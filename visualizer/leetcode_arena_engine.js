@@ -228,23 +228,40 @@ window.LEETCODE_ARENA = (() => {
 
     const mc = data.masterclass;
 
-    let diagramsHtml = '';
-    mc.diagrams.forEach(diag => {
-      diagramsHtml += `
-        <div class="lc-card">
-          <div class="lc-card-header">
-            <span class="lc-card-title">
-              <span style="color: var(--accent, #ea580c);">📐</span>
-              ${diag.title}
-            </span>
+    let chaptersHtml = '';
+    if (mc.chapters && mc.chapters.length > 0) {
+      mc.chapters.forEach(chap => {
+        let diagHtml = '';
+        if (chap.diagram) {
+          diagHtml = `
+            <div style="margin: 16px 0;">
+              <div style="font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                <span>📐</span>
+                <span>${chap.diagram.title}</span>
+              </div>
+              <div class="lc-diagram-wrap">
+                ${chap.diagram.svg}
+              </div>
+            </div>
+          `;
+        }
+
+        chaptersHtml += `
+          <div class="lc-card">
+            <div class="lc-card-header">
+              <span class="lc-card-title">
+                <span style="font-family: var(--font-mono); color: #2563eb; font-size: 14px;">[${chap.number}]</span>
+                <span>${chap.title}</span>
+              </span>
+            </div>
+            <div class="lc-explainer-text">
+              ${chap.content}
+            </div>
+            ${diagHtml}
           </div>
-          <div class="lc-diagram-wrap">
-            ${diag.svg}
-          </div>
-          <p class="lc-explainer-text">${diag.explanation}</p>
-        </div>
-      `;
-    });
+        `;
+      });
+    }
 
     let calloutsHtml = '';
     mc.callouts.forEach(call => {
@@ -261,7 +278,7 @@ window.LEETCODE_ARENA = (() => {
 
     panel.innerHTML = `
       <div class="lc-masterclass-grid">
-        <div class="lc-card" style="border-left: 4px solid var(--accent, #ea580c);">
+        <div class="lc-card">
           <div class="lc-card-header">
             <span class="lc-card-title">
               <span>🎯</span>
@@ -273,7 +290,7 @@ window.LEETCODE_ARENA = (() => {
             ${calloutsHtml}
           </div>
         </div>
-        ${diagramsHtml}
+        ${chaptersHtml}
       </div>
     `;
   }

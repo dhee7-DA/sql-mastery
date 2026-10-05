@@ -1,116 +1,238 @@
 // =============================================================================
-// LEETCODE SQL 50 ARENA - CONCEPT SECTION 1 DATA
+// LEETCODE SQL 50 ARENA - CONCEPT SECTION 1 DATA (TEXTBOOK GRADE)
 // Concept 1: Filtering & Three-Valued Logic (WHERE, NULL, and Predicates)
 // =============================================================================
 
 window.LEETCODE_SECTION_1_DATA = (() => {
 
   // ---------------------------------------------------------------------------
-  // 1. MASTERCLASS CONTENT & EMBEDDED SVG DIAGRAMS
+  // 1. EXTENSIVE MASTERCLASS LEARNING MATERIAL WITH MODERN LIGHT-THEME SVGS
   // ---------------------------------------------------------------------------
   const masterclass = {
     conceptId: 'concept-1',
-    title: 'Filtering & Three-Valued Logic',
-    subtitle: 'Mastering WHERE clause execution order, boolean truth tables, NULL traps, and string predicates',
-    keyTakeaway: 'The WHERE clause operates during Phase 2 of physical query execution. It discards every row where the predicate evaluates to FALSE or UNKNOWN. Only rows evaluating to TRUE survive into the projection buffer.',
+    title: 'Filtering & Three-Valued Logic Masterclass',
+    subtitle: 'An exhaustive deep dive into physical execution pipelines, 3VL boolean mechanics, NULL traps, index sargability, and string semantics.',
+    keyTakeaway: 'The WHERE clause operates during Phase 2 of physical execution. It enforces an existential filter: only rows where the boolean expression strictly evaluates to TRUE survive into memory buffers. Rows evaluating to FALSE or UNKNOWN are immediately dropped.',
     
-    diagrams: [
+    chapters: [
       {
-        id: 'exec-order-diagram',
-        title: 'Physical Execution Order: Why WHERE Cannot See SELECT Aliases',
-        svg: `<svg viewBox="0 0 860 220" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="gradFrom" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"/>
-              <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0.4"/>
-            </linearGradient>
-            <linearGradient id="gradWhere" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ea580c" stop-opacity="0.25"/>
-              <stop offset="100%" stop-color="#9a3412" stop-opacity="0.5"/>
-            </linearGradient>
-            <linearGradient id="gradSelect" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#10b981" stop-opacity="0.2"/>
-              <stop offset="100%" stop-color="#064e3b" stop-opacity="0.4"/>
-            </linearGradient>
-            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="#ea580c"/>
-            </marker>
-          </defs>
-          <!-- Stage 1: FROM -->
-          <rect x="20" y="30" width="220" height="150" rx="8" fill="url(#gradFrom)" stroke="#3b82f6" stroke-width="1.5"/>
-          <text x="35" y="60" fill="#60a5fa" font-family="monospace" font-size="12" font-weight="700">STAGE 1: FROM / JOIN</text>
-          <text x="35" y="85" fill="#f8fafc" font-size="13" font-weight="600">Load Base Table Buffer</text>
-          <text x="35" y="110" fill="#94a3b8" font-size="11">Reads raw rows from disk/index.</text>
-          <text x="35" y="130" fill="#94a3b8" font-size="11">Creates full working candidate set.</text>
-          <rect x="35" y="145" width="100" height="22" rx="4" fill="#1e293b" stroke="#475569"/>
-          <text x="45" y="160" fill="#38bdf8" font-family="monospace" font-size="11">1,000 Rows In</text>
+        id: 'chap-1-exec-order',
+        number: '1.1',
+        title: 'The Anatomy of SQL Physical Execution Pipeline',
+        content: `In declarative programming languages like SQL, queries are written in a logical syntax that looks like natural English (<code>SELECT ... FROM ... WHERE ...</code>). However, the internal relational database management system (RDBMS) execution engine parses, compiles, and optimizes this query into a completely different physical sequence.
 
-          <!-- Arrow 1 to 2 -->
-          <line x1="245" y1="105" x2="295" y2="105" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow)"/>
+Understanding this sequence is the single most important prerequisite for solving interview traps:
 
-          <!-- Stage 2: WHERE -->
-          <rect x="305" y="20" width="250" height="170" rx="8" fill="url(#gradWhere)" stroke="#ea580c" stroke-width="2"/>
-          <text x="320" y="52" fill="#fb923c" font-family="monospace" font-size="12" font-weight="700">STAGE 2: WHERE (Active Filter)</text>
-          <text x="320" y="78" fill="#f8fafc" font-size="13" font-weight="600">Row-by-Row Predicate Check</text>
-          <text x="320" y="102" fill="#fde047" font-family="monospace" font-size="11">Evaluates: TRUE, FALSE, UNKNOWN</text>
-          <text x="320" y="124" fill="#f87171" font-size="11">❌ Discards FALSE &amp; UNKNOWN (NULL)</text>
-          <text x="320" y="144" fill="#34d399" font-size="11">✅ Retains TRUE rows only</text>
-          <rect x="320" y="156" width="170" height="24" rx="4" fill="#0f172a" stroke="#ea580c"/>
-          <text x="328" y="172" fill="#fbbf24" font-family="monospace" font-size="10.5">WHERE col != 2 (NULL drops!)</text>
+<ol style="margin: 12px 0 16px 20px; line-height: 1.8;">
+  <li><strong>Phase 1: FROM &amp; JOIN</strong> &mdash; The storage engine locates the target physical tables on disk or buffer pool, loads row candidates, and applies any Cartesian products or <code>ON</code> join conditions to construct the base working rowset.</li>
+  <li><strong>Phase 2: WHERE Filter</strong> &mdash; The filter engine streams through every row in the working rowset. For each row, it evaluates the boolean predicate. Rows evaluating to <code>FALSE</code> or <code>UNKNOWN</code> are discarded on the fly.</li>
+  <li><strong>Phase 3: GROUP BY</strong> &mdash; Surviving rows are partitioned into aggregate buckets based on distinct combinations of the grouping keys.</li>
+  <li><strong>Phase 4: HAVING</strong> &mdash; Evaluates aggregate predicates (such as <code>COUNT(*) &gt; 5</code>) on the group buckets, discarding entire groups.</li>
+  <li><strong>Phase 5: SELECT &amp; Expressions</strong> &mdash; The projection engine computes mathematical calculations, string functions, window functions, and assigns column aliases (e.g. <code>AS total_rev</code>).</li>
+  <li><strong>Phase 6: DISTINCT</strong> &mdash; A hash table or sort-based deduplication pass strips duplicate projection rows.</li>
+  <li><strong>Phase 7: ORDER BY</strong> &mdash; Rows are sorted in memory (or external temporary disk files if the rowset exceeds the memory buffer).</li>
+  <li><strong>Phase 8: LIMIT / OFFSET</strong> &mdash; The cursor skips and caps the output stream, returning the final result to the client.</li>
+</ol>
 
-          <!-- Arrow 2 to 3 -->
-          <line x1="560" y1="105" x2="610" y2="105" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow)"/>
+<strong>The Alias Blindspot Trap:</strong> Candidates often try to write <code>WHERE total_profit &gt; 1000</code> when <code>total_profit</code> was defined in the <code>SELECT</code> clause. Because Phase 2 (WHERE) runs long before Phase 5 (SELECT), the database parser throws an immediate <code>Unknown column 'total_profit'</code> error. In contrast, <code>ORDER BY total_profit</code> works flawlessly because Phase 7 runs after Phase 5!`,
+        diagram: {
+          id: 'diag-exec-pipeline',
+          title: 'Physical Query Lifecycle: Memory Buffer & Predicate Gate',
+          svg: `<svg viewBox="0 0 900 240" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#475569"/>
+              </marker>
+            </defs>
+            <!-- Phase 1: FROM -->
+            <rect x="20" y="30" width="230" height="175" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+            <rect x="35" y="45" width="80" height="20" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="42" y="59" fill="#1d4ed8" font-family="monospace" font-size="10.5" font-weight="700">PHASE 1: FROM</text>
+            <text x="35" y="88" fill="#0f172a" font-size="14" font-weight="700">Base Table Scan</text>
+            <text x="35" y="112" fill="#52525b" font-size="12" line-height="1.4">Reads raw rows from disk blocks or buffer cache pool.</text>
+            <rect x="35" y="150" width="130" height="28" rx="5" fill="#ffffff" stroke="#e2e8f0"/>
+            <text x="45" y="169" fill="#0284c7" font-family="monospace" font-size="11.5" font-weight="600">📥 10,000 Rows In</text>
 
-          <!-- Stage 3: SELECT -->
-          <rect x="620" y="30" width="220" height="150" rx="8" fill="url(#gradSelect)" stroke="#10b981" stroke-width="1.5"/>
-          <text x="635" y="60" fill="#34d399" font-family="monospace" font-size="12" font-weight="700">STAGE 3: SELECT</text>
-          <text x="635" y="85" fill="#f8fafc" font-size="13" font-weight="600">Projection &amp; Aliasing</text>
-          <text x="635" y="110" fill="#94a3b8" font-size="11">Computes column expressions.</text>
-          <text x="635" y="130" fill="#94a3b8" font-size="11">Applies aliases (e.g. AS rev).</text>
-          <rect x="635" y="145" width="120" height="22" rx="4" fill="#1e293b" stroke="#475569"/>
-          <text x="645" y="160" fill="#10b981" font-family="monospace" font-size="11">120 Clean Rows Out</text>
-        </svg>`,
-        explanation: 'Because WHERE executes in Stage 2, long before SELECT executes in Stage 3, column aliases defined in SELECT do not exist yet when WHERE is filtering. Writing WHERE my_alias > 10 throws an immediate SQL syntax error!'
+            <!-- Arrow 1 to 2 -->
+            <line x1="250" y1="117" x2="310" y2="117" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+            <!-- Phase 2: WHERE -->
+            <rect x="320" y="15" width="280" height="205" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.04))"/>
+            <rect x="335" y="30" width="95" height="20" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="342" y="44" fill="#1d4ed8" font-family="monospace" font-size="10.5" font-weight="700">PHASE 2: WHERE</text>
+            <text x="335" y="74" fill="#0f172a" font-size="14" font-weight="700">Streaming Filter Gate</text>
+            <text x="335" y="98" fill="#52525b" font-size="12">Tests predicate per row:</text>
+            <text x="335" y="120" fill="#dc2626" font-size="11.5" font-weight="600">❌ FALSE ➔ Discarded</text>
+            <text x="335" y="140" fill="#ea580c" font-size="11.5" font-weight="600">⚠️ UNKNOWN (NULL) ➔ Discarded</text>
+            <text x="335" y="160" fill="#16a34a" font-size="11.5" font-weight="600">✅ TRUE ➔ Retained in memory</text>
+            <rect x="335" y="175" width="200" height="26" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+            <text x="345" y="192" fill="#475569" font-family="monospace" font-size="10.5">WHERE referee_id != 2</text>
+
+            <!-- Arrow 2 to 3 -->
+            <line x1="600" y1="117" x2="660" y2="117" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+            <!-- Phase 3: SELECT -->
+            <rect x="670" y="30" width="210" height="175" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+            <rect x="685" y="45" width="95" height="20" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>
+            <text x="692" y="59" fill="#15803d" font-family="monospace" font-size="10.5" font-weight="700">PHASE 5: SELECT</text>
+            <text x="685" y="88" fill="#0f172a" font-size="14" font-weight="700">Column Projection</text>
+            <text x="685" y="112" fill="#52525b" font-size="12">Computes expressions &amp; assigns output column aliases.</text>
+            <rect x="685" y="150" width="130" height="28" rx="5" fill="#ffffff" stroke="#e2e8f0"/>
+            <text x="695" y="169" fill="#16a34a" font-family="monospace" font-size="11.5" font-weight="600">📤 420 Filtered Rows</text>
+          </svg>`
+        }
       },
+
       {
-        id: 'null-truth-table-diagram',
-        title: 'Three-Valued Logic Truth Matrix (The NULL Trap)',
-        svg: `<svg viewBox="0 0 860 230" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-          <!-- Background Grid -->
-          <rect x="10" y="10" width="840" height="210" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-          <text x="30" y="35" fill="#ea580c" font-family="monospace" font-size="13" font-weight="700">THREE-VALUED LOGIC (3VL) TRUTH EVALUATION</text>
-          
-          <!-- Table Header -->
-          <rect x="30" y="50" width="790" height="28" fill="#1e293b" rx="4"/>
-          <text x="45" y="69" fill="#94a3b8" font-family="monospace" font-size="11" font-weight="700">EXPRESSION</text>
-          <text x="320" y="69" fill="#94a3b8" font-family="monospace" font-size="11" font-weight="700">EVALUATION</text>
-          <text x="500" y="69" fill="#94a3b8" font-family="monospace" font-size="11" font-weight="700">WHERE CLAUSE RESULT</text>
+        id: 'chap-2-3vl-logic',
+        number: '1.2',
+        title: 'Three-Valued Logic (3VL) & The Deep Anatomy of NULL',
+        content: `Standard programming languages (Java, Python, C++, TypeScript) operate in **Two-Valued Logic (2VL)**: every expression is either <code>true</code> or <code>false</code>. 
 
-          <!-- Row 1 -->
-          <line x1="30" y1="85" x2="820" y2="85" stroke="#334155" stroke-dasharray="2,2"/>
-          <text x="45" y="103" fill="#f8fafc" font-family="monospace" font-size="11.5">referee_id = 2 (when referee_id is 2)</text>
-          <text x="320" y="103" fill="#34d399" font-family="monospace" font-size="12" font-weight="700">TRUE</text>
-          <text x="500" y="103" fill="#34d399" font-size="11.5">✅ Row Retained</text>
+In contrast, SQL is fundamentally built upon **Three-Valued Logic (3VL)**, formulated by database pioneer Edgar F. Codd. In SQL, a truth value can be:
+<ul>
+  <li><code>TRUE</code>: The assertion is definitely factual.</li>
+  <li><code>FALSE</code>: The assertion is definitely counter-factual.</li>
+  <li><code>UNKNOWN</code>: The assertion cannot be determined because data is missing or indeterminate.</li>
+</ul>
 
-          <!-- Row 2 -->
-          <line x1="30" y1="118" x2="820" y2="118" stroke="#334155" stroke-dasharray="2,2"/>
-          <text x="45" y="136" fill="#f8fafc" font-family="monospace" font-size="11.5">referee_id = 2 (when referee_id is 1)</text>
-          <text x="320" y="136" fill="#f87171" font-family="monospace" font-size="12" font-weight="700">FALSE</text>
-          <text x="500" y="136" fill="#f87171" font-size="11.5">❌ Row Dropped</text>
+### The Truth Evaluation Tables (Kleene Logic)
+When evaluating compound boolean expressions with logical operators (<code>AND</code>, <code>OR</code>, <code>NOT</code>), SQL follows strict truth matrices:
 
-          <!-- Row 3 (THE TRAP) -->
-          <rect x="32" y="145" width="786" height="32" fill="rgba(239, 68, 68, 0.08)" rx="4"/>
-          <text x="45" y="166" fill="#fbbf24" font-family="monospace" font-size="11.5" font-weight="700">referee_id != 2 (when referee_id is NULL)</text>
-          <text x="320" y="166" fill="#fbbf24" font-family="monospace" font-size="12" font-weight="700">UNKNOWN (NULL)</text>
-          <text x="500" y="166" fill="#f87171" font-size="11.5" font-weight="700">❌ Row Dropped! (Not TRUE)</text>
+<table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px;">
+  <thead>
+    <tr style="background: #f8fafc; border-bottom: 2px solid #e4e4e7;">
+      <th style="padding: 8px 12px; text-align: left;">Operator</th>
+      <th style="padding: 8px 12px; text-align: left;">Operand A</th>
+      <th style="padding: 8px 12px; text-align: left;">Operand B</th>
+      <th style="padding: 8px 12px; text-align: left;">Evaluated Result</th>
+      <th style="padding: 8px 12px; text-align: left;">Survives WHERE?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom: 1px solid #f4f4f5;"><td style="padding: 6px 12px;"><strong>AND</strong></td><td>TRUE</td><td>UNKNOWN</td><td><code>UNKNOWN</code></td><td style="color: #dc2626;">❌ Discarded</td></tr>
+    <tr style="border-bottom: 1px solid #f4f4f5;"><td style="padding: 6px 12px;"><strong>AND</strong></td><td>FALSE</td><td>UNKNOWN</td><td><code>FALSE</code></td><td style="color: #dc2626;">❌ Discarded</td></tr>
+    <tr style="border-bottom: 1px solid #f4f4f5;"><td style="padding: 6px 12px;"><strong>OR</strong></td><td>TRUE</td><td>UNKNOWN</td><td><code>TRUE</code></td><td style="color: #16a34a; font-weight: 700;">✅ Kept</td></tr>
+    <tr style="border-bottom: 1px solid #f4f4f5;"><td style="padding: 6px 12px;"><strong>OR</strong></td><td>FALSE</td><td>UNKNOWN</td><td><code>UNKNOWN</code></td><td style="color: #dc2626;">❌ Discarded</td></tr>
+    <tr style="border-bottom: 1px solid #f4f4f5;"><td style="padding: 6px 12px;"><strong>NOT</strong></td><td>UNKNOWN</td><td>&mdash;</td><td><code>UNKNOWN</code></td><td style="color: #dc2626;">❌ Discarded</td></tr>
+  </tbody>
+</table>
 
-          <!-- Solution row -->
-          <line x1="30" y1="184" x2="820" y2="184" stroke="#334155" stroke-dasharray="2,2"/>
-          <text x="45" y="202" fill="#38bdf8" font-family="monospace" font-size="11.5">referee_id != 2 OR referee_id IS NULL</text>
-          <text x="320" y="202" fill="#34d399" font-family="monospace" font-size="12" font-weight="700">TRUE</text>
-          <text x="500" y="202" fill="#34d399" font-size="11.5">✅ Correct: NULL Customers Included!</text>
-        </svg>`,
-        explanation: 'In SQL, NULL means "Unknown Value", not blank or zero. Any comparison with NULL (like NULL != 2 or NULL = NULL) returns UNKNOWN. Because WHERE only retains rows that evaluate to TRUE, UNKNOWN rows are silently excluded. You MUST explicitly handle NULL with `IS NULL` or `IFNULL(referee_id, 0) != 2`.'
+### The 5 Deadly NULL Traps in Technical Interviews
+
+1. **The Equality Fallacy:** Writing <code>WHERE status = NULL</code> is universally incorrect. It always evaluates to <code>UNKNOWN</code>, returning zero records. You must always use <code>WHERE status IS NULL</code>.
+2. **The Inequality Filter Trap (LeetCode #584):** When filtering <code>WHERE referee_id != 2</code>, any row where <code>referee_id</code> is NULL produces <code>UNKNOWN != 2</code> &rarr; <code>UNKNOWN</code>. Because <code>UNKNOWN</code> is not <code>TRUE</code>, the customer is silently dropped! You must write <code>WHERE referee_id != 2 OR referee_id IS NULL</code>.
+3. **The Poisonous NOT IN Subquery Trap:** If you query <code>WHERE dept_id NOT IN (SELECT manager_dept FROM Managers)</code>, and even a single row in <code>manager_dept</code> is NULL, the entire query returns **ZERO records**. Why? Because <code>x NOT IN (1, 2, NULL)</code> expands to <code>x != 1 AND x != 2 AND x != NULL</code>. Since <code>x != NULL</code> is UNKNOWN, the entire AND chain collapses to UNKNOWN! Always use <code>NOT EXISTS</code> instead.
+4. **The Aggregate Counting Asymmetry:** <code>COUNT(*)</code> counts every row in the partition (including rows with all NULLs). However, <code>COUNT(column_name)</code> strictly counts rows where <code>column_name IS NOT NULL</code>. Similarly, <code>AVG(salary)</code> calculates <code>SUM(salary) / COUNT(salary)</code>, completely omitting employees with NULL salary from the denominator!
+5. **The Concatenation Eraser:** In standard ANSI SQL, string concatenation with NULL returns NULL: <code>CONCAT('Hello', ' ', NULL) = NULL</code>. In MySQL, <code>CONCAT</code> returns NULL if any argument is NULL. To prevent strings from vanishing, use <code>CONCAT_WS(' ', first_name, last_name)</code> or <code>COALESCE</code>.`,
+        diagram: {
+          id: 'diag-3vl-matrix',
+          title: '3VL Matrix & Row Survival Mechanics',
+          svg: `<svg viewBox="0 0 900 230" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="15" width="860" height="200" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+            <!-- Title -->
+            <text x="35" y="42" fill="#0f172a" font-size="13" font-weight="700">THREE-VALUED LOGIC COMPARISON TRUTH TABLE</text>
+            
+            <!-- Table Header -->
+            <rect x="35" y="55" width="830" height="28" fill="#f8fafc" rx="4"/>
+            <text x="45" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">ROW RECORD</text>
+            <text x="240" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">TEST PREDICATE</text>
+            <text x="480" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">3VL EVALUATION</text>
+            <text x="680" y="73" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">ENGINE ACTION</text>
+
+            <!-- Row 1 -->
+            <line x1="35" y1="92" x2="865" y2="92" stroke="#f1f5f9"/>
+            <text x="45" y="112" fill="#0f172a" font-family="monospace" font-size="11.5">User #1 (referee=1)</text>
+            <text x="240" y="112" fill="#2563eb" font-family="monospace" font-size="11.5">referee_id != 2</text>
+            <text x="480" y="112" fill="#16a34a" font-family="monospace" font-size="12" font-weight="700">TRUE</text>
+            <rect x="680" y="98" width="95" height="20" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>
+            <text x="692" y="112" fill="#15803d" font-size="11" font-weight="600">✅ Retained</text>
+
+            <!-- Row 2 -->
+            <line x1="35" y1="130" x2="865" y2="130" stroke="#f1f5f9"/>
+            <text x="45" y="148" fill="#0f172a" font-family="monospace" font-size="11.5">User #2 (referee=2)</text>
+            <text x="240" y="148" fill="#2563eb" font-family="monospace" font-size="11.5">referee_id != 2</text>
+            <text x="480" y="148" fill="#dc2626" font-family="monospace" font-size="12" font-weight="700">FALSE</text>
+            <rect x="680" y="134" width="95" height="20" rx="4" fill="#fef2f2" stroke="#fecaca"/>
+            <text x="692" y="148" fill="#991b1b" font-size="11" font-weight="600">❌ Discarded</text>
+
+            <!-- Row 3 (THE TRAP) -->
+            <rect x="35" y="162" width="830" height="36" rx="4" fill="#fffbeb" stroke="#fde68a"/>
+            <text x="45" y="184" fill="#92400e" font-family="monospace" font-size="11.5" font-weight="700">User #3 (referee=NULL)</text>
+            <text x="240" y="184" fill="#2563eb" font-family="monospace" font-size="11.5">referee_id != 2</text>
+            <text x="480" y="184" fill="#d97706" font-family="monospace" font-size="12" font-weight="700">UNKNOWN (NULL)</text>
+            <rect x="680" y="170" width="165" height="20" rx="4" fill="#fef2f2" stroke="#fecaca"/>
+            <text x="690" y="184" fill="#991b1b" font-size="11" font-weight="700">❌ Discarded (Silent!)</text>
+          </svg>`
+        }
+      },
+
+      {
+        id: 'chap-3-sargability',
+        number: '1.3',
+        title: 'Query Optimizer Mechanics & Index Sargability',
+        content: `Writing functional SQL is easy; writing **production-grade performant SQL** separates senior data engineers from novices. The heart of SQL performance is **Sargability** (an acronym for *Search Argument Able*).
+
+A predicate is **Sargable** if the database engine can directly exploit an existing B-Tree index to perform a direct logarithmic range seek (<code>O(log N)</code>) rather than scanning every record in the table (<code>O(N)</code>).
+
+### The Golden Rule of Sargability
+<blockquote><strong>Never wrap the indexed column inside a function or mathematical expression in the WHERE clause. Always manipulate the constant operand instead.</strong></blockquote>
+
+#### 1. Date Transformations
+* ❌ **Non-Sargable:** <code>WHERE YEAR(order_date) = 2026</code> &mdash; The engine must execute the <code>YEAR()</code> function on 10,000,000 rows one by one. Index disabled!
+* ✅ **Sargable:** <code>WHERE order_date &gt;= '2026-01-01' AND order_date &lt; '2027-01-01'</code> &mdash; The engine immediately seeks to the first January 1st node in the B-Tree index and reads linearly.
+
+#### 2. String Matching & Wildcard Placement
+* ❌ **Non-Sargable:** <code>WHERE sku LIKE '%PRO'</code> &mdash; Leading wildcards prevent B-Tree index seek because the starting characters are unknown.
+* ✅ **Sargable:** <code>WHERE sku LIKE 'PRO%'</code> &mdash; Trailing wildcards allow the B-Tree index to perform an exact prefix seek.
+
+#### 3. Mathematical Operations
+* ❌ **Non-Sargable:** <code>WHERE price * 1.10 &gt; 100</code>
+* ✅ **Sargable:** <code>WHERE price &gt; 100 / 1.10</code>`,
+        diagram: {
+          id: 'diag-index-seek',
+          title: 'B-Tree Index Range Seek vs Full Table Scan',
+          svg: `<svg viewBox="0 0 900 210" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="15" width="415" height="180" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+            <text x="35" y="42" fill="#16a34a" font-size="13" font-weight="700">SARGABLE: B-Tree Index Range Seek</text>
+            <text x="35" y="65" fill="#52525b" font-family="monospace" font-size="11">WHERE created_at &gt;= '2026-01-01'</text>
+            <rect x="35" y="80" width="385" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+            <text x="45" y="102" fill="#0f172a" font-size="12">Traverses B-Tree Root ➔ Branch ➔ Leaf page</text>
+            <text x="45" y="120" fill="#16a34a" font-family="monospace" font-size="11" font-weight="700">⚡ 3 Page I/O Reads &bull; Latency: 0.8ms</text>
+            <rect x="35" y="145" width="120" height="22" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+            <text x="45" y="160" fill="#166534" font-size="11" font-weight="600">O(log N) Cost</text>
+
+            <rect x="465" y="15" width="415" height="180" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+            <text x="480" y="42" fill="#dc2626" font-size="13" font-weight="700">NON-SARGABLE: Full Table Scan (FTS)</text>
+            <text x="480" y="65" fill="#52525b" font-family="monospace" font-size="11">WHERE YEAR(created_at) = 2026</text>
+            <rect x="480" y="80" width="385" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+            <text x="490" y="102" fill="#0f172a" font-size="12">Must execute function on every single raw disk row</text>
+            <text x="490" y="120" fill="#dc2626" font-family="monospace" font-size="11" font-weight="700">🐢 85,000 Page I/O Reads &bull; Latency: 4,200ms</text>
+            <rect x="480" y="145" width="120" height="22" rx="4" fill="#fef2f2" stroke="#fca5a5"/>
+            <text x="490" y="160" fill="#991b1b" font-size="11" font-weight="600">O(N) Full Scan</text>
+          </svg>`
+        }
+      },
+
+      {
+        id: 'chap-4-strings',
+        number: '1.4',
+        title: 'String Semantics, Unicode Traps & Character Counting',
+        content: `In LeetCode #1683 (Invalid Tweets), the specification asks to find tweets where the number of characters strictly exceeds 15. Candidates who use <code>LENGTH()</code> frequently fail hidden test cases involving modern unicode emojis.
+
+### Byte Length vs Character Count
+In modern databases utilizing <code>utf8mb4</code> encoding:
+<ul>
+  <li>Standard ASCII characters (A-Z, 0-9) consume <strong>1 byte</strong>.</li>
+  <li>Accented Latin characters (&eacute;, &ntilde;) consume <strong>2 bytes</strong>.</li>
+  <li>Common Asian characters (&atilde;&sbquo;&cent;, &auml;&frac12;&nbsp;) consume <strong>3 bytes</strong>.</li>
+  <li>Modern Unicode Emojis (&#128640;, &#128514;, &#128293;) consume <strong>4 bytes</strong>!</li>
+</ul>
+
+* <code>LENGTH('Vote for 🚀')</code> returns **13 bytes** (9 letters + 4 bytes for rocket).
+* <code>CHAR_LENGTH('Vote for 🚀')</code> returns **10 characters** (the actual count of human-perceived characters).
+
+Always use <code>CHAR_LENGTH()</code> for text character limits and word counting in SQL interviews.`
       }
     ],
 
@@ -136,7 +258,6 @@ window.LEETCODE_SECTION_1_DATA = (() => {
   // ---------------------------------------------------------------------------
   // 2. 100 CONCEPT MCQs (THEORY, TRAPS & EDGE CASES)
   // ---------------------------------------------------------------------------
-  // Generating 100 deep-dive conceptual questions covering the full spectrum
   const mcqs = [
     {
       id: 1,
@@ -210,7 +331,6 @@ window.LEETCODE_SECTION_1_DATA = (() => {
     }
   ];
 
-  // Dynamically populate remaining to reach 100 comprehensive drill MCQs
   const conceptTopics = [
     { topic: 'AND vs OR Precedence', trap: 'Operator Precedence', template: (i) => ({
       q: `What is the default evaluation order between AND and OR in a WHERE clause?`,
@@ -416,56 +536,56 @@ recyclable is an ENUM of types ('Y', 'N') where 'Y' means this product is recycl
           [3]
         ]
       },
-      svgDiagram: `<svg viewBox="0 0 820 280" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+      svgDiagram: `<svg viewBox="0 0 840 270" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
         <!-- Input Table -->
-        <rect x="20" y="20" width="300" height="230" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-        <text x="35" y="45" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="700">INPUT: Products</text>
+        <rect x="20" y="20" width="310" height="230" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">INPUT: Products</text>
         
         <!-- Header -->
-        <rect x="30" y="60" width="280" height="24" fill="#1e293b"/>
-        <text x="40" y="76" fill="#94a3b8" font-family="monospace" font-size="10" font-weight="700">id</text>
-        <text x="120" y="76" fill="#94a3b8" font-family="monospace" font-size="10" font-weight="700">low_fats</text>
-        <text x="210" y="76" fill="#94a3b8" font-family="monospace" font-size="10" font-weight="700">recyclable</text>
+        <rect x="30" y="58" width="290" height="24" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="40" y="74" fill="#64748b" font-family="monospace" font-size="10.5" font-weight="700">id</text>
+        <text x="120" y="74" fill="#64748b" font-family="monospace" font-size="10.5" font-weight="700">low_fats</text>
+        <text x="210" y="74" fill="#64748b" font-family="monospace" font-size="10.5" font-weight="700">recyclable</text>
 
         <!-- Rows -->
-        <text x="40" y="105" fill="#94a3b8" font-family="monospace" font-size="11">0</text>
-        <text x="135" y="105" fill="#34d399" font-family="monospace" font-size="11">Y</text>
-        <text x="225" y="105" fill="#f87171" font-family="monospace" font-size="11">N (drop)</text>
+        <text x="40" y="103" fill="#64748b" font-family="monospace" font-size="11">0</text>
+        <text x="135" y="103" fill="#16a34a" font-family="monospace" font-size="11">Y</text>
+        <text x="225" y="103" fill="#dc2626" font-family="monospace" font-size="11">N (drop)</text>
 
         <!-- Row 1 MATCH -->
-        <rect x="30" y="118" width="280" height="24" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="1"/>
-        <text x="40" y="134" fill="#34d399" font-family="monospace" font-size="11" font-weight="700">1</text>
-        <text x="135" y="134" fill="#34d399" font-family="monospace" font-size="11">Y</text>
-        <text x="225" y="134" fill="#34d399" font-family="monospace" font-size="11">Y</text>
+        <rect x="30" y="115" width="290" height="24" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+        <text x="40" y="131" fill="#166534" font-family="monospace" font-size="11" font-weight="700">1</text>
+        <text x="135" y="131" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Y</text>
+        <text x="225" y="131" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Y</text>
 
-        <text x="40" y="162" fill="#94a3b8" font-family="monospace" font-size="11">2</text>
-        <text x="135" y="162" fill="#f87171" font-family="monospace" font-size="11">N</text>
-        <text x="225" y="162" fill="#34d399" font-family="monospace" font-size="11">Y</text>
+        <text x="40" y="159" fill="#64748b" font-family="monospace" font-size="11">2</text>
+        <text x="135" y="159" fill="#dc2626" font-family="monospace" font-size="11">N</text>
+        <text x="225" y="159" fill="#16a34a" font-family="monospace" font-size="11">Y</text>
 
         <!-- Row 3 MATCH -->
-        <rect x="30" y="175" width="280" height="24" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="1"/>
-        <text x="40" y="191" fill="#34d399" font-family="monospace" font-size="11" font-weight="700">3</text>
-        <text x="135" y="191" fill="#34d399" font-family="monospace" font-size="11">Y</text>
-        <text x="225" y="191" fill="#34d399" font-family="monospace" font-size="11">Y</text>
+        <rect x="30" y="171" width="290" height="24" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+        <text x="40" y="187" fill="#166534" font-family="monospace" font-size="11" font-weight="700">3</text>
+        <text x="135" y="187" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Y</text>
+        <text x="225" y="187" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Y</text>
 
-        <text x="40" y="222" fill="#94a3b8" font-family="monospace" font-size="11">4</text>
-        <text x="135" y="222" fill="#f87171" font-family="monospace" font-size="11">N</text>
-        <text x="225" y="222" fill="#f87171" font-family="monospace" font-size="11">N</text>
+        <text x="40" y="217" fill="#64748b" font-family="monospace" font-size="11">4</text>
+        <text x="135" y="217" fill="#dc2626" font-family="monospace" font-size="11">N</text>
+        <text x="225" y="217" fill="#dc2626" font-family="monospace" font-size="11">N</text>
 
         <!-- Arrows and Filter Gate -->
-        <rect x="360" y="90" width="180" height="90" rx="6" fill="#1e293b" stroke="#ea580c" stroke-width="1.5"/>
-        <text x="375" y="118" fill="#fb923c" font-family="monospace" font-size="11" font-weight="700">PREDICATE GATE</text>
-        <text x="375" y="140" fill="#f8fafc" font-family="monospace" font-size="11">low_fats = 'Y'</text>
-        <text x="375" y="160" fill="#f8fafc" font-family="monospace" font-size="11">AND recyclable = 'Y'</text>
+        <rect x="365" y="85" width="200" height="95" rx="8" fill="#f8fafc" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="380" y="112" fill="#1d4ed8" font-family="monospace" font-size="11" font-weight="700">PREDICATE GATE</text>
+        <text x="380" y="136" fill="#0f172a" font-family="monospace" font-size="11.5">low_fats = 'Y'</text>
+        <text x="380" y="156" fill="#0f172a" font-family="monospace" font-size="11.5">AND recyclable = 'Y'</text>
 
         <!-- Result Table -->
-        <rect x="580" y="45" width="200" height="180" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
-        <text x="595" y="70" fill="#10b981" font-family="monospace" font-size="12" font-weight="700">OUTPUT TABLE</text>
-        <rect x="595" y="85" width="170" height="24" fill="#1e293b"/>
-        <text x="605" y="101" fill="#34d399" font-family="monospace" font-size="11" font-weight="700">product_id</text>
+        <rect x="600" y="45" width="210" height="180" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="615" y="70" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT: product_id</text>
+        <rect x="615" y="85" width="180" height="24" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="625" y="101" fill="#64748b" font-family="monospace" font-size="11" font-weight="700">product_id</text>
 
-        <text x="605" y="130" fill="#f8fafc" font-family="monospace" font-size="12">1</text>
-        <text x="605" y="158" fill="#f8fafc" font-family="monospace" font-size="12">3</text>
+        <text x="625" y="132" fill="#0f172a" font-family="monospace" font-size="12" font-weight="600">1</text>
+        <text x="625" y="160" fill="#0f172a" font-family="monospace" font-size="12" font-weight="600">3</text>
       </svg>`,
       logicBreakdown: [
         '1. We only need the primary key column "product_id" in the final projection.',
@@ -524,56 +644,56 @@ Each row of this table indicates the id of a customer, their name, and the id of
           ['Zack']
         ]
       },
-      svgDiagram: `<svg viewBox="0 0 820 280" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+      svgDiagram: `<svg viewBox="0 0 840 270" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
         <!-- Input Table -->
-        <rect x="20" y="20" width="320" height="240" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-        <text x="35" y="45" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="700">INPUT: Customer</text>
+        <rect x="20" y="20" width="330" height="235" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">INPUT: Customer</text>
         
-        <rect x="30" y="60" width="300" height="22" fill="#1e293b"/>
-        <text x="40" y="75" fill="#94a3b8" font-family="monospace" font-size="10">id</text>
-        <text x="100" y="75" fill="#94a3b8" font-family="monospace" font-size="10">name</text>
-        <text x="210" y="75" fill="#fbbf24" font-family="monospace" font-size="10">referee_id</text>
+        <rect x="30" y="58" width="310" height="22" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="40" y="73" fill="#64748b" font-family="monospace" font-size="10">id</text>
+        <text x="100" y="73" fill="#64748b" font-family="monospace" font-size="10">name</text>
+        <text x="210" y="73" fill="#64748b" font-family="monospace" font-size="10">referee_id</text>
 
         <!-- Rows with NULL callouts -->
-        <text x="40" y="100" fill="#34d399" font-family="monospace" font-size="11">1</text>
-        <text x="100" y="100" fill="#34d399" font-family="monospace" font-size="11">Will</text>
-        <text x="210" y="100" fill="#f87171" font-family="monospace" font-size="11">NULL (Kept!)</text>
+        <text x="40" y="98" fill="#16a34a" font-family="monospace" font-size="11">1</text>
+        <text x="100" y="98" fill="#16a34a" font-family="monospace" font-size="11">Will</text>
+        <text x="210" y="98" fill="#d97706" font-family="monospace" font-size="11">NULL (Kept!)</text>
 
-        <text x="40" y="125" fill="#34d399" font-family="monospace" font-size="11">2</text>
-        <text x="100" y="125" fill="#34d399" font-family="monospace" font-size="11">Jane</text>
-        <text x="210" y="125" fill="#f87171" font-family="monospace" font-size="11">NULL (Kept!)</text>
+        <text x="40" y="123" fill="#16a34a" font-family="monospace" font-size="11">2</text>
+        <text x="100" y="123" fill="#16a34a" font-family="monospace" font-size="11">Jane</text>
+        <text x="210" y="123" fill="#d97706" font-family="monospace" font-size="11">NULL (Kept!)</text>
 
-        <text x="40" y="150" fill="#94a3b8" font-family="monospace" font-size="11">3</text>
-        <text x="100" y="150" fill="#94a3b8" font-family="monospace" font-size="11">Alex</text>
-        <text x="210" y="150" fill="#94a3b8" font-family="monospace" font-size="11">2 (Drop)</text>
+        <text x="40" y="148" fill="#64748b" font-family="monospace" font-size="11">3</text>
+        <text x="100" y="148" fill="#64748b" font-family="monospace" font-size="11">Alex</text>
+        <text x="210" y="148" fill="#dc2626" font-family="monospace" font-size="11">2 (Drop)</text>
 
-        <text x="40" y="175" fill="#34d399" font-family="monospace" font-size="11">4</text>
-        <text x="100" y="175" fill="#34d399" font-family="monospace" font-size="11">Bill</text>
-        <text x="210" y="175" fill="#f87171" font-family="monospace" font-size="11">NULL (Kept!)</text>
+        <text x="40" y="173" fill="#16a34a" font-family="monospace" font-size="11">4</text>
+        <text x="100" y="173" fill="#16a34a" font-family="monospace" font-size="11">Bill</text>
+        <text x="210" y="173" fill="#d97706" font-family="monospace" font-size="11">NULL (Kept!)</text>
 
-        <text x="40" y="200" fill="#34d399" font-family="monospace" font-size="11">5</text>
-        <text x="100" y="200" fill="#34d399" font-family="monospace" font-size="11">Zack</text>
-        <text x="210" y="200" fill="#34d399" font-family="monospace" font-size="11">1 (Kept!)</text>
+        <text x="40" y="198" fill="#16a34a" font-family="monospace" font-size="11">5</text>
+        <text x="100" y="198" fill="#16a34a" font-family="monospace" font-size="11">Zack</text>
+        <text x="210" y="198" fill="#16a34a" font-family="monospace" font-size="11">1 (Kept!)</text>
 
-        <text x="40" y="225" fill="#94a3b8" font-family="monospace" font-size="11">6</text>
-        <text x="100" y="225" fill="#94a3b8" font-family="monospace" font-size="11">Mark</text>
-        <text x="210" y="225" fill="#94a3b8" font-family="monospace" font-size="11">2 (Drop)</text>
+        <text x="40" y="223" fill="#64748b" font-family="monospace" font-size="11">6</text>
+        <text x="100" y="223" fill="#64748b" font-family="monospace" font-size="11">Mark</text>
+        <text x="210" y="223" fill="#dc2626" font-family="monospace" font-size="11">2 (Drop)</text>
 
         <!-- Warning Callout Box -->
-        <rect x="360" y="70" width="220" height="130" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
-        <text x="375" y="95" fill="#fbbf24" font-family="monospace" font-size="11" font-weight="700">⚠️ THE 3VL TRAP</text>
-        <text x="375" y="120" fill="#f8fafc" font-size="11">If you write:</text>
-        <text x="375" y="140" fill="#f87171" font-family="monospace" font-size="11">WHERE referee_id != 2</text>
-        <text x="375" y="165" fill="#94a3b8" font-size="10.5">NULL != 2 is UNKNOWN.</text>
-        <text x="375" y="185" fill="#f87171" font-size="10.5">Will, Jane &amp; Bill vanish!</text>
+        <rect x="380" y="70" width="220" height="130" rx="8" fill="#fffbeb" stroke="#fde68a" stroke-width="1.5"/>
+        <text x="395" y="95" fill="#92400e" font-family="monospace" font-size="11" font-weight="700">⚠️ THE 3VL TRAP</text>
+        <text x="395" y="120" fill="#0f172a" font-size="11">If you write:</text>
+        <text x="395" y="140" fill="#dc2626" font-family="monospace" font-size="11">WHERE referee_id != 2</text>
+        <text x="395" y="165" fill="#52525b" font-size="10.5">NULL != 2 is UNKNOWN.</text>
+        <text x="395" y="185" fill="#dc2626" font-size="10.5" font-weight="600">Will, Jane &amp; Bill vanish!</text>
 
         <!-- Output Table -->
-        <rect x="610" y="45" width="180" height="190" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
-        <text x="625" y="70" fill="#10b981" font-family="monospace" font-size="12" font-weight="700">OUTPUT: name</text>
-        <text x="635" y="105" fill="#f8fafc" font-family="monospace" font-size="12">Will</text>
-        <text x="635" y="130" fill="#f8fafc" font-family="monospace" font-size="12">Jane</text>
-        <text x="635" y="155" fill="#f8fafc" font-family="monospace" font-size="12">Bill</text>
-        <text x="635" y="180" fill="#f8fafc" font-family="monospace" font-size="12">Zack</text>
+        <rect x="630" y="45" width="190" height="195" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="645" y="70" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT: name</text>
+        <text x="645" y="105" fill="#0f172a" font-family="monospace" font-size="12">Will</text>
+        <text x="645" y="130" fill="#0f172a" font-family="monospace" font-size="12">Jane</text>
+        <text x="645" y="155" fill="#0f172a" font-family="monospace" font-size="12">Bill</text>
+        <text x="645" y="180" fill="#0f172a" font-family="monospace" font-size="12">Zack</text>
       </svg>`,
       logicBreakdown: [
         '1. The most common interview blunder is writing: WHERE referee_id != 2. This drops every customer with referee_id = NULL.',
@@ -628,39 +748,39 @@ name is the primary key column for this table.`,
           ['Algeria', 37100000, 2381741]
         ]
       },
-      svgDiagram: `<svg viewBox="0 0 820 250" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="20" width="340" height="200" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-        <text x="35" y="45" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="700">INPUT: World</text>
+      svgDiagram: `<svg viewBox="0 0 840 250" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20" width="340" height="200" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">INPUT: World</text>
 
-        <rect x="30" y="60" width="320" height="22" fill="#1e293b"/>
-        <text x="40" y="75" fill="#94a3b8" font-family="monospace" font-size="10">name</text>
-        <text x="140" y="75" fill="#94a3b8" font-family="monospace" font-size="10">area</text>
-        <text x="240" y="75" fill="#94a3b8" font-family="monospace" font-size="10">population</text>
+        <rect x="30" y="58" width="320" height="22" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="40" y="73" fill="#64748b" font-family="monospace" font-size="10">name</text>
+        <text x="140" y="73" fill="#64748b" font-family="monospace" font-size="10">area</text>
+        <text x="240" y="73" fill="#64748b" font-family="monospace" font-size="10">population</text>
 
-        <text x="40" y="110" fill="#34d399" font-family="monospace" font-size="11">Afghanistan</text>
-        <text x="140" y="110" fill="#94a3b8" font-family="monospace" font-size="11">652,230</text>
-        <text x="240" y="110" fill="#34d399" font-family="monospace" font-size="11">25.5M (&gt;=25M)</text>
+        <text x="40" y="108" fill="#16a34a" font-family="monospace" font-size="11">Afghanistan</text>
+        <text x="140" y="108" fill="#64748b" font-family="monospace" font-size="11">652,230</text>
+        <text x="240" y="108" fill="#16a34a" font-family="monospace" font-size="11">25.5M (&gt;=25M)</text>
 
-        <text x="40" y="145" fill="#f87171" font-family="monospace" font-size="11">Albania</text>
-        <text x="140" y="145" fill="#f87171" font-family="monospace" font-size="11">28,748</text>
-        <text x="240" y="145" fill="#f87171" font-family="monospace" font-size="11">2.8M</text>
+        <text x="40" y="143" fill="#dc2626" font-family="monospace" font-size="11">Albania</text>
+        <text x="140" y="143" fill="#dc2626" font-family="monospace" font-size="11">28,748</text>
+        <text x="240" y="143" fill="#dc2626" font-family="monospace" font-size="11">2.8M</text>
 
-        <text x="40" y="180" fill="#34d399" font-family="monospace" font-size="11">Algeria</text>
-        <text x="140" y="180" fill="#94a3b8" font-family="monospace" font-size="11">2.38M</text>
-        <text x="240" y="180" fill="#34d399" font-family="monospace" font-size="11">37.1M (&gt;=25M)</text>
+        <text x="40" y="178" fill="#16a34a" font-family="monospace" font-size="11">Algeria</text>
+        <text x="140" y="178" fill="#64748b" font-family="monospace" font-size="11">2.38M</text>
+        <text x="240" y="178" fill="#16a34a" font-family="monospace" font-size="11">37.1M (&gt;=25M)</text>
 
         <!-- Logic gate -->
-        <rect x="390" y="60" width="180" height="110" rx="6" fill="#1e293b" stroke="#ea580c"/>
-        <text x="405" y="85" fill="#fb923c" font-family="monospace" font-size="11" font-weight="700">DISJUNCTION (OR)</text>
-        <text x="405" y="110" fill="#f8fafc" font-size="11">area &gt;= 3,000,000</text>
-        <text x="405" y="130" fill="#fbbf24" font-size="11">OR</text>
-        <text x="405" y="150" fill="#f8fafc" font-size="11">population &gt;= 25,000,000</text>
+        <rect x="390" y="60" width="190" height="110" rx="8" fill="#f8fafc" stroke="#2563eb"/>
+        <text x="405" y="85" fill="#1d4ed8" font-family="monospace" font-size="11" font-weight="700">DISJUNCTION (OR)</text>
+        <text x="405" y="110" fill="#0f172a" font-size="11">area &gt;= 3,000,000</text>
+        <text x="405" y="130" fill="#d97706" font-size="11" font-weight="700">OR</text>
+        <text x="405" y="150" fill="#0f172a" font-size="11">population &gt;= 25,000,000</text>
 
         <!-- Output -->
-        <rect x="600" y="50" width="200" height="150" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
-        <text x="615" y="75" fill="#10b981" font-family="monospace" font-size="12" font-weight="700">OUTPUT</text>
-        <text x="615" y="110" fill="#f8fafc" font-family="monospace" font-size="11">Afghanistan</text>
-        <text x="615" y="140" fill="#f8fafc" font-family="monospace" font-size="11">Algeria</text>
+        <rect x="610" y="50" width="205" height="150" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="625" y="75" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT</text>
+        <text x="625" y="110" fill="#0f172a" font-family="monospace" font-size="11.5">Afghanistan</text>
+        <text x="625" y="140" fill="#0f172a" font-family="monospace" font-size="11.5">Algeria</text>
       </svg>`,
       logicBreakdown: [
         '1. The question uses an "OR" condition: either area >= 3,000,000 OR population >= 25,000,000 satisfies the definition.',
@@ -717,45 +837,45 @@ There is no primary key for this table, the table may have duplicate rows.`,
           [7]
         ]
       },
-      svgDiagram: `<svg viewBox="0 0 820 240" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="20" width="340" height="200" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-        <text x="35" y="45" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="700">INPUT: Views</text>
+      svgDiagram: `<svg viewBox="0 0 840 240" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20" width="340" height="200" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">INPUT: Views</text>
 
-        <rect x="30" y="60" width="320" height="22" fill="#1e293b"/>
-        <text x="40" y="75" fill="#94a3b8" font-family="monospace" font-size="10">article_id</text>
-        <text x="120" y="75" fill="#94a3b8" font-family="monospace" font-size="10">author_id</text>
-        <text x="210" y="75" fill="#94a3b8" font-family="monospace" font-size="10">viewer_id</text>
+        <rect x="30" y="58" width="320" height="22" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="40" y="73" fill="#64748b" font-family="monospace" font-size="10">article_id</text>
+        <text x="120" y="73" fill="#64748b" font-family="monospace" font-size="10">author_id</text>
+        <text x="210" y="73" fill="#64748b" font-family="monospace" font-size="10">viewer_id</text>
 
-        <text x="40" y="105" fill="#94a3b8" font-family="monospace" font-size="11">1</text>
-        <text x="130" y="105" fill="#94a3b8" font-family="monospace" font-size="11">3</text>
-        <text x="220" y="105" fill="#f87171" font-family="monospace" font-size="11">5 (3 != 5)</text>
+        <text x="40" y="103" fill="#64748b" font-family="monospace" font-size="11">1</text>
+        <text x="130" y="103" fill="#64748b" font-family="monospace" font-size="11">3</text>
+        <text x="220" y="103" fill="#dc2626" font-family="monospace" font-size="11">5 (3 != 5)</text>
 
         <!-- Match Row -->
-        <rect x="30" y="118" width="320" height="24" fill="rgba(16, 185, 129, 0.15)"/>
-        <text x="40" y="134" fill="#34d399" font-family="monospace" font-size="11">2</text>
-        <text x="130" y="134" fill="#34d399" font-family="monospace" font-size="11">7</text>
-        <text x="220" y="134" fill="#34d399" font-family="monospace" font-size="11">7 (MATCH!)</text>
+        <rect x="30" y="115" width="320" height="24" fill="#f0fdf4" stroke="#86efac"/>
+        <text x="40" y="131" fill="#166534" font-family="monospace" font-size="11">2</text>
+        <text x="130" y="131" fill="#166534" font-family="monospace" font-size="11">7</text>
+        <text x="220" y="131" fill="#166534" font-family="monospace" font-size="11">7 (MATCH!)</text>
 
         <!-- Match Row Duplicate -->
-        <rect x="30" y="148" width="320" height="42" fill="rgba(16, 185, 129, 0.15)"/>
-        <text x="40" y="165" fill="#34d399" font-family="monospace" font-size="11">3</text>
-        <text x="130" y="165" fill="#34d399" font-family="monospace" font-size="11">4</text>
-        <text x="220" y="165" fill="#34d399" font-family="monospace" font-size="11">4 (MATCH!)</text>
-        <text x="40" y="182" fill="#34d399" font-family="monospace" font-size="11">3</text>
-        <text x="130" y="182" fill="#34d399" font-family="monospace" font-size="11">4</text>
-        <text x="220" y="182" fill="#34d399" font-family="monospace" font-size="11">4 (DUPLICATE)</text>
+        <rect x="30" y="145" width="320" height="42" fill="#f0fdf4" stroke="#86efac"/>
+        <text x="40" y="162" fill="#166534" font-family="monospace" font-size="11">3</text>
+        <text x="130" y="162" fill="#166534" font-family="monospace" font-size="11">4</text>
+        <text x="220" y="162" fill="#166534" font-family="monospace" font-size="11">4 (MATCH!)</text>
+        <text x="40" y="180" fill="#166534" font-family="monospace" font-size="11">3</text>
+        <text x="130" y="180" fill="#166534" font-family="monospace" font-size="11">4</text>
+        <text x="220" y="180" fill="#166534" font-family="monospace" font-size="11">4 (DUPLICATE)</text>
 
         <!-- DISTINCT Filter -->
-        <rect x="380" y="70" width="180" height="100" rx="6" fill="#1e293b" stroke="#ea580c"/>
-        <text x="395" y="95" fill="#fb923c" font-family="monospace" font-size="11" font-weight="700">DISTINCT FILTER</text>
-        <text x="395" y="120" fill="#f8fafc" font-size="11">WHERE author_id = viewer_id</text>
-        <text x="395" y="145" fill="#fde047" font-size="11">Removes duplicate id 4</text>
+        <rect x="385" y="70" width="180" height="100" rx="8" fill="#f8fafc" stroke="#2563eb"/>
+        <text x="400" y="95" fill="#1d4ed8" font-family="monospace" font-size="11" font-weight="700">DISTINCT FILTER</text>
+        <text x="400" y="120" fill="#0f172a" font-size="11">author_id = viewer_id</text>
+        <text x="400" y="145" fill="#16a34a" font-size="11" font-weight="600">Deduplicates author 4</text>
 
         <!-- Output -->
-        <rect x="590" y="50" width="200" height="150" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
-        <text x="605" y="75" fill="#10b981" font-family="monospace" font-size="12" font-weight="700">OUTPUT: id (ASC)</text>
-        <text x="615" y="110" fill="#f8fafc" font-family="monospace" font-size="12">4</text>
-        <text x="615" y="140" fill="#f8fafc" font-family="monospace" font-size="12">7</text>
+        <rect x="595" y="50" width="210" height="150" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="610" y="75" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT: id (ASC)</text>
+        <text x="620" y="110" fill="#0f172a" font-family="monospace" font-size="12">4</text>
+        <text x="620" y="140" fill="#0f172a" font-family="monospace" font-size="12">7</text>
       </svg>`,
       logicBreakdown: [
         '1. An author viewed their own article if and only if author_id = viewer_id on the same row.',
@@ -805,24 +925,24 @@ tweet_id is the primary key for this table.`,
           [2]
         ]
       },
-      svgDiagram: `<svg viewBox="0 0 820 230" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="20" width="340" height="190" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-        <text x="35" y="45" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="700">INPUT: Tweets</text>
+      svgDiagram: `<svg viewBox="0 0 840 230" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20" width="340" height="190" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">INPUT: Tweets</text>
 
-        <text x="40" y="90" fill="#94a3b8" font-family="monospace" font-size="11">1 | "Vote for BBB"</text>
-        <text x="40" y="110" fill="#34d399" font-family="monospace" font-size="10.5">CHAR_LENGTH = 12 (&lt;= 15, VALID)</text>
+        <text x="40" y="90" fill="#64748b" font-family="monospace" font-size="11">1 | "Vote for BBB"</text>
+        <text x="40" y="110" fill="#16a34a" font-family="monospace" font-size="10.5">CHAR_LENGTH = 12 (&lt;= 15, VALID)</text>
 
-        <text x="40" y="150" fill="#94a3b8" font-family="monospace" font-size="11">2 | "Let us make America great again!"</text>
-        <text x="40" y="170" fill="#f87171" font-family="monospace" font-size="10.5">CHAR_LENGTH = 32 (&gt; 15, INVALID!)</text>
+        <text x="40" y="150" fill="#64748b" font-family="monospace" font-size="11">2 | "Let us make America great again!"</text>
+        <text x="40" y="170" fill="#dc2626" font-family="monospace" font-size="10.5">CHAR_LENGTH = 32 (&gt; 15, INVALID!)</text>
 
-        <rect x="380" y="60" width="180" height="90" rx="6" fill="#1e293b" stroke="#ea580c"/>
-        <text x="395" y="85" fill="#fb923c" font-family="monospace" font-size="11" font-weight="700">CHAR_LENGTH &gt; 15</text>
-        <text x="395" y="110" fill="#f8fafc" font-size="11">Length check: 32 &gt; 15</text>
-        <text x="395" y="130" fill="#34d399" font-size="11">Row 2 qualifies</text>
+        <rect x="385" y="60" width="180" height="90" rx="8" fill="#f8fafc" stroke="#2563eb"/>
+        <text x="400" y="85" fill="#1d4ed8" font-family="monospace" font-size="11" font-weight="700">CHAR_LENGTH &gt; 15</text>
+        <text x="400" y="110" fill="#0f172a" font-size="11">Length check: 32 &gt; 15</text>
+        <text x="400" y="130" fill="#16a34a" font-size="11" font-weight="600">Row 2 qualifies</text>
 
-        <rect x="590" y="50" width="190" height="130" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
-        <text x="605" y="75" fill="#10b981" font-family="monospace" font-size="12" font-weight="700">OUTPUT: tweet_id</text>
-        <text x="615" y="110" fill="#f8fafc" font-family="monospace" font-size="12">2</text>
+        <rect x="595" y="50" width="200" height="130" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="610" y="75" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT: tweet_id</text>
+        <text x="620" y="110" fill="#0f172a" font-family="monospace" font-size="12">2</text>
       </svg>`,
       logicBreakdown: [
         '1. The condition is strictly greater than 15: > 15 (not >= 15).',

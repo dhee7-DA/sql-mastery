@@ -2117,7 +2117,6 @@ const NAV_GROUPS_MAP = {
   viewAmazonStory: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Amazon Analyst (30d)' },
   viewTrapGym: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Trap Gym (SRS)' },
   viewJPMorganStory: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'JPMorgan (30d)' },
-  viewLeetCode50: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'LeetCode 50' },
 
   viewExplainer: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Study Docs' },
   viewDeconstructor: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Deconstructor' },
@@ -2125,6 +2124,8 @@ const NAV_GROUPS_MAP = {
   viewVennMatrix: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Venn Matrix' },
   viewWindowMatrix: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Window Cockpit' },
 
+  viewLearningJourney: { triggerId: 'btnNavLearningJourney', pillId: null, label: 'Learning Journey' },
+  viewLeetCode50: { triggerId: 'btnNavLeetCode', pillId: null, label: 'LeetCode 50' },
   viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Studio' }
 };
 

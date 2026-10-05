@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://use.typekit.net/vqa3wut.css">
   <link rel="stylesheet" href="style.css?v=93">
   <link rel="stylesheet" href="jpmorgan_theme.css?v=3">
-  <link rel="stylesheet" href="leetcode_theme.css?v=1">
+  <link rel="stylesheet" href="leetcode_theme.css?v=2">
 </head>
 <body>
   <div class="app-layout">
@@ -252,16 +252,6 @@
                 <span class="nav-item-desc">Quantitative risk, core banking ledgers, AML &amp; treasury</span>
               </div>
             </button>
-            <button class="nav-dropdown-item nav-tab" data-view="viewLeetCode50" onclick="selectNavView('viewLeetCode50', 'LeetCode 50 Arena', 'navGroupPractice')">
-              <span class="nav-item-icon">⚡</span>
-              <div class="nav-item-text">
-                <div class="nav-item-title-row">
-                  <span class="nav-item-title">LeetCode 50 Arena</span>
-                  <span class="nav-item-tag accent" style="background: rgba(234, 88, 12, 0.2); color: #ea580c; border: 1px solid rgba(234, 88, 12, 0.4);">50 Track</span>
-                </div>
-                <span class="nav-item-desc">Concept masterclass, 100 MCQs, 100 drills &amp; FAANG intel</span>
-              </div>
-            </button>
           </div>
         </div>
 
@@ -345,7 +335,18 @@
           </span>
         </button>
 
-        <!-- 5. STUDIO (Direct Link) -->
+        <!-- 5. LEETCODE 50 (Direct Arena Tab) -->
+        <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavLeetCode" data-view="viewLeetCode50" onclick="selectNavView('viewLeetCode50', 'LeetCode 50', null)">
+          <span class="nav-group-lead">
+            <span class="nav-group-icon">⚡</span>
+            <span class="nav-group-title">LeetCode 50</span>
+          </span>
+          <span class="nav-group-tail">
+            <span class="nav-current-pill" id="currentLeetCodePill" style="background: rgba(37, 99, 235, 0.1); color: #2563eb; font-weight: 700;">Arena</span>
+          </span>
+        </button>
+
+        <!-- 6. STUDIO (Direct Link) -->
         <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="selectNavView('viewStudio', 'Studio', null)">
           <span class="nav-group-lead">
             <span class="nav-group-icon">
@@ -1745,8 +1746,8 @@
 <script src="jpmorgan_story_engine.js"></script>
 <script src="trap_flashcards_data.js"></script>
 <script src="trap_memory_engine.js"></script>
-<script src="leetcode_section1_data.js"></script>
-<script src="leetcode_arena_engine.js"></script>
+<script src="leetcode_section1_data.js?v=2"></script>
+<script src="leetcode_arena_engine.js?v=2"></script>
 <script src="app.js?v=91"></script>
 </body>
 </html>
