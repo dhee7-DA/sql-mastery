@@ -47,6 +47,9 @@ window.LEETCODE_ARENA = (() => {
   }
 
   function getSectionData() {
+    if (state.activeConceptId === 'concept-3') {
+      return window.LEETCODE_SECTION_3_DATA;
+    }
     if (state.activeConceptId === 'concept-2') {
       return window.LEETCODE_SECTION_2_DATA;
     }
@@ -88,7 +91,8 @@ window.LEETCODE_ARENA = (() => {
 
     const c1Count = (window.LEETCODE_SECTION_1_DATA && (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems)) ? (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems).length : 10;
     const c2Count = (window.LEETCODE_SECTION_2_DATA && (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems)) ? (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems).length : 16;
-    const totalAvail = c1Count + c2Count;
+    const c3Count = (window.LEETCODE_SECTION_3_DATA && (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems)) ? (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems).length : 12;
+    const totalAvail = c1Count + c2Count + c3Count;
 
     container.innerHTML = `
       <div class="lc-arena-container">
@@ -130,10 +134,10 @@ window.LEETCODE_ARENA = (() => {
             <span>Relational Joins &amp; Self-Joins</span>
             <span class="lc-concept-badge">${c2Count} Problems</span>
           </button>
-          <button class="lc-concept-btn" style="opacity: 0.6; cursor: not-allowed;" title="Upcoming Module">
+          <button class="lc-concept-btn ${state.activeConceptId === 'concept-3' ? 'active' : ''}" data-concept="concept-3">
             <span>📊 Concept 3:</span>
             <span>Basic Aggregates &amp; Math</span>
-            <span class="lc-concept-badge">8 Problems</span>
+            <span class="lc-concept-badge">${c3Count} Problems</span>
           </button>
           <button class="lc-concept-btn" style="opacity: 0.6; cursor: not-allowed;" title="Upcoming Module">
             <span>🗂️ Concept 4:</span>
@@ -238,7 +242,8 @@ window.LEETCODE_ARENA = (() => {
       const count = Object.keys(state.solvedProblems).length;
       const c1Count = (window.LEETCODE_SECTION_1_DATA && (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems)) ? (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems).length : 10;
       const c2Count = (window.LEETCODE_SECTION_2_DATA && (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems)) ? (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems).length : 16;
-      elSolved.textContent = `${count} / ${c1Count + c2Count}`;
+      const c3Count = (window.LEETCODE_SECTION_3_DATA && (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems)) ? (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems).length : 12;
+      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count}`;
     }
     if (elMcqs) {
       const correctCount = Object.values(state.answeredMcqs).filter(a => a.isCorrect).length;
