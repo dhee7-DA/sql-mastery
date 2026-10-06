@@ -1488,6 +1488,465 @@ WHERE CHAR_LENGTH(content) > 15;`,
         { clause: 'FROM Tweets', exp: 'Targets the Tweets table.' },
         { clause: 'WHERE CHAR_LENGTH(content) > 15;', exp: 'Calculates the real character count and filters strictly greater than 15.' }
       ]
+    },
+
+    {
+      id: 1873,
+      title: 'Calculate Special Bonus',
+      difficulty: 'Easy',
+      category: 'Filtering & Logic',
+      companies: ['Amazon', 'Apple', 'Meta', 'Bloomberg'],
+      interviewFreq: '89% (High - Conditional Modulo & String Prefix)',
+      interviewRound: 'Technical Screen',
+      prompt: `Write a solution to calculate the bonus of each employee. The bonus of an employee is 100% of their salary if the ID of the employee is an odd number and the employee's name does not start with the character 'M'. The bonus of an employee is 0 otherwise.\n\nReturn the result table ordered by employee_id.`,
+      schemaDescription: `Table: Employees
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| employee_id | int     |
+| name        | varchar |
+| salary      | int     |
++-------------+---------+
+employee_id is the primary key for this table.`,
+      sampleInput: {
+        table: 'Employees',
+        columns: ['employee_id', 'name', 'salary'],
+        rows: [
+          [2, 'Meir', 3000],
+          [3, 'Michael', 3800],
+          [7, 'Addilyn', 7400],
+          [8, 'Juan', 6100],
+          [9, 'Kannon', 7700]
+        ]
+      },
+      expectedOutput: {
+        columns: ['employee_id', 'bonus'],
+        rows: [
+          [2, 0],
+          [3, 0],
+          [7, 7400],
+          [8, 0],
+          [9, 7700]
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 840 240" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="15" y="15" width="310" height="210" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="28" y="38" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">INPUT: Employees</text>
+        <rect x="25" y="48" width="290" height="20" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="32" y="62" fill="#64748b" font-family="monospace" font-size="10">id</text>
+        <text x="75" y="62" fill="#64748b" font-family="monospace" font-size="10">name</text>
+        <text x="170" y="62" fill="#64748b" font-family="monospace" font-size="10">salary</text>
+        <text x="240" y="62" fill="#64748b" font-family="monospace" font-size="10">mod/M%</text>
+
+        <text x="32" y="85" fill="#64748b" font-family="monospace" font-size="10.5">2</text>
+        <text x="75" y="85" fill="#64748b" font-family="monospace" font-size="10.5">Meir</text>
+        <text x="170" y="85" fill="#64748b" font-family="monospace" font-size="10.5">3000</text>
+        <text x="240" y="85" fill="#dc2626" font-family="monospace" font-size="9.5">Even (0)</text>
+
+        <text x="32" y="112" fill="#64748b" font-family="monospace" font-size="10.5">3</text>
+        <text x="75" y="112" fill="#64748b" font-family="monospace" font-size="10.5">Michael</text>
+        <text x="170" y="112" fill="#64748b" font-family="monospace" font-size="10.5">3800</text>
+        <text x="240" y="112" fill="#dc2626" font-family="monospace" font-size="9.5">M% (0)</text>
+
+        <rect x="25" y="122" width="290" height="22" fill="#f0fdf4" stroke="#86efac"/>
+        <text x="32" y="137" fill="#166534" font-family="monospace" font-size="10.5">7</text>
+        <text x="75" y="137" fill="#166534" font-family="monospace" font-size="10.5">Addilyn</text>
+        <text x="170" y="137" fill="#166534" font-family="monospace" font-size="10.5">7400</text>
+        <text x="240" y="137" fill="#166534" font-family="monospace" font-size="9.5">Odd &amp; !M</text>
+
+        <text x="32" y="165" fill="#64748b" font-family="monospace" font-size="10.5">8</text>
+        <text x="75" y="165" fill="#64748b" font-family="monospace" font-size="10.5">Juan</text>
+        <text x="170" y="165" fill="#64748b" font-family="monospace" font-size="10.5">6100</text>
+        <text x="240" y="165" fill="#dc2626" font-family="monospace" font-size="9.5">Even (0)</text>
+
+        <rect x="25" y="176" width="290" height="22" fill="#f0fdf4" stroke="#86efac"/>
+        <text x="32" y="191" fill="#166534" font-family="monospace" font-size="10.5">9</text>
+        <text x="75" y="191" fill="#166534" font-family="monospace" font-size="10.5">Kannon</text>
+        <text x="170" y="191" fill="#166534" font-family="monospace" font-size="10.5">7700</text>
+        <text x="240" y="191" fill="#166534" font-family="monospace" font-size="9.5">Odd &amp; !M</text>
+
+        <!-- Condition Box -->
+        <rect x="345" y="35" width="220" height="170" rx="8" fill="#f8fafc" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="360" y="62" fill="#1d4ed8" font-family="monospace" font-size="11.5" font-weight="700">CASE PREDICATE LOGIC</text>
+        <rect x="355" y="75" width="200" height="52" rx="4" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="365" y="93" fill="#1e40af" font-family="monospace" font-size="10">id % 2 = 1</text>
+        <text x="365" y="112" fill="#1e40af" font-family="monospace" font-size="10">AND name NOT LIKE 'M%'</text>
+        <path d="M 455 127 L 455 142" stroke="#2563eb" stroke-width="2"/>
+        <text x="365" y="160" fill="#166534" font-family="monospace" font-size="10" font-weight="700">TRUE  =&gt; bonus = salary</text>
+        <text x="365" y="180" fill="#dc2626" font-family="monospace" font-size="10" font-weight="700">FALSE =&gt; bonus = 0</text>
+
+        <!-- Output Box -->
+        <rect x="585" y="20" width="235" height="200" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="600" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT: ORDER BY id</text>
+        <rect x="595" y="55" width="215" height="18" fill="#f0fdf4" stroke="#dcfce7"/>
+        <text x="605" y="68" fill="#166534" font-family="monospace" font-size="10">employee_id</text>
+        <text x="730" y="68" fill="#166534" font-family="monospace" font-size="10">bonus</text>
+        <text x="605" y="92" fill="#0f172a" font-family="monospace" font-size="10.5">2 | 0</text>
+        <text x="605" y="117" fill="#0f172a" font-family="monospace" font-size="10.5">3 | 0</text>
+        <text x="605" y="142" fill="#166534" font-family="monospace" font-size="10.5" font-weight="700">7 | 7400</text>
+        <text x="605" y="167" fill="#0f172a" font-family="monospace" font-size="10.5">8 | 0</text>
+        <text x="605" y="192" fill="#166534" font-family="monospace" font-size="10.5" font-weight="700">9 | 7700</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. Odd numbers satisfy the modulo check: employee_id % 2 = 1 (or MOD(employee_id, 2) = 1).',
+        '2. Names that do NOT start with M are matched via name NOT LIKE \'M%\'.',
+        '3. Both conditions must hold simultaneously using AND. If true, bonus equals salary; otherwise 0.',
+        '4. Results must be sorted numerically by employee_id ASC.'
+      ],
+      solutionSQL: `SELECT 
+    employee_id,
+    CASE 
+        WHEN employee_id % 2 = 1 AND name NOT LIKE 'M%' THEN salary
+        ELSE 0
+    END AS bonus
+FROM Employees
+ORDER BY employee_id;`,
+      lineByLineExplanation: [
+        { clause: 'SELECT employee_id,', exp: 'Returns the primary employee ID.' },
+        { clause: 'CASE WHEN employee_id % 2 = 1 AND name NOT LIKE \'M%\' THEN salary ELSE 0 END AS bonus', exp: 'Evaluates the conditional predicate: checks odd ID and name prefix before awarding salary or 0.' },
+        { clause: 'FROM Employees', exp: 'Targets the Employees source table.' },
+        { clause: 'ORDER BY employee_id;', exp: 'Ensures the final output is sorted in ascending employee ID sequence.' }
+      ]
+    },
+
+    {
+      id: 627,
+      title: 'Swap Salary',
+      difficulty: 'Easy',
+      category: 'Filtering & Logic',
+      companies: ['Apple', 'Google', 'Amazon', 'Microsoft'],
+      interviewFreq: '85% (High - In-place Mutation Without Temp Tables)',
+      interviewRound: 'Technical Interview',
+      prompt: `Write a solution to swap all 'f' and 'm' values (i.e., change all 'f' values to 'm' and vice versa) with a single update statement and no intermediate temporary tables.\n\nNote that you must write a single UPDATE statement, do NOT write any SELECT statement for this problem.`,
+      schemaDescription: `Table: Salary
++-------------+----------+
+| Column Name | Type     |
++-------------+----------+
+| id          | int      |
+| name        | varchar  |
+| sex         | ENUM     |
+| salary      | int      |
++-------------+----------+
+id is the primary key for this table.
+The sex column is ENUM value of type ('m', 'f').`,
+      sampleInput: {
+        table: 'Salary',
+        columns: ['id', 'name', 'sex', 'salary'],
+        rows: [
+          [1, 'A', 'm', 2500],
+          [2, 'B', 'f', 1500],
+          [3, 'C', 'm', 5500],
+          [4, 'D', 'f', 500]
+        ]
+      },
+      expectedOutput: {
+        columns: ['id', 'name', 'sex', 'salary'],
+        rows: [
+          [1, 'A', 'f', 2500],
+          [2, 'B', 'm', 1500],
+          [3, 'C', 'f', 5500],
+          [4, 'D', 'm', 500]
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 840 230" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20" width="310" height="190" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">BEFORE: Salary</text>
+        <text x="35" y="80" fill="#64748b" font-family="monospace" font-size="11">id 1: A | sex = 'm'</text>
+        <text x="35" y="110" fill="#64748b" font-family="monospace" font-size="11">id 2: B | sex = 'f'</text>
+        <text x="35" y="140" fill="#64748b" font-family="monospace" font-size="11">id 3: C | sex = 'm'</text>
+        <text x="35" y="170" fill="#64748b" font-family="monospace" font-size="11">id 4: D | sex = 'f'</text>
+
+        <!-- Swap Transform Engine -->
+        <rect x="350" y="40" width="200" height="150" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="365" y="68" fill="#1d4ed8" font-family="monospace" font-size="11" font-weight="700">ATOMIC SWAP TRANSFORM</text>
+        <text x="365" y="95" fill="#0f172a" font-size="11">CASE sex</text>
+        <text x="365" y="118" fill="#2563eb" font-family="monospace" font-size="10.5">  WHEN 'm' THEN 'f'</text>
+        <text x="365" y="138" fill="#2563eb" font-family="monospace" font-size="10.5">  ELSE 'm'</text>
+        <text x="365" y="160" fill="#0f172a" font-size="11">END</text>
+
+        <!-- AFTER -->
+        <rect x="575" y="20" width="245" height="190" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="590" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">AFTER: Salary (Mutated)</text>
+        <text x="590" y="80" fill="#166534" font-family="monospace" font-size="11" font-weight="700">id 1: A | sex = 'f' (Swapped!)</text>
+        <text x="590" y="110" fill="#166534" font-family="monospace" font-size="11" font-weight="700">id 2: B | sex = 'm' (Swapped!)</text>
+        <text x="590" y="140" fill="#166534" font-family="monospace" font-size="11" font-weight="700">id 3: C | sex = 'f' (Swapped!)</text>
+        <text x="590" y="170" fill="#166534" font-family="monospace" font-size="11" font-weight="700">id 4: D | sex = 'm' (Swapped!)</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. The goal is to swap values in place without temporary tables or secondary writes.',
+        '2. A single UPDATE statement with a conditional CASE statement (or IF() function in MySQL) evaluates every row atomically.',
+        '3. If sex = "m", replace with "f"; otherwise replace with "m".'
+      ],
+      solutionSQL: `UPDATE Salary
+SET sex = CASE 
+    WHEN sex = 'm' THEN 'f' 
+    ELSE 'm' 
+END;`,
+      lineByLineExplanation: [
+        { clause: 'UPDATE Salary', exp: 'Targets the Salary table for in-place row mutation.' },
+        { clause: 'SET sex = CASE WHEN sex = \'m\' THEN \'f\' ELSE \'m\' END;', exp: 'Atomically evaluates the current sex and toggles it to the opposite enum value.' }
+      ]
+    },
+
+    {
+      id: 1527,
+      title: 'Patients With a Condition',
+      difficulty: 'Easy',
+      category: 'Filtering & Logic',
+      companies: ['Bloomberg', 'Google', 'Amazon'],
+      interviewFreq: '91% (High - String Boundary & Regex Traps)',
+      interviewRound: 'Technical Interview',
+      prompt: `Write a solution to find the patient_id, patient_name, and conditions of the patients who have Type I Diabetes. Type I Diabetes always starts with DIAB1 prefix.\n\nReturn the result table in any order.`,
+      schemaDescription: `Table: Patients
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| patient_id   | int     |
+| patient_name | varchar |
+| conditions   | varchar |
++--------------+---------+
+patient_id is the primary key for this table.
+conditions contains 0 or more code separated by spaces.`,
+      sampleInput: {
+        table: 'Patients',
+        columns: ['patient_id', 'patient_name', 'conditions'],
+        rows: [
+          [1, 'Daniel', 'YFEV COUGH'],
+          [2, 'Alice', ''],
+          [3, 'Bob', 'DIAB100 MYOP'],
+          [4, 'George', 'ACNE DIAB100'],
+          [5, 'Alain', 'SADIAB100']
+        ]
+      },
+      expectedOutput: {
+        columns: ['patient_id', 'patient_name', 'conditions'],
+        rows: [
+          [3, 'Bob', 'DIAB100 MYOP'],
+          [4, 'George', 'ACNE DIAB100']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 840 240" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="15" y="15" width="310" height="210" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="28" y="38" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">INPUT: Patients.conditions</text>
+        <text x="28" y="65" fill="#64748b" font-family="monospace" font-size="10.5">1: "YFEV COUGH" (No match)</text>
+        <text x="28" y="92" fill="#64748b" font-family="monospace" font-size="10.5">2: "" (Empty)</text>
+
+        <!-- Match 1 -->
+        <rect x="25" y="103" width="290" height="22" fill="#f0fdf4" stroke="#86efac"/>
+        <text x="28" y="118" fill="#166534" font-family="monospace" font-size="10.5">3: "DIAB100 MYOP" (Starts with)</text>
+
+        <!-- Match 2 -->
+        <rect x="25" y="133" width="290" height="22" fill="#f0fdf4" stroke="#86efac"/>
+        <text x="28" y="148" fill="#166534" font-family="monospace" font-size="10.5">4: "ACNE DIAB100" (Space + DIAB1)</text>
+
+        <!-- Trap! -->
+        <rect x="25" y="163" width="290" height="22" fill="#fef2f2" stroke="#fca5a5"/>
+        <text x="28" y="178" fill="#dc2626" font-family="monospace" font-size="10.5">5: "SADIAB100" (TRAP! NOT A WORD BOUNDARY)</text>
+
+        <!-- Pattern Filter Box -->
+        <rect x="345" y="35" width="220" height="170" rx="8" fill="#f8fafc" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="360" y="62" fill="#1d4ed8" font-family="monospace" font-size="11.5" font-weight="700">WORD BOUNDARY PREDICATE</text>
+        <text x="360" y="88" fill="#0f172a" font-size="11">Prefix at string start:</text>
+        <text x="360" y="106" fill="#2563eb" font-family="monospace" font-size="10.5">conditions LIKE 'DIAB1%'</text>
+        <text x="360" y="132" fill="#0f172a" font-size="11">Prefix after space:</text>
+        <text x="360" y="150" fill="#2563eb" font-family="monospace" font-size="10.5">conditions LIKE '% DIAB1%'</text>
+        <text x="360" y="180" fill="#dc2626" font-size="10.5" font-weight="600">Rejects '%DIAB1%' trap!</text>
+
+        <!-- Output Box -->
+        <rect x="585" y="20" width="235" height="200" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="600" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT PATIENTS</text>
+        <text x="600" y="80" fill="#166534" font-family="monospace" font-size="11" font-weight="700">3 | Bob | DIAB100 MYOP</text>
+        <text x="600" y="120" fill="#166534" font-family="monospace" font-size="11" font-weight="700">4 | George | ACNE DIAB100</text>
+        <text x="600" y="165" fill="#64748b" font-size="11">Row 5 correctly excluded.</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. The condition code can appear either as the first word in the string, or preceded by a space after other codes.',
+        '2. Candidate trap: WHERE conditions LIKE \'%DIAB1%\' is INCORRECT because it erroneously matches \'SADIAB100\', which is a completely different medical condition.',
+        '3. The robust query checks: conditions LIKE \'DIAB1%\' OR conditions LIKE \'% DIAB1%\' (or REGEXP \'\\\\bDIAB1\').'
+      ],
+      solutionSQL: `SELECT patient_id, patient_name, conditions
+FROM Patients
+WHERE conditions LIKE 'DIAB1%' 
+   OR conditions LIKE '% DIAB1%';`,
+      lineByLineExplanation: [
+        { clause: 'SELECT patient_id, patient_name, conditions', exp: 'Projects patient identity and the full list of medical condition codes.' },
+        { clause: 'FROM Patients', exp: 'Targets the Patients registry table.' },
+        { clause: 'WHERE conditions LIKE \'DIAB1%\' OR conditions LIKE \'% DIAB1%\';', exp: 'Ensures DIAB1 matches at the start of the string or immediately following a space delimiter, preventing false substring matches.' }
+      ]
+    },
+
+    {
+      id: 1821,
+      title: 'Find Customers With Positive Revenue this Year',
+      difficulty: 'Easy',
+      category: 'Filtering & Logic',
+      companies: ['Amazon', 'Google'],
+      interviewFreq: '82% (High - Dual Predicate Partition Filtering)',
+      interviewRound: 'Technical Screen',
+      prompt: `Write an SQL query to report the customers with positive revenue in the year 2021.\n\nReturn the result table in any order.`,
+      schemaDescription: `Table: Customers
++--------------+------+
+| Column Name  | Type |
++--------------+------+
+| customer_id  | int  |
+| year         | int  |
+| revenue      | int  |
++--------------+------+
+(customer_id, year) is the primary key for this table.
+This table contains the customer ID and the revenue of customers in different years.
+Note that the revenue can be negative.`,
+      sampleInput: {
+        table: 'Customers',
+        columns: ['customer_id', 'year', 'revenue'],
+        rows: [
+          [1, 2018, 50],
+          [1, 2021, 30],
+          [1, 2020, 70],
+          [2, 2021, -50],
+          [3, 2018, 10],
+          [3, 2021, -20],
+          [4, 2021, 20]
+        ]
+      },
+      expectedOutput: {
+        columns: ['customer_id'],
+        rows: [
+          [1],
+          [4]
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 840 230" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20" width="310" height="190" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">INPUT: Customers</text>
+        <text x="35" y="75" fill="#64748b" font-family="monospace" font-size="10.5">1 | 2018 | 50 (Wrong Year)</text>
+        <text x="35" y="100" fill="#166534" font-family="monospace" font-size="10.5" font-weight="700">1 | 2021 | 30 (MATCH! &gt; 0)</text>
+        <text x="35" y="125" fill="#dc2626" font-family="monospace" font-size="10.5">2 | 2021 | -50 (Negative Revenue)</text>
+        <text x="35" y="150" fill="#dc2626" font-family="monospace" font-size="10.5">3 | 2021 | -20 (Negative Revenue)</text>
+        <text x="35" y="175" fill="#166534" font-family="monospace" font-size="10.5" font-weight="700">4 | 2021 | 20 (MATCH! &gt; 0)</text>
+
+        <!-- Filter Gate -->
+        <rect x="355" y="50" width="190" height="130" rx="8" fill="#f8fafc" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="370" y="75" fill="#1d4ed8" font-family="monospace" font-size="11" font-weight="700">DUAL FILTER GATE</text>
+        <text x="370" y="105" fill="#0f172a" font-family="monospace" font-size="11">year = 2021</text>
+        <text x="370" y="125" fill="#2563eb" font-family="monospace" font-size="11">AND</text>
+        <text x="370" y="145" fill="#0f172a" font-family="monospace" font-size="11">revenue &gt; 0</text>
+
+        <!-- Output Box -->
+        <rect x="575" y="20" width="245" height="190" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="590" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT: customer_id</text>
+        <text x="590" y="90" fill="#166534" font-family="monospace" font-size="12" font-weight="700">1</text>
+        <text x="590" y="130" fill="#166534" font-family="monospace" font-size="12" font-weight="700">4</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. The query must isolate records for the exact year 2021 using year = 2021.',
+        '2. Strictly positive revenue means revenue > 0 (strictly greater than zero, eliminating zero and negative balances).',
+        '3. Since (customer_id, year) is the primary key, each customer appears at most once for year 2021, so duplicate suppression is unnecessary.'
+      ],
+      solutionSQL: `SELECT customer_id
+FROM Customers
+WHERE year = 2021 
+  AND revenue > 0;`,
+      lineByLineExplanation: [
+        { clause: 'SELECT customer_id', exp: 'Returns the customer identifiers.' },
+        { clause: 'FROM Customers', exp: 'Queries the Customers annual revenue table.' },
+        { clause: 'WHERE year = 2021 AND revenue > 0;', exp: 'Filters strictly for the 2021 accounting year and checks that revenue is positive.' }
+      ]
+    },
+
+    {
+      id: 1741,
+      title: 'Find Total Time Spent by Each Employee',
+      difficulty: 'Easy',
+      category: 'Filtering & Logic',
+      companies: ['Amazon', 'Meta', 'Bloomberg'],
+      interviewFreq: '87% (High - Composite Granularity Grouping & Subtraction)',
+      interviewRound: 'Technical Interview',
+      prompt: `Write an SQL query to calculate the total time in minutes spent by each employee on each day at the office. Note that within one day, an employee can enter and leave more than once. The time spent in one visit is out_time - in_time.\n\nReturn the result table in any order.`,
+      schemaDescription: `Table: Employees
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| emp_id      | int  |
+| event_day   | date |
+| in_time     | int  |
+| out_time    | int  |
++-------------+------+
+(emp_id, event_day, in_time) is the primary key of this table.
+The table shows the employees' entries and exits in an office.
+event_day is the day at which this event happened, in_time is the minute at which the employee entered the office, and out_time is the minute at which they left the office.
+in_time and out_time are between 1 and 1440.
+It is guaranteed that in_time < out_time for all rows, and that visits on the same day for an employee do not intersect.`,
+      sampleInput: {
+        table: 'Employees',
+        columns: ['emp_id', 'event_day', 'in_time', 'out_time'],
+        rows: [
+          [1, '2020-11-28', 4, 32],
+          [1, '2020-11-28', 55, 200],
+          [1, '2020-12-03', 1, 42],
+          [2, '2020-11-28', 3, 33],
+          [2, '2020-12-09', 47, 74]
+        ]
+      },
+      expectedOutput: {
+        columns: ['day', 'emp_id', 'total_time'],
+        rows: [
+          ['2020-11-28', 1, 173],
+          ['2020-11-28', 2, 30],
+          ['2020-12-03', 1, 41],
+          ['2020-12-09', 2, 27]
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 840 240" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="15" y="15" width="310" height="210" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="28" y="38" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">INPUT: Multiple Visits per Day</text>
+
+        <!-- Emp 1, Day 11-28 Group -->
+        <rect x="25" y="50" width="290" height="52" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="32" y="70" fill="#1d4ed8" font-family="monospace" font-size="10.5">Emp 1 | 2020-11-28: 32 - 4 = 28m</text>
+        <text x="32" y="90" fill="#1d4ed8" font-family="monospace" font-size="10.5">Emp 1 | 2020-11-28: 200 - 55 = 145m</text>
+
+        <!-- Emp 2, Day 11-28 -->
+        <rect x="25" y="110" width="290" height="30" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="32" y="130" fill="#64748b" font-family="monospace" font-size="10.5">Emp 2 | 2020-11-28: 33 - 3 = 30m</text>
+
+        <!-- Others -->
+        <text x="32" y="165" fill="#64748b" font-family="monospace" font-size="10.5">Emp 1 | 2020-12-03: 42 - 1 = 41m</text>
+        <text x="32" y="195" fill="#64748b" font-family="monospace" font-size="10.5">Emp 2 | 2020-12-09: 74 - 47 = 27m</text>
+
+        <!-- Aggregator Box -->
+        <rect x="345" y="35" width="220" height="170" rx="8" fill="#f8fafc" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="360" y="62" fill="#1d4ed8" font-family="monospace" font-size="11.5" font-weight="700">GROUP BY (event_day, emp_id)</text>
+        <text x="360" y="95" fill="#0f172a" font-size="11">Duration Per Swipe:</text>
+        <text x="360" y="115" fill="#2563eb" font-family="monospace" font-size="10.5">out_time - in_time</text>
+        <text x="360" y="145" fill="#0f172a" font-size="11">Sum Daily Swipes:</text>
+        <text x="360" y="165" fill="#166534" font-family="monospace" font-size="10.5" font-weight="700">SUM(out_time - in_time)</text>
+
+        <!-- Output Box -->
+        <rect x="585" y="20" width="235" height="200" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="600" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT: (day, emp_id, total)</text>
+        <text x="600" y="80" fill="#166534" font-family="monospace" font-size="10.5" font-weight="700">2020-11-28 | 1 | 173m</text>
+        <text x="600" y="110" fill="#0f172a" font-family="monospace" font-size="10.5">2020-11-28 | 2 | 30m</text>
+        <text x="600" y="140" fill="#0f172a" font-family="monospace" font-size="10.5">2020-12-03 | 1 | 41m</text>
+        <text x="600" y="170" fill="#0f172a" font-family="monospace" font-size="10.5">2020-12-09 | 2 | 27m</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. The granularity of the output is per (event_day, emp_id). Therefore, we group by event_day and emp_id.',
+        '2. For each individual row visit, the elapsed time in minutes is out_time - in_time.',
+        '3. To get the daily total, we aggregate with SUM(out_time - in_time).',
+        '4. Rename event_day to day and the aggregate to total_time per the problem specification.'
+      ],
+      solutionSQL: `SELECT 
+    event_day AS day,
+    emp_id,
+    SUM(out_time - in_time) AS total_time
+FROM Employees
+GROUP BY event_day, emp_id;`,
+      lineByLineExplanation: [
+        { clause: 'SELECT event_day AS day, emp_id,', exp: 'Projects the date and employee ID, renaming event_day to day.' },
+        { clause: 'SUM(out_time - in_time) AS total_time', exp: 'Computes each visit interval and sums all durations within that group.' },
+        { clause: 'FROM Employees', exp: 'Specifies the Employees badge access records.' },
+        { clause: 'GROUP BY event_day, emp_id;', exp: 'Partitions data so each distinct day and employee combination is aggregated together.' }
+      ]
     }
   ];
 

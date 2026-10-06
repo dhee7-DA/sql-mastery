@@ -56,8 +56,9 @@ window.LEETCODE_ARENA = (() => {
   function switchConcept(conceptId) {
     state.activeConceptId = conceptId;
     const data = getSectionData();
-    if (data && data.problems && data.problems.length > 0) {
-      state.activeProblemId = data.problems[0].id;
+    const probs = (data && (data.leetcodeProblems || data.problems)) || [];
+    if (probs.length > 0) {
+      state.activeProblemId = probs[0].id;
     }
     state.activeDrillId = 1;
     renderShell();
@@ -85,6 +86,10 @@ window.LEETCODE_ARENA = (() => {
     const data = getSectionData();
     if (!data) return;
 
+    const c1Count = (window.LEETCODE_SECTION_1_DATA && (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems)) ? (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems).length : 10;
+    const c2Count = (window.LEETCODE_SECTION_2_DATA && (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems)) ? (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems).length : 16;
+    const totalAvail = c1Count + c2Count;
+
     container.innerHTML = `
       <div class="lc-arena-container">
         <!-- Top Hero Header -->
@@ -92,14 +97,14 @@ window.LEETCODE_ARENA = (() => {
           <div class="lc-title-area">
             <h2>
               <span style="color: var(--accent, #ea580c);">⚡</span>
-              LeetCode 50 SQL Arena
+              LeetCode SQL Arena
               <span class="lc-concept-badge">${data.title}</span>
             </h2>
-            <p>Master the canonical LeetCode SQL 50 through concept architecture, visual SVG schema diagrams, 100 theory trap MCQs, 100 prep drills, and instant test verification.</p>
+            <p>Master canonical LeetCode SQL problems through concept architecture, visual SVG schema diagrams, 100 theory trap MCQs, 100 prep drills, and instant test verification.</p>
           </div>
           <div class="lc-stats-group">
             <div class="lc-stat-pill">
-              <span class="lc-stat-num" id="lcStatSolved">0 / 50</span>
+              <span class="lc-stat-num" id="lcStatSolved">0 / ${totalAvail}</span>
               <span class="lc-stat-label">LC Solved</span>
             </div>
             <div class="lc-stat-pill">
@@ -118,12 +123,12 @@ window.LEETCODE_ARENA = (() => {
           <button class="lc-concept-btn ${state.activeConceptId === 'concept-1' ? 'active' : ''}" data-concept="concept-1">
             <span>📐 Concept 1:</span>
             <span>Filtering &amp; Three-Valued Logic</span>
-            <span class="lc-concept-badge">5 Problems</span>
+            <span class="lc-concept-badge">${c1Count} Problems</span>
           </button>
           <button class="lc-concept-btn ${state.activeConceptId === 'concept-2' ? 'active' : ''}" data-concept="concept-2">
             <span>🔗 Concept 2:</span>
             <span>Relational Joins &amp; Self-Joins</span>
-            <span class="lc-concept-badge">9 Problems</span>
+            <span class="lc-concept-badge">${c2Count} Problems</span>
           </button>
           <button class="lc-concept-btn" style="opacity: 0.6; cursor: not-allowed;" title="Upcoming Module">
             <span>📊 Concept 3:</span>
@@ -168,7 +173,7 @@ window.LEETCODE_ARENA = (() => {
           </button>
           <button class="lc-stage-btn ${state.activeStage === 'problems' ? 'active' : ''}" data-stage="problems">
             <span>⚡ Stage 4: LeetCode Problems</span>
-            <span class="lc-stage-badge">${data.problems ? data.problems.length : 0} Curated</span>
+            <span class="lc-stage-badge">${(data.leetcodeProblems || data.problems || []).length} Curated</span>
           </button>
         </div>
 
@@ -231,7 +236,9 @@ window.LEETCODE_ARENA = (() => {
 
     if (elSolved) {
       const count = Object.keys(state.solvedProblems).length;
-      elSolved.textContent = `${count} / 50`;
+      const c1Count = (window.LEETCODE_SECTION_1_DATA && (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems)) ? (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems).length : 10;
+      const c2Count = (window.LEETCODE_SECTION_2_DATA && (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems)) ? (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems).length : 16;
+      elSolved.textContent = `${count} / ${c1Count + c2Count}`;
     }
     if (elMcqs) {
       const correctCount = Object.values(state.answeredMcqs).filter(a => a.isCorrect).length;

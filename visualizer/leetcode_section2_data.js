@@ -1578,6 +1578,553 @@ GROUP BY s.user_id;`,
         { clause: 'FROM Signups s LEFT JOIN Confirmations c ON s.user_id = c.user_id', exp: 'Retains every registered user regardless of confirmation activity.' },
         { clause: 'GROUP BY s.user_id;', exp: 'Aggregates statistics per individual user.' }
       ]
+    },
+
+    {
+      id: 175,
+      number: '175',
+      title: 'Combine Two Tables',
+      difficulty: 'Easy',
+      category: 'Basic Joins',
+      companies: ['Amazon', 'Apple', 'Bloomberg', 'Microsoft'],
+      interviewFreq: '96% (Universal Screening Baseline - Left Outer Join)',
+      interviewRound: 'Technical Screen',
+      prompt: `Write a solution to report the first name, last name, city, and state of each person in the Person table. If the address of a personId is not present in the Address table, report null instead.\n\nReturn the result table in any order.`,
+      schemaDescription: `Table: Person (personId PK, lastName, firstName)
+Table: Address (addressId PK, personId, city, state)`,
+      sampleInput: {
+        table: 'Person & Address',
+        columns: ['personId', 'firstName', 'lastName', 'city', 'state'],
+        rows: [
+          [1, 'Allen', 'Wang', 'null', 'null'],
+          [2, 'Bob', 'Alice', 'New York City', 'New York']
+        ]
+      },
+      expectedOutput: {
+        columns: ['firstName', 'lastName', 'city', 'state'],
+        rows: [
+          ['Allen', 'Wang', null, null],
+          ['Bob', 'Alice', 'New York City', 'New York']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 200" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Table Person -->
+        <rect x="20" y="20" width="300" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">LEFT: Person (Must Preserve)</text>
+        <rect x="30" y="55" width="280" height="20" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="40" y="69" fill="#64748b" font-family="monospace" font-size="10">personId | firstName | lastName</text>
+        <text x="40" y="98" fill="#0f172a" font-family="monospace" font-size="11">1 | Allen | Wang</text>
+        <text x="40" y="128" fill="#0f172a" font-family="monospace" font-size="11">2 | Bob | Alice</text>
+        <rect x="30" y="145" width="280" height="24" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="40" y="161" fill="#1d4ed8" font-size="10" font-weight="600">Retains person 1 even without Address</text>
+
+        <!-- Pointer Arrow -->
+        <path d="M 330 100 L 410 100" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow1378)"/>
+        <text x="370" y="88" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="10" font-weight="700">LEFT JOIN</text>
+        <text x="370" y="120" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="9.5">ON p.personId = a.personId</text>
+
+        <!-- Table Address -->
+        <rect x="420" y="20" width="210" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="435" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">RIGHT: Address</text>
+        <rect x="430" y="55" width="190" height="20" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="440" y="69" fill="#64748b" font-family="monospace" font-size="10">personId | city | state</text>
+        <text x="440" y="98" fill="#dc2626" font-family="monospace" font-size="10.5">1 missing =&gt; [NULL, NULL]</text>
+        <text x="440" y="128" fill="#166534" font-family="monospace" font-size="10.5">2 | NYC | New York</text>
+
+        <!-- Output Box -->
+        <rect x="645" y="20" width="220" height="160" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="655" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT BUFFER</text>
+        <text x="655" y="75" fill="#0f172a" font-family="monospace" font-size="10">firstName, lastName, city, state</text>
+        <text x="655" y="105" fill="#166534" font-family="monospace" font-size="10.5">Allen | Wang | NULL | NULL</text>
+        <text x="655" y="135" fill="#166534" font-family="monospace" font-size="10.5">Bob | Alice | NYC | New York</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. An INNER JOIN would drop Person 1 because they have no corresponding row in Address.',
+        '2. The prompt demands reporting city and state as NULL if absent, which is the exact definition of a LEFT JOIN.',
+        '3. Join Person p LEFT JOIN Address a ON p.personId = a.personId and select firstName, lastName, city, and state.'
+      ],
+      solutionSQL: `SELECT 
+    p.firstName,
+    p.lastName,
+    a.city,
+    a.state
+FROM Person p
+LEFT JOIN Address a
+    ON p.personId = a.personId;`,
+      lineByLineExplanation: [
+        { clause: 'SELECT p.firstName, p.lastName, a.city, a.state', exp: 'Selects person names from Person and location attributes from Address.' },
+        { clause: 'FROM Person p', exp: 'Designates Person as the left primary relation to ensure all individuals are preserved.' },
+        { clause: 'LEFT JOIN Address a ON p.personId = a.personId;', exp: 'Outer joins Address on matching personId, producing NULL for missing addresses.' }
+      ]
+    },
+
+    {
+      id: 181,
+      number: '181',
+      title: 'Employees Earning More Than Their Managers',
+      difficulty: 'Easy',
+      category: 'Basic Joins',
+      companies: ['Meta', 'Google', 'Amazon', 'Bloomberg'],
+      interviewFreq: '95% (Canonical Hierarchy Self-Join)',
+      interviewRound: 'Technical Interview',
+      prompt: `Write a solution to find the employees who earn more than their managers.\n\nReturn the result table in any order.`,
+      schemaDescription: `Table: Employee (id PK, name, salary, managerId)`,
+      sampleInput: {
+        table: 'Employee',
+        columns: ['id', 'name', 'salary', 'managerId'],
+        rows: [
+          [1, 'Joe', 70000, 3],
+          [2, 'Henry', 80000, 4],
+          [3, 'Sam', 60000, null],
+          [4, 'Max', 90000, null]
+        ]
+      },
+      expectedOutput: {
+        columns: ['Employee'],
+        rows: [
+          ['Joe']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 200" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Subordinate Instance -->
+        <rect x="20" y="20" width="310" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">Employee e (Subordinate)</text>
+        <text x="35" y="75" fill="#64748b" font-family="monospace" font-size="11">id 1: Joe | $70,000 | mgr: 3</text>
+        <text x="35" y="105" fill="#64748b" font-family="monospace" font-size="11">id 2: Henry | $80,000 | mgr: 4</text>
+        <text x="35" y="135" fill="#64748b" font-family="monospace" font-size="11">id 3: Sam | $60,000 | mgr: NULL</text>
+        <text x="35" y="160" fill="#64748b" font-family="monospace" font-size="11">id 4: Max | $90,000 | mgr: NULL</text>
+
+        <!-- Self Join Bridge -->
+        <path d="M 340 75 Q 400 50, 455 75" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow1378)"/>
+        <text x="400" y="40" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="10" font-weight="700">e.managerId = m.id</text>
+
+        <!-- Manager Instance -->
+        <rect x="465" y="20" width="220" height="160" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="480" y="45" fill="#1d4ed8" font-family="monospace" font-size="12" font-weight="700">Employee m (Manager)</text>
+        <text x="480" y="75" fill="#1d4ed8" font-family="monospace" font-size="10.5">m.id 3: Sam | $60,000</text>
+        <text x="480" y="95" fill="#166534" font-family="monospace" font-size="9.5">&gt; Joe ($70k &gt; $60k) MATCH!</text>
+        <text x="480" y="125" fill="#1d4ed8" font-family="monospace" font-size="10.5">m.id 4: Max | $90,000</text>
+        <text x="480" y="145" fill="#dc2626" font-family="monospace" font-size="9.5">&gt; Henry ($80k &lt; $90k) REJECT</text>
+
+        <!-- Output -->
+        <rect x="705" y="20" width="160" height="160" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="715" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT</text>
+        <text x="715" y="70" fill="#64748b" font-family="monospace" font-size="10">Employee</text>
+        <text x="715" y="105" fill="#166534" font-family="monospace" font-size="14" font-weight="700">Joe</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. Employees and their managers coexist in the same table: Employee.',
+        '2. To inspect an employee alongside their direct boss, join Employee e with Employee m on e.managerId = m.id.',
+        '3. Add the filter WHERE e.salary > m.salary to identify subordinates out-earning their manager.',
+        '4. Alias the resulting column as Employee.'
+      ],
+      solutionSQL: `SELECT 
+    e.name AS Employee
+FROM Employee e
+JOIN Employee m
+    ON e.managerId = m.id
+WHERE e.salary > m.salary;`,
+      lineByLineExplanation: [
+        { clause: 'SELECT e.name AS Employee', exp: 'Selects the subordinate employee\'s name, aliased to "Employee".' },
+        { clause: 'FROM Employee e JOIN Employee m ON e.managerId = m.id', exp: 'Performs a self-join linking each employee\'s managerId to the manager\'s primary id.' },
+        { clause: 'WHERE e.salary > m.salary;', exp: 'Filters strictly for employees with a higher salary than their supervisor.' }
+      ]
+    },
+
+    {
+      id: 183,
+      number: '183',
+      title: 'Customers Who Never Order',
+      difficulty: 'Easy',
+      category: 'Basic Joins',
+      companies: ['Amazon', 'Apple', 'Bloomberg', 'Google'],
+      interviewFreq: '94% (Essential Anti-Join Mechanics)',
+      interviewRound: 'Technical Screen',
+      prompt: `Write a solution to find all customers who never order anything.\n\nReturn the result table in any order.`,
+      schemaDescription: `Table: Customers (id PK, name)
+Table: Orders (id PK, customerId FK)`,
+      sampleInput: {
+        table: 'Customers & Orders',
+        columns: ['Customers.id', 'Customers.name', 'Orders.id', 'Orders.customerId'],
+        rows: [
+          [1, 'Joe', 2, 1],
+          [2, 'Henry', null, null],
+          [3, 'Sam', 1, 3],
+          [4, 'Max', null, null]
+        ]
+      },
+      expectedOutput: {
+        columns: ['Customers'],
+        rows: [
+          ['Henry'],
+          ['Max']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 200" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Customers Table -->
+        <rect x="20" y="20" width="280" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">Customers c</text>
+        <text x="35" y="75" fill="#64748b" font-family="monospace" font-size="11">1: Joe</text>
+        <text x="35" y="100" fill="#166534" font-family="monospace" font-size="11" font-weight="700">2: Henry (NO ORDERS!)</text>
+        <text x="35" y="125" fill="#64748b" font-family="monospace" font-size="11">3: Sam</text>
+        <text x="35" y="150" fill="#166534" font-family="monospace" font-size="11" font-weight="700">4: Max (NO ORDERS!)</text>
+
+        <!-- Left Join Bridge -->
+        <path d="M 310 95 L 390 95" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow1378)"/>
+        <text x="350" y="80" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="10" font-weight="700">LEFT JOIN</text>
+        <text x="350" y="115" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="9">c.id = o.customerId</text>
+
+        <!-- Orders Table -->
+        <rect x="400" y="20" width="220" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="415" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">Orders o</text>
+        <text x="415" y="75" fill="#64748b" font-family="monospace" font-size="11">Order 1 -&gt; cust 3</text>
+        <text x="415" y="100" fill="#dc2626" font-family="monospace" font-size="11">NULL for Henry</text>
+        <text x="415" y="125" fill="#64748b" font-family="monospace" font-size="11">Order 2 -&gt; cust 1</text>
+        <text x="415" y="150" fill="#dc2626" font-family="monospace" font-size="11">NULL for Max</text>
+
+        <!-- Anti-Join Filter Gate -->
+        <rect x="640" y="20" width="225" height="160" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="655" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">FILTER: o.id IS NULL</text>
+        <text x="655" y="75" fill="#0f172a" font-size="11">Customers with zero orders:</text>
+        <text x="655" y="105" fill="#166534" font-family="monospace" font-size="13" font-weight="700">Henry</text>
+        <text x="655" y="135" fill="#166534" font-family="monospace" font-size="13" font-weight="700">Max</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. An anti-join extracts rows from Table A that have NO corresponding entry in Table B.',
+        '2. Method 1 (LEFT JOIN + IS NULL): Join Customers to Orders. If a customer never ordered, o.id will be NULL in the outer join output buffer.',
+        '3. Method 2 (NOT IN / NOT EXISTS): WHERE id NOT IN (SELECT customerId FROM Orders).',
+        '4. The LEFT JOIN ... WHERE o.id IS NULL pattern is universally preferred in interview scenarios for its clean execution plan.'
+      ],
+      solutionSQL: `SELECT 
+    c.name AS Customers
+FROM Customers c
+LEFT JOIN Orders o
+    ON c.id = o.customerId
+WHERE o.id IS NULL;`,
+      lineByLineExplanation: [
+        { clause: 'SELECT c.name AS Customers', exp: 'Selects customer name, aliased to "Customers".' },
+        { clause: 'FROM Customers c LEFT JOIN Orders o ON c.id = o.customerId', exp: 'Performs a left outer join to preserve every customer regardless of whether they have placed an order.' },
+        { clause: 'WHERE o.id IS NULL;', exp: 'Filters strictly for the unmatched rows where no corresponding order exists.' }
+      ]
+    },
+
+    {
+      id: 607,
+      number: '607',
+      title: 'Sales Person',
+      difficulty: 'Easy',
+      category: 'Basic Joins',
+      companies: ['Amazon', 'Adobe'],
+      interviewFreq: '88% (Multi-table 3-Way Relational Anti-Join)',
+      interviewRound: 'Technical Interview',
+      prompt: `Write a solution to find the names of all the salespersons who did not have any orders related to the company with the name 'RED'.\n\nReturn the result table in any order.`,
+      schemaDescription: `Table: SalesPerson (sales_id PK, name, salary, commission_rate, hire_date)
+Table: Company (com_id PK, name, city)
+Table: Orders (order_id PK, order_date, com_id, sales_id, amount)`,
+      sampleInput: {
+        table: 'SalesPerson & Company & Orders',
+        columns: ['sales_id', 'salesperson', 'company', 'com_id'],
+        rows: [
+          [1, 'John', 'RED', 1],
+          [2, 'Amy', 'YELLOW', 2],
+          [3, 'Mark', 'GREEN', 3],
+          [4, 'Pam', 'RED', 1],
+          [5, 'Alex', 'null', 'null']
+        ]
+      },
+      expectedOutput: {
+        columns: ['name'],
+        rows: [
+          ['Amy'],
+          ['Mark'],
+          ['Alex']
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 200" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- SalesPerson -->
+        <rect x="20" y="20" width="220" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">SalesPerson</text>
+        <text x="35" y="70" fill="#dc2626" font-family="monospace" font-size="10.5">1: John (RED)</text>
+        <text x="35" y="92" fill="#166534" font-family="monospace" font-size="10.5" font-weight="700">2: Amy (YELLOW)</text>
+        <text x="35" y="114" fill="#166534" font-family="monospace" font-size="10.5" font-weight="700">3: Mark (GREEN)</text>
+        <text x="35" y="136" fill="#dc2626" font-family="monospace" font-size="10.5">4: Pam (RED)</text>
+        <text x="35" y="158" fill="#166534" font-family="monospace" font-size="10.5" font-weight="700">5: Alex (NO ORDERS)</text>
+
+        <!-- Orders -->
+        <rect x="260" y="20" width="200" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="275" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">Orders</text>
+        <text x="275" y="75" fill="#64748b" font-family="monospace" font-size="10.5">ord 1: sales 1, com 1</text>
+        <text x="275" y="105" fill="#64748b" font-family="monospace" font-size="10.5">ord 2: sales 4, com 1</text>
+        <text x="275" y="135" fill="#64748b" font-family="monospace" font-size="10.5">ord 3: sales 2, com 2</text>
+
+        <!-- Company Bridge -->
+        <path d="M 470 75 L 530 75" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow1378)"/>
+
+        <!-- Company -->
+        <rect x="540" y="20" width="150" height="160" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+        <text x="550" y="45" fill="#991b1b" font-family="monospace" font-size="12" font-weight="700">Company</text>
+        <text x="550" y="75" fill="#dc2626" font-family="monospace" font-size="11" font-weight="700">com 1: 'RED'</text>
+        <text x="550" y="105" fill="#64748b" font-family="monospace" font-size="11">com 2: 'YELLOW'</text>
+        <text x="550" y="135" fill="#64748b" font-family="monospace" font-size="11">com 3: 'GREEN'</text>
+
+        <!-- Output -->
+        <rect x="710" y="20" width="155" height="160" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="720" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT</text>
+        <text x="720" y="75" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Amy</text>
+        <text x="720" y="105" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Mark</text>
+        <text x="720" y="135" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Alex</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. We need all salespersons who did NOT have any orders associated with company \'RED\'.',
+        '2. First, identify the set of sales_id values that DO have orders related to \'RED\': Orders joined to Company where c.name = \'RED\'.',
+        '3. Select the names from SalesPerson where sales_id NOT IN this subquery set.',
+        '4. Note that salespeople with no orders at all (like Alex) have zero \'RED\' orders and MUST be included.'
+      ],
+      solutionSQL: `SELECT name
+FROM SalesPerson
+WHERE sales_id NOT IN (
+    SELECT o.sales_id
+    FROM Orders o
+    JOIN Company c
+        ON o.com_id = c.com_id
+    WHERE c.name = 'RED'
+);`,
+      lineByLineExplanation: [
+        { clause: 'SELECT name FROM SalesPerson', exp: 'Retrieves names from the master salesperson registry.' },
+        { clause: 'WHERE sales_id NOT IN (...)', exp: 'Filters out any salesperson whose ID appears in the blacklisted RED company order set.' },
+        { clause: 'SELECT o.sales_id FROM Orders o JOIN Company c ON o.com_id = c.com_id WHERE c.name = \'RED\'', exp: 'Gathers all sales_id references tied to orders placed for the company \'RED\'.' }
+      ]
+    },
+
+    {
+      id: 603,
+      number: '603',
+      title: 'Consecutive Available Seats',
+      difficulty: 'Easy',
+      category: 'Basic Joins',
+      companies: ['Amazon', 'Google'],
+      interviewFreq: '86% (Adjacent Slot Continuous Self-Join)',
+      interviewRound: 'Technical Screen',
+      prompt: `Find all the consecutive available seats in the cinema. Return the result table ordered by seat_id in ascending order.\n\nTwo or more seats next to each other where free = 1 are considered consecutive.`,
+      schemaDescription: `Table: Cinema (seat_id PK INT auto_increment, free BOOL)`,
+      sampleInput: {
+        table: 'Cinema',
+        columns: ['seat_id', 'free'],
+        rows: [
+          [1, 1],
+          [2, 0],
+          [3, 1],
+          [4, 1],
+          [5, 1]
+        ]
+      },
+      expectedOutput: {
+        columns: ['seat_id'],
+        rows: [
+          [3],
+          [4],
+          [5]
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 200" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Cinema Table -->
+        <rect x="20" y="20" width="310" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">INPUT: Cinema Seats</text>
+        <text x="35" y="75" fill="#64748b" font-family="monospace" font-size="11">Seat 1: free = 1 (Isolated, seat 2 occupied)</text>
+        <text x="35" y="100" fill="#dc2626" font-family="monospace" font-size="11">Seat 2: free = 0 (Occupied)</text>
+        <text x="35" y="125" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Seat 3: free = 1 (Adjacent to 4)</text>
+        <text x="35" y="145" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Seat 4: free = 1 (Adjacent to 3 &amp; 5)</text>
+        <text x="35" y="165" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Seat 5: free = 1 (Adjacent to 4)</text>
+
+        <!-- Self-Join Logic -->
+        <rect x="360" y="30" width="260" height="140" rx="8" fill="#f8fafc" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="375" y="55" fill="#1d4ed8" font-family="monospace" font-size="11" font-weight="700">NEIGHBOR DISTANCE PREDICATE</text>
+        <text x="375" y="85" fill="#0f172a" font-family="monospace" font-size="11">ABS(a.seat_id - b.seat_id) = 1</text>
+        <text x="375" y="110" fill="#2563eb" font-family="monospace" font-size="11">AND a.free = 1 AND b.free = 1</text>
+        <text x="375" y="140" fill="#166534" font-size="11" font-weight="600">Matches 3 with 4, and 4 with 5</text>
+
+        <!-- Output -->
+        <rect x="650" y="20" width="210" height="160" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="665" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT: seat_id</text>
+        <text x="665" y="80" fill="#166534" font-family="monospace" font-size="12" font-weight="700">3</text>
+        <text x="665" y="115" fill="#166534" font-family="monospace" font-size="12" font-weight="700">4</text>
+        <text x="665" y="150" fill="#166534" font-family="monospace" font-size="12" font-weight="700">5</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. Two seats are adjacent if the absolute difference of their seat_id values is 1: ABS(a.seat_id - b.seat_id) = 1.',
+        '2. Both seats must be free: a.free = 1 AND b.free = 1.',
+        '3. Since seat 4 matches both seat 3 and seat 5, seat 4 would appear twice without deduplication; we use DISTINCT.',
+        '4. Order the output by seat_id in ascending order.'
+      ],
+      solutionSQL: `SELECT DISTINCT a.seat_id
+FROM Cinema a
+JOIN Cinema b
+    ON ABS(a.seat_id - b.seat_id) = 1
+   AND a.free = 1 
+   AND b.free = 1
+ORDER BY a.seat_id ASC;`,
+      lineByLineExplanation: [
+        { clause: 'SELECT DISTINCT a.seat_id', exp: 'Selects unique seat numbers, eliminating duplicate entries when a seat has two free neighbors.' },
+        { clause: 'FROM Cinema a JOIN Cinema b', exp: 'Self-joins the Cinema table onto itself to compare neighboring seats.' },
+        { clause: 'ON ABS(a.seat_id - b.seat_id) = 1 AND a.free = 1 AND b.free = 1', exp: 'Ensures the two seats are directly adjacent and both available.' },
+        { clause: 'ORDER BY a.seat_id ASC;', exp: 'Sorts qualifying seat IDs in ascending order.' }
+      ]
+    },
+
+    {
+      id: 613,
+      number: '613',
+      title: 'Shortest Distance in a Line',
+      difficulty: 'Easy',
+      category: 'Basic Joins',
+      companies: ['Twitter/X', 'Bloomberg'],
+      interviewFreq: '84% (1D Coordinate Pairwise Self-Join)',
+      interviewRound: 'Technical Screen',
+      prompt: `Write a solution to report the shortest distance between any two points from the Point table.`,
+      schemaDescription: `Table: Point (x INT PK)`,
+      sampleInput: {
+        table: 'Point',
+        columns: ['x'],
+        rows: [
+          [-1],
+          [0],
+          [2]
+        ]
+      },
+      expectedOutput: {
+        columns: ['shortest'],
+        rows: [
+          [1]
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 200" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Number Line -->
+        <rect x="20" y="20" width="370" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">1D COORDINATE AXIS</text>
+        <line x1="50" y1="100" x2="350" y2="100" stroke="#94a3b8" stroke-width="2"/>
+        <!-- Point -1 -->
+        <circle cx="100" cy="100" r="6" fill="#2563eb"/>
+        <text x="100" y="85" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="11" font-weight="700">-1</text>
+        <!-- Point 0 -->
+        <circle cx="180" cy="100" r="6" fill="#16a34a"/>
+        <text x="180" y="85" text-anchor="middle" fill="#16a34a" font-family="monospace" font-size="11" font-weight="700">0</text>
+        <!-- Point 2 -->
+        <circle cx="320" cy="100" r="6" fill="#2563eb"/>
+        <text x="320" y="85" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="11" font-weight="700">2</text>
+
+        <!-- Distance Brackets -->
+        <path d="M 100 115 L 180 115" stroke="#16a34a" stroke-width="2"/>
+        <text x="140" y="135" text-anchor="middle" fill="#16a34a" font-family="monospace" font-size="10.5" font-weight="700">dist = 1 (MIN)</text>
+        <path d="M 180 115 L 320 115" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="250" y="135" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="10">dist = 2</text>
+
+        <!-- Pairwise Join Predicate -->
+        <rect x="410" y="30" width="240" height="140" rx="8" fill="#f8fafc" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="425" y="55" fill="#1d4ed8" font-family="monospace" font-size="11" font-weight="700">ASYMMETRIC PAIRING</text>
+        <text x="425" y="85" fill="#0f172a" font-family="monospace" font-size="11">ON p1.x &lt; p2.x</text>
+        <text x="425" y="110" fill="#2563eb" font-family="monospace" font-size="11">Distance: (p2.x - p1.x)</text>
+        <text x="425" y="135" fill="#64748b" font-size="10.5">Avoids dist = 0 &amp; duplicates</text>
+
+        <!-- Output -->
+        <rect x="670" y="20" width="190" height="160" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="685" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">OUTPUT: shortest</text>
+        <text x="685" y="105" fill="#166534" font-family="monospace" font-size="28" font-weight="700">1</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. The distance between any two coordinates x1 and x2 is ABS(x2 - x1).',
+        '2. By self-joining with the strict inequality ON p1.x < p2.x, we guarantee that p2.x is always strictly greater than p1.x, eliminating self-distances (dist = 0) and duplicate mirrored pairs.',
+        '3. Since p2.x > p1.x, the distance is simply p2.x - p1.x.',
+        '4. We apply MIN(p2.x - p1.x) to obtain the globally shortest distance.'
+      ],
+      solutionSQL: `SELECT 
+    MIN(p2.x - p1.x) AS shortest
+FROM Point p1
+JOIN Point p2
+    ON p1.x < p2.x;`,
+      lineByLineExplanation: [
+        { clause: 'SELECT MIN(p2.x - p1.x) AS shortest', exp: 'Calculates the minimum distance across all valid coordinate pairs, aliasing to "shortest".' },
+        { clause: 'FROM Point p1 JOIN Point p2', exp: 'Self-joins the Point table onto itself.' },
+        { clause: 'ON p1.x < p2.x;', exp: 'Enforces strict directional ordering to avoid zero distance to self and redundant negative inversions.' }
+      ]
+    },
+
+    {
+      id: 580,
+      number: '580',
+      title: 'Count Student Number in Departments',
+      difficulty: 'Medium',
+      category: 'Basic Joins',
+      companies: ['Twitter/X', 'Google'],
+      interviewFreq: '87% (Grouped Outer Join with Zero Preservation)',
+      interviewRound: 'Technical Interview',
+      prompt: `Write a solution to report the respective department name and number of students majoring in each department for all departments in the Department table (even ones with 0 students).\n\nReturn the result table ordered by student_number in descending order. In case of ties, order them by dept_name alphabetically.`,
+      schemaDescription: `Table: Student (student_id PK, student_name, gender, dept_id FK)
+Table: Department (dept_id PK, dept_name)`,
+      sampleInput: {
+        table: 'Student & Department',
+        columns: ['dept_id', 'dept_name', 'student_id', 'student_name'],
+        rows: [
+          [1, 'Engineering', 1, 'Jack'],
+          [1, 'Engineering', 2, 'Jane'],
+          [2, 'Science', 3, 'Mark'],
+          [3, 'Law', null, null]
+        ]
+      },
+      expectedOutput: {
+        columns: ['dept_name', 'student_number'],
+        rows: [
+          ['Engineering', 2],
+          ['Science', 1],
+          ['Law', 0]
+        ]
+      },
+      svgDiagram: `<svg viewBox="0 0 880 200" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Department Table -->
+        <rect x="20" y="20" width="280" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="35" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">Department d (Primary)</text>
+        <text x="35" y="75" fill="#64748b" font-family="monospace" font-size="11">1: Engineering</text>
+        <text x="35" y="105" fill="#64748b" font-family="monospace" font-size="11">2: Science</text>
+        <text x="35" y="135" fill="#dc2626" font-family="monospace" font-size="11" font-weight="700">3: Law (0 students - MUST KEEP!)</text>
+
+        <!-- Left Join Bridge -->
+        <path d="M 310 95 L 390 95" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow1378)"/>
+        <text x="350" y="80" text-anchor="middle" fill="#2563eb" font-family="monospace" font-size="10" font-weight="700">LEFT JOIN</text>
+        <text x="350" y="115" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="9">d.dept_id = s.dept_id</text>
+
+        <!-- Student Table -->
+        <rect x="400" y="20" width="220" height="160" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <text x="415" y="45" fill="#0f172a" font-family="monospace" font-size="12" font-weight="700">Student s</text>
+        <text x="415" y="75" fill="#64748b" font-family="monospace" font-size="11">Jack (dept 1), Jane (dept 1)</text>
+        <text x="415" y="105" fill="#64748b" font-family="monospace" font-size="11">Mark (dept 2)</text>
+        <text x="415" y="135" fill="#dc2626" font-family="monospace" font-size="11">NULL for dept 3</text>
+
+        <!-- Count Aggregation Rule -->
+        <rect x="640" y="20" width="220" height="160" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="655" y="45" fill="#15803d" font-family="monospace" font-size="12" font-weight="700">COUNT(s.student_id)</text>
+        <text x="655" y="75" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Engineering | 2</text>
+        <text x="655" y="105" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Science | 1</text>
+        <text x="655" y="135" fill="#166534" font-family="monospace" font-size="11" font-weight="700">Law | 0 (COUNT ignores NULL)</text>
+      </svg>`,
+      logicBreakdown: [
+        '1. The problem demands listing ALL departments, including departments with zero registered students.',
+        '2. This mandates starting FROM Department d LEFT JOIN Student s ON d.dept_id = s.dept_id.',
+        '3. CRITICAL INTERVIEW TRAP: You must write COUNT(s.student_id), NOT COUNT(*). COUNT(*) counts NULL rows and would return 1 for Law! COUNT(s.student_id) correctly evaluates to 0 when student_id is NULL.',
+        '4. Order by student_number DESC, and dept_name ASC for alphabetical tie-breaking.'
+      ],
+      solutionSQL: `SELECT 
+    d.dept_name,
+    COUNT(s.student_id) AS student_number
+FROM Department d
+LEFT JOIN Student s
+    ON d.dept_id = s.dept_id
+GROUP BY d.dept_id, d.dept_name
+ORDER BY student_number DESC, d.dept_name ASC;`,
+      lineByLineExplanation: [
+        { clause: 'SELECT d.dept_name, COUNT(s.student_id) AS student_number', exp: 'Selects the department name and counts matching non-null student IDs, preserving 0 for empty departments.' },
+        { clause: 'FROM Department d LEFT JOIN Student s ON d.dept_id = s.dept_id', exp: 'Outer joins Department to Student so departments with no enrollees are not dropped.' },
+        { clause: 'GROUP BY d.dept_id, d.dept_name', exp: 'Groups records per individual department.' },
+        { clause: 'ORDER BY student_number DESC, d.dept_name ASC;', exp: 'Sorts by student count descending, breaking ties alphabetically by department name.' }
+      ]
     }
   ]
 };
