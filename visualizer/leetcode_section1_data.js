@@ -1134,6 +1134,19 @@ WHERE low_fats = 'Y'
         { clause: 'WHERE low_fats = \'Y\'', exp: 'First predicate: checks that the ENUM value is equal to the string literal "Y".' },
         { clause: 'AND recyclable = \'Y\';', exp: 'Conjunction: requires the recyclable attribute to also equal "Y" for the same row.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Collation Sensitivity: In case-sensitive binary collations (e.g. utf8mb4_bin), filtering low_fats = 'y' will fail to match 'Y'. Always match exact enum casing.",
+        "Hidden NULL Traps: If low_fats or recyclable allows NULL, rows with (NULL, 'Y') evaluate to UNKNOWN AND TRUE = UNKNOWN and are dropped silently."
+],
+      alternativeSolutions: [
+        {
+                "name": "Bitwise / Integer Flag Mapping",
+                "complexity": "O(1) CPU bit test",
+                "sql": "SELECT product_id\nFROM Products\nWHERE (low_fats = 'Y') & (recyclable = 'Y') = 1;",
+                "explanation": "Used in high-frequency trading and gaming architectures where boolean columns are stored as packed bitmasks to conserve cache line bandwidth."
+        }
+]
     },
 
     {
@@ -1242,6 +1255,25 @@ WHERE referee_id != 2
         { clause: 'WHERE referee_id != 2', exp: 'Matches customers who have an explicit referee ID that is not equal to 2.' },
         { clause: 'OR referee_id IS NULL;', exp: 'Critical safety clause: catches customers who have no referee (NULL) and ensures they are included.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "The 3VL Silent Erasure: Writing WHERE referee_id != 2 drops all customers with referee_id IS NULL because NULL != 2 evaluates to UNKNOWN. The WHERE clause only admits rows evaluating to strictly TRUE.",
+        "The Functional Index Trap: Writing WHERE IFNULL(referee_id, 0) != 2 blinds standard B-Tree indexes on referee_id, turning an O(log N) index seek into an O(N) full table scan."
+],
+      alternativeSolutions: [
+        {
+                "name": "Null-Safe Spaceship Operator (<=>)",
+                "complexity": "O(log N) seek in MySQL",
+                "sql": "SELECT name\nFROM Customer\nWHERE NOT (referee_id <=> 2);",
+                "explanation": "The spaceship operator treats NULL as comparable. `referee_id <=> 2` is FALSE when referee_id is NULL, so NOT(FALSE) becomes TRUE."
+        },
+        {
+                "name": "COALESCE Fallback",
+                "complexity": "O(N) Full Table Scan",
+                "sql": "SELECT name\nFROM Customer\nWHERE COALESCE(referee_id, 0) != 2;",
+                "explanation": "Replaces NULL with 0 before comparison. Very clean to read, but note that wrapping indexed columns in functions defeats index seeks."
+        }
+]
     },
 
     {
@@ -1328,6 +1360,18 @@ WHERE area >= 3000000
         { clause: 'WHERE area >= 3000000', exp: 'First qualification check for physical land mass.' },
         { clause: 'OR population >= 25000000;', exp: 'Second qualification check for demographic population count.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "The OR Full Table Scan Trap: A single WHERE area >= 3000000 OR population >= 25000000 forces a full table scan if the query optimizer cannot execute an Index Merge."
+],
+      alternativeSolutions: [
+        {
+                "name": "UNION Dual Index Range Seek",
+                "complexity": "2 * O(log N) seeks + O(M log M) dedupe",
+                "sql": "SELECT name, population, area FROM World WHERE area >= 3000000\nUNION\nSELECT name, population, area FROM World WHERE population >= 25000000;",
+                "explanation": "Enables independent index range scans on idx_area and idx_pop. UNION deduplicates boundary rows satisfying both criteria."
+        }
+]
     },
 
     {
@@ -1424,6 +1468,19 @@ ORDER BY id ASC;`,
         { clause: 'WHERE author_id = viewer_id', exp: 'Filters rows where the person viewing the article is the same person who authored it.' },
         { clause: 'ORDER BY id ASC;', exp: 'Sorts output in ascending numerical sequence.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Duplicate Self-Views: An author viewing their own article 10 times outputs 10 identical rows unless deduplicated with DISTINCT.",
+        "Strict Sorting: LeetCode requires ORDER BY id ASC. Omitting the sort clause triggers intermittent test failures."
+],
+      alternativeSolutions: [
+        {
+                "name": "GROUP BY Hash Aggregation",
+                "complexity": "O(N) hash grouping",
+                "sql": "SELECT author_id AS id\nFROM Views\nWHERE author_id = viewer_id\nGROUP BY author_id\nORDER BY id ASC;",
+                "explanation": "Uses hash aggregation instead of sort-based distinct, which can perform faster on unsorted raw buffers."
+        }
+]
     },
 
     {
@@ -1488,6 +1545,19 @@ WHERE CHAR_LENGTH(content) > 15;`,
         { clause: 'FROM Tweets', exp: 'Targets the Tweets table.' },
         { clause: 'WHERE CHAR_LENGTH(content) > 15;', exp: 'Calculates the real character count and filters strictly greater than 15.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Byte vs Character Length (UTF-8 Emojis): In UTF-8, emojis like 🚀 take 4 bytes. LENGTH('🚀') returns 4, but CHAR_LENGTH('🚀') returns 1. LENGTH() will incorrectly fail valid tweets with emojis!",
+        "Strict Inequality: Must be > 15, not >= 15. A tweet with exactly 15 characters is valid."
+],
+      alternativeSolutions: [
+        {
+                "name": "CHARACTER_LENGTH ANSI Standard",
+                "complexity": "O(K) character scan",
+                "sql": "SELECT tweet_id\nFROM Tweets\nWHERE CHARACTER_LENGTH(content) > 15;",
+                "explanation": "Direct ANSI SQL standard synonym for CHAR_LENGTH()."
+        }
+]
     },
 
     {
@@ -1607,6 +1677,25 @@ ORDER BY employee_id;`,
         { clause: 'FROM Employees', exp: 'Targets the Employees source table.' },
         { clause: 'ORDER BY employee_id;', exp: 'Ensures the final output is sorted in ascending employee ID sequence.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Missing ELSE Clause: Omitting ELSE in CASE WHEN causes unmatched rows to default to NULL rather than 0, failing LeetCode judge assertions.",
+        "Missing ORDER BY: The problem explicitly demands ordering by employee_id."
+],
+      alternativeSolutions: [
+        {
+                "name": "MySQL IF() Expression",
+                "complexity": "O(N) sequential scan",
+                "sql": "SELECT employee_id,\n       IF(employee_id % 2 = 1 AND name NOT LIKE 'M%', salary, 0) AS bonus\nFROM Employees\nORDER BY employee_id;",
+                "explanation": "Concise ternary-style syntax native to MySQL engines."
+        },
+        {
+                "name": "Arithmetic Boolean Multiplication",
+                "complexity": "O(N) vectorized math",
+                "sql": "SELECT employee_id,\n       salary * (employee_id % 2) * (LEFT(name, 1) != 'M') AS bonus\nFROM Employees\nORDER BY employee_id;",
+                "explanation": "Pure mathematical expression multiplying salary by boolean 0/1 predicates."
+        }
+]
     },
 
     {
@@ -1686,6 +1775,25 @@ END;`,
         { clause: 'UPDATE Salary', exp: 'Targets the Salary table for in-place row mutation.' },
         { clause: 'SET sex = CASE WHEN sex = \'m\' THEN \'f\' ELSE \'m\' END;', exp: 'Atomically evaluates the current sex and toggles it to the opposite enum value.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "The Double-Update Trap: Running two separate UPDATE statements turns EVERY row into 'f'. The swap must be atomic in a single UPDATE.",
+        "No Intermediate Temp Tables: Prohibited from creating temp tables or SELECT statements."
+],
+      alternativeSolutions: [
+        {
+                "name": "MySQL IF() Shortcut",
+                "complexity": "O(N) atomic update",
+                "sql": "UPDATE Salary\nSET sex = IF(sex = 'm', 'f', 'm');",
+                "explanation": "Clean single-line ternary update."
+        },
+        {
+                "name": "ASCII Inversion Complement",
+                "complexity": "O(N) arithmetic byte mutation",
+                "sql": "UPDATE Salary\nSET sex = CHAR(ASCII('m') + ASCII('f') - ASCII(sex));",
+                "explanation": "Clever ASCII arithmetic: when sex is 'm', ('m'+'f') - 'm' = 'f'."
+        }
+]
     },
 
     {
@@ -1773,6 +1881,18 @@ WHERE conditions LIKE 'DIAB1%'
         { clause: 'FROM Patients', exp: 'Targets the Patients registry table.' },
         { clause: 'WHERE conditions LIKE \'DIAB1%\' OR conditions LIKE \'% DIAB1%\';', exp: 'Ensures DIAB1 matches at the start of the string or immediately following a space delimiter, preventing false substring matches.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "The Substring False Positive: Writing WHERE conditions LIKE '%DIAB1%' wrongly matches words like 'SADIAB100'. The target code must start at index 0 or follow a space delimiter."
+],
+      alternativeSolutions: [
+        {
+                "name": "Regex Word Boundary",
+                "complexity": "O(N * L) regex scan",
+                "sql": "SELECT patient_id, patient_name, conditions\nFROM Patients\nWHERE conditions REGEXP '\\\\bDIAB1';",
+                "explanation": "Uses word boundary regex '\\bDIAB1' to prevent embedded substring matches."
+        }
+]
     },
 
     {
@@ -1851,6 +1971,18 @@ WHERE year = 2021
         { clause: 'FROM Customers', exp: 'Queries the Customers annual revenue table.' },
         { clause: 'WHERE year = 2021 AND revenue > 0;', exp: 'Filters strictly for the 2021 accounting year and checks that revenue is positive.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Negative and Zero Revenues: Revenue can be negative. Filtering only year = 2021 without revenue > 0 returns loss-making accounts."
+],
+      alternativeSolutions: [
+        {
+                "name": "HAVING Partition Filter",
+                "complexity": "O(N) grouping",
+                "sql": "SELECT customer_id\nFROM Customers\nWHERE year = 2021\nGROUP BY customer_id\nHAVING SUM(revenue) > 0;",
+                "explanation": "Aggregates revenue if multiple transactions existed per customer within the year."
+        }
+]
     },
 
     {
@@ -1947,6 +2079,19 @@ GROUP BY event_day, emp_id;`,
         { clause: 'FROM Employees', exp: 'Specifies the Employees badge access records.' },
         { clause: 'GROUP BY event_day, emp_id;', exp: 'Partitions data so each distinct day and employee combination is aggregated together.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Single-Key Grouping Trap: Grouping solely by emp_id aggregates across all days together. You MUST group by (event_day, emp_id).",
+        "Column Aliasing: Spec mandates event_day AS day and SUM(...) AS total_time."
+],
+      alternativeSolutions: [
+        {
+                "name": "Positional Grouping (Analytics Engine)",
+                "complexity": "O(N log N) sorting group",
+                "sql": "SELECT event_day AS day, emp_id, SUM(out_time - in_time) AS total_time\nFROM Employees\nGROUP BY 1, 2;",
+                "explanation": "Standard analytical warehouse convention referencing columns by SELECT position."
+        }
+]
     }
   ];
 

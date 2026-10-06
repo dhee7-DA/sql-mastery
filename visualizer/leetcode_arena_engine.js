@@ -649,12 +649,25 @@ window.LEETCODE_ARENA = (() => {
             </div>
 
             <!-- Logic Breakdown -->
-            <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: 6px; padding: 16px; margin-bottom: 20px;">
+            <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: 6px; padding: 16px; margin-bottom: 16px;">
               <div style="font-size: 12px; font-weight: 700; color: #fbbf24; margin-bottom: 8px;">💡 Core Insight &amp; Logic Breakdown:</div>
               <ul style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
                 ${activeProb.logicBreakdown.map(l => `<li>${l}</li>`).join('')}
               </ul>
             </div>
+
+            <!-- Why 70% Fail Trap Callout -->
+            ${activeProb.trapsAndEdgeCases && activeProb.trapsAndEdgeCases.length > 0 ? `
+              <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 6px; padding: 16px; margin-bottom: 20px;">
+                <div style="font-size: 12px; font-weight: 700; color: #be123c; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                  <span>🚨</span>
+                  <span>Why 70% of Candidates Fail (Critical Interview Traps):</span>
+                </div>
+                <ul style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.6; color: #9f1239;">
+                  ${activeProb.trapsAndEdgeCases.map(t => `<li>${t}</li>`).join('')}
+                </ul>
+              </div>
+            ` : ''}
 
             <!-- SQL Code Editor -->
             <div class="lc-editor-wrap">
@@ -676,7 +689,7 @@ window.LEETCODE_ARENA = (() => {
               </div>
               <button class="lc-btn lc-btn-secondary" id="btnToggleSolutionAccordion">
                 <span>📖</span>
-                <span>Line-by-Line Breakdown</span>
+                <span>Line-by-Line Breakdown &amp; Alternatives</span>
               </button>
             </div>
 
@@ -690,6 +703,26 @@ window.LEETCODE_ARENA = (() => {
               </div>
               <div class="lc-accordion-content open">
                 ${solutionLinesHtml}
+
+                <!-- Alternative Architectures & Trade-offs -->
+                ${activeProb.alternativeSolutions && activeProb.alternativeSolutions.length > 0 ? `
+                  <div style="margin-top: 20px; border-top: 1px dashed #cbd5e1; padding-top: 16px;">
+                    <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                      <span>🔄</span>
+                      <span>Alternative Architectural Approaches &amp; Dialect Trade-offs:</span>
+                    </div>
+                    ${activeProb.alternativeSolutions.map(alt => `
+                      <div style="margin-bottom: 14px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                          <span style="font-size: 12px; font-weight: 700; color: #2563eb;">${escapeHtml(alt.name)}</span>
+                          <span style="font-size: 10px; font-family: var(--font-mono); background: #e2e8f0; padding: 2px 8px; border-radius: 4px; color: #475569; font-weight: 600;">${escapeHtml(alt.complexity || 'Trade-off')}</span>
+                        </div>
+                        <pre style="margin: 0 0 8px 0; padding: 10px; background: #0f172a; color: #f8fafc; border-radius: 4px; font-family: var(--font-mono); font-size: 11.5px; overflow-x: auto; line-height: 1.4;"><code>${escapeHtml(alt.sql)}</code></pre>
+                        <div style="font-size: 12px; color: #64748b; line-height: 1.5;">${alt.explanation}</div>
+                      </div>
+                    `).join('')}
+                  </div>
+                ` : ''}
               </div>
             </div>
           </div>

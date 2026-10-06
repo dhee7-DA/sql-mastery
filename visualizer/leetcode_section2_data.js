@@ -1040,6 +1040,18 @@ LEFT JOIN EmployeeUNI u
         { clause: 'LEFT JOIN EmployeeUNI u', exp: 'Attaches unique_id if found; pads with NULL if no corresponding row exists.' },
         { clause: '    ON e.id = u.id;', exp: 'Join condition linking both tables on employee id.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Inner Join Drop Trap: Writing INNER JOIN drops all employees lacking a unique ID in EmployeeUNI. Must be LEFT JOIN to preserve every employee."
+],
+      alternativeSolutions: [
+        {
+                "name": "Correlated Scalar Subquery",
+                "complexity": "O(N * log M) index lookups",
+                "sql": "SELECT (SELECT u.unique_id FROM EmployeeUNI u WHERE u.id = e.id) AS unique_id, e.name\nFROM Employees e;",
+                "explanation": "Scalar subquery lookup in the projection. Useful when the right dimension table is small and indexed."
+        }
+]
     },
 
     {
@@ -1101,6 +1113,18 @@ JOIN Product p
         { clause: 'FROM Sales s', exp: 'Starts from the sales transactions.' },
         { clause: 'JOIN Product p ON s.product_id = p.product_id;', exp: 'Performs relational lookup using the indexed product_id key.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Foreign Key Mismatch: Joining on wrong columns or attempting to join on product_name instead of product_id."
+],
+      alternativeSolutions: [
+        {
+                "name": "USING Clause Shortcut",
+                "complexity": "O(N) hash join",
+                "sql": "SELECT p.product_name, s.year, s.price\nFROM Sales s\nJOIN Product p USING (product_id);",
+                "explanation": "Concise ANSI syntax when joining keys share identical column names."
+        }
+]
     },
 
     {
@@ -1170,6 +1194,18 @@ GROUP BY v.customer_id;`,
         { clause: 'WHERE t.transaction_id IS NULL', exp: 'The Anti-Join filter isolating non-purchasing visits.' },
         { clause: 'GROUP BY v.customer_id;', exp: 'Aggregates counts per individual customer.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Counting Wrong Columns: Count visits per customer (COUNT(v.visit_id)), not transactions."
+],
+      alternativeSolutions: [
+        {
+                "name": "NOT IN Subquery (Guarded)",
+                "complexity": "O(N + M) hash lookup",
+                "sql": "SELECT customer_id, COUNT(visit_id) AS count_no_trans\nFROM Visits\nWHERE visit_id NOT IN (\n    SELECT visit_id FROM Transactions WHERE visit_id IS NOT NULL\n)\nGROUP BY customer_id;",
+                "explanation": "Anti-join via NOT IN, explicitly guarding against NULLs."
+        }
+]
     },
 
     {
@@ -1233,6 +1269,19 @@ WHERE w1.temperature > w2.temperature;`,
         { clause: 'ON DATEDIFF(w1.recordDate, w2.recordDate) = 1', exp: 'Pairs today with exactly yesterday.' },
         { clause: 'WHERE w1.temperature > w2.temperature;', exp: 'Filters for days strictly hotter than yesterday.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Date Subtraction Trap: Writing w1.recordDate - w2.recordDate = 1 breaks across month boundaries (e.g. 2021-02-01 - 2021-01-31 = 70, not 1!). MUST use DATEDIFF() or DATE_ADD().",
+        "Date Gap Trap: Using window LAG(temperature) without date diff verification fails when there are missing dates in the log."
+],
+      alternativeSolutions: [
+        {
+                "name": "Window Function LAG() with Date Guard",
+                "complexity": "O(N log N) sorting scan",
+                "sql": "WITH Ranked AS (\n  SELECT id, recordDate, temperature,\n         LAG(temperature) OVER (ORDER BY recordDate) AS prev_temp,\n         LAG(recordDate) OVER (ORDER BY recordDate) AS prev_date\n  FROM Weather\n)\nSELECT id FROM Ranked WHERE temperature > prev_temp AND DATEDIFF(recordDate, prev_date) = 1;",
+                "explanation": "Single-pass window function approach avoiding quadratic Cartesian self-join comparisons."
+        }
+]
     },
 
     {
@@ -1301,6 +1350,18 @@ GROUP BY a1.machine_id;`,
         { clause: 'AND a1.activity_type = "start" AND a2.activity_type = "end"', exp: 'Ensures positive subtraction direction (end minus start).' },
         { clause: 'GROUP BY a1.machine_id;', exp: 'Aggregates averages per individual factory machine.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Divisor Confusion: Forgetting that a process consists of 2 activities (start and end), so dividing total duration by process count requires COUNT(DISTINCT process_id)."
+],
+      alternativeSolutions: [
+        {
+                "name": "Conditional Aggregation (Single Table Scan)",
+                "complexity": "O(N) single-pass scan",
+                "sql": "SELECT machine_id,\n       ROUND(SUM(CASE WHEN activity_type = 'end' THEN timestamp ELSE -timestamp END) / COUNT(DISTINCT process_id), 3) AS processing_time\nFROM Activity\nGROUP BY machine_id;",
+                "explanation": "Eliminates the expensive self-join entirely by accumulating end as positive and start as negative timestamps!"
+        }
+]
     },
 
     {
@@ -1367,6 +1428,18 @@ WHERE b.bonus < 1000
         { clause: 'FROM Employee e LEFT JOIN Bonus b ON e.empId = b.empId', exp: 'Preserves all employees even if they received no bonus record.' },
         { clause: 'WHERE b.bonus < 1000 OR b.bonus IS NULL;', exp: 'Defensive 3VL filter: prevents NULL bonus employees from being dropped.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "The Outer Join NULL Predicate: Writing WHERE b.bonus < 1000 drops employees with NO bonus row because NULL < 1000 is UNKNOWN. Must include OR b.bonus IS NULL."
+],
+      alternativeSolutions: [
+        {
+                "name": "IFNULL / COALESCE Filter",
+                "complexity": "O(N) join + filter",
+                "sql": "SELECT e.name, b.bonus\nFROM Employee e\nLEFT JOIN Bonus b ON e.empId = b.empId\nWHERE IFNULL(b.bonus, 0) < 1000;",
+                "explanation": "Coerces NULL bonuses to 0 so the single inequality captures both cases."
+        }
+]
     },
 
     {
@@ -1446,6 +1519,18 @@ ORDER BY s.student_id, sub.subject_name;`,
         { clause: 'GROUP BY s.student_id, s.student_name, sub.subject_name', exp: 'Aggregates exam counts per student-subject combination.' },
         { clause: 'ORDER BY s.student_id, sub.subject_name;', exp: 'Sorts output in ascending order as requested.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Missing 0-Exam Combinations: Students who never took an exam for a subject MUST appear with count 0. Mandates CROSS JOIN between Students and Subjects first."
+],
+      alternativeSolutions: [
+        {
+                "name": "Correlated Scalar Count",
+                "complexity": "O(S * B * log E) index seeks",
+                "sql": "SELECT s.student_id, s.student_name, sub.subject_name,\n       (SELECT COUNT(*) FROM Examinations e WHERE e.student_id = s.student_id AND e.subject_name = sub.subject_name) AS attended_exams\nFROM Students s CROSS JOIN Subjects sub\nORDER BY s.student_id, sub.subject_name;",
+                "explanation": "Uses scalar subquery counting for each cell in the Cartesian grid."
+        }
+]
     },
 
     {
@@ -1512,6 +1597,18 @@ HAVING COUNT(e.id) >= 5;`,
         { clause: 'GROUP BY m.id, m.name', exp: 'Aggregates reports around each distinct manager.' },
         { clause: 'HAVING COUNT(e.id) >= 5;', exp: 'Filters for managers supervising 5 or more team members.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Grouping Key: Group by manager (m.id, m.name), and filter HAVING COUNT(e.id) >= 5."
+],
+      alternativeSolutions: [
+        {
+                "name": "IN Subquery with GROUP BY",
+                "complexity": "O(N) hash aggregation",
+                "sql": "SELECT name\nFROM Employee\nWHERE id IN (\n    SELECT managerId\n    FROM Employee\n    GROUP BY managerId\n    HAVING COUNT(*) >= 5\n);",
+                "explanation": "Isolates aggregation into a subquery so the outer query simply retrieves manager names by primary key."
+        }
+]
     },
 
     {
@@ -1578,6 +1675,19 @@ GROUP BY s.user_id;`,
         { clause: 'FROM Signups s LEFT JOIN Confirmations c ON s.user_id = c.user_id', exp: 'Retains every registered user regardless of confirmation activity.' },
         { clause: 'GROUP BY s.user_id;', exp: 'Aggregates statistics per individual user.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Division by Zero & Inactive Users: Users with 0 requests must report 0.00, not NULL.",
+        "PostgreSQL Compatibility: In Postgres, AVG(action = 'confirmed') throws a type error because boolean is not numeric."
+],
+      alternativeSolutions: [
+        {
+                "name": "PostgreSQL Standard CASE Aggregation",
+                "complexity": "O(N) join + grouping",
+                "sql": "SELECT s.user_id,\n       ROUND(COALESCE(AVG(CASE WHEN c.action = 'confirmed' THEN 1.0 ELSE 0.0 END), 0), 2) AS confirmation_rate\nFROM Signups s\nLEFT JOIN Confirmations c ON s.user_id = c.user_id\nGROUP BY s.user_id;",
+                "explanation": "100% portable ANSI SQL standard that works identically in Postgres, Oracle, Snowflake, and MySQL."
+        }
+]
     },
 
     {
@@ -1656,6 +1766,18 @@ LEFT JOIN Address a
         { clause: 'FROM Person p', exp: 'Designates Person as the left primary relation to ensure all individuals are preserved.' },
         { clause: 'LEFT JOIN Address a ON p.personId = a.personId;', exp: 'Outer joins Address on matching personId, producing NULL for missing addresses.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Inner Join Trap: Missing addresses must output NULL. An INNER JOIN permanently discards addressless persons."
+],
+      alternativeSolutions: [
+        {
+                "name": "RIGHT JOIN Inversion",
+                "complexity": "O(N) join",
+                "sql": "SELECT p.firstName, p.lastName, a.city, a.state\nFROM Address a\nRIGHT JOIN Person p ON a.personId = p.personId;",
+                "explanation": "Semantic inversion using RIGHT JOIN with Person on the right."
+        }
+]
     },
 
     {
@@ -1729,6 +1851,18 @@ WHERE e.salary > m.salary;`,
         { clause: 'FROM Employee e JOIN Employee m ON e.managerId = m.id', exp: 'Performs a self-join linking each employee\'s managerId to the manager\'s primary id.' },
         { clause: 'WHERE e.salary > m.salary;', exp: 'Filters strictly for employees with a higher salary than their supervisor.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Subordinates with NULL manager: Employees with managerId IS NULL must not be compared to avoid false matches."
+],
+      alternativeSolutions: [
+        {
+                "name": "Correlated Scalar Comparison",
+                "complexity": "O(N * log N) index seeks",
+                "sql": "SELECT e.name AS Employee\nFROM Employee e\nWHERE e.salary > (\n    SELECT m.salary FROM Employee m WHERE m.id = e.managerId\n);",
+                "explanation": "Subquery lookups match manager salary directly without explicit join syntax."
+        }
+]
     },
 
     {
@@ -1806,6 +1940,18 @@ WHERE o.id IS NULL;`,
         { clause: 'FROM Customers c LEFT JOIN Orders o ON c.id = o.customerId', exp: 'Performs a left outer join to preserve every customer regardless of whether they have placed an order.' },
         { clause: 'WHERE o.id IS NULL;', exp: 'Filters strictly for the unmatched rows where no corresponding order exists.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "The Fatal NOT IN NULL Trap: If Orders.customerId contains even a single NULL, WHERE id NOT IN (SELECT customerId FROM Orders) evaluates to UNKNOWN for all rows, returning 0 rows! Always use NOT EXISTS or LEFT JOIN ... WHERE IS NULL."
+],
+      alternativeSolutions: [
+        {
+                "name": "NOT EXISTS Correlated Anti-Join",
+                "complexity": "O(N * log M) index seek with early termination",
+                "sql": "SELECT c.name AS Customers\nFROM Customers c\nWHERE NOT EXISTS (\n    SELECT 1 FROM Orders o WHERE o.customerId = c.id\n);",
+                "explanation": "Most reliable production anti-join pattern: immune to NULLs and terminates immediately on first match."
+        }
+]
     },
 
     {
@@ -1894,6 +2040,18 @@ WHERE sales_id NOT IN (
         { clause: 'WHERE sales_id NOT IN (...)', exp: 'Filters out any salesperson whose ID appears in the blacklisted RED company order set.' },
         { clause: 'SELECT o.sales_id FROM Orders o JOIN Company c ON o.com_id = c.com_id WHERE c.name = \'RED\'', exp: 'Gathers all sales_id references tied to orders placed for the company \'RED\'.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Salespeople with 0 orders: Must be included! Using an INNER JOIN to look for non-red orders accidentally drops salespeople who never made any sales."
+],
+      alternativeSolutions: [
+        {
+                "name": "NOT EXISTS Anti-Join",
+                "complexity": "O(S * log O) index seeks",
+                "sql": "SELECT s.name\nFROM SalesPerson s\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM Orders o\n    JOIN Company c ON o.com_id = c.com_id\n    WHERE o.sales_id = s.sales_id AND c.name = 'RED'\n);",
+                "explanation": "Standard production anti-join verifying no red company orders exist."
+        }
+]
     },
 
     {
@@ -1969,6 +2127,18 @@ ORDER BY a.seat_id ASC;`,
         { clause: 'ON ABS(a.seat_id - b.seat_id) = 1 AND a.free = 1 AND b.free = 1', exp: 'Ensures the two seats are directly adjacent and both available.' },
         { clause: 'ORDER BY a.seat_id ASC;', exp: 'Sorts qualifying seat IDs in ascending order.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Duplicate seats in output: Seat 4 is adjacent to both 3 and 5. Without DISTINCT, seat 4 outputs twice."
+],
+      alternativeSolutions: [
+        {
+                "name": "LEAD() & LAG() Window Analysis",
+                "complexity": "O(N) single-pass window scan",
+                "sql": "WITH Windowed AS (\n  SELECT seat_id, free,\n         LAG(free) OVER (ORDER BY seat_id) AS prev_free,\n         LEAD(free) OVER (ORDER BY seat_id) AS next_free\n  FROM Cinema\n)\nSELECT seat_id FROM Windowed WHERE free = 1 AND (prev_free = 1 OR next_free = 1) ORDER BY seat_id;",
+                "explanation": "State-of-the-art window function inspection: avoids Cartesian self-join quadratic runtime."
+        }
+]
     },
 
     {
@@ -2046,6 +2216,18 @@ JOIN Point p2
         { clause: 'FROM Point p1 JOIN Point p2', exp: 'Self-joins the Point table onto itself.' },
         { clause: 'ON p1.x < p2.x;', exp: 'Enforces strict directional ordering to avoid zero distance to self and redundant negative inversions.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "Zero distance to self: Using p1.x != p2.x calculates distances in both directions and doubles computation. Using strict inequality p1.x < p2.x cuts comparisons by 50%."
+],
+      alternativeSolutions: [
+        {
+                "name": "LEAD() Adjacent Window Difference",
+                "complexity": "O(N log N) sorting scan",
+                "sql": "WITH Sorted AS (\n  SELECT x, LEAD(x) OVER (ORDER BY x) AS next_x FROM Point\n)\nSELECT MIN(next_x - x) AS shortest FROM Sorted WHERE next_x IS NOT NULL;",
+                "explanation": "On a sorted 1D line, the closest neighbor is ALWAYS the immediately adjacent coordinate. No need to compare all pairs!"
+        }
+]
     },
 
     {
@@ -2125,6 +2307,18 @@ ORDER BY student_number DESC, d.dept_name ASC;`,
         { clause: 'GROUP BY d.dept_id, d.dept_name', exp: 'Groups records per individual department.' },
         { clause: 'ORDER BY student_number DESC, d.dept_name ASC;', exp: 'Sorts by student count descending, breaking ties alphabetically by department name.' }
       ]
+    ,
+      trapsAndEdgeCases: [
+        "The COUNT(*) Outer Join Trap: Writing COUNT(*) counts the NULL placeholder row generated by empty departments, reporting 1 student instead of 0! You MUST write COUNT(s.student_id)."
+],
+      alternativeSolutions: [
+        {
+                "name": "Correlated Scalar Count",
+                "complexity": "O(D * log S) index seeks",
+                "sql": "SELECT d.dept_name,\n       (SELECT COUNT(*) FROM Student s WHERE s.dept_id = d.dept_id) AS student_number\nFROM Department d\nORDER BY student_number DESC, d.dept_name ASC;",
+                "explanation": "Avoids outer join grouping by projecting scalar subquery count."
+        }
+]
     }
   ]
 };
