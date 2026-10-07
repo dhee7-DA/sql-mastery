@@ -47,6 +47,9 @@ window.LEETCODE_ARENA = (() => {
   }
 
   function getSectionData() {
+    if (state.activeConceptId === 'concept-4') {
+      return window.LEETCODE_SECTION_4_DATA;
+    }
     if (state.activeConceptId === 'concept-3') {
       return window.LEETCODE_SECTION_3_DATA;
     }
@@ -92,7 +95,8 @@ window.LEETCODE_ARENA = (() => {
     const c1Count = (window.LEETCODE_SECTION_1_DATA && (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems)) ? (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems).length : 10;
     const c2Count = (window.LEETCODE_SECTION_2_DATA && (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems)) ? (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems).length : 16;
     const c3Count = (window.LEETCODE_SECTION_3_DATA && (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems)) ? (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems).length : 12;
-    const totalAvail = c1Count + c2Count + c3Count;
+    const c4Count = (window.LEETCODE_SECTION_4_DATA && (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems)) ? (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems).length : 12;
+    const totalAvail = c1Count + c2Count + c3Count + c4Count;
 
     container.innerHTML = `
       <div class="lc-arena-container">
@@ -139,10 +143,10 @@ window.LEETCODE_ARENA = (() => {
             <span>Basic Aggregates &amp; Math</span>
             <span class="lc-concept-badge">${c3Count} Problems</span>
           </button>
-          <button class="lc-concept-btn" style="opacity: 0.6; cursor: not-allowed;" title="Upcoming Module">
+          <button class="lc-concept-btn ${state.activeConceptId === 'concept-4' ? 'active' : ''}" data-concept="concept-4">
             <span>🗂️ Concept 4:</span>
             <span>Sorting &amp; Grouping (HAVING)</span>
-            <span class="lc-concept-badge">7 Problems</span>
+            <span class="lc-concept-badge">${c4Count} Problems</span>
           </button>
           <button class="lc-concept-btn" style="opacity: 0.6; cursor: not-allowed;" title="Upcoming Module">
             <span>⚡ Concept 5:</span>
@@ -243,7 +247,8 @@ window.LEETCODE_ARENA = (() => {
       const c1Count = (window.LEETCODE_SECTION_1_DATA && (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems)) ? (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems).length : 10;
       const c2Count = (window.LEETCODE_SECTION_2_DATA && (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems)) ? (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems).length : 16;
       const c3Count = (window.LEETCODE_SECTION_3_DATA && (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems)) ? (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems).length : 12;
-      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count}`;
+      const c4Count = (window.LEETCODE_SECTION_4_DATA && (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems)) ? (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems).length : 12;
+      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count + c4Count}`;
     }
     if (elMcqs) {
       const correctCount = Object.values(state.answeredMcqs).filter(a => a.isCorrect).length;
@@ -319,10 +324,10 @@ window.LEETCODE_ARENA = (() => {
           <div class="lc-card-header">
             <span class="lc-card-title">
               <span>🎯</span>
-              Core Mental Model: ${mc.title}
+              Core Mental Model: ${mc.title || data.title}
             </span>
           </div>
-          <p class="lc-explainer-text" style="font-size: 14.5px;"><strong>${mc.keyTakeaway}</strong></p>
+          <p class="lc-explainer-text" style="font-size: 14.5px;"><strong>${mc.keyTakeaway || data.keyTakeaway || ''}</strong></p>
           <div class="lc-callout-grid">
             ${calloutsHtml}
           </div>
@@ -624,10 +629,12 @@ window.LEETCODE_ARENA = (() => {
       navigateToConcept('concept-1', 2, event);
     } else if (kw === 'aggregates') {
       navigateToConcept('concept-3', 1, event);
+    } else if (kw === 'having' || kw === 'grouping') {
+      navigateToConcept('concept-4', 1, event);
     } else if (kw === 'conditional') {
       navigateToConcept('concept-1', 4, event);
     } else if (kw === 'ordering') {
-      navigateToConcept('concept-1', 5, event);
+      navigateToConcept('concept-4', 1, event);
     }
   }
 
@@ -690,11 +697,14 @@ window.LEETCODE_ARENA = (() => {
       const c1 = (window.LEETCODE_SECTION_1_DATA && window.LEETCODE_SECTION_1_DATA.leetcodeProblems) || [];
       const c2 = (window.LEETCODE_SECTION_2_DATA && window.LEETCODE_SECTION_2_DATA.leetcodeProblems) || [];
       const c3 = (window.LEETCODE_SECTION_3_DATA && window.LEETCODE_SECTION_3_DATA.leetcodeProblems) || [];
+      const c4 = (window.LEETCODE_SECTION_4_DATA && window.LEETCODE_SECTION_4_DATA.leetcodeProblems) || [];
 
-      if (c2.some(p => p.id === pId)) {
-        state.activeConceptId = 'concept-2';
+      if (c4.some(p => p.id === pId)) {
+        state.activeConceptId = 'concept-4';
       } else if (c3.some(p => p.id === pId)) {
         state.activeConceptId = 'concept-3';
+      } else if (c2.some(p => p.id === pId)) {
+        state.activeConceptId = 'concept-2';
       } else {
         state.activeConceptId = 'concept-1';
       }
@@ -737,8 +747,28 @@ window.LEETCODE_ARENA = (() => {
       `</span>`;
     });
 
-    // 3. GROUP BY / HAVING / Aggregates
-    safe = safe.replace(/\b(GROUP\s+BY|HAVING|COUNT|SUM|AVG|ROUND|NULLIF)\b/gi, (match) => {
+    // 3. HAVING: Concept 4 Sorting & Grouping Masterclass
+    safe = safe.replace(/\b(HAVING)\b/gi, (match) => {
+      return `<span class="lc-kw-link lc-kw-having" onclick="window.LEETCODE_ARENA.navigateToKeyword('having', event)" title="Deep-dive into Concept 4: HAVING &amp; Group Filtering">` +
+        `<span class="lc-kw-text">${match}</span>` +
+        `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+          `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
+        `</svg>` +
+      `</span>`;
+    });
+
+    // 4. GROUP BY: Concept 4 Sorting & Grouping
+    safe = safe.replace(/\b(GROUP\s+BY)\b/gi, (match) => {
+      return `<span class="lc-kw-link lc-kw-group" onclick="window.LEETCODE_ARENA.navigateToKeyword('grouping', event)" title="Deep-dive into Concept 4: Sorting &amp; Grouping">` +
+        `<span class="lc-kw-text">${match}</span>` +
+        `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+          `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
+        `</svg>` +
+      `</span>`;
+    });
+
+    // 5. Aggregates: Concept 3
+    safe = safe.replace(/\b(COUNT|SUM|AVG|ROUND|NULLIF)\b/gi, (match) => {
       return `<span class="lc-kw-link lc-kw-agg" onclick="window.LEETCODE_ARENA.navigateToKeyword('aggregates', event)" title="Deep-dive into Concept 3: Aggregation &amp; Math Engine">` +
         `<span class="lc-kw-text">${match}</span>` +
         `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
@@ -747,9 +777,9 @@ window.LEETCODE_ARENA = (() => {
       `</span>`;
     });
 
-    // 4. ORDER BY / DISTINCT
+    // 6. ORDER BY / DISTINCT
     safe = safe.replace(/\b(ORDER\s+BY|DISTINCT)\b/gi, (match) => {
-      return `<span class="lc-kw-link lc-kw-order" onclick="window.LEETCODE_ARENA.navigateToKeyword('ordering', event)" title="Deep-dive into Concept 1: Sorting &amp; Deduplication">` +
+      return `<span class="lc-kw-link lc-kw-order" onclick="window.LEETCODE_ARENA.navigateToKeyword('ordering', event)" title="Deep-dive into Concept 4: Ordering &amp; Deduplication">` +
         `<span class="lc-kw-text">${match}</span>` +
         `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
           `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
@@ -953,6 +983,27 @@ window.LEETCODE_ARENA = (() => {
             <div class="lc-gateway-desc">8 Deep SVG chapters: Hash vs Stream Aggregation, HAVING vs WHERE filters, NULL arithmetic &amp; NULLIF</div>
           </div>
           <div class="lc-gateway-action-arrow" title="Read Aggregates Masterclass">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 10h10M11 6l4 4-4 4"/>
+            </svg>
+          </div>
+        </div>
+      `);
+    }
+
+    // Check for Concept 4: Sorting & Grouping (HAVING / GROUP BY / ORDER BY)
+    if (fullSql.includes('GROUP BY') || fullSql.includes('HAVING') || fullSql.includes('ORDER BY')) {
+      cards.push(`
+        <div class="lc-gateway-card" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-4', 1, event)">
+          <div class="lc-gateway-info">
+            <div class="lc-gateway-tag tag-masterclass">
+              <span>🗂️</span>
+              <span>Concept 4 Masterclass</span>
+            </div>
+            <div class="lc-gateway-name">Sorting &amp; Grouping (HAVING)</div>
+            <div class="lc-gateway-desc">8 Deep SVG chapters: Execution Lifecycle, Hash vs Stream Aggregation, Relational Division &amp; Deduplication</div>
+          </div>
+          <div class="lc-gateway-action-arrow" title="Read Sorting &amp; Grouping Masterclass">
             <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 10h10M11 6l4 4-4 4"/>
             </svg>
