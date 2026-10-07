@@ -557,6 +557,460 @@ window.LEETCODE_ARENA = (() => {
   }
 
   // ---------------------------------------------------------------------------
+  // INTERACTIVE DEEP-DIVE CONCEPT LINKING & NAVIGATION ENGINE
+  // Connects problem solutions with platform modules, Venn Matrix, and Masterclasses
+  // ---------------------------------------------------------------------------
+  let returnBreadcrumbState = null;
+
+  function getCurrentActiveProblem() {
+    const data = getSectionData();
+    if (!data) return null;
+    const problems = data.leetcodeProblems || data.problems || [];
+    return problems.find(p => p.id === state.activeProblemId) || problems[0] || null;
+  }
+
+  function ensureFloatingReturnPill() {
+    let pill = document.getElementById('lcFloatingReturnPill');
+    if (!pill) {
+      pill = document.createElement('div');
+      pill.id = 'lcFloatingReturnPill';
+      pill.className = 'lc-floating-return-pill';
+      pill.style.display = 'none';
+      pill.innerHTML = `
+        <div class="lc-pill-inner" onclick="window.LEETCODE_ARENA.returnToProblem()">
+          <span class="lc-pill-pulse">⚡</span>
+          <span class="lc-pill-text" id="lcFloatingReturnPillText">Return to LeetCode Problem</span>
+          <svg class="lc-pill-arrow" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 3L5 8l5 5"/>
+          </svg>
+        </div>
+      `;
+      document.body.appendChild(pill);
+    }
+    return pill;
+  }
+
+  function showReturnFloatingPill(probId, probTitle) {
+    returnBreadcrumbState = { problemId: probId, problemTitle: probTitle };
+    const pill = ensureFloatingReturnPill();
+    const textEl = document.getElementById('lcFloatingReturnPillText');
+    if (textEl) {
+      textEl.textContent = `Return to LeetCode #${probId} (${probTitle})`;
+    }
+    pill.style.display = 'flex';
+  }
+
+  function hideReturnFloatingPill() {
+    const pill = document.getElementById('lcFloatingReturnPill');
+    if (pill) {
+      pill.style.display = 'none';
+    }
+    returnBreadcrumbState = null;
+  }
+
+  function navigateToKeyword(kw, event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const currentProb = getCurrentActiveProblem();
+    if (currentProb) {
+      showReturnFloatingPill(currentProb.id, currentProb.title);
+    }
+
+    if (kw === 'join') {
+      navigateToPlatformView('viewVennMatrix', 'Venn & Euler Matrix', event);
+    } else if (kw === 'filtering') {
+      navigateToConcept('concept-1', 2, event);
+    } else if (kw === 'aggregates') {
+      navigateToConcept('concept-3', 1, event);
+    } else if (kw === 'conditional') {
+      navigateToConcept('concept-1', 4, event);
+    } else if (kw === 'ordering') {
+      navigateToConcept('concept-1', 5, event);
+    }
+  }
+
+  function navigateToConcept(conceptId, chapterNum, event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const currentProb = getCurrentActiveProblem();
+    if (currentProb) {
+      showReturnFloatingPill(currentProb.id, currentProb.title);
+    }
+
+    if (typeof window.selectNavView === 'function') {
+      window.selectNavView('viewLeetCode50', 'LeetCode 50', null);
+    }
+
+    switchConcept(conceptId);
+    switchStage('masterclass');
+
+    setTimeout(() => {
+      const cards = document.querySelectorAll('#lcPanelMasterclass .lc-card');
+      const targetCard = (chapterNum && cards[chapterNum]) ? cards[chapterNum] : cards[0];
+      if (targetCard) {
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        targetCard.classList.add('lc-highlight-pulse');
+        setTimeout(() => targetCard.classList.remove('lc-highlight-pulse'), 2500);
+      }
+    }, 150);
+
+    if (window.SQL_BUDDY) {
+      window.SQL_BUDDY.say(`🚀 Jumped to Concept ${conceptId.replace('concept-', '')} Masterclass! Click the floating pill in the corner anytime to resume Problem #${currentProb ? currentProb.id : ''}!`, 4500, 'info');
+    }
+  }
+
+  function navigateToPlatformView(viewId, viewTitle, event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const currentProb = getCurrentActiveProblem();
+    if (currentProb) {
+      showReturnFloatingPill(currentProb.id, currentProb.title);
+    }
+    if (typeof window.selectNavView === 'function') {
+      window.selectNavView(viewId, viewTitle, 'navGroupReference');
+    }
+    if (window.SQL_BUDDY) {
+      window.SQL_BUDDY.say(`⭕ Welcome to the ${viewTitle}! Experiment with set physics, then click the floating pill to return to Problem #${currentProb ? currentProb.id : ''}!`, 5000, 'happy');
+    }
+  }
+
+  function returnToProblem() {
+    hideReturnFloatingPill();
+    if (typeof window.selectNavView === 'function') {
+      window.selectNavView('viewLeetCode50', 'LeetCode 50', null);
+    }
+    if (returnBreadcrumbState && returnBreadcrumbState.problemId) {
+      const pId = returnBreadcrumbState.problemId;
+      const c1 = (window.LEETCODE_SECTION_1_DATA && window.LEETCODE_SECTION_1_DATA.leetcodeProblems) || [];
+      const c2 = (window.LEETCODE_SECTION_2_DATA && window.LEETCODE_SECTION_2_DATA.leetcodeProblems) || [];
+      const c3 = (window.LEETCODE_SECTION_3_DATA && window.LEETCODE_SECTION_3_DATA.leetcodeProblems) || [];
+
+      if (c2.some(p => p.id === pId)) {
+        state.activeConceptId = 'concept-2';
+      } else if (c3.some(p => p.id === pId)) {
+        state.activeConceptId = 'concept-3';
+      } else {
+        state.activeConceptId = 'concept-1';
+      }
+      state.activeProblemId = pId;
+      state.activeStage = 'problems';
+      renderShell();
+      renderActiveStage();
+      updateStatsHeader();
+
+      setTimeout(() => {
+        const accordion = document.getElementById('lcSolutionAccordion');
+        if (accordion) accordion.style.display = 'block';
+        const target = document.querySelector('.lc-prob-workspace');
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 200);
+    }
+  }
+
+  function renderClauseWithKeywordLinks(rawClause) {
+    if (!rawClause) return '';
+    let safe = escapeHtml(rawClause);
+
+    // 1. Joins: replace JOIN phrases with interactive SVG arrow badge
+    safe = safe.replace(/\b(LEFT\s+JOIN|RIGHT\s+JOIN|FULL\s+OUTER\s+JOIN|FULL\s+JOIN|INNER\s+JOIN|CROSS\s+JOIN|JOIN)\b/gi, (match) => {
+      return `<span class="lc-kw-link lc-kw-join" onclick="window.LEETCODE_ARENA.navigateToKeyword('join', event)" title="Deep-dive into Joins Section &amp; Venn Matrix Simulator">` +
+        `<span class="lc-kw-text">${match}</span>` +
+        `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+          `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
+        `</svg>` +
+      `</span>`;
+    });
+
+    // 2. WHERE / 3VL / NULL
+    safe = safe.replace(/\b(WHERE|IS\s+NULL|IS\s+NOT\s+NULL)\b/gi, (match) => {
+      return `<span class="lc-kw-link lc-kw-filter" onclick="window.LEETCODE_ARENA.navigateToKeyword('filtering', event)" title="Deep-dive into Concept 1: 3VL &amp; NULL Logic">` +
+        `<span class="lc-kw-text">${match}</span>` +
+        `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+          `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
+        `</svg>` +
+      `</span>`;
+    });
+
+    // 3. GROUP BY / HAVING / Aggregates
+    safe = safe.replace(/\b(GROUP\s+BY|HAVING|COUNT|SUM|AVG|ROUND|NULLIF)\b/gi, (match) => {
+      return `<span class="lc-kw-link lc-kw-agg" onclick="window.LEETCODE_ARENA.navigateToKeyword('aggregates', event)" title="Deep-dive into Concept 3: Aggregation &amp; Math Engine">` +
+        `<span class="lc-kw-text">${match}</span>` +
+        `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+          `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
+        `</svg>` +
+      `</span>`;
+    });
+
+    // 4. ORDER BY / DISTINCT
+    safe = safe.replace(/\b(ORDER\s+BY|DISTINCT)\b/gi, (match) => {
+      return `<span class="lc-kw-link lc-kw-order" onclick="window.LEETCODE_ARENA.navigateToKeyword('ordering', event)" title="Deep-dive into Concept 1: Sorting &amp; Deduplication">` +
+        `<span class="lc-kw-text">${match}</span>` +
+        `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+          `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
+        `</svg>` +
+      `</span>`;
+    });
+
+    return safe;
+  }
+
+  function getClauseActionButtons(clause, exp) {
+    const text = ((clause || '') + ' ' + (exp || '')).toUpperCase();
+    let buttons = [];
+
+    if (text.includes('JOIN') || text.includes(' ON ') || text.includes('CROSS')) {
+      buttons.push(`
+        <button class="lc-line-chip lc-chip-join" onclick="window.LEETCODE_ARENA.navigateToPlatformView('viewVennMatrix', 'Venn Matrix Simulator', event)" title="Open Interactive Venn Matrix Simulator">
+          <span class="lc-chip-icon">⭕</span>
+          <span>Joins Section &amp; Venn Matrix</span>
+          <svg class="lc-chip-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </button>
+        <button class="lc-line-chip lc-chip-masterclass" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-2', 1, event)" title="Jump to Concept 2: Joins Masterclass">
+          <span class="lc-chip-icon">🔗</span>
+          <span>Joins Masterclass</span>
+          <svg class="lc-chip-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </button>
+      `);
+    }
+    if (text.includes('WHERE') || text.includes('NULL') || text.includes('3VL') || text.includes('LIKE')) {
+      buttons.push(`
+        <button class="lc-line-chip lc-chip-filter" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-1', 2, event)" title="Jump to Concept 1: 3VL &amp; NULL Trap Masterclass">
+          <span class="lc-chip-icon">📐</span>
+          <span>3VL &amp; NULL Trap</span>
+          <svg class="lc-chip-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </button>
+      `);
+    }
+    if (text.includes('GROUP BY') || text.includes('HAVING') || text.includes('COUNT') || text.includes('SUM') || text.includes('AVG') || text.includes('ROUND')) {
+      buttons.push(`
+        <button class="lc-line-chip lc-chip-agg" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-3', 1, event)" title="Jump to Concept 3: Aggregates &amp; Math Masterclass">
+          <span class="lc-chip-icon">📊</span>
+          <span>Aggregates Engine</span>
+          <svg class="lc-chip-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </button>
+      `);
+    }
+    if (text.includes('CASE') || text.includes('WHEN')) {
+      buttons.push(`
+        <button class="lc-line-chip lc-chip-case" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-1', 4, event)" title="Jump to Concept 1: CASE WHEN Masterclass">
+          <span class="lc-chip-icon">🔀</span>
+          <span>Conditional Branches</span>
+          <svg class="lc-chip-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </button>
+      `);
+    }
+
+    if (buttons.length === 0) return '';
+    return `<div class="lc-line-chips-row">${buttons.join('')}</div>`;
+  }
+
+  function renderProblemQuickPills(prob) {
+    const fullSql = (prob.solutionSQL || '').toUpperCase();
+    const explanationText = (prob.logicBreakdown || []).join(' ').toUpperCase();
+    const pills = [];
+
+    if (fullSql.includes('JOIN') || explanationText.includes('JOIN')) {
+      pills.push(`
+        <button class="lc-quick-pill lc-pill-join" onclick="window.LEETCODE_ARENA.navigateToPlatformView('viewVennMatrix', 'Venn Matrix Simulator', event)" title="Launch Platform Joins Section &amp; Venn Matrix">
+          <span>⭕ Joins Section (Venn Matrix)</span>
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M12 4H6M12 4V10"/></svg>
+        </button>
+        <button class="lc-quick-pill lc-pill-masterclass" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-2', 1, event)" title="Read Concept 2 Joins Masterclass">
+          <span>🔗 Concept 2 Joins Masterclass</span>
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M12 4H6M12 4V10"/></svg>
+        </button>
+      `);
+    }
+
+    if (fullSql.includes('WHERE') || fullSql.includes('NULL') || fullSql.includes('LIKE')) {
+      pills.push(`
+        <button class="lc-quick-pill lc-pill-filter" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-1', 2, event)" title="Read Concept 1 Filtering Masterclass">
+          <span>📐 3VL &amp; NULL Trap Masterclass</span>
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M12 4H6M12 4V10"/></svg>
+        </button>
+      `);
+    }
+
+    if (fullSql.includes('GROUP BY') || fullSql.includes('HAVING') || fullSql.includes('COUNT') || fullSql.includes('SUM') || fullSql.includes('AVG') || fullSql.includes('ROUND')) {
+      pills.push(`
+        <button class="lc-quick-pill lc-pill-agg" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-3', 1, event)" title="Read Concept 3 Aggregates Masterclass">
+          <span>📊 Aggregates &amp; Math Masterclass</span>
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M12 4H6M12 4V10"/></svg>
+        </button>
+      `);
+    }
+
+    if (fullSql.includes('CASE') || fullSql.includes('WHEN')) {
+      pills.push(`
+        <button class="lc-quick-pill lc-pill-case" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-1', 4, event)" title="Read Concept 1 CASE WHEN Masterclass">
+          <span>🔀 CASE WHEN Masterclass</span>
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M12 4H6M12 4V10"/></svg>
+        </button>
+      `);
+    }
+
+    return pills.join('');
+  }
+
+  function renderProblemGatewaySection(prob) {
+    const fullSql = (prob.solutionSQL || '').toUpperCase();
+    const explanationText = (prob.logicBreakdown || []).join(' ').toUpperCase();
+    const cards = [];
+
+    // Check for JOIN
+    if (fullSql.includes('JOIN') || explanationText.includes('JOIN')) {
+      cards.push(`
+        <div class="lc-gateway-card" onclick="window.LEETCODE_ARENA.navigateToPlatformView('viewVennMatrix', 'Venn Matrix Simulator', event)">
+          <div class="lc-gateway-info">
+            <div class="lc-gateway-tag tag-interactive">
+              <span>⭕</span>
+              <span>Platform Simulator</span>
+            </div>
+            <div class="lc-gateway-name">Venn &amp; Euler Matrix Lab</div>
+            <div class="lc-gateway-desc">Interactive live 5-row set physics for Joins, Unmatched Keys &amp; Cartesian sets</div>
+          </div>
+          <div class="lc-gateway-action-arrow" title="Launch Venn Matrix Lab">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 10h10M11 6l4 4-4 4"/>
+            </svg>
+          </div>
+        </div>
+        <div class="lc-gateway-card" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-2', 1, event)">
+          <div class="lc-gateway-info">
+            <div class="lc-gateway-tag tag-masterclass">
+              <span>🔗</span>
+              <span>Concept 2 Masterclass</span>
+            </div>
+            <div class="lc-gateway-name">Relational Joins &amp; Venn Taxonomy</div>
+            <div class="lc-gateway-desc">8 Visual SVG chapters: Hash vs Merge, Self-Joins, Anti-Joins &amp; ON vs WHERE filter physics</div>
+          </div>
+          <div class="lc-gateway-action-arrow" title="Read Joins Masterclass">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 10h10M11 6l4 4-4 4"/>
+            </svg>
+          </div>
+        </div>
+      `);
+    }
+
+    // Check for WHERE / NULL / 3VL
+    if (fullSql.includes('WHERE') || fullSql.includes('NULL') || fullSql.includes('LIKE')) {
+      cards.push(`
+        <div class="lc-gateway-card" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-1', 2, event)">
+          <div class="lc-gateway-info">
+            <div class="lc-gateway-tag tag-masterclass">
+              <span>📐</span>
+              <span>Concept 1 Masterclass</span>
+            </div>
+            <div class="lc-gateway-name">3VL Truth Table &amp; NULL Traps</div>
+            <div class="lc-gateway-desc">Master Three-Valued Logic, UNKNOWN boolean evaluation, SARGability &amp; IS NULL index behavior</div>
+          </div>
+          <div class="lc-gateway-action-arrow" title="Read Filtering Masterclass">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 10h10M11 6l4 4-4 4"/>
+            </svg>
+          </div>
+        </div>
+      `);
+    }
+
+    // Check for GROUP BY / HAVING / Aggregations
+    if (fullSql.includes('GROUP BY') || fullSql.includes('HAVING') || fullSql.includes('COUNT') || fullSql.includes('SUM') || fullSql.includes('AVG') || fullSql.includes('ROUND')) {
+      cards.push(`
+        <div class="lc-gateway-card" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-3', 1, event)">
+          <div class="lc-gateway-info">
+            <div class="lc-gateway-tag tag-masterclass">
+              <span>📊</span>
+              <span>Concept 3 Masterclass</span>
+            </div>
+            <div class="lc-gateway-name">Aggregates &amp; Math Engine</div>
+            <div class="lc-gateway-desc">8 Deep SVG chapters: Hash vs Stream Aggregation, HAVING vs WHERE filters, NULL arithmetic &amp; NULLIF</div>
+          </div>
+          <div class="lc-gateway-action-arrow" title="Read Aggregates Masterclass">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 10h10M11 6l4 4-4 4"/>
+            </svg>
+          </div>
+        </div>
+      `);
+    }
+
+    // Check for CASE WHEN
+    if (fullSql.includes('CASE') || fullSql.includes('WHEN')) {
+      cards.push(`
+        <div class="lc-gateway-card" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-1', 4, event)">
+          <div class="lc-gateway-info">
+            <div class="lc-gateway-tag tag-masterclass">
+              <span>🔀</span>
+              <span>Concept 1 Masterclass</span>
+            </div>
+            <div class="lc-gateway-name">CASE WHEN &amp; Branching Logic</div>
+            <div class="lc-gateway-desc">Short-circuit evaluation, conditional aggregation, type coercion and fallback rules</div>
+          </div>
+          <div class="lc-gateway-action-arrow" title="Read Conditional Masterclass">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 10h10M11 6l4 4-4 4"/>
+            </svg>
+          </div>
+        </div>
+      `);
+    }
+
+    // Live Query Studio Stepper
+    cards.push(`
+      <div class="lc-gateway-card" onclick="window.LEETCODE_ARENA.openActiveInStudio(event)">
+        <div class="lc-gateway-info">
+          <div class="lc-gateway-tag tag-studio">
+            <span>🔬</span>
+            <span>Query Studio</span>
+          </div>
+          <div class="lc-gateway-name">Step Through Memory Buffers</div>
+          <div class="lc-gateway-desc">Trace AST compilation, physical row filtering and result projections step-by-step</div>
+        </div>
+        <div class="lc-gateway-action-arrow" title="Open in Query Studio">
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 10h10M11 6l4 4-4 4"/>
+          </svg>
+        </div>
+      </div>
+    `);
+
+    return `
+      <div class="lc-solution-deepdive-section">
+        <div class="lc-deepdive-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">🧭</span>
+            <span class="lc-deepdive-title">Deep-Dive Concept Links &amp; Interactive Learning Gateways</span>
+          </div>
+          <span class="lc-deepdive-badge">${cards.length} Active Modules</span>
+        </div>
+        <div class="lc-deepdive-desc">
+          Click any concept card below to launch that dedicated masterclass or interactive set lab built into our platform, so you can master the exact mechanics behind this solution deeply:
+        </div>
+        <div class="lc-gateway-cards-grid">
+          ${cards.join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // ---------------------------------------------------------------------------
   // STAGE 4: LEETCODE PROBLEMS ARENA (WITH SCHEMA SVGS & INTEL)
   // ---------------------------------------------------------------------------
   function renderProblems() {
@@ -564,7 +1018,7 @@ window.LEETCODE_ARENA = (() => {
     const data = getSectionData();
     if (!panel || !data) return;
 
-    const problems = data.leetcodeProblems;
+    const problems = data.leetcodeProblems || data.problems || [];
     const activeProb = problems.find(p => p.id === state.activeProblemId) || problems[0];
 
     // Left Drawer problem list
@@ -594,13 +1048,20 @@ window.LEETCODE_ARENA = (() => {
       `;
     });
 
-    // Breakdown lines
+    // Breakdown lines with interactive SVG arrow links on keywords
     let solutionLinesHtml = '';
-    activeProb.lineByLineExplanation.forEach(line => {
+    (activeProb.lineByLineExplanation || []).forEach(line => {
+      const clauseWithLinks = renderClauseWithKeywordLinks(line.clause);
+      const actionButtons = getClauseActionButtons(line.clause, line.exp);
       solutionLinesHtml += `
         <div class="lc-solution-line">
-          <div class="lc-solution-code-clause">${escapeHtml(line.clause)}</div>
-          <div class="lc-solution-explanation">${line.exp}</div>
+          <div>
+            <div class="lc-solution-code-clause">${clauseWithLinks}</div>
+          </div>
+          <div>
+            <div class="lc-solution-explanation">${line.exp}</div>
+            ${actionButtons}
+          </div>
         </div>
       `;
     });
@@ -680,6 +1141,12 @@ window.LEETCODE_ARENA = (() => {
               <textarea class="lc-textarea-editor" id="lcProbEditor" style="min-height: 160px;">${activeProb.solutionSQL}</textarea>
             </div>
 
+            <!-- Quick Knowledge Links Pill Bar -->
+            <div class="lc-solution-quick-pills-bar">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">⚡ Concept Deep-Dives:</span>
+              ${renderProblemQuickPills(activeProb)}
+            </div>
+
             <!-- Action Buttons -->
             <div class="lc-action-row" style="margin-top: 14px;">
               <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -707,7 +1174,15 @@ window.LEETCODE_ARENA = (() => {
                 <span>Canonical Solution &amp; Line-by-Line Breakdown</span>
               </div>
               <div class="lc-accordion-content open">
-                ${solutionLinesHtml}
+                ${renderProblemGatewaySection(activeProb)}
+
+                <div style="margin-top: 18px;">
+                  <div style="font-size: 12.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                    <span>📜</span>
+                    <span>Clause-by-Clause Execution &amp; Interactive Keyword Deep-Links:</span>
+                  </div>
+                  ${solutionLinesHtml}
+                </div>
 
                 <!-- Alternative Architectures & Trade-offs -->
                 ${activeProb.alternativeSolutions && activeProb.alternativeSolutions.length > 0 ? `
@@ -854,7 +1329,17 @@ window.LEETCODE_ARENA = (() => {
   }
 
   return {
-    init
+    init,
+    switchConcept,
+    switchStage,
+    navigateToKeyword,
+    navigateToConcept,
+    navigateToPlatformView,
+    returnToProblem,
+    openActiveInStudio: (e) => {
+      const p = getCurrentActiveProblem();
+      if (p) openInQueryStudio(p);
+    }
   };
 
 })();
