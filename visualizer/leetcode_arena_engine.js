@@ -760,6 +760,16 @@ window.LEETCODE_ARENA = (() => {
     return safe;
   }
 
+  function renderHighlightedSQLWithArrows(sql) {
+    if (!sql) return '';
+    const lines = sql.split('\n');
+    return lines.map((line, idx) => {
+      const lineNum = String(idx + 1).padStart(2, '0');
+      const content = renderClauseWithKeywordLinks(line);
+      return `<div class="lc-code-line"><span class="lc-code-linenum">${lineNum}</span><span class="lc-code-text">${content}</span></div>`;
+    }).join('');
+  }
+
   function getClauseActionButtons(clause, exp) {
     const text = ((clause || '') + ' ' + (exp || '')).toUpperCase();
     let buttons = [];
@@ -1135,75 +1145,86 @@ window.LEETCODE_ARENA = (() => {
               </div>
             ` : ''}
 
-            <!-- SQL Code Editor -->
-            <div class="lc-editor-wrap">
-              <label style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">Write your SQL solution:</label>
-              <textarea class="lc-textarea-editor" id="lcProbEditor" style="min-height: 160px;">${activeProb.solutionSQL}</textarea>
-            </div>
-
-            <!-- Quick Knowledge Links Pill Bar -->
-            <div class="lc-solution-quick-pills-bar">
-              <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">⚡ Concept Deep-Dives:</span>
-              ${renderProblemQuickPills(activeProb)}
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="lc-action-row" style="margin-top: 14px;">
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <button class="lc-btn lc-btn-primary" id="btnSubmitJudge">
-                  <span>🎯</span>
-                  <span>Submit &amp; Judge</span>
-                </button>
-                <button class="lc-btn lc-btn-secondary" id="btnOpenStudio">
-                  <span>🔬</span>
-                  <span>Open in Visualizer Studio</span>
-                </button>
+            <!-- 💎 PERMANENTLY VISIBLE CANONICAL SOLUTION & INTERACTIVE CONCEPT GATEWAYS -->
+            <div class="lc-solution-card">
+              <div class="lc-solution-card-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 16px;">💎</span>
+                  <span style="font-size: 14px; font-weight: 700; color: var(--text-primary);">Canonical Solution &amp; Interactive Concept Gateways</span>
+                </div>
+                <span class="lc-concept-badge" style="background: rgba(37, 99, 235, 0.1); color: #2563eb; font-weight: 600;">Verified 100% Pass</span>
               </div>
-              <button class="lc-btn lc-btn-secondary" id="btnToggleSolutionAccordion">
-                <span>📖</span>
-                <span>Line-by-Line Breakdown &amp; Alternatives</span>
-              </button>
-            </div>
 
-            <!-- Test Judge Output Box -->
-            <div class="lc-judge-box" id="lcJudgeBox"></div>
+              <!-- Deep-Dive Concept Gateway Cards (Venn Matrix Simulator, Joins Masterclass, etc.) -->
+              ${renderProblemGatewaySection(activeProb)}
 
-            <!-- Line-by-Line Solution Accordion -->
-            <div class="lc-accordion" id="lcSolutionAccordion" style="display: none;">
-              <div class="lc-accordion-header">
-                <span>Canonical Solution &amp; Line-by-Line Breakdown</span>
+              <!-- Syntax-Highlighted Canonical Solution with Interactive SVG Arrows on Keywords -->
+              <div style="margin: 18px 0;">
+                <div style="font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                  <span>⚡</span>
+                  <span>Canonical SQL Solution (Click any keyword arrow to jump into that platform section):</span>
+                </div>
+                <div class="lc-canonical-code-box">
+                  ${renderHighlightedSQLWithArrows(activeProb.solutionSQL)}
+                </div>
               </div>
-              <div class="lc-accordion-content open">
-                ${renderProblemGatewaySection(activeProb)}
 
-                <div style="margin-top: 18px;">
-                  <div style="font-size: 12.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
-                    <span>📜</span>
-                    <span>Clause-by-Clause Execution &amp; Interactive Keyword Deep-Links:</span>
-                  </div>
+              <!-- Line-by-Line Clause Walkthrough with SVG Arrows & Action Chips -->
+              <div style="margin-top: 18px;">
+                <div style="font-size: 12.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                  <span>📜</span>
+                  <span>Clause-by-Clause Execution &amp; Keyword Deep-Links:</span>
+                </div>
+                <div class="lc-solution-lines-table">
                   ${solutionLinesHtml}
                 </div>
-
-                <!-- Alternative Architectures & Trade-offs -->
-                ${activeProb.alternativeSolutions && activeProb.alternativeSolutions.length > 0 ? `
-                  <div style="margin-top: 20px; border-top: 1px dashed #cbd5e1; padding-top: 16px;">
-                    <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                      <span>🔄</span>
-                      <span>Alternative Architectural Approaches &amp; Dialect Trade-offs:</span>
-                    </div>
-                    ${activeProb.alternativeSolutions.map(alt => `
-                      <div style="margin-bottom: 14px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                          <span style="font-size: 12px; font-weight: 700; color: #2563eb;">${escapeHtml(alt.name)}</span>
-                          <span style="font-size: 10px; font-family: var(--font-mono); background: #e2e8f0; padding: 2px 8px; border-radius: 4px; color: #475569; font-weight: 600;">${escapeHtml(alt.complexity || 'Trade-off')}</span>
-                        </div>
-                        <pre style="margin: 0 0 8px 0; padding: 10px; background: #0f172a; color: #f8fafc; border-radius: 4px; font-family: var(--font-mono); font-size: 11.5px; overflow-x: auto; line-height: 1.4;"><code>${escapeHtml(alt.sql)}</code></pre>
-                        <div style="font-size: 12px; color: #64748b; line-height: 1.5;">${alt.explanation}</div>
-                      </div>
-                    `).join('')}
-                  </div>
-                ` : ''}
               </div>
+
+              <!-- Alternative Architectures & Trade-offs -->
+              ${activeProb.alternativeSolutions && activeProb.alternativeSolutions.length > 0 ? `
+                <div style="margin-top: 20px; border-top: 1px dashed #cbd5e1; padding-top: 16px;">
+                  <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                    <span>🔄</span>
+                    <span>Alternative Architectural Approaches &amp; Dialect Trade-offs:</span>
+                  </div>
+                  ${activeProb.alternativeSolutions.map(alt => `
+                    <div style="margin-bottom: 14px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 12px; font-weight: 700; color: #2563eb;">${escapeHtml(alt.name)}</span>
+                        <span style="font-size: 10px; font-family: var(--font-mono); background: #e2e8f0; padding: 2px 8px; border-radius: 4px; color: #475569; font-weight: 600;">${escapeHtml(alt.complexity || 'Trade-off')}</span>
+                      </div>
+                      <pre style="margin: 0 0 8px 0; padding: 10px; background: #0f172a; color: #f8fafc; border-radius: 4px; font-family: var(--font-mono); font-size: 11.5px; overflow-x: auto; line-height: 1.4;"><code>${escapeHtml(alt.sql)}</code></pre>
+                      <div style="font-size: 12px; color: #64748b; line-height: 1.5;">${alt.explanation}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : ''}
+            </div>
+
+            <!-- 🎯 INTERACTIVE SQL WORKSPACE & TEST JUDGE -->
+            <div class="lc-workspace-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <label style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 700;">
+                  🎯 Interactive SQL Workspace &amp; Test Judge:
+                </label>
+              </div>
+              <textarea class="lc-textarea-editor" id="lcProbEditor" style="min-height: 140px;">${activeProb.solutionSQL}</textarea>
+
+              <div class="lc-action-row" style="margin-top: 14px;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button class="lc-btn lc-btn-primary" id="btnSubmitJudge">
+                    <span>🎯</span>
+                    <span>Submit &amp; Judge</span>
+                  </button>
+                  <button class="lc-btn lc-btn-secondary" id="btnOpenStudio">
+                    <span>🔬</span>
+                    <span>Open in Visualizer Studio</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Test Judge Output Box -->
+              <div class="lc-judge-box" id="lcJudgeBox"></div>
             </div>
           </div>
         </div>

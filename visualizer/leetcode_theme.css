@@ -1398,6 +1398,69 @@ code.lc-code-pill {
   color: #3f3f46;
 }
 
+/* Permanent Canonical Solution Card */
+.lc-solution-card {
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #e4e4e7);
+  border-radius: 8px;
+  padding: 22px;
+  margin-top: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.lc-solution-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle, #e4e4e7);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lc-canonical-code-box {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-x: auto;
+}
+
+.lc-code-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 24px;
+}
+
+.lc-code-linenum {
+  color: #475569;
+  user-select: none;
+  font-size: 11px;
+  width: 22px;
+  text-align: right;
+  flex-shrink: 0;
+  font-family: var(--font-mono, monospace);
+}
+
+.lc-code-text {
+  color: #f8fafc;
+  white-space: pre;
+  font-family: var(--font-mono, monospace);
+}
+
+.lc-workspace-card {
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #e4e4e7);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
 @media (max-width: 900px) {
   .lc-comparison-grid,
   .lc-drill-grid,
@@ -1408,3 +1471,4 @@ code.lc-code-pill {
     grid-template-columns: 1fr;
   }
 }
+
