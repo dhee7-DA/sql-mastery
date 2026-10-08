@@ -47,6 +47,9 @@ window.LEETCODE_ARENA = (() => {
   }
 
   function getSectionData() {
+    if (state.activeConceptId === 'concept-5') {
+      return window.LEETCODE_SECTION_5_DATA;
+    }
     if (state.activeConceptId === 'concept-4') {
       return window.LEETCODE_SECTION_4_DATA;
     }
@@ -96,7 +99,8 @@ window.LEETCODE_ARENA = (() => {
     const c2Count = (window.LEETCODE_SECTION_2_DATA && (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems)) ? (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems).length : 16;
     const c3Count = (window.LEETCODE_SECTION_3_DATA && (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems)) ? (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems).length : 12;
     const c4Count = (window.LEETCODE_SECTION_4_DATA && (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems)) ? (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems).length : 12;
-    const totalAvail = c1Count + c2Count + c3Count + c4Count;
+    const c5Count = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) ? (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems).length : 12;
+    const totalAvail = c1Count + c2Count + c3Count + c4Count + c5Count;
 
     container.innerHTML = `
       <div class="lc-arena-container">
@@ -148,10 +152,10 @@ window.LEETCODE_ARENA = (() => {
             <span>Sorting &amp; Grouping (HAVING)</span>
             <span class="lc-concept-badge">${c4Count} Problems</span>
           </button>
-          <button class="lc-concept-btn" style="opacity: 0.6; cursor: not-allowed;" title="Upcoming Module">
+          <button class="lc-concept-btn ${state.activeConceptId === 'concept-5' ? 'active' : ''}" data-concept="concept-5">
             <span>⚡ Concept 5:</span>
             <span>Advanced Joins &amp; Running Sums</span>
-            <span class="lc-concept-badge">7 Problems</span>
+            <span class="lc-concept-badge">${c5Count} Problems</span>
           </button>
           <button class="lc-concept-btn" style="opacity: 0.6; cursor: not-allowed;" title="Upcoming Module">
             <span>🧩 Concept 6:</span>
@@ -248,7 +252,8 @@ window.LEETCODE_ARENA = (() => {
       const c2Count = (window.LEETCODE_SECTION_2_DATA && (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems)) ? (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems).length : 16;
       const c3Count = (window.LEETCODE_SECTION_3_DATA && (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems)) ? (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems).length : 12;
       const c4Count = (window.LEETCODE_SECTION_4_DATA && (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems)) ? (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems).length : 12;
-      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count + c4Count}`;
+      const c5Count = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) ? (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems).length : 12;
+      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count + c4Count + c5Count}`;
     }
     if (elMcqs) {
       const correctCount = Object.values(state.answeredMcqs).filter(a => a.isCorrect).length;
@@ -631,6 +636,8 @@ window.LEETCODE_ARENA = (() => {
       navigateToConcept('concept-3', 1, event);
     } else if (kw === 'having' || kw === 'grouping') {
       navigateToConcept('concept-4', 1, event);
+    } else if (kw === 'window' || kw === 'running' || kw === 'consecutive') {
+      navigateToConcept('concept-5', 2, event);
     } else if (kw === 'conditional') {
       navigateToConcept('concept-1', 4, event);
     } else if (kw === 'ordering') {
@@ -698,8 +705,11 @@ window.LEETCODE_ARENA = (() => {
       const c2 = (window.LEETCODE_SECTION_2_DATA && window.LEETCODE_SECTION_2_DATA.leetcodeProblems) || [];
       const c3 = (window.LEETCODE_SECTION_3_DATA && window.LEETCODE_SECTION_3_DATA.leetcodeProblems) || [];
       const c4 = (window.LEETCODE_SECTION_4_DATA && window.LEETCODE_SECTION_4_DATA.leetcodeProblems) || [];
+      const c5 = (window.LEETCODE_SECTION_5_DATA && window.LEETCODE_SECTION_5_DATA.leetcodeProblems) || [];
 
-      if (c4.some(p => p.id === pId)) {
+      if (c5.some(p => p.id === pId)) {
+        state.activeConceptId = 'concept-5';
+      } else if (c4.some(p => p.id === pId)) {
         state.activeConceptId = 'concept-4';
       } else if (c3.some(p => p.id === pId)) {
         state.activeConceptId = 'concept-3';
@@ -780,6 +790,16 @@ window.LEETCODE_ARENA = (() => {
     // 6. ORDER BY / DISTINCT
     safe = safe.replace(/\b(ORDER\s+BY|DISTINCT)\b/gi, (match) => {
       return `<span class="lc-kw-link lc-kw-order" onclick="window.LEETCODE_ARENA.navigateToKeyword('ordering', event)" title="Deep-dive into Concept 4: Ordering &amp; Deduplication">` +
+        `<span class="lc-kw-text">${match}</span>` +
+        `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+          `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
+        `</svg>` +
+      `</span>`;
+    });
+
+    // 7. Window Functions & Framing: OVER, ROWS BETWEEN, PRECEDING, LEAD, LAG (Concept 5)
+    safe = safe.replace(/\b(ROWS\s+BETWEEN|PRECEDING|FOLLOWING|LEAD|LAG|ROW_NUMBER|OVER)\b/gi, (match) => {
+      return `<span class="lc-kw-link lc-kw-window" onclick="window.LEETCODE_ARENA.navigateToKeyword('window', event)" title="Deep-dive into Concept 5: Window Framing &amp; Running Sums">` +
         `<span class="lc-kw-text">${match}</span>` +
         `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
           `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
@@ -1004,6 +1024,27 @@ window.LEETCODE_ARENA = (() => {
             <div class="lc-gateway-desc">8 Deep SVG chapters: Execution Lifecycle, Hash vs Stream Aggregation, Relational Division &amp; Deduplication</div>
           </div>
           <div class="lc-gateway-action-arrow" title="Read Sorting &amp; Grouping Masterclass">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 10h10M11 6l4 4-4 4"/>
+            </svg>
+          </div>
+        </div>
+      `);
+    }
+
+    // Check for Concept 5: Advanced Joins, Windows & Running Aggregates
+    if (fullSql.includes('OVER') || fullSql.includes('ROWS') || fullSql.includes('LEAD') || fullSql.includes('LAG') || fullSql.includes('PRECEDING') || fullSql.includes('PARTITION BY')) {
+      cards.push(`
+        <div class="lc-gateway-card" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-5', 1, event)">
+          <div class="lc-gateway-info">
+            <div class="lc-gateway-tag tag-masterclass">
+              <span>⚡</span>
+              <span>Concept 5 Masterclass</span>
+            </div>
+            <div class="lc-gateway-name">Advanced Joins &amp; Running Sums</div>
+            <div class="lc-gateway-desc">8 Visual SVG chapters: Non-Equi Joins, ROWS vs RANGE Frames, Consecutive LEAD/LAG &amp; Knapsack Physics</div>
+          </div>
+          <div class="lc-gateway-action-arrow" title="Read Advanced Joins Masterclass">
             <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 10h10M11 6l4 4-4 4"/>
             </svg>

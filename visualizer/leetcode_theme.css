@@ -1065,6 +1065,19 @@ code.lc-code-pill {
   box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
 }
 
+.lc-kw-window {
+  background: rgba(13, 148, 136, 0.1);
+  color: #0d9488;
+  border: 1px solid rgba(13, 148, 136, 0.3);
+}
+
+.lc-kw-window:hover {
+  background: #0d9488;
+  color: #ffffff;
+  border-color: #0d9488;
+  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.25);
+}
+
 /* Line-Level Deep-Dive Chips */
 .lc-line-chips-row {
   display: flex;
