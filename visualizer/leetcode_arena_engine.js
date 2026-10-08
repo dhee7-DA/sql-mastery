@@ -15,6 +15,8 @@ window.LEETCODE_ARENA = (() => {
     activeDrillId: 1,
     mcqFilter: 'all', // 'all' | 'traps' | 'unanswered'
     mcqSearch: '',
+    probFilter: 'all', // 'all' | 'Easy' | 'Medium' | 'Hard' | 'solved' | 'unsolved'
+    probSearch: '',
     solvedProblems: {},
     answeredMcqs: {},
     completedDrills: {}
@@ -279,15 +281,17 @@ window.LEETCODE_ARENA = (() => {
     if (mc.chapters && mc.chapters.length > 0) {
       mc.chapters.forEach(chap => {
         let diagHtml = '';
-        if (chap.diagram) {
+        const diagSvg = (chap.diagram && chap.diagram.svg) || chap.svg;
+        const diagTitle = (chap.diagram && chap.diagram.title) || chap.title || 'Visual Execution Mechanics';
+        if (diagSvg) {
           diagHtml = `
             <div style="margin: 16px 0;">
               <div style="font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
                 <span>📐</span>
-                <span>${chap.diagram.title}</span>
+                <span>${diagTitle}</span>
               </div>
               <div class="lc-diagram-wrap">
-                ${chap.diagram.svg}
+                ${diagSvg}
               </div>
             </div>
           `;
@@ -311,7 +315,7 @@ window.LEETCODE_ARENA = (() => {
     }
 
     let calloutsHtml = '';
-    mc.callouts.forEach(call => {
+    (mc.callouts || []).forEach(call => {
       calloutsHtml += `
         <div class="lc-callout-card ${call.type}">
           <div class="lc-callout-title">
@@ -350,16 +354,23 @@ window.LEETCODE_ARENA = (() => {
     const data = getSectionData();
     if (!panel || !data) return;
 
-    let filtered = data.mcqs;
+    let filtered = data.mcqs || [];
     if (state.mcqFilter === 'traps') {
-      filtered = filtered.filter(m => m.trapBadge && m.trapBadge.toLowerCase().includes('trap'));
+      filtered = filtered.filter(m => {
+        const badge = (m.trapBadge || m.trapWarning || (m.isTrap ? 'trap' : '')).toLowerCase();
+        return badge.includes('trap');
+      });
     } else if (state.mcqFilter === 'unanswered') {
       filtered = filtered.filter(m => !state.answeredMcqs[m.id]);
     }
 
     if (state.mcqSearch.trim()) {
-      const q = state.mcqSearch.toLowerCase();
-      filtered = filtered.filter(m => m.q.toLowerCase().includes(q) || (m.code && m.code.toLowerCase().includes(q)));
+      const query = state.mcqSearch.toLowerCase();
+      filtered = filtered.filter(m => {
+        const text = (m.q || m.question || '').toLowerCase();
+        const code = (m.code || '').toLowerCase();
+        return text.includes(query) || code.includes(query);
+      });
     }
 
     let mcqsHtml = '';
@@ -367,12 +378,13 @@ window.LEETCODE_ARENA = (() => {
       const ans = state.answeredMcqs[mcq.id];
       const answered = !!ans;
       const isPassed = ans && ans.isCorrect;
+      const correctIdx = (mcq.correct !== undefined ? mcq.correct : (mcq.correctIndex !== undefined ? mcq.correctIndex : mcq.answer));
 
       let optionsHtml = '';
       mcq.options.forEach((opt, optIdx) => {
         let optClass = 'lc-mcq-option';
         if (answered) {
-          if (optIdx === mcq.correct) optClass += ' correct';
+          if (optIdx === correctIdx) optClass += ' correct';
           else if (ans.selected === optIdx && !isPassed) optClass += ' wrong';
         }
 
@@ -393,13 +405,15 @@ window.LEETCODE_ARENA = (() => {
         `;
       }
 
+      const trapLabel = mcq.trapBadge || mcq.trapWarning || (mcq.isTrap ? 'Critical Trap' : 'Concept Trap');
+
       mcqsHtml += `
         <div class="lc-mcq-card" id="mcqCard_${mcq.id}">
           <div class="lc-mcq-header">
             <span class="lc-mcq-number">Question #${mcq.id}</span>
-            <span class="lc-badge-trap">${mcq.trapBadge || 'Concept Trap'}</span>
+            <span class="lc-badge-trap">${trapLabel}</span>
           </div>
-          <div class="lc-mcq-question">${mcq.q}</div>
+          <div class="lc-mcq-question">${mcq.q || mcq.question}</div>
           ${mcq.code ? `<pre class="lc-mcq-code">${escapeHtml(mcq.code)}</pre>` : ''}
           <div class="lc-mcq-options">${optionsHtml}</div>
           ${feedbackHtml}
@@ -446,10 +460,11 @@ window.LEETCODE_ARENA = (() => {
 
   function handleMcqAnswer(mcqId, optIdx) {
     const data = getSectionData();
-    const mcq = data.mcqs.find(m => m.id === mcqId);
+    const mcq = (data.mcqs || []).find(m => m.id === mcqId);
     if (!mcq) return;
 
-    const isCorrect = (optIdx === mcq.correct);
+    const correctIdx = (mcq.correct !== undefined ? mcq.correct : (mcq.correctIndex !== undefined ? mcq.correctIndex : mcq.answer));
+    const isCorrect = (optIdx === correctIdx);
     state.answeredMcqs[mcqId] = { selected: optIdx, isCorrect };
     saveState();
     updateStatsHeader();
@@ -464,20 +479,21 @@ window.LEETCODE_ARENA = (() => {
     const data = getSectionData();
     if (!panel || !data) return;
 
-    const drills = data.prepDrills;
-    const activeDrill = drills.find(d => d.id === state.activeDrillId) || drills[0];
+    const drills = data.prepDrills || data.drills || [];
+    const activeDrill = drills.find(d => d.id === state.activeDrillId) || drills[0] || {};
 
     let itemsHtml = '';
     drills.slice(0, 50).forEach(d => {
       const isCompleted = !!state.completedDrills[d.id];
       const isActive = d.id === activeDrill.id;
       const diffClass = d.difficulty === 'Easy' ? 'lc-diff-easy' : (d.difficulty === 'Medium' ? 'lc-diff-medium' : 'lc-diff-hard');
+      const domainLabel = d.domain || d.context || 'Enterprise Scenario';
 
       itemsHtml += `
         <div class="lc-drill-item ${isActive ? 'active' : ''}" data-drill-id="${d.id}">
           <div>
             <div class="lc-drill-item-title">${d.title}</div>
-            <span style="font-size: 10px; color: var(--text-muted);">${d.domain}</span>
+            <span style="font-size: 10px; color: var(--text-muted);">${domainLabel}</span>
           </div>
           <div style="display: flex; align-items: center; gap: 6px;">
             <span class="lc-diff-badge ${diffClass}">${d.difficulty}</span>
@@ -486,6 +502,12 @@ window.LEETCODE_ARENA = (() => {
         </div>
       `;
     });
+
+    const activeDomain = activeDrill.domain || activeDrill.context || 'Enterprise Scenario';
+    const activePrompt = activeDrill.prompt || activeDrill.task || '';
+    const activeSchema = activeDrill.schema || activeDrill.tables || '';
+    const starterCode = activeDrill.starterSQL || '-- Write your SQL solution here\n';
+    const canonicalCode = activeDrill.solutionSQL || activeDrill.sql || '';
 
     panel.innerHTML = `
       <div class="lc-drill-grid">
@@ -500,20 +522,20 @@ window.LEETCODE_ARENA = (() => {
         <div class="lc-drill-workspace">
           <div>
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-              <span class="lc-diff-badge ${activeDrill.difficulty === 'Easy' ? 'lc-diff-easy' : (activeDrill.difficulty === 'Medium' ? 'lc-diff-medium' : 'lc-diff-hard')}">${activeDrill.difficulty}</span>
-              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--accent);">${activeDrill.domain}</span>
+              <span class="lc-diff-badge ${activeDrill.difficulty === 'Easy' ? 'lc-diff-easy' : (activeDrill.difficulty === 'Medium' ? 'lc-diff-medium' : 'lc-diff-hard')}">${activeDrill.difficulty || 'Medium'}</span>
+              <span style="font-size: 11px; font-family: var(--font-mono); color: var(--accent);">${activeDomain}</span>
             </div>
             <h3 style="margin: 0 0 8px 0; font-size: 18px; color: var(--text-primary);">${activeDrill.title}</h3>
-            <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; margin: 0;">${activeDrill.prompt}</p>
+            <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; margin: 0;">${activePrompt}</p>
           </div>
 
           <div class="lc-drill-schema-box">
-            <strong>Table Schema:</strong> ${activeDrill.schema}
+            <strong>Table Schema:</strong> ${activeSchema}
           </div>
 
           <div class="lc-editor-wrap">
             <label style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">SQL Workspace</label>
-            <textarea class="lc-textarea-editor" id="lcDrillEditor">${activeDrill.starterSQL}</textarea>
+            <textarea class="lc-textarea-editor" id="lcDrillEditor">${starterCode}</textarea>
           </div>
 
           <div class="lc-action-row">
@@ -529,7 +551,7 @@ window.LEETCODE_ARENA = (() => {
 
           <div id="lcDrillSolutionBox" style="display: none; background: var(--bg-card); border: 1px solid var(--border-default); border-radius: 6px; padding: 14px;">
             <div style="font-size: 11px; font-family: var(--font-mono); color: #38bdf8; margin-bottom: 6px;">CANONICAL SOLUTION:</div>
-            <pre style="margin: 0; font-family: var(--font-mono); font-size: 12px; color: #34d399;">${escapeHtml(activeDrill.solutionSQL)}</pre>
+            <pre style="margin: 0; font-family: var(--font-mono); font-size: 12px; color: #34d399;">${escapeHtml(canonicalCode)}</pre>
           </div>
         </div>
       </div>
@@ -1120,35 +1142,64 @@ window.LEETCODE_ARENA = (() => {
     const data = getSectionData();
     if (!panel || !data) return;
 
-    const problems = data.leetcodeProblems || data.problems || [];
-    const activeProb = problems.find(p => p.id === state.activeProblemId) || problems[0];
+    const allProblems = data.leetcodeProblems || data.problems || [];
+    
+    // Filter problems by difficulty, solved status, and search query
+    const filteredProblems = allProblems.filter(p => {
+      if (state.probFilter === 'Easy' && p.difficulty !== 'Easy') return false;
+      if (state.probFilter === 'Medium' && p.difficulty !== 'Medium') return false;
+      if (state.probFilter === 'Hard' && p.difficulty !== 'Hard') return false;
+      if (state.probFilter === 'solved' && !state.solvedProblems[p.id]) return false;
+      if (state.probFilter === 'unsolved' && state.solvedProblems[p.id]) return false;
+      if (state.probSearch && state.probSearch.trim()) {
+        const q = state.probSearch.toLowerCase().trim();
+        const matchesId = String(p.id).includes(q);
+        const matchesTitle = (p.title || '').toLowerCase().includes(q);
+        if (!matchesId && !matchesTitle) return false;
+      }
+      return true;
+    });
+
+    const activeProb = allProblems.find(p => p.id === state.activeProblemId) || filteredProblems[0] || allProblems[0];
+    const currentIdx = allProblems.findIndex(p => p.id === activeProb.id);
+    const prevProb = currentIdx > 0 ? allProblems[currentIdx - 1] : null;
+    const nextProb = currentIdx < allProblems.length - 1 ? allProblems[currentIdx + 1] : null;
 
     // Left Drawer problem list
     let drawerHtml = '';
-    problems.forEach(p => {
-      const isSolved = !!state.solvedProblems[p.id];
-      const isActive = p.id === activeProb.id;
-      const diffClass = p.difficulty === 'Easy' ? 'lc-diff-easy' : (p.difficulty === 'Medium' ? 'lc-diff-medium' : 'lc-diff-hard');
-
-      let companyPills = '';
-      p.companies.slice(0, 3).forEach(c => {
-        companyPills += `<span class="lc-company-pill">${c}</span>`;
-      });
-
-      drawerHtml += `
-        <div class="lc-prob-card ${isActive ? 'active' : ''}" data-prob-id="${p.id}">
-          <div class="lc-prob-top">
-            <span class="lc-prob-id">#${p.id}</span>
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <span class="lc-diff-badge ${diffClass}">${p.difficulty}</span>
-              ${isSolved ? '<span style="color: #10b981; font-size: 13px;">✓</span>' : ''}
-            </div>
-          </div>
-          <div class="lc-prob-name">${p.title}</div>
-          <div class="lc-company-row">${companyPills}</div>
+    if (filteredProblems.length === 0) {
+      drawerHtml = `
+        <div style="padding: 24px 16px; text-align: center; color: var(--text-muted); font-size: 13px;">
+          <div style="font-size: 24px; margin-bottom: 8px;">🔍</div>
+          No problems match your current filter or search criteria.
         </div>
       `;
-    });
+    } else {
+      filteredProblems.forEach(p => {
+        const isSolved = !!state.solvedProblems[p.id];
+        const isActive = p.id === activeProb.id;
+        const diffClass = p.difficulty === 'Easy' ? 'lc-diff-easy' : (p.difficulty === 'Medium' ? 'lc-diff-medium' : 'lc-diff-hard');
+
+        let companyPills = '';
+        (p.companies || ['Meta', 'Amazon']).slice(0, 3).forEach(c => {
+          companyPills += `<span class="lc-company-pill">${c}</span>`;
+        });
+
+        drawerHtml += `
+          <div class="lc-prob-card ${isActive ? 'active' : ''}" data-prob-id="${p.id}">
+            <div class="lc-prob-top">
+              <span class="lc-prob-id">#${p.id}</span>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="lc-diff-badge ${diffClass}">${p.difficulty}</span>
+                ${isSolved ? '<span style="color: #10b981; font-size: 13px;">✓</span>' : ''}
+              </div>
+            </div>
+            <div class="lc-prob-name">${p.title}</div>
+            <div class="lc-company-row">${companyPills}</div>
+          </div>
+        `;
+      });
+    }
 
     // Breakdown lines with interactive SVG arrow links on keywords
     let solutionLinesHtml = '';
@@ -1168,14 +1219,42 @@ window.LEETCODE_ARENA = (() => {
       `;
     });
 
+    const promptText = activeProb.prompt || activeProb.description || '';
+    const freqText = activeProb.interviewFreq || activeProb.acceptance || 'Top Tier FAANG';
+    const svgContent = activeProb.svgDiagram || activeProb.schemaDiagram || '';
+    const trapsList = activeProb.trapsAndEdgeCases || activeProb.traps || [];
+    const companiesList = activeProb.companies || ['Meta', 'Amazon', 'Google'];
+
     panel.innerHTML = `
       <div class="lc-problems-layout">
         <!-- Left: Problems Drawer -->
         <div class="lc-problems-drawer">
-          <div style="font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">
-            Concept ${data.conceptNumber || 1} Problems (${problems.length})
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-size: 13px; font-weight: 700; color: var(--text-primary);">
+              Concept ${data.conceptNumber || 1} Problems (${allProblems.length})
+            </div>
+            <span class="lc-concept-badge" style="font-size: 10px;">${filteredProblems.length} Shown</span>
           </div>
-          ${drawerHtml}
+
+          <!-- Problem Search Input -->
+          <div class="lc-prob-search-wrap">
+            <input type="text" class="lc-prob-search-input" id="lcProbSearchInput" placeholder="Filter by #ID or title..." value="${escapeHtml(state.probSearch)}">
+            ${state.probSearch ? `<button class="lc-prob-search-clear" id="lcProbSearchClear">✕</button>` : ''}
+          </div>
+
+          <!-- Filter Pills Bar -->
+          <div class="lc-prob-filter-bar">
+            <button class="lc-prob-filter-pill ${state.probFilter === 'all' ? 'active' : ''}" data-filter="all">All</button>
+            <button class="lc-prob-filter-pill ${state.probFilter === 'Easy' ? 'active' : ''}" data-filter="Easy">Easy</button>
+            <button class="lc-prob-filter-pill ${state.probFilter === 'Medium' ? 'active' : ''}" data-filter="Medium">Medium</button>
+            <button class="lc-prob-filter-pill ${state.probFilter === 'Hard' ? 'active' : ''}" data-filter="Hard">Hard</button>
+            <button class="lc-prob-filter-pill ${state.probFilter === 'solved' ? 'active' : ''}" data-filter="solved">Solved</button>
+          </div>
+
+          <!-- Drawer List -->
+          <div class="lc-prob-list-scroll">
+            ${drawerHtml}
+          </div>
         </div>
 
         <!-- Right: Problem Workspace -->
@@ -1186,11 +1265,11 @@ window.LEETCODE_ARENA = (() => {
             <div class="lc-intel-bar">
               <div class="lc-intel-freq">
                 <span>🔥</span>
-                <span>${activeProb.interviewFreq}</span>
+                <span>${freqText}</span>
               </div>
               <div class="lc-intel-companies">
                 <span style="font-size: 11px; color: var(--text-muted);">Target Companies:</span>
-                ${activeProb.companies.map(c => `<span class="lc-company-pill" style="color: var(--text-primary);">${c}</span>`).join('')}
+                ${companiesList.map(c => `<span class="lc-company-pill" style="color: var(--text-primary);">${c}</span>`).join('')}
               </div>
             </div>
 
@@ -1200,39 +1279,43 @@ window.LEETCODE_ARENA = (() => {
                 <span style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); font-weight: 700;">LEETCODE #${activeProb.id}</span>
                 <h2 style="margin: 4px 0 0 0; font-size: 22px; color: var(--text-primary);">${activeProb.title}</h2>
               </div>
-              <span class="lc-diff-badge ${activeProb.difficulty === 'Easy' ? 'lc-diff-easy' : 'lc-diff-medium'}">${activeProb.difficulty}</span>
+              <span class="lc-diff-badge ${activeProb.difficulty === 'Easy' ? 'lc-diff-easy' : (activeProb.difficulty === 'Medium' ? 'lc-diff-medium' : 'lc-diff-hard')}">${activeProb.difficulty}</span>
             </div>
 
-            <p style="font-size: 14px; line-height: 1.6; color: var(--text-secondary); white-space: pre-line;">${activeProb.prompt}</p>
+            <p style="font-size: 14px; line-height: 1.6; color: var(--text-secondary); white-space: pre-line;">${promptText}</p>
 
             <!-- Embedded Schema SVG Diagram -->
-            <div style="margin: 20px 0;">
-              <div style="font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                <span>📐</span>
-                <span>Visual Schema &amp; Row Filtering Physics:</span>
+            ${svgContent ? `
+              <div style="margin: 20px 0;">
+                <div style="font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                  <span>📐</span>
+                  <span>Visual Schema &amp; Row Filtering Physics:</span>
+                </div>
+                <div class="lc-prob-svg-wrap">
+                  ${svgContent}
+                </div>
               </div>
-              <div class="lc-prob-svg-wrap">
-                ${activeProb.svgDiagram}
-              </div>
-            </div>
+            ` : ''}
 
             <!-- Logic Breakdown -->
-            <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: 6px; padding: 16px; margin-bottom: 16px;">
-              <div style="font-size: 12px; font-weight: 700; color: #fbbf24; margin-bottom: 8px;">💡 Core Insight &amp; Logic Breakdown:</div>
-              <ul style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
-                ${activeProb.logicBreakdown.map(l => `<li>${l}</li>`).join('')}
-              </ul>
-            </div>
+            ${activeProb.logicBreakdown && activeProb.logicBreakdown.length > 0 ? `
+              <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: 6px; padding: 16px; margin-bottom: 16px;">
+                <div style="font-size: 12px; font-weight: 700; color: #fbbf24; margin-bottom: 8px;">💡 Core Insight &amp; Logic Breakdown:</div>
+                <ul style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">
+                  ${activeProb.logicBreakdown.map(l => `<li>${l}</li>`).join('')}
+                </ul>
+              </div>
+            ` : ''}
 
             <!-- Why 70% Fail Trap Callout -->
-            ${activeProb.trapsAndEdgeCases && activeProb.trapsAndEdgeCases.length > 0 ? `
+            ${trapsList.length > 0 ? `
               <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 6px; padding: 16px; margin-bottom: 20px;">
                 <div style="font-size: 12px; font-weight: 700; color: #be123c; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
                   <span>🚨</span>
                   <span>Why 70% of Candidates Fail (Critical Interview Traps):</span>
                 </div>
                 <ul style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.6; color: #9f1239;">
-                  ${activeProb.trapsAndEdgeCases.map(t => `<li>${t}</li>`).join('')}
+                  ${trapsList.map(t => `<li>${t}</li>`).join('')}
                 </ul>
               </div>
             ` : ''}
@@ -1244,7 +1327,13 @@ window.LEETCODE_ARENA = (() => {
                   <span style="font-size: 16px;">💎</span>
                   <span style="font-size: 14px; font-weight: 700; color: var(--text-primary);">Canonical Solution &amp; Interactive Concept Gateways</span>
                 </div>
-                <span class="lc-concept-badge" style="background: rgba(37, 99, 235, 0.1); color: #2563eb; font-weight: 600;">Verified 100% Pass</span>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <button class="lc-copy-sql-btn" id="btnCopyCanonicalSql" title="Copy SQL to Clipboard">
+                    <span class="lc-copy-icon">📋</span>
+                    <span class="lc-copy-text">Copy SQL</span>
+                  </button>
+                  <span class="lc-concept-badge" style="background: rgba(37, 99, 235, 0.1); color: #2563eb; font-weight: 600;">Verified 100% Pass</span>
+                </div>
               </div>
 
               <!-- Deep-Dive Concept Gateway Cards (Venn Matrix Simulator, Joins Masterclass, etc.) -->
@@ -1299,6 +1388,14 @@ window.LEETCODE_ARENA = (() => {
                 <label style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-weight: 700;">
                   🎯 Interactive SQL Workspace &amp; Test Judge:
                 </label>
+                <div style="display: flex; gap: 6px;">
+                  <button class="lc-editor-tool-btn" id="btnFillSolution" title="Fill workspace with canonical solution">
+                    <span>⚡ Fill Solution</span>
+                  </button>
+                  <button class="lc-editor-tool-btn" id="btnResetEditor" title="Clear workspace">
+                    <span>↺ Reset</span>
+                  </button>
+                </div>
               </div>
               <textarea class="lc-textarea-editor" id="lcProbEditor" style="min-height: 140px;">${activeProb.solutionSQL}</textarea>
 
@@ -1318,6 +1415,25 @@ window.LEETCODE_ARENA = (() => {
               <!-- Test Judge Output Box -->
               <div class="lc-judge-box" id="lcJudgeBox"></div>
             </div>
+
+            <!-- Previous / Next Problem Quick Bar -->
+            <div class="lc-prev-next-bar">
+              ${prevProb ? `
+                <button class="lc-nav-prob-btn" id="btnPrevProblem" data-prob-id="${prevProb.id}">
+                  <span>←</span>
+                  <span>#${prevProb.id} ${escapeHtml(prevProb.title)}</span>
+                </button>
+              ` : '<div style="flex:1;"></div>'}
+              <span class="lc-prob-position-indicator">
+                Problem ${currentIdx + 1} of ${allProblems.length}
+              </span>
+              ${nextProb ? `
+                <button class="lc-nav-prob-btn" id="btnNextProblem" data-prob-id="${nextProb.id}">
+                  <span>#${nextProb.id} ${escapeHtml(nextProb.title)}</span>
+                  <span>→</span>
+                </button>
+              ` : '<div style="flex:1;"></div>'}
+            </div>
           </div>
         </div>
       </div>
@@ -1331,13 +1447,92 @@ window.LEETCODE_ARENA = (() => {
       });
     });
 
-    // Toggle Solution Accordion
-    const btnAccordion = panel.querySelector('#btnToggleSolutionAccordion');
-    const accordion = panel.querySelector('#lcSolutionAccordion');
-    if (btnAccordion && accordion) {
-      btnAccordion.addEventListener('click', () => {
-        const isHidden = accordion.style.display === 'none';
-        accordion.style.display = isHidden ? 'block' : 'none';
+    // Hook up search input
+    const searchInput = panel.querySelector('#lcProbSearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        state.probSearch = e.target.value;
+        renderProblems();
+        // Restore focus to input
+        const newSearch = document.getElementById('lcProbSearchInput');
+        if (newSearch) {
+          newSearch.focus();
+          newSearch.setSelectionRange(newSearch.value.length, newSearch.value.length);
+        }
+      });
+    }
+
+    const searchClear = panel.querySelector('#lcProbSearchClear');
+    if (searchClear) {
+      searchClear.addEventListener('click', () => {
+        state.probSearch = '';
+        renderProblems();
+      });
+    }
+
+    // Hook up filter pills
+    panel.querySelectorAll('.lc-prob-filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        state.probFilter = pill.dataset.filter;
+        renderProblems();
+      });
+    });
+
+    // Hook up Prev / Next Problem buttons
+    const btnPrev = panel.querySelector('#btnPrevProblem');
+    if (btnPrev) {
+      btnPrev.addEventListener('click', () => {
+        selectProblem(parseInt(btnPrev.dataset.probId, 10));
+      });
+    }
+
+    const btnNext = panel.querySelector('#btnNextProblem');
+    if (btnNext) {
+      btnNext.addEventListener('click', () => {
+        selectProblem(parseInt(btnNext.dataset.probId, 10));
+      });
+    }
+
+    // Hook up 1-Click Copy SQL
+    const btnCopy = panel.querySelector('#btnCopyCanonicalSql');
+    if (btnCopy) {
+      btnCopy.addEventListener('click', () => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(activeProb.solutionSQL).then(() => {
+            const copyText = btnCopy.querySelector('.lc-copy-text');
+            const copyIcon = btnCopy.querySelector('.lc-copy-icon');
+            if (copyText) copyText.textContent = 'Copied! ✓';
+            if (copyIcon) copyIcon.textContent = '✅';
+            btnCopy.classList.add('copied');
+            setTimeout(() => {
+              if (copyText) copyText.textContent = 'Copy SQL';
+              if (copyIcon) copyIcon.textContent = '📋';
+              btnCopy.classList.remove('copied');
+            }, 2000);
+          }).catch(() => {
+            // Fallback for clipboard
+            copyTextFallback(activeProb.solutionSQL, btnCopy);
+          });
+        } else {
+          copyTextFallback(activeProb.solutionSQL, btnCopy);
+        }
+      });
+    }
+
+    // Hook up Editor Quick Tools
+    const btnFill = panel.querySelector('#btnFillSolution');
+    const btnReset = panel.querySelector('#btnResetEditor');
+    const editor = panel.querySelector('#lcProbEditor');
+    if (btnFill && editor) {
+      btnFill.addEventListener('click', () => {
+        editor.value = activeProb.solutionSQL;
+        editor.focus();
+      });
+    }
+    if (btnReset && editor) {
+      btnReset.addEventListener('click', () => {
+        editor.value = '';
+        editor.focus();
       });
     }
 
@@ -1355,6 +1550,51 @@ window.LEETCODE_ARENA = (() => {
       btnStudio.addEventListener('click', () => {
         openInQueryStudio(activeProb);
       });
+    }
+  }
+
+  function copyTextFallback(text, btn) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      const copyText = btn.querySelector('.lc-copy-text');
+      const copyIcon = btn.querySelector('.lc-copy-icon');
+      if (copyText) copyText.textContent = 'Copied! ✓';
+      if (copyIcon) copyIcon.textContent = '✅';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        if (copyText) copyText.textContent = 'Copy SQL';
+        if (copyIcon) copyIcon.textContent = '📋';
+        btn.classList.remove('copied');
+      }, 2000);
+    } catch (e) {
+      console.warn('Copy failed', e);
+    }
+    document.body.removeChild(ta);
+  }
+
+  function getCurrentActiveProblem() {
+    const data = getSectionData();
+    const probs = (data && (data.leetcodeProblems || data.problems)) || [];
+    return probs.find(p => p.id === state.activeProblemId) || probs[0] || null;
+  }
+
+  function selectProblem(probId) {
+    state.activeProblemId = parseInt(probId, 10);
+    if (state.activeStage !== 'problems') {
+      switchStage('problems');
+    } else {
+      renderProblems();
+    }
+    // Scroll dossier into view smoothly
+    const dossier = document.querySelector('.lc-dossier-card');
+    if (dossier) {
+      dossier.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
@@ -1449,6 +1689,8 @@ window.LEETCODE_ARENA = (() => {
     navigateToConcept,
     navigateToPlatformView,
     returnToProblem,
+    selectProblem,
+    getCurrentActiveProblem,
     openActiveInStudio: (e) => {
       const p = getCurrentActiveProblem();
       if (p) openInQueryStudio(p);

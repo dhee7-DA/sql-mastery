@@ -2096,10 +2096,17 @@ GROUP BY event_day, emp_id;`,
   ];
 
   return {
+    conceptId: 'concept-1',
+    conceptNumber: 1,
+    title: 'Filtering & Three-Valued Logic',
+    subtitle: masterclass.subtitle || 'Master 3-Valued Logic, SARGable predicates, and NULL edge-cases.',
+    keyTakeaway: masterclass.keyTakeaway || 'WHERE filters rows before grouping; only strictly TRUE passes.',
     masterclass,
     mcqs,
     prepDrills,
-    leetcodeProblems
+    drills: prepDrills,
+    leetcodeProblems,
+    problems: leetcodeProblems
   };
 
 })();

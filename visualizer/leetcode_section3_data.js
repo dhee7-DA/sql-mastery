@@ -6,6 +6,23 @@ window.LEETCODE_SECTION_3_DATA = {
   "keyTakeaway": "Aggregates summarize multiple rows into a single scalar value. Beware of NULL handling: COUNT(*) counts rows, but COUNT(column) ignores NULLs, and SUM(column) on empty sets returns NULL, not 0.",
   "masterclass": {
     "overview": "\n          Aggregating and grouping data is the core foundation of analytical reporting and data engineering.\n          In this masterclass, you will master the physical execution engines behind <code>GROUP BY</code> (Hash Aggregate vs Stream Aggregate), \n          the subtle 3-Valued Logic matrix of <code>COUNT(*)</code> versus <code>COUNT(col)</code>, zero-division safeguards with <code>NULLIF</code>, \n          weighted revenue mathematics, and retention cohort calculations.\n        ",
+    "callouts": [
+      {
+        "type": "danger",
+        "title": "The Empty-Set SUM Trap",
+        "body": "SUM(col) on 0 rows yields NULL instead of 0. An unguarded NULL can crash backend API contracts and financial balances. Always wrap with COALESCE(SUM(col), 0)."
+      },
+      {
+        "type": "warning",
+        "title": "COUNT(*) vs COUNT(col)",
+        "body": "COUNT(*) tallies row existence including NULLs. COUNT(col) discards rows where col is NULL. In LEFT JOIN queries, COUNT(*) on unmatched child rows returns 1 instead of 0!"
+      },
+      {
+        "type": "info",
+        "title": "Zero-Division Shield with NULLIF",
+        "body": "Never divide directly in analytics queries. Use NULLIF(denominator, 0) combined with COALESCE to gracefully output 0 without fatal engine division-by-zero crashes."
+      }
+    ],
     "chapters": [
       {
         "id": "chap-3-1-hash-vs-stream",

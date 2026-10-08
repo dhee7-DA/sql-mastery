@@ -1356,6 +1356,80 @@ for (let i = 1; i <= 100; i++) {
   });
 }
 
+function generateProblemSvg(p) {
+  const sample = p.sampleInput || { table: 'InputTable', columns: ['id', 'val'], rows: [[1, 10], [2, 20]] };
+  const exp = p.expectedOutput || { columns: ['res'], rows: [[10]] };
+  
+  const colHeaders = sample.columns.map((c, i) => `<text x="${16 + i * 75}" y="36" fill="#475569" font-family="monospace" font-size="8.5" font-weight="700">${c}</text>`).join('');
+  const sampleRows = sample.rows.slice(0, 3).map((r, rIdx) => {
+    const y = 52 + rIdx * 16;
+    const cells = r.map((val, cIdx) => `<text x="${16 + cIdx * 75}" y="${y}" fill="#0f172a" font-family="monospace" font-size="8.5">${String(val).slice(0, 10)}</text>`).join('');
+    return `<g>${cells}</g>`;
+  }).join('');
+
+  const outColHeaders = exp.columns.map((c, i) => `<text x="${16 + i * 85}" y="36" fill="#047857" font-family="monospace" font-size="8.5" font-weight="700">${c}</text>`).join('');
+  const outRows = exp.rows.slice(0, 3).map((r, rIdx) => {
+    const y = 52 + rIdx * 16;
+    const cells = r.map((val, cIdx) => `<text x="${16 + cIdx * 85}" y="${y}" fill="#065f46" font-family="monospace" font-size="9" font-weight="600">${String(val).slice(0, 12)}</text>`).join('');
+    return `<g>${cells}</g>`;
+  }).join('');
+
+  return `<svg viewBox="0 0 880 180" class="lc-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+    <rect x="15" y="15" width="850" height="150" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+    <text x="30" y="34" fill="#0f172a" font-family="monospace" font-size="11" font-weight="700">PHYSICAL RELATIONAL TRANSFORMATION: #${p.id} ${p.title.toUpperCase()}</text>
+    
+    <!-- Source Table -->
+    <g transform="translate(30, 48)">
+      <rect x="0" y="0" width="370" height="98" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/>
+      <rect x="0" y="0" width="370" height="22" rx="6" fill="#e2e8f0"/>
+      <text x="12" y="15" fill="#1e293b" font-family="monospace" font-size="9.5" font-weight="700">INPUT: ${sample.table}</text>
+      ${colHeaders}
+      ${sampleRows}
+    </g>
+
+    <!-- Transformation Conveyor -->
+    <g transform="translate(415, 88)">
+      <path d="M 0 10 L 45 10" stroke="#2563eb" stroke-width="2.5" stroke-dasharray="3,3"/>
+      <polygon points="52,10 44,6 44,14" fill="#2563eb"/>
+      <text x="-12" y="0" fill="#2563eb" font-family="monospace" font-size="8.5" font-weight="700">WINDOW &amp; JOIN</text>
+    </g>
+
+    <!-- Expected Output -->
+    <g transform="translate(480, 48)">
+      <rect x="0" y="0" width="370" height="98" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.2"/>
+      <rect x="0" y="0" width="370" height="22" rx="6" fill="#d1fae5"/>
+      <text x="12" y="15" fill="#065f46" font-family="monospace" font-size="9.5" font-weight="700">EXPECTED OUTPUT</text>
+      ${outColHeaders}
+      ${outRows}
+    </g>
+  </svg>`;
+}
+
+// Normalize problems
+problems.forEach(p => {
+  p.prompt = p.prompt || p.description;
+  p.interviewFreq = p.interviewFreq || p.acceptance || 'High Frequency';
+  p.trapsAndEdgeCases = p.trapsAndEdgeCases || p.traps || [];
+  if (!p.svgDiagram) {
+    p.svgDiagram = generateProblemSvg(p);
+  }
+});
+
+// Normalize MCQs
+mcqs.forEach(m => {
+  m.correct = m.correct !== undefined ? m.correct : m.answer;
+  m.question = m.question || m.q;
+  m.isTrap = m.trapBadge ? true : false;
+});
+
+// Normalize Drills
+drills.forEach(d => {
+  d.solutionSQL = d.solutionSQL || d.sql;
+  d.prompt = d.prompt || d.task;
+  d.domain = d.domain || d.context;
+  d.schema = d.schema || d.tables;
+});
+
 // -----------------------------------------------------------------------------
 // 5. ASSEMBLE WINDOW DATA OBJECT
 // -----------------------------------------------------------------------------
@@ -1380,7 +1454,9 @@ const section5Data = {
   },
   mcqs: mcqs,
   drills: drills,
-  leetcodeProblems: problems
+  prepDrills: drills,
+  leetcodeProblems: problems,
+  problems: problems
 };
 
 const outputContent = `// =============================================================================
