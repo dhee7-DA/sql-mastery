@@ -1078,6 +1078,33 @@ code.lc-code-pill {
   box-shadow: 0 2px 6px rgba(13, 148, 136, 0.25);
 }
 
+.lc-kw-subquery {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+  border: 1px solid rgba(124, 58, 237, 0.3);
+}
+
+.lc-kw-subquery:hover {
+  background: #7c3aed;
+  color: #ffffff;
+  border-color: #7c3aed;
+  box-shadow: 0 2px 6px rgba(124, 58, 237, 0.25);
+}
+
+.lc-kw-string {
+  background: rgba(217, 119, 6, 0.1);
+  color: #d97706;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+}
+
+.lc-kw-string:hover {
+  background: #d97706;
+  color: #ffffff;
+  border-color: #d97706;
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.25);
+}
+
+
 /* Line-Level Deep-Dive Chips */
 .lc-line-chips-row {
   display: flex;
@@ -1138,6 +1165,17 @@ code.lc-code-pill {
   border-color: #ea580c;
   color: #ea580c;
 }
+
+.lc-chip-subquery:hover {
+  border-color: #7c3aed;
+  color: #7c3aed;
+}
+
+.lc-chip-string:hover {
+  border-color: #d97706;
+  color: #d97706;
+}
+
 
 /* Quick Pills Bar under Editor */
 .lc-solution-quick-pills-bar {

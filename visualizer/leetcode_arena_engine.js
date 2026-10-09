@@ -49,6 +49,9 @@ window.LEETCODE_ARENA = (() => {
   }
 
   function getSectionData() {
+    if (state.activeConceptId === 'concept-7') {
+      return window.LEETCODE_SECTION_7_DATA;
+    }
     if (state.activeConceptId === 'concept-6') {
       return window.LEETCODE_SECTION_6_DATA;
     }
@@ -106,7 +109,8 @@ window.LEETCODE_ARENA = (() => {
     const c4Count = (window.LEETCODE_SECTION_4_DATA && (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems)) ? (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems).length : 12;
     const c5Count = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) ? (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems).length : 12;
     const c6Count = (window.LEETCODE_SECTION_6_DATA && (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems)) ? (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems).length : 7;
-    const totalAvail = c1Count + c2Count + c3Count + c4Count + c5Count + c6Count;
+    const c7Count = (window.LEETCODE_SECTION_7_DATA && (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems)) ? (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems).length : 7;
+    const totalAvail = c1Count + c2Count + c3Count + c4Count + c5Count + c6Count + c7Count;
 
     container.innerHTML = `
       <div class="lc-arena-container">
@@ -168,10 +172,10 @@ window.LEETCODE_ARENA = (() => {
             <span>Subqueries, CTEs &amp; Correlated</span>
             <span class="lc-concept-badge">${c6Count} Problems</span>
           </button>
-          <button class="lc-concept-btn" style="opacity: 0.6; cursor: not-allowed;" title="Upcoming Module">
+          <button class="lc-concept-btn ${state.activeConceptId === 'concept-7' ? 'active' : ''}" data-concept="concept-7">
             <span>🔤 Concept 7:</span>
             <span>String Manipulation &amp; Regex</span>
-            <span class="lc-concept-badge">7 Problems</span>
+            <span class="lc-concept-badge">${c7Count} Problems</span>
           </button>
         </div>
 
@@ -260,7 +264,9 @@ window.LEETCODE_ARENA = (() => {
       const c4Count = (window.LEETCODE_SECTION_4_DATA && (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems)) ? (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems).length : 12;
       const c5Count = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) ? (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems).length : 12;
       const c6Count = (window.LEETCODE_SECTION_6_DATA && (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems)) ? (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems).length : 7;
-      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count + c4Count + c5Count + c6Count}`;
+      const c7Count = (window.LEETCODE_SECTION_7_DATA && (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems)) ? (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems).length : 7;
+      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count + c4Count + c5Count + c6Count + c7Count}`;
+
     }
     if (elMcqs) {
       const correctCount = Object.values(state.answeredMcqs).filter(a => a.isCorrect).length;
@@ -671,6 +677,8 @@ window.LEETCODE_ARENA = (() => {
       navigateToConcept('concept-4', 1, event);
     } else if (kw === 'subqueries' || kw === 'cte' || kw === 'correlated') {
       navigateToConcept('concept-6', 1, event);
+    } else if (kw === 'strings' || kw === 'regex' || kw === 'dml' || kw === 'group_concat') {
+      navigateToConcept('concept-7', 1, event);
     }
   }
 
@@ -730,14 +738,17 @@ window.LEETCODE_ARENA = (() => {
     }
     if (returnBreadcrumbState && returnBreadcrumbState.problemId) {
       const pId = returnBreadcrumbState.problemId;
-      const c1 = (window.LEETCODE_SECTION_1_DATA && window.LEETCODE_SECTION_1_DATA.leetcodeProblems) || [];
-      const c2 = (window.LEETCODE_SECTION_2_DATA && window.LEETCODE_SECTION_2_DATA.leetcodeProblems) || [];
-      const c3 = (window.LEETCODE_SECTION_3_DATA && window.LEETCODE_SECTION_3_DATA.leetcodeProblems) || [];
-      const c4 = (window.LEETCODE_SECTION_4_DATA && window.LEETCODE_SECTION_4_DATA.leetcodeProblems) || [];
-      const c5 = (window.LEETCODE_SECTION_5_DATA && window.LEETCODE_SECTION_5_DATA.leetcodeProblems) || [];
-      const c6 = (window.LEETCODE_SECTION_6_DATA && window.LEETCODE_SECTION_6_DATA.leetcodeProblems) || [];
+      const c1 = (window.LEETCODE_SECTION_1_DATA && (window.LEETCODE_SECTION_1_DATA.leetcodeProblems || window.LEETCODE_SECTION_1_DATA.problems)) || [];
+      const c2 = (window.LEETCODE_SECTION_2_DATA && (window.LEETCODE_SECTION_2_DATA.leetcodeProblems || window.LEETCODE_SECTION_2_DATA.problems)) || [];
+      const c3 = (window.LEETCODE_SECTION_3_DATA && (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems)) || [];
+      const c4 = (window.LEETCODE_SECTION_4_DATA && (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems)) || [];
+      const c5 = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) || [];
+      const c6 = (window.LEETCODE_SECTION_6_DATA && (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems)) || [];
+      const c7 = (window.LEETCODE_SECTION_7_DATA && (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems)) || [];
 
-      if (c6.some(p => p.id === pId)) {
+      if (c7.some(p => p.id === pId)) {
+        state.activeConceptId = 'concept-7';
+      } else if (c6.some(p => p.id === pId)) {
         state.activeConceptId = 'concept-6';
       } else if (c5.some(p => p.id === pId)) {
         state.activeConceptId = 'concept-5';
@@ -849,7 +860,18 @@ window.LEETCODE_ARENA = (() => {
       `</span>`;
     });
 
+    // 9. String Manipulation, Regex & Clauses (Concept 7)
+    safe = safe.replace(/\b(CONCAT|SUBSTRING|SUBSTR|UPPER|LOWER|LENGTH|CHAR_LENGTH|TRIM|REGEXP|RLIKE|LIKE|GROUP_CONCAT|STRING_AGG|DELETE)\b/gi, (match) => {
+      return `<span class="lc-kw-link lc-kw-string" onclick="window.LEETCODE_ARENA.navigateToKeyword('strings', event)" title="Deep-dive into Concept 7: String Manipulation, Regex &amp; DML">` +
+        `<span class="lc-kw-text">${match}</span>` +
+        `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+          `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
+        `</svg>` +
+      `</span>`;
+    });
+
     return safe;
+
   }
 
   function renderHighlightedSQLWithArrows(sql) {
@@ -917,6 +939,28 @@ window.LEETCODE_ARENA = (() => {
         </button>
       `);
     }
+    if (text.includes('WITH') || text.includes('EXISTS') || text.includes('UNION') || text.includes('SUBQUERY') || text.includes('CTE')) {
+      buttons.push(`
+        <button class="lc-line-chip lc-chip-subquery" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-6', 1, event)" title="Jump to Concept 6: Subqueries &amp; CTEs Masterclass">
+          <span class="lc-chip-icon">🧩</span>
+          <span>Subqueries &amp; CTEs</span>
+          <svg class="lc-chip-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </button>
+      `);
+    }
+    if (text.includes('CONCAT') || text.includes('SUBSTR') || text.includes('REGEXP') || text.includes('RLIKE') || text.includes('DELETE') || text.includes('GROUP_CONCAT')) {
+      buttons.push(`
+        <button class="lc-line-chip lc-chip-string" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-7', 1, event)" title="Jump to Concept 7: String Manipulation &amp; Regex Masterclass">
+          <span class="lc-chip-icon">🔤</span>
+          <span>Strings &amp; Regex</span>
+          <svg class="lc-chip-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </button>
+      `);
+    }
 
     if (buttons.length === 0) return '';
     return `<div class="lc-line-chips-row">${buttons.join('')}</div>`;
@@ -966,6 +1010,25 @@ window.LEETCODE_ARENA = (() => {
         </button>
       `);
     }
+
+    if (fullSql.includes('WITH') || fullSql.includes('EXISTS') || fullSql.includes('UNION') || explanationText.includes('SUBQUERY') || explanationText.includes('CTE')) {
+      pills.push(`
+        <button class="lc-quick-pill lc-pill-subquery" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-6', 1, event)" title="Read Concept 6 Subqueries Masterclass">
+          <span>🧩 Concept 6 Subqueries &amp; CTEs</span>
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M12 4H6M12 4V10"/></svg>
+        </button>
+      `);
+    }
+
+    if (fullSql.includes('CONCAT') || fullSql.includes('SUBSTR') || fullSql.includes('REGEXP') || fullSql.includes('DELETE') || explanationText.includes('REGEX') || explanationText.includes('STRING')) {
+      pills.push(`
+        <button class="lc-quick-pill lc-pill-string" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-7', 1, event)" title="Read Concept 7 Strings &amp; Regex Masterclass">
+          <span>🔤 Concept 7 Strings &amp; Regex</span>
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M12 4H6M12 4V10"/></svg>
+        </button>
+      `);
+    }
+
 
     return pills.join('');
   }
@@ -1115,6 +1178,28 @@ window.LEETCODE_ARENA = (() => {
         </div>
       `);
     }
+
+    // Check for Concept 7: Advanced String Manipulation, Regex & Clauses
+    if (fullSql.includes('CONCAT') || fullSql.includes('SUBSTR') || fullSql.includes('REGEXP') || fullSql.includes('LIKE') || fullSql.includes('DELETE') || explanationText.includes('REGEX') || explanationText.includes('STRING')) {
+      cards.push(`
+        <div class="lc-gateway-card" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-7', 1, event)">
+          <div class="lc-gateway-info">
+            <div class="lc-gateway-tag tag-masterclass">
+              <span>🔤</span>
+              <span>Concept 7 Masterclass</span>
+            </div>
+            <div class="lc-gateway-name">String Manipulation, Regex &amp; Clauses</div>
+            <div class="lc-gateway-desc">8 Deep SVG chapters: String Pipeline Physics, Regex Engine DFA/NFA, GROUP_CONCAT Serialization &amp; DML Deletion</div>
+          </div>
+          <div class="lc-gateway-action-arrow" title="Read String Manipulation Masterclass">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 10h10M11 6l4 4-4 4"/>
+            </svg>
+          </div>
+        </div>
+      `);
+    }
+
 
     // Check for CASE WHEN
     if (fullSql.includes('CASE') || fullSql.includes('WHEN')) {
