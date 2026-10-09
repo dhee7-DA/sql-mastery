@@ -49,6 +49,9 @@ window.LEETCODE_ARENA = (() => {
   }
 
   function getSectionData() {
+    if (state.activeConceptId === 'concept-6') {
+      return window.LEETCODE_SECTION_6_DATA;
+    }
     if (state.activeConceptId === 'concept-5') {
       return window.LEETCODE_SECTION_5_DATA;
     }
@@ -102,7 +105,8 @@ window.LEETCODE_ARENA = (() => {
     const c3Count = (window.LEETCODE_SECTION_3_DATA && (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems)) ? (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems).length : 12;
     const c4Count = (window.LEETCODE_SECTION_4_DATA && (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems)) ? (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems).length : 12;
     const c5Count = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) ? (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems).length : 12;
-    const totalAvail = c1Count + c2Count + c3Count + c4Count + c5Count;
+    const c6Count = (window.LEETCODE_SECTION_6_DATA && (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems)) ? (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems).length : 7;
+    const totalAvail = c1Count + c2Count + c3Count + c4Count + c5Count + c6Count;
 
     container.innerHTML = `
       <div class="lc-arena-container">
@@ -159,10 +163,10 @@ window.LEETCODE_ARENA = (() => {
             <span>Advanced Joins &amp; Running Sums</span>
             <span class="lc-concept-badge">${c5Count} Problems</span>
           </button>
-          <button class="lc-concept-btn" style="opacity: 0.6; cursor: not-allowed;" title="Upcoming Module">
+          <button class="lc-concept-btn ${state.activeConceptId === 'concept-6' ? 'active' : ''}" data-concept="concept-6">
             <span>🧩 Concept 6:</span>
-            <span>Subqueries, CTEs &amp; Windows</span>
-            <span class="lc-concept-badge">7 Problems</span>
+            <span>Subqueries, CTEs &amp; Correlated</span>
+            <span class="lc-concept-badge">${c6Count} Problems</span>
           </button>
           <button class="lc-concept-btn" style="opacity: 0.6; cursor: not-allowed;" title="Upcoming Module">
             <span>🔤 Concept 7:</span>
@@ -255,7 +259,8 @@ window.LEETCODE_ARENA = (() => {
       const c3Count = (window.LEETCODE_SECTION_3_DATA && (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems)) ? (window.LEETCODE_SECTION_3_DATA.leetcodeProblems || window.LEETCODE_SECTION_3_DATA.problems).length : 12;
       const c4Count = (window.LEETCODE_SECTION_4_DATA && (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems)) ? (window.LEETCODE_SECTION_4_DATA.leetcodeProblems || window.LEETCODE_SECTION_4_DATA.problems).length : 12;
       const c5Count = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) ? (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems).length : 12;
-      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count + c4Count + c5Count}`;
+      const c6Count = (window.LEETCODE_SECTION_6_DATA && (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems)) ? (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems).length : 7;
+      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count + c4Count + c5Count + c6Count}`;
     }
     if (elMcqs) {
       const correctCount = Object.values(state.answeredMcqs).filter(a => a.isCorrect).length;
@@ -664,6 +669,8 @@ window.LEETCODE_ARENA = (() => {
       navigateToConcept('concept-1', 4, event);
     } else if (kw === 'ordering') {
       navigateToConcept('concept-4', 1, event);
+    } else if (kw === 'subqueries' || kw === 'cte' || kw === 'correlated') {
+      navigateToConcept('concept-6', 1, event);
     }
   }
 
@@ -728,8 +735,11 @@ window.LEETCODE_ARENA = (() => {
       const c3 = (window.LEETCODE_SECTION_3_DATA && window.LEETCODE_SECTION_3_DATA.leetcodeProblems) || [];
       const c4 = (window.LEETCODE_SECTION_4_DATA && window.LEETCODE_SECTION_4_DATA.leetcodeProblems) || [];
       const c5 = (window.LEETCODE_SECTION_5_DATA && window.LEETCODE_SECTION_5_DATA.leetcodeProblems) || [];
+      const c6 = (window.LEETCODE_SECTION_6_DATA && window.LEETCODE_SECTION_6_DATA.leetcodeProblems) || [];
 
-      if (c5.some(p => p.id === pId)) {
+      if (c6.some(p => p.id === pId)) {
+        state.activeConceptId = 'concept-6';
+      } else if (c5.some(p => p.id === pId)) {
         state.activeConceptId = 'concept-5';
       } else if (c4.some(p => p.id === pId)) {
         state.activeConceptId = 'concept-4';
@@ -822,6 +832,16 @@ window.LEETCODE_ARENA = (() => {
     // 7. Window Functions & Framing: OVER, ROWS BETWEEN, PRECEDING, LEAD, LAG (Concept 5)
     safe = safe.replace(/\b(ROWS\s+BETWEEN|PRECEDING|FOLLOWING|LEAD|LAG|ROW_NUMBER|OVER)\b/gi, (match) => {
       return `<span class="lc-kw-link lc-kw-window" onclick="window.LEETCODE_ARENA.navigateToKeyword('window', event)" title="Deep-dive into Concept 5: Window Framing &amp; Running Sums">` +
+        `<span class="lc-kw-text">${match}</span>` +
+        `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+          `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
+        `</svg>` +
+      `</span>`;
+    });
+
+    // 8. Subqueries, CTEs & Correlated Subqueries (Concept 6)
+    safe = safe.replace(/\b(WITH|EXISTS|NOT\s+EXISTS|UNION\s+ALL|UNION|DENSE_RANK)\b/gi, (match) => {
+      return `<span class="lc-kw-link lc-kw-subquery" onclick="window.LEETCODE_ARENA.navigateToKeyword('subqueries', event)" title="Deep-dive into Concept 6: Subqueries, CTEs &amp; Correlated Logic">` +
         `<span class="lc-kw-text">${match}</span>` +
         `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
           `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
@@ -1067,6 +1087,27 @@ window.LEETCODE_ARENA = (() => {
             <div class="lc-gateway-desc">8 Visual SVG chapters: Non-Equi Joins, ROWS vs RANGE Frames, Consecutive LEAD/LAG &amp; Knapsack Physics</div>
           </div>
           <div class="lc-gateway-action-arrow" title="Read Advanced Joins Masterclass">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 10h10M11 6l4 4-4 4"/>
+            </svg>
+          </div>
+        </div>
+      `);
+    }
+
+    // Check for Concept 6: Subqueries, CTEs, EXISTS, UNION & Correlated Logic
+    if (fullSql.includes('WITH') || fullSql.includes('EXISTS') || fullSql.includes('UNION') || fullSql.includes('DENSE_RANK') || fullSql.includes('NOT IN') || explanationText.includes('SUBQUERY') || explanationText.includes('CTE')) {
+      cards.push(`
+        <div class="lc-gateway-card" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-6', 1, event)">
+          <div class="lc-gateway-info">
+            <div class="lc-gateway-tag tag-masterclass">
+              <span>🧩</span>
+              <span>Concept 6 Masterclass</span>
+            </div>
+            <div class="lc-gateway-name">Subqueries, CTEs &amp; Correlated Logic</div>
+            <div class="lc-gateway-desc">8 Visual SVG chapters: Subquery Shapes, NOT IN NULL Traps, CTE Optimization Fences &amp; DAG Pipelines</div>
+          </div>
+          <div class="lc-gateway-action-arrow" title="Read Subqueries Masterclass">
             <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 10h10M11 6l4 4-4 4"/>
             </svg>
