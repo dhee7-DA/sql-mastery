@@ -138,7 +138,7 @@ window.LEETCODE_ARENA = (() => {
               LeetCode SQL Arena
               <span class="lc-concept-badge">${data.title}</span>
             </h2>
-            <p>Master canonical LeetCode SQL problems through concept architecture, visual SVG schema diagrams, 100 theory trap MCQs, 100 prep drills, and instant test verification.</p>
+            <p>126 canonical database problems decoded through visual execution physics, theory traps, and instant test verification.</p>
           </div>
           <div class="lc-stats-group">
             <div class="lc-stat-pill">
@@ -156,63 +156,65 @@ window.LEETCODE_ARENA = (() => {
           </div>
         </div>
 
-        <!-- Concept Navigation Bar -->
-        <div class="lc-concept-nav">
-          <button class="lc-concept-btn ${state.activeConceptId === 'concept-1' ? 'active' : ''}" data-concept="concept-1">
-            <span>📐 Concept 1:</span>
-            <span>Filtering &amp; Three-Valued Logic</span>
-            <span class="lc-concept-badge">${c1Count} Problems</span>
-          </button>
-          <button class="lc-concept-btn ${state.activeConceptId === 'concept-2' ? 'active' : ''}" data-concept="concept-2">
-            <span>🔗 Concept 2:</span>
-            <span>Relational Joins &amp; Self-Joins</span>
-            <span class="lc-concept-badge">${c2Count} Problems</span>
-          </button>
-          <button class="lc-concept-btn ${state.activeConceptId === 'concept-3' ? 'active' : ''}" data-concept="concept-3">
-            <span>📊 Concept 3:</span>
-            <span>Basic Aggregates &amp; Math</span>
-            <span class="lc-concept-badge">${c3Count} Problems</span>
-          </button>
-          <button class="lc-concept-btn ${state.activeConceptId === 'concept-4' ? 'active' : ''}" data-concept="concept-4">
-            <span>🗂️ Concept 4:</span>
-            <span>Sorting &amp; Grouping (HAVING)</span>
-            <span class="lc-concept-badge">${c4Count} Problems</span>
-          </button>
-          <button class="lc-concept-btn ${state.activeConceptId === 'concept-5' ? 'active' : ''}" data-concept="concept-5">
-            <span>⚡ Concept 5:</span>
-            <span>Advanced Joins &amp; Running Sums</span>
-            <span class="lc-concept-badge">${c5Count} Problems</span>
-          </button>
-          <button class="lc-concept-btn ${state.activeConceptId === 'concept-6' ? 'active' : ''}" data-concept="concept-6">
-            <span>🧩 Concept 6:</span>
-            <span>Subqueries, CTEs &amp; Correlated</span>
-            <span class="lc-concept-badge">${c6Count} Problems</span>
-          </button>
-          <button class="lc-concept-btn ${state.activeConceptId === 'concept-7' ? 'active' : ''}" data-concept="concept-7">
-            <span>🔤 Concept 7:</span>
-            <span>String Manipulation &amp; Regex</span>
-            <span class="lc-concept-badge">${c7Count} Problems</span>
-          </button>
-          <button class="lc-concept-btn ${state.activeConceptId === 'concept-8' ? 'active' : ''}" data-concept="concept-8">
-            <span>📊 Concept 8:</span>
-            <span>Statistical Distributions &amp; Medians</span>
-            <span class="lc-concept-badge">${c8Count} Problems</span>
-          </button>
-          <button class="lc-concept-btn ${state.activeConceptId === 'concept-9' ? 'active' : ''}" data-concept="concept-9">
-            <span>🏝️ Concept 9:</span>
-            <span>Islands, Gaps &amp; Temporal</span>
-            <span class="lc-concept-badge">${c9Count} Problems</span>
-          </button>
-          <button class="lc-concept-btn ${state.activeConceptId === 'concept-10' ? 'active' : ''}" data-concept="concept-10">
-            <span>🕸️ Concept 10:</span>
-            <span>Graph &amp; Social Analytics</span>
-            <span class="lc-concept-badge">${c10Count} Problems</span>
-          </button>
-          <button class="lc-concept-btn ${state.activeConceptId === 'concept-11' ? 'active' : ''}" data-concept="concept-11">
-            <span>🌲 Concept 11:</span>
-            <span>Recursive CTEs &amp; Hierarchies</span>
-            <span class="lc-concept-badge">${c11Count} Problems</span>
-          </button>
+        <!-- Concept Navigation Bar with Masked Scroll Wrapper -->
+        <div class="lc-concept-nav-wrapper">
+          <div class="lc-concept-nav">
+            <button class="lc-concept-btn ${state.activeConceptId === 'concept-1' ? 'active' : ''}" data-concept="concept-1">
+              <span>📐 Concept 1:</span>
+              <span>Filtering &amp; Three-Valued Logic</span>
+              <span class="lc-concept-badge">${c1Count} Problems</span>
+            </button>
+            <button class="lc-concept-btn ${state.activeConceptId === 'concept-2' ? 'active' : ''}" data-concept="concept-2">
+              <span>🔗 Concept 2:</span>
+              <span>Relational Joins &amp; Self-Joins</span>
+              <span class="lc-concept-badge">${c2Count} Problems</span>
+            </button>
+            <button class="lc-concept-btn ${state.activeConceptId === 'concept-3' ? 'active' : ''}" data-concept="concept-3">
+              <span>📊 Concept 3:</span>
+              <span>Basic Aggregates &amp; Math</span>
+              <span class="lc-concept-badge">${c3Count} Problems</span>
+            </button>
+            <button class="lc-concept-btn ${state.activeConceptId === 'concept-4' ? 'active' : ''}" data-concept="concept-4">
+              <span>🗂️ Concept 4:</span>
+              <span>Sorting &amp; Grouping (HAVING)</span>
+              <span class="lc-concept-badge">${c4Count} Problems</span>
+            </button>
+            <button class="lc-concept-btn ${state.activeConceptId === 'concept-5' ? 'active' : ''}" data-concept="concept-5">
+              <span>⚡ Concept 5:</span>
+              <span>Advanced Joins &amp; Running Sums</span>
+              <span class="lc-concept-badge">${c5Count} Problems</span>
+            </button>
+            <button class="lc-concept-btn ${state.activeConceptId === 'concept-6' ? 'active' : ''}" data-concept="concept-6">
+              <span>🧩 Concept 6:</span>
+              <span>Subqueries, CTEs &amp; Correlated</span>
+              <span class="lc-concept-badge">${c6Count} Problems</span>
+            </button>
+            <button class="lc-concept-btn ${state.activeConceptId === 'concept-7' ? 'active' : ''}" data-concept="concept-7">
+              <span>🔤 Concept 7:</span>
+              <span>String Manipulation &amp; Regex</span>
+              <span class="lc-concept-badge">${c7Count} Problems</span>
+            </button>
+            <button class="lc-concept-btn ${state.activeConceptId === 'concept-8' ? 'active' : ''}" data-concept="concept-8">
+              <span>📊 Concept 8:</span>
+              <span>Statistical Distributions &amp; Medians</span>
+              <span class="lc-concept-badge">${c8Count} Problems</span>
+            </button>
+            <button class="lc-concept-btn ${state.activeConceptId === 'concept-9' ? 'active' : ''}" data-concept="concept-9">
+              <span>🏝️ Concept 9:</span>
+              <span>Islands, Gaps &amp; Temporal</span>
+              <span class="lc-concept-badge">${c9Count} Problems</span>
+            </button>
+            <button class="lc-concept-btn ${state.activeConceptId === 'concept-10' ? 'active' : ''}" data-concept="concept-10">
+              <span>🕸️ Concept 10:</span>
+              <span>Graph &amp; Social Analytics</span>
+              <span class="lc-concept-badge">${c10Count} Problems</span>
+            </button>
+            <button class="lc-concept-btn ${state.activeConceptId === 'concept-11' ? 'active' : ''}" data-concept="concept-11">
+              <span>🌲 Concept 11:</span>
+              <span>Recursive CTEs &amp; Hierarchies</span>
+              <span class="lc-concept-badge">${c11Count} Problems</span>
+            </button>
+          </div>
         </div>
 
         <!-- 4-Stage Sub Navigation -->
