@@ -49,6 +49,15 @@ window.LEETCODE_ARENA = (() => {
   }
 
   function getSectionData() {
+    if (state.activeConceptId === 'concept-11') {
+      return window.LEETCODE_SECTION_11_DATA;
+    }
+    if (state.activeConceptId === 'concept-10') {
+      return window.LEETCODE_SECTION_10_DATA;
+    }
+    if (state.activeConceptId === 'concept-9') {
+      return window.LEETCODE_SECTION_9_DATA;
+    }
     if (state.activeConceptId === 'concept-8') {
       return window.LEETCODE_SECTION_8_DATA;
     }
@@ -113,8 +122,11 @@ window.LEETCODE_ARENA = (() => {
     const c5Count = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) ? (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems).length : 12;
     const c6Count = (window.LEETCODE_SECTION_6_DATA && (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems)) ? (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems).length : 7;
     const c7Count = (window.LEETCODE_SECTION_7_DATA && (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems)) ? (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems).length : 7;
-    const c8Count = (window.LEETCODE_SECTION_8_DATA && (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems)) ? (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems).length : 50;
-    const totalAvail = c1Count + c2Count + c3Count + c4Count + c5Count + c6Count + c7Count + c8Count;
+    const c8Count = (window.LEETCODE_SECTION_8_DATA && (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems)) ? (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems).length : 12;
+    const c9Count = (window.LEETCODE_SECTION_9_DATA && (window.LEETCODE_SECTION_9_DATA.leetcodeProblems || window.LEETCODE_SECTION_9_DATA.problems)) ? (window.LEETCODE_SECTION_9_DATA.leetcodeProblems || window.LEETCODE_SECTION_9_DATA.problems).length : 12;
+    const c10Count = (window.LEETCODE_SECTION_10_DATA && (window.LEETCODE_SECTION_10_DATA.leetcodeProblems || window.LEETCODE_SECTION_10_DATA.problems)) ? (window.LEETCODE_SECTION_10_DATA.leetcodeProblems || window.LEETCODE_SECTION_10_DATA.problems).length : 13;
+    const c11Count = (window.LEETCODE_SECTION_11_DATA && (window.LEETCODE_SECTION_11_DATA.leetcodeProblems || window.LEETCODE_SECTION_11_DATA.problems)) ? (window.LEETCODE_SECTION_11_DATA.leetcodeProblems || window.LEETCODE_SECTION_11_DATA.problems).length : 13;
+    const totalAvail = c1Count + c2Count + c3Count + c4Count + c5Count + c6Count + c7Count + c8Count + c9Count + c10Count + c11Count;
 
     container.innerHTML = `
       <div class="lc-arena-container">
@@ -182,9 +194,24 @@ window.LEETCODE_ARENA = (() => {
             <span class="lc-concept-badge">${c7Count} Problems</span>
           </button>
           <button class="lc-concept-btn ${state.activeConceptId === 'concept-8' ? 'active' : ''}" data-concept="concept-8">
-            <span>💎 Concept 8:</span>
-            <span>Advanced Premium Core</span>
+            <span>📊 Concept 8:</span>
+            <span>Statistical Distributions &amp; Medians</span>
             <span class="lc-concept-badge">${c8Count} Problems</span>
+          </button>
+          <button class="lc-concept-btn ${state.activeConceptId === 'concept-9' ? 'active' : ''}" data-concept="concept-9">
+            <span>🏝️ Concept 9:</span>
+            <span>Islands, Gaps &amp; Temporal</span>
+            <span class="lc-concept-badge">${c9Count} Problems</span>
+          </button>
+          <button class="lc-concept-btn ${state.activeConceptId === 'concept-10' ? 'active' : ''}" data-concept="concept-10">
+            <span>🕸️ Concept 10:</span>
+            <span>Graph &amp; Social Analytics</span>
+            <span class="lc-concept-badge">${c10Count} Problems</span>
+          </button>
+          <button class="lc-concept-btn ${state.activeConceptId === 'concept-11' ? 'active' : ''}" data-concept="concept-11">
+            <span>🌲 Concept 11:</span>
+            <span>Recursive CTEs &amp; Hierarchies</span>
+            <span class="lc-concept-badge">${c11Count} Problems</span>
           </button>
         </div>
 
@@ -274,8 +301,11 @@ window.LEETCODE_ARENA = (() => {
       const c5Count = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) ? (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems).length : 12;
       const c6Count = (window.LEETCODE_SECTION_6_DATA && (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems)) ? (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems).length : 7;
       const c7Count = (window.LEETCODE_SECTION_7_DATA && (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems)) ? (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems).length : 7;
-      const c8Count = (window.LEETCODE_SECTION_8_DATA && (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems)) ? (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems).length : 50;
-      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count + c4Count + c5Count + c6Count + c7Count + c8Count}`;
+      const c8Count = (window.LEETCODE_SECTION_8_DATA && (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems)) ? (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems).length : 12;
+      const c9Count = (window.LEETCODE_SECTION_9_DATA && (window.LEETCODE_SECTION_9_DATA.leetcodeProblems || window.LEETCODE_SECTION_9_DATA.problems)) ? (window.LEETCODE_SECTION_9_DATA.leetcodeProblems || window.LEETCODE_SECTION_9_DATA.problems).length : 12;
+      const c10Count = (window.LEETCODE_SECTION_10_DATA && (window.LEETCODE_SECTION_10_DATA.leetcodeProblems || window.LEETCODE_SECTION_10_DATA.problems)) ? (window.LEETCODE_SECTION_10_DATA.leetcodeProblems || window.LEETCODE_SECTION_10_DATA.problems).length : 13;
+      const c11Count = (window.LEETCODE_SECTION_11_DATA && (window.LEETCODE_SECTION_11_DATA.leetcodeProblems || window.LEETCODE_SECTION_11_DATA.problems)) ? (window.LEETCODE_SECTION_11_DATA.leetcodeProblems || window.LEETCODE_SECTION_11_DATA.problems).length : 13;
+      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count + c4Count + c5Count + c6Count + c7Count + c8Count + c9Count + c10Count + c11Count}`;
 
     }
     if (elMcqs) {
@@ -689,8 +719,14 @@ window.LEETCODE_ARENA = (() => {
       navigateToConcept('concept-6', 1, event);
     } else if (kw === 'strings' || kw === 'regex' || kw === 'dml' || kw === 'group_concat') {
       navigateToConcept('concept-7', 1, event);
-    } else if (kw === 'premium' || kw === 'median' || kw === 'islands' || kw === 'gaps' || kw === 'udf' || kw === 'hierarchy') {
+    } else if (kw === 'median' || kw === 'distribution' || kw === 'udf' || kw === 'dense_rank') {
       navigateToConcept('concept-8', 1, event);
+    } else if (kw === 'islands' || kw === 'gaps' || kw === 'streak' || kw === 'temporal') {
+      navigateToConcept('concept-9', 1, event);
+    } else if (kw === 'graph' || kw === 'social' || kw === 'network' || kw === 'distance') {
+      navigateToConcept('concept-10', 1, event);
+    } else if (kw === 'recursive' || kw === 'hierarchy' || kw === 'tree' || kw === 'hopper') {
+      navigateToConcept('concept-11', 1, event);
     }
   }
 
@@ -758,8 +794,17 @@ window.LEETCODE_ARENA = (() => {
       const c6 = (window.LEETCODE_SECTION_6_DATA && (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems)) || [];
       const c7 = (window.LEETCODE_SECTION_7_DATA && (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems)) || [];
       const c8 = (window.LEETCODE_SECTION_8_DATA && (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems)) || [];
+      const c9 = (window.LEETCODE_SECTION_9_DATA && (window.LEETCODE_SECTION_9_DATA.leetcodeProblems || window.LEETCODE_SECTION_9_DATA.problems)) || [];
+      const c10 = (window.LEETCODE_SECTION_10_DATA && (window.LEETCODE_SECTION_10_DATA.leetcodeProblems || window.LEETCODE_SECTION_10_DATA.problems)) || [];
+      const c11 = (window.LEETCODE_SECTION_11_DATA && (window.LEETCODE_SECTION_11_DATA.leetcodeProblems || window.LEETCODE_SECTION_11_DATA.problems)) || [];
 
-      if (c8.some(p => p.id === pId)) {
+      if (c11.some(p => p.id === pId)) {
+        state.activeConceptId = 'concept-11';
+      } else if (c10.some(p => p.id === pId)) {
+        state.activeConceptId = 'concept-10';
+      } else if (c9.some(p => p.id === pId)) {
+        state.activeConceptId = 'concept-9';
+      } else if (c8.some(p => p.id === pId)) {
         state.activeConceptId = 'concept-8';
       } else if (c7.some(p => p.id === pId)) {
         state.activeConceptId = 'concept-7';

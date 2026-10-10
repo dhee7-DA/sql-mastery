@@ -19,6 +19,9 @@ loadDataFile('visualizer/leetcode_section5_data.js');
 loadDataFile('visualizer/leetcode_section6_data.js');
 loadDataFile('visualizer/leetcode_section7_data.js');
 loadDataFile('visualizer/leetcode_section8_data.js');
+loadDataFile('visualizer/leetcode_section9_data.js');
+loadDataFile('visualizer/leetcode_section10_data.js');
+loadDataFile('visualizer/leetcode_section11_data.js');
 
 const sections = [
   { id: 'concept-1', name: 'Concept 1: Filtering & Three-Valued Logic', data: window.LEETCODE_SECTION_1_DATA },
@@ -28,10 +31,13 @@ const sections = [
   { id: 'concept-5', name: 'Concept 5: Advanced Joins & Running Aggregates', data: window.LEETCODE_SECTION_5_DATA },
   { id: 'concept-6', name: 'Concept 6: Subqueries, CTEs & Correlated Subqueries', data: window.LEETCODE_SECTION_6_DATA },
   { id: 'concept-7', name: 'Concept 7: Advanced String Manipulation, Regex & Clauses', data: window.LEETCODE_SECTION_7_DATA },
-  { id: 'concept-8', name: 'Concept 8: Advanced Premium Core & UDF Architecture', data: window.LEETCODE_SECTION_8_DATA }
+  { id: 'concept-8', name: 'Concept 8: Statistical Distributions & Medians', data: window.LEETCODE_SECTION_8_DATA },
+  { id: 'concept-9', name: 'Concept 9: Islands, Gaps & Temporal Sequences', data: window.LEETCODE_SECTION_9_DATA },
+  { id: 'concept-10', name: 'Concept 10: Graph, Social & Network Analytics', data: window.LEETCODE_SECTION_10_DATA },
+  { id: 'concept-11', name: 'Concept 11: Recursive CTEs & Hierarchies', data: window.LEETCODE_SECTION_11_DATA }
 ];
 
-console.log('=== LEETCODE SQL ARENA COMPREHENSIVE 8-SECTION AUDIT ===\n');
+console.log('=== LEETCODE SQL ARENA COMPREHENSIVE 11-CONCEPT AUDIT ===\n');
 
 let totalProblems = 0;
 let totalChapters = 0;
@@ -129,7 +135,7 @@ sections.forEach((sec, idx) => {
   console.log('');
 });
 
-console.log('=== SUMMARY ACROSS ALL 8 CONCEPTS ===');
+console.log('=== SUMMARY ACROSS ALL 11 CONCEPTS ===');
 console.log(`Total Problems: ${totalProblems}`);
 console.log(`Total Masterclass Chapters (with visual SVGs): ${totalChapters}`);
 console.log(`Total MCQs: ${totalMCQs}`);
