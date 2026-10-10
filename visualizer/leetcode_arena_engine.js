@@ -49,6 +49,9 @@ window.LEETCODE_ARENA = (() => {
   }
 
   function getSectionData() {
+    if (state.activeConceptId === 'concept-8') {
+      return window.LEETCODE_SECTION_8_DATA;
+    }
     if (state.activeConceptId === 'concept-7') {
       return window.LEETCODE_SECTION_7_DATA;
     }
@@ -110,7 +113,8 @@ window.LEETCODE_ARENA = (() => {
     const c5Count = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) ? (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems).length : 12;
     const c6Count = (window.LEETCODE_SECTION_6_DATA && (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems)) ? (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems).length : 7;
     const c7Count = (window.LEETCODE_SECTION_7_DATA && (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems)) ? (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems).length : 7;
-    const totalAvail = c1Count + c2Count + c3Count + c4Count + c5Count + c6Count + c7Count;
+    const c8Count = (window.LEETCODE_SECTION_8_DATA && (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems)) ? (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems).length : 50;
+    const totalAvail = c1Count + c2Count + c3Count + c4Count + c5Count + c6Count + c7Count + c8Count;
 
     container.innerHTML = `
       <div class="lc-arena-container">
@@ -176,6 +180,11 @@ window.LEETCODE_ARENA = (() => {
             <span>🔤 Concept 7:</span>
             <span>String Manipulation &amp; Regex</span>
             <span class="lc-concept-badge">${c7Count} Problems</span>
+          </button>
+          <button class="lc-concept-btn ${state.activeConceptId === 'concept-8' ? 'active' : ''}" data-concept="concept-8">
+            <span>💎 Concept 8:</span>
+            <span>Advanced Premium Core</span>
+            <span class="lc-concept-badge">${c8Count} Problems</span>
           </button>
         </div>
 
@@ -265,7 +274,8 @@ window.LEETCODE_ARENA = (() => {
       const c5Count = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) ? (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems).length : 12;
       const c6Count = (window.LEETCODE_SECTION_6_DATA && (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems)) ? (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems).length : 7;
       const c7Count = (window.LEETCODE_SECTION_7_DATA && (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems)) ? (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems).length : 7;
-      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count + c4Count + c5Count + c6Count + c7Count}`;
+      const c8Count = (window.LEETCODE_SECTION_8_DATA && (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems)) ? (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems).length : 50;
+      elSolved.textContent = `${count} / ${c1Count + c2Count + c3Count + c4Count + c5Count + c6Count + c7Count + c8Count}`;
 
     }
     if (elMcqs) {
@@ -679,6 +689,8 @@ window.LEETCODE_ARENA = (() => {
       navigateToConcept('concept-6', 1, event);
     } else if (kw === 'strings' || kw === 'regex' || kw === 'dml' || kw === 'group_concat') {
       navigateToConcept('concept-7', 1, event);
+    } else if (kw === 'premium' || kw === 'median' || kw === 'islands' || kw === 'gaps' || kw === 'udf' || kw === 'hierarchy') {
+      navigateToConcept('concept-8', 1, event);
     }
   }
 
@@ -745,8 +757,11 @@ window.LEETCODE_ARENA = (() => {
       const c5 = (window.LEETCODE_SECTION_5_DATA && (window.LEETCODE_SECTION_5_DATA.leetcodeProblems || window.LEETCODE_SECTION_5_DATA.problems)) || [];
       const c6 = (window.LEETCODE_SECTION_6_DATA && (window.LEETCODE_SECTION_6_DATA.leetcodeProblems || window.LEETCODE_SECTION_6_DATA.problems)) || [];
       const c7 = (window.LEETCODE_SECTION_7_DATA && (window.LEETCODE_SECTION_7_DATA.leetcodeProblems || window.LEETCODE_SECTION_7_DATA.problems)) || [];
+      const c8 = (window.LEETCODE_SECTION_8_DATA && (window.LEETCODE_SECTION_8_DATA.leetcodeProblems || window.LEETCODE_SECTION_8_DATA.problems)) || [];
 
-      if (c7.some(p => p.id === pId)) {
+      if (c8.some(p => p.id === pId)) {
+        state.activeConceptId = 'concept-8';
+      } else if (c7.some(p => p.id === pId)) {
         state.activeConceptId = 'concept-7';
       } else if (c6.some(p => p.id === pId)) {
         state.activeConceptId = 'concept-6';
@@ -863,6 +878,16 @@ window.LEETCODE_ARENA = (() => {
     // 9. String Manipulation, Regex & Clauses (Concept 7)
     safe = safe.replace(/\b(CONCAT|SUBSTRING|SUBSTR|UPPER|LOWER|LENGTH|CHAR_LENGTH|TRIM|REGEXP|RLIKE|LIKE|GROUP_CONCAT|STRING_AGG|DELETE)\b/gi, (match) => {
       return `<span class="lc-kw-link lc-kw-string" onclick="window.LEETCODE_ARENA.navigateToKeyword('strings', event)" title="Deep-dive into Concept 7: String Manipulation, Regex &amp; DML">` +
+        `<span class="lc-kw-text">${match}</span>` +
+        `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+          `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
+        `</svg>` +
+      `</span>`;
+    });
+
+    // 10. Advanced Premium Core & UDF Architecture (Concept 8)
+    safe = safe.replace(/\b(FUNCTION|PROCEDURE|RETURNS|MEDIAN|PERCENT_RANK|CUME_DIST|NTILE)\b/gi, (match) => {
+      return `<span class="lc-kw-link lc-kw-premium" onclick="window.LEETCODE_ARENA.navigateToKeyword('premium', event)" title="Deep-dive into Concept 8: Advanced Premium Core &amp; UDF Architecture">` +
         `<span class="lc-kw-text">${match}</span>` +
         `<svg class="lc-kw-arrow-svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
           `<path d="M4 12L12 4M12 4H6M12 4V10"/>` +
@@ -1024,6 +1049,15 @@ window.LEETCODE_ARENA = (() => {
       pills.push(`
         <button class="lc-quick-pill lc-pill-string" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-7', 1, event)" title="Read Concept 7 Strings &amp; Regex Masterclass">
           <span>🔤 Concept 7 Strings &amp; Regex</span>
+          <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M12 4H6M12 4V10"/></svg>
+        </button>
+      `);
+    }
+
+    if (fullSql.includes('FUNCTION') || fullSql.includes('MEDIAN') || fullSql.includes('DENSE_RANK') || fullSql.includes('PERCENT_RANK') || explanationText.includes('PREMIUM') || explanationText.includes('ISLAND') || explanationText.includes('GAPS')) {
+      pills.push(`
+        <button class="lc-quick-pill lc-pill-premium" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-8', 1, event)" title="Read Concept 8 Premium Core Masterclass">
+          <span>💎 Concept 8 Premium Core</span>
           <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M12 4H6M12 4V10"/></svg>
         </button>
       `);
@@ -1192,6 +1226,27 @@ window.LEETCODE_ARENA = (() => {
             <div class="lc-gateway-desc">8 Deep SVG chapters: String Pipeline Physics, Regex Engine DFA/NFA, GROUP_CONCAT Serialization &amp; DML Deletion</div>
           </div>
           <div class="lc-gateway-action-arrow" title="Read String Manipulation Masterclass">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 10h10M11 6l4 4-4 4"/>
+            </svg>
+          </div>
+        </div>
+      `);
+    }
+
+    // Check for Concept 8: Advanced Premium Core & UDF Architecture
+    if (fullSql.includes('FUNCTION') || fullSql.includes('MEDIAN') || fullSql.includes('PERCENT_RANK') || explanationText.includes('PREMIUM') || explanationText.includes('ISLAND') || explanationText.includes('GAPS')) {
+      cards.push(`
+        <div class="lc-gateway-card" onclick="window.LEETCODE_ARENA.navigateToConcept('concept-8', 1, event)">
+          <div class="lc-gateway-info">
+            <div class="lc-gateway-tag tag-masterclass">
+              <span>💎</span>
+              <span>Concept 8 Masterclass</span>
+            </div>
+            <div class="lc-gateway-name">Advanced Premium Core &amp; UDF Architecture</div>
+            <div class="lc-gateway-desc">8 Deep SVG chapters: UDF Execution Lifecycle, Continuous Median Physics, Islands &amp; Gaps, Cross-Granular Cohorts</div>
+          </div>
+          <div class="lc-gateway-action-arrow" title="Read Premium Core Masterclass">
             <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 10h10M11 6l4 4-4 4"/>
             </svg>

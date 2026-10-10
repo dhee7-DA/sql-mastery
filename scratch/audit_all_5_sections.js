@@ -18,6 +18,7 @@ loadDataFile('visualizer/leetcode_section4_data.js');
 loadDataFile('visualizer/leetcode_section5_data.js');
 loadDataFile('visualizer/leetcode_section6_data.js');
 loadDataFile('visualizer/leetcode_section7_data.js');
+loadDataFile('visualizer/leetcode_section8_data.js');
 
 const sections = [
   { id: 'concept-1', name: 'Concept 1: Filtering & Three-Valued Logic', data: window.LEETCODE_SECTION_1_DATA },
@@ -26,10 +27,11 @@ const sections = [
   { id: 'concept-4', name: 'Concept 4: Sorting & Grouping (HAVING)', data: window.LEETCODE_SECTION_4_DATA },
   { id: 'concept-5', name: 'Concept 5: Advanced Joins & Running Aggregates', data: window.LEETCODE_SECTION_5_DATA },
   { id: 'concept-6', name: 'Concept 6: Subqueries, CTEs & Correlated Subqueries', data: window.LEETCODE_SECTION_6_DATA },
-  { id: 'concept-7', name: 'Concept 7: Advanced String Manipulation, Regex & Clauses', data: window.LEETCODE_SECTION_7_DATA }
+  { id: 'concept-7', name: 'Concept 7: Advanced String Manipulation, Regex & Clauses', data: window.LEETCODE_SECTION_7_DATA },
+  { id: 'concept-8', name: 'Concept 8: Advanced Premium Core & UDF Architecture', data: window.LEETCODE_SECTION_8_DATA }
 ];
 
-console.log('=== LEETCODE 50 SQL ARENA COMPREHENSIVE 7-SECTION AUDIT ===\n');
+console.log('=== LEETCODE SQL ARENA COMPREHENSIVE 8-SECTION AUDIT ===\n');
 
 let totalProblems = 0;
 let totalChapters = 0;
@@ -127,7 +129,7 @@ sections.forEach((sec, idx) => {
   console.log('');
 });
 
-console.log('=== SUMMARY ACROSS ALL 7 CONCEPTS ===');
+console.log('=== SUMMARY ACROSS ALL 8 CONCEPTS ===');
 console.log(`Total Problems: ${totalProblems}`);
 console.log(`Total Masterclass Chapters (with visual SVGs): ${totalChapters}`);
 console.log(`Total MCQs: ${totalMCQs}`);
