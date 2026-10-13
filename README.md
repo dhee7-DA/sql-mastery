@@ -85,8 +85,8 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
 |---|---|---|---|---|
 | **Day 11** | [`day-11-window-ranking`](./day-11-window-ranking) | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | Advanced | ✅ Completed (4/4) |
 | **Day 12** | [`day-12-window-aggregates`](./day-12-window-aggregates) | `LAG()`, `LEAD()`, Running Totals, Moving Averages | Advanced | ✅ Completed (4/4) |
-| **Day 13** | `day-13-business-analytics` | Churn Analysis, Retention Cohorts, MoM Growth Queries | Advanced | 🟡 Next Up |
-| **Day 14** | `day-14-capstone-project` | Comprehensive End-to-End Analytics Case Study & Presentation | Capstone | ⚪ Pending |
+| **Day 13** | [`day-13-business-analytics`](./day-13-business-analytics) | Churn Analysis, Retention Cohorts, MoM Growth Queries | Advanced | ✅ Completed (4/4) |
+| **Day 14** | `day-14-capstone-project` | Comprehensive End-to-End Analytics Case Study & Presentation | Capstone | 🟡 Next Up |
 
 > 🪟 **Important Materials & Reference**: Complete **Window Functions Master Vault (420 Problems across 7 Disciplines & Master Decision Matrix)** available in [`docs/IMPORTANT_MATERIALS_WINDOW_FUNCTIONS.md`](./docs/IMPORTANT_MATERIALS_WINDOW_FUNCTIONS.md) and [`docs/IMPORTANT_QUESTIONS_WINDOW_FUNCTIONS.md`](./docs/IMPORTANT_QUESTIONS_WINDOW_FUNCTIONS.md).
 
