@@ -31,6 +31,39 @@ window.DECONSTRUCTOR_PRESETS = [
     plainEnglishGoal: 'Evaluate three numeric columns (A, B, C) per row and classify each row into one of 4 discrete text labels based on geometric validity and side equality.',
     
     mentalModel: 'Think of this as a waterfall cascading filter. You MUST test whether the shape can physically exist first (Triangle Inequality). Only if it is a real triangle do you check if 3 sides match, then 2 sides, then all different.',
+    svgDiagram: `<svg viewBox="0 0 760 160" width="100%" height="160" xmlns="http://www.w3.org/2000/svg">
+  <rect width="760" height="160" fill="#080c14" rx="8" stroke="rgba(255,255,255,0.08)"/>
+  <rect x="15" y="12" width="730" height="26" fill="rgba(255,255,255,0.02)" rx="4" stroke="rgba(56,189,248,0.2)"/>
+  <text x="380" y="29" fill="#38bdf8" font-family="monospace" font-size="10.5" font-weight="900" text-anchor="middle">CASE WHEN WATERFALL: TRIANGLE VALIDATION DECISION TREE</text>
+  <g transform="translate(15, 48)">
+    <rect x="0" y="0" width="165" height="95" fill="rgba(244,63,94,0.08)" rx="6" stroke="rgba(244,63,94,0.3)"/>
+    <text x="82" y="22" fill="#fb7185" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">01. INEQUALITY TEST</text>
+    <text x="82" y="40" fill="#cbd5e1" font-family="monospace" font-size="8.5" text-anchor="middle">A+B&lt;=C | A+C&lt;=B | B+C&lt;=A</text>
+    <rect x="12" y="52" width="141" height="24" fill="rgba(0,0,0,0.4)" rx="4"/>
+    <text x="82" y="68" fill="#fb7185" font-family="system-ui, sans-serif" font-size="8.5" font-weight="bold" text-anchor="middle">&rarr; 'Not A Triangle'</text>
+    <path d="M 168 47 L 182 47" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+
+    <rect x="185" y="0" width="165" height="95" fill="rgba(56,189,248,0.08)" rx="6" stroke="rgba(56,189,248,0.3)"/>
+    <text x="267" y="22" fill="#38bdf8" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">02. EQUILATERAL</text>
+    <text x="267" y="40" fill="#cbd5e1" font-family="monospace" font-size="8.5" text-anchor="middle">A = B AND B = C</text>
+    <rect x="197" y="52" width="141" height="24" fill="rgba(0,0,0,0.4)" rx="4"/>
+    <text x="267" y="68" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="8.5" font-weight="bold" text-anchor="middle">&rarr; 'Equilateral'</text>
+    <path d="M 353 47 L 367 47" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+
+    <rect x="370" y="0" width="170" height="95" fill="rgba(251,191,36,0.08)" rx="6" stroke="rgba(251,191,36,0.3)"/>
+    <text x="455" y="22" fill="#fbbf24" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">03. ISOSCELES</text>
+    <text x="455" y="40" fill="#cbd5e1" font-family="monospace" font-size="8.5" text-anchor="middle">A = B | B = C | A = C</text>
+    <rect x="385" y="52" width="140" height="24" fill="rgba(0,0,0,0.4)" rx="4"/>
+    <text x="455" y="68" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="8.5" font-weight="bold" text-anchor="middle">&rarr; 'Isosceles'</text>
+    <path d="M 543 47 L 557 47" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+
+    <rect x="560" y="0" width="170" height="95" fill="rgba(34,197,94,0.08)" rx="6" stroke="rgba(34,197,94,0.3)"/>
+    <text x="645" y="22" fill="#4ade80" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">04. SCALENE</text>
+    <text x="645" y="40" fill="#cbd5e1" font-family="monospace" font-size="8.5" text-anchor="middle">ELSE (All Sides Unequal)</text>
+    <rect x="575" y="52" width="140" height="24" fill="rgba(0,0,0,0.4)" rx="4"/>
+    <text x="645" y="68" fill="#4ade80" font-family="system-ui, sans-serif" font-size="8.5" font-weight="bold" text-anchor="middle">&rarr; 'Scalene'</text>
+  </g>
+</svg>`,
     
     edgeCases: [
       {
@@ -89,6 +122,26 @@ window.DECONSTRUCTOR_PRESETS = [
     plainEnglishGoal: 'Execute two separate queries: one to find the city with the minimum character length, and one for the maximum length. If multiple cities share the shortest length, break the tie alphabetically.',
     
     mentalModel: 'Instead of searching for MIN() and MAX() with complex subqueries, sort all cities by LENGTH(CITY) ASC and pick the first one with LIMIT 1. Repeat in DESC order for the longest city.',
+    svgDiagram: `<svg viewBox="0 0 760 160" width="100%" height="160" xmlns="http://www.w3.org/2000/svg">
+  <rect width="760" height="160" fill="#080c14" rx="8" stroke="rgba(255,255,255,0.08)"/>
+  <rect x="15" y="12" width="730" height="26" fill="rgba(255,255,255,0.02)" rx="4" stroke="rgba(16,185,129,0.2)"/>
+  <text x="380" y="29" fill="#10b981" font-family="monospace" font-size="10.5" font-weight="900" text-anchor="middle">WEATHER OBSERVATION STATION 5: DUAL EXTREME HEAP PIPELINE</text>
+  <g transform="translate(15, 48)">
+    <rect x="0" y="0" width="350" height="95" fill="rgba(56,189,248,0.08)" rx="6" stroke="rgba(56,189,248,0.3)"/>
+    <text x="175" y="22" fill="#38bdf8" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">PIPELINE 1: SHORTEST CITY (MIN HEAP)</text>
+    <text x="175" y="40" fill="#cbd5e1" font-family="monospace" font-size="8.5" text-anchor="middle">ORDER BY LENGTH(city) ASC, city ASC LIMIT 1</text>
+    <rect x="25" y="52" width="300" height="26" fill="rgba(0,0,0,0.45)" rx="4"/>
+    <text x="175" y="69" fill="#38bdf8" font-family="monospace" font-size="8.5" font-weight="bold" text-anchor="middle">Result: ('Amo', 3) &bull; Alphabetical Tie-Breaker</text>
+
+    <path d="M 353 47 L 377 47" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+
+    <rect x="380" y="0" width="350" height="95" fill="rgba(251,191,36,0.08)" rx="6" stroke="rgba(251,191,36,0.3)"/>
+    <text x="555" y="22" fill="#fbbf24" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">PIPELINE 2: LONGEST CITY (MAX HEAP)</text>
+    <text x="555" y="40" fill="#cbd5e1" font-family="monospace" font-size="8.5" text-anchor="middle">ORDER BY LENGTH(city) DESC, city ASC LIMIT 1</text>
+    <rect x="405" y="52" width="300" height="26" fill="rgba(0,0,0,0.45)" rx="4"/>
+    <text x="555" y="69" fill="#fbbf24" font-family="monospace" font-size="8.5" font-weight="bold" text-anchor="middle">Result: ('Marine On Saint Croix', 21)</text>
+  </g>
+</svg>`,
     
     edgeCases: [
       {
@@ -139,6 +192,32 @@ window.DECONSTRUCTOR_PRESETS = [
     plainEnglishGoal: 'Multiply salary * months to find each employee\'s total earnings. Then find what the highest earnings figure is, and count how many employees earned that exact top amount.',
     
     mentalModel: 'Group employees by their computed earnings (months * salary), sort the groups from highest earnings to lowest, and take LIMIT 1.',
+    svgDiagram: `<svg viewBox="0 0 760 160" width="100%" height="160" xmlns="http://www.w3.org/2000/svg">
+  <rect width="760" height="160" fill="#080c14" rx="8" stroke="rgba(255,255,255,0.08)"/>
+  <rect x="15" y="12" width="730" height="26" fill="rgba(255,255,255,0.02)" rx="4" stroke="rgba(245,158,11,0.2)"/>
+  <text x="380" y="29" fill="#fbbf24" font-family="monospace" font-size="10.5" font-weight="900" text-anchor="middle">TOP EARNERS: COMPUTED PROJECTION &bull; GROUP BY &bull; TOP-1 SLICE</text>
+  <g transform="translate(15, 48)">
+    <rect x="0" y="0" width="220" height="95" fill="rgba(56,189,248,0.08)" rx="6" stroke="rgba(56,189,248,0.3)"/>
+    <text x="110" y="22" fill="#38bdf8" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">01. COMPUTE TOTAL</text>
+    <text x="110" y="40" fill="#cbd5e1" font-family="monospace" font-size="8.5" text-anchor="middle">earnings = months * salary</text>
+    <rect x="15" y="52" width="190" height="24" fill="rgba(0,0,0,0.4)" rx="4"/>
+    <text x="110" y="68" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="8" text-anchor="middle">Row-by-row integer math</text>
+    <path d="M 223 47 L 252 47" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+
+    <rect x="255" y="0" width="220" height="95" fill="rgba(192,132,252,0.08)" rx="6" stroke="rgba(192,132,252,0.3)"/>
+    <text x="365" y="22" fill="#c084fc" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">02. HASH GROUP BY</text>
+    <text x="365" y="40" fill="#cbd5e1" font-family="monospace" font-size="8.5" text-anchor="middle">GROUP BY months * salary</text>
+    <rect x="270" y="52" width="190" height="24" fill="rgba(0,0,0,0.4)" rx="4"/>
+    <text x="365" y="68" fill="#c084fc" font-family="system-ui, sans-serif" font-size="8" text-anchor="middle">Aggregate COUNT(*) headcount</text>
+    <path d="M 478 47 L 507 47" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+
+    <rect x="510" y="0" width="220" height="95" fill="rgba(34,197,94,0.08)" rx="6" stroke="rgba(34,197,94,0.3)"/>
+    <text x="620" y="22" fill="#4ade80" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">03. ORDER BY &amp; LIMIT 1</text>
+    <text x="620" y="40" fill="#cbd5e1" font-family="monospace" font-size="8.5" text-anchor="middle">ORDER BY 1 DESC LIMIT 1</text>
+    <rect x="525" y="52" width="190" height="24" fill="rgba(0,0,0,0.4)" rx="4"/>
+    <text x="620" y="68" fill="#4ade80" font-family="system-ui, sans-serif" font-size="8" text-anchor="middle">Output: (108064, 7)</text>
+  </g>
+</svg>`,
     
     edgeCases: [
       {

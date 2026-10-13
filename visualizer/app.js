@@ -2671,6 +2671,12 @@ function renderDeconstructedProblem(problemId = 'triangle') {
         <p style="font-size: 12px; line-height: 1.6; color: #a1a1aa; margin: 0;">
           <strong>Intuitive Mental Model:</strong> ${problem.mentalModel}
         </p>
+        ${problem.svgDiagram ? `
+          <div style="margin-top: 12px; background: #080c14; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px; overflow-x: auto;">
+            <div style="font-family: var(--font-mono); font-size: 10px; font-weight: 800; color: #38bdf8; margin-bottom: 6px;">⚡ ARCHITECTURAL MENTAL MODEL FLOW</div>
+            ${problem.svgDiagram}
+          </div>
+        ` : ''}
       </div>
 
       <!-- Part 2: Critical Edge Cases & Hidden Traps -->

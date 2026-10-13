@@ -472,7 +472,290 @@ window.STUDY_LIBRARY = [
       "trap": "Filtering window functions in WHERE throws 'Window functions are not allowed in WHERE'. Always encapsulate in a CTE and filter 'WHERE rnk <= 3' in the outer query."
     }
   ]
-}
+},
+  {
+    "id": "sec_business_analytics",
+    "pillarId": "pillar4",
+    "icon": "📊",
+    "title": "13. Advanced Business Analytics: Churn, Retention Cohorts & LTV Curves",
+    "badge": "Analytics Engineering",
+    "badgeClass": "pill-group",
+    "readTime": "15 min read",
+    "summary": "Master enterprise cohort analysis, retention triangle heatmaps, customer churn bridge waterfalls, and cumulative Customer Lifetime Value (LTV) curves using window framing and date truncations.",
+    "svgDiagram": `
+      <svg viewBox="0 0 860 280" width="100%" height="100%" style="min-height: 230px; max-height: 330px; display: block;" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="280" fill="#080c14" rx="14" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
+        <rect x="18" y="16" width="824" height="34" fill="rgba(255, 255, 255, 0.03)" rx="8" stroke="rgba(56, 189, 248, 0.25)" stroke-width="1"/>
+        <text x="430" y="38" fill="#38bdf8" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="900" text-anchor="middle" letter-spacing="0.5">
+          ENTERPRISE COHORT RETENTION TRIANGLE &amp; CHURN BRIDGE WATERFALL ENGINE
+        </text>
+
+        <!-- Left: Retention Triangle Heatmap Matrix -->
+        <g transform="translate(20, 65)">
+          <rect width="400" height="195" fill="rgba(255,255,255,0.02)" rx="8" stroke="rgba(255,255,255,0.08)"/>
+          <text x="15" y="22" fill="#38bdf8" font-family="monospace" font-size="10.5" font-weight="900">📐 RETENTION TRIANGLE MATRIX (COHORT % BY MONTH)</text>
+          
+          <!-- Column Headers -->
+          <text x="60" y="42" fill="#94a3b8" font-family="monospace" font-size="8.5">Cohort</text>
+          <text x="125" y="42" fill="#38bdf8" font-family="monospace" font-size="8.5">M0</text>
+          <text x="180" y="42" fill="#38bdf8" font-family="monospace" font-size="8.5">M1</text>
+          <text x="235" y="42" fill="#38bdf8" font-family="monospace" font-size="8.5">M2</text>
+          <text x="290" y="42" fill="#38bdf8" font-family="monospace" font-size="8.5">M3</text>
+          <text x="345" y="42" fill="#38bdf8" font-family="monospace" font-size="8.5">M4</text>
+
+          <!-- Row 1: Jan 2026 -->
+          <text x="20" y="66" fill="#cbd5e1" font-family="monospace" font-size="8.5">2026-01</text>
+          <rect x="115" y="52" width="45" height="20" fill="rgba(34,197,94,0.4)" rx="3"/>
+          <text x="137" y="66" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">100%</text>
+          <rect x="170" y="52" width="45" height="20" fill="rgba(34,197,94,0.28)" rx="3"/>
+          <text x="192" y="66" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">68%</text>
+          <rect x="225" y="52" width="45" height="20" fill="rgba(34,197,94,0.20)" rx="3"/>
+          <text x="247" y="66" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">54%</text>
+          <rect x="280" y="52" width="45" height="20" fill="rgba(34,197,94,0.15)" rx="3"/>
+          <text x="302" y="66" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">47%</text>
+          <rect x="335" y="52" width="45" height="20" fill="rgba(34,197,94,0.12)" rx="3"/>
+          <text x="357" y="66" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">42%</text>
+
+          <!-- Row 2: Feb 2026 -->
+          <text x="20" y="96" fill="#cbd5e1" font-family="monospace" font-size="8.5">2026-02</text>
+          <rect x="115" y="82" width="45" height="20" fill="rgba(34,197,94,0.4)" rx="3"/>
+          <text x="137" y="96" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">100%</text>
+          <rect x="170" y="82" width="45" height="20" fill="rgba(34,197,94,0.30)" rx="3"/>
+          <text x="192" y="96" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">71%</text>
+          <rect x="225" y="82" width="45" height="20" fill="rgba(34,197,94,0.22)" rx="3"/>
+          <text x="247" y="96" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">58%</text>
+          <rect x="280" y="82" width="45" height="20" fill="rgba(34,197,94,0.17)" rx="3"/>
+          <text x="302" y="96" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">51%</text>
+
+          <!-- Row 3: Mar 2026 -->
+          <text x="20" y="126" fill="#cbd5e1" font-family="monospace" font-size="8.5">2026-03</text>
+          <rect x="115" y="112" width="45" height="20" fill="rgba(34,197,94,0.4)" rx="3"/>
+          <text x="137" y="126" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">100%</text>
+          <rect x="170" y="112" width="45" height="20" fill="rgba(34,197,94,0.32)" rx="3"/>
+          <text x="192" y="126" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">74%</text>
+          <rect x="225" y="112" width="45" height="20" fill="rgba(34,197,94,0.24)" rx="3"/>
+          <text x="247" y="126" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">61%</text>
+
+          <!-- Row 4: Apr 2026 -->
+          <text x="20" y="156" fill="#cbd5e1" font-family="monospace" font-size="8.5">2026-04</text>
+          <rect x="115" y="142" width="45" height="20" fill="rgba(34,197,94,0.4)" rx="3"/>
+          <text x="137" y="156" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">100%</text>
+          <rect x="170" y="142" width="45" height="20" fill="rgba(34,197,94,0.34)" rx="3"/>
+          <text x="192" y="156" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">76%</text>
+
+          <text x="20" y="182" fill="#64748b" font-family="system-ui, sans-serif" font-size="8">Offset: (active_year - cohort_year)*12 + (active_month - cohort_month)</text>
+        </g>
+
+        <!-- Right: SaaS MRR Churn Waterfall Bridge -->
+        <g transform="translate(435, 65)">
+          <rect width="405" height="195" fill="rgba(255,255,255,0.02)" rx="8" stroke="rgba(255,255,255,0.08)"/>
+          <text x="15" y="22" fill="#fbbf24" font-family="monospace" font-size="10.5" font-weight="900">🌊 SAAS MRR CHURN &amp; EXPANSION BRIDGE</text>
+          
+          <!-- Waterfall bars -->
+          <g transform="translate(15, 40)">
+            <!-- Bar 1: Starting MRR -->
+            <rect x="5" y="40" width="48" height="80" fill="rgba(56,189,248,0.25)" stroke="#38bdf8" rx="3"/>
+            <text x="29" y="32" fill="#38bdf8" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">$100k</text>
+            <text x="29" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">Starting</text>
+
+            <!-- Bar 2: New MRR -->
+            <rect x="68" y="20" width="48" height="40" fill="rgba(34,197,94,0.3)" stroke="#4ade80" rx="3"/>
+            <text x="92" y="12" fill="#4ade80" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">+$25k</text>
+            <text x="92" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">New</text>
+
+            <!-- Bar 3: Expansion MRR -->
+            <rect x="131" y="10" width="48" height="30" fill="rgba(192,132,252,0.3)" stroke="#c084fc" rx="3"/>
+            <text x="155" y="4" fill="#c084fc" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">+$15k</text>
+            <text x="155" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">Expansion</text>
+
+            <!-- Bar 4: Contraction MRR -->
+            <rect x="194" y="60" width="48" height="25" fill="rgba(245,158,11,0.3)" stroke="#fbbf24" rx="3"/>
+            <text x="218" y="52" fill="#fbbf24" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">-$8k</text>
+            <text x="218" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">Contraction</text>
+
+            <!-- Bar 5: Churn MRR -->
+            <rect x="257" y="75" width="48" height="35" fill="rgba(244,63,94,0.3)" stroke="#fb7185" rx="3"/>
+            <text x="281" y="68" fill="#fb7185" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">-$12k</text>
+            <text x="281" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">Full Churn</text>
+
+            <!-- Bar 6: Ending MRR -->
+            <rect x="320" y="20" width="48" height="100" fill="rgba(34,197,94,0.3)" stroke="#22c55e" rx="3" stroke-width="1.5"/>
+            <text x="344" y="12" fill="#4ade80" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">$120k</text>
+            <text x="344" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">Ending Net</text>
+          </g>
+          <text x="20" y="182" fill="#64748b" font-family="system-ui, sans-serif" font-size="8">NRR = (Starting + Expansion - Contraction - Churn) / Starting = 120%</text>
+        </g>
+      </svg>
+    `,
+    "sections": [
+      {
+        "heading": "1. Cohort Construction & First-Touch Attribution",
+        "content": "Cohort analysis tracks groups of users sharing a common acquisition date over time. Building a retention cohort requires a 3-step CTE architecture:\n\n1. **First-Action CTE**: Pinpoint the initial activation date per user using `MIN(order_date)`.\n2. **Activity Stream CTE**: Map all repeat orders by calendar month.\n3. **Cohort Index Calculation**: Derive the discrete integer month offset:\n```sql\nWITH UserCohorts AS (\n    SELECT user_id, DATE_FORMAT(MIN(order_date), '%Y-%m-01') AS cohort_month\n    FROM Orders\n    GROUP BY user_id\n),\nUserActivity AS (\n    SELECT DISTINCT o.user_id, c.cohort_month,\n           DATE_FORMAT(o.order_date, '%Y-%m-01') AS activity_month,\n           TIMESTAMPDIFF(MONTH, c.cohort_month, o.order_date) AS month_number\n    FROM Orders o\n    JOIN UserCohorts c ON o.user_id = c.user_id\n)\nSELECT cohort_month, month_number, COUNT(DISTINCT user_id) AS active_users\nFROM UserActivity\nGROUP BY cohort_month, month_number\nORDER BY cohort_month, month_number;\n```"
+      },
+      {
+        "heading": "2. The Triangle Retention Heatmap (Pivoting Month Offsets)",
+        "content": "To render the classic triangular retention heatmap, we pivot the `month_number` offset counts against the `month_0` baseline:\n\n```sql\nWITH CohortSizes AS (\n    SELECT cohort_month, COUNT(DISTINCT user_id) AS cohort_size\n    FROM UserActivity WHERE month_number = 0\n    GROUP BY cohort_month\n)\nSELECT a.cohort_month, cs.cohort_size,\n       ROUND(COUNT(DISTINCT CASE WHEN month_number = 1 THEN a.user_id END) * 100.0 / cs.cohort_size, 1) AS m1_retention_pct,\n       ROUND(COUNT(DISTINCT CASE WHEN month_number = 2 THEN a.user_id END) * 100.0 / cs.cohort_size, 1) AS m2_retention_pct,\n       ROUND(COUNT(DISTINCT CASE WHEN month_number = 3 THEN a.user_id END) * 100.0 / cs.cohort_size, 1) AS m3_retention_pct\nFROM UserActivity a\nJOIN CohortSizes cs ON a.cohort_month = cs.cohort_month\nGROUP BY a.cohort_month, cs.cohort_size\nORDER BY a.cohort_month;\n```"
+      },
+      {
+        "heading": "3. SaaS MRR Churn Bridge & Net Revenue Retention (NRR)",
+        "content": "Measuring revenue retention is far more critical than raw user counts. **Net Revenue Retention (NRR)** accounts for upgrades, downgrades, and cancellations:\n\nNRR = ((Starting MRR + Expansion - Contraction - Churn) / Starting MRR) * 100%\n\nUsing `LAG()` over consecutive billing cycles enables deterministic status classification:\n- **New**: `prev_mrr IS NULL AND current_mrr > 0`\n- **Retained**: `prev_mrr = current_mrr`\n- **Expansion**: `current_mrr > prev_mrr`\n- **Contraction**: `current_mrr < prev_mrr AND current_mrr > 0`\n- **Churn**: `current_mrr = 0 OR current_mrr IS NULL`"
+      },
+      {
+        "heading": "4. Cumulative LTV Curves with Running Frame Windows",
+        "content": "Customer Lifetime Value (LTV) curves depict the average cumulative gross margin a cohort generates over $N$ months of tenure:\n\n```sql\nSELECT cohort_month, month_number,\n       SUM(monthly_revenue) OVER (\n           PARTITION BY cohort_month\n           ORDER BY month_number\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) / cohort_size AS cumulative_ltv\nFROM CohortMonthlyRevenue;\n```\nWhen cumulative LTV surpasses Customer Acquisition Cost (CAC) by 3x+ within 12 months, unit economics are declared venture-scalable."
+      }
+    ],
+    "diff": {
+      "badTitle": "Correlated Subquery per Cohort Cell",
+      "badSql": "SELECT cohort_month,\n  (SELECT COUNT(*) FROM Orders o2 WHERE o2.user_id IN (...) AND o2.order_date BETWEEN '2026-02-01' AND '2026-02-28') / cohort_size\nFROM Cohorts;",
+      "badExplanation": "Fires quadratic subqueries for every cell in the triangle matrix, triggering millions of nested table scans.",
+      "goodTitle": "Single-Pass Windowed CTE with Date Math",
+      "goodSql": "WITH CohortUsers AS (\n  SELECT user_id, MIN(order_date) AS signup_date FROM Orders GROUP BY 1\n)\nSELECT DATE_FORMAT(signup_date, '%Y-%m-01') AS cohort,\n       TIMESTAMPDIFF(MONTH, signup_date, o.order_date) AS m_offset,\n       COUNT(DISTINCT o.user_id) AS active_users\nFROM Orders o JOIN CohortUsers cu ON o.user_id = cu.user_id\nGROUP BY 1, 2;",
+      "goodExplanation": "Computes the entire multi-year retention triangle in a single linear pass over indexed records."
+    },
+    "interviewGotchas": [
+      {
+        "title": "The Missing Month / Survivorship Bias Trap",
+        "trap": "Users who skip a month of purchases (e.g. active M0, inactive M1, active M2) will break row-based offsets like LAG(). Always compute calendar month diffs via TIMESTAMPDIFF(MONTH, ...) or DATE_TRUNC instead of physical row offsets!"
+      },
+      {
+        "title": "Rolling 30-Day vs Calendar Month Drift",
+        "trap": "Mixing INTERVAL 30 DAY with calendar month cohorts causes boundary drift where February (28 days) leaks into preceding or succeeding monthly buckets."
+      }
+    ]
+  },
+  {
+    "id": "sec_data_warehousing",
+    "pillarId": "pillar3",
+    "icon": "🏛️",
+    "title": "14. Enterprise Dimensional Modeling: Kimball Star Schema & Data Warehousing",
+    "badge": "Data Architecture",
+    "badgeClass": "pill-join",
+    "readTime": "16 min read",
+    "summary": "Architect industrial-scale analytics platforms using Ralph Kimball Star Schemas, Conformed Dimensions, Grain Definition, Surrogate Keys, and SCD Type 0/1/2/3 historical tracking.",
+    "svgDiagram": `
+      <svg viewBox="0 0 860 280" width="100%" height="100%" style="min-height: 230px; max-height: 330px; display: block;" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="280" fill="#080c14" rx="14" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
+        <rect x="18" y="16" width="824" height="34" fill="rgba(255, 255, 255, 0.03)" rx="8" stroke="rgba(192, 132, 252, 0.25)" stroke-width="1"/>
+        <text x="430" y="38" fill="#c084fc" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="900" text-anchor="middle" letter-spacing="0.5">
+          RALPH KIMBALL STAR SCHEMA &bull; CONFORMED DIMENSIONS &amp; SCD TYPE 2 TIMELINE
+        </text>
+
+        <!-- Center: Fact Table -->
+        <g transform="translate(320, 65)">
+          <rect width="220" height="195" fill="rgba(56, 189, 248, 0.08)" rx="8" stroke="#38bdf8" stroke-width="1.5"/>
+          <rect width="220" height="26" fill="rgba(56, 189, 248, 0.25)" rx="8"/>
+          <text x="110" y="17" fill="#ffffff" font-family="monospace" font-size="11" font-weight="900" text-anchor="middle">FACT_ORDERS (GRAIN: 1 ITEM)</text>
+          
+          <g transform="translate(12, 35)">
+            <text x="0" y="14" fill="#fbbf24" font-family="monospace" font-size="9" font-weight="bold">FK: order_date_skey (INT)</text>
+            <text x="0" y="28" fill="#fbbf24" font-family="monospace" font-size="9" font-weight="bold">FK: customer_skey (INT)</text>
+            <text x="0" y="42" fill="#fbbf24" font-family="monospace" font-size="9" font-weight="bold">FK: product_skey (INT)</text>
+            <text x="0" y="56" fill="#fbbf24" font-family="monospace" font-size="9" font-weight="bold">FK: store_skey (INT)</text>
+            <line x1="0" y1="65" x2="196" y2="65" stroke="rgba(255,255,255,0.15)"/>
+            <text x="0" y="80" fill="#4ade80" font-family="monospace" font-size="9" font-weight="bold">MEASURE: quantity</text>
+            <text x="0" y="94" fill="#4ade80" font-family="monospace" font-size="9" font-weight="bold">MEASURE: unit_price_cents</text>
+            <text x="0" y="108" fill="#4ade80" font-family="monospace" font-size="9" font-weight="bold">MEASURE: discount_cents</text>
+            <text x="0" y="122" fill="#4ade80" font-family="monospace" font-size="9" font-weight="bold">MEASURE: net_amount_cents</text>
+            <line x1="0" y1="130" x2="196" y2="130" stroke="rgba(255,255,255,0.15)"/>
+            <text x="0" y="145" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="8">Additive Measures &bull; 100M+ Rows</text>
+          </g>
+        </g>
+
+        <!-- Left Top: DIM_CUSTOMER (SCD Type 2) -->
+        <g transform="translate(20, 65)">
+          <rect width="270" height="92" fill="rgba(244, 63, 94, 0.08)" rx="6" stroke="rgba(244, 63, 94, 0.4)"/>
+          <rect width="270" height="22" fill="rgba(244, 63, 94, 0.2)" rx="6"/>
+          <text x="135" y="15" fill="#fb7185" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">DIM_CUSTOMER (SCD TYPE 2)</text>
+          <g transform="translate(10, 32)">
+            <text x="0" y="12" fill="#fbbf24" font-family="monospace" font-size="8.5">PK: customer_skey (Surrogate)</text>
+            <text x="0" y="24" fill="#cbd5e1" font-family="monospace" font-size="8.5">NK: customer_id (Natural/Business)</text>
+            <text x="0" y="36" fill="#cbd5e1" font-family="monospace" font-size="8.5">name, tier, city, state</text>
+            <text x="0" y="48" fill="#4ade80" font-family="monospace" font-size="8.5">valid_from, valid_to, is_current</text>
+          </g>
+          <path d="M 270 46 L 320 110" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,3"/>
+        </g>
+
+        <!-- Left Bottom: DIM_DATE (Calendar Master) -->
+        <g transform="translate(20, 168)">
+          <rect width="270" height="92" fill="rgba(251, 191, 36, 0.08)" rx="6" stroke="rgba(251, 191, 36, 0.4)"/>
+          <rect width="270" height="22" fill="rgba(251, 191, 36, 0.2)" rx="6"/>
+          <text x="135" y="15" fill="#fbbf24" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">DIM_DATE (ROLE-PLAYING CALENDAR)</text>
+          <g transform="translate(10, 32)">
+            <text x="0" y="12" fill="#fbbf24" font-family="monospace" font-size="8.5">PK: date_skey (e.g. 20261014)</text>
+            <text x="0" y="24" fill="#cbd5e1" font-family="monospace" font-size="8.5">full_date, day_of_week, day_name</text>
+            <text x="0" y="36" fill="#cbd5e1" font-family="monospace" font-size="8.5">fiscal_year, fiscal_quarter, is_holiday</text>
+            <text x="0" y="48" fill="#4ade80" font-family="monospace" font-size="8.5">Precomputed: ZERO date math at query time!</text>
+          </g>
+          <path d="M 270 46 L 320 20" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,3"/>
+        </g>
+
+        <!-- Right Top: DIM_PRODUCT -->
+        <g transform="translate(570, 65)">
+          <rect width="270" height="92" fill="rgba(34, 197, 94, 0.08)" rx="6" stroke="rgba(34, 197, 94, 0.4)"/>
+          <rect width="270" height="22" fill="rgba(34, 197, 94, 0.2)" rx="6"/>
+          <text x="135" y="15" fill="#4ade80" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">DIM_PRODUCT (CONFORMED)</text>
+          <g transform="translate(10, 32)">
+            <text x="0" y="12" fill="#fbbf24" font-family="monospace" font-size="8.5">PK: product_skey (Surrogate)</text>
+            <text x="0" y="24" fill="#cbd5e1" font-family="monospace" font-size="8.5">NK: sku_code (Natural)</text>
+            <text x="0" y="36" fill="#cbd5e1" font-family="monospace" font-size="8.5">product_name, category, brand</text>
+            <text x="0" y="48" fill="#4ade80" font-family="monospace" font-size="8.5">unit_cost_cents, is_discontinued</text>
+          </g>
+          <path d="M 0 46 L -30 110" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,3"/>
+        </g>
+
+        <!-- Right Bottom: DIM_STORE -->
+        <g transform="translate(570, 168)">
+          <rect width="270" height="92" fill="rgba(168, 85, 247, 0.08)" rx="6" stroke="rgba(168, 85, 247, 0.4)"/>
+          <rect width="270" height="22" fill="rgba(168, 85, 247, 0.2)" rx="6"/>
+          <text x="135" y="15" fill="#c084fc" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">DIM_STORE (LOCATION HIERARCHY)</text>
+          <g transform="translate(10, 32)">
+            <text x="0" y="12" fill="#fbbf24" font-family="monospace" font-size="8.5">PK: store_skey (Surrogate)</text>
+            <text x="0" y="24" fill="#cbd5e1" font-family="monospace" font-size="8.5">store_id, store_name, channel_type</text>
+            <text x="0" y="36" fill="#cbd5e1" font-family="monospace" font-size="8.5">city, state, region, country</text>
+            <text x="0" y="48" fill="#4ade80" font-family="monospace" font-size="8.5">square_feet, open_date</text>
+          </g>
+          <path d="M 0 46 L -30 20" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,3"/>
+        </g>
+      </svg>
+    `,
+    "sections": [
+      {
+        "heading": "1. The 4-Step Kimball Dimensional Design Process",
+        "content": "Ralph Kimball's dimensional modeling technique powers 95%+ of enterprise analytics systems (Snowflake, BigQuery, Databricks, Redshift). Designing an enterprise warehouse requires strict adherence to four sequential questions:\n\n1. **Select the Business Process**: Identify the operational process to model (e.g., Retail Sales, Order Fulfillment, Claims Processing).\n2. **Declare the Grain**: State precisely what a single row in the fact table represents (e.g., *'One row represents an individual line item on a customer retail checkout receipt'*). Never mix grains in a single fact table!\n3. **Identify the Dimensions**: Determine the context answering *Who, What, Where, When, and Why* (Customer, Product, Date, Store, Promotion).\n4. **Identify the Facts**: Select the numeric, additive performance measures generated by the event (Quantity, Gross Revenue, Discount, Cost, Net Margin)."
+      },
+      {
+        "heading": "2. The Three Fact Table Architectural Archetypes",
+        "content": "- **Transactional Fact Tables**: The most granular. One row per real-time event. Captures point-in-time state changes at the atomic level.\n- **Periodic Snapshot Fact Tables**: Captures the cumulative status of a process at regular intervals (e.g., daily inventory levels per SKU or month-end account balance). Crucial when transactions are too numerous or balances fluctuate.\n- **Accumulating Snapshot Fact Tables**: Tracks a workflow with a definite beginning and end (e.g., order processing: ordered -> paid -> picked -> packed -> shipped -> delivered). Contains multiple milestone date foreign keys that are continuously updated as the entity moves through the pipeline."
+      },
+      {
+        "heading": "3. Conformed Dimensions & The Enterprise Bus Matrix",
+        "content": "A **Conformed Dimension** is a dimension that means the exact same thing across multiple disparate business processes. For instance, `dim_customer` and `dim_date` must join seamlessly to both `fact_retail_orders` and `fact_support_tickets`.\n\nWithout conformed dimensions, cross-functional drill-across queries become impossible, leading to fragmented data silos and contradicting departmental metrics."
+      },
+      {
+        "heading": "4. Slowly Changing Dimensions (SCD Type 1 vs. Type 2)",
+        "content": "When dimensional attributes change in the real world (e.g., Alice moves from San Francisco to New York), the warehouse must choose how to represent history:\n\n- **SCD Type 1 (Overwrite)**: Updates the existing row directly. Historical transactions are retroactively re-assigned to the new state. Fast, but destroys history.\n- **SCD Type 2 (Add New Row with Validity Timeline)**: Closes the active row by setting `valid_to = CURRENT_DATE` and `is_current = FALSE`, then inserts a brand new row with a new surrogate key, `valid_from = CURRENT_DATE`, `valid_to = '9999-12-31'`, and `is_current = TRUE`.\n\n```sql\n-- Querying historical point-in-time snapshot with SCD Type 2\nSELECT f.order_id, f.amount, c.customer_name, c.city AS historical_city\nFROM fact_orders f\nJOIN dim_customer c \n  ON f.customer_id = c.natural_customer_id\n AND f.order_date BETWEEN c.valid_from AND c.valid_to;\n```"
+      }
+    ],
+    "diff": {
+      "badTitle": "Normalized 3NF Snowflaking for OLAP",
+      "badSql": "SELECT co.country_name, p.product_name, SUM(oi.amount)\nFROM order_items oi\nJOIN orders o ON oi.order_id = o.id\nJOIN customers c ON o.cust_id = c.id\nJOIN addresses a ON c.address_id = a.id\nJOIN cities ci ON a.city_id = ci.id\nJOIN countries co ON ci.country_id = co.id\nJOIN products p ON oi.product_id = p.id\nGROUP BY 1, 2;",
+      "badExplanation": "A 7-table join traversal across normalized relational tables causes massive shuffle joins and degrades query latency.",
+      "goodTitle": "Kimball Star Schema with Surrogate Keys",
+      "goodSql": "SELECT d.country_name, p.product_name, SUM(f.amount_cents) / 100.0\nFROM fact_order_items f\nJOIN dim_customer d ON f.customer_skey = d.customer_skey\nJOIN dim_product p ON f.product_skey = p.product_skey\nGROUP BY 1, 2;",
+      "goodExplanation": "Single-hop joins on integer surrogate keys directly against denormalized dimension tables allow vectorized columnar scans."
+    },
+    "interviewGotchas": [
+      {
+        "title": "The Grain Mismatch Multiplication Trap",
+        "trap": "Attempting to join a line-item fact table directly to an invoice-level shipping fact without rolling up to matching grains creates a Cartesian fan-out, multiplying metrics by 2x-10x!"
+      },
+      {
+        "title": "Natural Key vs. Surrogate Key Join Trap",
+        "trap": "Joining fact tables on natural business keys (e.g. natural customer_id) instead of point-in-time surrogate keys causes duplicate rows in SCD Type 2 dimensions and assigns past revenue to current customer tiers."
+      }
+    ]
+  }
 ];
 
 // Ensure quickActions are attached to all study modules
@@ -488,7 +771,9 @@ const STUDY_QUICK_ACTIONS = {
   sec_intermediate_joins: { labTrack: 'trackJoins', questId: 8, presetQuery: "SELECT e.emp_id, e.first_name, e.salary, s.grade_level FROM Employees e INNER JOIN SalaryGrades s ON e.salary BETWEEN s.min_salary AND s.max_salary;" },
   sec_subqueries: { labTrack: 'track01', questId: 9, presetQuery: "SELECT emp_id, first_name, department, salary FROM Employees WHERE salary > (SELECT AVG(salary) FROM Employees);" },
   sec_ctes: { labTrack: 'track01', questId: 10, presetQuery: "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT e.emp_id, e.first_name, e.department, e.salary, ROUND(d.avg_sal, 2) AS dept_avg\nFROM Employees e\nJOIN DeptAvg d ON e.department = d.department\nWHERE e.salary > d.avg_sal;" },
-  sec_window_functions: { labTrack: 'track01', questId: 11, presetQuery: "SELECT emp_id, first_name, department, salary,\n  DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_rank,\n  ROUND(AVG(salary) OVER (PARTITION BY department), 2) AS dept_avg\nFROM Employees;" }
+  sec_window_functions: { labTrack: 'track01', questId: 11, presetQuery: "SELECT emp_id, first_name, department, salary,\n  DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_rank,\n  ROUND(AVG(salary) OVER (PARTITION BY department), 2) AS dept_avg\nFROM Employees;" },
+  sec_business_analytics: { labTrack: 'trackAggregations', questId: 4, presetQuery: "SELECT department, COUNT(*) AS emp_count, ROUND(AVG(salary), 2) AS avg_sal FROM Employees GROUP BY department;" },
+  sec_data_warehousing: { labTrack: 'trackJoins', questId: 6, presetQuery: "SELECT e.emp_id, e.first_name, e.department, d.location FROM Employees e INNER JOIN Departments d ON e.department = d.dept_name;" }
 };
 
 if (typeof window !== 'undefined' && window.STUDY_LIBRARY) {
