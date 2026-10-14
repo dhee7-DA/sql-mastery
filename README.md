@@ -16,7 +16,7 @@ Welcome to the **14-Day SQL Intensive**. This repository is an institutional-gra
 
 An institutional-grade, in-browser execution studio and visual masterclass located in [`visualizer/`](./visualizer):
 - 🎨 **Poppy Neo-Brutalist Design System**: High-contrast, tactile UI with raw 3px solid black outlines, offset ink drop shadows, and punchy sticker palettes (`#fef08a`, `#38bdf8`, `#f472b6`, `#22c55e`, `#fbbf24`, `#c084fc`).
-- 📖 **12 Visual Masterclass Modules**: Textbook-grade CS theory, engine storage physics, and custom Neo-Brutalist SVG Explainer Diagrams:
+- 📖 **14 Visual Masterclass Modules**: Textbook-grade CS theory, engine storage physics, and custom Neo-Brutalist SVG Explainer Diagrams:
   1. *Physical Execution Pipeline & Lexical Sequencing*
   2. *Filtering, Predicates & Three-Valued Logic (3VL)*
   3. *Sorting, Determinism & Keyset Pagination*
@@ -29,6 +29,8 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
   10. *Subqueries, Derived Tables & Correlated Logic*
   11. *Common Table Expressions (CTEs) & Recursive Hierarchies*
   12. *Analytical Window Functions, Value Offsets & Sliding Window Physics*
+  13. *Advanced Business Analytics, Churn Bridges & Retention Cohorts*
+  14. *Enterprise Dimensional Modeling, Kimball Star Schema & Data Warehousing*
 - 🧠 **2,100 Master Technical MCQs Vault**: 23 technical categories with 350 dedicated Relational Join questions, 500 dedicated Window Function questions, and 150 Section 10 Subquery/CTE/Set Operations questions, instant answer validation, sound FX, and balanced 25% option distribution.
 - 💼 **1,790 Corporate & Foundations Case Study Master Vault**: 11 sections spanning 10 industry verticals plus Section 0 Syntax Gym (300 foundational micro-drills, 390 Relational Join cases, 300 Section 9 Window Analytics cases, and 150 Section 10 Advanced SQL Engine Mastery cases with interactive token puzzles and live execution simulation).
 - 🔗 **8-Step Dual-Table Relational Joins Linker**: Interactive step-through simulator in Guided Lab (Track 04) covering Inner, Left, Right, Full Outer, Left Anti, Cross, Self, and Non-Equi joins.
@@ -80,13 +82,14 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
 
 ---
 
-### 🟣 Phase 5: Advanced Analytical SQL & Portfolio Case Study
+### 🟣 Phase 5: Advanced Analytical SQL, ACID Storage & Enterprise Capstone
 | Day | Module Directory | Focus & Enterprise Skills | Difficulty | Status |
 |---|---|---|---|---|
 | **Day 11** | [`day-11-window-ranking`](./day-11-window-ranking) | `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`, `NTILE()` | Advanced | ✅ Completed (4/4) |
 | **Day 12** | [`day-12-window-aggregates`](./day-12-window-aggregates) | `LAG()`, `LEAD()`, Running Totals, Moving Averages | Advanced | ✅ Completed (4/4) |
 | **Day 13** | [`day-13-business-analytics`](./day-13-business-analytics) | Churn Analysis, Retention Cohorts, MoM Growth Queries | Advanced | ✅ Completed (4/4) |
-| **Day 14** | `day-14-capstone-project` | Comprehensive End-to-End Analytics Case Study & Presentation | Capstone | 🟡 Next Up |
+| **Day 14** | [`day-14-dml-atomic-upserts-acid`](./day-14-dml-atomic-upserts-acid) | DML Mutation, Atomic Upserts, ACID Storage Physics, Concurrency | Advanced | ✅ Completed (4/4) |
+| **Capstone** | `day-15-enterprise-capstone` | Multi-Asset Trade Settlement & Prime Broker Reconciliation | Capstone | 🟡 Next Up |
 
 > 🪟 **Important Materials & Reference**: Complete **Window Functions Master Vault (420 Problems across 7 Disciplines & Master Decision Matrix)** available in [`docs/IMPORTANT_MATERIALS_WINDOW_FUNCTIONS.md`](./docs/IMPORTANT_MATERIALS_WINDOW_FUNCTIONS.md) and [`docs/IMPORTANT_QUESTIONS_WINDOW_FUNCTIONS.md`](./docs/IMPORTANT_QUESTIONS_WINDOW_FUNCTIONS.md).
 
