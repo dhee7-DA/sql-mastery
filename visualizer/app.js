@@ -2126,6 +2126,7 @@ const NAV_GROUPS_MAP = {
 
   viewLearningJourney: { triggerId: 'btnNavLearningJourney', pillId: null, label: 'Learning Journey' },
   viewLeetCode50: { triggerId: 'btnNavLeetCode', pillId: null, label: 'LeetCode 50' },
+  viewSqlTerminal: { triggerId: 'btnNavSqlTerminal', pillId: null, label: 'SQL Terminal' },
   viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Studio' }
 };
 
@@ -2160,6 +2161,10 @@ function switchMainView(targetId) {
   }
 
   // Lazy render on view switch
+  if (targetId === 'viewSqlTerminal') {
+    if (window.SqlTerminalEngine) window.SqlTerminalEngine.init();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("💻 Welcome to the SQLite WASM Terminal! Execute real custom SQL queries against 12 live production tables with zero latency!", 5000, 'celebrate');
+  }
   if (targetId === 'viewLearningJourney') {
     if (typeof renderLearningJourney === 'function') renderLearningJourney();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🗺️ Welcome to your 20-Day Learning Journey! Follow the trail and complete today's quests to advance me forward!", 5000, 'happy');
