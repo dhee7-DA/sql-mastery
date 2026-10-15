@@ -17,6 +17,7 @@ window.SqlTerminalEngine = (function() {
   let currentResults = null;
   let currentPlan = null;
   let currentPlanAnalysis = null;
+  let isInitializing = false;
   let userCustomIndexes = []; // ['idx_name', ...]
   let filterTerm = '';
 
@@ -24,9 +25,13 @@ window.SqlTerminalEngine = (function() {
    * Root DOM initialization
    */
   async function init() {
-    if (isInitialized) return;
+    if (isInitialized || isInitializing) return;
+    isInitializing = true;
     const container = document.getElementById('viewSqlTerminal');
-    if (!container) return;
+    if (!container) {
+      isInitializing = false;
+      return;
+    }
 
     renderWorkbenchSkeleton(container);
     setupEventListeners();
@@ -47,6 +52,8 @@ window.SqlTerminalEngine = (function() {
     } catch (err) {
       console.error('Failed to initialize SQLite WASM:', err);
       showFatalError(err.message);
+    } finally {
+      isInitializing = false;
     }
   }
 
@@ -72,8 +79,16 @@ window.SqlTerminalEngine = (function() {
   /**
    * Seed database with the 12 domain tables
    */
-  function seedDatabase() {
+  function seedDatabase(force = false) {
     if (!db || !window.SQL_TERMINAL_DATA) return;
+    if (!force) {
+      try {
+        const check = db.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='fx_daily_rates';");
+        if (check && check[0] && check[0].values.length > 0) {
+          return;
+        }
+      } catch (e) {}
+    }
     db.run(window.SQL_TERMINAL_DATA.seedSql);
     userCustomIndexes = [];
   }
@@ -1264,12 +1279,26 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
     const container = document.getElementById('viewSqlTerminal');
     if (container) {
       container.innerHTML = `
-        <div style="padding: 2.5rem; text-align: center; color: #f87171;">
-          <h2>Failed to Launch SQLite WASM</h2>
-          <p>${escapeHtml(msg)}</p>
+        <div style="padding: 3.5rem 1.5rem; text-align: center; max-width: 580px; margin: 2rem auto; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 14px; box-shadow: 0 12px 36px rgba(0,0,0,0.4);">
+          <div style="font-size: 2.8rem; margin-bottom: 0.8rem;">⚠️</div>
+          <h2 style="margin: 0 0 0.5rem; color: #f87171; font-size: 1.35rem;">Failed to Launch SQLite WASM</h2>
+          <p style="color: #94a3b8; font-family: monospace; font-size: 0.85rem; margin-bottom: 1.5rem; background: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 8px;">${escapeHtml(msg)}</p>
+          <button class="terminal-btn terminal-btn-primary" onclick="window.SqlTerminalEngine.retryInit()" style="padding: 0.65rem 1.35rem; font-size: 0.88rem; cursor: pointer;">
+            🔄 Reset &amp; Relaunch SQLite Engine
+          </button>
         </div>
       `;
     }
+  }
+
+  function retryInit() {
+    isInitialized = false;
+    isInitializing = false;
+    if (db) {
+      try { db.close(); } catch (e) {}
+      db = null;
+    }
+    init();
   }
 
   function formatNumber(num) {
@@ -1293,6 +1322,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
 
   return {
     init,
+    retryInit,
     setSidebarTab,
     setOutputTab,
     handleSidebarSearch,

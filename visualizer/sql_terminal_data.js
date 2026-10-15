@@ -17,7 +17,8 @@ window.SQL_TERMINAL_DATA = {
 -- =============================================================================
 -- DOMAIN 1: INVESTMENT BANKING & ASSET MANAGEMENT
 -- =============================================================================
-CREATE TABLE fx_daily_rates (
+DROP TABLE IF EXISTS fx_daily_rates;
+CREATE TABLE IF NOT EXISTS fx_daily_rates (
   rate_date TEXT NOT NULL,
   currency TEXT NOT NULL,
   currency_name TEXT NOT NULL,
@@ -35,7 +36,8 @@ INSERT INTO fx_daily_rates VALUES
   ('2026-10-13', 'GBP', 'British Pound', 1.3090),
   ('2026-10-13', 'JPY', 'Japanese Yen', 0.0066);
 
-CREATE TABLE internal_trade_blotter (
+DROP TABLE IF EXISTS internal_trade_blotter;
+CREATE TABLE IF NOT EXISTS internal_trade_blotter (
   trade_id TEXT PRIMARY KEY,
   desk_code TEXT NOT NULL,
   raw_ticker TEXT NOT NULL,
@@ -62,7 +64,8 @@ INSERT INTO internal_trade_blotter VALUES
   ('TRD-20261014-008', 'EQUITIES_LON', 'HSBC', 'GB0005405286', 'EQUITY', 'BUY', 30000, 6.80, 'GBP', '2026-10-14 09:48:10', 'HSBC_GLOBAL', 'TRD_CHRIS', 'EXECUTED'),
   ('TRD-20261014-009', 'EQUITIES_NY', 'TSLA', 'US88160R1014', 'EQUITY', 'BUY', 15000, 175.00, 'USD', '2026-10-14 09:50:00', 'CITADEL_EXEC', 'TRD_ALEX', 'EXECUTED');
 
-CREATE TABLE custodian_clearing_feed (
+DROP TABLE IF EXISTS custodian_clearing_feed;
+CREATE TABLE IF NOT EXISTS custodian_clearing_feed (
   custodian_trade_ref TEXT PRIMARY KEY,
   custodian_code TEXT NOT NULL,
   clearing_account TEXT NOT NULL,
@@ -87,7 +90,8 @@ INSERT INTO custodian_clearing_feed VALUES
   ('EURO-8802-008', 'EUROCLEAR', 'ACC-GLOBAL-02', 'GB0005405286', 'HSBC', 'BUY', 30000, 6.80, 'GBP', '2026-10-15', 'SETTLED'),
   ('DTCC-9901-010', 'DTCC_NY', 'ACC-PRIME-01', 'US0231351067', 'AMZN', 'BUY', 8000, 182.50, 'USD', '2026-10-15', 'SETTLED');
 
-CREATE TABLE daily_stock_prices (
+DROP TABLE IF EXISTS daily_stock_prices;
+CREATE TABLE IF NOT EXISTS daily_stock_prices (
   ticker TEXT NOT NULL,
   trade_date TEXT NOT NULL,
   close_price REAL NOT NULL,
@@ -107,7 +111,8 @@ INSERT INTO daily_stock_prices VALUES
 -- =============================================================================
 -- DOMAIN 2: FINTECH & DIGITAL PAYMENTS
 -- =============================================================================
-CREATE TABLE payment_events (
+DROP TABLE IF EXISTS payment_events;
+CREATE TABLE IF NOT EXISTS payment_events (
   payment_id TEXT PRIMARY KEY,
   merchant_id TEXT NOT NULL,
   merchant_category TEXT NOT NULL,
@@ -131,7 +136,8 @@ INSERT INTO payment_events VALUES
   ('PAY-109', 'M-TRAVEL-04', 'AIRLINE_TRAVEL', 'SETTLED', 650.00, 'ACQ_AMEX', 'CARD', '2026-10-10 16:00:00', '2026-10-12 11:00:00'),
   ('PAY-110', 'M-TRAVEL-04', 'AIRLINE_TRAVEL', 'SETTLED', 920.00, 'ACQ_AMEX', 'CARD', '2026-10-10 16:30:00', '2026-10-12 15:00:00');
 
-CREATE TABLE wire_transfers (
+DROP TABLE IF EXISTS wire_transfers;
+CREATE TABLE IF NOT EXISTS wire_transfers (
   tx_id TEXT PRIMARY KEY,
   sender_acc TEXT NOT NULL,
   receiver_acc TEXT NOT NULL,
@@ -149,7 +155,8 @@ INSERT INTO wire_transfers VALUES
 -- =============================================================================
 -- DOMAIN 3: ENTERPRISE B2B SAAS
 -- =============================================================================
-CREATE TABLE dim_customers (
+DROP TABLE IF EXISTS dim_customers;
+CREATE TABLE IF NOT EXISTS dim_customers (
   customer_id TEXT PRIMARY KEY,
   company_name TEXT NOT NULL,
   segment TEXT NOT NULL,
@@ -163,14 +170,16 @@ INSERT INTO dim_customers VALUES
   ('CUST-104', 'DataPulse AI', 'ENTERPRISE', '2026-02-15'),
   ('CUST-105', 'Echo Logistics', 'MID_MARKET', '2026-03-01');
 
-CREATE TABLE dim_months (
+DROP TABLE IF EXISTS dim_months;
+CREATE TABLE IF NOT EXISTS dim_months (
   month_start_date TEXT PRIMARY KEY
 );
 
 INSERT INTO dim_months VALUES
   ('2026-01-01'), ('2026-02-01'), ('2026-03-01'), ('2026-04-01'), ('2026-05-01');
 
-CREATE TABLE subscriptions (
+DROP TABLE IF EXISTS subscriptions;
+CREATE TABLE IF NOT EXISTS subscriptions (
   customer_id TEXT NOT NULL,
   billing_month TEXT NOT NULL,
   mrr_amount REAL NOT NULL,
@@ -198,7 +207,8 @@ INSERT INTO subscriptions VALUES
 -- =============================================================================
 -- DOMAIN 4: HEALTHCARE & HEALTH INSURANCE
 -- =============================================================================
-CREATE TABLE patient_claims (
+DROP TABLE IF EXISTS patient_claims;
+CREATE TABLE IF NOT EXISTS patient_claims (
   claim_id TEXT PRIMARY KEY,
   patient_id TEXT NOT NULL,
   provider_id TEXT NOT NULL,
@@ -217,7 +227,8 @@ INSERT INTO patient_claims VALUES
   ('CLM-006', 'P-8805', 'PRV-E', '27447', '2026-09-05', 24500.00, 'DENIED'),
   ('CLM-007', 'P-8806', 'PRV-B', '99214', '2026-09-06', 320.00, 'PAID_FIRST_PASS');
 
-CREATE TABLE cms_fee_schedule (
+DROP TABLE IF EXISTS cms_fee_schedule;
+CREATE TABLE IF NOT EXISTS cms_fee_schedule (
   procedure_code TEXT PRIMARY KEY,
   description TEXT NOT NULL,
   medicare_allowable_rate REAL NOT NULL
@@ -231,7 +242,8 @@ INSERT INTO cms_fee_schedule VALUES
   ('99285', 'Emergency Dept High Severity', 280.00),
   ('27447', 'Total Knee Arthroplasty', 1450.00);
 
-CREATE TABLE hospital_visits (
+DROP TABLE IF EXISTS hospital_visits;
+CREATE TABLE IF NOT EXISTS hospital_visits (
   visit_id TEXT PRIMARY KEY,
   patient_id TEXT NOT NULL,
   department TEXT NOT NULL,
@@ -251,7 +263,8 @@ INSERT INTO hospital_visits VALUES
 -- =============================================================================
 -- DOMAIN 5: E-COMMERCE & SUPPLY CHAIN FINANCE
 -- =============================================================================
-CREATE TABLE marketplace_orders (
+DROP TABLE IF EXISTS marketplace_orders;
+CREATE TABLE IF NOT EXISTS marketplace_orders (
   order_id TEXT PRIMARY KEY,
   seller_id TEXT NOT NULL,
   order_subtotal REAL NOT NULL,
@@ -270,7 +283,8 @@ INSERT INTO marketplace_orders VALUES
   ('ORD-5006', 'SLR-GAMMA', 45.00, 5.00, 0.00, 'COMPLETED', '2026-10-02'),
   ('ORD-5007', 'SLR-GAMMA', 60.00, 6.00, 60.00, 'RETURNED', '2026-10-05');
 
-CREATE TABLE warehouse_inventory (
+DROP TABLE IF EXISTS warehouse_inventory;
+CREATE TABLE IF NOT EXISTS warehouse_inventory (
   sku_id TEXT PRIMARY KEY,
   sku_name TEXT NOT NULL,
   current_stock_qty INTEGER NOT NULL,
