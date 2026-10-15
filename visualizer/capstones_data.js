@@ -347,6 +347,41 @@ window.CAPSTONES_DATA = [
           slot3: { correct: "5", options: ["5", "95", "1", "10"] }
         },
         expectedColumns: ["ticker", "var_95_cutoff"]
+      },
+      {
+        stepNumber: 5,
+        title: "Rolling 30-Day Annualized Volatility via STDDEV() Window Frame",
+        businessBrief: "Quantitative risk models quantify asset turbulence using 30-day rolling annualized volatility: stddev(daily_return) * sqrt(252). Frame a 30-day window per ticker and round to 4 decimals.",
+        prerequisites: [
+          {
+            sectionKey: "section6",
+            label: "Sliding Window Frames (ROWS BETWEEN 29 PRECEDING AND CURRENT ROW)",
+            tip: "Frame a rolling 30-day window using ROWS BETWEEN 29 PRECEDING AND CURRENT ROW."
+          },
+          {
+            sectionKey: "section1",
+            label: "Mathematical Functions (SQRT & Rounding)",
+            tip: "Multiply daily standard deviation by SQRT(252) to annualize equity volatility."
+          }
+        ],
+        bloopsAdvice: "In equity markets, there are approximately 252 trading days per year. Multiplying the daily standard deviation by SQRT(252) annualizes the metric for risk committee review!",
+        schemaSnippet: "AssetDailyReturns(ticker, trade_date, daily_return)",
+        targetQuery: "SELECT\n  ticker,\n  trade_date,\n  daily_return,\n  ROUND(STDDEV_SAMP(daily_return) OVER (\n    PARTITION BY ticker\n    ORDER BY trade_date\n    ROWS BETWEEN 29 PRECEDING AND CURRENT ROW\n  ) * SQRT(252), 4) AS annualized_volatility_30d\nFROM AssetDailyReturns;",
+        template: [
+          { text: "SELECT\n  ticker,\n  trade_date,\n  daily_return,\n  ROUND(", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ SAMPLE STDDEV ]" },
+          { text: "(daily_return) OVER (\n    PARTITION BY ticker\n    ORDER BY trade_date\n    ROWS BETWEEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ 30D SLIDING FRAME ]" },
+          { text: " AND CURRENT ROW\n  ) * ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ ANNUALIZER ]" },
+          { text: "(252), 4) AS annualized_volatility_30d\nFROM AssetDailyReturns;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "STDDEV_SAMP", options: ["STDDEV_SAMP", "VAR_SAMP", "AVG", "MEDIAN"] },
+          slot2: { correct: "29 PRECEDING", options: ["29 PRECEDING", "30 PRECEDING", "CURRENT ROW", "UNBOUNDED PRECEDING"] },
+          slot3: { correct: "SQRT", options: ["SQRT", "EXP", "LOG", "CBRT"] }
+        },
+        expectedColumns: ["ticker", "trade_date", "daily_return", "annualized_volatility_30d"]
       }
     ]
   },
@@ -450,6 +485,76 @@ window.CAPSTONES_DATA = [
           slot2: { correct: "50", options: ["50", "1", "100", "10"] }
         },
         expectedColumns: ["merchant_id", "month_date", "total_txns", "total_disputes", "dispute_ratio_pct"]
+      },
+      {
+        stepNumber: 4,
+        title: "Processing Settlement Latency & Route Slippage via EPOCH Extraction",
+        businessBrief: "Dissect transaction latency between customer authorization and acquiring bank settlement. Calculate average settlement delay in hours grouped by payment rail (payment_rail) and acquiring partner (acquirer_code). Flag rails with average delay > 48 hours.",
+        prerequisites: [
+          {
+            sectionKey: "section4",
+            label: "GROUP BY & Aggregate Filtering with HAVING",
+            tip: "Use HAVING to filter aggregated route averages exceeding the 48-hour SLA threshold."
+          },
+          {
+            sectionKey: "section1",
+            label: "Timestamp Interval Difference & Math",
+            tip: "Extract EPOCH seconds between timestamps and divide by 3600.0 to convert to decimal hours."
+          }
+        ],
+        bloopsAdvice: "Settlement lag traps working capital. Compute the difference between auth_timestamp and settled_timestamp in hours, then filter out the slowest acquiring routes using HAVING!",
+        schemaSnippet: "SettledTransactions(txn_id, payment_rail, acquirer_code, auth_timestamp, settled_timestamp, txn_amount)",
+        targetQuery: "SELECT\n  payment_rail,\n  acquirer_code,\n  COUNT(*) AS total_settled_txns,\n  ROUND(AVG(EXTRACT(EPOCH FROM (settled_timestamp - auth_timestamp)) / 3600.0), 2) AS avg_settlement_hours,\n  SUM(txn_amount) AS total_volume_settled\nFROM SettledTransactions\nGROUP BY payment_rail, acquirer_code\nHAVING AVG(EXTRACT(EPOCH FROM (settled_timestamp - auth_timestamp)) / 3600.0) > 48.0\nORDER BY avg_settlement_hours DESC;",
+        template: [
+          { text: "SELECT\n  payment_rail,\n  acquirer_code,\n  COUNT(*) AS total_settled_txns,\n  ROUND(AVG(EXTRACT(", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ TIME FIELD ]" },
+          { text: " FROM (settled_timestamp - auth_timestamp)) / 3600.0), 2) AS avg_settlement_hours,\n  SUM(txn_amount) AS total_volume_settled\nFROM SettledTransactions\nGROUP BY payment_rail, acquirer_code\n", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ AGGREGATE FILTER ]" },
+          { text: " AVG(EXTRACT(EPOCH FROM (settled_timestamp - auth_timestamp)) / 3600.0) > 48.0\nORDER BY avg_settlement_hours ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ SORT DIRECTION ]" },
+          { text: ";", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "EPOCH", options: ["EPOCH", "HOUR", "SECOND", "DAY"] },
+          slot2: { correct: "HAVING", options: ["HAVING", "WHERE", "QUALIFY", "ON"] },
+          slot3: { correct: "DESC", options: ["DESC", "ASC", "NULLS FIRST", "LIMIT"] }
+        },
+        expectedColumns: ["payment_rail", "acquirer_code", "total_settled_txns", "avg_settlement_hours", "total_volume_settled"]
+      },
+      {
+        stepNumber: 5,
+        title: "Executive Merchant Risk Tiering & Exposure Concentration",
+        businessBrief: "The Chief Compliance Officer requires an executive tiering of all active merchants based on monthly dispute ratios and volume. Assign risk tiers ('CRITICAL_RISK', 'HIGH_RISK', 'ACCEPTABLE') and rank merchants by dispute exposure using DENSE_RANK().",
+        prerequisites: [
+          {
+            sectionKey: "section6",
+            label: "Ranking Window Functions (DENSE_RANK)",
+            tip: "Use DENSE_RANK() OVER (ORDER BY dispute_volume DESC) to produce gapless risk rankings."
+          },
+          {
+            sectionKey: "section8",
+            label: "Complex Multi-Condition CASE Logic",
+            tip: "Evaluate multiple threshold criteria simultaneously with AND/OR within CASE branches."
+          }
+        ],
+        bloopsAdvice: "DENSE_RANK() guarantees consecutive ranking without gaps! Combine it with a clear CASE statement to categorize merchants for immediate account freezes or enhanced underwriting.",
+        schemaSnippet: "MerchantMonthlySummary(merchant_id, merchant_name, monthly_gmv, dispute_volume, dispute_pct)",
+        targetQuery: "SELECT\n  merchant_id,\n  merchant_name,\n  monthly_gmv,\n  dispute_volume,\n  dispute_pct,\n  DENSE_RANK() OVER (ORDER BY dispute_volume DESC) AS risk_rank,\n  CASE\n    WHEN dispute_pct >= 1.50 AND dispute_volume > 10000 THEN 'CRITICAL_RISK'\n    WHEN dispute_pct >= 1.00 OR dispute_volume > 5000 THEN 'HIGH_RISK'\n    ELSE 'ACCEPTABLE'\n  END AS compliance_tier\nFROM MerchantMonthlySummary\nORDER BY risk_rank ASC;",
+        template: [
+          { text: "SELECT\n  merchant_id,\n  merchant_name,\n  monthly_gmv,\n  dispute_volume,\n  dispute_pct,\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ DENSE RANK FUNC ]" },
+          { text: "() ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ WINDOW SPEC ]" },
+          { text: " (ORDER BY dispute_volume DESC) AS risk_rank,\n  CASE\n    WHEN dispute_pct >= 1.50 AND dispute_volume > 10000 THEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ CRITICAL TIER ]" },
+          { text: "\n    WHEN dispute_pct >= 1.00 OR dispute_volume > 5000 THEN 'HIGH_RISK'\n    ELSE 'ACCEPTABLE'\n  END AS compliance_tier\nFROM MerchantMonthlySummary\nORDER BY risk_rank ASC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "DENSE_RANK", options: ["DENSE_RANK", "RANK", "ROW_NUMBER", "NTILE"] },
+          slot2: { correct: "OVER", options: ["OVER", "PARTITION", "WINDOW", "GROUP"] },
+          slot3: { correct: "'CRITICAL_RISK'", options: ["'CRITICAL_RISK'", "'ACCEPTABLE'", "'UNKNOWN'", "'SAFE'"] }
+        },
+        expectedColumns: ["merchant_id", "merchant_name", "monthly_gmv", "dispute_volume", "dispute_pct", "risk_rank", "compliance_tier"]
       }
     ]
   },
@@ -523,6 +628,111 @@ window.CAPSTONES_DATA = [
           slot1: { correct: "t1.sender_acc", options: ["t1.sender_acc", "t2.sender_acc", "t3.receiver_acc", "NULL"] }
         },
         expectedColumns: ["ring_root_acc", "leg1_receiver", "leg2_receiver", "leg3_receiver", "initial_amount"]
+      },
+      {
+        stepNumber: 3,
+        title: "Pass-Through Mule Account Velocity & Fund Drain Detection",
+        businessBrief: "Money mules receive illegal incoming wire deposits and immediately drain > 90% of the funds via outgoing wires within 30 minutes. Find all account transactions where an outgoing wire follows an incoming wire within 30 minutes and drains >= 90% of the inflow.",
+        prerequisites: [
+          {
+            sectionKey: "section6",
+            label: "Window Function LAG() Across Transaction Feeds",
+            tip: "Use LAG() to compare outgoing wire parameters against the immediately preceding inbound deposit."
+          },
+          {
+            sectionKey: "section8",
+            label: "CASE & Mathematical Ratios",
+            tip: "Calculate drain percentage with ROUND(wire_amount * 100.0 / NULLIF(prev_inbound_amount, 0), 2)."
+          }
+        ],
+        bloopsAdvice: "Launderers cannot let stolen funds sit in intermediate accounts. LAG() looks at the immediately preceding credit transaction and compares timestamps and balances!",
+        schemaSnippet: "AccountWireStream(account_id, wire_id, direction ['INBOUND', 'OUTBOUND'], wire_amount, wire_timestamp)",
+        targetQuery: "WITH SequencedWires AS (\n  SELECT\n    account_id,\n    wire_id,\n    direction,\n    wire_amount,\n    wire_timestamp,\n    LAG(direction, 1) OVER (PARTITION BY account_id ORDER BY wire_timestamp) AS prev_direction,\n    LAG(wire_amount, 1) OVER (PARTITION BY account_id ORDER BY wire_timestamp) AS prev_inbound_amount,\n    LAG(wire_timestamp, 1) OVER (PARTITION BY account_id ORDER BY wire_timestamp) AS prev_inbound_time\n  FROM AccountWireStream\n)\nSELECT\n  account_id,\n  wire_id AS drain_wire_id,\n  wire_amount AS drain_amount,\n  prev_inbound_amount,\n  ROUND(wire_amount * 100.0 / NULLIF(prev_inbound_amount, 0), 2) AS drain_pct\nFROM SequencedWires\nWHERE direction = 'OUTBOUND'\n  AND prev_direction = 'INBOUND'\n  AND (wire_timestamp - prev_inbound_time) <= INTERVAL '30 minutes'\n  AND (wire_amount / NULLIF(prev_inbound_amount, 0)) >= 0.90;",
+        template: [
+          { text: "WITH SequencedWires AS (\n  SELECT\n    account_id,\n    wire_id,\n    direction,\n    wire_amount,\n    wire_timestamp,\n    LAG(direction, 1) OVER (", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ PARTITION CLAUSE ]" },
+          { text: " account_id ORDER BY wire_timestamp) AS prev_direction,\n    LAG(wire_amount, 1) OVER (PARTITION BY account_id ORDER BY wire_timestamp) AS prev_inbound_amount,\n    LAG(wire_timestamp, 1) OVER (PARTITION BY account_id ORDER BY wire_timestamp) AS prev_inbound_time\n  FROM AccountWireStream\n)\nSELECT\n  account_id,\n  wire_id AS drain_wire_id,\n  wire_amount AS drain_amount,\n  prev_inbound_amount,\n  ROUND(wire_amount * 100.0 / NULLIF(prev_inbound_amount, 0), 2) AS drain_pct\nFROM SequencedWires\nWHERE direction = ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ DRAIN DIRECTION ]" },
+          { text: "\n  AND prev_direction = 'INBOUND'\n  AND (wire_timestamp - prev_inbound_time) <= ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ TIME INTERVAL ]" },
+          { text: "\n  AND (wire_amount / NULLIF(prev_inbound_amount, 0)) >= 0.90;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "PARTITION BY", options: ["PARTITION BY", "GROUP BY", "ORDER BY", "CLUSTER BY"] },
+          slot2: { correct: "'OUTBOUND'", options: ["'OUTBOUND'", "'INBOUND'", "'PENDING'", "'INTERNAL'"] },
+          slot3: { correct: "INTERVAL '30 minutes'", options: ["INTERVAL '30 minutes'", "INTERVAL '24 hours'", "30", "'30m'"] }
+        },
+        expectedColumns: ["account_id", "drain_wire_id", "drain_amount", "prev_inbound_amount", "drain_pct"]
+      },
+      {
+        stepNumber: 4,
+        title: "Synthetic Identity Clustering by Shared Digital Fingerprints",
+        businessBrief: "Organized fraud syndicates open multiple fake bank accounts using stolen identities originating from the same browser fingerprint, IP subnet, or hardware device hash. Uncover identity clusters where 3 or more distinct account IDs share the exact same device fingerprint.",
+        prerequisites: [
+          {
+            sectionKey: "section4",
+            label: "COUNT(DISTINCT) with GROUP BY",
+            tip: "Use COUNT(DISTINCT account_id) to count unique accounts linked to each fingerprint."
+          },
+          {
+            sectionKey: "section4",
+            label: "HAVING Filters on Cardinality",
+            tip: "Filter grouped clusters in HAVING: HAVING COUNT(DISTINCT account_id) >= 3."
+          }
+        ],
+        bloopsAdvice: "If 10 different people with 10 different SSNs all log in from the same machine hash, you just discovered a synthetic fraud farm! Use COUNT(DISTINCT account_id) in HAVING.",
+        schemaSnippet: "AccountLoginTelemetry(account_id, customer_name, device_fingerprint, ip_address, login_timestamp)",
+        targetQuery: "SELECT\n  device_fingerprint,\n  COUNT(DISTINCT account_id) AS linked_account_count,\n  COUNT(*) AS total_login_events,\n  MIN(login_timestamp) AS first_observed_login,\n  MAX(login_timestamp) AS latest_observed_login\nFROM AccountLoginTelemetry\nGROUP BY device_fingerprint\nHAVING COUNT(DISTINCT account_id) >= 3\nORDER BY linked_account_count DESC;",
+        template: [
+          { text: "SELECT\n  device_fingerprint,\n  COUNT(", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ DEDUP CLAUSE ]" },
+          { text: " account_id) AS linked_account_count,\n  COUNT(*) AS total_login_events,\n  MIN(login_timestamp) AS first_observed_login,\n  MAX(login_timestamp) AS latest_observed_login\nFROM AccountLoginTelemetry\nGROUP BY device_fingerprint\n", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ GROUP FILTER ]" },
+          { text: " COUNT(DISTINCT account_id) ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ CARDINALITY OP ]" },
+          { text: " 3\nORDER BY linked_account_count DESC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "DISTINCT", options: ["DISTINCT", "ALL", "UNIQUE", "EXACT"] },
+          slot2: { correct: "HAVING", options: ["HAVING", "WHERE", "QUALIFY", "LIMIT"] },
+          slot3: { correct: ">=", options: [">=", "<=", "=", "!="] }
+        },
+        expectedColumns: ["device_fingerprint", "linked_account_count", "total_login_events", "first_observed_login", "latest_observed_login"]
+      },
+      {
+        stepNumber: 5,
+        title: "SAR Prioritization Queue & Regulatory Investigation Dossier",
+        businessBrief: "Financial intelligence analysts must review hundreds of fraud flags daily. Synthesize structured deposits, circular wires, and device clusters into a unified FinCEN SAR queue. Rank suspicious entities by total laundering volume using DENSE_RANK() and categorize urgency.",
+        prerequisites: [
+          {
+            sectionKey: "section7",
+            label: "Common Table Expressions & Window Functions",
+            tip: "Structure entity risk metrics cleanly before applying ranking windows."
+          },
+          {
+            sectionKey: "section6",
+            label: "Ranking Windows (DENSE_RANK & OVER)",
+            tip: "Rank high-dollar laundering entities at the top with DENSE_RANK() OVER (ORDER BY suspicious_volume_usd DESC)."
+          }
+        ],
+        bloopsAdvice: "Regulators require high-severity cases to be filed within 30 calendar days. Prioritize the highest-dollar laundering networks at the top of the investigative queue!",
+        schemaSnippet: "SuspiciousEntityPool(entity_id, entity_name, entity_type, suspicious_volume_usd, primary_typology)",
+        targetQuery: "SELECT\n  entity_id,\n  entity_name,\n  primary_typology,\n  suspicious_volume_usd,\n  DENSE_RANK() OVER (ORDER BY suspicious_volume_usd DESC) AS filing_priority_rank,\n  CASE\n    WHEN suspicious_volume_usd >= 1000000 THEN 'TIER_1_EXPEDITE_24H'\n    WHEN suspicious_volume_usd >= 250000 THEN 'TIER_2_PRIORITY_7D'\n    ELSE 'TIER_3_ROUTINE_30D'\n  END AS filing_sla_urgency\nFROM SuspiciousEntityPool\nORDER BY filing_priority_rank ASC;",
+        template: [
+          { text: "SELECT\n  entity_id,\n  entity_name,\n  primary_typology,\n  suspicious_volume_usd,\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ DENSE RANK FUNC ]" },
+          { text: "() OVER (ORDER BY suspicious_volume_usd ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ RANK DIRECTION ]" },
+          { text: ") AS filing_priority_rank,\n  CASE\n    WHEN suspicious_volume_usd >= 1000000 THEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ URGENT SLA ]" },
+          { text: "\n    WHEN suspicious_volume_usd >= 250000 THEN 'TIER_2_PRIORITY_7D'\n    ELSE 'TIER_3_ROUTINE_30D'\n  END AS filing_sla_urgency\nFROM SuspiciousEntityPool\nORDER BY filing_priority_rank ASC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "DENSE_RANK", options: ["DENSE_RANK", "RANK", "ROW_NUMBER", "CUME_DIST"] },
+          slot2: { correct: "DESC", options: ["DESC", "ASC", "NULLS LAST", "LIMIT"] },
+          slot3: { correct: "'TIER_1_EXPEDITE_24H'", options: ["'TIER_1_EXPEDITE_24H'", "'ROUTINE'", "'LOW'", "'CLOSED'"] }
+        },
+        expectedColumns: ["entity_id", "entity_name", "primary_typology", "suspicious_volume_usd", "filing_priority_rank", "filing_sla_urgency"]
       }
     ]
   },
@@ -623,6 +833,76 @@ window.CAPSTONES_DATA = [
           slot2: { correct: "'CHURN'", options: ["'CHURN'", "'CANCEL'", "'DROP'", "'LOST'"] }
         },
         expectedColumns: ["customer_id", "month_start_date", "active_mrr", "prior_mrr", "mrr_category"]
+      },
+      {
+        stepNumber: 4,
+        title: "Monthly Executive MRR Bridge & Net New MRR Aggregation",
+        businessBrief: "Construct the executive MRR bridge reported to the Board of Directors: For each calendar month, aggregate New MRR, Expansion MRR, Contraction MRR, and Churn MRR, and calculate Net New MRR.",
+        prerequisites: [
+          {
+            sectionKey: "section4",
+            label: "Conditional Aggregations (SUM + CASE)",
+            tip: "Use SUM(CASE WHEN mrr_category = 'NEW' THEN active_mrr ELSE 0 END) to roll up category deltas."
+          },
+          {
+            sectionKey: "section3",
+            label: "Chronological ORDER BY",
+            tip: "Sort monthly financial summaries chronologically with ORDER BY month_start_date ASC."
+          }
+        ],
+        bloopsAdvice: "The Board doesn't look at individual customer rows; they want one row per month showing how each component of the waterfall moved the business forward!",
+        schemaSnippet: "CustomerMonthlyMRRWaterfall(customer_id, month_start_date, active_mrr, prior_mrr, mrr_category)",
+        targetQuery: "SELECT\n  month_start_date,\n  SUM(CASE WHEN mrr_category = 'NEW' THEN active_mrr ELSE 0 END) AS new_mrr,\n  SUM(CASE WHEN mrr_category = 'EXPANSION' THEN (active_mrr - prior_mrr) ELSE 0 END) AS expansion_mrr,\n  SUM(CASE WHEN mrr_category = 'CONTRACTION' THEN (prior_mrr - active_mrr) ELSE 0 END) AS contraction_mrr,\n  SUM(CASE WHEN mrr_category = 'CHURN' THEN prior_mrr ELSE 0 END) AS churn_mrr,\n  (\n    SUM(CASE WHEN mrr_category = 'NEW' THEN active_mrr ELSE 0 END) +\n    SUM(CASE WHEN mrr_category = 'EXPANSION' THEN (active_mrr - prior_mrr) ELSE 0 END) -\n    SUM(CASE WHEN mrr_category = 'CONTRACTION' THEN (prior_mrr - active_mrr) ELSE 0 END) -\n    SUM(CASE WHEN mrr_category = 'CHURN' THEN prior_mrr ELSE 0 END)\n  ) AS net_new_mrr\nFROM CustomerMonthlyMRRWaterfall\nGROUP BY month_start_date\nORDER BY month_start_date ASC;",
+        template: [
+          { text: "SELECT\n  month_start_date,\n  SUM(CASE WHEN mrr_category = ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ NEW TAG ]" },
+          { text: " THEN active_mrr ELSE 0 END) AS new_mrr,\n  SUM(CASE WHEN mrr_category = 'EXPANSION' THEN (active_mrr - prior_mrr) ELSE 0 END) AS expansion_mrr,\n  SUM(CASE WHEN mrr_category = ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ CONTRACTION TAG ]" },
+          { text: " THEN (prior_mrr - active_mrr) ELSE 0 END) AS contraction_mrr,\n  SUM(CASE WHEN mrr_category = 'CHURN' THEN prior_mrr ELSE 0 END) AS churn_mrr,\n  (\n    SUM(CASE WHEN mrr_category = 'NEW' THEN active_mrr ELSE 0 END) +\n    SUM(CASE WHEN mrr_category = 'EXPANSION' THEN (active_mrr - prior_mrr) ELSE 0 END) -\n    SUM(CASE WHEN mrr_category = 'CONTRACTION' THEN (prior_mrr - active_mrr) ELSE 0 END) -\n    SUM(CASE WHEN mrr_category = 'CHURN' THEN prior_mrr ELSE 0 END)\n  ) AS net_new_mrr\nFROM CustomerMonthlyMRRWaterfall\n", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ GROUPING CLAUSE ]" },
+          { text: " month_start_date\nORDER BY month_start_date ASC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "'NEW'", options: ["'NEW'", "'EXPANSION'", "'CHURN'", "'RETAINED'"] },
+          slot2: { correct: "'CONTRACTION'", options: ["'CONTRACTION'", "'DOWNSELL'", "'LOST'", "'DROP'"] },
+          slot3: { correct: "GROUP BY", options: ["GROUP BY", "ORDER BY", "PARTITION BY", "CLUSTER BY"] }
+        },
+        expectedColumns: ["month_start_date", "new_mrr", "expansion_mrr", "contraction_mrr", "churn_mrr", "net_new_mrr"]
+      },
+      {
+        stepNumber: 5,
+        title: "SaaS Quick Ratio & Net Revenue Retention (NRR) Valuation Engine",
+        businessBrief: "Compute SaaS valuation multiple drivers: SaaS Quick Ratio = (New MRR + Expansion MRR) / (Contraction MRR + Churn MRR) and Net Revenue Retention % (NRR). Benchmark companies against the top-quartile Quick Ratio benchmark of >= 4.0.",
+        prerequisites: [
+          {
+            sectionKey: "section4",
+            label: "Safe Math with NULLIF in Financial Metrics",
+            tip: "Protect against division-by-zero when churn or starting revenue is 0."
+          },
+          {
+            sectionKey: "section8",
+            label: "CASE WHEN Health Grading",
+            tip: "Grade growth efficiency into TOP_QUARTILE_EFFICIENCY, HEALTHY_GROWTH, or ELEVATED_CHURN_DRAG."
+          }
+        ],
+        bloopsAdvice: "Venture capitalists evaluate the SaaS Quick Ratio: if it's > 4.0, your growth is outrunning churn by 4x! Always wrap the denominator in NULLIF to prevent division by 0.",
+        schemaSnippet: "ExecutiveMonthlyBridge(month_start_date, starting_mrr, new_mrr, expansion_mrr, contraction_mrr, churn_mrr, ending_mrr)",
+        targetQuery: "SELECT\n  month_start_date,\n  starting_mrr,\n  ending_mrr,\n  ROUND((new_mrr + expansion_mrr) / NULLIF(contraction_mrr + churn_mrr, 0), 2) AS saas_quick_ratio,\n  ROUND((starting_mrr + expansion_mrr - contraction_mrr - churn_mrr) * 100.0 / NULLIF(starting_mrr, 0), 2) AS nrr_percentage,\n  CASE\n    WHEN (new_mrr + expansion_mrr) / NULLIF(contraction_mrr + churn_mrr, 0) >= 4.0 THEN 'TOP_QUARTILE_EFFICIENCY'\n    WHEN (new_mrr + expansion_mrr) / NULLIF(contraction_mrr + churn_mrr, 0) >= 2.0 THEN 'HEALTHY_GROWTH'\n    ELSE 'ELEVATED_CHURN_DRAG'\n  END AS growth_efficiency_band\nFROM ExecutiveMonthlyBridge\nORDER BY month_start_date ASC;",
+        template: [
+          { text: "SELECT\n  month_start_date,\n  starting_mrr,\n  ending_mrr,\n  ROUND((new_mrr + expansion_mrr) / ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ SAFE DIVISOR ]" },
+          { text: "(contraction_mrr + churn_mrr, 0), 2) AS saas_quick_ratio,\n  ROUND((starting_mrr + expansion_mrr - contraction_mrr - churn_mrr) * ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ PERCENT SCALE ]" },
+          { text: " / NULLIF(starting_mrr, 0), 2) AS nrr_percentage,\n  CASE\n    WHEN (new_mrr + expansion_mrr) / NULLIF(contraction_mrr + churn_mrr, 0) >= 4.0 THEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ EFFICIENCY STATUS ]" },
+          { text: "\n    WHEN (new_mrr + expansion_mrr) / NULLIF(contraction_mrr + churn_mrr, 0) >= 2.0 THEN 'HEALTHY_GROWTH'\n    ELSE 'ELEVATED_CHURN_DRAG'\n  END AS growth_efficiency_band\nFROM ExecutiveMonthlyBridge\nORDER BY month_start_date ASC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "NULLIF", options: ["NULLIF", "COALESCE", "IFNULL", "NVL"] },
+          slot2: { correct: "100.0", options: ["100.0", "1.0", "1000", "10"] },
+          slot3: { correct: "'TOP_QUARTILE_EFFICIENCY'", options: ["'TOP_QUARTILE_EFFICIENCY'", "'POOR'", "'UNHEALTHY'", "'FAILED'"] }
+        },
+        expectedColumns: ["month_start_date", "starting_mrr", "ending_mrr", "saas_quick_ratio", "nrr_percentage", "growth_efficiency_band"]
       }
     ]
   },
@@ -688,6 +968,111 @@ window.CAPSTONES_DATA = [
           slot1: { correct: "EXTRACT", options: ["EXTRACT", "DATE_PART", "YEAR", "GET_YEAR"] }
         },
         expectedColumns: ["customer_id", "cohort_month", "activity_month", "month_index"]
+      },
+      {
+        stepNumber: 3,
+        title: "Triangular Customer Retention Matrix & Cohort Decay Curves",
+        businessBrief: "Calculate retention curves: For every acquisition cohort and relative month index, count active customers and calculate Retention Rate % relative to Month 0 starting cohort size.",
+        prerequisites: [
+          {
+            sectionKey: "section6",
+            label: "FIRST_VALUE() Window Function Across Partitions",
+            tip: "Use FIRST_VALUE(active_users) OVER (PARTITION BY cohort_month ORDER BY month_index ASC) to anchor Month 0 cohort size."
+          },
+          {
+            sectionKey: "section4",
+            label: "Aggregations with Math Normalization",
+            tip: "Divide active users by Month 0 initial cohort size and multiply by 100.0."
+          }
+        ],
+        bloopsAdvice: "FIRST_VALUE() anchors your percentage to Month 0's initial cohort headcount so you can see whether 80%, 60%, or 40% of customers stay active in Month 12!",
+        schemaSnippet: "CustomerCohortMonthly(customer_id, cohort_month, month_index)",
+        targetQuery: "WITH CohortCounts AS (\n  SELECT\n    cohort_month,\n    month_index,\n    COUNT(DISTINCT customer_id) AS active_users\n  FROM CustomerCohortMonthly\n  GROUP BY cohort_month, month_index\n)\nSELECT\n  cohort_month,\n  month_index,\n  active_users,\n  FIRST_VALUE(active_users) OVER (\n    PARTITION BY cohort_month\n    ORDER BY month_index ASC\n  ) AS initial_cohort_size,\n  ROUND(active_users * 100.0 / FIRST_VALUE(active_users) OVER (\n    PARTITION BY cohort_month\n    ORDER BY month_index ASC\n  ), 2) AS retention_rate_pct\nFROM CohortCounts\nORDER BY cohort_month ASC, month_index ASC;",
+        template: [
+          { text: "WITH CohortCounts AS (\n  SELECT\n    cohort_month,\n    month_index,\n    ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ USER COUNT ]" },
+          { text: "(DISTINCT customer_id) AS active_users\n  FROM CustomerCohortMonthly\n  GROUP BY cohort_month, month_index\n)\nSELECT\n  cohort_month,\n  month_index,\n  active_users,\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ FIRST VALUE FUNC ]" },
+          { text: "(active_users) OVER (\n    ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ PARTITION CLAUSE ]" },
+          { text: " cohort_month\n    ORDER BY month_index ASC\n  ) AS initial_cohort_size,\n  ROUND(active_users * 100.0 / FIRST_VALUE(active_users) OVER (\n    PARTITION BY cohort_month\n    ORDER BY month_index ASC\n  ), 2) AS retention_rate_pct\nFROM CohortCounts\nORDER BY cohort_month ASC, month_index ASC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "COUNT", options: ["COUNT", "SUM", "AVG", "MAX"] },
+          slot2: { correct: "FIRST_VALUE", options: ["FIRST_VALUE", "LAST_VALUE", "LAG", "LEAD"] },
+          slot3: { correct: "PARTITION BY", options: ["PARTITION BY", "GROUP BY", "ORDER BY", "CLUSTER BY"] }
+        },
+        expectedColumns: ["cohort_month", "month_index", "active_users", "initial_cohort_size", "retention_rate_pct"]
+      },
+      {
+        stepNumber: 4,
+        title: "Net Dollar Retention (NDR) Expansion Curve & Smile Curves",
+        businessBrief: "In world-class enterprise SaaS (e.g. Snowflake, Datadog), cohorts demonstrate 'Net Negative Churn' (NDR > 100%), where expansion from retained accounts exceeds lost churn. Compute cohort NDR % over time.",
+        prerequisites: [
+          {
+            sectionKey: "section6",
+            label: "Window Framing & Normalization",
+            tip: "Compare total_mrr against Month 0 revenue using FIRST_VALUE()."
+          },
+          {
+            sectionKey: "section4",
+            label: "SUM Aggregations with Ratio Scaling",
+            tip: "Protect ratio calculations with NULLIF(..., 0)."
+          }
+        ],
+        bloopsAdvice: "Even if 20% of users churn, if remaining users expand their contract value by 50%, NDR is 130%! This 'smile curve' is what makes SaaS companies billion-dollar public market darlings.",
+        schemaSnippet: "CohortRevenueMonthly(cohort_month, month_index, total_mrr)",
+        targetQuery: "SELECT\n  cohort_month,\n  month_index,\n  total_mrr,\n  FIRST_VALUE(total_mrr) OVER (\n    PARTITION BY cohort_month\n    ORDER BY month_index ASC\n  ) AS month_0_mrr,\n  ROUND(total_mrr * 100.0 / NULLIF(FIRST_VALUE(total_mrr) OVER (\n    PARTITION BY cohort_month\n    ORDER BY month_index ASC\n  ), 0), 2) AS ndr_percentage\nFROM CohortRevenueMonthly\nORDER BY cohort_month ASC, month_index ASC;",
+        template: [
+          { text: "SELECT\n  cohort_month,\n  month_index,\n  total_mrr,\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ BASE VALUE FUNC ]" },
+          { text: "(total_mrr) OVER (\n    PARTITION BY cohort_month\n    ORDER BY month_index ASC\n  ) AS month_0_mrr,\n  ROUND(total_mrr * 100.0 / ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ SAFE ZERO DIVISOR ]" },
+          { text: "(FIRST_VALUE(total_mrr) OVER (\n    PARTITION BY cohort_month\n    ORDER BY month_index ASC\n  ), 0), 2) AS ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ COLUMN ALIAS ]" },
+          { text: "\nFROM CohortRevenueMonthly\nORDER BY cohort_month ASC, month_index ASC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "FIRST_VALUE", options: ["FIRST_VALUE", "NTH_VALUE", "MIN", "MAX"] },
+          slot2: { correct: "NULLIF", options: ["NULLIF", "COALESCE", "ISNULL", "NVL"] },
+          slot3: { correct: "ndr_percentage", options: ["ndr_percentage", "loss_percentage", "raw_mrr", "growth_delta"] }
+        },
+        expectedColumns: ["cohort_month", "month_index", "total_mrr", "month_0_mrr", "ndr_percentage"]
+      },
+      {
+        stepNumber: 5,
+        title: "LTV / CAC Payback Period & Unit Economics Break-Even Engine",
+        businessBrief: "Merge cumulative cohort gross margin profits with blended Customer Acquisition Cost ($CAC). Calculate the exact cumulative payback curve per customer and identify when cumulative Gross Profit exceeds CAC ($6,000 benchmark).",
+        prerequisites: [
+          {
+            sectionKey: "section6",
+            label: "Cumulative Running Totals (SUM OVER UNBOUNDED PRECEDING)",
+            tip: "Accumulate gross profits over time using SUM() OVER (PARTITION BY cohort_month ORDER BY month_index ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)."
+          },
+          {
+            sectionKey: "section8",
+            label: "CASE WHEN Payback Milestones",
+            tip: "Tag the milestone when cumulative GP >= blended_cac."
+          }
+        ],
+        bloopsAdvice: "Running cumulative SUM() over month_index tracks cumulative gross profit recovered from the customer. Once cumulative GP >= CAC, the customer is fully paid off and pure profit begins!",
+        schemaSnippet: "CohortUnitEconomics(cohort_month, month_index, blended_cac, monthly_gross_profit_per_customer)",
+        targetQuery: "SELECT\n  cohort_month,\n  month_index,\n  blended_cac,\n  monthly_gross_profit_per_customer,\n  SUM(monthly_gross_profit_per_customer) OVER (\n    PARTITION BY cohort_month\n    ORDER BY month_index ASC\n    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n  ) AS cumulative_gp_per_customer,\n  CASE\n    WHEN SUM(monthly_gross_profit_per_customer) OVER (\n      PARTITION BY cohort_month\n      ORDER BY month_index ASC\n      ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) >= blended_cac THEN 'CAC_REPAID_PROFITABLE'\n    ELSE 'PAYBACK_IN_PROGRESS'\n  END AS payback_status\nFROM CohortUnitEconomics\nORDER BY cohort_month ASC, month_index ASC;",
+        template: [
+          { text: "SELECT\n  cohort_month,\n  month_index,\n  blended_cac,\n  monthly_gross_profit_per_customer,\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ RUNNING ACCUMULATOR ]" },
+          { text: "(monthly_gross_profit_per_customer) OVER (\n    PARTITION BY cohort_month\n    ORDER BY month_index ASC\n    ROWS BETWEEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ FRAME START ]" },
+          { text: " AND CURRENT ROW\n  ) AS cumulative_gp_per_customer,\n  CASE\n    WHEN SUM(monthly_gross_profit_per_customer) OVER (\n      PARTITION BY cohort_month\n      ORDER BY month_index ASC\n      ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n    ) >= blended_cac THEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ PROFIT STATUS ]" },
+          { text: "\n    ELSE 'PAYBACK_IN_PROGRESS'\n  END AS payback_status\nFROM CohortUnitEconomics\nORDER BY cohort_month ASC, month_index ASC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "SUM", options: ["SUM", "AVG", "MAX", "COUNT"] },
+          slot2: { correct: "UNBOUNDED PRECEDING", options: ["UNBOUNDED PRECEDING", "CURRENT ROW", "1 PRECEDING", "FOLLOWING"] },
+          slot3: { correct: "'CAC_REPAID_PROFITABLE'", options: ["'CAC_REPAID_PROFITABLE'", "'DEFICIT'", "'BANKRUPT'", "'PENDING'"] }
+        },
+        expectedColumns: ["cohort_month", "month_index", "blended_cac", "monthly_gross_profit_per_customer", "cumulative_gp_per_customer", "payback_status"]
       }
     ]
   },
@@ -764,6 +1149,111 @@ window.CAPSTONES_DATA = [
           slot2: { correct: ">", options: [">", "=", "<", ">="] }
         },
         expectedColumns: ["claim_id", "patient_id", "provider_id", "procedure_code", "claim_date", "billed_amount", "submission_sequence"]
+      },
+      {
+        stepNumber: 3,
+        title: "Claim Denial Root-Cause Pareto Distribution (80/20 Rule)",
+        businessBrief: "Health insurers and hospital billing offices use Pareto analysis (80/20 rule) to eliminate denial drivers. Aggregate total denied dollar volume by CARC (Claim Adjustment Reason Code), compute each code's percentage of total denials, and calculate the running cumulative percentage.",
+        prerequisites: [
+          {
+            sectionKey: "section6",
+            label: "Window Function SUM() OVER () for Global Denominators",
+            tip: "Use SUM(total_denied_amount) OVER () with empty parenthesis as the global denominator."
+          },
+          {
+            sectionKey: "section6",
+            label: "Cumulative Running Totals with ORDER BY",
+            tip: "Use SUM(...) OVER (ORDER BY total_denied_amount DESC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) to track the cumulative running total."
+          }
+        ],
+        bloopsAdvice: "Notice the difference between SUM(denied_amount) OVER () [global total] and SUM(denied_amount) OVER (ORDER BY denied_amount DESC) [running cumulative total]! Dividing them gives the exact Pareto curve.",
+        schemaSnippet: "DeniedClaimsLog(claim_id, denial_code, denial_reason, denied_amount)",
+        targetQuery: "WITH DenialAggs AS (\n  SELECT\n    denial_code,\n    denial_reason,\n    SUM(denied_amount) AS total_denied_amount\n  FROM DeniedClaimsLog\n  GROUP BY denial_code, denial_reason\n)\nSELECT\n  denial_code,\n  denial_reason,\n  total_denied_amount,\n  ROUND(total_denied_amount * 100.0 / SUM(total_denied_amount) OVER (), 2) AS pct_of_total_denials,\n  ROUND(SUM(total_denied_amount) OVER (\n    ORDER BY total_denied_amount DESC\n    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n  ) * 100.0 / SUM(total_denied_amount) OVER (), 2) AS cumulative_pareto_pct\nFROM DenialAggs\nORDER BY total_denied_amount DESC;",
+        template: [
+          { text: "WITH DenialAggs AS (\n  SELECT\n    denial_code,\n    denial_reason,\n    SUM(denied_amount) AS total_denied_amount\n  FROM DeniedClaimsLog\n  GROUP BY denial_code, denial_reason\n)\nSELECT\n  denial_code,\n  denial_reason,\n  total_denied_amount,\n  ROUND(total_denied_amount * 100.0 / SUM(total_denied_amount) ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ GLOBAL WINDOW ]" },
+          { text: ", 2) AS pct_of_total_denials,\n  ROUND(SUM(total_denied_amount) OVER (\n    ORDER BY total_denied_amount ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ SORT DIRECTION ]" },
+          { text: "\n    ROWS BETWEEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ FRAME START ]" },
+          { text: " AND CURRENT ROW\n  ) * 100.0 / SUM(total_denied_amount) OVER (), 2) AS cumulative_pareto_pct\nFROM DenialAggs\nORDER BY total_denied_amount DESC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "OVER ()", options: ["OVER ()", "OVER (PARTITION BY denial_code)", "GROUP BY", "WHERE"] },
+          slot2: { correct: "DESC", options: ["DESC", "ASC", "NULLS LAST", "LIMIT"] },
+          slot3: { correct: "UNBOUNDED PRECEDING", options: ["UNBOUNDED PRECEDING", "CURRENT ROW", "1 PRECEDING", "FOLLOWING"] }
+        },
+        expectedColumns: ["denial_code", "denial_reason", "total_denied_amount", "pct_of_total_denials", "cumulative_pareto_pct"]
+      },
+      {
+        stepNumber: 4,
+        title: "Out-of-Network (OON) Surprise Billing Markup vs. CMS Benchmark",
+        businessBrief: "Under the federal No Surprises Act, providers cannot arbitrarily bill patients exorbitant rates. Join patient claims against the CMS Medicare Maximum Allowable Fee Schedule to identify predatory billing markups where billed charges exceed 400% of the Medicare benchmark.",
+        prerequisites: [
+          {
+            sectionKey: "section5",
+            label: "INNER JOIN on Clinical Procedure Codes (CPT/HCPCS)",
+            tip: "Join ProviderBilledProcedures to CmsFeeSchedule on procedure_code."
+          },
+          {
+            sectionKey: "section8",
+            label: "CASE WHEN Regulatory Audit Flags",
+            tip: "Tag predatory surprise bills when billed_amount >= 4.0 * medicare_allowable_rate."
+          }
+        ],
+        bloopsAdvice: "Medicare publishes the national gold standard benchmark for what medical procedures actually cost. Joining on procedure_code lets us flag providers price-gouging patients!",
+        schemaSnippet: "ProviderBilledProcedures(claim_id, provider_id, procedure_code, charged_amount), CmsFeeSchedule(procedure_code, medicare_allowable_rate)",
+        targetQuery: "SELECT\n  p.claim_id,\n  p.provider_id,\n  p.procedure_code,\n  p.charged_amount,\n  c.medicare_allowable_rate,\n  ROUND(p.charged_amount / NULLIF(c.medicare_allowable_rate, 0), 2) AS markup_multiple,\n  CASE\n    WHEN (p.charged_amount / NULLIF(c.medicare_allowable_rate, 0)) >= 4.0 THEN 'PREDATORY_SURPRISE_BILL'\n    WHEN (p.charged_amount / NULLIF(c.medicare_allowable_rate, 0)) >= 2.0 THEN 'ELEVATED_COMMERCIAL_MARKUP'\n    ELSE 'FAIR_MARKET_BENCHMARK'\n  END AS billing_audit_flag\nFROM ProviderBilledProcedures p\nJOIN CmsFeeSchedule c\n  ON p.procedure_code = c.procedure_code\nORDER BY markup_multiple DESC;",
+        template: [
+          { text: "SELECT\n  p.claim_id,\n  p.provider_id,\n  p.procedure_code,\n  p.charged_amount,\n  c.medicare_allowable_rate,\n  ROUND(p.charged_amount / NULLIF(c.medicare_allowable_rate, 0), 2) AS markup_multiple,\n  CASE\n    WHEN (p.charged_amount / NULLIF(c.medicare_allowable_rate, 0)) >= 4.0 THEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ PREDATORY FLAG ]" },
+          { text: "\n    WHEN (p.charged_amount / NULLIF(c.medicare_allowable_rate, 0)) >= 2.0 THEN 'ELEVATED_COMMERCIAL_MARKUP'\n    ELSE 'FAIR_MARKET_BENCHMARK'\n  END AS billing_audit_flag\nFROM ProviderBilledProcedures p\n", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ JOIN SPEC ]" },
+          { text: " CmsFeeSchedule c\n  ON p.procedure_code = c.procedure_code\nORDER BY ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ SORT COLUMN ]" },
+          { text: " DESC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "'PREDATORY_SURPRISE_BILL'", options: ["'PREDATORY_SURPRISE_BILL'", "'STANDARD'", "'DISCOUNTED'", "'FREE'"] },
+          slot2: { correct: "JOIN", options: ["JOIN", "LEFT JOIN", "CROSS JOIN", "FULL JOIN"] },
+          slot3: { correct: "markup_multiple", options: ["markup_multiple", "charged_amount", "claim_id", "procedure_code"] }
+        },
+        expectedColumns: ["claim_id", "provider_id", "procedure_code", "charged_amount", "medicare_allowable_rate", "markup_multiple", "billing_audit_flag"]
+      },
+      {
+        stepNumber: 5,
+        title: "Executive Payer Adjudication Funnel & First-Pass Clean Claim Rate (CCR)",
+        businessBrief: "Healthcare CFOs track the First-Pass Clean Claim Rate (CCR): Percentage of submitted claims adjudicated and paid without rejection, denial, or manual rework. Construct a comprehensive department summary.",
+        prerequisites: [
+          {
+            sectionKey: "section4",
+            label: "Multi-Condition CASE Aggregations",
+            tip: "Use COUNT(CASE WHEN adjudication_status = 'PAID_FIRST_PASS' THEN 1 END) to isolate first-pass approvals."
+          },
+          {
+            sectionKey: "section4",
+            label: "High-Precision Division with Safe Defaults",
+            tip: "Prevent divide-by-zero using NULLIF(COUNT(*), 0)."
+          }
+        ],
+        bloopsAdvice: "First-Pass Clean Claim Rate above 95% indicates an elite revenue cycle operations team. Conditional aggregations allow you to build the entire dashboard in one query!",
+        schemaSnippet: "ClaimsAdjudicationEvents(claim_id, billing_department, adjudication_status ['PAID_FIRST_PASS', 'DENIED', 'REWORKED_APPEALED'], paid_amount)",
+        targetQuery: "SELECT\n  billing_department,\n  COUNT(*) AS total_claims_submitted,\n  COUNT(CASE WHEN adjudication_status = 'PAID_FIRST_PASS' THEN 1 END) AS clean_first_pass_claims,\n  COUNT(CASE WHEN adjudication_status = 'DENIED' THEN 1 END) AS denied_claims,\n  ROUND(\n    COUNT(CASE WHEN adjudication_status = 'PAID_FIRST_PASS' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0),\n    2\n  ) AS clean_claim_rate_pct,\n  SUM(paid_amount) AS total_disbursed_usd\nFROM ClaimsAdjudicationEvents\nGROUP BY billing_department\nORDER BY clean_claim_rate_pct DESC;",
+        template: [
+          { text: "SELECT\n  billing_department,\n  COUNT(*) AS total_claims_submitted,\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ AGGREGATE FUNC ]" },
+          { text: "(CASE WHEN adjudication_status = ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ CLEAN STATUS ]" },
+          { text: " THEN 1 END) AS clean_first_pass_claims,\n  COUNT(CASE WHEN adjudication_status = 'DENIED' THEN 1 END) AS denied_claims,\n  ROUND(\n    COUNT(CASE WHEN adjudication_status = 'PAID_FIRST_PASS' THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0),\n    2\n  ) AS clean_claim_rate_pct,\n  SUM(paid_amount) AS total_disbursed_usd\nFROM ClaimsAdjudicationEvents\n", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ GROUPING CLAUSE ]" },
+          { text: " billing_department\nORDER BY clean_claim_rate_pct DESC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "COUNT", options: ["COUNT", "SUM", "AVG", "TOTAL"] },
+          slot2: { correct: "'PAID_FIRST_PASS'", options: ["'PAID_FIRST_PASS'", "'DENIED'", "'PENDING'", "'VOID'"] },
+          slot3: { correct: "GROUP BY", options: ["GROUP BY", "ORDER BY", "PARTITION BY", "WINDOW"] }
+        },
+        expectedColumns: ["billing_department", "total_claims_submitted", "clean_first_pass_claims", "denied_claims", "clean_claim_rate_pct", "total_disbursed_usd"]
       }
     ]
   },
@@ -810,6 +1300,151 @@ window.CAPSTONES_DATA = [
           slot1: { correct: "LEAD", options: ["LEAD", "LAG", "NEXT", "FUTURE"] }
         },
         expectedColumns: ["visit_id", "patient_id", "discharge_date", "next_admission_date", "is_30day_readmission"]
+      },
+      {
+        stepNumber: 2,
+        title: "Patient Length of Stay (LOS) & Outlier Deviation vs. DRG Norms",
+        businessBrief: "Calculate patient Length of Stay (LOS) in whole days: (discharge_date - admission_date). Join with DRG (Diagnosis Related Group) benchmarks and compute variance: actual_los - benchmark_los. Flag stays exceeding 1.5x of benchmark as clinical outliers.",
+        prerequisites: [
+          {
+            sectionKey: "section1",
+            label: "Date Subtraction & Day Arithmetic",
+            tip: "Subtract admission_date from discharge_date to calculate stay length in days."
+          },
+          {
+            sectionKey: "section5",
+            label: "JOIN on Diagnostic DRG Codes",
+            tip: "Join PatientInpatientStays to DrgBenchmarks on drg_code."
+          },
+          {
+            sectionKey: "section8",
+            label: "CASE Logic for Clinical Outliers",
+            tip: "Tag EXTREME_OUTLIER when actual days > benchmark * 1.5."
+          }
+        ],
+        bloopsAdvice: "Hospitals receive fixed lump-sum payments under Medicare DRG rules. If a patient stays 12 days when the DRG benchmark is 4 days, the hospital loses tens of thousands on that bed!",
+        schemaSnippet: "PatientInpatientStays(stay_id, patient_id, drg_code, admission_date, discharge_date), DrgBenchmarks(drg_code, expected_mean_los)",
+        targetQuery: "SELECT\n  s.stay_id,\n  s.patient_id,\n  s.drg_code,\n  (s.discharge_date - s.admission_date) AS actual_los_days,\n  b.expected_mean_los,\n  ROUND((s.discharge_date - s.admission_date) - b.expected_mean_los, 1) AS los_variance_days,\n  CASE\n    WHEN (s.discharge_date - s.admission_date) > (b.expected_mean_los * 1.5) THEN 'EXTREME_OUTLIER'\n    WHEN (s.discharge_date - s.admission_date) < b.expected_mean_los THEN 'EFFICIENT_DISCHARGE'\n    ELSE 'STANDARD_CARE'\n  END AS utilization_category\nFROM PatientInpatientStays s\nJOIN DrgBenchmarks b\n  ON s.drg_code = b.drg_code\nORDER BY actual_los_days DESC;",
+        template: [
+          { text: "SELECT\n  s.stay_id,\n  s.patient_id,\n  s.drg_code,\n  (s.discharge_date ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ DATE DELTA OP ]" },
+          { text: " s.admission_date) AS actual_los_days,\n  b.expected_mean_los,\n  ROUND((s.discharge_date - s.admission_date) - b.expected_mean_los, 1) AS los_variance_days,\n  CASE\n    WHEN (s.discharge_date - s.admission_date) > (b.expected_mean_los * 1.5) THEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ OUTLIER STATUS ]" },
+          { text: "\n    WHEN (s.discharge_date - s.admission_date) < b.expected_mean_los THEN 'EFFICIENT_DISCHARGE'\n    ELSE 'STANDARD_CARE'\n  END AS utilization_category\nFROM PatientInpatientStays s\n", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ JOIN SPEC ]" },
+          { text: " DrgBenchmarks b\n  ON s.drg_code = b.drg_code\nORDER BY actual_los_days DESC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "-", options: ["-", "+", "*", "/"] },
+          slot2: { correct: "'EXTREME_OUTLIER'", options: ["'EXTREME_OUTLIER'", "'STANDARD_CARE'", "'DISCHARGED'", "'NORMAL'"] },
+          slot3: { correct: "JOIN", options: ["JOIN", "LEFT JOIN", "CROSS JOIN", "OUTER JOIN"] }
+        },
+        expectedColumns: ["stay_id", "patient_id", "drg_code", "actual_los_days", "expected_mean_los", "los_variance_days", "utilization_category"]
+      },
+      {
+        stepNumber: 3,
+        title: "Daily Midnight Bed Census & ICU Capacity Surge Monitoring",
+        businessBrief: "Hospital bed management teams must track daily midnight bed occupancy. Expand patient admission and discharge date intervals against a daily calendar to count occupied beds per department and alert if occupancy exceeds 90%.",
+        prerequisites: [
+          {
+            sectionKey: "section5",
+            label: "NON-EQUI JOIN on Date Ranges",
+            tip: "Join where calendar census_date >= admission_date AND census_date < discharge_date."
+          },
+          {
+            sectionKey: "section4",
+            label: "GROUP BY Department & Date",
+            tip: "Aggregate bed counts per department and date."
+          }
+        ],
+        bloopsAdvice: "A patient occupies a bed on every calendar date between admission and discharge! A non-equi join with a date spine gives the exact active census for any midnight in history.",
+        schemaSnippet: "DimHospitalCalendar(census_date), DepartmentBedInventory(department_name, total_licensed_beds), ActiveAdmissions(stay_id, department_name, admission_date, discharge_date)",
+        targetQuery: "SELECT\n  c.census_date,\n  i.department_name,\n  COUNT(a.stay_id) AS occupied_beds,\n  i.total_licensed_beds,\n  ROUND(COUNT(a.stay_id) * 100.0 / NULLIF(i.total_licensed_beds, 0), 1) AS occupancy_rate_pct,\n  CASE\n    WHEN COUNT(a.stay_id) * 100.0 / NULLIF(i.total_licensed_beds, 0) >= 90.0 THEN 'CRITICAL_SURGE_DIVERSION'\n    WHEN COUNT(a.stay_id) * 100.0 / NULLIF(i.total_licensed_beds, 0) >= 80.0 THEN 'HIGH_CENSUS_ALERT'\n    ELSE 'NOMINAL_CAPACITY'\n  END AS capacity_status\nFROM DimHospitalCalendar c\nJOIN DepartmentBedInventory i\n  ON 1=1\nLEFT JOIN ActiveAdmissions a\n  ON i.department_name = a.department_name\n AND c.census_date >= a.admission_date\n AND c.census_date < a.discharge_date\nGROUP BY c.census_date, i.department_name, i.total_licensed_beds\nORDER BY c.census_date ASC, occupancy_rate_pct DESC;",
+        template: [
+          { text: "SELECT\n  c.census_date,\n  i.department_name,\n  COUNT(a.stay_id) AS occupied_beds,\n  i.total_licensed_beds,\n  ROUND(COUNT(a.stay_id) * 100.0 / NULLIF(i.total_licensed_beds, 0), 1) AS occupancy_rate_pct,\n  CASE\n    WHEN COUNT(a.stay_id) * 100.0 / NULLIF(i.total_licensed_beds, 0) >= 90.0 THEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ SURGE STATUS ]" },
+          { text: "\n    WHEN COUNT(a.stay_id) * 100.0 / NULLIF(i.total_licensed_beds, 0) >= 80.0 THEN 'HIGH_CENSUS_ALERT'\n    ELSE 'NOMINAL_CAPACITY'\n  END AS capacity_status\nFROM DimHospitalCalendar c\nJOIN DepartmentBedInventory i\n  ON 1=1\nLEFT JOIN ActiveAdmissions a\n  ON i.department_name = a.department_name\n AND c.census_date ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ ADMIT BOUND ]" },
+          { text: " a.admission_date\n AND c.census_date < a.discharge_date\nGROUP BY c.census_date, i.department_name, i.total_licensed_beds\nORDER BY c.census_date ASC, occupancy_rate_pct ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ SORT DIRECTION ]" },
+          { text: ";", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "'CRITICAL_SURGE_DIVERSION'", options: ["'CRITICAL_SURGE_DIVERSION'", "'EMPTY'", "'CLOSED'", "'AVAILABLE'"] },
+          slot2: { correct: ">=", options: [">=", ">", "<=", "="] },
+          slot3: { correct: "DESC", options: ["DESC", "ASC", "NULLS FIRST", "LIMIT"] }
+        },
+        expectedColumns: ["census_date", "department_name", "occupied_beds", "total_licensed_beds", "occupancy_rate_pct", "capacity_status"]
+      },
+      {
+        stepNumber: 4,
+        title: "Hospital-Acquired Condition (HAC) & Complication Timestamp Audit",
+        businessBrief: "Under CMS penalty rules, Medicare denies reimbursement for Hospital-Acquired Infections if the diagnosis was not present upon admission (POA = 'N') and occurred > 48 hours after admission.",
+        prerequisites: [
+          {
+            sectionKey: "section5",
+            label: "INNER JOIN on Patient Stays",
+            tip: "Join InpatientStays to StayDiagnoses on stay_id."
+          },
+          {
+            sectionKey: "section1",
+            label: "Timestamp Interval Comparison (> 48 hours)",
+            tip: "Compare timestamp difference using INTERVAL '48 hours'."
+          }
+        ],
+        bloopsAdvice: "If a patient catches an infection 48 hours after admission, it's legally a Hospital-Acquired Condition. Insurance will not pay for the extra days of antibiotics and ICU care!",
+        schemaSnippet: "InpatientStays(stay_id, patient_id, admission_time), StayDiagnoses(stay_id, icd10_code, diagnosis_time, present_on_admission ['Y', 'N'])",
+        targetQuery: "SELECT\n  s.stay_id,\n  s.patient_id,\n  d.icd10_code,\n  s.admission_time,\n  d.diagnosis_time,\n  ROUND(EXTRACT(EPOCH FROM (d.diagnosis_time - s.admission_time)) / 3600.0, 1) AS hours_since_admission,\n  CASE\n    WHEN d.present_on_admission = 'N' AND (d.diagnosis_time - s.admission_time) > INTERVAL '48 hours'\n    THEN 'HAC_NON_REIMBURSABLE'\n    ELSE 'PRE_EXISTING_CONDITION'\n  END AS reimbursement_classification\nFROM InpatientStays s\nJOIN StayDiagnoses d\n  ON s.stay_id = d.stay_id\nWHERE d.present_on_admission = 'N';",
+        template: [
+          { text: "SELECT\n  s.stay_id,\n  s.patient_id,\n  d.icd10_code,\n  s.admission_time,\n  d.diagnosis_time,\n  ROUND(EXTRACT(EPOCH FROM (d.diagnosis_time - s.admission_time)) / 3600.0, 1) AS hours_since_admission,\n  CASE\n    WHEN d.present_on_admission = 'N' AND (d.diagnosis_time - s.admission_time) > ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ 48HR INTERVAL ]" },
+          { text: "\n    THEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ HAC STATUS ]" },
+          { text: "\n    ELSE 'PRE_EXISTING_CONDITION'\n  END AS reimbursement_classification\nFROM InpatientStays s\n", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ JOIN SPEC ]" },
+          { text: " StayDiagnoses d\n  ON s.stay_id = d.stay_id\nWHERE d.present_on_admission = 'N';", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "INTERVAL '48 hours'", options: ["INTERVAL '48 hours'", "INTERVAL '24 hours'", "48", "'48h'"] },
+          slot2: { correct: "'HAC_NON_REIMBURSABLE'", options: ["'HAC_NON_REIMBURSABLE'", "'APPROVED'", "'PAID'", "'CLEAN'"] },
+          slot3: { correct: "JOIN", options: ["JOIN", "CROSS JOIN", "LEFT JOIN", "FULL JOIN"] }
+        },
+        expectedColumns: ["stay_id", "patient_id", "icd10_code", "admission_time", "diagnosis_time", "hours_since_admission", "reimbursement_classification"]
+      },
+      {
+        stepNumber: 5,
+        title: "Departmental HRRP Readmission Penalty Risk Scorecard",
+        businessBrief: "Synthesize hospital-wide performance into the Chief Medical Officer's HRRP dashboard: For each clinical department, compute total discharges, 30-day readmissions, readmission rate %, and rank departments by penalty exposure using DENSE_RANK().",
+        prerequisites: [
+          {
+            sectionKey: "section4",
+            label: "Aggregations with Math Ratios",
+            tip: "Calculate SUM(is_30day_readmission) * 100.0 / NULLIF(COUNT(*), 0)."
+          },
+          {
+            sectionKey: "section6",
+            label: "Ranking Windows (DENSE_RANK)",
+            tip: "Rank departments by readmission rate descending using DENSE_RANK() OVER (ORDER BY rate DESC)."
+          }
+        ],
+        bloopsAdvice: "Under the HRRP program, hospitals with excessive 30-day readmissions forfeit up to 3% of ALL Medicare inpatient revenue. DENSE_RANK() highlights the departments causing the highest penalty risk!",
+        schemaSnippet: "DepartmentalReadmissionsLog(department_name, discharge_id, is_30day_readmission [1, 0])",
+        targetQuery: "SELECT\n  department_name,\n  COUNT(*) AS total_discharges,\n  SUM(is_30day_readmission) AS readmission_count,\n  ROUND(SUM(is_30day_readmission) * 100.0 / NULLIF(COUNT(*), 0), 2) AS readmission_rate_pct,\n  DENSE_RANK() OVER (\n    ORDER BY (SUM(is_30day_readmission) * 100.0 / NULLIF(COUNT(*), 0)) DESC\n  ) AS penalty_risk_rank\nFROM DepartmentalReadmissionsLog\nGROUP BY department_name\nORDER BY penalty_risk_rank ASC;",
+        template: [
+          { text: "SELECT\n  department_name,\n  COUNT(*) AS total_discharges,\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ SUM READMISSIONS ]" },
+          { text: "(is_30day_readmission) AS readmission_count,\n  ROUND(SUM(is_30day_readmission) * 100.0 / NULLIF(COUNT(*), 0), 2) AS readmission_rate_pct,\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ DENSE RANK FUNC ]" },
+          { text: "() OVER (\n    ORDER BY (SUM(is_30day_readmission) * 100.0 / NULLIF(COUNT(*), 0)) ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ SORT DIRECTION ]" },
+          { text: "\n  ) AS penalty_risk_rank\nFROM DepartmentalReadmissionsLog\nGROUP BY department_name\nORDER BY penalty_risk_rank ASC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "SUM", options: ["SUM", "COUNT", "AVG", "MAX"] },
+          slot2: { correct: "DENSE_RANK", options: ["DENSE_RANK", "RANK", "ROW_NUMBER", "NTILE"] },
+          slot3: { correct: "DESC", options: ["DESC", "ASC", "NULLS LAST", "LIMIT"] }
+        },
+        expectedColumns: ["department_name", "total_discharges", "readmission_count", "readmission_rate_pct", "penalty_risk_rank"]
       }
     ]
   },
@@ -854,6 +1489,151 @@ window.CAPSTONES_DATA = [
           slot2: { correct: "GROUP BY", options: ["GROUP BY", "ORDER BY", "PARTITION BY", "CLUSTER BY"] }
         },
         expectedColumns: ["seller_id", "gross_gmv", "total_refunds", "platform_take_rate_fee", "net_merchant_payout"]
+      },
+      {
+        stepNumber: 2,
+        title: "Escrow Holdback Balance & Rolling 14-Day Release Tranches",
+        businessBrief: "Marketplaces protect buyers by holding merchant payout funds in escrow for 14 days after confirmed delivery. Calculate each seller's locked escrow balance vs. funds eligible for immediate disbursement today (current_date >= delivery_date + 14 days).",
+        prerequisites: [
+          {
+            sectionKey: "section8",
+            label: "CASE WHEN with Date Intervals",
+            tip: "Use delivery_date + INTERVAL '14 days' <= CURRENT_DATE to evaluate eligibility."
+          },
+          {
+            sectionKey: "section4",
+            label: "Conditional Aggregations (SUM + CASE)",
+            tip: "Sum funds conditionally for eligible vs. locked buckets."
+          }
+        ],
+        bloopsAdvice: "If a buyer receives defective goods, the marketplace issues a refund directly out of escrow. Sellers only get disbursed funds once the 14-day holdback window expires!",
+        schemaSnippet: "EscrowOrders(order_id, seller_id, net_payable_amount, delivery_date)",
+        targetQuery: "SELECT\n  seller_id,\n  SUM(net_payable_amount) AS total_order_funds,\n  SUM(CASE WHEN delivery_date + INTERVAL '14 days' <= CURRENT_DATE THEN net_payable_amount ELSE 0 END) AS eligible_for_disbursement,\n  SUM(CASE WHEN delivery_date + INTERVAL '14 days' > CURRENT_DATE THEN net_payable_amount ELSE 0 END) AS locked_in_escrow\nFROM EscrowOrders\nGROUP BY seller_id\nORDER BY locked_in_escrow DESC;",
+        template: [
+          { text: "SELECT\n  seller_id,\n  SUM(net_payable_amount) AS total_order_funds,\n  SUM(CASE WHEN delivery_date + ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ 14-DAY INTERVAL ]" },
+          { text: " <= ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ CURRENT DATE ]" },
+          { text: " THEN net_payable_amount ELSE 0 END) AS eligible_for_disbursement,\n  SUM(CASE WHEN delivery_date + INTERVAL '14 days' > CURRENT_DATE THEN net_payable_amount ELSE 0 END) AS locked_in_escrow\nFROM EscrowOrders\n", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ GROUPING CLAUSE ]" },
+          { text: " seller_id\nORDER BY locked_in_escrow DESC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "INTERVAL '14 days'", options: ["INTERVAL '14 days'", "INTERVAL '1 day'", "14", "'14d'"] },
+          slot2: { correct: "CURRENT_DATE", options: ["CURRENT_DATE", "CURRENT_TIME", "'2020-01-01'", "NULL"] },
+          slot3: { correct: "GROUP BY", options: ["GROUP BY", "ORDER BY", "PARTITION BY", "CLUSTER BY"] }
+        },
+        expectedColumns: ["seller_id", "total_order_funds", "eligible_for_disbursement", "locked_in_escrow"]
+      },
+      {
+        stepNumber: 3,
+        title: "Multi-Party Return Break Reconciliation via FULL JOIN",
+        businessBrief: "Reconcile customer refund events against 3PL warehouse physical return scan events. Match on order_id using FULL OUTER JOIN and flag reconciliation breaks: 'REFUNDED_NO_PHYSICAL_RETURN' (carrier scan missing) and 'RETURNED_NO_REFUND_CREDIT' (goods arrived but buyer not refunded).",
+        prerequisites: [
+          {
+            sectionKey: "section5",
+            label: "FULL OUTER JOIN for Sided Discrepancies",
+            tip: "Use FULL OUTER JOIN to capture unmatched orders from both refunds and returns."
+          },
+          {
+            sectionKey: "section1",
+            label: "COALESCE for Key Unification",
+            tip: "Use COALESCE(r.order_id, w.order_id) to ensure a complete order identifier."
+          },
+          {
+            sectionKey: "section8",
+            label: "CASE WHEN for Discrepancy Classification",
+            tip: "Classify return statuses into PERFECT_RETURN_RECONCILED, REFUNDED_NO_PHYSICAL_RETURN, and RETURNED_NO_REFUND_CREDIT."
+          }
+        ],
+        bloopsAdvice: "A FULL OUTER JOIN ensures neither lost inventory nor unrefunded customers slip through the cracks. Operations teams work these breaks daily!",
+        schemaSnippet: "CustomerRefunds(order_id, refund_amount, refund_date), WarehouseReturns(order_id, carrier_tracking_code, scan_date)",
+        targetQuery: "SELECT\n  COALESCE(r.order_id, w.order_id) AS reconciled_order_id,\n  r.refund_amount,\n  w.carrier_tracking_code,\n  CASE\n    WHEN r.order_id IS NOT NULL AND w.order_id IS NOT NULL THEN 'PERFECT_RETURN_RECONCILED'\n    WHEN r.order_id IS NOT NULL AND w.order_id IS NULL THEN 'REFUNDED_NO_PHYSICAL_RETURN'\n    WHEN r.order_id IS NULL AND w.order_id IS NOT NULL THEN 'RETURNED_NO_REFUND_CREDIT'\n  END AS return_break_status\nFROM CustomerRefunds r\nFULL OUTER JOIN WarehouseReturns w\n  ON r.order_id = w.order_id;",
+        template: [
+          { text: "SELECT\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ KEY RESOLVER ]" },
+          { text: "(r.order_id, w.order_id) AS reconciled_order_id,\n  r.refund_amount,\n  w.carrier_tracking_code,\n  CASE\n    WHEN r.order_id IS NOT NULL AND w.order_id IS NOT NULL THEN 'PERFECT_RETURN_RECONCILED'\n    WHEN r.order_id IS NOT NULL AND w.order_id IS NULL THEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ BREAK STATUS ]" },
+          { text: "\n    WHEN r.order_id IS NULL AND w.order_id IS NOT NULL THEN 'RETURNED_NO_REFUND_CREDIT'\n  END AS return_break_status\nFROM CustomerRefunds r\n", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ JOIN SPEC ]" },
+          { text: " WarehouseReturns w\n  ON r.order_id = w.order_id;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "COALESCE", options: ["COALESCE", "NULLIF", "CONCAT", "IFNULL"] },
+          slot2: { correct: "'REFUNDED_NO_PHYSICAL_RETURN'", options: ["'REFUNDED_NO_PHYSICAL_RETURN'", "'MATCHED'", "'OK'", "'ERROR'"] },
+          slot3: { correct: "FULL OUTER JOIN", options: ["FULL OUTER JOIN", "INNER JOIN", "CROSS JOIN", "LEFT JOIN"] }
+        },
+        expectedColumns: ["reconciled_order_id", "refund_amount", "carrier_tracking_code", "return_break_status"]
+      },
+      {
+        stepNumber: 4,
+        title: "High-Risk Seller Reserve Withholding Engine",
+        businessBrief: "To protect against insolvent merchant defaults, sellers with high dispute rates (> 1.5%) must have a mandatory 10% rolling reserve withheld from their eligible payout balance. Calculate the exact withheld reserve and net bank wire amount.",
+        prerequisites: [
+          {
+            sectionKey: "section8",
+            label: "CASE WHEN Tiered Calculations",
+            tip: "Calculate 10% reserve when chargeback_rate_pct >= 1.50."
+          },
+          {
+            sectionKey: "section1",
+            label: "Rounding and Percentage Arithmetic",
+            tip: "Compute net wire as eligible_balance * 0.90."
+          }
+        ],
+        bloopsAdvice: "Stripe and Amazon impose rolling reserves on risky merchants. If a merchant has high chargebacks, withhold 10% into a risk reserve pool before sending the bank transfer!",
+        schemaSnippet: "SellerDisbursementQueue(seller_id, seller_name, eligible_balance, chargeback_rate_pct)",
+        targetQuery: "SELECT\n  seller_id,\n  seller_name,\n  eligible_balance,\n  chargeback_rate_pct,\n  CASE\n    WHEN chargeback_rate_pct >= 1.50 THEN ROUND(eligible_balance * 0.10, 2)\n    ELSE 0.00\n  END AS reserve_withheld_amount,\n  CASE\n    WHEN chargeback_rate_pct >= 1.50 THEN ROUND(eligible_balance * 0.90, 2)\n    ELSE eligible_balance\n  END AS net_wire_disbursement\nFROM SellerDisbursementQueue\nORDER BY reserve_withheld_amount DESC;",
+        template: [
+          { text: "SELECT\n  seller_id,\n  seller_name,\n  eligible_balance,\n  chargeback_rate_pct,\n  CASE\n    WHEN chargeback_rate_pct >= 1.50 THEN ROUND(eligible_balance * ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ RESERVE RATIO ]" },
+          { text: ", 2)\n    ELSE 0.00\n  END AS reserve_withheld_amount,\n  CASE\n    WHEN chargeback_rate_pct >= 1.50 THEN ROUND(eligible_balance * ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ NET DISBURSEMENT RATIO ]" },
+          { text: ", 2)\n    ELSE eligible_balance\n  END AS net_wire_disbursement\nFROM SellerDisbursementQueue\nORDER BY reserve_withheld_amount ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ SORT ORDER ]" },
+          { text: ";", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "0.10", options: ["0.10", "0.90", "1.50", "10"] },
+          slot2: { correct: "0.90", options: ["0.90", "0.10", "1.00", "0.50"] },
+          slot3: { correct: "DESC", options: ["DESC", "ASC", "NULLS FIRST", "LIMIT"] }
+        },
+        expectedColumns: ["seller_id", "seller_name", "eligible_balance", "chargeback_rate_pct", "reserve_withheld_amount", "net_wire_disbursement"]
+      },
+      {
+        stepNumber: 5,
+        title: "Double-Entry Balanced Payout Disbursement Journal",
+        businessBrief: "Generate the double-entry general ledger journal for the daily payout batch. For total net payouts, construct balanced accounting entries: DEBIT Escrow_Liabilities and CREDIT Merchant_Payables and Platform_Commission_Revenue. Total debits must equal total credits.",
+        prerequisites: [
+          {
+            sectionKey: "section7",
+            label: "UNION ALL for Double-Entry Journal Rows",
+            tip: "Combine balanced debit and credit entries using UNION ALL."
+          },
+          {
+            sectionKey: "section4",
+            label: "SUM Aggregations with Explicit Column Tagging",
+            tip: "Tag static string literals ('DEBIT', 'CREDIT') in the projection list."
+          }
+        ],
+        bloopsAdvice: "Every financial software system must produce balanced debits and credits. In SQL, UNION ALL allows you to assemble the opposing sides of the general ledger entry!",
+        schemaSnippet: "DailyDisbursementBatch(batch_id, total_gross_settled, platform_fees_collected, net_seller_wires)",
+        targetQuery: "SELECT\n  'DEBIT' AS entry_type,\n  '2000-ESCROW-LIABILITY' AS account_code,\n  SUM(total_gross_settled) AS amount_usd\nFROM DailyDisbursementBatch\nUNION ALL\nSELECT\n  'CREDIT' AS entry_type,\n  '4000-PLATFORM-TAKE-RATE-REVENUE' AS account_code,\n  SUM(platform_fees_collected) AS amount_usd\nFROM DailyDisbursementBatch\nUNION ALL\nSELECT\n  'CREDIT' AS entry_type,\n  '2100-MERCHANT-ACCOUNTS-PAYABLE' AS account_code,\n  SUM(net_seller_wires) AS amount_usd\nFROM DailyDisbursementBatch;",
+        template: [
+          { text: "SELECT\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ DEBIT ENTRY ]" },
+          { text: " AS entry_type,\n  '2000-ESCROW-LIABILITY' AS account_code,\n  SUM(total_gross_settled) AS amount_usd\nFROM DailyDisbursementBatch\n", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ SET OPERATOR ]" },
+          { text: "\nSELECT\n  'CREDIT' AS entry_type,\n  '4000-PLATFORM-TAKE-RATE-REVENUE' AS account_code,\n  SUM(platform_fees_collected) AS amount_usd\nFROM DailyDisbursementBatch\nUNION ALL\nSELECT\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ CREDIT ENTRY ]" },
+          { text: " AS entry_type,\n  '2100-MERCHANT-ACCOUNTS-PAYABLE' AS account_code,\n  SUM(net_seller_wires) AS amount_usd\nFROM DailyDisbursementBatch;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "'DEBIT'", options: ["'DEBIT'", "'CREDIT'", "'ASSET'", "'REVENUE'"] },
+          slot2: { correct: "UNION ALL", options: ["UNION ALL", "UNION", "INTERSECT", "EXCEPT"] },
+          slot3: { correct: "'CREDIT'", options: ["'CREDIT'", "'DEBIT'", "'LOSS'", "'EXPENSE'"] }
+        },
+        expectedColumns: ["entry_type", "account_code", "amount_usd"]
       }
     ]
   },
@@ -927,6 +1707,116 @@ window.CAPSTONES_DATA = [
           slot1: { correct: "NULLIF", options: ["NULLIF", "COALESCE", "IFNULL", "ZERO_IF_NULL"] }
         },
         expectedColumns: ["sku_id", "current_stock_qty", "rolling_14d_ads", "days_of_inventory"]
+      },
+      {
+        stepNumber: 3,
+        title: "Safety Stock & Statistical Reorder Point (ROP) Engine",
+        businessBrief: "Procurement teams prevent stockouts using statistical Reorder Points (ROP): ROP = (Average Daily Sales * Supplier Lead Time) + Safety Stock. Safety stock is computed with a 95% service factor (Z = 1.65): 1.65 * SQRT(lead_time_days) * sales_stddev. Flag SKUs that need immediate replenishment (current_stock <= reorder_point).",
+        prerequisites: [
+          {
+            sectionKey: "section1",
+            label: "Mathematical Functions (SQRT & Multiplication)",
+            tip: "Calculate safety stock using 1.65 * SQRT(lead_time_days) * sales_stddev."
+          },
+          {
+            sectionKey: "section8",
+            label: "CASE Logic for Reorder Flags",
+            tip: "Tag REORDER_NOW when current_stock <= calculated reorder point."
+          }
+        ],
+        bloopsAdvice: "If you wait until inventory hits zero before ordering, you stock out during the supplier's 14-day delivery lead time! Reorder points tell you the exact stock level that triggers a purchase order.",
+        schemaSnippet: "SkuSupplyChainParameters(sku_id, current_stock, lead_time_days, ads_units, sales_stddev)",
+        targetQuery: "SELECT\n  sku_id,\n  current_stock,\n  lead_time_days,\n  ads_units,\n  ROUND((ads_units * lead_time_days) + (1.65 * SQRT(lead_time_days) * sales_stddev), 0) AS reorder_point,\n  CASE\n    WHEN current_stock <= ((ads_units * lead_time_days) + (1.65 * SQRT(lead_time_days) * sales_stddev)) THEN 'REORDER_NOW'\n    ELSE 'SUFFICIENT_STOCK'\n  END AS replenishment_action\nFROM SkuSupplyChainParameters\nORDER BY current_stock ASC;",
+        template: [
+          { text: "SELECT\n  sku_id,\n  current_stock,\n  lead_time_days,\n  ads_units,\n  ROUND((ads_units * lead_time_days) + (1.65 * ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ SQUARE ROOT ]" },
+          { text: "(lead_time_days) * sales_stddev), 0) AS reorder_point,\n  CASE\n    WHEN current_stock ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ REORDER COMPARATOR ]" },
+          { text: " ((ads_units * lead_time_days) + (1.65 * SQRT(lead_time_days) * sales_stddev)) THEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ ACTION STATUS ]" },
+          { text: "\n    ELSE 'SUFFICIENT_STOCK'\n  END AS replenishment_action\nFROM SkuSupplyChainParameters\nORDER BY current_stock ASC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "SQRT", options: ["SQRT", "EXP", "ROUND", "ABS"] },
+          slot2: { correct: "<=", options: ["<=", ">=", ">", "="] },
+          slot3: { correct: "'REORDER_NOW'", options: ["'REORDER_NOW'", "'SUFFICIENT_STOCK'", "'HOLD'", "'EXPIRED'"] }
+        },
+        expectedColumns: ["sku_id", "current_stock", "lead_time_days", "ads_units", "reorder_point", "replenishment_action"]
+      },
+      {
+        stepNumber: 4,
+        title: "Dead Stock & Warehouse Holding Cost Bleed Audit",
+        businessBrief: "Holding unsellable inventory consumes warehouse space and capital. Identify 'Dead Stock' SKUs with zero units sold in the last 90 days. Compute monthly carrying cost ($1.20 per cubic foot volume + 1.25% monthly cost of capital on inventory value) to calculate total cash trapped.",
+        prerequisites: [
+          {
+            sectionKey: "section2",
+            label: "WHERE Filters on Zero Sales & Days Inactive",
+            tip: "Filter WHERE units_sold_90d = 0 AND units_on_hand > 0."
+          },
+          {
+            sectionKey: "section1",
+            label: "Multi-Factor Cost Arithmetic",
+            tip: "Multiply volume by holding rates and capital cost percentage."
+          }
+        ],
+        bloopsAdvice: "Dead stock is a silent balance sheet killer. Inventory sitting on shelves still incurs warehouse rent and capital interest every single month!",
+        schemaSnippet: "WarehouseInventoryAging(sku_id, units_on_hand, unit_cost_usd, cubic_feet_per_unit, units_sold_90d)",
+        targetQuery: "SELECT\n  sku_id,\n  units_on_hand,\n  units_on_hand * unit_cost_usd AS trapped_capital_usd,\n  ROUND(\n    (units_on_hand * cubic_feet_per_unit * 1.20) +\n    (units_on_hand * unit_cost_usd * 0.0125),\n    2\n  ) AS monthly_holding_cost_usd\nFROM WarehouseInventoryAging\nWHERE units_sold_90d = 0\n  AND units_on_hand > 0\nORDER BY trapped_capital_usd DESC;",
+        template: [
+          { text: "SELECT\n  sku_id,\n  units_on_hand,\n  units_on_hand ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ ARITHMETIC OP ]" },
+          { text: " unit_cost_usd AS trapped_capital_usd,\n  ROUND(\n    (units_on_hand * cubic_feet_per_unit * 1.20) +\n    (units_on_hand * unit_cost_usd * 0.0125),\n    2\n  ) AS monthly_holding_cost_usd\nFROM WarehouseInventoryAging\nWHERE units_sold_90d = ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ ZERO SALES ]" },
+          { text: "\n  AND units_on_hand > 0\nORDER BY trapped_capital_usd ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ SORT DIRECTION ]" },
+          { text: ";", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "*", options: ["*", "+", "/", "-"] },
+          slot2: { correct: "0", options: ["0", "1", "10", "90"] },
+          slot3: { correct: "DESC", options: ["DESC", "ASC", "NULLS LAST", "LIMIT"] }
+        },
+        expectedColumns: ["sku_id", "units_on_hand", "trapped_capital_usd", "monthly_holding_cost_usd"]
+      },
+      {
+        stepNumber: 5,
+        title: "Gross Margin Return on Investment (GMROI) Portfolio Matrix",
+        businessBrief: "Retail executives rank product portfolio efficiency using GMROI: Gross Margin $ / Average Inventory at Cost $. Categorize all SKUs into a 2x2 Boston Consulting Group matrix: CASH_COW (GMROI >= 3.0), STAR (GMROI >= 1.5), SLEEPER (GMROI >= 1.0), and DOG_LIQUIDATE (GMROI < 1.0).",
+        prerequisites: [
+          {
+            sectionKey: "section4",
+            label: "High-Precision Division with Safe NULLIF",
+            tip: "Protect ratio calculations against zero inventory with NULLIF(avg_inventory_cost_usd, 0)."
+          },
+          {
+            sectionKey: "section8",
+            label: "Multi-Tier CASE Classification",
+            tip: "Classify SKUs into CASH_COW, STAR, SLEEPER, or DOG_LIQUIDATE."
+          },
+          {
+            sectionKey: "section6",
+            label: "Ranking Windows (DENSE_RANK)",
+            tip: "Rank SKUs by GMROI descending with DENSE_RANK()."
+          }
+        ],
+        bloopsAdvice: "A GMROI of 3.0 means every dollar invested in inventory generates $3 in gross margin profit each year. DENSE_RANK() sorts your winners from your balance sheet drags!",
+        schemaSnippet: "SkuAnnualProfitability(sku_id, annual_gross_margin_usd, avg_inventory_cost_usd)",
+        targetQuery: "SELECT\n  sku_id,\n  annual_gross_margin_usd,\n  avg_inventory_cost_usd,\n  ROUND(annual_gross_margin_usd / NULLIF(avg_inventory_cost_usd, 0), 2) AS gmroi_ratio,\n  DENSE_RANK() OVER (\n    ORDER BY (annual_gross_margin_usd / NULLIF(avg_inventory_cost_usd, 0)) DESC\n  ) AS profitability_rank,\n  CASE\n    WHEN (annual_gross_margin_usd / NULLIF(avg_inventory_cost_usd, 0)) >= 3.0 THEN 'CASH_COW'\n    WHEN (annual_gross_margin_usd / NULLIF(avg_inventory_cost_usd, 0)) >= 1.5 THEN 'STAR'\n    WHEN (annual_gross_margin_usd / NULLIF(avg_inventory_cost_usd, 0)) >= 1.0 THEN 'SLEEPER'\n    ELSE 'DOG_LIQUIDATE'\n  END AS portfolio_quadrant\nFROM SkuAnnualProfitability\nORDER BY profitability_rank ASC;",
+        template: [
+          { text: "SELECT\n  sku_id,\n  annual_gross_margin_usd,\n  avg_inventory_cost_usd,\n  ROUND(annual_gross_margin_usd / ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot1", placeholder: "[ SAFE ZERO DIVISOR ]" },
+          { text: "(avg_inventory_cost_usd, 0), 2) AS gmroi_ratio,\n  ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot2", placeholder: "[ DENSE RANK FUNC ]" },
+          { text: "() OVER (\n    ORDER BY (annual_gross_margin_usd / NULLIF(avg_inventory_cost_usd, 0)) DESC\n  ) AS profitability_rank,\n  CASE\n    WHEN (annual_gross_margin_usd / NULLIF(avg_inventory_cost_usd, 0)) >= 3.0 THEN ", isBlank: false },
+          { text: "", isBlank: true, slotId: "slot3", placeholder: "[ BEST QUADRANT ]" },
+          { text: "\n    WHEN (annual_gross_margin_usd / NULLIF(avg_inventory_cost_usd, 0)) >= 1.5 THEN 'STAR'\n    WHEN (annual_gross_margin_usd / NULLIF(avg_inventory_cost_usd, 0)) >= 1.0 THEN 'SLEEPER'\n    ELSE 'DOG_LIQUIDATE'\n  END AS portfolio_quadrant\nFROM SkuAnnualProfitability\nORDER BY profitability_rank ASC;", isBlank: false }
+        ],
+        slots: {
+          slot1: { correct: "NULLIF", options: ["NULLIF", "COALESCE", "IFNULL", "NVL"] },
+          slot2: { correct: "DENSE_RANK", options: ["DENSE_RANK", "RANK", "ROW_NUMBER", "NTILE"] },
+          slot3: { correct: "'CASH_COW'", options: ["'CASH_COW'", "'STAR'", "'DOG_LIQUIDATE'", "'UNKNOWN'"] }
+        },
+        expectedColumns: ["sku_id", "annual_gross_margin_usd", "avg_inventory_cost_usd", "gmroi_ratio", "profitability_rank", "portfolio_quadrant"]
       }
     ]
   }
