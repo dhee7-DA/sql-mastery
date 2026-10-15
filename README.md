@@ -89,7 +89,7 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
 | **Day 12** | [`day-12-window-aggregates`](./day-12-window-aggregates) | `LAG()`, `LEAD()`, Running Totals, Moving Averages | Advanced | ✅ Completed (4/4) |
 | **Day 13** | [`day-13-business-analytics`](./day-13-business-analytics) | Churn Analysis, Retention Cohorts, MoM Growth Queries | Advanced | ✅ Completed (4/4) |
 | **Day 14** | [`day-14-dml-atomic-upserts-acid`](./day-14-dml-atomic-upserts-acid) | DML Mutation, Atomic Upserts, ACID Storage Physics, Concurrency | Advanced | ✅ Completed (4/4) |
-| **Capstone** | `day-15-enterprise-capstone` | Multi-Asset Trade Settlement & Prime Broker Reconciliation | Capstone | 🟡 Next Up |
+| **Capstone** | [`day-15-enterprise-capstone`](./day-15-enterprise-capstone) | Multi-Asset Trade Settlement & Prime Broker Reconciliation Engine | Capstone | 🏆 Completed (Grand Capstone) |
 
 > 🪟 **Important Materials & Reference**: Complete **Window Functions Master Vault (420 Problems across 7 Disciplines & Master Decision Matrix)** available in [`docs/IMPORTANT_MATERIALS_WINDOW_FUNCTIONS.md`](./docs/IMPORTANT_MATERIALS_WINDOW_FUNCTIONS.md) and [`docs/IMPORTANT_QUESTIONS_WINDOW_FUNCTIONS.md`](./docs/IMPORTANT_QUESTIONS_WINDOW_FUNCTIONS.md).
 
