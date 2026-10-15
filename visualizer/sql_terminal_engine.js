@@ -1,7 +1,8 @@
 /**
  * SQL TERMINAL & WEBASSEMBLY QUERY ENGINE
  * In-browser SQLite 3.45.2 WASM Client-Side Execution Engine
- * Offline-capable, zero latency, full DDL/DML, Window Functions & CTE support.
+ * Offline-capable, zero latency, full DDL/DML, Window Functions, CTEs,
+ * and Visual EXPLAIN QUERY PLAN & Performance Optimizer.
  */
 
 window.SqlTerminalEngine = (function() {
@@ -10,10 +11,13 @@ window.SqlTerminalEngine = (function() {
   let SQL = null;
   let db = null;
   let isInitialized = false;
-  let isLoading = false;
   let activeSidebarTab = 'tables'; // 'tables' | 'presets'
+  let activeOutputTab = 'grid'; // 'grid' | 'plan' | 'advisor'
   let cachedTables = []; // [{ name, count, columns: [{ name, type, pk }] }]
   let currentResults = null;
+  let currentPlan = null;
+  let currentPlanAnalysis = null;
+  let userCustomIndexes = []; // ['idx_name', ...]
   let filterTerm = '';
 
   /**
@@ -53,16 +57,12 @@ window.SqlTerminalEngine = (function() {
     if (db) return;
     updateStatus('running', 'Loading WebAssembly binary...');
 
-    // Try loading via window.initSqlJs
     if (typeof window.initSqlJs !== 'function') {
       throw new Error('SQLite WASM loader (sql-wasm.js) is not present on window.');
     }
 
     SQL = await window.initSqlJs({
-      locateFile: file => {
-        // First try relative path in visualizer
-        return file;
-      }
+      locateFile: file => file
     });
 
     db = new SQL.Database();
@@ -75,6 +75,7 @@ window.SqlTerminalEngine = (function() {
   function seedDatabase() {
     if (!db || !window.SQL_TERMINAL_DATA) return;
     db.run(window.SQL_TERMINAL_DATA.seedSql);
+    userCustomIndexes = [];
   }
 
   /**
@@ -88,7 +89,6 @@ window.SqlTerminalEngine = (function() {
       if (tablesRes && tablesRes[0]) {
         const tableNames = tablesRes[0].values.map(row => row[0]);
         for (const tableName of tableNames) {
-          // Get columns
           const colRes = db.exec(`PRAGMA table_info(${tableName});`);
           const columns = colRes && colRes[0] ? colRes[0].values.map(c => ({
             cid: c[0],
@@ -99,7 +99,6 @@ window.SqlTerminalEngine = (function() {
             pk: c[5]
           })) : [];
 
-          // Get row count
           let count = 0;
           try {
             const countRes = db.exec(`SELECT COUNT(*) FROM ${tableName};`);
@@ -110,6 +109,12 @@ window.SqlTerminalEngine = (function() {
 
           cachedTables.push({ name: tableName, count, columns });
         }
+      }
+
+      // Also refresh active custom indexes
+      const idxRes = db.exec("SELECT name FROM sqlite_master WHERE type='index' AND name LIKE 'idx_custom_%';");
+      if (idxRes && idxRes[0]) {
+        userCustomIndexes = idxRes[0].values.map(r => r[0]);
       }
     } catch (err) {
       console.error('Schema inspection error:', err);
@@ -131,14 +136,14 @@ window.SqlTerminalEngine = (function() {
               <span class="terminal-wasm-pill"><span class="terminal-wasm-dot"></span> SQLite 3.45.2 WASM</span>
             </h1>
             <div class="terminal-hero-sub">
-              Full client-side SQL engine with zero network latency. 12 pre-seeded institutional tables across 5 industry domains.
+              Full client-side SQL engine with zero network latency, visual EXPLAIN execution plan tree, and automated index optimizer.
             </div>
           </div>
         </div>
         <div class="terminal-hero-stats">
           <div class="terminal-stat-chip"><strong>12</strong> Production Tables</div>
           <div class="terminal-stat-chip"><strong>100%</strong> Offline Engine</div>
-          <div class="terminal-stat-chip"><strong>Window &amp; CTEs</strong> Full Support</div>
+          <div class="terminal-stat-chip"><strong>EXPLAIN</strong> Visual Optimizer</div>
         </div>
       </div>
 
@@ -180,6 +185,9 @@ window.SqlTerminalEngine = (function() {
                 <button class="terminal-btn" onclick="window.SqlTerminalEngine.resetDatabase()" title="Restore 12 tables to original seed state">
                   🔄 Reset DB
                 </button>
+                <button class="terminal-btn terminal-btn-explain" id="btnTerminalExplain" onclick="window.SqlTerminalEngine.explainQueryPlan()" title="Generate visual execution plan (Alt+Enter)">
+                  ⚡ Explain Plan (⌥⏎)
+                </button>
                 <button class="terminal-btn terminal-btn-primary" id="btnTerminalRun" onclick="window.SqlTerminalEngine.executeQuery()">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                   Run Query (⌘⏎)
@@ -217,37 +225,90 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
           <div class="terminal-bloop-banner" id="terminalBloopBanner">
             <div class="terminal-bloop-avatar">🐡</div>
             <div class="terminal-bloop-text" id="terminalBloopText">
-              <strong>Sir Bloop Co-Pilot:</strong> Ready to crunch records! Press <code>Cmd+Enter</code> or click <strong>Run Query</strong> to execute against SQLite WASM.
+              <strong>Sir Bloop Co-Pilot:</strong> Ready to crunch records! Press <code>Cmd+Enter</code> to execute, or <code>Alt+Enter</code> to analyze the query execution plan.
             </div>
           </div>
 
-          <!-- Results Grid Card -->
+          <!-- Results & Optimizer Card -->
           <div class="terminal-results-card">
-            <div class="terminal-results-header">
-              <div class="terminal-results-title">
-                <span>📊 Query Output</span>
-                <span class="terminal-table-badge" id="terminalResultsBadge">0 rows</span>
+            <!-- Output Sub-Navigation Tabs -->
+            <div class="terminal-output-tabs">
+              <button class="terminal-output-tab active" id="tabOutputGrid" onclick="window.SqlTerminalEngine.setOutputTab('grid')">
+                <span>📊</span> Results Grid
+              </button>
+              <button class="terminal-output-tab" id="tabOutputPlan" onclick="window.SqlTerminalEngine.setOutputTab('plan')">
+                <span>⚡</span> Execution Plan Tree (<span id="planOpCount">0</span> ops)
+              </button>
+              <button class="terminal-output-tab" id="tabOutputAdvisor" onclick="window.SqlTerminalEngine.setOutputTab('advisor')">
+                <span>💡</span> Index &amp; Cost Advisor (<span id="planScoreBadge">100/100</span>)
+              </button>
+            </div>
+
+            <!-- Pane 1: Results Grid -->
+            <div id="paneOutputGrid">
+              <div class="terminal-results-header">
+                <div class="terminal-results-title">
+                  <span>📊 Query Output</span>
+                  <span class="terminal-table-badge" id="terminalResultsBadge">0 rows</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input 
+                    type="text" 
+                    class="terminal-results-filter-input" 
+                    id="terminalResultsFilter" 
+                    placeholder="Filter results..." 
+                    oninput="window.SqlTerminalEngine.filterResults(this.value)"
+                  >
+                  <button class="terminal-btn" onclick="window.SqlTerminalEngine.exportCsv()" id="btnTerminalExport" title="Export as CSV file">
+                    📥 Export CSV
+                  </button>
+                </div>
               </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <input 
-                  type="text" 
-                  class="terminal-results-filter-input" 
-                  id="terminalResultsFilter" 
-                  placeholder="Filter results..." 
-                  oninput="window.SqlTerminalEngine.filterResults(this.value)"
-                >
-                <button class="terminal-btn" onclick="window.SqlTerminalEngine.exportCsv()" id="btnTerminalExport" title="Export as CSV file">
-                  📥 Export CSV
-                </button>
+
+              <div class="terminal-results-table-wrap" id="terminalResultsWrap">
+                <div class="terminal-empty-state">
+                  <div class="terminal-empty-icon">⚡</div>
+                  <div>Run a query or pick a preset from the sidebar to inspect records.</div>
+                </div>
               </div>
             </div>
 
-            <div class="terminal-results-table-wrap" id="terminalResultsWrap">
-              <div class="terminal-empty-state">
-                <div class="terminal-empty-icon">⚡</div>
-                <div>Run a query or pick a preset from the sidebar to inspect records.</div>
+            <!-- Pane 2: Execution Plan Tree -->
+            <div id="paneOutputPlan" style="display: none;">
+              <!-- Scorecard Header -->
+              <div class="terminal-plan-header" id="terminalPlanHeader">
+                <div class="terminal-plan-score-group">
+                  <div class="terminal-plan-gauge score-optimal" id="planGauge">
+                    <span id="planGaugeVal">100</span>
+                  </div>
+                  <div class="terminal-plan-score-meta">
+                    <h4 id="planScoreGrade">Plan Health: 100/100 (Optimal)</h4>
+                    <p id="planScoreSummary">Zero full table scans. All predicates covered by binary index lookups.</p>
+                  </div>
+                </div>
+                <div class="terminal-plan-chips" id="planChips">
+                  <div class="terminal-plan-chip chip-scan">0 Scans</div>
+                  <div class="terminal-plan-chip chip-index">0 Index Searches</div>
+                  <div class="terminal-plan-chip chip-btree">0 Temp B-Trees</div>
+                </div>
+              </div>
+
+              <!-- Hierarchical Nodes Tree -->
+              <div class="terminal-plan-tree" id="terminalPlanTree">
+                <div class="terminal-empty-state">
+                  <div class="terminal-empty-icon">⚡</div>
+                  <div>Click <strong>Explain Plan (⌥⏎)</strong> to inspect SQLite's physical execution plan.</div>
+                </div>
               </div>
             </div>
+
+            <!-- Pane 3: Index & Cost Advisor -->
+            <div id="paneOutputAdvisor" style="display: none;">
+              <div class="terminal-advisor-pane" id="terminalAdvisorContent">
+                <!-- Dynamically populated by renderAdvisor -->
+              </div>
+            </div>
+
           </div>
         </main>
       </div>
@@ -262,15 +323,12 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
     const gutters = document.getElementById('terminalEditorGutters');
 
     if (textarea) {
-      // Update line numbers on input and scroll
       textarea.addEventListener('input', () => updateGutters(textarea, gutters));
       textarea.addEventListener('scroll', () => {
         if (gutters) gutters.scrollTop = textarea.scrollTop;
       });
 
-      // Keyboard shortcuts
       textarea.addEventListener('keydown', (e) => {
-        // Tab key indent
         if (e.key === 'Tab') {
           e.preventDefault();
           const start = textarea.selectionStart;
@@ -280,10 +338,16 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
           updateGutters(textarea, gutters);
         }
 
-        // Cmd+Enter or Ctrl+Enter to execute
+        // Cmd+Enter or Ctrl+Enter to execute query
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
           e.preventDefault();
           executeQuery();
+        }
+
+        // Alt+Enter or Option+Enter to explain query plan
+        if (e.altKey && e.key === 'Enter') {
+          e.preventDefault();
+          explainQueryPlan();
         }
       });
     }
@@ -297,6 +361,38 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
       gutterHtml += i + '<br>';
     }
     gutters.innerHTML = gutterHtml;
+  }
+
+  /**
+   * Output Tab Switcher
+   */
+  function setOutputTab(tab) {
+    activeOutputTab = tab;
+    ['tabOutputGrid', 'tabOutputPlan', 'tabOutputAdvisor'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('active');
+    });
+    ['paneOutputGrid', 'paneOutputPlan', 'paneOutputAdvisor'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+
+    if (tab === 'grid') {
+      const btn = document.getElementById('tabOutputGrid');
+      const pane = document.getElementById('paneOutputGrid');
+      if (btn) btn.classList.add('active');
+      if (pane) pane.style.display = 'block';
+    } else if (tab === 'plan') {
+      const btn = document.getElementById('tabOutputPlan');
+      const pane = document.getElementById('paneOutputPlan');
+      if (btn) btn.classList.add('active');
+      if (pane) pane.style.display = 'block';
+    } else if (tab === 'advisor') {
+      const btn = document.getElementById('tabOutputAdvisor');
+      const pane = document.getElementById('paneOutputAdvisor');
+      if (btn) btn.classList.add('active');
+      if (pane) pane.style.display = 'block';
+    }
   }
 
   /**
@@ -447,7 +543,6 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
       const durationMs = (performance.now() - startTime).toFixed(1);
 
       if (results && results.length > 0) {
-        // Grab the last query result if multi-statement
         const activeResult = results[results.length - 1];
         currentResults = activeResult;
         filterTerm = '';
@@ -458,6 +553,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
         updateStatus('success', `Returned ${activeResult.values.length} rows in ${durationMs}ms`);
         updateStats(activeResult.values.length, `${durationMs}ms`);
         renderResultsTable(activeResult);
+        setOutputTab('grid');
 
         // Sir Bloop commentary
         setBloopMessage(generateSuccessCommentary(sql, activeResult.values.length, durationMs), 'happy');
@@ -466,14 +562,14 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
           window.soundFX.playSuccess();
         }
       } else {
-        // DDL or DML statement without result set (e.g., INSERT, CREATE, DROP)
         currentResults = null;
         updateStatus('success', `Query OK. Executed in ${durationMs}ms`);
         updateStats(0, `${durationMs}ms`);
         renderDmlSuccess(durationMs);
+        setOutputTab('grid');
         inspectDatabaseSchema().then(() => renderSidebarContent());
 
-        setBloopMessage(`✅ DDL/DML statement executed cleanly in ${durationMs}ms! Schema metadata refreshed.`, 'celebrate');
+        setBloopMessage(`✅ Statement executed cleanly in ${durationMs}ms! Schema state updated.`, 'celebrate');
       }
     } catch (err) {
       const durationMs = (performance.now() - startTime).toFixed(1);
@@ -481,13 +577,448 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
       updateStatus('error', 'Execution Error');
       updateStats(0, `${durationMs}ms`);
       renderErrorCard(err.message);
+      setOutputTab('grid');
 
-      // Bloop diagnostic hint
       setBloopMessage(generateErrorDiagnostic(err.message, sql), 'thinking');
 
       if (window.soundFX && typeof window.soundFX.playError === 'function') {
         window.soundFX.playError();
       }
+    }
+  }
+
+  /**
+   * EXPLAIN QUERY PLAN Execution & Analysis
+   */
+  function explainQueryPlan() {
+    const textarea = document.getElementById('terminalEditorTextarea');
+    if (!textarea || !db) return;
+
+    let sql = textarea.value.trim();
+    if (!sql) {
+      updateStatus('ready', 'Editor is empty');
+      return;
+    }
+
+    // Clean any leading EXPLAIN prefix if present
+    sql = sql.replace(/^EXPLAIN\s+QUERY\s+PLAN\s+/i, '').replace(/^EXPLAIN\s+/i, '');
+
+    updateStatus('running', 'Generating Execution Plan...');
+    const startTime = performance.now();
+
+    try {
+      const planRes = db.exec("EXPLAIN QUERY PLAN " + sql);
+      const durationMs = (performance.now() - startTime).toFixed(1);
+
+      if (planRes && planRes[0]) {
+        currentPlan = planRes[0].values;
+        updateStatus('success', `Plan ready in ${durationMs}ms (${currentPlan.length} operations)`);
+
+        const analysis = analyzePlan(currentPlan, sql);
+        currentPlanAnalysis = analysis;
+
+        // Render Tree & Advisor
+        renderPlanTree(analysis);
+        renderAdvisor(analysis);
+
+        // Update Badge counters
+        const opCountEl = document.getElementById('planOpCount');
+        const scoreBadgeEl = document.getElementById('planScoreBadge');
+        if (opCountEl) opCountEl.textContent = currentPlan.length;
+        if (scoreBadgeEl) scoreBadgeEl.textContent = `${analysis.healthScore}/100`;
+
+        setOutputTab('plan');
+        setBloopMessage(analysis.bloopAdvice, analysis.bloopMood);
+
+        if (window.soundFX && typeof window.soundFX.playSuccess === 'function') {
+          window.soundFX.playSuccess();
+        }
+      } else {
+        throw new Error('SQLite did not produce a query plan for this statement.');
+      }
+    } catch (err) {
+      const durationMs = (performance.now() - startTime).toFixed(1);
+      updateStatus('error', 'Plan Error');
+      renderPlanError(err.message);
+      setOutputTab('plan');
+      setBloopMessage(`⚠️ Could not generate execution plan: ${err.message}`, 'thinking');
+
+      if (window.soundFX && typeof window.soundFX.playError === 'function') {
+        window.soundFX.playError();
+      }
+    }
+  }
+
+  /**
+   * Plan AST Analysis & Health Scoring
+   */
+  function analyzePlan(rows, originalSql) {
+    let healthScore = 100;
+    let scanCount = 0;
+    let indexCount = 0;
+    let btreeCount = 0;
+    let autoIndexCount = 0;
+    const recommendations = [];
+    const scannedTables = new Set();
+
+    const parsedNodes = rows.map((r, idx) => {
+      const id = r[0];
+      const parent = r[1];
+      const detail = r[3] || '';
+      const detailUpper = detail.toUpperCase();
+
+      let opType = 'UNKNOWN';
+      let badgeClass = 'op-subquery';
+      let complexity = 'O(N)';
+      let impactText = '';
+
+      if (detailUpper.includes('SCAN')) {
+        opType = 'FULL TABLE SCAN';
+        badgeClass = 'op-scan';
+        complexity = 'O(N)';
+        scanCount++;
+        healthScore -= 25;
+        impactText = 'Full scan through every page in the table. High I/O overhead.';
+
+        const matchTable = detail.match(/SCAN\s+([a-zA-Z0-9_]+)/i);
+        if (matchTable && matchTable[1]) {
+          scannedTables.add(matchTable[1]);
+        }
+      } else if (detailUpper.includes('SEARCH') && detailUpper.includes('USING INDEX')) {
+        opType = 'INDEX LOOKUP';
+        badgeClass = 'op-index';
+        complexity = 'O(log N)';
+        indexCount++;
+        healthScore += 5;
+        impactText = 'Direct binary tree probe via B-Tree index. Optimal performance.';
+      } else if (detailUpper.includes('SEARCH') && detailUpper.includes('USING AUTOMATIC')) {
+        opType = 'AUTO INDEX';
+        badgeClass = 'op-autoindex';
+        complexity = 'O(N log N) build';
+        autoIndexCount++;
+        healthScore -= 15;
+        impactText = 'SQLite dynamically built a temporary in-memory index on the fly.';
+      } else if (detailUpper.includes('USE TEMP B-TREE')) {
+        opType = 'TEMP B-TREE';
+        badgeClass = 'op-btree';
+        complexity = 'O(N log N)';
+        btreeCount++;
+        healthScore -= 15;
+        impactText = 'Materialized sort or group buffer in memory.';
+      } else if (detailUpper.includes('CO-ROUTINE') || detailUpper.includes('SUBQUERY')) {
+        opType = 'CO-ROUTINE';
+        badgeClass = 'op-subquery';
+        complexity = 'O(N)';
+        impactText = 'Materialized subquery execution pipeline.';
+      } else if (detailUpper.includes('COMPOUND')) {
+        opType = 'COMPOUND MERGE';
+        badgeClass = 'op-compound';
+        complexity = 'O(N)';
+        impactText = 'Relational set union/intersection merger.';
+      } else {
+        opType = 'RELATIONAL OP';
+        badgeClass = 'op-subquery';
+        complexity = 'O(1)';
+        impactText = 'Pipeline data flow node.';
+      }
+
+      return {
+        id,
+        parent,
+        detail,
+        opType,
+        badgeClass,
+        complexity,
+        impactText,
+        depth: parent === 0 ? 0 : 1
+      };
+    });
+
+    healthScore = Math.max(10, Math.min(100, healthScore));
+
+    // Automated index suggestions
+    if (scannedTables.size > 0) {
+      scannedTables.forEach(tableName => {
+        // Find matching columns from WHERE or ON clause
+        const tableObj = cachedTables.find(t => t.name.toLowerCase() === tableName.toLowerCase());
+        const candidates = [];
+        if (tableObj && tableObj.columns) {
+          tableObj.columns.forEach(col => {
+            const reg = new RegExp(`\\b${col.name}\\b`, 'i');
+            if (reg.test(originalSql) && !col.pk) {
+              candidates.push(col.name);
+            }
+          });
+        }
+
+        const colsToUse = candidates.slice(0, 2);
+        const indexCols = colsToUse.length > 0 ? colsToUse.join(', ') : 'id';
+        const indexName = `idx_custom_${tableName}_${colsToUse.join('_') || 'scan'}`;
+
+        recommendations.push({
+          targetTable: tableName,
+          reason: `Eliminate full table scan on <code>${escapeHtml(tableName)}</code>`,
+          sql: `CREATE INDEX IF NOT EXISTS ${indexName} ON ${tableName}(${indexCols});`,
+          indexName
+        });
+      });
+    }
+
+    if (btreeCount > 0 && originalSql.toUpperCase().includes('ORDER BY')) {
+      recommendations.push({
+        targetTable: 'Sorting Optimization',
+        reason: 'Eliminate temporary B-Tree sort buffer by providing pre-sorted index order',
+        sql: `-- Tip: append the ORDER BY column to your existing WHERE index!`,
+        indexName: null
+      });
+    }
+
+    // Co-Pilot Advice
+    let bloopAdvice = '';
+    let bloopMood = 'happy';
+
+    if (healthScore >= 90) {
+      bloopAdvice = `⚡ <strong>Pristine Execution Plan (Score: ${healthScore}/100)!</strong> All table lookups utilize indexed B-Trees with zero unindexed table scans.`;
+      bloopMood = 'celebrate';
+    } else if (healthScore >= 70) {
+      bloopAdvice = `💡 <strong>Good Execution Plan (Score: ${healthScore}/100):</strong> Fast execution, but has ${btreeCount > 0 ? 'an in-memory sort buffer' : 'some table scan overhead'}. Check the <strong>Index Advisor</strong> tab for 1-click speedups!`;
+      bloopMood = 'happy';
+    } else {
+      bloopAdvice = `🚨 <strong>Performance Alert (Score: ${healthScore}/100):</strong> Detected ${scanCount} Full Table Scan(s)! Switch to the <strong>Index &amp; Cost Advisor</strong> tab and click <em>Apply Index</em> to eliminate the bottleneck!`;
+      bloopMood = 'thinking';
+    }
+
+    return {
+      nodes: parsedNodes,
+      healthScore,
+      scanCount,
+      indexCount,
+      btreeCount,
+      autoIndexCount,
+      recommendations,
+      bloopAdvice,
+      bloopMood
+    };
+  }
+
+  /**
+   * Render Execution Plan Tree
+   */
+  function renderPlanTree(analysis) {
+    const treeEl = document.getElementById('terminalPlanTree');
+    const gaugeEl = document.getElementById('planGauge');
+    const gaugeValEl = document.getElementById('planGaugeVal');
+    const scoreGradeEl = document.getElementById('planScoreGrade');
+    const scoreSummaryEl = document.getElementById('planScoreSummary');
+    const chipsEl = document.getElementById('planChips');
+
+    if (!treeEl) return;
+
+    // Update Scorecard
+    if (gaugeValEl) gaugeValEl.textContent = analysis.healthScore;
+    if (gaugeEl) {
+      gaugeEl.className = 'terminal-plan-gauge ' + (
+        analysis.healthScore >= 85 ? 'score-optimal' :
+        analysis.healthScore >= 65 ? 'score-warning' : 'score-danger'
+      );
+    }
+
+    if (scoreGradeEl) {
+      scoreGradeEl.textContent = `Plan Health: ${analysis.healthScore}/100 (${
+        analysis.healthScore >= 85 ? 'Grade A: Optimal' :
+        analysis.healthScore >= 65 ? 'Grade B: Moderate' : 'Grade C: Scan Heavy'
+      })`;
+    }
+
+    if (scoreSummaryEl) {
+      scoreSummaryEl.textContent = analysis.healthScore >= 85
+        ? 'Fully covered by binary indexed probes. Zero table scans or memory bottlenecks.'
+        : `Identified ${analysis.scanCount} full table scan(s) and ${analysis.btreeCount} sort buffer(s).`;
+    }
+
+    if (chipsEl) {
+      chipsEl.innerHTML = `
+        <div class="terminal-plan-chip chip-scan">${analysis.scanCount} Full Scans</div>
+        <div class="terminal-plan-chip chip-index">${analysis.indexCount} Index Searches</div>
+        <div class="terminal-plan-chip chip-btree">${analysis.btreeCount} Temp B-Trees</div>
+      `;
+    }
+
+    // Render Nodes
+    treeEl.innerHTML = analysis.nodes.map(node => `
+      <div class="terminal-plan-node" style="margin-left: ${node.depth * 28}px;">
+        <span class="terminal-node-badge ${node.badgeClass}">${node.opType}</span>
+        <div class="terminal-node-body">
+          <div class="terminal-node-detail">
+            ${node.depth > 0 ? '<span style="color:#64748b;">└── </span>' : ''}
+            ${highlightPlanDetail(node.detail)}
+          </div>
+          <div class="terminal-node-meta">
+            <span class="terminal-complexity-pill">${node.complexity}</span>
+            <span>${node.impactText}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function highlightPlanDetail(detail) {
+    return escapeHtml(detail)
+      .replace(/\b(SCAN|SEARCH|USING INDEX|USING AUTOMATIC COVERING INDEX|USE TEMP B-TREE)\b/g, '<strong style="color:#38bdf8;">$1</strong>')
+      .replace(/\b(ORDER BY|GROUP BY)\b/g, '<span style="color:#c084fc;">$1</span>');
+  }
+
+  /**
+   * Render Index & Cost Advisor Pane
+   */
+  function renderAdvisor(analysis) {
+    const advisorContent = document.getElementById('terminalAdvisorContent');
+    if (!advisorContent) return;
+
+    let html = `
+      <div class="terminal-advice-card">
+        <div class="terminal-advice-header">
+          <div class="terminal-advice-title">
+            <span>⚡ Automated Physical Index Optimizer</span>
+          </div>
+          <span class="terminal-table-badge">WASM Memory Engine</span>
+        </div>
+        <div class="terminal-advice-desc">
+          The engine analyzed your relational predicates, foreign key joins, and ordering clauses. 
+          Apply suggested indexes directly into your running SQLite WASM database to watch your execution plan transform in real-time.
+        </div>
+      </div>
+    `;
+
+    if (analysis.recommendations.length === 0) {
+      html += `
+        <div class="terminal-advice-card" style="border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.04);">
+          <div class="terminal-advice-title" style="color: #34d399;">
+            ✅ Zero Index Recommendations Needed!
+          </div>
+          <div class="terminal-advice-desc">
+            Your query is already executing at maximum efficiency using primary keys and existing indexes.
+          </div>
+        </div>
+      `;
+    } else {
+      analysis.recommendations.forEach(rec => {
+        html += `
+          <div class="terminal-advice-card">
+            <div class="terminal-advice-header">
+              <div class="terminal-advice-title">
+                <span>🎯 Target: ${escapeHtml(rec.targetTable)}</span>
+              </div>
+              ${rec.indexName ? `
+                <button class="terminal-btn-apply-index" onclick="window.SqlTerminalEngine.applySuggestedIndex('${escapeHtml(rec.sql)}', '${rec.indexName}')">
+                  ⚡ 1-Click Apply Index
+                </button>
+              ` : ''}
+            </div>
+            <div class="terminal-advice-desc">${rec.reason}</div>
+            <div class="terminal-sql-codeblock">
+              <code>${escapeHtml(rec.sql)}</code>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // Active Custom User Indexes section
+    if (userCustomIndexes.length > 0) {
+      html += `
+        <div class="terminal-advice-card">
+          <div class="terminal-advice-header">
+            <div class="terminal-advice-title">
+              <span>🗂️ Active Custom Indexes in WASM Memory (${userCustomIndexes.length})</span>
+            </div>
+            <button class="terminal-btn" onclick="window.SqlTerminalEngine.dropAllCustomIndexes()">
+              Drop All Indexes
+            </button>
+          </div>
+          <div class="terminal-indexes-list">
+            ${userCustomIndexes.map(idx => `
+              <div class="terminal-index-item">
+                <span>🔑 ${escapeHtml(idx)}</span>
+                <button class="terminal-btn-peek" onclick="window.SqlTerminalEngine.dropCustomIndex('${idx}')">
+                  Drop
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    advisorContent.innerHTML = html;
+  }
+
+  function renderPlanError(msg) {
+    const treeEl = document.getElementById('terminalPlanTree');
+    if (treeEl) {
+      treeEl.innerHTML = `
+        <div class="terminal-error-card">
+          <div style="font-weight: 700; color: #f87171; margin-bottom: 0.4rem;">
+            Failed to Generate Query Plan
+          </div>
+          <div>${escapeHtml(msg)}</div>
+        </div>
+      `;
+    }
+  }
+
+  /**
+   * Apply Suggested Index to SQLite WASM
+   */
+  async function applySuggestedIndex(indexSql, indexName) {
+    if (!db) return;
+    try {
+      db.run(indexSql);
+      if (!userCustomIndexes.includes(indexName)) {
+        userCustomIndexes.push(indexName);
+      }
+      await inspectDatabaseSchema();
+      renderSidebarContent();
+
+      if (window.soundFX && typeof window.soundFX.playSuccess === 'function') {
+        window.soundFX.playSuccess();
+      }
+
+      // Automatically re-run explain plan so user sees instant improvement!
+      explainQueryPlan();
+      setBloopMessage(`🚀 Custom index <code>${indexName}</code> applied! Watch your scan turn into a high-speed indexed probe!`, 'celebrate');
+    } catch (err) {
+      alert(`Could not create index: ${err.message}`);
+    }
+  }
+
+  async function dropCustomIndex(indexName) {
+    if (!db) return;
+    try {
+      db.run(`DROP INDEX IF EXISTS ${indexName};`);
+      userCustomIndexes = userCustomIndexes.filter(i => i !== indexName);
+      await inspectDatabaseSchema();
+      renderSidebarContent();
+      explainQueryPlan();
+      setBloopMessage(`Index <code>${indexName}</code> dropped. Plan re-evaluated.`, 'happy');
+    } catch (err) {
+      alert(`Could not drop index: ${err.message}`);
+    }
+  }
+
+  async function dropAllCustomIndexes() {
+    if (!db) return;
+    try {
+      for (const idx of [...userCustomIndexes]) {
+        db.run(`DROP INDEX IF EXISTS ${idx};`);
+      }
+      userCustomIndexes = [];
+      await inspectDatabaseSchema();
+      renderSidebarContent();
+      explainQueryPlan();
+      setBloopMessage(`All custom indexes dropped.`, 'happy');
+    } catch (err) {
+      alert(`Could not drop indexes: ${err.message}`);
     }
   }
 
@@ -599,10 +1130,8 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
     const { columns, values } = currentResults;
     let csvContent = 'data:text/csv;charset=utf-8,';
     
-    // Headers
     csvContent += columns.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',') + '\r\n';
     
-    // Rows
     values.forEach(row => {
       csvContent += row.map(val => {
         if (val === null || val === undefined) return '""';
@@ -631,10 +1160,10 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
       'INTERSECT', 'EXCEPT', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'OVER', 'PARTITION BY',
       'ROWS BETWEEN', 'UNBOUNDED PRECEDING', 'CURRENT ROW', 'FOLLOWING', 'COALESCE',
       'NULLIF', 'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'LAG', 'LEAD', 'ROW_NUMBER',
-      'RANK', 'DENSE_RANK', 'CREATE TABLE', 'INSERT INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE'
+      'RANK', 'DENSE_RANK', 'CREATE TABLE', 'INSERT INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE',
+      'EXPLAIN', 'QUERY', 'PLAN'
     ];
 
-    // Capitalize keywords cleanly using word boundary regex
     keywords.forEach(kw => {
       const reg = new RegExp(`\\b${kw}\\b`, 'gi');
       code = code.replace(reg, kw);
@@ -653,7 +1182,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
   }
 
   function resetDatabase() {
-    if (!confirm('Reset in-memory database to default seed state? Any custom tables or updates will be reverted.')) {
+    if (!confirm('Reset in-memory database to default seed state? Any custom tables or indexes will be reverted.')) {
       return;
     }
     if (db) {
@@ -709,7 +1238,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
       return `Executive-grade SaaS MRR bridge! Calculated retention, contraction, and expansion deltas across ${rows} cohort transitions in ${ms}ms!`;
     }
     if (upper.includes('JOIN') && upper.includes('WHERE')) {
-      return `Clean relational join! Processed and returned ${rows} records in ${ms}ms.`;
+      return `Clean relational join! Processed and returned ${rows} records in ${ms}ms. Click <strong>Explain Plan (⌥⏎)</strong> to inspect indexing!`;
     }
     return `Query executed in ${ms}ms! SQLite WASM processed ${rows} rows in-memory.`;
   }
@@ -765,11 +1294,16 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
   return {
     init,
     setSidebarTab,
+    setOutputTab,
     handleSidebarSearch,
     toggleTableCard,
     peekTable,
     loadPreset,
     executeQuery,
+    explainQueryPlan,
+    applySuggestedIndex,
+    dropCustomIndex,
+    dropAllCustomIndexes,
     filterResults,
     exportCsv,
     formatSql,
