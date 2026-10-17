@@ -134,6 +134,51 @@
   line-height: 1.35;
 }
 
+/* Sector Filter Bar */
+.interview-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: -0.25rem;
+}
+
+.interview-filter-pill {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #d4d4d8);
+  color: var(--text-secondary, #52525b);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.interview-filter-pill:hover {
+  border-color: var(--accent, #c2410c);
+  color: var(--text-primary, #18181b);
+}
+
+.interview-filter-pill.active {
+  background: var(--accent, #c2410c);
+  border-color: var(--accent, #c2410c);
+  color: #ffffff;
+}
+
+.interview-badge-sector {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: var(--bg-card, #f4f4f5);
+  color: var(--text-muted, #71717a);
+  border: 1px solid var(--border-default, #e4e4e7);
+}
+
 /* Track Cards Grid */
 .interview-tracks-grid {
   display: grid;

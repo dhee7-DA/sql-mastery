@@ -17,8 +17,16 @@ window.MockInterviewEngine = (function() {
   let timeRemaining = 45 * 60; // 45:00 in seconds
   let timerInterval = null;
   let isPaused = false;
-  let hintsUsedCount = 0;
+  let activeCategoryFilter = 'all';
   let roundSubmissions = {}; // { 0: { sql, passed, durationSec, hints } }
+
+  function setCategoryFilter(category) {
+    activeCategoryFilter = category;
+    const container = document.getElementById('viewMockInterview');
+    if (container && !activeTrack) {
+      renderLobby(container);
+    }
+  }
 
   /**
    * Root DOM initialization
@@ -48,7 +56,21 @@ window.MockInterviewEngine = (function() {
    * Render Track Selection Lobby
    */
   function renderLobby(container) {
-    const tracks = (window.MOCK_INTERVIEW_DATA && window.MOCK_INTERVIEW_DATA.tracks) || [];
+    const allTracks = (window.MOCK_INTERVIEW_DATA && window.MOCK_INTERVIEW_DATA.tracks) || [];
+    
+    const faangCount = allTracks.filter(t => (t.badge || '').includes('FAANG')).length;
+    const quantCount = allTracks.filter(t => (t.badge || '').includes('Wall Street') || (t.badge || '').includes('HFT')).length;
+    const logCount = allTracks.filter(t => (t.badge || '').includes('Logistics') || (t.badge || '').includes('Marketplace')).length;
+    const finCount = allTracks.filter(t => (t.badge || '').includes('Fintech')).length;
+
+    const filteredTracks = allTracks.filter(t => {
+      if (activeCategoryFilter === 'all') return true;
+      if (activeCategoryFilter === 'faang') return (t.badge || '').includes('FAANG');
+      if (activeCategoryFilter === 'quant') return (t.badge || '').includes('Wall Street') || (t.badge || '').includes('HFT');
+      if (activeCategoryFilter === 'logistics') return (t.badge || '').includes('Logistics') || (t.badge || '').includes('Marketplace');
+      if (activeCategoryFilter === 'fintech') return (t.badge || '').includes('Fintech');
+      return true;
+    });
 
     container.innerHTML = `
       <div class="interview-lobby">
@@ -62,7 +84,7 @@ window.MockInterviewEngine = (function() {
                 <span class="interview-timer-badge">⏱️ 45-Min Timed Simulator</span>
               </h1>
               <div class="interview-hero-desc">
-                Realistic Senior &amp; Staff Data Engineering live coding interviews. Solve 3 progressive query rounds against in-memory WebAssembly databases with test assertions and Sir Bloop grading.
+                Realistic Senior &amp; Staff Data Engineering live coding interviews across 7 industry tracks. Solve 3 progressive query rounds against in-memory WebAssembly databases with test assertions and Sir Bloop grading.
               </div>
             </div>
           </div>
@@ -100,9 +122,28 @@ window.MockInterviewEngine = (function() {
           </div>
         </div>
 
+        <!-- Sector Filter Pills -->
+        <div class="interview-filter-bar">
+          <button class="interview-filter-pill ${activeCategoryFilter === 'all' ? 'active' : ''}" onclick="window.MockInterviewEngine.setCategoryFilter('all')">
+            All Tracks (${allTracks.length})
+          </button>
+          <button class="interview-filter-pill ${activeCategoryFilter === 'faang' ? 'active' : ''}" onclick="window.MockInterviewEngine.setCategoryFilter('faang')">
+            FAANG &amp; Big Tech (${faangCount})
+          </button>
+          <button class="interview-filter-pill ${activeCategoryFilter === 'quant' ? 'active' : ''}" onclick="window.MockInterviewEngine.setCategoryFilter('quant')">
+            Wall Street &amp; Quant (${quantCount})
+          </button>
+          <button class="interview-filter-pill ${activeCategoryFilter === 'logistics' ? 'active' : ''}" onclick="window.MockInterviewEngine.setCategoryFilter('logistics')">
+            Marketplaces &amp; Logistics (${logCount})
+          </button>
+          <button class="interview-filter-pill ${activeCategoryFilter === 'fintech' ? 'active' : ''}" onclick="window.MockInterviewEngine.setCategoryFilter('fintech')">
+            Fintech &amp; Ledgers (${finCount})
+          </button>
+        </div>
+
         <!-- Company Tracks Grid -->
         <div class="interview-tracks-grid">
-          ${tracks.map(t => `
+          ${filteredTracks.map(t => `
             <div class="interview-track-card">
               <div class="interview-track-top">
                 <div class="interview-track-icon-group">
@@ -112,7 +153,10 @@ window.MockInterviewEngine = (function() {
                     <div class="interview-track-role">${escapeHtml(t.role)}</div>
                   </div>
                 </div>
-                <span class="interview-badge-hard">${t.difficulty}</span>
+                <div style="display: flex; gap: 0.4rem; align-items: center;">
+                  <span class="interview-badge-sector">${escapeHtml(t.badge || '')}</span>
+                  <span class="interview-badge-hard">${t.difficulty}</span>
+                </div>
               </div>
               <div class="interview-track-desc">${escapeHtml(t.description)}</div>
               <div class="interview-track-meta">
@@ -821,6 +865,7 @@ window.MockInterviewEngine = (function() {
     submitRound,
     togglePause,
     quitScreen,
-    closeReportAndLobby
+    closeReportAndLobby,
+    setCategoryFilter
   };
 })();
