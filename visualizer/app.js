@@ -145,6 +145,21 @@ const DATABASE = {
     { deposit_id: 'DEP-102', account_id: 'ACC-4412', amount_usd: 12500.00, deposit_channel: 'CASH_TELLER', customer_occupation: 'Retail Owner' },
     { deposit_id: 'DEP-103', account_id: 'ACC-9903', amount_usd: 350.00, deposit_channel: 'ATM', customer_occupation: 'Software Engineer' },
     { deposit_id: 'DEP-104', account_id: 'ACC-7714', amount_usd: 9200.00, deposit_channel: 'CASH_TELLER', customer_occupation: 'Real Estate' }
+  ],
+
+  internal_trade_blotter: [
+    { trade_id: 'TRD-2026-001', ticker: 'NVDA', currency: 'USD', trade_qty: 1500, execution_price: 130.50, trade_status: 'FILLED' },
+    { trade_id: 'TRD-2026-002', ticker: 'AAPL', currency: 'USD', trade_qty: 2400, execution_price: 228.40, trade_status: 'FILLED' },
+    { trade_id: 'TRD-2026-003', ticker: 'MSFT', currency: 'USD', trade_qty: 850, execution_price: 442.10, trade_status: 'FILLED' },
+    { trade_id: 'TRD-2026-004', ticker: 'AMZN', currency: 'USD', trade_qty: 3100, execution_price: 188.75, trade_status: 'FILLED' },
+    { trade_id: 'TRD-2026-005', ticker: 'TSLA', currency: 'USD', trade_qty: 1200, execution_price: 254.30, trade_status: 'CANCELLED' }
+  ],
+
+  custodian_clearing_feed: [
+    { clearing_ref: 'CLR-9901', internal_trade_id: 'TRD-2026-001', security_id: 'NVDA', cleared_qty: 1500, settlement_status: 'SETTLED' },
+    { clearing_ref: 'CLR-9902', internal_trade_id: 'TRD-2026-002', security_id: 'AAPL', cleared_qty: 2350, settlement_status: 'BREAK_QUANTITY' },
+    { clearing_ref: 'CLR-9903', internal_trade_id: 'TRD-2026-003', security_id: 'MSFT', cleared_qty: 850, settlement_status: 'SETTLED' },
+    { clearing_ref: 'CLR-9904', internal_trade_id: null, security_id: 'GOOGL', cleared_qty: 500, settlement_status: 'UNMATCHED_CUSTODY' }
   ]
 };
 
@@ -204,7 +219,24 @@ LIMIT 1;`,
   preset_dept_payroll: `SELECT department, COUNT(*) AS staff_count, SUM(salary) AS total_payroll, AVG(salary) AS avg_salary
 FROM Employees
 GROUP BY department
-ORDER BY total_payroll DESC;`
+ORDER BY total_payroll DESC;`,
+
+  preset_trade_recon: `-- Day 15 Grand Capstone: Multi-Asset Trade Settlement & Custody Break Recon
+SELECT 
+  COALESCE(b.trade_id, c.clearing_ref) AS trade_identifier,
+  COALESCE(b.ticker, c.security_id) AS symbol,
+  b.trade_qty AS blotter_qty,
+  c.cleared_qty AS custody_qty,
+  (COALESCE(b.trade_qty, 0) - COALESCE(c.cleared_qty, 0)) AS position_delta,
+  CASE 
+    WHEN b.trade_id IS NULL THEN 'ORPHAN_CUSTODY_BREAK'
+    WHEN c.clearing_ref IS NULL THEN 'FAIL_TO_DELIVER_UNMATCHED'
+    WHEN b.trade_qty <> c.cleared_qty THEN 'QUANTITY_MISMATCH'
+    ELSE 'PERFECT_MATCH_SETTLED'
+  END AS reconciliation_status
+FROM internal_trade_blotter b
+FULL OUTER JOIN custodian_clearing_feed c 
+  ON b.trade_id = c.internal_trade_id;`
 };
 
 // =============================================================================
@@ -225,6 +257,21 @@ const EngineState = {
 // Dynamically creates, populates, and registers tables for any Case Study or custom query
 // =============================================================================
 
+function getAllCaseStudies() {
+  return window.ALL_2540_CASE_STUDIES ||
+         window.ALL_2000_CASE_STUDIES ||
+         window.ALL_1490_CASE_STUDIES ||
+         window.ALL_1340_CASE_STUDIES ||
+         window.ALL_1040_CASE_STUDIES ||
+         window.ALL_700_CASE_STUDIES ||
+         window.ALL_650_CASE_STUDIES ||
+         window.ALL_600_CASE_STUDIES ||
+         window.ALL_500_CASE_STUDIES ||
+         window.ALL_300_CASE_STUDIES ||
+         window.ALL_100_CASE_STUDIES || [];
+}
+window.getAllCaseStudies = getAllCaseStudies;
+
 const DYNAMIC_TABLE_REGISTRY = new Set();
 
 function ensureDynamicTableInDatabase(tableName, caseStudy = null, sqlContext = '') {
@@ -238,7 +285,7 @@ function ensureDynamicTableInDatabase(tableName, caseStudy = null, sqlContext = 
   }
 
   // 1. Locate case study or schema definition
-  const allCases = window.ALL_600_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+  const allCases = getAllCaseStudies();
   let cs = caseStudy;
   if (!cs) {
     cs = allCases.find(c => c.table && c.table.toLowerCase() === cleanName.toLowerCase());
@@ -2195,11 +2242,11 @@ function switchMainView(targetId) {
   }
   if (targetId === 'viewSyntaxGym') {
     renderSyntaxGym();
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏋️ Welcome to the Syntax Gym! 300 micro-drills to build muscle memory across 10 everyday schemas!", 4500, 'happy');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏋️ Welcome to the Syntax Gym! 1,700 progressive micro-drills across 17 topics to build muscle memory!", 4500, 'happy');
   }
   if (targetId === 'viewCases') {
     renderCaseStudies();
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("💼 1,490 Enterprise Case Studies! Pick an industry vertical and let's solve real data challenges!", 4500, 'happy');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("💼 2,540 Corporate Case Studies! Pick an industry vertical and let's solve real data challenges!", 4500, 'happy');
   }
   if (targetId === 'viewEnterpriseERD') initEnterpriseERD();
   if (targetId === 'viewVennMatrix') {
@@ -2502,7 +2549,7 @@ function initCurriculumSystem() {
   }
   if (btnDossierSolveStudio) {
     btnDossierSolveStudio.addEventListener('click', () => {
-      const allCases = window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || [];
+      const allCases = getAllCaseStudies();
       const cs = allCases.find(c => c.id === activeDossierCaseId);
       if (cs) {
         closeCaseDossier();
@@ -4304,13 +4351,18 @@ function getTopicModuleQuests(moduleId) {
     set_operations: [{ key: 'section9', quests: window.QUESTS_SECTION_9 || [] }],
     cloud_modern: [
       { key: 'section8', quests: window.QUESTS_SECTION_8 || [] },
-      { key: 'section10', quests: window.QUESTS_SECTION_10 || [] }
+      { key: 'section10', quests: window.QUESTS_SECTION_10 || [] },
+      { key: 'section11', quests: window.QUESTS_SECTION_11 || [] },
+      { key: 'section12', quests: window.QUESTS_SECTION_12 || [] },
+      { key: 'section13', quests: window.QUESTS_SECTION_13 || [] },
+      { key: 'section14', quests: window.QUESTS_SECTION_14 || [] },
+      { key: 'section15', quests: window.QUESTS_SECTION_15 || [] }
     ]
   };
 
   if (moduleId === 'all') {
     const all = [];
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 15; i++) {
       const arr = window['QUESTS_SECTION_' + i] || [];
       arr.forEach((q, idx) => all.push({ ...q, questSectionKey: 'section' + i, rawIndex: idx }));
     }
@@ -4326,7 +4378,7 @@ function getTopicModuleQuests(moduleId) {
 }
 
 function getTopicModuleCases(moduleId) {
-  const allCases = window.ALL_2540_CASE_STUDIES || window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+  const allCases = getAllCaseStudies();
   if (moduleId === 'all') return allCases;
 
   const filterMap = {
@@ -5041,7 +5093,7 @@ function renderCaseTableRowsHtml(columns, rows, evalResults = null) {
 }
 
 window.toggleCaseTableRows = function(caseId) {
-  const cs = (typeof getCaseStudyById === 'function' ? getCaseStudyById(caseId) : null) || (window.ALL_2540_CASE_STUDIES || window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || []).find(c => c.id === caseId || c.id === `gym_${caseId}`);
+  const cs = (typeof getCaseStudyById === 'function' ? getCaseStudyById(caseId) : null) || getAllCaseStudies().find(c => c.id === caseId || c.id === `gym_${caseId}`);
   if (!cs) return;
   const tbody = document.getElementById(`caseTableBody_${caseId}`);
   const btn = document.getElementById(`btnTableRows_${caseId}`);
@@ -5365,7 +5417,7 @@ function renderCaseStudies(
     window.DOMAIN_ERD_ENGINE.renderTopShowcase(targetDomain);
   }
 
-  let allCases = window.ALL_2540_CASE_STUDIES || window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_700_CASE_STUDIES || window.ALL_600_CASE_STUDIES || [];
+  let allCases = getAllCaseStudies();
   let cases = allCases.slice();
 
   // 1. Filter by Section
@@ -5494,7 +5546,7 @@ function renderCaseStudies(
   container.querySelectorAll('.btn-toggle-sim').forEach(btn => {
     btn.addEventListener('click', () => {
       const caseId = parseInt(btn.dataset.caseId, 10);
-      const cs = (window.ALL_500_CASE_STUDIES || window.ALL_300_CASE_STUDIES || []).find(c => c.id === caseId);
+      const cs = getAllCaseStudies().find(c => c.id === caseId);
       const drawer = document.getElementById(`sim_drawer_${caseId}`);
       if (!drawer || !cs || !window.CASE_SIMULATOR_ENGINE) return;
 
@@ -5644,7 +5696,7 @@ function renderCaseStudies(
     }
 
     // 2. Check corporate enterprise cases
-    const allCases = window.ALL_2540_CASE_STUDIES || window.ALL_2000_CASE_STUDIES || window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || window.ALL_1340_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || [];
+    const allCases = getAllCaseStudies();
     const numId = typeof caseId === 'number' ? caseId : parseInt(caseId, 10);
     let found = allCases.find(c => c.id === numId || c.id === caseId);
 
@@ -6436,7 +6488,7 @@ function closeCaseDossier() {
 window.closeCaseDossier = closeCaseDossier;
 
 function navigateDossierPrev() {
-  const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+  const allCases = getAllCaseStudies();
   const currentIdx = allCases.findIndex(c => c.id === activeDossierCaseId);
   if (currentIdx > 0) {
     openCaseDossier(allCases[currentIdx - 1].id);
@@ -6446,7 +6498,7 @@ function navigateDossierPrev() {
 }
 
 function navigateDossierNext() {
-  const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+  const allCases = getAllCaseStudies();
   const currentIdx = allCases.findIndex(c => c.id === activeDossierCaseId);
   if (currentIdx >= 0 && currentIdx < allCases.length - 1) {
     openCaseDossier(allCases[currentIdx + 1].id);
@@ -15608,7 +15660,7 @@ function togglePathwayCaseView(mode) {
 let activeDrawerCaseId = 1;
 
 function navigateDrawerCase(step) {
-  const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+  const allCases = getAllCaseStudies();
   const currentMod = TOPIC_PATHWAY_MODULES.find(m => m.id === currentPathwayModuleId);
   let scopeCases = allCases;
   if (currentMod && currentMod.caseSection) {
@@ -15625,7 +15677,7 @@ function navigateDrawerCase(step) {
 }
 
 function openCaseDrawer(caseId) {
-  const allCases = window.ALL_1490_CASE_STUDIES || window.ALL_1040_CASE_STUDIES || window.ALL_500_CASE_STUDIES || [];
+  const allCases = getAllCaseStudies();
   const cs = allCases.find(c => c.id === caseId);
   if (!cs) return;
 

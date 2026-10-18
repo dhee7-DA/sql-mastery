@@ -319,14 +319,17 @@
   }
 
   function jumpToCapstoneTopic(sectionKey) {
-    if (typeof switchQuestSection === 'function') {
-      // Switch tab in main navigation to quests
-      const questsTabBtn = document.querySelector('[data-view="quests"]') || document.querySelector('.nav-tab[data-tab="quests"]');
+    if (typeof window.switchMainView === 'function') {
+      window.switchMainView('viewQuests');
+    } else {
+      const questsTabBtn = document.querySelector('[data-view="viewQuests"]') || document.querySelector('[data-view="quests"]');
       if (questsTabBtn) questsTabBtn.click();
+    }
+    if (typeof switchQuestSection === 'function') {
       switchQuestSection(sectionKey);
-      if (window.SQL_BUDDY) {
-        window.SQL_BUDDY.say(`Navigated to ${sectionKey.toUpperCase()} for prerequisite review! Master this topic and return to the capstone!`, 4500, 'happy');
-      }
+    }
+    if (window.SQL_BUDDY) {
+      window.SQL_BUDDY.say(`Navigated to ${sectionKey.toUpperCase()} for prerequisite review! Master this topic and return to the capstone!`, 4500, 'happy');
     }
   }
 

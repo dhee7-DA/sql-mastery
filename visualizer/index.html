@@ -139,7 +139,7 @@
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Case Studies</span>
-                    <span class="nav-item-tag accent">1,490</span>
+                    <span class="nav-item-tag accent">2,540</span>
                   </div>
                   <span class="nav-item-desc">Real-world production business incident dossiers</span>
                 </div>
@@ -396,7 +396,7 @@
               <p class="pathways-subtitle">Master SQL systematically: 1. Visual Masterclass &rarr; 2. Traps &amp; Interview Secrets &rarr; 3. Topic MCQs &rarr; 4. Corporate Case Studies</p>
             </div>
             <div class="pathways-progress-summary">
-              <span>Vault: <strong>1,490 Cases</strong></span>
+              <span>Vault: <strong>2,540 Cases</strong></span>
               <span style="color: var(--border-default);">&bull;</span>
               <span><strong>2,100 MCQs</strong></span>
               <span style="color: var(--border-default);">&bull;</span>
@@ -605,6 +605,7 @@
                 <option value="preset_distinct_cities">DISTINCT &mdash; Unique Market Tuples</option>
                 <option value="preset_top_earners">AGGREGATE &mdash; Top Earners (Months * Salary)</option>
                 <option value="preset_dept_payroll">GROUP BY &mdash; Department Total &amp; Avg Payroll</option>
+                <option value="preset_trade_recon">CAPSTONE &mdash; Prime Broker Recon (Day 15)</option>
               </select>
             </div>
             <div class="editor-actions" id="rawEditorActions" style="display: none;">
@@ -925,7 +926,7 @@
       <div class="curriculum-header">
         <div>
           <h2 class="view-title">🎯 Topic Mastery Hub &amp; Practice Arena</h2>
-          <p class="view-subtitle">Unified curriculum workspace: Seamlessly explore 2,100 MCQs, 1,490 Corporate Case Studies, and 1,320+ Query Problems &amp; Quests in the same topic window.</p>
+          <p class="view-subtitle">Unified curriculum workspace: Seamlessly explore 2,100 MCQs, 2,540 Corporate Case Studies, and 3,420+ Query Problems &amp; Quests in the same topic window.</p>
         </div>
         <div class="quiz-header-right">
           <div class="quiz-score-badge">
@@ -1022,8 +1023,8 @@
         <!-- Deck 1: Title, Modes, Sort, Search & Solved Tally -->
         <div class="toolbar-deck-top">
           <div>
-            <h2 class="view-title">The 1,490 Corporate Case Study Master Vault</h2>
-            <p class="view-subtitle">1,490 production analytics scenarios across 10 enterprise sections with interactive slot challenges.</p>
+            <h2 class="view-title">The 2,540 Corporate Case Study Master Vault</h2>
+            <p class="view-subtitle">2,540 production analytics scenarios across 10 enterprise sections with interactive slot challenges.</p>
           </div>
           <div class="toolbar-deck-controls">
             <div class="mode-toggle-group">
@@ -1035,11 +1036,11 @@
             <select id="caseSortSelect" class="case-sort-select">
               <option value="diff_asc">Sort: Easy &rarr; Medium &rarr; Hard (Curriculum Order)</option>
               <option value="diff_desc">Sort: Hard &rarr; Medium &rarr; Easy (Challenge Order)</option>
-              <option value="id_asc">Sort: Case ID #001 &rarr; #1490 (Chronological)</option>
+              <option value="id_asc">Sort: Case ID #001 &rarr; #2540 (Chronological)</option>
             </select>
-            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 1,490 cases by keyword, schema, query...">
-            <span id="caseCountBadge" class="status-pill">1,490 Cases</span>
-            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/1490 Solved</span>
+            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 2,540 cases by keyword, schema, query...">
+            <span id="caseCountBadge" class="status-pill">2,540 Cases</span>
+            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/2540 Solved</span>
           </div>
         </div>
 
@@ -1047,7 +1048,7 @@
         <div class="toolbar-deck-bottom">
           <!-- 10 Core Enterprise Sections Switcher Bar -->
           <div class="case-section-group" id="caseSectionFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="case-section-btn active" data-section="all">All Sections (1490)</button>
+            <button class="case-section-btn active" data-section="all">All Sections (2540)</button>
             <button class="case-section-btn" data-section="Section 1: Database Theory &amp; Architecture">Sec 1: Theory &amp; Interview Prep (100)</button>
             <button class="case-section-btn" data-section="Section 2: Physical Query Execution Order &amp; Projections">Sec 2: Execution &amp; Projections (100)</button>
             <button class="case-section-btn" data-section="Section 3: Filtering, Predicates &amp; Three-Valued Logic">Sec 3: Filtering &amp; 3VL (100)</button>
@@ -1064,7 +1065,7 @@
           <div style="display: flex; flex-direction: column; gap: 8px;">
             <div class="filter-strip-row" id="caseDifficultyFilters">
               <span class="filter-strip-label">Difficulty:</span>
-              <button class="case-diff-filter-btn active" data-diff="all">All Difficulties (1490)</button>
+              <button class="case-diff-filter-btn active" data-diff="all">All Difficulties (2540)</button>
               <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">🟢 Easy &bull; Enterprise (530)</button>
               <button class="case-diff-filter-btn diff-pill-medium" data-diff="Medium">🟡 Medium &bull; Production Standard (530)</button>
               <button class="case-diff-filter-btn diff-pill-hard" data-diff="Hard">🔴 Hard &bull; Senior Edge Cases (430)</button>
@@ -1072,7 +1073,7 @@
 
             <div class="filter-strip-row" id="caseIndustryFilters">
               <span class="filter-strip-label">Industry:</span>
-              <button class="case-filter-btn active" data-industry="all">All (1490)</button>
+              <button class="case-filter-btn active" data-industry="all">All (2540)</button>
               <button class="case-filter-btn" data-industry="Fintech">Fintech (135)</button>
               <button class="case-filter-btn" data-industry="SaaS">SaaS (120)</button>
               <button class="case-filter-btn" data-industry="Retail">Retail (120)</button>
