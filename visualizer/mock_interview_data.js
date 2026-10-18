@@ -1592,6 +1592,728 @@ LIMIT 1;`,
           bloopGreeting: "Final question for the Staff level! Design the AWS Spot Market clearing price engine that allocates millions of spare cloud compute instances."
         }
       ]
+    },
+    // =========================================================================
+    // TRACK 8: JANE STREET / GOLDMAN SACHS (QUANTITATIVE RISK & TRADING)
+    // =========================================================================
+    {
+      id: "track_janestreet",
+      company: "Jane Street / Goldman Sachs",
+      role: "Quantitative Systems & Risk Engine Architect",
+      badge: "Wall Street / Quant",
+      icon: "📉",
+      difficulty: "Hard / Elite",
+      timeLimitMinutes: 45,
+      compensationRange: "$400,000 – $600,000",
+      description: "Elite quantitative trading screen: calculate multi-asset portfolio sector exposures, trigger intraday maintenance margin calls, and simulate multi-tier limit order book sweep slippage.",
+      interviewer: {
+        name: "Julian Thorne",
+        title: "Global Head of Quantitative Risk Engines",
+        avatar: "🏛️"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS janestreet_portfolio_positions;
+CREATE TABLE janestreet_portfolio_positions (
+  position_id TEXT PRIMARY KEY,
+  fund_id TEXT NOT NULL,
+  symbol TEXT NOT NULL,
+  asset_class TEXT NOT NULL,
+  shares INTEGER NOT NULL,
+  market_price REAL NOT NULL,
+  entry_price REAL NOT NULL
+);
+
+INSERT INTO janestreet_portfolio_positions VALUES
+  ('POS-01', 'FUND-ALPHA', 'AAPL', 'EQUITY', 10000, 220.0, 200.0),
+  ('POS-02', 'FUND-ALPHA', 'NVDA', 'EQUITY', 15000, 120.0, 110.0),
+  ('POS-03', 'FUND-ALPHA', 'GLD', 'COMMODITY', 5000, 240.0, 250.0),
+  ('POS-04', 'FUND-BETA', 'TSLA', 'EQUITY', 8000, 250.0, 270.0),
+  ('POS-05', 'FUND-BETA', 'USO', 'COMMODITY', 20000, 70.0, 75.0);
+
+DROP TABLE IF EXISTS janestreet_margin_accounts;
+CREATE TABLE janestreet_margin_accounts (
+  account_id TEXT PRIMARY KEY,
+  client_name TEXT NOT NULL,
+  total_equity REAL NOT NULL,
+  borrowed_margin REAL NOT NULL,
+  maintenance_margin_pct REAL NOT NULL
+);
+
+INSERT INTO janestreet_margin_accounts VALUES
+  ('ACC-101', 'Alpha Horizon Fund', 3500000.0, 10000000.0, 0.25),
+  ('ACC-102', 'Cobalt Capital', 1800000.0, 8000000.0, 0.25),
+  ('ACC-103', 'Renaissance Apex', 8000000.0, 12000000.0, 0.25),
+  ('ACC-104', 'Meridian Quant', 1200000.0, 5000000.0, 0.25);
+
+DROP TABLE IF EXISTS janestreet_orderbook_asks;
+CREATE TABLE janestreet_orderbook_asks (
+  level_id INTEGER PRIMARY KEY,
+  symbol TEXT NOT NULL,
+  price_level REAL NOT NULL,
+  available_shares INTEGER NOT NULL
+);
+
+INSERT INTO janestreet_orderbook_asks VALUES
+  (1, 'AAPL', 220.10, 500),
+  (2, 'AAPL', 220.25, 1000),
+  (3, 'AAPL', 220.50, 1500),
+  (4, 'AAPL', 221.00, 2000);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: Portfolio Exposure & Unrealized PnL Engine",
+          difficulty: "Warmup",
+          prompt: `In high-frequency quantitative asset management, risk engines compute net exposure and mark-to-market PnL across active investment funds.
+
+**Formulas:**
+$$\\text{total\\_market\\_value} = \\sum(\\text{shares} \\times \\text{market\\_price})$$
+$$\\text{total\\_unrealized\\_pnl} = \\sum(\\text{shares} \\times (\\text{market\\_price} - \\text{entry\\_price}))$$
+$$\\text{pnl\\_pct} = \\text{ROUND}\\left(\\frac{\\text{total\\_unrealized\\_pnl}}{\\sum(\\text{shares} \\times \\text{entry\\_price})} \\times 100, 2\\right)$$
+
+**Requirements:**
+- Query \`janestreet_portfolio_positions\`.
+- For each \`fund_id\` and \`asset_class\`, calculate:
+  - \`total_positions\`: Count of position holdings.
+  - \`total_market_value\`: Total current mark-to-market value, rounded to 2 decimal places.
+  - \`total_unrealized_pnl\`: Total dollar gain/loss, rounded to 2 decimal places.
+  - \`pnl_pct\`: Percentage return against cost basis, rounded to 2 decimal places.
+- Return: \`fund_id\`, \`asset_class\`, \`total_positions\`, \`total_market_value\`, \`total_unrealized_pnl\`, \`pnl_pct\`.
+- Order by \`total_market_value\` DESC.`,
+          starterSql: `-- Jane Street Round 1: Portfolio Exposure & PnL
+SELECT
+  fund_id,
+  asset_class,
+  -- Calculate position count, market value, dollar PnL, and percentage return
+FROM janestreet_portfolio_positions
+GROUP BY fund_id, asset_class
+ORDER BY fund_id;`,
+          solutionSql: `SELECT
+  fund_id,
+  asset_class,
+  COUNT(*) AS total_positions,
+  ROUND(SUM(shares * market_price), 2) AS total_market_value,
+  ROUND(SUM(shares * (market_price - entry_price)), 2) AS total_unrealized_pnl,
+  ROUND(
+    (SUM(shares * (market_price - entry_price)) * 100.0) / NULLIF(SUM(shares * entry_price), 0),
+    2
+  ) AS pnl_pct
+FROM janestreet_portfolio_positions
+GROUP BY fund_id, asset_class
+ORDER BY total_market_value DESC;`,
+          hints: [
+            "Compute market value as SUM(shares * market_price).",
+            "Cost basis is SUM(shares * entry_price); use NULLIF to prevent divide-by-zero.",
+            "Round all monetary values and percentages to 2 decimal places."
+          ],
+          expectedColumns: ["fund_id", "asset_class", "total_positions", "total_market_value", "total_unrealized_pnl", "pnl_pct"],
+          expectedRowCount: 4,
+          bloopGreeting: "Welcome to Jane Street! Precision is paramount when managing billions in multi-asset quantitative risk. Let's start with real-time portfolio NAV exposure."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Intraday Maintenance Margin Calls & Deficit Liquidation",
+          difficulty: "Intermediate",
+          prompt: `Prime brokerage desks provide leverage to institutional clients. When market moves erode an account's equity below its maintenance requirement, an immediate **Margin Call** is triggered.
+
+**Rules:**
+$$\\text{total\\_portfolio\\_value} = \\text{total\\_equity} + \\text{borrowed\\_margin}$$
+$$\\text{current\\_equity\\_pct} = \\text{ROUND}\\left(\\frac{\\text{total\\_equity}}{\\text{total\\_portfolio\\_value}} \\times 100, 2\\right)$$
+$$\\text{margin\\_deficit} = \\text{MAX}\\left(0.0, (\\text{total\\_portfolio\\_value} \\times \\text{maintenance\\_margin\\_pct}) - \\text{total\\_equity}\\right)$$
+
+- If $\\frac{\\text{total\\_equity}}{\\text{total\\_portfolio\\_value}} < \\text{maintenance\\_margin\\_pct}$, assign \`risk_status = 'MARGIN_CALL'\`.
+- Otherwise, assign \`risk_status = 'HEALTHY'\`.
+
+**Requirements:**
+- Query \`janestreet_margin_accounts\`.
+- Return: \`account_id\`, \`client_name\`, \`total_portfolio_value\`, \`current_equity_pct\`, \`margin_deficit\`, \`risk_status\`.
+- Order by \`margin_deficit\` DESC.`,
+          starterSql: `-- Jane Street Round 2: Intraday Margin Call Trigger
+SELECT
+  account_id,
+  client_name,
+  -- Compute portfolio value, equity %, margin deficit, and risk status
+FROM janestreet_margin_accounts
+ORDER BY account_id;`,
+          solutionSql: `SELECT
+  account_id,
+  client_name,
+  ROUND(total_equity + borrowed_margin, 2) AS total_portfolio_value,
+  ROUND((total_equity * 100.0) / NULLIF(total_equity + borrowed_margin, 0), 2) AS current_equity_pct,
+  ROUND(
+    MAX(0.0, ((total_equity + borrowed_margin) * maintenance_margin_pct) - total_equity),
+    2
+  ) AS margin_deficit,
+  CASE
+    WHEN (total_equity / NULLIF(total_equity + borrowed_margin, 0)) < maintenance_margin_pct THEN 'MARGIN_CALL'
+    ELSE 'HEALTHY'
+  END AS risk_status
+FROM janestreet_margin_accounts
+ORDER BY margin_deficit DESC;`,
+          hints: [
+            "Total portfolio value is total_equity + borrowed_margin.",
+            "Use MAX(0.0, required_equity - total_equity) to ensure deficit is never negative.",
+            "Trigger 'MARGIN_CALL' whenever actual equity ratio is below maintenance_margin_pct."
+          ],
+          expectedColumns: ["account_id", "client_name", "total_portfolio_value", "current_equity_pct", "margin_deficit", "risk_status"],
+          expectedRowCount: 4,
+          bloopGreeting: "Sharp risk calculations! Now implement the firm's prime brokerage liquidation monitor: detect margin breaches and compute capital call deficits."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: Multi-Tier Limit Order Book Market Order Sweep Slippage",
+          difficulty: "Staff / Advanced",
+          prompt: `When an execution algorithm sends a market buy order larger than the top-of-book depth, it sweeps through multiple ascending ask levels. This causes **Execution Slippage**.
+
+**Scenario:**
+- An institutional buy order arrives for **2,500 shares** of \`'AAPL'\`.
+- The order sweeps the ask levels in ascending price order:
+  - Level 1: 500 shares @ $220.10
+  - Level 2: 1,000 shares @ $220.25 (cumulative: 1,500)
+  - Level 3: 1,000 shares @ $220.50 (fills remaining 1,000 of 2,500)
+- **Top-of-Book Price:** The lowest available ask price ($220.10).
+- **VWAP Execution Price:** $\\frac{\\sum(\\text{filled\\_shares} \\times \\text{price})}{\\sum(\\text{filled\\_shares})}$.
+- **Slippage (Basis Points):**
+  $$\\text{ROUND}\\left(\\frac{\\text{vwap\\_execution\\_price} - \\text{top\\_of\\_book\\_price}}{\\text{top\\_of\\_book\\_price}} \\times 10000, 2\\right)$$
+
+**Requirements:**
+- Query \`janestreet_orderbook_asks\` for \`symbol = 'AAPL'\`.
+- Using window functions, compute cumulative depth and calculate the exact shares filled at each price level to complete 2,500 shares.
+- Return: \`symbol\`, \`order_size_filled\`, \`total_fill_cost\`, \`vwap_execution_price\`, \`top_of_book_price\`, \`slippage_bps\`.`,
+          starterSql: `-- Jane Street Round 3: Multi-Level Order Book Sweep & Slippage
+WITH book_depth AS (
+  SELECT
+    level_id,
+    symbol,
+    price_level,
+    available_shares,
+    -- Compute cumulative depth and top-of-book price
+  FROM janestreet_orderbook_asks
+  WHERE symbol = 'AAPL'
+)
+SELECT * FROM book_depth;`,
+          solutionSql: `WITH book_depth AS (
+  SELECT
+    level_id,
+    symbol,
+    price_level,
+    available_shares,
+    SUM(available_shares) OVER (PARTITION BY symbol ORDER BY price_level ASC) AS cum_shares,
+    COALESCE(SUM(available_shares) OVER (PARTITION BY symbol ORDER BY price_level ASC ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0) AS prev_cum_shares,
+    FIRST_VALUE(price_level) OVER (PARTITION BY symbol ORDER BY price_level ASC) AS top_of_book_price
+  FROM janestreet_orderbook_asks
+  WHERE symbol = 'AAPL'
+),
+filled_levels AS (
+  SELECT
+    level_id,
+    symbol,
+    price_level,
+    top_of_book_price,
+    CASE
+      WHEN cum_shares <= 2500 THEN available_shares
+      WHEN prev_cum_shares < 2500 THEN 2500 - prev_cum_shares
+      ELSE 0
+    END AS filled_shares
+  FROM book_depth
+  WHERE prev_cum_shares < 2500
+)
+SELECT
+  symbol,
+  SUM(filled_shares) AS order_size_filled,
+  ROUND(SUM(filled_shares * price_level), 2) AS total_fill_cost,
+  ROUND(SUM(filled_shares * price_level) / SUM(filled_shares), 2) AS vwap_execution_price,
+  top_of_book_price,
+  ROUND(
+    ((SUM(filled_shares * price_level) / SUM(filled_shares)) - top_of_book_price) * 10000.0 / top_of_book_price,
+    2
+  ) AS slippage_bps
+FROM filled_levels
+GROUP BY symbol, top_of_book_price;`,
+          hints: [
+            "Use SUM(available_shares) OVER (ORDER BY price_level) to track cumulative depth.",
+            "Use FIRST_VALUE(price_level) OVER (ORDER BY price_level) for top-of-book benchmark price.",
+            "Fill 2500 shares across levels with CASE WHEN prev_cum_shares < 2500 THEN 2500 - prev_cum_shares.",
+            "Slippage in bps is ((vwap - top_of_book) / top_of_book) * 10000."
+          ],
+          expectedColumns: ["symbol", "order_size_filled", "total_fill_cost", "vwap_execution_price", "top_of_book_price", "slippage_bps"],
+          expectedRowCount: 1,
+          bloopGreeting: "Final question for the Staff level! Simulate a high-speed market order book sweep, calculate VWAP fills, and measure market impact slippage in basis points."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 9: AIRBNB (HOSPITALITY, CALENDAR AVAILABILITY & DYNAMIC PRICING)
+    // =========================================================================
+    {
+      id: "track_airbnb",
+      company: "Airbnb",
+      role: "Staff Marketplace Dynamics & Search Infrastructure Engineer",
+      badge: "Marketplaces & Travel",
+      icon: "🏡",
+      difficulty: "Medium – Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$330,000 – $470,000",
+      description: "Hospitality marketplace screen: evaluate Superhost inquiry response conversion, detect contiguous 7-day vacant booking windows (Islands & Gaps), and optimize RevPAR seasonal price elasticity.",
+      interviewer: {
+        name: "Chloe Mercier",
+        title: "Principal Search & Pricing Architect",
+        avatar: "✨"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS airbnb_hosts;
+CREATE TABLE airbnb_hosts (
+  host_id TEXT PRIMARY KEY,
+  host_name TEXT NOT NULL,
+  total_inquiries INTEGER NOT NULL,
+  accepted_bookings INTEGER NOT NULL,
+  avg_response_hours REAL NOT NULL,
+  cancellation_count INTEGER NOT NULL
+);
+
+INSERT INTO airbnb_hosts VALUES
+  ('H-101', 'Sarah Jenkins', 120, 114, 1.2, 0),
+  ('H-102', 'Marco Silva', 80, 68, 4.5, 2),
+  ('H-103', 'Yuki Tanaka', 200, 192, 0.8, 1),
+  ('H-104', 'Elena Rossi', 50, 35, 12.0, 4);
+
+DROP TABLE IF EXISTS airbnb_calendar_days;
+CREATE TABLE airbnb_calendar_days (
+  day_id INTEGER PRIMARY KEY,
+  listing_id TEXT NOT NULL,
+  calendar_date TEXT NOT NULL,
+  is_available INTEGER NOT NULL
+);
+
+INSERT INTO airbnb_calendar_days VALUES
+  (1, 'LST-01', '2026-11-01', 1),
+  (2, 'LST-01', '2026-11-02', 1),
+  (3, 'LST-01', '2026-11-03', 1),
+  (4, 'LST-01', '2026-11-04', 1),
+  (5, 'LST-01', '2026-11-05', 1),
+  (6, 'LST-01', '2026-11-06', 1),
+  (7, 'LST-01', '2026-11-07', 1),
+  (8, 'LST-01', '2026-11-08', 0),
+  (9, 'LST-01', '2026-11-09', 1),
+  (10, 'LST-01', '2026-11-10', 1),
+  (11, 'LST-01', '2026-11-11', 0),
+  (12, 'LST-02', '2026-11-01', 1),
+  (13, 'LST-02', '2026-11-02', 1),
+  (14, 'LST-02', '2026-11-03', 1);
+
+DROP TABLE IF EXISTS airbnb_pricing_elasticity;
+CREATE TABLE airbnb_pricing_elasticity (
+  experiment_id TEXT PRIMARY KEY,
+  neighborhood TEXT NOT NULL,
+  nightly_price_usd REAL NOT NULL,
+  total_available_nights INTEGER NOT NULL,
+  booked_nights INTEGER NOT NULL
+);
+
+INSERT INTO airbnb_pricing_elasticity VALUES
+  ('EXP-01', 'SoHo Manhattan', 250.0, 100, 85),
+  ('EXP-02', 'SoHo Manhattan', 300.0, 100, 78),
+  ('EXP-03', 'SoHo Manhattan', 380.0, 100, 50),
+  ('EXP-04', 'Mission SF', 180.0, 100, 90),
+  ('EXP-05', 'Mission SF', 220.0, 100, 80),
+  ('EXP-06', 'Mission SF', 280.0, 100, 55);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: Host Acceptance Rate & Superhost Certification",
+          difficulty: "Warmup",
+          prompt: `In Airbnb's host quality scoring, Superhost status drives guest trust and premium search placement.
+
+**Superhost Criteria:**
+- \`acceptance_rate_pct >= 90.0\`
+- \`avg_response_hours <= 2.0\`
+- \`cancellation_count = 0\`
+- If \`acceptance_rate_pct < 75.0\` OR \`cancellation_count >= 3\`, assign \`'AT_RISK'\`.
+- Otherwise, assign \`'STANDARD'\`.
+
+**Requirements:**
+- Query \`airbnb_hosts\`.
+- Compute \`acceptance_rate_pct\` as:
+  $$\\text{ROUND}\\left(\\frac{\\text{accepted\\_bookings}}{\\text{total\\_inquiries}} \\times 100, 1\\right)$$
+- Return: \`host_id\`, \`host_name\`, \`acceptance_rate_pct\`, \`avg_response_hours\`, \`cancellation_count\`, \`host_badge\`.
+- Order by \`acceptance_rate_pct\` DESC.`,
+          starterSql: `-- Airbnb Round 1: Superhost Tier Certification
+SELECT
+  host_id,
+  host_name,
+  -- Compute acceptance %, inspect response time, and assign badge
+FROM airbnb_hosts
+ORDER BY host_id;`,
+          solutionSql: `SELECT
+  host_id,
+  host_name,
+  ROUND((accepted_bookings * 100.0) / NULLIF(total_inquiries, 0), 1) AS acceptance_rate_pct,
+  avg_response_hours,
+  cancellation_count,
+  CASE
+    WHEN ((accepted_bookings * 100.0) / NULLIF(total_inquiries, 0)) >= 90.0 
+         AND avg_response_hours <= 2.0 
+         AND cancellation_count = 0 THEN 'SUPERHOST'
+    WHEN ((accepted_bookings * 100.0) / NULLIF(total_inquiries, 0)) < 75.0 
+         OR cancellation_count >= 3 THEN 'AT_RISK'
+    ELSE 'STANDARD'
+  END AS host_badge
+FROM airbnb_hosts
+ORDER BY acceptance_rate_pct DESC;`,
+          hints: [
+            "Compute acceptance_rate_pct using NULLIF(total_inquiries, 0).",
+            "Use CASE WHEN with compound AND conditions for Superhost certification.",
+            "Order by acceptance_rate_pct DESC."
+          ],
+          expectedColumns: ["host_id", "host_name", "acceptance_rate_pct", "avg_response_hours", "cancellation_count", "host_badge"],
+          expectedRowCount: 4,
+          bloopGreeting: "Welcome to Airbnb! In our travel marketplace, responsive hosts create unforgettable guest stays. Let's start with Superhost tier qualification."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Contiguous 7-Day Unbooked Calendar Vacancies (Islands & Gaps)",
+          difficulty: "Intermediate",
+          prompt: `To boost occupancy during off-peak seasons, Airbnb targets listings with long consecutive unbooked dates for weekly promotional discount campaigns.
+
+**Requirements:**
+- Query \`airbnb_calendar_days\` where \`is_available = 1\` (day is vacant/unbooked).
+- Identify contiguous sequences of consecutive available days using the **Islands & Gaps** difference technique:
+  $$\\text{grp} = \\text{CAST}(\\text{strftime}('\\%s', \\text{calendar\\_date}) / 86400 \\text{ AS INTEGER}) - \\text{ROW\\_NUMBER}()$$
+- Filter for vacancy blocks spanning at least **7 consecutive days** (\`COUNT(*) >= 7\`).
+- Return: \`listing_id\`, \`vacancy_start_date\` (earliest date in the block), \`vacancy_end_date\` (latest date in the block), \`consecutive_days\` (length of streak).
+- Order by \`listing_id\` ASC, \`vacancy_start_date\` ASC.`,
+          starterSql: `-- Airbnb Round 2: 7-Day Contiguous Vacancies (Islands & Gaps)
+WITH island_groups AS (
+  SELECT
+    listing_id,
+    calendar_date,
+    is_available,
+    -- Group contiguous dates
+  FROM airbnb_calendar_days
+  WHERE is_available = 1
+)
+SELECT * FROM island_groups;`,
+          solutionSql: `WITH island_groups AS (
+  SELECT
+    listing_id,
+    calendar_date,
+    is_available,
+    CAST(strftime('%s', calendar_date) / 86400 AS INTEGER) - 
+    ROW_NUMBER() OVER (PARTITION BY listing_id, is_available ORDER BY calendar_date) AS grp
+  FROM airbnb_calendar_days
+  WHERE is_available = 1
+)
+SELECT
+  listing_id,
+  MIN(calendar_date) AS vacancy_start_date,
+  MAX(calendar_date) AS vacancy_end_date,
+  COUNT(*) AS consecutive_days
+FROM island_groups
+GROUP BY listing_id, grp
+HAVING COUNT(*) >= 7
+ORDER BY listing_id, vacancy_start_date;`,
+          hints: [
+            "Divide strftime('%s', calendar_date) by 86400 to get days since epoch.",
+            "Subtract ROW_NUMBER() from epoch days to create a constant island group identifier.",
+            "Filter groups using HAVING COUNT(*) >= 7."
+          ],
+          expectedColumns: ["listing_id", "vacancy_start_date", "vacancy_end_date", "consecutive_days"],
+          expectedRowCount: 1,
+          bloopGreeting: "Great work! Now for a real marketplace search problem: detect contiguous unbooked calendar streaks to launch weekly discount promos."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: Dynamic Seasonal Pricing Elasticity & Revenue Per Room (RevPAR)",
+          difficulty: "Staff / Advanced",
+          prompt: `Setting the optimal nightly price requires balancing occupancy rate against price per night to maximize **Revenue Per Available Room (RevPAR)**.
+
+**Metrics:**
+$$\\text{occupancy\\_pct} = \\text{ROUND}\\left(\\frac{\\text{booked\\_nights}}{\\text{total\\_available\\_nights}} \\times 100, 1\\right)$$
+$$\\text{total\\_revenue} = \\text{booked\\_nights} \\times \\text{nightly\\_price\\_usd}$$
+$$\\text{max\\_revpar\\_usd} = \\text{ROUND}\\left(\\frac{\\text{total\\_revenue}}{\\text{total\\_available\\_nights}}, 2\\right)$$
+
+**Requirements:**
+- Query \`airbnb_pricing_elasticity\`.
+- For each \`neighborhood\`, evaluate all tested price points and find the single optimal nightly price that yields the highest RevPAR.
+- Return: \`neighborhood\`, \`optimal_nightly_price\`, \`occupancy_pct\`, \`max_revpar_usd\`, \`total_revenue\`.
+- Order by \`neighborhood\` ASC.`,
+          starterSql: `-- Airbnb Round 3: Dynamic Pricing Elasticity & Optimal RevPAR
+WITH revpar_calc AS (
+  SELECT
+    neighborhood,
+    nightly_price_usd,
+    -- Calculate occupancy, revenue, RevPAR, and rank price points per neighborhood
+  FROM airbnb_pricing_elasticity
+)
+SELECT * FROM revpar_calc;`,
+          solutionSql: `WITH revpar_calc AS (
+  SELECT
+    neighborhood,
+    nightly_price_usd AS optimal_nightly_price,
+    ROUND((booked_nights * 100.0) / NULLIF(total_available_nights, 0), 1) AS occupancy_pct,
+    ROUND((booked_nights * nightly_price_usd) / NULLIF(total_available_nights, 0), 2) AS max_revpar_usd,
+    ROUND(booked_nights * nightly_price_usd, 2) AS total_revenue,
+    ROW_NUMBER() OVER (
+      PARTITION BY neighborhood 
+      ORDER BY ((booked_nights * nightly_price_usd) / total_available_nights) DESC
+    ) AS rank_pos
+  FROM airbnb_pricing_elasticity
+)
+SELECT
+  neighborhood,
+  optimal_nightly_price,
+  occupancy_pct,
+  max_revpar_usd,
+  total_revenue
+FROM revpar_calc
+WHERE rank_pos = 1
+ORDER BY neighborhood ASC;`,
+          hints: [
+            "RevPAR is total revenue divided by total available nights.",
+            "Use ROW_NUMBER() OVER (PARTITION BY neighborhood ORDER BY revpar DESC) to pick the best price.",
+            "Filter for rank_pos = 1 to select the optimal revenue-maximizing price point."
+          ],
+          expectedColumns: ["neighborhood", "optimal_nightly_price", "occupancy_pct", "max_revpar_usd", "total_revenue"],
+          expectedRowCount: 2,
+          bloopGreeting: "Final question for the Staff level! Optimize marketplace dynamic pricing by identifying the exact nightly rate that maximizes RevPAR."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 10: COINBASE / ROBINHOOD (CRYPTO & RETAIL BROKERAGE)
+    // =========================================================================
+    {
+      id: "track_coinbase",
+      company: "Coinbase / Robinhood",
+      role: "Staff Blockchain Analytics & Market Surveillance Engineer",
+      badge: "Fintech / Crypto",
+      icon: "🪙",
+      difficulty: "Hard / Elite",
+      timeLimitMinutes: 45,
+      compensationRange: "$360,000 – $520,000",
+      description: "Crypto exchange and market surveillance screen: compute 24-hour trading volume with maker/taker fee splits, analyze deposit-to-trade settlement velocity, and detect circular wash trading rings.",
+      interviewer: {
+        name: "Kavita Rao",
+        title: "Head of Market Integrity & Surveillance",
+        avatar: "🛡️"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS coinbase_trades;
+CREATE TABLE coinbase_trades (
+  trade_id TEXT PRIMARY KEY,
+  product_id TEXT NOT NULL,
+  price REAL NOT NULL,
+  size REAL NOT NULL,
+  side TEXT NOT NULL,
+  fee_tier TEXT NOT NULL,
+  trade_time TEXT NOT NULL
+);
+
+INSERT INTO coinbase_trades VALUES
+  ('TR-01', 'BTC-USD', 65000.0, 1.5, 'BUY', 'TAKER', '2026-10-15 10:00:00'),
+  ('TR-02', 'BTC-USD', 65100.0, 2.0, 'SELL', 'MAKER', '2026-10-15 10:05:00'),
+  ('TR-03', 'BTC-USD', 64950.0, 0.8, 'BUY', 'TAKER', '2026-10-15 10:10:00'),
+  ('TR-04', 'ETH-USD', 3500.0, 10.0, 'BUY', 'TAKER', '2026-10-15 10:02:00'),
+  ('TR-05', 'ETH-USD', 3520.0, 15.0, 'SELL', 'MAKER', '2026-10-15 10:08:00'),
+  ('TR-06', 'SOL-USD', 150.0, 200.0, 'BUY', 'TAKER', '2026-10-15 10:01:00');
+
+DROP TABLE IF EXISTS coinbase_fiat_onramp;
+CREATE TABLE coinbase_fiat_onramp (
+  deposit_id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  deposit_time TEXT NOT NULL,
+  deposit_amount_usd REAL NOT NULL,
+  first_crypto_purchase_time TEXT NOT NULL,
+  is_withdrawn INTEGER NOT NULL
+);
+
+INSERT INTO coinbase_fiat_onramp VALUES
+  ('DEP-01', 'USR-901', '2026-10-15 09:00:00', 5000.0, '2026-10-15 09:04:00', 1),
+  ('DEP-02', 'USR-902', '2026-10-15 09:00:00', 25000.0, '2026-10-15 09:02:00', 1),
+  ('DEP-03', 'USR-903', '2026-10-15 09:00:00', 1500.0, '2026-10-15 14:30:00', 0),
+  ('DEP-04', 'USR-904', '2026-10-15 09:00:00', 8000.0, '2026-10-15 09:03:00', 0);
+
+DROP TABLE IF EXISTS coinbase_order_fills;
+CREATE TABLE coinbase_order_fills (
+  fill_id INTEGER PRIMARY KEY,
+  maker_account TEXT NOT NULL,
+  taker_account TEXT NOT NULL,
+  product_id TEXT NOT NULL,
+  fill_amount REAL NOT NULL,
+  fill_time TEXT NOT NULL
+);
+
+INSERT INTO coinbase_order_fills VALUES
+  (1, 'ACC-ALPHA', 'ACC-BETA', 'BTC-USD', 5.0, '2026-10-15 11:00:00'),
+  (2, 'ACC-BETA', 'ACC-GAMMA', 'BTC-USD', 5.0, '2026-10-15 11:02:00'),
+  (3, 'ACC-GAMMA', 'ACC-ALPHA', 'BTC-USD', 5.0, '2026-10-15 11:04:00'),
+  (4, 'ACC-USER1', 'ACC-USER2', 'ETH-USD', 2.5, '2026-10-15 11:10:00');
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: 24-Hour Trading Volume & Maker/Taker Fee Split",
+          difficulty: "Warmup",
+          prompt: `In cryptocurrency exchange matching engines, fees differ sharply between liquidity makers and liquidity takers.
+
+**Fee Schedule:**
+- **Taker Fee:** $0.5\\%$ of notional value (\`price * size * 0.005\`).
+- **Maker Fee:** $0.2\\%$ of notional value (\`price * size * 0.002\`).
+
+**Requirements:**
+- Query \`coinbase_trades\`.
+- For each \`product_id\`, calculate:
+  - \`trade_count\`: Number of executed trades.
+  - \`total_volume_usd\`: Total notional volume ($), rounded to 2 decimal places.
+  - \`maker_volume_usd\`: Volume where \`fee_tier = 'MAKER'\`, rounded to 2 decimal places.
+  - \`taker_volume_usd\`: Volume where \`fee_tier = 'TAKER'\`, rounded to 2 decimal places.
+  - \`total_exchange_fees_usd\`: Total exchange revenue earned across maker and taker fills, rounded to 2 decimal places.
+- Return: \`product_id\`, \`trade_count\`, \`total_volume_usd\`, \`maker_volume_usd\`, \`taker_volume_usd\`, \`total_exchange_fees_usd\`.
+- Order by \`total_volume_usd\` DESC.`,
+          starterSql: `-- Coinbase Round 1: Product Volume & Maker/Taker Fees
+SELECT
+  product_id,
+  -- Compute volume totals, maker/taker splits, and exchange fee revenue
+FROM coinbase_trades
+GROUP BY product_id
+ORDER BY product_id;`,
+          solutionSql: `SELECT
+  product_id,
+  COUNT(*) AS trade_count,
+  ROUND(SUM(price * size), 2) AS total_volume_usd,
+  ROUND(SUM(CASE WHEN fee_tier = 'MAKER' THEN price * size ELSE 0 END), 2) AS maker_volume_usd,
+  ROUND(SUM(CASE WHEN fee_tier = 'TAKER' THEN price * size ELSE 0 END), 2) AS taker_volume_usd,
+  ROUND(
+    SUM(CASE WHEN fee_tier = 'TAKER' THEN price * size * 0.005 ELSE price * size * 0.002 END),
+    2
+  ) AS total_exchange_fees_usd
+FROM coinbase_trades
+GROUP BY product_id
+ORDER BY total_volume_usd DESC;`,
+          hints: [
+            "Compute notional volume as price * size.",
+            "Use conditional aggregation SUM(CASE WHEN fee_tier = 'MAKER' THEN price * size ELSE 0 END).",
+            "Apply 0.005 multiplier for takers and 0.002 multiplier for makers."
+          ],
+          expectedColumns: ["product_id", "trade_count", "total_volume_usd", "maker_volume_usd", "taker_volume_usd", "total_exchange_fees_usd"],
+          expectedRowCount: 3,
+          bloopGreeting: "Welcome to Coinbase! In 24/7 crypto markets, matching engines generate millions in maker/taker fee revenues. Let's analyze trading volume splits."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Deposit-to-Trade Settlement Latency & Outflow Risk",
+          difficulty: "Intermediate",
+          prompt: `Fraud rings frequently exploit ACH fiat instant deposits by purchasing volatile crypto assets within minutes and transferring them off-exchange before bank clearing settles.
+
+**Detection Rules:**
+- \`latency_minutes\`: Time elapsed between \`deposit_time\` and \`first_crypto_purchase_time\`:
+  $$\\text{ROUND}\\left(\\frac{\\text{strftime}('\\%s', \\text{first\\_crypto\\_purchase\\_time}) - \\text{strftime}('\\%s', \\text{deposit\\_time})}{60.0}, 1\\right)$$
+- If \`latency_minutes <= 5.0\` AND \`is_withdrawn = 1\`, assign \`risk_action = 'HIGH_RISK_FRAUD_FREEZE'\`.
+- If \`latency_minutes <= 5.0\` AND \`is_withdrawn = 0\`, assign \`risk_action = 'RAPID_CONVERSION_MONITOR'\`.
+- Otherwise, assign \`risk_action = 'NORMAL_VERIFIED'\`.
+
+**Requirements:**
+- Query \`coinbase_fiat_onramp\`.
+- Return: \`deposit_id\`, \`user_id\`, \`deposit_amount_usd\`, \`latency_minutes\`, \`is_withdrawn\`, \`risk_action\`.
+- Order by \`deposit_amount_usd\` DESC.`,
+          starterSql: `-- Coinbase Round 2: Deposit-to-Trade Velocity & Risk Flags
+SELECT
+  deposit_id,
+  user_id,
+  deposit_amount_usd,
+  -- Calculate latency in minutes and evaluate withdrawal risk
+FROM coinbase_fiat_onramp
+ORDER BY deposit_amount_usd DESC;`,
+          solutionSql: `SELECT
+  deposit_id,
+  user_id,
+  deposit_amount_usd,
+  ROUND((strftime('%s', first_crypto_purchase_time) - strftime('%s', deposit_time)) / 60.0, 1) AS latency_minutes,
+  is_withdrawn,
+  CASE
+    WHEN ((strftime('%s', first_crypto_purchase_time) - strftime('%s', deposit_time)) / 60.0) <= 5.0 
+         AND is_withdrawn = 1 THEN 'HIGH_RISK_FRAUD_FREEZE'
+    WHEN ((strftime('%s', first_crypto_purchase_time) - strftime('%s', deposit_time)) / 60.0) <= 5.0 
+         AND is_withdrawn = 0 THEN 'RAPID_CONVERSION_MONITOR'
+    ELSE 'NORMAL_VERIFIED'
+  END AS risk_action
+FROM coinbase_fiat_onramp
+ORDER BY deposit_amount_usd DESC;`,
+          hints: [
+            "Compute latency in minutes with (strftime('%s', purchase_time) - strftime('%s', deposit_time)) / 60.0.",
+            "Check both latency <= 5.0 and is_withdrawn = 1 for freeze condition.",
+            "Order results by deposit_amount_usd DESC."
+          ],
+          expectedColumns: ["deposit_id", "user_id", "deposit_amount_usd", "latency_minutes", "is_withdrawn", "risk_action"],
+          expectedRowCount: 4,
+          bloopGreeting: "Sharp compliance instincts! Now track fiat-to-crypto velocity: identify accounts that convert and withdraw funds before bank ACH settlement clears."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: Circular Directed Graph Wash Trading Ring Detector",
+          difficulty: "Staff / Advanced",
+          prompt: `Wash trading is illegal market manipulation where colluding accounts trade the same tokens back and forth to create fake trading volume.
+
+**Collusion Ring Pattern (3-Node Triangle):**
+- Account **A** sells to **B** (\`Trade 1\`)
+- Account **B** sells to **C** (\`Trade 2\`, where \`Trade 2\` occurs after \`Trade 1\`)
+- Account **C** sells back to **A** (\`Trade 3\`, where \`Trade 3\` occurs after \`Trade 2\`)
+- All 3 trades involve the **same \`product_id\`** and **identical \`fill_amount\`**.
+- The entire circular loop completes in **10 minutes or less** ($\le 600$ seconds).
+
+**Requirements:**
+- Query \`coinbase_order_fills\`.
+- Use self-joins to detect the 3-node directed graph cycle ($A \to B \to C \to A$).
+- Compute \`ring_duration_seconds\` as \`strftime('%s', t3.fill_time) - strftime('%s', t1.fill_time)\`.
+- Return: \`ring_originator\` (A), \`intermediary_1\` (B), \`intermediary_2\` (C), \`product_id\`, \`washed_volume\`, \`ring_duration_seconds\`.`,
+          starterSql: `-- Coinbase Round 3: Circular Wash Trading Ring Detector
+SELECT
+  -- Detect 3-account wash cycle: A -> B -> C -> A
+FROM coinbase_order_fills t1
+JOIN coinbase_order_fills t2 ON ...
+JOIN coinbase_order_fills t3 ON ...;`,
+          solutionSql: `SELECT
+  t1.maker_account AS ring_originator,
+  t2.maker_account AS intermediary_1,
+  t3.maker_account AS intermediary_2,
+  t1.product_id,
+  t1.fill_amount AS washed_volume,
+  (strftime('%s', t3.fill_time) - strftime('%s', t1.fill_time)) AS ring_duration_seconds
+FROM coinbase_order_fills t1
+JOIN coinbase_order_fills t2 
+  ON t1.taker_account = t2.maker_account 
+  AND t1.product_id = t2.product_id 
+  AND t1.fill_amount = t2.fill_amount 
+  AND t2.fill_time > t1.fill_time
+JOIN coinbase_order_fills t3 
+  ON t2.taker_account = t3.maker_account 
+  AND t3.taker_account = t1.maker_account
+  AND t2.product_id = t3.product_id 
+  AND t2.fill_amount = t3.fill_amount 
+  AND t3.fill_time > t2.fill_time
+WHERE (strftime('%s', t3.fill_time) - strftime('%s', t1.fill_time)) <= 600;`,
+          hints: [
+            "Join t2 on t1.taker_account = t2.maker_account where product_id and fill_amount match and t2.fill_time > t1.fill_time.",
+            "Join t3 on t2.taker_account = t3.maker_account AND t3.taker_account = t1.maker_account to close the cycle.",
+            "Filter for total duration <= 600 seconds."
+          ],
+          expectedColumns: ["ring_originator", "intermediary_1", "intermediary_2", "product_id", "washed_volume", "ring_duration_seconds"],
+          expectedRowCount: 1,
+          bloopGreeting: "Final question for the Staff level! Detect illicit market manipulation by writing a graph cycle detection query to catch circular wash trading rings."
+        }
+      ]
     }
 
   ]

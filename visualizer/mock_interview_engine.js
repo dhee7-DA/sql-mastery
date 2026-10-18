@@ -60,14 +60,14 @@ window.MockInterviewEngine = (function() {
     
     const faangCount = allTracks.filter(t => (t.badge || '').includes('FAANG')).length;
     const quantCount = allTracks.filter(t => (t.badge || '').includes('Wall Street') || (t.badge || '').includes('HFT')).length;
-    const logCount = allTracks.filter(t => (t.badge || '').includes('Logistics') || (t.badge || '').includes('Marketplace')).length;
+    const logCount = allTracks.filter(t => (t.badge || '').includes('Logistics') || (t.badge || '').includes('Marketplace') || (t.badge || '').includes('Travel')).length;
     const finCount = allTracks.filter(t => (t.badge || '').includes('Fintech')).length;
 
     const filteredTracks = allTracks.filter(t => {
       if (activeCategoryFilter === 'all') return true;
       if (activeCategoryFilter === 'faang') return (t.badge || '').includes('FAANG');
       if (activeCategoryFilter === 'quant') return (t.badge || '').includes('Wall Street') || (t.badge || '').includes('HFT');
-      if (activeCategoryFilter === 'logistics') return (t.badge || '').includes('Logistics') || (t.badge || '').includes('Marketplace');
+      if (activeCategoryFilter === 'logistics') return (t.badge || '').includes('Logistics') || (t.badge || '').includes('Marketplace') || (t.badge || '').includes('Travel');
       if (activeCategoryFilter === 'fintech') return (t.badge || '').includes('Fintech');
       return true;
     });
@@ -84,7 +84,7 @@ window.MockInterviewEngine = (function() {
                 <span class="interview-timer-badge">⏱️ 45-Min Timed Simulator</span>
               </h1>
               <div class="interview-hero-desc">
-                Realistic Senior &amp; Staff Data Engineering live coding interviews across 7 industry tracks. Solve 3 progressive query rounds against in-memory WebAssembly databases with test assertions and Sir Bloop grading.
+                Realistic Senior &amp; Staff Data Engineering live coding interviews across 10 industry tracks. Solve 3 progressive query rounds against in-memory WebAssembly databases with test assertions and Sir Bloop grading.
               </div>
             </div>
           </div>
@@ -134,10 +134,10 @@ window.MockInterviewEngine = (function() {
             Wall Street &amp; Quant (${quantCount})
           </button>
           <button class="interview-filter-pill ${activeCategoryFilter === 'logistics' ? 'active' : ''}" onclick="window.MockInterviewEngine.setCategoryFilter('logistics')">
-            Marketplaces &amp; Logistics (${logCount})
+            Marketplaces &amp; Travel (${logCount})
           </button>
           <button class="interview-filter-pill ${activeCategoryFilter === 'fintech' ? 'active' : ''}" onclick="window.MockInterviewEngine.setCategoryFilter('fintech')">
-            Fintech &amp; Ledgers (${finCount})
+            Fintech &amp; Crypto (${finCount})
           </button>
         </div>
 
