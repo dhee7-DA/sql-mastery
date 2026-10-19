@@ -1838,6 +1838,11 @@ function updateQueryTelemetry(sql, steps) {
   if (elBuffer) elBuffer.textContent = bufferHit;
   if (elSelect) elSelect.textContent = selectivity;
   if (elAst) elAst.textContent = astDepth;
+
+  // Synchronize Visual EXPLAIN Tree Engine
+  if (window.VISUAL_EXPLAIN_TREE_ENGINE && typeof window.VISUAL_EXPLAIN_TREE_ENGINE.renderTreeForQuery === 'function') {
+    window.VISUAL_EXPLAIN_TREE_ENGINE.renderTreeForQuery(sql, steps);
+  }
 }
 window.updateQueryTelemetry = updateQueryTelemetry;
 
@@ -2091,6 +2096,12 @@ function initVisualizerApp() {
       tabBtn.classList.add('active');
       const targetPanel = document.getElementById(tabBtn.dataset.tab);
       if (targetPanel) targetPanel.classList.add('active');
+
+      if (tabBtn.dataset.tab === 'tabExplainPlan' && window.VISUAL_EXPLAIN_TREE_ENGINE) {
+        let sql = document.getElementById('sqlInput') ? document.getElementById('sqlInput').value : '';
+        if (!sql && document.getElementById('liveSqlPreview')) sql = document.getElementById('liveSqlPreview').textContent;
+        window.VISUAL_EXPLAIN_TREE_ENGINE.renderTreeForQuery(sql, EngineState.steps);
+      }
     });
   });
 

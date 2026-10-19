@@ -749,7 +749,7 @@
 
           <!-- Physical Query Execution Telemetry -->
           <div class="query-telemetry-bar" id="queryTelemetryBar">
-            <div class="telemetry-chip plan-chip" id="telemetryPlanChip" title="Physical Storage Access Method">
+            <div class="telemetry-chip plan-chip" id="telemetryPlanChip" title="Click to view interactive Visual EXPLAIN ANALYZE Execution Plan Tree" style="cursor: pointer;" onclick="if(window.VISUAL_EXPLAIN_TREE_ENGINE) window.VISUAL_EXPLAIN_TREE_ENGINE.openAndFocusTree();">
               <span class="telemetry-label">PLAN:</span>
               <span class="telemetry-val" id="telemetryPlanVal">INDEX RANGE SEEK</span>
             </div>
@@ -777,9 +777,14 @@
               <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd> Format &bull; 
               <kbd>Esc</kbd> Reset
             </span>
-            <button id="btnFormatSQLInline" class="btn-format-inline" onclick="if(window.formatSQLEditorQuery) window.formatSQLEditorQuery();" title="Prettify &amp; Format SQL">
-              ✨ Prettify SQL
-            </button>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <button id="btnFormatSQLInline" class="btn-format-inline" onclick="if(window.formatSQLEditorQuery) window.formatSQLEditorQuery();" title="Prettify &amp; Format SQL">
+                ✨ Prettify SQL
+              </button>
+              <button id="btnExplainPlanInline" class="btn-format-inline" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);" onclick="if(window.VISUAL_EXPLAIN_TREE_ENGINE) window.VISUAL_EXPLAIN_TREE_ENGINE.openAndFocusTree();" title="Inspect Visual EXPLAIN ANALYZE Execution Plan Tree">
+                ⚡ EXPLAIN Tree
+              </button>
+            </div>
           </div>
         </div>
       </aside>
@@ -865,6 +870,7 @@
           <div class="viewer-tabs">
             <div class="tab-group">
               <button class="tab-item active" data-tab="tabStepper">Data Grid</button>
+              <button class="tab-item" data-tab="tabExplainPlan" id="btnTabExplainPlan">🌳 Execution Plan Tree <span class="hot-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 700; margin-left: 4px;">EXPLAIN</span></button>
               <button class="tab-item" data-tab="tabDecisionTree">Logic Flow</button>
               <button class="tab-item" data-tab="tabChart">Distribution</button>
               <button class="tab-item" data-tab="tabDiff">Input / Output Diff</button>
@@ -878,17 +884,22 @@
               <div class="table-scroll-wrapper" id="stepperTableContainer"></div>
             </div>
 
-            <!-- Tab 2: Decision Tree -->
+            <!-- Tab 2: Visual Execution Plan Tree (EXPLAIN ANALYZE) -->
+            <div class="tab-pane" id="tabExplainPlan">
+              <div class="explain-plan-tree-container" id="explainPlanTreeContainer"></div>
+            </div>
+
+            <!-- Tab 3: Decision Tree -->
             <div class="tab-pane" id="tabDecisionTree">
               <div class="tree-wrapper" id="decisionTreeContainer"></div>
             </div>
 
-            <!-- Tab 3: Distribution Chart -->
+            <!-- Tab 4: Distribution Chart -->
             <div class="tab-pane" id="tabChart">
               <div class="chart-wrapper" id="chartContainer"></div>
             </div>
 
-            <!-- Tab 4: Diff Grid -->
+            <!-- Tab 5: Diff Grid -->
             <div class="tab-pane" id="tabDiff">
               <div class="diff-wrapper" id="diffContainer"></div>
             </div>
@@ -1760,6 +1771,7 @@
 <script src="gym_autopsy_engine.js?v=57"></script>
 <script src="gym_execution_timeline.js?v=57"></script>
 <script src="gym_explain_optimizer.js?v=57"></script>
+<script src="visual_explain_tree_engine.js?v=1"></script>
 <script src="gym_faang_interviewer.js?v=57"></script>
 <script src="gym_dataflow_graph.js?v=57"></script>
 <script src="gym_typing_dojo.js?v=57"></script>
