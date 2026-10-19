@@ -14,7 +14,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Transactions (tx_id, merchant_category, amount_usd, is_foreign_card, risk_score)`",
     "businessObjective": "Analyze Fintech data: Stripe Transaction Fraud Velocity Tripwire",
     "targetQuery": "SELECT tx_id, merchant_category, amount_usd, risk_score,\n       CASE\n           WHEN risk_score >= 90 OR (amount_usd >= 5000 AND is_foreign_card = TRUE) THEN 'CRITICAL_RISK'\n           WHEN risk_score >= 75 OR amount_usd >= 1000 THEN 'SUSPICIOUS'\n           ELSE 'STANDARD_REVIEW'\n       END AS fraud_decision\nFROM Transactions\nWHERE is_foreign_card = TRUE OR risk_score >= 75\nORDER BY amount_usd DESC, risk_score DESC\nLIMIT 50;",
-    "table": "`Transactions"
+    "table": "Transactions"
   },
   {
     "id": 2,
@@ -26,7 +26,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Customers (customer_id, full_name, credit_score, country, tenure_months)`",
     "businessObjective": "Analyze Fintech data: Neobank Prime Credit Limit Allocation",
     "targetQuery": "SELECT DISTINCT full_name, credit_score, (credit_score * 15) AS monthly_credit_limit, tenure_months\nFROM Customers\nWHERE country = 'USA' AND credit_score >= 720 AND tenure_months >= 12\nORDER BY tenure_months DESC, credit_score DESC\nLIMIT 10;",
-    "table": "`Customers"
+    "table": "Customers"
   },
   {
     "id": 3,
@@ -38,7 +38,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DepositLedger (deposit_id, account_id, amount_usd, deposit_channel, customer_occupation)`",
     "businessObjective": "Analyze Fintech data: Anti-Money Laundering (AML) Structuring Tripwire",
     "targetQuery": "SELECT deposit_id, account_id, amount_usd, deposit_channel,\n       CASE\n           WHEN amount_usd BETWEEN 8500.00 AND 9999.99 THEN 'SUSPICIOUS_STRUCTURING_FLAG'\n           WHEN amount_usd >= 10000.00 THEN 'MANDATORY_CTR_FILING'\n           ELSE 'STANDARD_ACTIVITY'\n       END AS aml_compliance_tier\nFROM DepositLedger\nWHERE deposit_channel = 'CASH_TELLER' AND amount_usd >= 8500.00\nORDER BY amount_usd DESC;",
-    "table": "`DepositLedger"
+    "table": "DepositLedger"
   },
   {
     "id": 4,
@@ -50,7 +50,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`WireTransfers (wire_id, dest_country, amount_usd, is_sanctioned_region)`",
     "businessObjective": "Analyze Fintech data: International SWIFT Transfer Surcharge Calculation",
     "targetQuery": "SELECT wire_id, dest_country, amount_usd,\n       CASE\n           WHEN is_sanctioned_region = TRUE THEN 'BLOCKED_SANCTION_REVIEW'\n           WHEN amount_usd > 50000 THEN 'PREMIUM_WIRE ($15 Flat)'\n           WHEN dest_country IN ('GBR', 'DEU', 'FRA', 'JPN') THEN 'STANDARD_WIRE ($25 Flat)'\n           ELSE 'HIGH_RISK_CORRIDOR ($45 + 0.5%)'\n       END AS wire_fee_tier\nFROM WireTransfers\nORDER BY amount_usd DESC;",
-    "table": "`WireTransfers"
+    "table": "WireTransfers"
   },
   {
     "id": 5,
@@ -62,7 +62,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AccountBalances (account_id, current_balance, average_daily_balance, tenure_years)`",
     "businessObjective": "Analyze Fintech data: Overdraft Fee Waiver Eligibility",
     "targetQuery": "SELECT account_id, current_balance,\n       CASE\n           WHEN current_balance >= 0 THEN 'NO_OVERDRAFT'\n           WHEN current_balance >= -20.00 THEN 'COURTESY_BUFFER_WAIVED'\n           WHEN average_daily_balance >= 5000 AND tenure_years >= 3 THEN 'VIP_RELATIONSHIP_WAIVED'\n           ELSE 'ASSESS_FEE_$35'\n       END AS overdraft_disposition\nFROM AccountBalances\nWHERE current_balance < 0;",
-    "table": "`AccountBalances"
+    "table": "AccountBalances"
   },
   {
     "id": 6,
@@ -74,7 +74,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TradeExecutions (trade_id, ticker, limit_price, fill_price, volume)`",
     "businessObjective": "Analyze Fintech data: High-Frequency Trading (HFT) Slippage Penalty Flags",
     "targetQuery": "SELECT trade_id, ticker, volume, (fill_price - limit_price) AS slippage_per_share,\n       CASE\n           WHEN (fill_price - limit_price) > 0.05 THEN 'EXCESSIVE_SLIPPAGE_PENALTY'\n           WHEN (fill_price - limit_price) > 0.01 THEN 'ACCEPTABLE_VARIANCE'\n           ELSE 'OPTIMAL_FILL'\n       END AS execution_quality\nFROM TradeExecutions\nWHERE volume >= 1000\nORDER BY slippage_per_share DESC;",
-    "table": "`TradeExecutions"
+    "table": "TradeExecutions"
   },
   {
     "id": 7,
@@ -86,7 +86,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Merchants (merchant_id, monthly_volume, dispute_count, dispute_rate_pct)`",
     "businessObjective": "Analyze Fintech data: Merchant Chargeback Ratio Warning Tiers",
     "targetQuery": "SELECT merchant_id, dispute_rate_pct,\n       CASE\n           WHEN dispute_rate_pct >= 1.5 THEN 'TERMINATION_WARNING'\n           WHEN dispute_rate_pct >= 0.9 THEN 'HIGH_RISK_MONITORING'\n           WHEN dispute_rate_pct >= 0.5 THEN 'ELEVATED_WATCH'\n           ELSE 'COMPLIANT'\n       END AS card_network_status\nFROM Merchants\nWHERE dispute_count >= 10\nORDER BY dispute_rate_pct DESC;",
-    "table": "`Merchants"
+    "table": "Merchants"
   },
   {
     "id": 8,
@@ -98,7 +98,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`LoanApplicants (applicant_id, fico_score, dti_ratio, annual_income)`",
     "businessObjective": "Analyze Fintech data: Consumer Loan Default Risk Grading (Grades A to E)",
     "targetQuery": "SELECT applicant_id, fico_score, dti_ratio,\n       CASE\n           WHEN fico_score >= 760 AND dti_ratio < 0.20 THEN 'GRADE_A (Prime Low)'\n           WHEN fico_score >= 700 AND dti_ratio < 0.35 THEN 'GRADE_B (Prime)'\n           WHEN fico_score >= 640 AND dti_ratio < 0.45 THEN 'GRADE_C (Near Prime)'\n           ELSE 'GRADE_D_REJECT'\n       END AS loan_risk_grade\nFROM LoanApplicants\nORDER BY fico_score DESC, dti_ratio ASC;",
-    "table": "`LoanApplicants"
+    "table": "LoanApplicants"
   },
   {
     "id": 9,
@@ -110,7 +110,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AtmTerminals (terminal_id, location_type, cash_remaining_usd, max_capacity_usd)`",
     "businessObjective": "Analyze Fintech data: ATM Cash Depletion Urgency Classifier",
     "targetQuery": "SELECT terminal_id, location_type, (cash_remaining_usd * 100.0 / max_capacity_usd) AS fill_pct,\n       CASE\n           WHEN (cash_remaining_usd * 1.0 / max_capacity_usd) < 0.15 THEN 'CRITICAL_DISPATCH_NOW'\n           WHEN (cash_remaining_usd * 1.0 / max_capacity_usd) < 0.30 THEN 'SCHEDULE_NEXT_DAY'\n           ELSE 'OPTIMAL_LEVEL'\n       END AS armored_car_priority\nFROM AtmTerminals\nORDER BY fill_pct ASC;",
-    "table": "`AtmTerminals"
+    "table": "AtmTerminals"
   },
   {
     "id": 10,
@@ -122,7 +122,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CryptoDeposits (tx_hash, wallet_address, token_symbol, usd_value, is_mixer_associated)`",
     "businessObjective": "Analyze Fintech data: Crypto Wallet Sanctions Screening",
     "targetQuery": "SELECT tx_hash, wallet_address, token_symbol, usd_value,\n       CASE\n           WHEN is_mixer_associated = TRUE THEN 'FREEZE_SANCTION_VIOLATION'\n           WHEN usd_value >= 100000 THEN 'KYC_SOURCE_OF_FUNDS_REQUIRED'\n           ELSE 'AUTO_CREDIT'\n       END AS compliance_action\nFROM CryptoDeposits\nORDER BY usd_value DESC;",
-    "table": "`CryptoDeposits"
+    "table": "CryptoDeposits"
   },
   {
     "id": 11,
@@ -134,7 +134,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SubscriptionAccounts (account_id, company_name, plan_tier, licensed_seats, active_seats, days_since_last_login)`",
     "businessObjective": "Analyze SaaS data: B2B Account Churn Risk & Contraction Classifier",
     "targetQuery": "SELECT company_name, plan_tier, licensed_seats, active_seats,\n       ROUND((active_seats * 100.0 / licensed_seats), 1) AS seat_utilization_pct,\n       CASE\n           WHEN days_since_last_login > 30 OR (active_seats * 1.0 / licensed_seats) < 0.25 THEN 'IMMINENT_CHURN'\n           WHEN days_since_last_login > 14 OR (active_seats * 1.0 / licensed_seats) < 0.50 THEN 'NEEDS_OUTREACH'\n           ELSE 'HEALTHY'\n       END AS account_health_status\nFROM SubscriptionAccounts\nWHERE plan_tier IN ('Enterprise', 'Growth')\nORDER BY seat_utilization_pct ASC, days_since_last_login DESC;",
-    "table": "`SubscriptionAccounts"
+    "table": "SubscriptionAccounts"
   },
   {
     "id": 12,
@@ -146,7 +146,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DeveloperTenants (tenant_id, org_name, monthly_vcpuhours, storage_gb, is_billing_verified)`",
     "businessObjective": "Analyze SaaS data: Freemium Cloud Compute Gatekeeper & Upgrade Tiers",
     "targetQuery": "SELECT org_name, monthly_vcpuhours, storage_gb,\n       CASE\n           WHEN monthly_vcpuhours >= 250 OR storage_gb >= 100 THEN 'HOT_SALES_LEAD'\n           WHEN monthly_vcpuhours >= 100 OR storage_gb >= 50 THEN 'WARM_UPGRADE_CANDIDATE'\n           ELSE 'STANDARD_FREE'\n       END AS sales_motion_tier\nFROM DeveloperTenants\nWHERE is_billing_verified = FALSE AND (monthly_vcpuhours >= 100 OR storage_gb >= 50)\nORDER BY monthly_vcpuhours DESC;",
-    "table": "`DeveloperTenants"
+    "table": "DeveloperTenants"
   },
   {
     "id": 13,
@@ -158,7 +158,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Contracts (contract_id, client_name, annual_revenue, contract_years)`",
     "businessObjective": "Analyze SaaS data: Enterprise Annual Contract Renewal Discount Matrix",
     "targetQuery": "SELECT client_name, annual_revenue, contract_years,\n       CASE\n           WHEN contract_years >= 3 AND annual_revenue >= 100000 THEN 'DISCOUNT_25_PCT'\n           WHEN contract_years >= 2 AND annual_revenue >= 50000 THEN 'DISCOUNT_15_PCT'\n           WHEN contract_years >= 2 THEN 'DISCOUNT_10_PCT'\n           ELSE 'STANDARD_LIST_PRICE'\n       END AS eligible_discount\nFROM Contracts\nORDER BY annual_revenue DESC;",
-    "table": "`Contracts"
+    "table": "Contracts"
   },
   {
     "id": 14,
@@ -170,7 +170,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SupportTickets (ticket_id, priority, wait_time_minutes, is_enterprise)`",
     "businessObjective": "Analyze SaaS data: Customer Support SLA Escalation Urgency",
     "targetQuery": "SELECT ticket_id, priority, wait_time_minutes,\n       CASE\n           WHEN is_enterprise = TRUE AND wait_time_minutes > 15 THEN 'PAGE_ONCALL_ENG'\n           WHEN priority = 'P1' AND wait_time_minutes > 30 THEN 'PAGE_ONCALL_ENG'\n           WHEN priority = 'P2' AND wait_time_minutes > 60 THEN 'ESCALATE_SUPERVISOR'\n           ELSE 'NORMAL_QUEUE'\n       END AS dispatch_status\nFROM SupportTickets\nWHERE wait_time_minutes > 15\nORDER BY wait_time_minutes DESC;",
-    "table": "`SupportTickets"
+    "table": "SupportTickets"
   },
   {
     "id": 15,
@@ -182,7 +182,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ApiUsage (token_id, monthly_quota, consumed_calls)`",
     "businessObjective": "Analyze SaaS data: API Token Rate Limit & Overage Billing",
     "targetQuery": "SELECT token_id, monthly_quota, consumed_calls,\n       CASE\n           WHEN consumed_calls > (monthly_quota * 1.5) THEN 'THROTTLED_BLOCKED'\n           WHEN consumed_calls > monthly_quota THEN 'OVERAGE_BILLED ($0.002/call)'\n           WHEN consumed_calls > (monthly_quota * 0.8) THEN 'WARN_80_PCT_REACHED'\n           ELSE 'NORMAL'\n       END AS api_status\nFROM ApiUsage\nORDER BY consumed_calls DESC;",
-    "table": "`ApiUsage"
+    "table": "ApiUsage"
   },
   {
     "id": 16,
@@ -194,7 +194,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`UserDirectory (user_id, email, role, days_inactive)`",
     "businessObjective": "Analyze SaaS data: Stale Single Sign-On (SSO) Admin Audit",
     "targetQuery": "SELECT email, role, days_inactive,\n       CASE\n           WHEN role = 'SuperAdmin' AND days_inactive > 60 THEN 'REVOKE_IMMEDIATELY'\n           WHEN role = 'Admin' AND days_inactive > 90 THEN 'REVOKE_IMMEDIATELY'\n           WHEN days_inactive > 180 THEN 'ARCHIVE_USER'\n           ELSE 'ACTIVE'\n       END AS access_disposition\nFROM UserDirectory\nWHERE days_inactive > 30\nORDER BY days_inactive DESC;",
-    "table": "`UserDirectory"
+    "table": "UserDirectory"
   },
   {
     "id": 17,
@@ -206,7 +206,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TenantPlans (tenant_id, plan_name, feature_requested)`",
     "businessObjective": "Analyze SaaS data: SaaS Feature Gatekeeper & Tier Entitlement",
     "targetQuery": "SELECT tenant_id, plan_name, feature_requested,\n       CASE\n           WHEN feature_requested = 'SAML_SSO' AND plan_name = 'Enterprise' THEN 'GRANTED'\n           WHEN feature_requested = 'AUDIT_LOGS' AND plan_name IN ('Enterprise', 'Business') THEN 'GRANTED'\n           WHEN feature_requested = 'CORE_ANALYTICS' THEN 'GRANTED'\n           ELSE 'UPGRADE_REQUIRED'\n       END AS access_permission\nFROM TenantPlans;",
-    "table": "`TenantPlans"
+    "table": "TenantPlans"
   },
   {
     "id": 18,
@@ -218,7 +218,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`NpsResponses (response_id, score, comment)`",
     "businessObjective": "Analyze SaaS data: Customer Success Net Promoter Score (NPS) Sentiment",
     "targetQuery": "SELECT response_id, score,\n       CASE\n           WHEN score BETWEEN 9 AND 10 THEN 'PROMOTER'\n           WHEN score BETWEEN 7 AND 8 THEN 'PASSIVE'\n           WHEN score BETWEEN 0 AND 6 THEN 'DETRACTOR'\n           ELSE 'INVALID_SCORE'\n       END AS nps_category\nFROM NpsResponses\nORDER BY score ASC;",
-    "table": "`NpsResponses"
+    "table": "NpsResponses"
   },
   {
     "id": 19,
@@ -230,7 +230,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DatabaseTenants (tenant_id, tier, storage_used_gb, storage_limit_gb)`",
     "businessObjective": "Analyze SaaS data: Multi-Tenant Database Storage Allocation Overage",
     "targetQuery": "SELECT tenant_id, tier, storage_used_gb, storage_limit_gb,\n       CASE\n           WHEN storage_used_gb > storage_limit_gb THEN 'OVER_CAPACITY_BILL_OVERAGE'\n           WHEN (storage_used_gb * 1.0 / storage_limit_gb) > 0.9 THEN 'CAPACITY_WARNING_90_PCT'\n           ELSE 'HEALTHY'\n       END AS storage_health\nFROM DatabaseTenants\nORDER BY (storage_used_gb - storage_limit_gb) DESC;",
-    "table": "`DatabaseTenants"
+    "table": "DatabaseTenants"
   },
   {
     "id": 20,
@@ -242,7 +242,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TrialUsers (user_id, days_since_signup, has_payment_method)`",
     "businessObjective": "Analyze SaaS data: Free Trial Expiration & Credit Card Grace Period",
     "targetQuery": "SELECT user_id, days_since_signup, has_payment_method,\n       CASE\n           WHEN days_since_signup > 14 AND has_payment_method = TRUE THEN 'CONVERT_TO_PAID'\n           WHEN days_since_signup > 14 AND has_payment_method = FALSE THEN 'EXPIRED_LOCKED'\n           WHEN days_since_signup BETWEEN 12 AND 14 THEN 'SEND_EXPIRY_WARNING'\n           ELSE 'TRIAL_ACTIVE'\n       END AS lifecycle_state\nFROM TrialUsers\nORDER BY days_since_signup DESC;",
-    "table": "`TrialUsers"
+    "table": "TrialUsers"
   },
   {
     "id": 21,
@@ -254,7 +254,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`LoyaltyMembers (member_id, full_name, annual_spend, return_rate_pct, preferred_category)`",
     "businessObjective": "Analyze Retail data: VIP Customer Loyalty Tiering & Point Multipliers",
     "targetQuery": "SELECT full_name, annual_spend, return_rate_pct,\n       CASE\n           WHEN annual_spend >= 10000 THEN 'PLATINUM (3x Points)'\n           WHEN annual_spend >= 5000 THEN 'GOLD (2x Points)'\n           WHEN annual_spend >= 1500 THEN 'SILVER (1.5x Points)'\n           ELSE 'BRONZE (1x Points)'\n       END AS loyalty_tier\nFROM LoyaltyMembers\nWHERE return_rate_pct < 20.0\nORDER BY annual_spend DESC\nLIMIT 25;",
-    "table": "`LoyaltyMembers"
+    "table": "LoyaltyMembers"
   },
   {
     "id": 22,
@@ -266,7 +266,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Orders (order_id, order_total, is_prime_member, destination_zip, order_status)`",
     "businessObjective": "Analyze Retail data: Express vs Standard Fulfillment SLA Routing",
     "targetQuery": "SELECT order_id, order_total, is_prime_member, destination_zip,\n       CASE\n           WHEN is_prime_member = TRUE OR order_total >= 150.00 THEN 'AIR_DISPATCH_NEXT_DAY'\n           ELSE 'GROUND_CARRIER_STANDARD'\n       END AS fulfillment_routing\nFROM Orders\nWHERE order_status = 'PENDING_FULFILLMENT'\nORDER BY order_total DESC;",
-    "table": "`Orders"
+    "table": "Orders"
   },
   {
     "id": 23,
@@ -278,7 +278,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AbandonedCarts (cart_id, user_email, cart_value, hours_abandoned)`",
     "businessObjective": "Analyze Retail data: Abandoned Cart Recovery Incentive Tiers",
     "targetQuery": "SELECT user_email, cart_value, hours_abandoned,\n       CASE\n           WHEN hours_abandoned > 48 THEN 'SUPPRESS_EXPIRED'\n           WHEN cart_value >= 250 THEN 'OFFER_15_PCT_COUPON'\n           WHEN cart_value >= 100 THEN 'OFFER_FREE_SHIPPING'\n           ELSE 'STANDARD_REMINDER_EMAIL'\n       END AS email_strategy\nFROM AbandonedCarts\nWHERE hours_abandoned BETWEEN 1 AND 48\nORDER BY cart_value DESC;",
-    "table": "`AbandonedCarts"
+    "table": "AbandonedCarts"
   },
   {
     "id": 24,
@@ -290,7 +290,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CustomerReturns (customer_id, return_frequency_pct, total_refund_usd)`",
     "businessObjective": "Analyze Retail data: Return Abuse & Wardrobing Detector",
     "targetQuery": "SELECT customer_id, return_frequency_pct, total_refund_usd,\n       CASE\n           WHEN return_frequency_pct > 75.0 AND total_refund_usd > 2000 THEN 'FLAG_WARDROBING_SUSPEND'\n           WHEN return_frequency_pct > 50.0 THEN 'REQUIRE_MANAGER_INSPECTION'\n           ELSE 'STANDARD_RETURN_POLICY'\n       END AS fraud_risk_policy\nFROM CustomerReturns\nORDER BY return_frequency_pct DESC;",
-    "table": "`CustomerReturns"
+    "table": "CustomerReturns"
   },
   {
     "id": 25,
@@ -302,7 +302,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Inventory (sku, available_units, reserved_units)`",
     "businessObjective": "Analyze Retail data: Flash Sale Inventory Safety Buffer",
     "targetQuery": "SELECT sku, (available_units - reserved_units) AS net_sellable,\n       CASE\n           WHEN (available_units - reserved_units) <= 0 THEN 'OUT_OF_STOCK'\n           WHEN (available_units - reserved_units) <= 10 THEN 'LOW_STOCK_URGENCY_BANNER'\n           ELSE 'IN_STOCK'\n       END AS inventory_display_badge\nFROM Inventory;",
-    "table": "`Inventory"
+    "table": "Inventory"
   },
   {
     "id": 26,
@@ -314,7 +314,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ProductPrices (sku, category, base_price, dynamic_price, is_essential_good)`",
     "businessObjective": "Analyze Retail data: Dynamic Price Gouging Regulatory Compliance",
     "targetQuery": "SELECT sku, base_price, dynamic_price,\n       ROUND(((dynamic_price - base_price) * 100.0 / base_price), 1) AS surge_markup_pct,\n       CASE\n           WHEN is_essential_good = TRUE AND (dynamic_price * 1.0 / base_price) > 1.20 THEN 'PRICE_GOUGING_VIOLATION'\n           WHEN (dynamic_price * 1.0 / base_price) > 1.50 THEN 'FLAG_PRICING_ANOMALY'\n           ELSE 'APPROVED_PRICE'\n       END AS compliance_check\nFROM ProductPrices\nORDER BY surge_markup_pct DESC;",
-    "table": "`ProductPrices"
+    "table": "ProductPrices"
   },
   {
     "id": 27,
@@ -326,7 +326,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Sellers (seller_id, late_shipment_rate_pct, order_defect_rate_pct)`",
     "businessObjective": "Analyze Retail data: Third-Party Marketplace Merchant Health Scorecard",
     "targetQuery": "SELECT seller_id, late_shipment_rate_pct, order_defect_rate_pct,\n       CASE\n           WHEN order_defect_rate_pct > 2.0 THEN 'IMMEDIATE_STORE_SUSPENSION'\n           WHEN late_shipment_rate_pct > 4.0 THEN 'PROBATION_WARNING'\n           ELSE 'GOOD_STANDING'\n       END AS marketplace_status\nFROM Sellers\nORDER BY order_defect_rate_pct DESC;",
-    "table": "`Sellers"
+    "table": "Sellers"
   },
   {
     "id": 28,
@@ -338,7 +338,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CustomsManifest (package_id, declared_value_usd, origin_country)`",
     "businessObjective": "Analyze Retail data: Cross-Border Customs Tariff De Minimis Exemption",
     "targetQuery": "SELECT package_id, declared_value_usd, origin_country,\n       CASE\n           WHEN declared_value_usd <= 800.00 THEN 'DUTY_FREE_DE_MINIMIS'\n           WHEN origin_country = 'CHN' THEN 'FORMAL_ENTRY_TARIFF_25_PCT'\n           ELSE 'STANDARD_CUSTOMS_DUTY'\n       END AS customs_clearance_type\nFROM CustomsManifest\nORDER BY declared_value_usd DESC;",
-    "table": "`CustomsManifest"
+    "table": "CustomsManifest"
   },
   {
     "id": 29,
@@ -350,7 +350,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CartItems (cart_id, item_count, category_code, total_price)`",
     "businessObjective": "Analyze Retail data: Buy-One-Get-One (BOGO) Bundle Discount Eligibility",
     "targetQuery": "SELECT cart_id, category_code, item_count,\n       CASE\n           WHEN category_code IN ('FOOTWEAR', 'APPAREL') AND item_count >= 2 THEN 'BOGO_50_PCT_APPLIED'\n           WHEN category_code = 'ACCESSORIES' AND total_price >= 50 THEN 'FREE_GIFT_QUALIFIED'\n           ELSE 'STANDARD_PRICE'\n       END AS promotional_discount\nFROM CartItems;",
-    "table": "`CartItems"
+    "table": "CartItems"
   },
   {
     "id": 30,
@@ -362,7 +362,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Backorders (order_id, sku, supplier_days_lead_time)`",
     "businessObjective": "Analyze Retail data: Out-of-Stock Pre-Order Lead Time Estimator",
     "targetQuery": "SELECT order_id, sku, supplier_days_lead_time,\n       CASE\n           WHEN supplier_days_lead_time <= 7 THEN 'SHIPS_NEXT_WEEK'\n           WHEN supplier_days_lead_time <= 21 THEN 'SHIPS_IN_2_3_WEEKS'\n           ELSE 'EXTENDED_BACKORDER_MONTH+'\n       END AS estimated_delivery_window\nFROM Backorders\nORDER BY supplier_days_lead_time ASC;",
-    "table": "`Backorders"
+    "table": "Backorders"
   },
   {
     "id": 31,
@@ -374,7 +374,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PatientIntake (intake_id, patient_name, pulse_bpm, o2_saturation, is_unresponsive)`",
     "businessObjective": "Analyze Healthcare data: Emergency Room Triage Acuity Matrix (ESI Tiers)",
     "targetQuery": "SELECT patient_name, pulse_bpm, o2_saturation,\n       CASE\n           WHEN is_unresponsive = TRUE OR o2_saturation < 85 THEN 'ESI-1: RESUSCITATION (IMMEDIATE)'\n           WHEN o2_saturation < 92 OR pulse_bpm > 130 OR pulse_bpm < 45 THEN 'ESI-2: EMERGENT (10 MIN MAX)'\n           WHEN pulse_bpm BETWEEN 100 AND 130 THEN 'ESI-3: URGENT'\n           ELSE 'ESI-4: NON-URGENT'\n       END AS triage_level\nFROM PatientIntake\nORDER BY o2_saturation ASC, pulse_bpm DESC;",
-    "table": "`PatientIntake"
+    "table": "PatientIntake"
   },
   {
     "id": 32,
@@ -386,7 +386,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Prescriptions (rx_id, patient_weight_kg, prescribed_mg_day, drug_name)`",
     "businessObjective": "Analyze Healthcare data: Pediatric Dosage Safety Boundary Validator",
     "targetQuery": "SELECT rx_id, drug_name, patient_weight_kg, prescribed_mg_day,\n       CASE\n           WHEN prescribed_mg_day BETWEEN (patient_weight_kg * 40) AND (patient_weight_kg * 90) THEN 'DOSAGE_SAFE'\n           WHEN prescribed_mg_day > (patient_weight_kg * 90) THEN 'OVERDOSE_WARNING'\n           ELSE 'UNDERDOSE_INEFFECTIVE'\n       END AS clinical_safety_status\nFROM Prescriptions\nWHERE drug_name = 'Amoxicillin';",
-    "table": "`Prescriptions"
+    "table": "Prescriptions"
   },
   {
     "id": 33,
@@ -398,7 +398,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`IcuPatients (patient_id, hours_stable, requires_ventilator, vasopressor_support)`",
     "businessObjective": "Analyze Healthcare data: ICU Bed Occupancy & Step-Down Transfer Readiness",
     "targetQuery": "SELECT patient_id, hours_stable,\n       CASE\n           WHEN requires_ventilator = TRUE OR vasopressor_support = TRUE THEN 'CRITICAL_ICU_LOCKED'\n           WHEN hours_stable >= 48 THEN 'READY_FOR_STEP_DOWN'\n           WHEN hours_stable >= 24 THEN 'OBSERVATION_PREPARE_TRANSFER'\n           ELSE 'CONTINUE_ICU_MONITORING'\n       END AS bed_assignment_recommendation\nFROM IcuPatients\nORDER BY hours_stable DESC;",
-    "table": "`IcuPatients"
+    "table": "IcuPatients"
   },
   {
     "id": 34,
@@ -410,7 +410,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`OpioidRefillLog (rx_id, patient_id, days_since_prior_dispense, days_supply)`",
     "businessObjective": "Analyze Healthcare data: Controlled Substance Refill Frequency Audit",
     "targetQuery": "SELECT rx_id, patient_id, (days_supply - days_since_prior_dispense) AS days_early,\n       CASE\n           WHEN (days_supply - days_since_prior_dispense) > 5 THEN 'REFILL_DENIED_TOO_EARLY'\n           WHEN (days_supply - days_since_prior_dispense) BETWEEN 1 AND 5 THEN 'PHARMACIST_OVERRIDE_REQUIRED'\n           ELSE 'AUTHORIZED_REFILL'\n       END AS dispense_decision\nFROM OpioidRefillLog\nORDER BY days_early DESC;",
-    "table": "`OpioidRefillLog"
+    "table": "OpioidRefillLog"
   },
   {
     "id": 35,
@@ -422,7 +422,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`InsuranceClaims (claim_id, cpt_code, estimated_cost, prior_authorization_on_file)`",
     "businessObjective": "Analyze Healthcare data: Health Insurance Pre-Authorization Auto-Approval",
     "targetQuery": "SELECT claim_id, cpt_code, estimated_cost,\n       CASE\n           WHEN prior_authorization_on_file = TRUE THEN 'AUTO_APPROVED'\n           WHEN estimated_cost <= 250.00 THEN 'LOW_COST_AUTO_CLEAR'\n           ELSE 'MANUAL_PHYSICIAN_REVIEW_REQUIRED'\n       END AS claim_status\nFROM InsuranceClaims\nORDER BY estimated_cost DESC;",
-    "table": "`InsuranceClaims"
+    "table": "InsuranceClaims"
   },
   {
     "id": 36,
@@ -434,7 +434,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`VitalsMonitoring (patient_id, resp_rate, gcs_score, systolic_bp)`",
     "businessObjective": "Analyze Healthcare data: Sepsis Early Warning Score (qSOFA) Clinical Alert",
     "targetQuery": "SELECT patient_id, resp_rate, systolic_bp,\n       CASE\n           WHEN (resp_rate >= 22 AND systolic_bp <= 100) OR gcs_score < 15 THEN 'HIGH_SEPSIS_RISK_PAGE_RAPID_RESPONSE'\n           ELSE 'LOW_RISK_MONITOR'\n       END AS clinical_alert\nFROM VitalsMonitoring;",
-    "table": "`VitalsMonitoring"
+    "table": "VitalsMonitoring"
   },
   {
     "id": 37,
@@ -446,7 +446,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TransplantWaitlist (recipient_id, recipient_blood_type, donor_blood_type)`",
     "businessObjective": "Analyze Healthcare data: Organ Transplant Blood Type Compatibility",
     "targetQuery": "SELECT recipient_id, recipient_blood_type, donor_blood_type,\n       CASE\n           WHEN donor_blood_type = 'O' THEN 'UNIVERSAL_DONOR_COMPATIBLE'\n           WHEN recipient_blood_type = donor_blood_type THEN 'EXACT_MATCH_COMPATIBLE'\n           WHEN recipient_blood_type = 'AB' THEN 'UNIVERSAL_RECIPIENT_COMPATIBLE'\n           ELSE 'INCOMPATIBLE_REJECT'\n       END AS crossmatch_result\nFROM TransplantWaitlist;",
-    "table": "`TransplantWaitlist"
+    "table": "TransplantWaitlist"
   },
   {
     "id": 38,
@@ -458,7 +458,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ClinicalTrialScreening (subject_id, age, egfr_mutation, prior_chemo_months)`",
     "businessObjective": "Analyze Healthcare data: Oncology Clinical Trial Inclusion/Exclusion Gate",
     "targetQuery": "SELECT subject_id, age,\n       CASE\n           WHEN age BETWEEN 18 AND 75 AND egfr_mutation = TRUE AND prior_chemo_months >= 6 THEN 'TRIAL_ELIGIBLE'\n           WHEN age < 18 THEN 'EXCLUDED_PEDIATRIC'\n           ELSE 'EXCLUDED_CRITERIA_MISMATCH'\n       END AS screening_verdict\nFROM ClinicalTrialScreening;",
-    "table": "`ClinicalTrialScreening"
+    "table": "ClinicalTrialScreening"
   },
   {
     "id": 39,
@@ -470,7 +470,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FreezerSensors (sensor_id, temp_celsius, duration_minutes_above_threshold)`",
     "businessObjective": "Analyze Healthcare data: Vaccine Cold-Chain Temperature Excursion Detector",
     "targetQuery": "SELECT sensor_id, temp_celsius, duration_minutes_above_threshold,\n       CASE\n           WHEN temp_celsius > -60.0 AND duration_minutes_above_threshold > 120 THEN 'BATCH_COMPROMISED_DESTROY'\n           WHEN temp_celsius > -60.0 THEN 'EXCURSION_QUARANTINE_INSPECT'\n           ELSE 'COLD_CHAIN_NORMAL'\n       END AS vaccine_batch_integrity\nFROM FreezerSensors\nORDER BY temp_celsius DESC;",
-    "table": "`FreezerSensors"
+    "table": "FreezerSensors"
   },
   {
     "id": 40,
@@ -482,7 +482,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PatientAppointments (appointment_id, prior_noshow_count, distance_miles)`",
     "businessObjective": "Analyze Healthcare data: Outpatient Appointment No-Show Propensity Buffer",
     "targetQuery": "SELECT appointment_id, prior_noshow_count,\n       CASE\n           WHEN prior_noshow_count >= 3 THEN 'HIGH_NOSHOW_RISK_DOUBLE_BOOK'\n           WHEN prior_noshow_count >= 1 THEN 'CONFIRMATION_CALL_MANDATORY'\n           ELSE 'STANDARD_SLOT'\n       END AS booking_strategy\nFROM PatientAppointments;",
-    "table": "`PatientAppointments"
+    "table": "PatientAppointments"
   },
   {
     "id": 41,
@@ -494,7 +494,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DroneFleet (drone_id, battery_pct, payload_kg, mission_distance_km, motor_health_score)`",
     "businessObjective": "Analyze Logistics data: Autonomous Drone Battery & Cargo Gate",
     "targetQuery": "SELECT drone_id, battery_pct, payload_kg, mission_distance_km,\n       CASE\n           WHEN payload_kg > 4.5 OR motor_health_score < 80 THEN 'GROUNDED_MAINTENANCE'\n           WHEN mission_distance_km > 5.0 AND battery_pct < 40 THEN 'GROUNDED_LOW_BATTERY'\n           WHEN mission_distance_km <= 5.0 AND battery_pct < 25 THEN 'GROUNDED_LOW_BATTERY'\n           ELSE 'CLEARED_FOR_TAKEOFF'\n       END AS flight_clearance\nFROM DroneFleet\nORDER BY flight_clearance ASC, battery_pct ASC;",
-    "table": "`DroneFleet"
+    "table": "DroneFleet"
   },
   {
     "id": 42,
@@ -506,7 +506,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ShipmentTracking (tracking_id, carrier_name, sla_minutes, actual_delivery_minutes, freight_cost)`",
     "businessObjective": "Analyze Logistics data: Carrier Late Delivery Penalty Escalation",
     "targetQuery": "SELECT tracking_id, carrier_name, (actual_delivery_minutes - sla_minutes) AS delay_minutes,\n       CASE\n           WHEN actual_delivery_minutes <= sla_minutes THEN 'ON_TIME (0% Penalty)'\n           WHEN (actual_delivery_minutes - sla_minutes) <= 60 THEN 'MINOR_DELAY (5% Penalty)'\n           WHEN (actual_delivery_minutes - sla_minutes) <= 180 THEN 'MODERATE_DELAY (15% Penalty)'\n           ELSE 'SEVERE_BREACH (30% Penalty)'\n       END AS penalty_assessment\nFROM ShipmentTracking\nWHERE actual_delivery_minutes > sla_minutes\nORDER BY delay_minutes DESC;",
-    "table": "`ShipmentTracking"
+    "table": "ShipmentTracking"
   },
   {
     "id": 43,
@@ -518,7 +518,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ReeferCargo (pallet_id, produce_type, hours_to_spoilage, transit_remaining_hours)`",
     "businessObjective": "Analyze Logistics data: Perishable Produce Shelf-Life Freight Expiry",
     "targetQuery": "SELECT pallet_id, produce_type, (hours_to_spoilage - transit_remaining_hours) AS buffer_hours,\n       CASE\n           WHEN (hours_to_spoilage - transit_remaining_hours) < 0 THEN 'CARGO_SPOILED_REJECT'\n           WHEN (hours_to_spoilage - transit_remaining_hours) < 24 THEN 'REROUTE_TO_LOCAL_STORE'\n           ELSE 'ON_SCHEDULE'\n       END AS produce_disposition\nFROM ReeferCargo\nORDER BY buffer_hours ASC;",
-    "table": "`ReeferCargo"
+    "table": "ReeferCargo"
   },
   {
     "id": 44,
@@ -530,7 +530,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ContainerDwell (container_no, port_code, dwell_days, free_days_allowed)`",
     "businessObjective": "Analyze Logistics data: Ocean Shipping Container Demurrage Accrual",
     "targetQuery": "SELECT container_no, dwell_days, (dwell_days - free_days_allowed) AS billable_overstay_days,\n       CASE\n           WHEN dwell_days <= free_days_allowed THEN 'NO_DEMURRAGE_FREE'\n           WHEN (dwell_days - free_days_allowed) <= 5 THEN 'TIER_1 ($150/day)'\n           ELSE 'TIER_2_PUNITIVE ($350/day)'\n       END AS demurrage_tier\nFROM ContainerDwell\nWHERE dwell_days > free_days_allowed\nORDER BY dwell_days DESC;",
-    "table": "`ContainerDwell"
+    "table": "ContainerDwell"
   },
   {
     "id": 45,
@@ -542,7 +542,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DriverStops (driver_id, stop_id, planned_dwell_mins, actual_dwell_mins)`",
     "businessObjective": "Analyze Logistics data: Delivery Driver Route Dwell-Time Anomaly",
     "targetQuery": "SELECT driver_id, stop_id, (actual_dwell_mins - planned_dwell_mins) AS excess_dwell,\n       CASE\n           WHEN (actual_dwell_mins - planned_dwell_mins) > 20 THEN 'INVESTIGATE_SAFETY_BREAKDOWN'\n           WHEN (actual_dwell_mins - planned_dwell_mins) > 8 THEN 'ELEVATED_DWELL_DELIVERY_ISSUE'\n           ELSE 'NORMAL_PACE'\n       END AS stop_audit\nFROM DriverStops\nORDER BY excess_dwell DESC;",
-    "table": "`DriverStops"
+    "table": "DriverStops"
   },
   {
     "id": 46,
@@ -554,7 +554,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`InboundTrailers (trailer_id, is_hazardous, is_temperature_controlled, pallet_count)`",
     "businessObjective": "Analyze Logistics data: Cross-Docking Terminal Bay Allocation",
     "targetQuery": "SELECT trailer_id,\n       CASE\n           WHEN is_hazardous = TRUE THEN 'BAY_ZONE_H (ISOLATED)'\n           WHEN is_temperature_controlled = TRUE THEN 'BAY_ZONE_COLD (REEFER DOCK)'\n           WHEN pallet_count > 30 THEN 'HIGH_CAPACITY_CONVEYOR_DOCK'\n           ELSE 'STANDARD_BAY'\n       END AS dock_assignment\nFROM InboundTrailers;",
-    "table": "`InboundTrailers"
+    "table": "InboundTrailers"
   },
   {
     "id": 47,
@@ -566,7 +566,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`HazmatRoutes (truck_id, hazmat_class_code, intended_route_id)`",
     "businessObjective": "Analyze Logistics data: Hazardous Materials (Hazmat) Tunnel Route Prohibition",
     "targetQuery": "SELECT truck_id, hazmat_class_code,\n       CASE\n           WHEN hazmat_class_code IN ('CLASS_1_EXPLOSIVE', 'CLASS_2_GAS') THEN 'RESTRICTED_BYPASS_SURROUND'\n           WHEN hazmat_class_code = 'CLASS_3_FLAMMABLE' THEN 'PERMIT_ESCORT_REQUIRED'\n           ELSE 'UNRESTRICTED_ROUTE'\n       END AS dispatch_clearance\nFROM HazmatRoutes;",
-    "table": "`HazmatRoutes"
+    "table": "HazmatRoutes"
   },
   {
     "id": 48,
@@ -578,7 +578,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TruckFleet (vin, miles_since_last_service, oil_life_pct)`",
     "businessObjective": "Analyze Logistics data: Fleet Preventative Maintenance Mileage Thresholds",
     "targetQuery": "SELECT vin, miles_since_last_service, oil_life_pct,\n       CASE\n           WHEN miles_since_last_service >= 25000 OR oil_life_pct < 10 THEN 'IMMEDIATE_SHOP_OVERHAUL'\n           WHEN miles_since_last_service >= 15000 OR oil_life_pct < 25 THEN 'SCHEDULE_NEXT_DEPOT_STOP'\n           ELSE 'HEALTHY_RUNNING'\n       END AS maintenance_trigger\nFROM TruckFleet\nORDER BY miles_since_last_service DESC;",
-    "table": "`TruckFleet"
+    "table": "TruckFleet"
   },
   {
     "id": 49,
@@ -590,7 +590,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AirShipments (airway_bill_id, actual_weight_kg, vol_weight_kg)`",
     "businessObjective": "Analyze Logistics data: Air Cargo Volumetric Weight vs Actual Weight Billing",
     "targetQuery": "SELECT airway_bill_id, actual_weight_kg, vol_weight_kg,\n       CASE\n           WHEN vol_weight_kg > actual_weight_kg THEN vol_weight_kg\n           ELSE actual_weight_kg\n       END AS billable_weight_kg,\n       CASE\n           WHEN vol_weight_kg > actual_weight_kg THEN 'BILLED_ON_DIM_WEIGHT'\n           ELSE 'BILLED_ON_ACTUAL_WEIGHT'\n       END AS billing_basis\nFROM AirShipments\nORDER BY billable_weight_kg DESC;",
-    "table": "`AirShipments"
+    "table": "AirShipments"
   },
   {
     "id": 50,
@@ -602,7 +602,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`VesselQueue (vessel_name, imo_number, wait_hours_at_anchor)`",
     "businessObjective": "Analyze Logistics data: Port Congestion Vessel Anchor Surcharge",
     "targetQuery": "SELECT vessel_name, wait_hours_at_anchor,\n       CASE\n           WHEN wait_hours_at_anchor > 120 THEN 'SEEK_ALTERNATIVE_PORT_ALERT'\n           WHEN wait_hours_at_anchor > 72 THEN 'CONGESTION_SURCHARGE_$50K'\n           ELSE 'NORMAL_ANCHORAGE'\n       END AS harbor_status\nFROM VesselQueue\nORDER BY wait_hours_at_anchor DESC;",
-    "table": "`VesselQueue"
+    "table": "VesselQueue"
   },
   {
     "id": 51,
@@ -614,7 +614,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`MediaCatalog (title, mpaa_rating, genre, content_warning_tags)`",
     "businessObjective": "Analyze Media data: Content Age-Gate Advisory",
     "targetQuery": "SELECT title, genre, mpaa_rating,\n       CASE\n           WHEN mpaa_rating IN ('R', 'TV-MA', 'NC-17') THEN 'RESTRICTED_LOCKED'\n           WHEN mpaa_rating = 'PG-13' THEN 'PARENTAL_PIN_REQUIRED'\n           ELSE 'OPEN_ACCESS'\n       END AS child_profile_permission\nFROM MediaCatalog\nORDER BY title ASC;",
-    "table": "`MediaCatalog"
+    "table": "MediaCatalog"
   },
   {
     "id": 52,
@@ -626,7 +626,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ClientSessions (session_id, bandwidth_kbps, screen_width_px)`",
     "businessObjective": "Analyze Media data: Adaptive Video Bitrate Streaming Profile",
     "targetQuery": "SELECT session_id, bandwidth_kbps,\n       CASE\n           WHEN bandwidth_kbps >= 15000 AND screen_width_px >= 3840 THEN '4K_UHD_PROFILE'\n           WHEN bandwidth_kbps >= 5000 THEN '1080P_FULL_HD'\n           WHEN bandwidth_kbps >= 2500 THEN '720P_HD'\n           ELSE '480P_SD_CONSERVE_DATA'\n       END AS stream_quality\nFROM ClientSessions\nORDER BY bandwidth_kbps DESC;",
-    "table": "`ClientSessions"
+    "table": "ClientSessions"
   },
   {
     "id": 53,
@@ -638,7 +638,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SongPlays (play_id, track_id, is_premium_user, country_code)`",
     "businessObjective": "Analyze Media data: Music Streaming Royalties Tiering",
     "targetQuery": "SELECT track_id, is_premium_user, country_code,\n       CASE\n           WHEN is_premium_user = TRUE AND country_code = 'USA' THEN 0.0045\n           WHEN is_premium_user = TRUE THEN 0.0035\n           ELSE 0.0012\n       END AS calculated_royalty_payout_usd\nFROM SongPlays;",
-    "table": "`SongPlays"
+    "table": "SongPlays"
   },
   {
     "id": 54,
@@ -650,7 +650,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PlayerTelemetry (match_id, player_handle, snap_latency_ms, headshot_pct)`",
     "businessObjective": "Analyze Media data: Competitive Esports Anti-Cheat Aim-Bot Deviation",
     "targetQuery": "SELECT player_handle, snap_latency_ms, headshot_pct,\n       CASE\n           WHEN snap_latency_ms < 15 AND headshot_pct > 80.0 THEN 'IMMEDIATE_BAN_AIMBOT'\n           WHEN snap_latency_ms < 30 AND headshot_pct > 60.0 THEN 'HUMAN_REVIEW_FLAG'\n           ELSE 'NORMAL_PLAY'\n       END AS anti_cheat_verdict\nFROM PlayerTelemetry\nORDER BY headshot_pct DESC;",
-    "table": "`PlayerTelemetry"
+    "table": "PlayerTelemetry"
   },
   {
     "id": 55,
@@ -662,7 +662,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`VideoEpisodes (episode_id, duration_minutes, subscription_type)`",
     "businessObjective": "Analyze Media data: Ad-Supported Streaming Mid-Roll Commercial Breaks",
     "targetQuery": "SELECT episode_id, duration_minutes,\n       CASE\n           WHEN subscription_type = 'AD_FREE_PREMIUM' THEN 0\n           WHEN duration_minutes >= 60 THEN 4\n           WHEN duration_minutes >= 30 THEN 2\n           ELSE 1\n       END AS scheduled_midroll_ad_count\nFROM VideoEpisodes;",
-    "table": "`VideoEpisodes"
+    "table": "VideoEpisodes"
   },
   {
     "id": 56,
@@ -674,7 +674,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ArticleViews (reader_ip, monthly_views, has_active_subscription)`",
     "businessObjective": "Analyze Media data: Paywalled Article Metered Access",
     "targetQuery": "SELECT reader_ip, monthly_views,\n       CASE\n           WHEN has_active_subscription = TRUE THEN 'UNLIMITED_ACCESS'\n           WHEN monthly_views <= 3 THEN 'FREE_METERED_ARTICLE'\n           ELSE 'PAYWALL_MODAL_BLOCK'\n       END AS access_gate\nFROM ArticleViews\nORDER BY monthly_views DESC;",
-    "table": "`ArticleViews"
+    "table": "ArticleViews"
   },
   {
     "id": 57,
@@ -686,7 +686,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`GamerRankings (gamer_tag, mmr_points)`",
     "businessObjective": "Analyze Media data: Matchmaking Skill Rating (MMR) Range Matcher",
     "targetQuery": "SELECT gamer_tag, mmr_points,\n       CASE\n           WHEN mmr_points >= 2800 THEN 'GRANDMASTER'\n           WHEN mmr_points >= 2200 THEN 'DIAMOND'\n           WHEN mmr_points >= 1600 THEN 'GOLD'\n           ELSE 'BRONZE'\n       END AS competitive_division\nFROM GamerRankings\nORDER BY mmr_points DESC;",
-    "table": "`GamerRankings"
+    "table": "GamerRankings"
   },
   {
     "id": 58,
@@ -698,7 +698,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ContentReports (comment_id, toxic_keyword_count, report_count)`",
     "businessObjective": "Analyze Media data: User-Generated Content (UGC) Moderation Priority",
     "targetQuery": "SELECT comment_id, report_count,\n       CASE\n           WHEN toxic_keyword_count > 0 OR report_count >= 10 THEN 'AUTO_HIDE_URGENT_QUEUE'\n           WHEN report_count >= 3 THEN 'STANDARD_REVIEW_QUEUE'\n           ELSE 'LOW_PRIORITY'\n       END AS moderation_action\nFROM ContentReports\nORDER BY report_count DESC;",
-    "table": "`ContentReports"
+    "table": "ContentReports"
   },
   {
     "id": 59,
@@ -710,7 +710,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ActiveSessions (user_id, consecutive_stream_hours)`",
     "businessObjective": "Analyze Media data: Binge-Watcher Session Fatigue Rest Reminder",
     "targetQuery": "SELECT user_id, consecutive_stream_hours,\n       CASE\n           WHEN consecutive_stream_hours >= 4.0 THEN 'PROMPT_ARE_YOU_STILL_WATCHING'\n           ELSE 'CONTINUE_AUTOPLAY'\n       END AS player_ux_decision\nFROM ActiveSessions;",
-    "table": "`ActiveSessions"
+    "table": "ActiveSessions"
   },
   {
     "id": 60,
@@ -722,7 +722,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PlayerWallets (character_name, gold_balance)`",
     "businessObjective": "Analyze Media data: In-Game Virtual Economy Gold Sinks",
     "targetQuery": "SELECT character_name, gold_balance,\n       CASE\n           WHEN gold_balance >= 1000000 THEN 'LUXURY_AUCTION_TAX (15%)'\n           WHEN gold_balance >= 100000 THEN 'STANDARD_AUCTION_TAX (8%)'\n           ELSE 'BEGINNER_TAX_FREE'\n       END AS marketplace_fee_tier\nFROM PlayerWallets\nORDER BY gold_balance DESC;",
-    "table": "`PlayerWallets"
+    "table": "PlayerWallets"
   },
   {
     "id": 61,
@@ -734,7 +734,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AuthAuditLog (source_ip, failed_attempts, country_code, is_vpn)`",
     "businessObjective": "Analyze Security data: Brute-Force IP Lockout & Anomaly Detection",
     "targetQuery": "SELECT source_ip, failed_attempts, country_code,\n       CASE\n           WHEN source_ip LIKE '10.0.%' THEN 'INTERNAL_VPN_ALERT'\n           WHEN failed_attempts >= 25 THEN 'AUTOMATIC_PERMANENT_BAN'\n           WHEN failed_attempts >= 10 THEN 'TEMPORARY_RATE_LIMIT_60M'\n           ELSE 'MONITOR'\n       END AS firewall_action\nFROM AuthAuditLog\nWHERE failed_attempts >= 5\nORDER BY failed_attempts DESC;",
-    "table": "`AuthAuditLog"
+    "table": "AuthAuditLog"
   },
   {
     "id": 62,
@@ -746,7 +746,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`LoginEvents (user_id, prev_country, new_country, elapsed_minutes)`",
     "businessObjective": "Analyze Security data: Impossible Geolocation Travel Velocity",
     "targetQuery": "SELECT user_id, prev_country, new_country, elapsed_minutes,\n       CASE\n           WHEN prev_country != new_country AND elapsed_minutes < 60 THEN 'SUSPICIOUS_IMPOSSIBLE_TRAVEL_LOCK'\n           ELSE 'LEGITIMATE_LOGIN'\n       END AS auth_risk_disposition\nFROM LoginEvents;",
-    "table": "`LoginEvents"
+    "table": "LoginEvents"
   },
   {
     "id": 63,
@@ -758,7 +758,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`RequestLogs (log_id, raw_payload)`",
     "businessObjective": "Analyze Security data: SOC2 & HIPAA Audit Log PII Redaction",
     "targetQuery": "SELECT log_id,\n       CASE\n           WHEN raw_payload LIKE '%ssn%' OR raw_payload LIKE '%credit_card%' THEN 'CRITICAL_PII_LEAK_PURGE_LOG'\n           ELSE 'COMPLIANT_SANITIZED'\n       END AS log_compliance\nFROM RequestLogs;",
-    "table": "`RequestLogs"
+    "table": "RequestLogs"
   },
   {
     "id": 64,
@@ -770,7 +770,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`IamPolicies (policy_name, allowed_actions, attached_users_count)`",
     "businessObjective": "Analyze Security data: Cloud IAM Privileged Role Escalation",
     "targetQuery": "SELECT policy_name, attached_users_count,\n       CASE\n           WHEN allowed_actions = '*:*' AND attached_users_count > 5 THEN 'HIGH_RISK_ADMIN_CREEP'\n           WHEN allowed_actions = '*:*' THEN 'ACCEPTABLE_RESTRICTED_ADMIN'\n           ELSE 'LEAST_PRIVILEGE_ROLE'\n       END AS iam_governance_score\nFROM IamPolicies\nORDER BY attached_users_count DESC;",
-    "table": "`IamPolicies"
+    "table": "IamPolicies"
   },
   {
     "id": 65,
@@ -782,7 +782,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SecurityScans (cve_id, cvss_score, is_actively_exploited)`",
     "businessObjective": "Analyze Security data: Zero-Day Vulnerability CVSS Severity Scoring",
     "targetQuery": "SELECT cve_id, cvss_score, is_actively_exploited,\n       CASE\n           WHEN is_actively_exploited = TRUE OR cvss_score >= 9.0 THEN 'SEV-1: PATCH_IN_24_HOURS'\n           WHEN cvss_score >= 7.0 THEN 'SEV-2: PATCH_IN_7_DAYS'\n           WHEN cvss_score >= 4.0 THEN 'SEV-3: PATCH_IN_30_DAYS'\n           ELSE 'SEV-4: STANDARD_BACKLOG'\n       END AS remediation_sla\nFROM SecurityScans\nORDER BY cvss_score DESC;",
-    "table": "`SecurityScans"
+    "table": "SecurityScans"
   },
   {
     "id": 66,
@@ -794,7 +794,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`InboundEmails (email_id, sender_domain, spf_pass)`",
     "businessObjective": "Analyze Security data: Phishing Email Domain Typosquatting Matcher",
     "targetQuery": "SELECT email_id, sender_domain, spf_pass,\n       CASE\n           WHEN spf_pass = FALSE THEN 'QUARANTINE_SPOOFED_SENDER'\n           WHEN sender_domain LIKE '%paypa1%' OR sender_domain LIKE '%g00gle%' THEN 'PHISHING_TYPOSQUAT_BLOCK'\n           ELSE 'INBOX_DELIVER'\n       END AS email_gateway_action\nFROM InboundEmails;",
-    "table": "`InboundEmails"
+    "table": "InboundEmails"
   },
   {
     "id": 67,
@@ -806,7 +806,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Laptops (asset_tag, av_signature_days_old, os_version)`",
     "businessObjective": "Analyze Security data: Endpoint Antivirus Definition Outdated Quarantine",
     "targetQuery": "SELECT asset_tag, av_signature_days_old,\n       CASE\n           WHEN av_signature_days_old > 14 THEN 'NETWORK_QUARANTINE_VLAN'\n           WHEN av_signature_days_old > 7 THEN 'PROMPT_USER_UPDATE'\n           ELSE 'COMPLIANT'\n       END AS endpoint_health\nFROM Laptops\nORDER BY av_signature_days_old DESC;",
-    "table": "`Laptops"
+    "table": "Laptops"
   },
   {
     "id": 68,
@@ -818,7 +818,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TerminatedStaff (employee_id, hours_since_termination, active_token_count)`",
     "businessObjective": "Analyze Security data: Employee Offboarding Access Revocation Audit",
     "targetQuery": "SELECT employee_id, hours_since_termination, active_token_count,\n       CASE\n           WHEN active_token_count > 0 AND hours_since_termination > 2 THEN 'CRITICAL_SECURITY_BREACH_AUDIT'\n           WHEN active_token_count > 0 THEN 'PENDING_AUTOMATION'\n           ELSE 'CLEAN_OFFBOARDING'\n       END AS offboarding_audit_status\nFROM TerminatedStaff\nORDER BY hours_since_termination DESC;",
-    "table": "`TerminatedStaff"
+    "table": "TerminatedStaff"
   },
   {
     "id": 69,
@@ -830,7 +830,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FileDownloads (user_id, total_mb_downloaded_today, files_count)`",
     "businessObjective": "Analyze Security data: Data Loss Prevention (DLP) Bulk File Download Alert",
     "targetQuery": "SELECT user_id, total_mb_downloaded_today, files_count,\n       CASE\n           WHEN total_mb_downloaded_today >= 5000 THEN 'SEV_1_DLP_SUSPEND_ACCOUNT'\n           WHEN total_mb_downloaded_today >= 1000 THEN 'WARN_MANAGER_AUDIT'\n           ELSE 'NORMAL_ACTIVITY'\n       END AS dlp_risk_tier\nFROM FileDownloads\nORDER BY total_mb_downloaded_today DESC;",
-    "table": "`FileDownloads"
+    "table": "FileDownloads"
   },
   {
     "id": 70,
@@ -842,7 +842,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Certificates (domain_name, days_until_expiration)`",
     "businessObjective": "Analyze Security data: TLS Certificate Expiration Warning Windows",
     "targetQuery": "SELECT domain_name, days_until_expiration,\n       CASE\n           WHEN days_until_expiration <= 0 THEN 'OUTAGE_EXPIRED'\n           WHEN days_until_expiration <= 14 THEN 'URGENT_AUTO_RENEW_FAILED'\n           WHEN days_until_expiration <= 30 THEN 'WARNING_RENEWAL_WINDOW'\n           ELSE 'HEALTHY'\n       END AS cert_status\nFROM Certificates\nORDER BY days_until_expiration ASC;",
-    "table": "`Certificates"
+    "table": "Certificates"
   },
   {
     "id": 71,
@@ -854,7 +854,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TRIANGLES (A, B, C)`",
     "businessObjective": "Analyze Hardware data: Ultrasound Sensor Triangle Distance Geometry Verification",
     "targetQuery": "SELECT A, B, C,\n       CASE\n           WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'\n           WHEN A = B AND B = C THEN 'Equilateral'\n           WHEN A = B OR B = C OR A = C THEN 'Isosceles'\n           ELSE 'Scalene'\n       END AS triangle_type\nFROM TRIANGLES;",
-    "table": "`TRIANGLES"
+    "table": "TRIANGLES"
   },
   {
     "id": 72,
@@ -866,7 +866,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`RobotTelemetry (robot_id, vibration_hz, operating_temp_c)`",
     "businessObjective": "Analyze Hardware data: Industrial Robotic Arm Vibration Bearing Wear",
     "targetQuery": "SELECT robot_id, vibration_hz, operating_temp_c,\n       CASE\n           WHEN vibration_hz >= 120 OR operating_temp_c >= 85 THEN 'EMERGENCY_SHUTDOWN_BEARING_FAIL'\n           WHEN vibration_hz >= 90 THEN 'SCHEDULE_LUBRICATION'\n           ELSE 'OPTIMAL'\n       END AS factory_floor_alert\nFROM RobotTelemetry;",
-    "table": "`RobotTelemetry"
+    "table": "RobotTelemetry"
   },
   {
     "id": 73,
@@ -878,7 +878,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`GridMeters (meter_id, current_load_kw, hour_of_day)`",
     "businessObjective": "Analyze Hardware data: Smart Electric Grid Surge Demand Pricing Tiers",
     "targetQuery": "SELECT meter_id, current_load_kw, hour_of_day,\n       CASE\n           WHEN hour_of_day BETWEEN 17 AND 21 AND current_load_kw >= 7.0 THEN 'PEAK_SURGE ($0.45/kWh)'\n           WHEN hour_of_day BETWEEN 17 AND 21 THEN 'PEAK_STANDARD ($0.30/kWh)'\n           WHEN hour_of_day BETWEEN 0 AND 6 THEN 'SUPER_OFF_PEAK ($0.08/kWh)'\n           ELSE 'STANDARD ($0.18/kWh)'\n       END AS tariff_rate\nFROM GridMeters;",
-    "table": "`GridMeters"
+    "table": "GridMeters"
   },
   {
     "id": 74,
@@ -890,7 +890,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AmrObstacles (robot_id, obstacle_distance_cm, current_velocity_mps)`",
     "businessObjective": "Analyze Hardware data: Autonomous Mobile Robot (AMR) Collision Evasion",
     "targetQuery": "SELECT robot_id, obstacle_distance_cm,\n       CASE\n           WHEN obstacle_distance_cm <= 20 THEN 'EMERGENCY_BRAKE_0_MPS'\n           WHEN obstacle_distance_cm <= 50 THEN 'DECELERATE_0_5_MPS'\n           ELSE 'NORMAL_CRUISE_1_5_MPS'\n       END AS speed_command\nFROM AmrObstacles;",
-    "table": "`AmrObstacles"
+    "table": "AmrObstacles"
   },
   {
     "id": 75,
@@ -902,7 +902,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SolarInverters (inverter_id, actual_kwh_generated, expected_kwh_sunlight)`",
     "businessObjective": "Analyze Hardware data: Solar Panel Array Inverter Efficiency Degradation",
     "targetQuery": "SELECT inverter_id, (actual_kwh_generated * 100.0 / expected_kwh_sunlight) AS efficiency_pct,\n       CASE\n           WHEN (actual_kwh_generated * 1.0 / expected_kwh_sunlight) < 0.60 THEN 'DEFECT_PANEL_CRACKED'\n           WHEN (actual_kwh_generated * 1.0 / expected_kwh_sunlight) < 0.85 THEN 'SCHEDULE_PANEL_WASH'\n           ELSE 'OPTIMAL_GENERATION'\n       END AS maintenance_action\nFROM SolarInverters;",
-    "table": "`SolarInverters"
+    "table": "SolarInverters"
   },
   {
     "id": 76,
@@ -914,7 +914,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`EvSessions (session_id, charger_type, kwh_delivered)`",
     "businessObjective": "Analyze Hardware data: EV Charging Station Supercharge vs Level 2 Billing",
     "targetQuery": "SELECT session_id, charger_type, kwh_delivered,\n       CASE\n           WHEN charger_type = 'DC_FAST_350KW' THEN (kwh_delivered * 0.42) + 2.50\n           WHEN charger_type = 'DC_FAST_150KW' THEN (kwh_delivered * 0.35) + 1.00\n           ELSE (kwh_delivered * 0.22)\n       END AS session_cost_usd\nFROM EvSessions;",
-    "table": "`EvSessions"
+    "table": "EvSessions"
   },
   {
     "id": 77,
@@ -926,7 +926,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`WaterQuality (sample_id, ph_reading, chlorine_ppm)`",
     "businessObjective": "Analyze Hardware data: Municipal Water Treatment PH Balance Safe Zone",
     "targetQuery": "SELECT sample_id, ph_reading,\n       CASE\n           WHEN ph_reading < 6.5 THEN 'ACIDIC_VIOLATION_ADD_LIME'\n           WHEN ph_reading > 8.5 THEN 'ALKALINE_VIOLATION_ADD_ACID'\n           ELSE 'SAFE_POTABLE_WATER'\n       END AS ph_compliance\nFROM WaterQuality;",
-    "table": "`WaterQuality"
+    "table": "WaterQuality"
   },
   {
     "id": 78,
@@ -938,7 +938,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ServerThermal (rack_id, intake_temp_c, exhaust_temp_c)`",
     "businessObjective": "Analyze Hardware data: Server Rack Thermal Hot-Aisle Overheat Throttle",
     "targetQuery": "SELECT rack_id, exhaust_temp_c,\n       CASE\n           WHEN exhaust_temp_c >= 45.0 THEN 'CRITICAL_THROTTLE_CPU_50_PCT'\n           WHEN exhaust_temp_c >= 38.0 THEN 'BOOST_FAN_SPEED_100_PCT'\n           ELSE 'THERMAL_OPTIMAL'\n       END AS cooling_instruction\nFROM ServerThermal;",
-    "table": "`ServerThermal"
+    "table": "ServerThermal"
   },
   {
     "id": 79,
@@ -950,7 +950,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TurbineSensors (flight_no, engine_no, exhaust_gas_temp_c)`",
     "businessObjective": "Analyze Hardware data: Commercial Aircraft Jet Turbine Exhaust Temperature",
     "targetQuery": "SELECT flight_no, engine_no, exhaust_gas_temp_c,\n       CASE\n           WHEN exhaust_gas_temp_c >= 950 THEN 'RED_WARNING_OVERHEAT'\n           WHEN exhaust_gas_temp_c >= 875 THEN 'AMBER_CAUTION'\n           ELSE 'NORMAL_GREEN'\n       END AS cockpit_alert\nFROM TurbineSensors;",
-    "table": "`TurbineSensors"
+    "table": "TurbineSensors"
   },
   {
     "id": 80,
@@ -962,7 +962,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SoilProbes (field_zone_id, volumetric_water_content_pct)`",
     "businessObjective": "Analyze Hardware data: Smart Farm Soil Moisture Automated Irrigation",
     "targetQuery": "SELECT field_zone_id, volumetric_water_content_pct,\n       CASE\n           WHEN volumetric_water_content_pct < 15.0 THEN 'VALVE_OPEN_IRRIGATE'\n           WHEN volumetric_water_content_pct > 35.0 THEN 'VALVE_CLOSED_SATURATED'\n           ELSE 'VALVE_CLOSED_OPTIMAL'\n       END AS irrigation_command\nFROM SoilProbes;",
-    "table": "`SoilProbes"
+    "table": "SoilProbes"
   },
   {
     "id": 81,
@@ -974,7 +974,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ExecutiveReview (executive_id, executive_name, department, okr_completion_pct, tenure_years)`",
     "businessObjective": "Analyze HR data: Executive OKR Bonus & Equity Vesting Matrix",
     "targetQuery": "SELECT executive_name, department, okr_completion_pct, tenure_years,\n       CASE\n           WHEN okr_completion_pct >= 115.0 THEN 'SUPERIOR (150% Bonus + 1.25x Vesting)'\n           WHEN okr_completion_pct >= 100.0 THEN 'TARGET (100% Bonus + 1.0x Vesting)'\n           WHEN okr_completion_pct >= 85.0 THEN 'THRESHOLD (75% Bonus + Standard Vesting)'\n           ELSE 'BELOW_EXPECTATION (0% Bonus)'\n       END AS bonus_vesting_bracket\nFROM ExecutiveReview\nWHERE tenure_years >= 2\nORDER BY okr_completion_pct DESC;",
-    "table": "`ExecutiveReview"
+    "table": "ExecutiveReview"
   },
   {
     "id": 82,
@@ -986,7 +986,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TimeCards (emp_id, weekly_hours_worked, base_hourly_rate)`",
     "businessObjective": "Analyze HR data: Overtime Pay Compliance (1.5x Over 40h, 2.0x Over 60h)",
     "targetQuery": "SELECT emp_id, weekly_hours_worked, base_hourly_rate,\n       CASE\n           WHEN weekly_hours_worked > 60 THEN (40 * base_hourly_rate) + (20 * base_hourly_rate * 1.5) + ((weekly_hours_worked - 60) * base_hourly_rate * 2.0)\n           WHEN weekly_hours_worked > 40 THEN (40 * base_hourly_rate) + ((weekly_hours_worked - 40) * base_hourly_rate * 1.5)\n           ELSE (weekly_hours_worked * base_hourly_rate)\n       END AS gross_weekly_pay\nFROM TimeCards\nORDER BY gross_weekly_pay DESC;",
-    "table": "`TimeCards"
+    "table": "TimeCards"
   },
   {
     "id": 83,
@@ -998,7 +998,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PtoBalances (employee_id, current_pto_hours)`",
     "businessObjective": "Analyze HR data: Annual Paid Time Off (PTO) Carryover Limit & Forfeiture",
     "targetQuery": "SELECT employee_id, current_pto_hours,\n       CASE\n           WHEN current_pto_hours > 80 THEN 80\n           ELSE current_pto_hours\n       END AS hours_carried_forward,\n       CASE\n           WHEN current_pto_hours > 80 THEN (current_pto_hours - 80)\n           ELSE 0\n       END AS hours_forfeited\nFROM PtoBalances;",
-    "table": "`PtoBalances"
+    "table": "PtoBalances"
   },
   {
     "id": 84,
@@ -1010,7 +1010,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CompensationAudit (emp_id, role, salary, role_median_salary)`",
     "businessObjective": "Analyze HR data: Gender & Ethnicity Pay Equity Audit Bands",
     "targetQuery": "SELECT emp_id, role, salary, role_median_salary,\n       CASE\n           WHEN salary < (role_median_salary * 0.80) THEN 'UNDERPAID_EQUITY_REVIEW'\n           WHEN salary > (role_median_salary * 1.20) THEN 'EXCEEDS_SALARY_BAND'\n           ELSE 'COMPLIANT_BAND'\n       END AS pay_equity_status\nFROM CompensationAudit;",
-    "table": "`CompensationAudit"
+    "table": "CompensationAudit"
   },
   {
     "id": 85,
@@ -1022,7 +1022,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SalesReps (rep_id, deals_closed_usd, annual_quota_usd)`",
     "businessObjective": "Analyze HR data: Sales Commission Accelerators (100% / 150% / 200%)",
     "targetQuery": "SELECT rep_id, (deals_closed_usd * 100.0 / annual_quota_usd) AS attainment_pct,\n       CASE\n           WHEN (deals_closed_usd * 1.0 / annual_quota_usd) >= 1.50 THEN 'SUPER_ACCELERATOR (20% Commission)'\n           WHEN (deals_closed_usd * 1.0 / annual_quota_usd) >= 1.00 THEN 'ACCELERATOR (15% Commission)'\n           ELSE 'BASE_COMMISSION (10% Commission)'\n       END AS commission_structure\nFROM SalesReps\nORDER BY attainment_pct DESC;",
-    "table": "`SalesReps"
+    "table": "SalesReps"
   },
   {
     "id": 86,
@@ -1034,7 +1034,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`RemoteWorkers (employee_id, physical_state, company_registered_states)`",
     "businessObjective": "Analyze HR data: Remote Work State Tax Nexus Trigger",
     "targetQuery": "SELECT employee_id, physical_state,\n       CASE\n           WHEN physical_state NOT IN ('CA', 'NY', 'TX', 'WA') THEN 'NEW_STATE_TAX_NEXUS_TRIGGER'\n           ELSE 'ESTABLISHED_NEXUS'\n       END AS legal_tax_status\nFROM RemoteWorkers;",
-    "table": "`RemoteWorkers"
+    "table": "RemoteWorkers"
   },
   {
     "id": 87,
@@ -1046,7 +1046,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`StaffFlightRisk (emp_id, performance_rating, months_since_last_raise)`",
     "businessObjective": "Analyze HR data: Employee Flight Risk Propensity Index",
     "targetQuery": "SELECT emp_id, performance_rating, months_since_last_raise,\n       CASE\n           WHEN performance_rating >= 4 AND months_since_last_raise >= 24 THEN 'CRITICAL_FLIGHT_RISK'\n           WHEN months_since_last_raise >= 18 THEN 'MODERATE_RETENTION_RISK'\n           ELSE 'LOW_RISK'\n       END AS retention_tier\nFROM StaffFlightRisk;",
-    "table": "`StaffFlightRisk"
+    "table": "StaffFlightRisk"
   },
   {
     "id": 88,
@@ -1058,7 +1058,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Contractors (contractor_id, weekly_hours, tenure_months)`",
     "businessObjective": "Analyze HR data: Independent Contractor 1099 vs W2 Classification Audit",
     "targetQuery": "SELECT contractor_id, weekly_hours, tenure_months,\n       CASE\n           WHEN weekly_hours >= 40 AND tenure_months >= 12 THEN 'HIGH_MISCLASSIFICATION_AUDIT_RISK'\n           ELSE 'COMPLIANT_1099'\n       END AS legal_assessment\nFROM Contractors;",
-    "table": "`Contractors"
+    "table": "Contractors"
   },
   {
     "id": 89,
@@ -1070,7 +1070,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ComplianceTraining (employee_id, days_overdue, is_completed)`",
     "businessObjective": "Analyze HR data: Annual Cybersecurity Compliance Training Escalation",
     "targetQuery": "SELECT employee_id, days_overdue,\n       CASE\n           WHEN is_completed = TRUE THEN 'CERTIFIED_COMPLETE'\n           WHEN days_overdue >= 14 THEN 'REVOKE_VPN_CREDENTIALS'\n           WHEN days_overdue >= 7 THEN 'ESCALATE_TO_DEPARTMENT_VP'\n           ELSE 'SEND_DAILY_SLACK_REMINDER'\n       END AS compliance_enforcement\nFROM ComplianceTraining;",
-    "table": "`ComplianceTraining"
+    "table": "ComplianceTraining"
   },
   {
     "id": 90,
@@ -1082,7 +1082,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`RetirementPlans (emp_id, completed_years, employer_match_balance)`",
     "businessObjective": "Analyze HR data: 401(k) Employer Match Vesting Schedule",
     "targetQuery": "SELECT emp_id, completed_years, employer_match_balance,\n       CASE\n           WHEN completed_years >= 4 THEN employer_match_balance * 1.00\n           WHEN completed_years = 3 THEN employer_match_balance * 0.75\n           WHEN completed_years = 2 THEN employer_match_balance * 0.50\n           WHEN completed_years = 1 THEN employer_match_balance * 0.25\n           ELSE 0.00\n       END AS vested_match_balance_usd\nFROM RetirementPlans;",
-    "table": "`RetirementPlans"
+    "table": "RetirementPlans"
   },
   {
     "id": 91,
@@ -1094,7 +1094,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`RideZones (zone_id, active_drivers, pending_requests)`",
     "businessObjective": "Analyze Platforms data: Ride-Hailing Surge Pricing Multiplier Engine",
     "targetQuery": "SELECT zone_id, active_drivers, pending_requests,\n       CASE\n           WHEN active_drivers = 0 THEN 'SURGE_3_0X_MAX'\n           WHEN (pending_requests * 1.0 / active_drivers) >= 3.0 THEN 'SURGE_2_5X'\n           WHEN (pending_requests * 1.0 / active_drivers) >= 2.0 THEN 'SURGE_1_75X'\n           WHEN (pending_requests * 1.0 / active_drivers) >= 1.2 THEN 'SURGE_1_25X'\n           ELSE 'STANDARD_FARE_1_0X'\n       END AS surge_multiplier\nFROM RideZones\nORDER BY pending_requests DESC;",
-    "table": "`RideZones"
+    "table": "RideZones"
   },
   {
     "id": 92,
@@ -1106,7 +1106,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`InfluencerStats (handle, follower_count, engagement_rate_pct)`",
     "businessObjective": "Analyze Platforms data: Social Media Creator Sponsorship Tiering",
     "targetQuery": "SELECT handle, follower_count, engagement_rate_pct,\n       CASE\n           WHEN follower_count >= 1000000 AND engagement_rate_pct >= 3.5 THEN 'TIER_1_CELEBRITY ($25k/post)'\n           WHEN follower_count >= 100000 AND engagement_rate_pct >= 4.0 THEN 'TIER_2_MACRO ($5k/post)'\n           WHEN follower_count >= 10000 AND engagement_rate_pct >= 5.0 THEN 'TIER_3_MICRO ($1k/post)'\n           ELSE 'UNQUALIFIED'\n       END AS sponsorship_rate_card\nFROM InfluencerStats\nORDER BY follower_count DESC;",
-    "table": "`InfluencerStats"
+    "table": "InfluencerStats"
   },
   {
     "id": 93,
@@ -1118,7 +1118,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AirbnbHosts (host_id, average_rating, cancellation_rate_pct, completed_trips)`",
     "businessObjective": "Analyze Platforms data: Airbnb Superhost Status Certification",
     "targetQuery": "SELECT host_id, average_rating, cancellation_rate_pct, completed_trips,\n       CASE\n           WHEN completed_trips >= 10 AND average_rating >= 4.80 AND cancellation_rate_pct < 1.0 THEN 'SUPERHOST_CERTIFIED'\n           ELSE 'STANDARD_HOST'\n       END AS badge_award\nFROM AirbnbHosts\nORDER BY average_rating DESC;",
-    "table": "`AirbnbHosts"
+    "table": "AirbnbHosts"
   },
   {
     "id": 94,
@@ -1130,7 +1130,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AdCampaigns (campaign_id, bid_price_usd, quality_score_1_to_10)`",
     "businessObjective": "Analyze Platforms data: AdTech Cost-Per-Click (CPC) Quality Score Penalty",
     "targetQuery": "SELECT campaign_id, bid_price_usd, quality_score_1_to_10,\n       CASE\n           WHEN quality_score_1_to_10 >= 8 THEN bid_price_usd * 0.80  -- 20% discount\n           WHEN quality_score_1_to_10 <= 3 THEN bid_price_usd * 1.50  -- 50% penalty\n           ELSE bid_price_usd\n       END AS effective_cpc_price\nFROM AdCampaigns\nORDER BY quality_score_1_to_10 ASC;",
-    "table": "`AdCampaigns"
+    "table": "AdCampaigns"
   },
   {
     "id": 95,
@@ -1142,7 +1142,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FoodOrders (order_id, subtotal_usd, delivery_distance_miles)`",
     "businessObjective": "Analyze Platforms data: Food Delivery Tip Recommendation Options",
     "targetQuery": "SELECT order_id, subtotal_usd,\n       CASE\n           WHEN subtotal_usd < 15.00 THEN 3.00\n           ELSE ROUND(subtotal_usd * 0.18, 2)\n       END AS recommended_default_tip_usd\nFROM FoodOrders;",
-    "table": "`FoodOrders"
+    "table": "FoodOrders"
   },
   {
     "id": 96,
@@ -1154,7 +1154,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`MarketplaceListings (listing_id, brand_name, listed_price_usd, msrp_usd, seller_rating)`",
     "businessObjective": "Analyze Platforms data: Counterfeit Luxury Marketplace Listing Risk Score",
     "targetQuery": "SELECT listing_id, brand_name, listed_price_usd, msrp_usd,\n       CASE\n           WHEN brand_name = 'Rolex' AND listed_price_usd < (msrp_usd * 0.30) THEN 'CRITICAL_COUNTERFEIT_TAKEDOWN'\n           WHEN (listed_price_usd * 1.0 / msrp_usd) < 0.50 AND seller_rating < 3.5 THEN 'HOLD_FOR_AUTHENTICATION'\n           ELSE 'APPROVED_LISTING'\n       END AS trust_action\nFROM MarketplaceListings;",
-    "table": "`MarketplaceListings"
+    "table": "MarketplaceListings"
   },
   {
     "id": 97,
@@ -1166,7 +1166,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SignupAudit (subnet, signups_last_hour)`",
     "businessObjective": "Analyze Platforms data: Social Network Bot Account Creation Velocity",
     "targetQuery": "SELECT subnet, signups_last_hour,\n       CASE\n           WHEN signups_last_hour >= 50 THEN 'CAPTCHA_PLUS_PHONE_VERIFY'\n           WHEN signups_last_hour >= 20 THEN 'REQUIRE_CAPTCHA'\n           ELSE 'STANDARD_FLOW'\n       END AS security_challenge\nFROM SignupAudit\nORDER BY signups_last_hour DESC;",
-    "table": "`SignupAudit"
+    "table": "SignupAudit"
   },
   {
     "id": 98,
@@ -1178,7 +1178,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`MatchCandidates (user_a_id, user_b_id, distance_miles, age_difference_years)`",
     "businessObjective": "Analyze Platforms data: Dating App Match Distance & Age Range Boundary",
     "targetQuery": "SELECT user_a_id, user_b_id, distance_miles, age_difference_years,\n       CASE\n           WHEN distance_miles <= 25 AND age_difference_years <= 5 THEN 'ELIGIBLE_IN_FEED'\n           ELSE 'OUT_OF_BOUNDS_FILTER'\n       END AS discovery_filter\nFROM MatchCandidates;",
-    "table": "`MatchCandidates"
+    "table": "MatchCandidates"
   },
   {
     "id": 99,
@@ -1190,7 +1190,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`HomeListings (mls_id, list_price, days_on_market)`",
     "businessObjective": "Analyze Platforms data: Real Estate Days-On-Market (DOM) Stale Listing Flag",
     "targetQuery": "SELECT mls_id, list_price, days_on_market,\n       CASE\n           WHEN days_on_market > 90 THEN 'RECOMMEND_10_PCT_PRICE_CUT'\n           WHEN days_on_market > 45 THEN 'RECOMMEND_5_PCT_PRICE_CUT'\n           ELSE 'NEW_ACTIVE_LISTING'\n       END AS realtor_strategy\nFROM HomeListings\nORDER BY days_on_market DESC;",
-    "table": "`HomeListings"
+    "table": "HomeListings"
   },
   {
     "id": 100,
@@ -1202,7 +1202,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Campaigns (campaign_id, goal_amount_usd, pledged_amount_usd, is_deadline_passed)`",
     "businessObjective": "Analyze Platforms data: Crowdfunding Kickstarter All-or-Nothing Escrow Payout",
     "targetQuery": "SELECT campaign_id, goal_amount_usd, pledged_amount_usd,\n       CASE\n           WHEN pledged_amount_usd >= goal_amount_usd AND is_deadline_passed = TRUE THEN 'RELEASE_FUNDS_TO_CREATOR'\n           WHEN pledged_amount_usd < goal_amount_usd AND is_deadline_passed = TRUE THEN 'REFUND_ALL_BACKERS'\n           ELSE 'CAMPAIGN_IN_PROGRESS'\n       END AS escrow_disbursement\nFROM Campaigns;",
-    "table": "`Campaigns"
+    "table": "Campaigns"
   },
   {
     "id": 101,
@@ -1214,7 +1214,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Transactions (tx_id, merchant_category, amount_usd, tx_date)`",
     "businessObjective": "Analyze Fintech data: Daily Transaction Volume & Average Ticket Size per Category",
     "targetQuery": "SELECT merchant_category,\n       COUNT(*) AS total_transactions,\n       SUM(amount_usd) AS gross_volume_usd,\n       ROUND(AVG(amount_usd), 2) AS average_ticket_usd\nFROM Transactions\nGROUP BY merchant_category\nORDER BY gross_volume_usd DESC;",
-    "table": "`Transactions"
+    "table": "Transactions"
   },
   {
     "id": 102,
@@ -1226,7 +1226,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CardCharges (charge_id, cardholder_id, amount_usd, billing_month)`",
     "businessObjective": "Analyze Fintech data: Cardholders with Excessive Monthly Spend (`HAVING SUM`)",
     "targetQuery": "SELECT cardholder_id,\n       COUNT(*) AS total_charges,\n       SUM(amount_usd) AS total_monthly_spend\nFROM CardCharges\nWHERE billing_month = '2026-08'\nGROUP BY cardholder_id\nHAVING SUM(amount_usd) >= 10000.00\nORDER BY total_monthly_spend DESC;",
-    "table": "`CardCharges"
+    "table": "CardCharges"
   },
   {
     "id": 103,
@@ -1238,7 +1238,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`MerchantSettlements (merchant_id, total_sales, chargeback_count)`",
     "businessObjective": "Analyze Fintech data: Merchant Dispute Rate & Chargeback Ratio Grouping",
     "targetQuery": "SELECT merchant_id,\n       SUM(total_sales) AS total_orders,\n       SUM(chargeback_count) AS total_chargebacks,\n       ROUND(SUM(chargeback_count) * 100.0 / SUM(total_sales), 3) AS dispute_rate_pct\nFROM MerchantSettlements\nGROUP BY merchant_id\nHAVING SUM(total_sales) >= 500 AND (SUM(chargeback_count) * 1.0 / SUM(total_sales)) >= 0.01\nORDER BY dispute_rate_pct DESC;",
-    "table": "`MerchantSettlements"
+    "table": "MerchantSettlements"
   },
   {
     "id": 104,
@@ -1250,7 +1250,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AtmWithdrawals (withdrawal_id, terminal_id, amount_usd, dispense_hour)`",
     "businessObjective": "Analyze Fintech data: ATM Cash Dispense Volume by Hour of Day",
     "targetQuery": "SELECT dispense_hour,\n       COUNT(*) AS withdrawal_count,\n       SUM(amount_usd) AS total_cash_dispensed,\n       AVG(amount_usd) AS avg_withdrawal_usd\nFROM AtmWithdrawals\nGROUP BY dispense_hour\nORDER BY total_cash_dispensed DESC;",
-    "table": "`AtmWithdrawals"
+    "table": "AtmWithdrawals"
   },
   {
     "id": 105,
@@ -1262,7 +1262,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`BrokerExecutions (order_id, market_maker, limit_price, fill_price, share_volume)`",
     "businessObjective": "Analyze Fintech data: HFT Execution Slippage per Market Maker",
     "targetQuery": "SELECT market_maker,\n       COUNT(*) AS executed_trades,\n       SUM(share_volume) AS total_shares,\n       ROUND(AVG(fill_price - limit_price), 4) AS avg_slippage_per_share\nFROM BrokerExecutions\nGROUP BY market_maker\nORDER BY avg_slippage_per_share DESC;",
-    "table": "`BrokerExecutions"
+    "table": "BrokerExecutions"
   },
   {
     "id": 106,
@@ -1274,7 +1274,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`WireAudits (wire_id, account_id, dest_country, amount_usd, is_foreign)`",
     "businessObjective": "Analyze Fintech data: KYC Sanctions Risk: Accounts with Multiple Foreign Wires",
     "targetQuery": "SELECT account_id,\n       COUNT(*) AS foreign_wire_count,\n       SUM(amount_usd) AS total_wired_usd,\n       COUNT(DISTINCT dest_country) AS unique_destination_countries\nFROM WireAudits\nWHERE is_foreign = TRUE\nGROUP BY account_id\nHAVING COUNT(*) >= 3 AND SUM(amount_usd) >= 50000\nORDER BY total_wired_usd DESC;",
-    "table": "`WireAudits"
+    "table": "WireAudits"
   },
   {
     "id": 107,
@@ -1286,7 +1286,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`LoanPortfolio (loan_id, credit_tier, loan_amount, is_defaulted)`",
     "businessObjective": "Analyze Fintech data: Loan Portfolio Exposure & Default Rate by FICO Credit Tier",
     "targetQuery": "SELECT credit_tier,\n       COUNT(*) AS total_loans,\n       SUM(loan_amount) AS total_exposure_usd,\n       ROUND(SUM(CASE WHEN is_defaulted = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS default_rate_pct\nFROM LoanPortfolio\nGROUP BY credit_tier\nORDER BY default_rate_pct DESC;",
-    "table": "`LoanPortfolio"
+    "table": "LoanPortfolio"
   },
   {
     "id": 108,
@@ -1298,7 +1298,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DexSwaps (swap_id, token_pair, input_amount_usd, fee_usd)`",
     "businessObjective": "Analyze Fintech data: Cryptocurrency Liquidity Pool Swap Fees",
     "targetQuery": "SELECT token_pair,\n       COUNT(*) AS total_swaps,\n       SUM(input_amount_usd) AS total_trading_volume,\n       SUM(fee_usd) AS total_protocol_revenue\nFROM DexSwaps\nGROUP BY token_pair\nHAVING SUM(input_amount_usd) >= 1000000\nORDER BY total_protocol_revenue DESC;",
-    "table": "`DexSwaps"
+    "table": "DexSwaps"
   },
   {
     "id": 109,
@@ -1310,7 +1310,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`BranchWaivers (waiver_id, branch_code, waived_amount_usd)`",
     "businessObjective": "Analyze Fintech data: Branch Overdraft Courtesy Waivers",
     "targetQuery": "SELECT branch_code,\n       COUNT(*) AS total_waivers_granted,\n       SUM(waived_amount_usd) AS total_waived_usd,\n       AVG(waived_amount_usd) AS avg_waiver_size\nFROM BranchWaivers\nGROUP BY branch_code\nHAVING SUM(waived_amount_usd) >= 25000\nORDER BY total_waived_usd DESC;",
-    "table": "`BranchWaivers"
+    "table": "BranchWaivers"
   },
   {
     "id": 110,
@@ -1322,7 +1322,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FxConversions (conversion_id, currency_pair, converted_usd, spread_revenue_usd)`",
     "businessObjective": "Analyze Fintech data: Cross-Border Foreign Exchange Margin by Currency Corridor",
     "targetQuery": "SELECT currency_pair,\n       COUNT(*) AS conversion_count,\n       SUM(converted_usd) AS total_volume_usd,\n       ROUND(SUM(spread_revenue_usd), 2) AS total_fx_revenue\nFROM FxConversions\nGROUP BY currency_pair\nORDER BY total_fx_revenue DESC;",
-    "table": "`FxConversions"
+    "table": "FxConversions"
   },
   {
     "id": 111,
@@ -1334,7 +1334,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Subscriptions (subscription_id, plan_tier, monthly_rate_usd, status)`",
     "businessObjective": "Analyze SaaS data: Monthly Recurring Revenue (MRR) by Subscription Tier",
     "targetQuery": "SELECT plan_tier,\n       COUNT(*) AS active_tenants,\n       SUM(monthly_rate_usd) AS total_mrr,\n       AVG(monthly_rate_usd) AS avg_contract_value\nFROM Subscriptions\nWHERE status = 'ACTIVE'\nGROUP BY plan_tier\nORDER BY total_mrr DESC;",
-    "table": "`Subscriptions"
+    "table": "Subscriptions"
   },
   {
     "id": 112,
@@ -1346,7 +1346,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`EnterpriseSeats (account_id, company_name, licensed_seats, active_seats)`",
     "businessObjective": "Analyze SaaS data: Contraction Risk: Accounts with Seat Utilization < 50%",
     "targetQuery": "SELECT company_name,\n       SUM(licensed_seats) AS total_licensed,\n       SUM(active_seats) AS total_active,\n       ROUND(SUM(active_seats) * 100.0 / SUM(licensed_seats), 1) AS overall_utilization_pct\nFROM EnterpriseSeats\nGROUP BY company_name\nHAVING (SUM(active_seats) * 1.0 / SUM(licensed_seats)) < 0.50\nORDER BY total_licensed DESC;",
-    "table": "`EnterpriseSeats"
+    "table": "EnterpriseSeats"
   },
   {
     "id": 113,
@@ -1358,7 +1358,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SupportTickets (ticket_id, priority, resolution_hours, is_breached)`",
     "businessObjective": "Analyze SaaS data: Customer Support Ticket SLA Breaches by Priority",
     "targetQuery": "SELECT priority,\n       COUNT(*) AS total_tickets,\n       ROUND(AVG(resolution_hours), 1) AS avg_resolution_hours,\n       SUM(CASE WHEN is_breached = TRUE THEN 1 ELSE 0 END) AS breached_tickets_count\nFROM SupportTickets\nGROUP BY priority\nORDER BY avg_resolution_hours DESC;",
-    "table": "`SupportTickets"
+    "table": "SupportTickets"
   },
   {
     "id": 114,
@@ -1370,7 +1370,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ApiRequests (request_id, tenant_id, endpoint_category)`",
     "businessObjective": "Analyze SaaS data: API Gateway Overage Billing per Tenant",
     "targetQuery": "SELECT tenant_id,\n       COUNT(*) AS total_requests,\n       COUNT(DISTINCT endpoint_category) AS distinct_apis_used\nFROM ApiRequests\nGROUP BY tenant_id\nHAVING COUNT(*) > 1000000\nORDER BY total_requests DESC;",
-    "table": "`ApiRequests"
+    "table": "ApiRequests"
   },
   {
     "id": 115,
@@ -1382,7 +1382,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TenantStorage (tenant_id, cluster_name, storage_used_gb)`",
     "businessObjective": "Analyze SaaS data: Multi-Tenant Cloud Storage Consumption",
     "targetQuery": "SELECT cluster_name,\n       COUNT(DISTINCT tenant_id) AS total_tenants,\n       SUM(storage_used_gb) AS total_storage_gb,\n       MAX(storage_used_gb) AS largest_single_tenant_gb\nFROM TenantStorage\nGROUP BY cluster_name\nORDER BY total_storage_gb DESC;",
-    "table": "`TenantStorage"
+    "table": "TenantStorage"
   },
   {
     "id": 116,
@@ -1394,7 +1394,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`UserCohorts (user_id, signup_year, tier, is_active)`",
     "businessObjective": "Analyze SaaS data: User Retention Cohorts by Signup Year and Tier",
     "targetQuery": "SELECT signup_year, tier,\n       COUNT(*) AS total_signed_up,\n       SUM(CASE WHEN is_active = TRUE THEN 1 ELSE 0 END) AS currently_active_users\nFROM UserCohorts\nGROUP BY signup_year, tier\nORDER BY signup_year DESC, tier ASC;",
-    "table": "`UserCohorts"
+    "table": "UserCohorts"
   },
   {
     "id": 117,
@@ -1406,7 +1406,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FeatureFeedback (feedback_id, feature_name, nps_score)`",
     "businessObjective": "Analyze SaaS data: Net Promoter Score (NPS) Sentiment by Product Feature",
     "targetQuery": "SELECT feature_name,\n       COUNT(*) AS response_count,\n       ROUND(AVG(nps_score), 2) AS average_nps,\n       SUM(CASE WHEN nps_score >= 9 THEN 1 ELSE 0 END) AS promoter_count\nFROM FeatureFeedback\nGROUP BY feature_name\nHAVING COUNT(*) >= 50\nORDER BY average_nps DESC;",
-    "table": "`FeatureFeedback"
+    "table": "FeatureFeedback"
   },
   {
     "id": 118,
@@ -1418,7 +1418,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FeatureTelemetry (event_id, company_id, feature_flag)`",
     "businessObjective": "Analyze SaaS data: Beta Feature Adoption Velocity",
     "targetQuery": "SELECT feature_flag,\n       COUNT(*) AS total_invocations,\n       COUNT(DISTINCT company_id) AS adopting_companies_count\nFROM FeatureTelemetry\nGROUP BY feature_flag\nORDER BY adopting_companies_count DESC;",
-    "table": "`FeatureTelemetry"
+    "table": "FeatureTelemetry"
   },
   {
     "id": 119,
@@ -1430,7 +1430,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`UserDirectory (user_id, department, role, is_active_last_90d)`",
     "businessObjective": "Analyze SaaS data: SSO Inactive Admin Count by Department",
     "targetQuery": "SELECT department,\n       COUNT(*) AS total_admins,\n       SUM(CASE WHEN is_active_last_90d = FALSE THEN 1 ELSE 0 END) AS stale_admins_count\nFROM UserDirectory\nWHERE role IN ('SuperAdmin', 'Admin')\nGROUP BY department\nHAVING SUM(CASE WHEN is_active_last_90d = FALSE THEN 1 ELSE 0 END) > 0\nORDER BY stale_admins_count DESC;",
-    "table": "`UserDirectory"
+    "table": "UserDirectory"
   },
   {
     "id": 120,
@@ -1442,7 +1442,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`EnterpriseRenewals (account_id, renewal_quarter, annual_contract_value_usd)`",
     "businessObjective": "Analyze SaaS data: Enterprise Renewal Pipeline Value by Quarter",
     "targetQuery": "SELECT renewal_quarter,\n       COUNT(*) AS upcoming_renewals,\n       SUM(annual_contract_value_usd) AS total_pipeline_arr,\n       MIN(annual_contract_value_usd) AS min_deal_size,\n       MAX(annual_contract_value_usd) AS max_deal_size\nFROM EnterpriseRenewals\nGROUP BY renewal_quarter\nORDER BY renewal_quarter ASC;",
-    "table": "`EnterpriseRenewals"
+    "table": "EnterpriseRenewals"
   },
   {
     "id": 121,
@@ -1454,7 +1454,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`OrderItems (order_id, category, item_price, quantity)`",
     "businessObjective": "Analyze Retail data: Average Order Value (AOV) & Revenue by Category",
     "targetQuery": "SELECT category,\n       SUM(item_price * quantity) AS total_gross_revenue,\n       COUNT(DISTINCT order_id) AS total_orders,\n       ROUND(SUM(item_price * quantity) / COUNT(DISTINCT order_id), 2) AS average_order_value\nFROM OrderItems\nGROUP BY category\nORDER BY total_gross_revenue DESC;",
-    "table": "`OrderItems"
+    "table": "OrderItems"
   },
   {
     "id": 122,
@@ -1466,7 +1466,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CustomerTransactions (order_id, customer_id, is_returned, refund_amount)`",
     "businessObjective": "Analyze Retail data: Wardrobing Return Abuse: High-Volume Serial Returners",
     "targetQuery": "SELECT customer_id,\n       COUNT(*) AS total_orders_placed,\n       SUM(CASE WHEN is_returned = TRUE THEN 1 ELSE 0 END) AS total_returns,\n       ROUND(SUM(CASE WHEN is_returned = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS return_rate_pct\nFROM CustomerTransactions\nGROUP BY customer_id\nHAVING COUNT(*) >= 10 AND (SUM(CASE WHEN is_returned = TRUE THEN 1 ELSE 0 END) * 1.0 / COUNT(*)) >= 0.60\nORDER BY return_rate_pct DESC;",
-    "table": "`CustomerTransactions"
+    "table": "CustomerTransactions"
   },
   {
     "id": 123,
@@ -1478,7 +1478,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`WarehouseOrders (order_id, center_id, processing_minutes)`",
     "businessObjective": "Analyze Retail data: Warehouse Pick-and-Pack Latency by Fulfillment Center",
     "targetQuery": "SELECT center_id,\n       COUNT(*) AS packages_fulfilled,\n       ROUND(AVG(processing_minutes), 1) AS avg_fulfillment_minutes,\n       MAX(processing_minutes) AS max_delay_minutes\nFROM WarehouseOrders\nGROUP BY center_id\nORDER BY avg_fulfillment_minutes ASC;",
-    "table": "`WarehouseOrders"
+    "table": "WarehouseOrders"
   },
   {
     "id": 124,
@@ -1490,7 +1490,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`OnlineOrders (order_id, customer_id, order_total, order_year)`",
     "businessObjective": "Analyze Retail data: Customer Lifetime Value (LTV) Segmentation",
     "targetQuery": "SELECT customer_id,\n       COUNT(*) AS lifetime_orders,\n       SUM(order_total) AS total_lifetime_spend,\n       AVG(order_total) AS avg_spend_per_order\nFROM OnlineOrders\nGROUP BY customer_id\nHAVING SUM(order_total) >= 5000.00\nORDER BY total_lifetime_spend DESC;",
-    "table": "`OnlineOrders"
+    "table": "OnlineOrders"
   },
   {
     "id": 125,
@@ -1502,7 +1502,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FlashSaleOrders (order_id, sku, was_fulfilled, item_price)`",
     "businessObjective": "Analyze Retail data: Flash Sale Stockout vs Fulfilled Units per SKU",
     "targetQuery": "SELECT sku,\n       COUNT(*) AS total_purchase_attempts,\n       SUM(CASE WHEN was_fulfilled = TRUE THEN 1 ELSE 0 END) AS fulfilled_units,\n       SUM(CASE WHEN was_fulfilled = FALSE THEN 1 ELSE 0 END) AS stockout_cancellations\nFROM FlashSaleOrders\nGROUP BY sku\nORDER BY stockout_cancellations DESC;",
-    "table": "`FlashSaleOrders"
+    "table": "FlashSaleOrders"
   },
   {
     "id": 126,
@@ -1514,7 +1514,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SellerMetrics (seller_id, order_id, has_defect)`",
     "businessObjective": "Analyze Retail data: Third-Party Marketplace Seller Defect Rate",
     "targetQuery": "SELECT seller_id,\n       COUNT(*) AS total_sales,\n       SUM(CASE WHEN has_defect = TRUE THEN 1 ELSE 0 END) AS defect_count,\n       ROUND(SUM(CASE WHEN has_defect = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS defect_rate_pct\nFROM SellerMetrics\nGROUP BY seller_id\nHAVING COUNT(*) >= 100 AND (SUM(CASE WHEN has_defect = TRUE THEN 1 ELSE 0 END) * 1.0 / COUNT(*)) > 0.02\nORDER BY defect_rate_pct DESC;",
-    "table": "`SellerMetrics"
+    "table": "SellerMetrics"
   },
   {
     "id": 127,
@@ -1526,7 +1526,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CartHistory (cart_id, day_of_week, is_purchased, cart_value)`",
     "businessObjective": "Analyze Retail data: Abandoned Cart Loss by Day of Week",
     "targetQuery": "SELECT day_of_week,\n       COUNT(*) AS total_abandoned_carts,\n       SUM(cart_value) AS unrecovered_revenue_loss\nFROM CartHistory\nWHERE is_purchased = FALSE\nGROUP BY day_of_week\nORDER BY unrecovered_revenue_loss DESC;",
-    "table": "`CartHistory"
+    "table": "CartHistory"
   },
   {
     "id": 128,
@@ -1538,7 +1538,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ExportShipments (shipment_id, dest_country, customs_duty_paid)`",
     "businessObjective": "Analyze Retail data: Cross-Border Customs Duty by Destination Country",
     "targetQuery": "SELECT dest_country,\n       COUNT(*) AS total_shipments,\n       SUM(customs_duty_paid) AS total_duties_collected,\n       AVG(customs_duty_paid) AS avg_duty_per_parcel\nFROM ExportShipments\nGROUP BY dest_country\nORDER BY total_duties_collected DESC;",
-    "table": "`ExportShipments"
+    "table": "ExportShipments"
   },
   {
     "id": 129,
@@ -1550,7 +1550,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PurchaseOrders (po_id, supplier_id, lead_time_days)`",
     "businessObjective": "Analyze Retail data: Supplier Restock Lead Time Variance",
     "targetQuery": "SELECT supplier_id,\n       COUNT(*) AS orders_completed,\n       MIN(lead_time_days) AS fastest_lead_time,\n       AVG(lead_time_days) AS avg_lead_time,\n       MAX(lead_time_days) AS slowest_lead_time\nFROM PurchaseOrders\nGROUP BY supplier_id\nORDER BY avg_lead_time ASC;",
-    "table": "`PurchaseOrders"
+    "table": "PurchaseOrders"
   },
   {
     "id": 130,
@@ -1562,7 +1562,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DiscountOrders (order_id, coupon_code, order_subtotal, discount_amount)`",
     "businessObjective": "Analyze Retail data: Promotional Coupon Code Impact on Gross Margins",
     "targetQuery": "SELECT coupon_code,\n       COUNT(*) AS times_redeemed,\n       SUM(order_subtotal) AS gross_sales_usd,\n       SUM(discount_amount) AS total_discount_given\nFROM DiscountOrders\nGROUP BY coupon_code\nORDER BY times_redeemed DESC;",
-    "table": "`DiscountOrders"
+    "table": "DiscountOrders"
   },
   {
     "id": 131,
@@ -1574,7 +1574,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ErVisits (visit_id, esi_level, wait_minutes_to_physician)`",
     "businessObjective": "Analyze Healthcare data: Emergency Room Average Wait Times by ESI Acuity",
     "targetQuery": "SELECT esi_level,\n       COUNT(*) AS patient_count,\n       ROUND(AVG(wait_minutes_to_physician), 1) AS avg_wait_minutes,\n       MAX(wait_minutes_to_physician) AS max_wait_minutes\nFROM ErVisits\nGROUP BY esi_level\nORDER BY esi_level ASC;",
-    "table": "`ErVisits"
+    "table": "ErVisits"
   },
   {
     "id": 132,
@@ -1586,7 +1586,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`HospitalAdmissions (admission_id, ward_name, length_of_stay_days)`",
     "businessObjective": "Analyze Healthcare data: Inpatient Average Length of Stay (ALOS) by Ward",
     "targetQuery": "SELECT ward_name,\n       COUNT(*) AS total_patients_discharged,\n       ROUND(AVG(length_of_stay_days), 1) AS avg_length_of_stay_days,\n       SUM(length_of_stay_days) AS total_bed_days_occupied\nFROM HospitalAdmissions\nGROUP BY ward_name\nORDER BY avg_length_of_stay_days DESC;",
-    "table": "`HospitalAdmissions"
+    "table": "HospitalAdmissions"
   },
   {
     "id": 133,
@@ -1598,7 +1598,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PatientReadmissions (admission_id, icd10_code, was_readmitted_30d)`",
     "businessObjective": "Analyze Healthcare data: Hospital 30-Day Readmission Rates by Diagnosis Code",
     "targetQuery": "SELECT icd10_code,\n       COUNT(*) AS total_discharges,\n       SUM(CASE WHEN was_readmitted_30d = TRUE THEN 1 ELSE 0 END) AS readmitted_count,\n       ROUND(SUM(CASE WHEN was_readmitted_30d = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS readmission_rate_pct\nFROM PatientReadmissions\nGROUP BY icd10_code\nHAVING COUNT(*) >= 50\nORDER BY readmission_rate_pct DESC;",
-    "table": "`PatientReadmissions"
+    "table": "PatientReadmissions"
   },
   {
     "id": 134,
@@ -1610,7 +1610,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ControlledPrescriptions (rx_id, prescriber_npi, opioid_units)`",
     "businessObjective": "Analyze Healthcare data: Controlled Substance Provider Dispensing Volumes",
     "targetQuery": "SELECT prescriber_npi,\n       COUNT(*) AS total_prescriptions,\n       SUM(opioid_units) AS total_units_prescribed\nFROM ControlledPrescriptions\nGROUP BY prescriber_npi\nHAVING SUM(opioid_units) >= 1000\nORDER BY total_units_prescribed DESC;",
-    "table": "`ControlledPrescriptions"
+    "table": "ControlledPrescriptions"
   },
   {
     "id": 135,
@@ -1622,7 +1622,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`BillingClaims (claim_id, cpt_code, billed_amount, is_denied)`",
     "businessObjective": "Analyze Healthcare data: Insurance Claim Denial Rates by CPT Procedure Code",
     "targetQuery": "SELECT cpt_code,\n       COUNT(*) AS total_claims_billed,\n       SUM(billed_amount) AS total_dollars_claimed,\n       ROUND(SUM(CASE WHEN is_denied = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS denial_rate_pct\nFROM BillingClaims\nGROUP BY cpt_code\nHAVING COUNT(*) >= 100\nORDER BY denial_rate_pct DESC;",
-    "table": "`BillingClaims"
+    "table": "BillingClaims"
   },
   {
     "id": 136,
@@ -1634,7 +1634,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SepsisEncounters (encounter_id, hospital_unit, minutes_to_antibiotics)`",
     "businessObjective": "Analyze Healthcare data: Sepsis Clinical Protocol: Minutes to First Antibiotic",
     "targetQuery": "SELECT hospital_unit,\n       COUNT(*) AS sepsis_cases,\n       ROUND(AVG(minutes_to_antibiotics), 1) AS avg_minutes_to_antibiotics,\n       SUM(CASE WHEN minutes_to_antibiotics <= 60 THEN 1 ELSE 0 END) AS golden_hour_compliant_cases\nFROM SepsisEncounters\nGROUP BY hospital_unit\nORDER BY avg_minutes_to_antibiotics ASC;",
-    "table": "`SepsisEncounters"
+    "table": "SepsisEncounters"
   },
   {
     "id": 137,
@@ -1646,7 +1646,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FacilityBeds (facility_id, total_icu_beds, occupied_icu_beds)`",
     "businessObjective": "Analyze Healthcare data: Intensive Care Unit (ICU) Bed Occupancy by Facility",
     "targetQuery": "SELECT facility_id,\n       SUM(total_icu_beds) AS total_capacity,\n       SUM(occupied_icu_beds) AS total_occupied,\n       ROUND(SUM(occupied_icu_beds) * 100.0 / SUM(total_icu_beds), 1) AS occupancy_rate_pct\nFROM FacilityBeds\nGROUP BY facility_id\nORDER BY occupancy_rate_pct DESC;",
-    "table": "`FacilityBeds"
+    "table": "FacilityBeds"
   },
   {
     "id": 138,
@@ -1658,7 +1658,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TrialSites (trial_id, site_id, is_randomized)`",
     "businessObjective": "Analyze Healthcare data: Clinical Trial Enrollment Velocity by Site",
     "targetQuery": "SELECT site_id,\n       COUNT(*) AS total_screened_candidates,\n       SUM(CASE WHEN is_randomized = TRUE THEN 1 ELSE 0 END) AS randomized_patients\nFROM TrialSites\nGROUP BY site_id\nORDER BY randomized_patients DESC;",
-    "table": "`TrialSites"
+    "table": "TrialSites"
   },
   {
     "id": 139,
@@ -1670,7 +1670,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DispenseErrors (error_id, drug_class, severity_score)`",
     "businessObjective": "Analyze Healthcare data: Pharmacy Dispensing Error Audit by Medication Category",
     "targetQuery": "SELECT drug_class,\n       COUNT(*) AS total_reported_near_misses,\n       MAX(severity_score) AS peak_severity\nFROM DispenseErrors\nGROUP BY drug_class\nORDER BY total_reported_near_misses DESC;",
-    "table": "`DispenseErrors"
+    "table": "DispenseErrors"
   },
   {
     "id": 140,
@@ -1682,7 +1682,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SpecialtyAppointments (appointment_id, specialty, was_no_show)`",
     "businessObjective": "Analyze Healthcare data: Outpatient Clinic No-Show Rates by Specialty",
     "targetQuery": "SELECT specialty,\n       COUNT(*) AS total_appointments,\n       SUM(CASE WHEN was_no_show = TRUE THEN 1 ELSE 0 END) AS total_no_shows,\n       ROUND(SUM(CASE WHEN was_no_show = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS no_show_rate_pct\nFROM SpecialtyAppointments\nGROUP BY specialty\nORDER BY no_show_rate_pct DESC;",
-    "table": "`SpecialtyAppointments"
+    "table": "SpecialtyAppointments"
   },
   {
     "id": 141,
@@ -1694,7 +1694,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FreightShipments (shipment_id, origin_hub, dest_hub, weight_tons, freight_cost)`",
     "businessObjective": "Analyze Logistics data: Freight Tonnage & Average Cost per Lane",
     "targetQuery": "SELECT origin_hub, dest_hub,\n       COUNT(*) AS total_loads,\n       SUM(weight_tons) AS total_tonnage,\n       ROUND(SUM(freight_cost) / SUM(weight_tons), 2) AS avg_cost_per_ton\nFROM FreightShipments\nGROUP BY origin_hub, dest_hub\nORDER BY total_tonnage DESC;",
-    "table": "`FreightShipments"
+    "table": "FreightShipments"
   },
   {
     "id": 142,
@@ -1706,7 +1706,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CarrierDeliveries (delivery_id, carrier_name, is_on_time)`",
     "businessObjective": "Analyze Logistics data: Carrier SLA On-Time Delivery Rate",
     "targetQuery": "SELECT carrier_name,\n       COUNT(*) AS total_trips,\n       SUM(CASE WHEN is_on_time = TRUE THEN 1 ELSE 0 END) AS on_time_trips,\n       ROUND(SUM(CASE WHEN is_on_time = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS on_time_pct\nFROM CarrierDeliveries\nGROUP BY carrier_name\nHAVING COUNT(*) >= 50\nORDER BY on_time_pct DESC;",
-    "table": "`CarrierDeliveries"
+    "table": "CarrierDeliveries"
   },
   {
     "id": 143,
@@ -1718,7 +1718,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PortContainers (container_id, ocean_line, dwell_days)`",
     "businessObjective": "Analyze Logistics data: Port Dwell Time by Ocean Container Line",
     "targetQuery": "SELECT ocean_line,\n       COUNT(*) AS total_containers,\n       ROUND(AVG(dwell_days), 1) AS avg_dwell_days,\n       MAX(dwell_days) AS worst_dwell_days\nFROM PortContainers\nGROUP BY ocean_line\nORDER BY avg_dwell_days DESC;",
-    "table": "`PortContainers"
+    "table": "PortContainers"
   },
   {
     "id": 144,
@@ -1730,7 +1730,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DroneMissions (mission_id, payload_tier, flight_duration_minutes)`",
     "businessObjective": "Analyze Logistics data: Autonomous Delivery Drone Flight Time by Payload Tier",
     "targetQuery": "SELECT payload_tier,\n       COUNT(*) AS completed_missions,\n       ROUND(AVG(flight_duration_minutes), 1) AS avg_flight_minutes\nFROM DroneMissions\nGROUP BY payload_tier\nORDER BY avg_flight_minutes DESC;",
-    "table": "`DroneMissions"
+    "table": "DroneMissions"
   },
   {
     "id": 145,
@@ -1742,7 +1742,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DriverShifts (shift_id, driver_id, packages_delivered, delivery_zone)`",
     "businessObjective": "Analyze Logistics data: Last-Mile Delivery Driver Route Productivity",
     "targetQuery": "SELECT delivery_zone,\n       COUNT(DISTINCT driver_id) AS active_drivers,\n       SUM(packages_delivered) AS total_delivered,\n       ROUND(AVG(packages_delivered), 1) AS avg_packages_per_driver\nFROM DriverShifts\nGROUP BY delivery_zone\nORDER BY total_delivered DESC;",
-    "table": "`DriverShifts"
+    "table": "DriverShifts"
   },
   {
     "id": 146,
@@ -1754,7 +1754,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ReeferTrucks (trip_id, fleet_operator, was_spoiled, cargo_value_usd)`",
     "businessObjective": "Analyze Logistics data: Cold-Chain Spoilage Loss by Fleet Operator",
     "targetQuery": "SELECT fleet_operator,\n       COUNT(*) AS total_trips,\n       SUM(CASE WHEN was_spoiled = TRUE THEN cargo_value_usd ELSE 0 END) AS total_spoilage_loss_usd\nFROM ReeferTrucks\nGROUP BY fleet_operator\nHAVING SUM(CASE WHEN was_spoiled = TRUE THEN cargo_value_usd ELSE 0 END) > 0\nORDER BY total_spoilage_loss_usd DESC;",
-    "table": "`ReeferTrucks"
+    "table": "ReeferTrucks"
   },
   {
     "id": 147,
@@ -1766,7 +1766,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TerminalDocks (dock_id, terminal_id, pallets_unloaded)`",
     "businessObjective": "Analyze Logistics data: Cross-Docking Terminal Pallet Throughput",
     "targetQuery": "SELECT terminal_id,\n       COUNT(DISTINCT dock_id) AS active_docks,\n       SUM(pallets_unloaded) AS total_pallets_handled\nFROM TerminalDocks\nGROUP BY terminal_id\nORDER BY total_pallets_handled DESC;",
-    "table": "`TerminalDocks"
+    "table": "TerminalDocks"
   },
   {
     "id": 148,
@@ -1778,7 +1778,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FleetOdometer (vehicle_id, engine_model, miles_driven, gallons_fuel_consumed)`",
     "businessObjective": "Analyze Logistics data: Fleet Fuel Economy (MPG) by Engine Model",
     "targetQuery": "SELECT engine_model,\n       COUNT(DISTINCT vehicle_id) AS total_trucks,\n       ROUND(SUM(miles_driven) / SUM(gallons_fuel_consumed), 2) AS fleet_average_mpg\nFROM FleetOdometer\nGROUP BY engine_model\nORDER BY fleet_average_mpg DESC;",
-    "table": "`FleetOdometer"
+    "table": "FleetOdometer"
   },
   {
     "id": 149,
@@ -1790,7 +1790,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`VesselDemurrage (bill_id, charterer_name, overstay_fee_usd)`",
     "businessObjective": "Analyze Logistics data: Demurrage Penalty Accrual by Vessel Charterer",
     "targetQuery": "SELECT charterer_name,\n       COUNT(*) AS delayed_vessel_calls,\n       SUM(overstay_fee_usd) AS total_demurrage_billed_usd\nFROM VesselDemurrage\nGROUP BY charterer_name\nHAVING SUM(overstay_fee_usd) >= 100000\nORDER BY total_demurrage_billed_usd DESC;",
-    "table": "`VesselDemurrage"
+    "table": "VesselDemurrage"
   },
   {
     "id": 150,
@@ -1802,7 +1802,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`HazmatInspections (inspection_id, carrier_id, violation_found)`",
     "businessObjective": "Analyze Logistics data: Hazmat Transport Violations by Carrier",
     "targetQuery": "SELECT carrier_id,\n       COUNT(*) AS total_roadside_inspections,\n       SUM(CASE WHEN violation_found = TRUE THEN 1 ELSE 0 END) AS total_violations\nFROM HazmatInspections\nGROUP BY carrier_id\nORDER BY total_violations DESC;",
-    "table": "`HazmatInspections"
+    "table": "HazmatInspections"
   },
   {
     "id": 151,
@@ -1814,7 +1814,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Streams (stream_id, genre, watch_hours, is_fully_completed)`",
     "businessObjective": "Analyze Media data: Watch Hours & Completion Rate by Content Genre",
     "targetQuery": "SELECT genre,\n       COUNT(*) AS total_streams,\n       SUM(watch_hours) AS total_hours_streamed,\n       ROUND(SUM(CASE WHEN is_fully_completed = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS completion_rate_pct\nFROM Streams\nGROUP BY genre\nORDER BY total_hours_streamed DESC;",
-    "table": "`Streams"
+    "table": "Streams"
   },
   {
     "id": 152,
@@ -1826,7 +1826,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SongRoyalties (play_id, label_name, royalty_earned_usd)`",
     "businessObjective": "Analyze Media data: Music Streaming Royalties Payout by Record Label",
     "targetQuery": "SELECT label_name,\n       COUNT(*) AS total_plays,\n       SUM(royalty_earned_usd) AS total_payout_usd\nFROM SongRoyalties\nGROUP BY label_name\nORDER BY total_payout_usd DESC;",
-    "table": "`SongRoyalties"
+    "table": "SongRoyalties"
   },
   {
     "id": 153,
@@ -1838,7 +1838,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PlayerMatches (match_id, character_class, kills, deaths, assists)`",
     "businessObjective": "Analyze Media data: Esports Player Kill-Death-Assist (KDA) by Character Class",
     "targetQuery": "SELECT character_class,\n       COUNT(*) AS matches_played,\n       ROUND(SUM(kills + assists) * 1.0 / NULLIF(SUM(deaths), 0), 2) AS aggregate_kda_ratio\nFROM PlayerMatches\nGROUP BY character_class\nORDER BY aggregate_kda_ratio DESC;",
-    "table": "`PlayerMatches"
+    "table": "PlayerMatches"
   },
   {
     "id": 154,
@@ -1850,7 +1850,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`VideoBitrateLog (session_id, isp_name, stream_resolution)`",
     "businessObjective": "Analyze Media data: 4K vs 1080p Video Delivery Percentage by ISP",
     "targetQuery": "SELECT isp_name,\n       COUNT(*) AS total_sessions,\n       ROUND(SUM(CASE WHEN stream_resolution = '4K' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS pct_4k_streams\nFROM VideoBitrateLog\nGROUP BY isp_name\nHAVING COUNT(*) >= 1000\nORDER BY pct_4k_streams DESC;",
-    "table": "`VideoBitrateLog"
+    "table": "VideoBitrateLog"
   },
   {
     "id": 155,
@@ -1862,7 +1862,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AdImpressions (ad_id, hour_of_day, revenue_usd)`",
     "businessObjective": "Analyze Media data: Ad-Supported Streaming Impressions by Hour",
     "targetQuery": "SELECT hour_of_day,\n       COUNT(*) AS total_ads_rendered,\n       SUM(revenue_usd) AS total_ad_revenue\nFROM AdImpressions\nGROUP BY hour_of_day\nORDER BY total_ad_revenue DESC;",
-    "table": "`AdImpressions"
+    "table": "AdImpressions"
   },
   {
     "id": 156,
@@ -1874,7 +1874,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PaywallEvents (event_id, article_topic, did_subscribe)`",
     "businessObjective": "Analyze Media data: Paywall Free Reads vs Subscription Conversions by Topic",
     "targetQuery": "SELECT article_topic,\n       COUNT(*) AS total_paywall_hits,\n       SUM(CASE WHEN did_subscribe = TRUE THEN 1 ELSE 0 END) AS new_subscribers,\n       ROUND(SUM(CASE WHEN did_subscribe = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS conversion_rate_pct\nFROM PaywallEvents\nGROUP BY article_topic\nORDER BY new_subscribers DESC;",
-    "table": "`PaywallEvents"
+    "table": "PaywallEvents"
   },
   {
     "id": 157,
@@ -1886,7 +1886,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ServerHeartbeats (heartbeat_id, region, active_players)`",
     "businessObjective": "Analyze Media data: Multiplayer Game Peak Concurrency by Geographic Region",
     "targetQuery": "SELECT region,\n       MAX(active_players) AS peak_concurrent_players,\n       AVG(active_players) AS avg_concurrent_players\nFROM ServerHeartbeats\nGROUP BY region\nORDER BY peak_concurrent_players DESC;",
-    "table": "`ServerHeartbeats"
+    "table": "ServerHeartbeats"
   },
   {
     "id": 158,
@@ -1898,7 +1898,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ModActions (action_id, queue_name, was_content_removed)`",
     "businessObjective": "Analyze Media data: Trust & Safety Moderation Actions by Review Queue",
     "targetQuery": "SELECT queue_name,\n       COUNT(*) AS items_moderated,\n       SUM(CASE WHEN was_content_removed = TRUE THEN 1 ELSE 0 END) AS content_takedowns\nFROM ModActions\nGROUP BY queue_name\nORDER BY items_moderated DESC;",
-    "table": "`ModActions"
+    "table": "ModActions"
   },
   {
     "id": 159,
@@ -1910,7 +1910,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ViewerSessions (session_id, user_id, episodes_watched)`",
     "businessObjective": "Analyze Media data: Binge-Watching Session Length Distribution",
     "targetQuery": "SELECT episodes_watched,\n       COUNT(*) AS session_count\nFROM ViewerSessions\nGROUP BY episodes_watched\nORDER BY episodes_watched ASC;",
-    "table": "`ViewerSessions"
+    "table": "ViewerSessions"
   },
   {
     "id": 160,
@@ -1922,7 +1922,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AuctionSales (item_id, rarity_tier, gold_price)`",
     "businessObjective": "Analyze Media data: Virtual Economy Gold Volume by Item Rarity",
     "targetQuery": "SELECT rarity_tier,\n       COUNT(*) AS items_sold,\n       SUM(gold_price) AS total_gold_exchanged\nFROM AuctionSales\nGROUP BY rarity_tier\nORDER BY total_gold_exchanged DESC;",
-    "table": "`AuctionSales"
+    "table": "AuctionSales"
   },
   {
     "id": 161,
@@ -1934,7 +1934,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`LoginAudits (event_id, source_subnet, was_success)`",
     "businessObjective": "Analyze Security data: Brute-Force IP Subnet Thresholds (`HAVING COUNT >= 20`)",
     "targetQuery": "SELECT source_subnet,\n       COUNT(*) AS total_failed_attempts\nFROM LoginAudits\nWHERE was_success = FALSE\nGROUP BY source_subnet\nHAVING COUNT(*) >= 20\nORDER BY total_failed_attempts DESC;",
-    "table": "`LoginAudits"
+    "table": "LoginAudits"
   },
   {
     "id": 162,
@@ -1946,7 +1946,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`VulnerabilityScans (host_id, os_name, cve_id, cvss_score)`",
     "businessObjective": "Analyze Security data: Unpatched Zero-Day CVE Count by Operating System",
     "targetQuery": "SELECT os_name,\n       COUNT(DISTINCT host_id) AS vulnerable_hosts,\n       COUNT(DISTINCT cve_id) AS unique_cves_present,\n       MAX(cvss_score) AS highest_cvss\nFROM VulnerabilityScans\nGROUP BY os_name\nORDER BY highest_cvss DESC;",
-    "table": "`VulnerabilityScans"
+    "table": "VulnerabilityScans"
   },
   {
     "id": 163,
@@ -1958,7 +1958,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CloudBilling (item_id, cost_center_tag, billed_amount_usd)`",
     "businessObjective": "Analyze Security data: Cloud Compute Cost by Cost-Center Tag",
     "targetQuery": "SELECT cost_center_tag,\n       SUM(billed_amount_usd) AS total_monthly_spend_usd\nFROM CloudBilling\nGROUP BY cost_center_tag\nHAVING SUM(billed_amount_usd) >= 10000\nORDER BY total_monthly_spend_usd DESC;",
-    "table": "`CloudBilling"
+    "table": "CloudBilling"
   },
   {
     "id": 164,
@@ -1970,7 +1970,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PhishingCampaign (test_id, department, email_opened, link_clicked)`",
     "businessObjective": "Analyze Security data: Simulated Phishing Click Rate by Department",
     "targetQuery": "SELECT department,\n       COUNT(*) AS emails_sent,\n       SUM(CASE WHEN link_clicked = TRUE THEN 1 ELSE 0 END) AS failure_clicks,\n       ROUND(SUM(CASE WHEN link_clicked = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS click_rate_pct\nFROM PhishingCampaign\nGROUP BY department\nORDER BY click_rate_pct DESC;",
-    "table": "`PhishingCampaign"
+    "table": "PhishingCampaign"
   },
   {
     "id": 165,
@@ -1982,7 +1982,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`RoleAssignments (assignment_id, employee_id, is_admin_role)`",
     "businessObjective": "Analyze Security data: IAM Privileged Role Sprawl per Employee",
     "targetQuery": "SELECT employee_id,\n       COUNT(*) AS total_roles_assigned,\n       SUM(CASE WHEN is_admin_role = TRUE THEN 1 ELSE 0 END) AS admin_roles_count\nFROM RoleAssignments\nGROUP BY employee_id\nHAVING SUM(CASE WHEN is_admin_role = TRUE THEN 1 ELSE 0 END) >= 3\nORDER BY admin_roles_count DESC;",
-    "table": "`RoleAssignments"
+    "table": "RoleAssignments"
   },
   {
     "id": 166,
@@ -1994,7 +1994,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DataExports (export_id, user_id, data_size_mb)`",
     "businessObjective": "Analyze Security data: Data Loss Prevention (DLP) Exfiltration by Account",
     "targetQuery": "SELECT user_id,\n       COUNT(*) AS export_events,\n       SUM(data_size_mb) AS total_mb_exported\nFROM DataExports\nGROUP BY user_id\nHAVING SUM(data_size_mb) >= 5000\nORDER BY total_mb_exported DESC;",
-    "table": "`DataExports"
+    "table": "DataExports"
   },
   {
     "id": 167,
@@ -2006,7 +2006,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CertInventory (cert_id, team_owner, days_until_expiry)`",
     "businessObjective": "Analyze Security data: Expiring SSL/TLS Certificates by Infrastructure Owner",
     "targetQuery": "SELECT team_owner,\n       COUNT(*) AS certs_expiring_soon\nFROM CertInventory\nWHERE days_until_expiry <= 30\nGROUP BY team_owner\nORDER BY certs_expiring_soon DESC;",
-    "table": "`CertInventory"
+    "table": "CertInventory"
   },
   {
     "id": 168,
@@ -2018,7 +2018,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`UserLocations (event_id, user_id, country_code)`",
     "businessObjective": "Analyze Security data: Impossible Travel Geolocation Anomalies",
     "targetQuery": "SELECT user_id,\n       COUNT(DISTINCT country_code) AS unique_countries_24h\nFROM UserLocations\nGROUP BY user_id\nHAVING COUNT(DISTINCT country_code) >= 2\nORDER BY unique_countries_24h DESC;",
-    "table": "`UserLocations"
+    "table": "UserLocations"
   },
   {
     "id": 169,
@@ -2030,7 +2030,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`WorkstationFleet (device_id, office_branch, is_av_outdated)`",
     "businessObjective": "Analyze Security data: Outdated Antivirus Workstations by Office Location",
     "targetQuery": "SELECT office_branch,\n       COUNT(*) AS total_workstations,\n       SUM(CASE WHEN is_av_outdated = TRUE THEN 1 ELSE 0 END) AS non_compliant_devices\nFROM WorkstationFleet\nGROUP BY office_branch\nORDER BY non_compliant_devices DESC;",
-    "table": "`WorkstationFleet"
+    "table": "WorkstationFleet"
   },
   {
     "id": 170,
@@ -2042,7 +2042,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SplunkIngestion (log_id, log_source, raw_bytes)`",
     "businessObjective": "Analyze Security data: SOC2 Audit Log Daily Ingestion Volume",
     "targetQuery": "SELECT log_source,\n       COUNT(*) AS event_count,\n       ROUND(SUM(raw_bytes) / 1073741824.0, 2) AS total_gigabytes_ingested\nFROM SplunkIngestion\nGROUP BY log_source\nORDER BY total_gigabytes_ingested DESC;",
-    "table": "`SplunkIngestion"
+    "table": "SplunkIngestion"
   },
   {
     "id": 171,
@@ -2054,7 +2054,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AmrLogs (event_id, aisle_id, was_emergency_brake)`",
     "businessObjective": "Analyze Hardware data: Warehouse AMR Collision Near-Misses by Aisle",
     "targetQuery": "SELECT aisle_id,\n       COUNT(*) AS robot_passages,\n       SUM(CASE WHEN was_emergency_brake = TRUE THEN 1 ELSE 0 END) AS emergency_braking_events\nFROM AmrLogs\nGROUP BY aisle_id\nHAVING SUM(CASE WHEN was_emergency_brake = TRUE THEN 1 ELSE 0 END) >= 5\nORDER BY emergency_braking_events DESC;",
-    "table": "`AmrLogs"
+    "table": "AmrLogs"
   },
   {
     "id": 172,
@@ -2066,7 +2066,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`RobotCells (telemetry_id, cell_code, vibration_hz)`",
     "businessObjective": "Analyze Hardware data: Industrial Robot Arm Vibration Telemetry by Work Cell",
     "targetQuery": "SELECT cell_code,\n       COUNT(*) AS samples_collected,\n       ROUND(AVG(vibration_hz), 2) AS average_vibration_hz,\n       MAX(vibration_hz) AS peak_vibration_hz\nFROM RobotCells\nGROUP BY cell_code\nORDER BY peak_vibration_hz DESC;",
-    "table": "`RobotCells"
+    "table": "RobotCells"
   },
   {
     "id": 173,
@@ -2078,7 +2078,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`SubstationFeeders (reading_id, substation_id, load_mw)`",
     "businessObjective": "Analyze Hardware data: Smart Electric Grid Peak Load by Substation",
     "targetQuery": "SELECT substation_id,\n       MAX(load_mw) AS peak_megawatts,\n       AVG(load_mw) AS avg_megawatts\nFROM SubstationFeeders\nGROUP BY substation_id\nORDER BY peak_megawatts DESC;",
-    "table": "`SubstationFeeders"
+    "table": "SubstationFeeders"
   },
   {
     "id": 174,
@@ -2090,7 +2090,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`InverterEnergy (record_id, inverter_id, generated_kwh)`",
     "businessObjective": "Analyze Hardware data: Solar Farm Daily Generation by Inverter",
     "targetQuery": "SELECT inverter_id,\n       SUM(generated_kwh) AS total_daily_kwh,\n       AVG(generated_kwh) AS avg_hourly_kwh\nFROM InverterEnergy\nGROUP BY inverter_id\nORDER BY total_daily_kwh ASC;",
-    "table": "`InverterEnergy"
+    "table": "InverterEnergy"
   },
   {
     "id": 175,
@@ -2102,7 +2102,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`EvChargers (session_id, station_location, energy_delivered_kwh)`",
     "businessObjective": "Analyze Hardware data: EV Charging Station Energy Dispensed by Site",
     "targetQuery": "SELECT station_location,\n       COUNT(*) AS charge_sessions,\n       SUM(energy_delivered_kwh) AS total_kwh_delivered\nFROM EvChargers\nGROUP BY station_location\nORDER BY total_kwh_delivered DESC;",
-    "table": "`EvChargers"
+    "table": "EvChargers"
   },
   {
     "id": 176,
@@ -2114,7 +2114,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`RackThermalSensors (reading_id, rack_row_id, exhaust_temp_c)`",
     "businessObjective": "Analyze Hardware data: Datacenter Server Rack Hot-Aisle Maximum Temperatures",
     "targetQuery": "SELECT rack_row_id,\n       ROUND(AVG(exhaust_temp_c), 1) AS avg_temp_c,\n       MAX(exhaust_temp_c) AS max_hot_aisle_temp_c\nFROM RackThermalSensors\nGROUP BY rack_row_id\nORDER BY max_hot_aisle_temp_c DESC;",
-    "table": "`RackThermalSensors"
+    "table": "RackThermalSensors"
   },
   {
     "id": 177,
@@ -2126,7 +2126,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`WaterPlants (reading_id, plant_id, turbidity_ntu)`",
     "businessObjective": "Analyze Hardware data: Municipal Water Plant Turbidity Breaches",
     "targetQuery": "SELECT plant_id,\n       COUNT(*) AS total_samples,\n       SUM(CASE WHEN turbidity_ntu > 1.0 THEN 1 ELSE 0 END) AS epa_violation_count\nFROM WaterPlants\nGROUP BY plant_id\nORDER BY epa_violation_count DESC;",
-    "table": "`WaterPlants"
+    "table": "WaterPlants"
   },
   {
     "id": 178,
@@ -2138,7 +2138,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`EngineTelemetry (telemetry_id, aircraft_model, egt_celsius)`",
     "businessObjective": "Analyze Hardware data: Jet Turbine Engine Exhaust Temperatures by Aircraft Fleet",
     "targetQuery": "SELECT aircraft_model,\n       COUNT(*) AS flights_recorded,\n       ROUND(AVG(egt_celsius), 1) AS avg_egt,\n       MAX(egt_celsius) AS max_egt\nFROM EngineTelemetry\nGROUP BY aircraft_model\nORDER BY max_egt DESC;",
-    "table": "`EngineTelemetry"
+    "table": "EngineTelemetry"
   },
   {
     "id": 179,
@@ -2150,7 +2150,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FieldProbes (probe_id, zone_name, moisture_pct)`",
     "businessObjective": "Analyze Hardware data: Smart Farm Average Soil Moisture by Crop Zone",
     "targetQuery": "SELECT zone_name,\n       COUNT(*) AS probe_count,\n       ROUND(AVG(moisture_pct), 1) AS avg_soil_moisture_pct\nFROM FieldProbes\nGROUP BY zone_name\nORDER BY avg_soil_moisture_pct ASC;",
-    "table": "`FieldProbes"
+    "table": "FieldProbes"
   },
   {
     "id": 180,
@@ -2162,7 +2162,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FactoryStoppages (stoppage_id, assembly_line, downtime_minutes)`",
     "businessObjective": "Analyze Hardware data: Factory Assembly Line Total Downtime Minutes",
     "targetQuery": "SELECT assembly_line,\n       COUNT(*) AS stoppage_incidents,\n       SUM(downtime_minutes) AS total_lost_minutes\nFROM FactoryStoppages\nGROUP BY assembly_line\nORDER BY total_lost_minutes DESC;",
-    "table": "`FactoryStoppages"
+    "table": "FactoryStoppages"
   },
   {
     "id": 181,
@@ -2174,7 +2174,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Employees (id, name, department, salary)`",
     "businessObjective": "Analyze HR data: Departmental Headcount, Payroll Total, and Average Compensation",
     "targetQuery": "SELECT department,\n       COUNT(*) AS staff_count,\n       SUM(salary) AS total_payroll,\n       ROUND(AVG(salary), 2) AS average_salary\nFROM Employees\nGROUP BY department\nORDER BY total_payroll DESC;",
-    "table": "`Employees"
+    "table": "Employees"
   },
   {
     "id": 182,
@@ -2186,7 +2186,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`WeeklyPayroll (emp_id, department, overtime_hours)`",
     "businessObjective": "Analyze HR data: Overtime Compliance: Departments Exceeding 200 Weekly OT Hours",
     "targetQuery": "SELECT department,\n       COUNT(*) AS employees_working_ot,\n       SUM(overtime_hours) AS total_dept_ot_hours\nFROM WeeklyPayroll\nGROUP BY department\nHAVING SUM(overtime_hours) >= 200\nORDER BY total_dept_ot_hours DESC;",
-    "table": "`WeeklyPayroll"
+    "table": "WeeklyPayroll"
   },
   {
     "id": 183,
@@ -2198,7 +2198,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`BonusRecords (exec_id, business_unit, bonus_payout_usd)`",
     "businessObjective": "Analyze HR data: Executive OKR Performance Bonus Rollup",
     "targetQuery": "SELECT business_unit,\n       COUNT(*) AS executives_awarded,\n       SUM(bonus_payout_usd) AS total_bonus_distributed\nFROM BonusRecords\nGROUP BY business_unit\nORDER BY total_bonus_distributed DESC;",
-    "table": "`BonusRecords"
+    "table": "BonusRecords"
   },
   {
     "id": 184,
@@ -2210,7 +2210,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`PayEquityReview (emp_id, job_grade, gender, base_salary)`",
     "businessObjective": "Analyze HR data: Pay Equity Audit: Average Salary Comparisons by Job Grade",
     "targetQuery": "SELECT job_grade, gender,\n       COUNT(*) AS headcount,\n       ROUND(AVG(base_salary), 2) AS avg_salary\nFROM PayEquityReview\nGROUP BY job_grade, gender\nORDER BY job_grade ASC, gender ASC;",
-    "table": "`PayEquityReview"
+    "table": "PayEquityReview"
   },
   {
     "id": 185,
@@ -2222,7 +2222,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`StaffPto (emp_id, division, unused_pto_hours)`",
     "businessObjective": "Analyze HR data: Annual Paid Time Off (PTO) Unused Accrued Hours",
     "targetQuery": "SELECT division,\n       COUNT(*) AS employee_count,\n       SUM(unused_pto_hours) AS total_unused_hours\nFROM StaffPto\nGROUP BY division\nORDER BY total_unused_hours DESC;",
-    "table": "`StaffPto"
+    "table": "StaffPto"
   },
   {
     "id": 186,
@@ -2234,7 +2234,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CommissionPayouts (rep_id, sales_territory, commission_usd)`",
     "businessObjective": "Analyze HR data: Sales Commission Accelerator Payouts by Territory",
     "targetQuery": "SELECT sales_territory,\n       COUNT(*) AS reps_in_territory,\n       SUM(commission_usd) AS total_commissions_paid\nFROM CommissionPayouts\nGROUP BY sales_territory\nORDER BY total_commissions_paid DESC;",
-    "table": "`CommissionPayouts"
+    "table": "CommissionPayouts"
   },
   {
     "id": 187,
@@ -2246,7 +2246,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`RemoteEmployees (emp_id, residential_state, salary)`",
     "businessObjective": "Analyze HR data: Remote Worker Geographic Tax Nexus Headcounts",
     "targetQuery": "SELECT residential_state,\n       COUNT(*) AS remote_headcount,\n       SUM(salary) AS total_state_payroll\nFROM RemoteEmployees\nGROUP BY residential_state\nORDER BY remote_headcount DESC;",
-    "table": "`RemoteEmployees"
+    "table": "RemoteEmployees"
   },
   {
     "id": 188,
@@ -2258,7 +2258,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`ExitInterviews (interview_id, department, tenure_months)`",
     "businessObjective": "Analyze HR data: Employee Turnover Count by Department",
     "targetQuery": "SELECT department,\n       COUNT(*) AS departures_count,\n       ROUND(AVG(tenure_months), 1) AS avg_tenure_months\nFROM ExitInterviews\nGROUP BY department\nORDER BY departures_count DESC;",
-    "table": "`ExitInterviews"
+    "table": "ExitInterviews"
   },
   {
     "id": 189,
@@ -2270,7 +2270,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`TrainingProgress (emp_id, division, is_certified)`",
     "businessObjective": "Analyze HR data: Mandatory Compliance Training Completion Percentage",
     "targetQuery": "SELECT division,\n       COUNT(*) AS total_staff,\n       SUM(CASE WHEN is_certified = TRUE THEN 1 ELSE 0 END) AS completed_staff,\n       ROUND(SUM(CASE WHEN is_certified = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS completion_pct\nFROM TrainingProgress\nGROUP BY division\nHAVING (SUM(CASE WHEN is_certified = TRUE THEN 1 ELSE 0 END) * 1.0 / COUNT(*)) < 0.90\nORDER BY completion_pct ASC;",
-    "table": "`TrainingProgress"
+    "table": "TrainingProgress"
   },
   {
     "id": 190,
@@ -2282,7 +2282,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`RetirementLedger (emp_id, plan_year, company_match_usd)`",
     "businessObjective": "Analyze HR data: 401(k) Employer Match Liability by Plan Year",
     "targetQuery": "SELECT plan_year,\n       COUNT(DISTINCT emp_id) AS participating_employees,\n       SUM(company_match_usd) AS total_company_match_expenditure\nFROM RetirementLedger\nGROUP BY plan_year\nORDER BY plan_year DESC;",
-    "table": "`RetirementLedger"
+    "table": "RetirementLedger"
   },
   {
     "id": 191,
@@ -2294,7 +2294,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Rides (ride_id, city_zone, fare_amount_usd, surge_multiplier)`",
     "businessObjective": "Analyze Platforms data: Ride-Hailing Driver Earnings & Surge Fares by City Zone",
     "targetQuery": "SELECT city_zone,\n       COUNT(*) AS total_trips,\n       ROUND(AVG(surge_multiplier), 2) AS avg_surge,\n       SUM(fare_amount_usd) AS gross_driver_earnings\nFROM Rides\nGROUP BY city_zone\nORDER BY gross_driver_earnings DESC;",
-    "table": "`Rides"
+    "table": "Rides"
   },
   {
     "id": 192,
@@ -2306,7 +2306,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Creators (creator_id, follower_tier, engagement_rate)`",
     "businessObjective": "Analyze Platforms data: Creator Sponsorship Market: Engagement Rates by Follower Tier",
     "targetQuery": "SELECT follower_tier,\n       COUNT(*) AS creator_count,\n       ROUND(AVG(engagement_rate), 2) AS avg_engagement_pct\nFROM Creators\nGROUP BY follower_tier\nORDER BY avg_engagement_pct DESC;",
-    "table": "`Creators"
+    "table": "Creators"
   },
   {
     "id": 193,
@@ -2318,7 +2318,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`Properties (property_id, host_id, review_score, bookings_count)`",
     "businessObjective": "Analyze Platforms data: Airbnb Superhost Evaluation: Average Rating & Trips",
     "targetQuery": "SELECT host_id,\n       SUM(bookings_count) AS total_bookings,\n       ROUND(AVG(review_score), 2) AS avg_host_rating\nFROM Properties\nGROUP BY host_id\nHAVING SUM(bookings_count) >= 10 AND AVG(review_score) >= 4.80\nORDER BY total_bookings DESC;",
-    "table": "`Properties"
+    "table": "Properties"
   },
   {
     "id": 194,
@@ -2330,7 +2330,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`AdBids (bid_id, ad_category, winning_cpc_usd)`",
     "businessObjective": "Analyze Platforms data: AdTech Programmatic Ad Bidding: Spend by Category",
     "targetQuery": "SELECT ad_category,\n       COUNT(*) AS impressions_won,\n       ROUND(AVG(winning_cpc_usd), 2) AS avg_cpc,\n       SUM(winning_cpc_usd) AS total_ad_spend\nFROM AdBids\nGROUP BY ad_category\nORDER BY total_ad_spend DESC;",
-    "table": "`AdBids"
+    "table": "AdBids"
   },
   {
     "id": 195,
@@ -2342,7 +2342,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`FoodDeliveries (delivery_id, order_subtotal, tip_amount)`",
     "businessObjective": "Analyze Platforms data: Food Delivery Courier Tips: Average Tip Percentage",
     "targetQuery": "SELECT COUNT(*) AS total_deliveries,\n       SUM(order_subtotal) AS gross_food_sales,\n       SUM(tip_amount) AS total_courier_tips,\n       ROUND(SUM(tip_amount) * 100.0 / SUM(order_subtotal), 2) AS avg_tip_pct\nFROM FoodDeliveries;",
-    "table": "`FoodDeliveries"
+    "table": "FoodDeliveries"
   },
   {
     "id": 196,
@@ -2354,7 +2354,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`MarketplaceAudits (audit_id, seller_id, is_counterfeit_flag)`",
     "businessObjective": "Analyze Platforms data: Marketplace Counterfeit Risk: Sellers with Flagged Listings",
     "targetQuery": "SELECT seller_id,\n       COUNT(*) AS total_active_listings,\n       SUM(CASE WHEN is_counterfeit_flag = TRUE THEN 1 ELSE 0 END) AS flagged_counterfeits\nFROM MarketplaceAudits\nGROUP BY seller_id\nHAVING SUM(CASE WHEN is_counterfeit_flag = TRUE THEN 1 ELSE 0 END) >= 3\nORDER BY flagged_counterfeits DESC;",
-    "table": "`MarketplaceAudits"
+    "table": "MarketplaceAudits"
   },
   {
     "id": 197,
@@ -2366,7 +2366,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`UserRegistrations (reg_id, origin_subnet)`",
     "businessObjective": "Analyze Platforms data: Social Network Signup Velocity by Subnet",
     "targetQuery": "SELECT origin_subnet,\n       COUNT(*) AS registrations_last_hour\nFROM UserRegistrations\nGROUP BY origin_subnet\nHAVING COUNT(*) >= 50\nORDER BY registrations_last_hour DESC;",
-    "table": "`UserRegistrations"
+    "table": "UserRegistrations"
   },
   {
     "id": 198,
@@ -2378,7 +2378,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`DatingSwipes (swipe_id, metro_city, was_mutual_match)`",
     "businessObjective": "Analyze Platforms data: Dating App Match Conversion Rate by Metro City",
     "targetQuery": "SELECT metro_city,\n       COUNT(*) AS total_swipes,\n       SUM(CASE WHEN was_mutual_match = TRUE THEN 1 ELSE 0 END) AS total_matches,\n       ROUND(SUM(CASE WHEN was_mutual_match = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS match_rate_pct\nFROM DatingSwipes\nGROUP BY metro_city\nORDER BY total_matches DESC;",
-    "table": "`DatingSwipes"
+    "table": "DatingSwipes"
   },
   {
     "id": 199,
@@ -2390,7 +2390,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`RealtyListings (listing_id, neighborhood, list_price, days_on_market)`",
     "businessObjective": "Analyze Platforms data: Real Estate Days-On-Market (DOM) by Neighborhood",
     "targetQuery": "SELECT neighborhood,\n       COUNT(*) AS active_homes,\n       ROUND(AVG(list_price), 0) AS avg_home_price,\n       ROUND(AVG(days_on_market), 0) AS avg_days_on_market\nFROM RealtyListings\nGROUP BY neighborhood\nORDER BY avg_days_on_market DESC;",
-    "table": "`RealtyListings"
+    "table": "RealtyListings"
   },
   {
     "id": 200,
@@ -2402,7 +2402,7 @@ window.ALL_300_CASE_STUDIES = [
     "schemaSnippet": "`CrowdfundingProjects (project_id, category, pledged_usd, goal_usd)`",
     "businessObjective": "Analyze Platforms data: Crowdfunding Kickstarter Success Rate by Category",
     "targetQuery": "SELECT category,\n       COUNT(*) AS total_campaigns,\n       SUM(CASE WHEN pledged_usd >= goal_usd THEN 1 ELSE 0 END) AS successful_campaigns,\n       ROUND(SUM(CASE WHEN pledged_usd >= goal_usd THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS success_rate_pct\nFROM CrowdfundingProjects\nGROUP BY category\nORDER BY success_rate_pct DESC;",
-    "table": "`CrowdfundingProjects"
+    "table": "CrowdfundingProjects"
   },
   {
     "id": 201,

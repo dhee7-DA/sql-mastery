@@ -276,7 +276,7 @@ const DYNAMIC_TABLE_REGISTRY = new Set();
 
 function ensureDynamicTableInDatabase(tableName, caseStudy = null, sqlContext = '') {
   if (!tableName) return 'Employees';
-  const cleanName = tableName.trim();
+  const cleanName = tableName.trim().replace(/^[`'"]+|[`'"]+$/g, '');
 
   // If already in DATABASE and not a dynamic table, return existing key
   const existingKey = Object.keys(DATABASE).find(k => k.toLowerCase() === cleanName.toLowerCase());

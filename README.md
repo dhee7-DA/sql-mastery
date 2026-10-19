@@ -1,6 +1,6 @@
-# 🚀 14-Day SQL Mastery for Data Analysis
+# 🚀 15-Day SQL Mastery for Data Analysis & Enterprise Engineering
 
-Welcome to the **14-Day SQL Intensive**. This repository is an institutional-grade structured log of daily deliberate practice, solving real-world query problems, mastering edge cases, and building analytical muscle memory from absolute fundamentals to advanced analytical SQL (Window Functions, CTEs, Data Modeling).
+Welcome to the **15-Day SQL Intensive**. This repository is an institutional-grade structured log of daily deliberate practice, solving real-world query problems, mastering edge cases, and building analytical muscle memory from absolute fundamentals to advanced analytical SQL (Window Functions, CTEs, Data Modeling, and Enterprise Reconciliation).
 
 ---
 
@@ -16,7 +16,7 @@ Welcome to the **14-Day SQL Intensive**. This repository is an institutional-gra
 
 An institutional-grade, in-browser execution studio and visual masterclass located in [`visualizer/`](./visualizer):
 - 🎨 **Poppy Neo-Brutalist Design System**: High-contrast, tactile UI with raw 3px solid black outlines, offset ink drop shadows, and punchy sticker palettes (`#fef08a`, `#38bdf8`, `#f472b6`, `#22c55e`, `#fbbf24`, `#c084fc`).
-- 📖 **14 Visual Masterclass Modules**: Textbook-grade CS theory, engine storage physics, and custom Neo-Brutalist SVG Explainer Diagrams:
+- 📖 **15 Visual Masterclass Modules & In-App Theory Reader**: Textbook-grade CS theory, engine storage physics, and custom Neo-Brutalist SVG Explainer Diagrams:
   1. *Physical Execution Pipeline & Lexical Sequencing*
   2. *Filtering, Predicates & Three-Valued Logic (3VL)*
   3. *Sorting, Determinism & Keyset Pagination*
@@ -31,8 +31,11 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
   12. *Analytical Window Functions, Value Offsets & Sliding Window Physics*
   13. *Advanced Business Analytics, Churn Bridges & Retention Cohorts*
   14. *Enterprise Dimensional Modeling, Kimball Star Schema & Data Warehousing*
+  15. *Prime Broker Reconciliation Engine & Grand Capstone Verification*
+- 🌳 **Visual EXPLAIN ANALYZE Execution Plan Tree**: Production query cost visualizer with interactive SVG flow topologies, multi-dialect execution modeling (PostgreSQL 16, MySQL 8.0, DuckDB), and an interactive **What-If B+Tree Index Simulator** with ESR rule diagnostics.
+- 📚 **In-App Curriculum Theory & Defense Reader**: Direct 4-way subtab access across all 15 curriculum days (Theory, Interview Defense, Daily Log, Solutions Breakdown) with code copy and "▶ Test in Studio" bridges.
 - 🧠 **2,100 Master Technical MCQs Vault**: 23 technical categories with 350 dedicated Relational Join questions, 500 dedicated Window Function questions, and 150 Section 10 Subquery/CTE/Set Operations questions, instant answer validation, sound FX, and balanced 25% option distribution.
-- 💼 **1,790 Corporate & Foundations Case Study Master Vault**: 11 sections spanning 10 industry verticals plus Section 0 Syntax Gym (300 foundational micro-drills, 390 Relational Join cases, 300 Section 9 Window Analytics cases, and 150 Section 10 Advanced SQL Engine Mastery cases with interactive token puzzles and live execution simulation).
+- 💼 **2,540 Corporate & Foundations Case Study Master Vault**: Spanning 10 industry verticals (FinTech, Healthcare, Logistics, AdTech, E-Commerce, Gaming, SaaS, HR, Security, Real Estate) plus Syntax Gym micro-drills, token puzzles, and live execution simulation.
 - 🔗 **8-Step Dual-Table Relational Joins Linker**: Interactive step-through simulator in Guided Lab (Track 04) covering Inner, Left, Right, Full Outer, Left Anti, Cross, Self, and Non-Equi joins.
 - 🎮 **30 Gamified Quests**: Live token puzzle solver with sound FX and real-time AST evaluation.
 - 🚀 **Zero Dependencies**: Pure HTML5, Vanilla CSS, and Vanilla JavaScript. Double-click [`visualizer/index.html`](./visualizer/index.html) or run a local server to launch!
