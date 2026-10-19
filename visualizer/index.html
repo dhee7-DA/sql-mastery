@@ -94,6 +94,16 @@
             </button>
             <div class="nav-dropdown-menu">
               <div class="nav-dropdown-header">Drill &amp; Test Vaults</div>
+              <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Activity Heatmap', 'navGroupPractice'); setTimeout(()=>{ const el = document.getElementById('curriculumActivityHeatmap'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 120);">
+                <span class="nav-item-icon">📅</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Activity Heatmap &amp; Streaks</span>
+                    <span class="nav-item-tag accent" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">112-Day</span>
+                  </div>
+                  <span class="nav-item-desc">GitHub-style deliberate practice matrix &amp; habit tracking</span>
+                </div>
+              </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewMockInterview" onclick="selectNavView('viewMockInterview', 'Interview 🎯', 'navGroupPractice')">
                 <span class="nav-item-icon">🎯</span>
                 <div class="nav-item-text">
@@ -332,11 +342,11 @@
       <div class="header-right">
         <!-- Compact Habit Counters -->
         <div class="header-stats-strip">
-          <span class="header-stat-chip" id="userStreakCounter" title="Daily SQL Mastery Streak">
+          <span class="header-stat-chip" id="userStreakCounter" title="Daily SQL Mastery Streak (Click to open Calendar)" style="cursor: pointer;" onclick="if(window.dailyStreak) window.dailyStreak.open();">
             <span class="stat-icon">🔥</span>
             <span class="stat-val" id="streakDaysCount">1</span><span class="stat-unit">d</span>
           </span>
-          <span class="header-stat-chip" id="userXpCounter" title="Total SQL Mastery Points">
+          <span class="header-stat-chip" id="userXpCounter" title="Total SQL Mastery Points (Click to view 112-Day Heatmap)" style="cursor: pointer;" onclick="if(window.selectNavView) window.selectNavView('viewQuests', 'Quests', null); setTimeout(()=>{ const el = document.getElementById('curriculumActivityHeatmap'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 150);">
             <span class="stat-icon">⚡</span>
             <span class="stat-val" id="xpPointsVal">60</span><span class="stat-unit">XP</span>
           </span>
@@ -425,7 +435,7 @@
                     <span class="analytics-subtitle">Real-time persistence across 2,100 MCQs, 1,700 Drills, Case Studies &amp; Studio</span>
                   </div>
                 </div>
-                <div class="heatmap-streak-badge" id="heatmapStreakBadge">
+                <div class="heatmap-streak-badge" id="heatmapStreakBadge" style="cursor: pointer;" onclick="if(window.dailyStreak) window.dailyStreak.open();" title="Click to view Streak Calendar">
                   🔥 <strong>1 Day Streak</strong> &bull; 60 XP
                 </div>
               </div>
