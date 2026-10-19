@@ -14918,6 +14918,74 @@ const TOPIC_PATHWAY_MODULES = [
     trapsCount: 2,
     tipsCount: 1,
     interviewCount: 1
+  },
+  {
+    id: "mod_windows",
+    num: "12",
+    title: "Analytical Window Functions & Sliding Frames",
+    icon: "🪟",
+    tagline: "ROW_NUMBER, RANK, DENSE_RANK, NTILE, LAG, LEAD, and ROWS BETWEEN sliding frames",
+    caseSection: "Section 9: Window Functions & Quantitative Financial Analytics",
+    mcqKeywords: ["RANK", "LAG & LEAD", "RUNNING TOTALS"],
+    studySectionId: "sec_window_functions",
+    labTrackId: "track01",
+    trapsModuleId: "mod_joins",
+    caseCount: 300,
+    mcqCount: 200,
+    trapsCount: 4,
+    tipsCount: 2,
+    interviewCount: 2
+  },
+  {
+    id: "mod_analytics",
+    num: "13",
+    title: "Enterprise Business Analytics & Cohort Decay",
+    icon: "📈",
+    tagline: "Retention cohorts, churn decay, 5-way MRR waterfall, LTV/CAC payback & funnels",
+    caseSection: "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    mcqKeywords: ["COUNT", "SUM", "AVG"],
+    studySectionId: "sec_business_analytics",
+    labTrackId: "track03",
+    trapsModuleId: "mod_aggregations",
+    caseCount: 200,
+    mcqCount: 150,
+    trapsCount: 3,
+    tipsCount: 2,
+    interviewCount: 2
+  },
+  {
+    id: "mod_warehousing",
+    num: "14",
+    title: "Kimball Dimensional Modeling & Warehousing",
+    icon: "🏛️",
+    tagline: "Star Schema, Fact/Dim granularity, SCD Type 2 historical tracking & Conformed Keys",
+    caseSection: "Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion & Set Operations)",
+    mcqKeywords: ["WHERE", "SELECT"],
+    studySectionId: "sec_data_warehousing",
+    labTrackId: "track04",
+    trapsModuleId: "mod_architecture",
+    caseCount: 150,
+    mcqCount: 100,
+    trapsCount: 3,
+    tipsCount: 2,
+    interviewCount: 1
+  },
+  {
+    id: "mod_reconciliation",
+    num: "15",
+    title: "Prime Broker Reconciliation & Capstone Mastery",
+    icon: "💼",
+    tagline: "Multi-asset trade matching, custody clearing breaks, SEC T+1 & capital-at-risk",
+    caseSection: "Section 8: Relational Joins & Financial Data Modeling",
+    mcqKeywords: ["FULL OUTER JOIN", "INNER JOIN"],
+    studySectionId: "sec_reconciliation",
+    labTrackId: "track04",
+    trapsModuleId: "mod_joins",
+    caseCount: 100,
+    mcqCount: 100,
+    trapsCount: 3,
+    tipsCount: 2,
+    interviewCount: 2
   }
 ];
 
@@ -15013,6 +15081,22 @@ function renderPathwayMasterclass() {
     `;
     return;
   }
+
+  // In-App Curriculum Theory Reader Banner
+  const readerBanner = `
+    <div style="background: rgba(194, 65, 12, 0.05); border: 1px solid var(--accent-border, #fed7aa); border-radius: 12px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 24px;">📖</span>
+        <div>
+          <div style="font-size: 13.5px; font-weight: 800; color: var(--text-primary);">Curriculum Deep-Dive &bull; Module ${currentMod.num}</div>
+          <div style="font-size: 12px; color: var(--text-muted);">Read the complete theoretical proof, daily engineering log, and senior interview defense for this topic.</div>
+        </div>
+      </div>
+      <button class="action-btn-primary" onclick="if (window.CurriculumReaderEngine) window.CurriculumReaderEngine.openDay(${parseInt(currentMod.num, 10)})" style="padding: 6px 14px; font-size: 12.5px; font-weight: 700; border-radius: 6px; cursor: pointer; background: var(--accent); color: #fff; border: 1px solid var(--accent);">
+        📖 Open In-App Reader &rarr;
+      </button>
+    </div>
+  `;
 
   // If Joins module, embed an interactive lab launcher card banner
   let joinsLabBanner = '';
