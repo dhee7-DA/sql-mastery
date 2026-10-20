@@ -195,20 +195,54 @@ window.LEETCODE_ARENA = (() => {
   }
 
   function getSectionData(conceptId = state.activeConceptId) {
-    if (conceptId === 'concept-11') return window.LEETCODE_SECTION_11_DATA;
-    if (conceptId === 'concept-10') return window.LEETCODE_SECTION_10_DATA;
-    if (conceptId === 'concept-9') return window.LEETCODE_SECTION_9_DATA;
-    if (conceptId === 'concept-8') return window.LEETCODE_SECTION_8_DATA;
-    if (conceptId === 'concept-7') return window.LEETCODE_SECTION_7_DATA;
-    if (conceptId === 'concept-6') return window.LEETCODE_SECTION_6_DATA;
-    if (conceptId === 'concept-5') return window.LEETCODE_SECTION_5_DATA;
-    if (conceptId === 'concept-4') return window.LEETCODE_SECTION_4_DATA;
-    if (conceptId === 'concept-3') return window.LEETCODE_SECTION_3_DATA;
-    if (conceptId === 'concept-2') return window.LEETCODE_SECTION_2_DATA;
-    return window.LEETCODE_SECTION_1_DATA;
+    let raw = null;
+    if (conceptId === 'concept-11') raw = window.LEETCODE_SECTION_11_DATA;
+    else if (conceptId === 'concept-10') raw = window.LEETCODE_SECTION_10_DATA;
+    else if (conceptId === 'concept-9') raw = window.LEETCODE_SECTION_9_DATA;
+    else if (conceptId === 'concept-8') raw = window.LEETCODE_SECTION_8_DATA;
+    else if (conceptId === 'concept-7') raw = window.LEETCODE_SECTION_7_DATA;
+    else if (conceptId === 'concept-6') raw = window.LEETCODE_SECTION_6_DATA;
+    else if (conceptId === 'concept-5') raw = window.LEETCODE_SECTION_5_DATA;
+    else if (conceptId === 'concept-4') raw = window.LEETCODE_SECTION_4_DATA;
+    else if (conceptId === 'concept-3') raw = window.LEETCODE_SECTION_3_DATA;
+    else if (conceptId === 'concept-2') raw = window.LEETCODE_SECTION_2_DATA;
+    else raw = window.LEETCODE_SECTION_1_DATA;
+
+    // Augment with 300+ Official Master Vault
+    if (window.LEETCODE_300_VAULT && Array.isArray(window.LEETCODE_300_VAULT)) {
+      const catMap = {
+        'concept-1': ['Filtering', 'Basic Select'],
+        'concept-2': ['Joins', 'Anti-Joins'],
+        'concept-3': ['Aggregations', 'Math'],
+        'concept-4': ['Sorting', 'HAVING'],
+        'concept-5': ['Cross Joins', 'Joins'],
+        'concept-6': ['Subqueries', 'Functions'],
+        'concept-7': ['Regex', 'String Functions'],
+        'concept-8': ['Window Functions'],
+        'concept-9': ['Gaps & Islands', 'Window Functions'],
+        'concept-10': ['DML Mutations', 'Set Operations'],
+        'concept-11': ['Recursive CTEs', 'Pivoting', 'Dynamic SQL']
+      };
+      const cats = catMap[conceptId] || [];
+      const vaultProbs = window.LEETCODE_300_VAULT.filter(p => cats.some(c => (p.category || '').includes(c)));
+      
+      if (!raw) {
+        raw = { conceptId, leetcodeProblems: vaultProbs, problems: vaultProbs };
+      } else {
+        const existing = raw.leetcodeProblems || raw.problems || [];
+        const existingIds = new Set(existing.map(p => p.id));
+        const additional = vaultProbs.filter(p => !existingIds.has(p.id));
+        raw.leetcodeProblems = [...existing, ...additional];
+        raw.problems = raw.leetcodeProblems;
+      }
+    }
+    return raw;
   }
 
   function getTotalProblemsCount() {
+    if (window.LEETCODE_300_VAULT && window.LEETCODE_300_VAULT.length > 0) {
+      return window.LEETCODE_300_VAULT.length;
+    }
     let total = 0;
     CONCEPTS_META.forEach(c => {
       const d = getSectionData(c.id);
@@ -217,7 +251,7 @@ window.LEETCODE_ARENA = (() => {
         total += probs.length;
       }
     });
-    return total || 126;
+    return total || 320;
   }
 
   function getDifficultyCounts(conceptId = null) {
