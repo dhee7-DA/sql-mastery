@@ -2,21 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Fig. 16 · The Relational Computing Apparatus & Mechanical Query Factory</title>
+  <title>The Relational Data Foundry · Visual SQL Execution Factory</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      --paper: #f2efe7;
-      --ink: #231e16;
-      --ink-muted: #857d6e;
-      --card-bg: #fffdfa;
-      --accent: #f4b829;
-      --accent-tomato: #ef6a4c;
-      --accent-mint: #93d3b0;
-      --accent-cobalt: #76a0e2;
-      --shadow-cast: #41538f;
+      --paper: #f4f1ea;
+      --paper-card: #ffffff;
+      --paper-elevated: #faf8f5;
+      --ink: #1e1b18;
+      --ink-muted: #6b6357;
+      --ink-subtle: #9c9384;
+      --border-ink: #2b2621;
+      --border-subtle: rgba(43, 38, 33, 0.15);
+      
+      --brass: #d4a342;
+      --brass-dark: #8c6317;
+      --accent-pass: #10b981;
+      --accent-fail: #ef4444;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-amber: #f59e0b;
+      
       --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      --font-serif: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052, serif;
+      --font-serif: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", Georgia, serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,7 +32,7 @@
     body {
       background: var(--paper);
       color: var(--ink);
-      font-family: var(--font-mono);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -33,79 +41,100 @@
       overflow-x: hidden;
     }
 
-    /* Ambient paper grain */
+    /* Ambient paper texture */
     body::before {
       content: '';
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-image: radial-gradient(var(--ink) 0.75px, transparent 0.75px);
-      background-size: 24px 24px;
-      opacity: 0.04;
+      background-image: radial-gradient(rgba(30, 27, 24, 0.08) 0.75px, transparent 0.75px);
+      background-size: 20px 20px;
       pointer-events: none;
       z-index: 999;
     }
 
-    /* Top Console Header */
-    .machine-header {
+    /* Header */
+    .foundry-header {
       width: 100%;
-      max-width: 1180px;
+      max-width: 1200px;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      border-bottom: 2px solid var(--ink);
+      align-items: center;
+      border-bottom: 2px solid var(--border-ink);
       padding-bottom: 12px;
       margin-bottom: 14px;
       flex-wrap: wrap;
       gap: 12px;
     }
 
-    .machine-title-group h1 {
+    .header-titles h1 {
       font-family: var(--font-serif);
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
       color: var(--ink);
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .machine-title-group p {
-      font-size: 11.5px;
+    .header-titles p {
+      font-size: 12.5px;
       color: var(--ink-muted);
-      margin-top: 4px;
-      line-height: 1.4;
+      margin-top: 3px;
     }
 
-    .header-badge {
-      display: inline-flex;
+    .header-actions {
+      display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 3px 10px;
-      background: #fff4d6;
-      border: 1.5px solid var(--ink);
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800;
-      box-shadow: 2px 2px 0 var(--ink);
+      gap: 10px;
     }
 
-    /* Interactive Query Console */
-    .query-console-wrap {
+    .badge-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-ink);
+      background: #fffdf9;
+      box-shadow: 2px 2px 0 var(--border-ink);
+    }
+
+    .btn-return {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-ink);
+      background: #ffffff;
+      color: var(--ink);
+      text-decoration: none;
+      transition: all 0.15s ease;
+      box-shadow: 2px 2px 0 var(--border-ink);
+    }
+
+    .btn-return:hover {
+      background: #fdf2d0;
+      transform: translateY(-1px);
+    }
+
+    /* SQL Query Console */
+    .console-card {
       width: 100%;
-      max-width: 1180px;
-      background: var(--card-bg);
-      border: 2px solid var(--ink);
+      max-width: 1200px;
+      background: var(--paper-card);
+      border: 2px solid var(--border-ink);
       border-radius: 12px;
       padding: 14px 18px;
-      box-shadow: 4px 4px 0 var(--ink);
-      margin-bottom: 16px;
+      box-shadow: 4px 4px 0 var(--border-ink);
+      margin-bottom: 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .preset-row {
+    .presets-scroll-bar {
       display: flex;
       align-items: center;
       gap: 6px;
@@ -115,75 +144,79 @@
     }
 
     .preset-label {
-      font-size: 10.5px;
+      font-family: var(--font-mono);
+      font-size: 10px;
       font-weight: 800;
-      color: var(--ink-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      color: var(--ink-muted);
       white-space: nowrap;
       margin-right: 4px;
     }
 
-    .preset-chip {
-      background: var(--paper);
-      border: 1.5px solid var(--ink);
-      border-radius: 6px;
-      padding: 4px 10px;
+    .preset-btn {
+      font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 700;
+      padding: 4px 10px;
+      background: var(--paper-elevated);
+      border: 1.5px solid var(--border-ink);
+      border-radius: 6px;
+      color: var(--ink);
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.15s ease;
-      color: var(--ink);
     }
 
-    .preset-chip:hover {
-      background: #fff4d6;
+    .preset-btn:hover {
+      background: #fff3cb;
       transform: translateY(-1px);
-      box-shadow: 2px 2px 0 var(--ink);
+      box-shadow: 2px 2px 0 var(--border-ink);
     }
 
-    .preset-chip.active {
-      background: var(--accent);
-      color: var(--ink);
-      box-shadow: 2px 2px 0 var(--ink);
+    .preset-btn.active {
+      background: var(--brass);
+      color: #1a1405;
+      font-weight: 800;
+      box-shadow: 2px 2px 0 var(--border-ink);
     }
 
-    .query-input-row {
+    .query-bar {
       display: flex;
       gap: 10px;
       align-items: center;
     }
 
-    .query-input-box {
+    .query-input {
       flex: 1;
       font-family: var(--font-mono);
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 600;
       padding: 10px 14px;
+      border: 2px solid var(--border-ink);
+      border-radius: 8px;
       background: #ffffff;
-      border: 2px solid var(--ink);
-      border-radius: 8px;
       color: var(--ink);
-      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.08);
       outline: none;
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.06);
     }
 
-    .query-input-box:focus {
-      border-color: #0284c7;
-      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.08), 0 0 0 3px rgba(2, 132, 199, 0.2);
+    .query-input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.06), 0 0 0 3px rgba(59, 130, 246, 0.2);
     }
 
-    .compile-btn {
-      padding: 10px 18px;
-      background: #10b981;
-      color: #ffffff;
-      border: 2px solid var(--ink);
-      border-radius: 8px;
+    .btn-assemble {
+      font-family: var(--font-mono);
       font-size: 12px;
       font-weight: 800;
+      padding: 10px 18px;
+      background: var(--accent-pass);
+      color: #ffffff;
+      border: 2px solid var(--border-ink);
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 2px 2px 0 var(--ink);
+      box-shadow: 2px 2px 0 var(--border-ink);
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -191,351 +224,541 @@
       transition: all 0.12s ease;
     }
 
-    .compile-btn:hover {
+    .btn-assemble:hover {
       background: #059669;
       transform: translateY(-1px);
-      box-shadow: 3px 3px 0 var(--ink);
+      box-shadow: 3px 3px 0 var(--border-ink);
     }
 
-    .compile-btn:active {
+    .btn-assemble:active {
       transform: translate(2px, 2px);
-      box-shadow: 0 0 0 var(--ink);
+      box-shadow: 0 0 0 var(--border-ink);
     }
 
-    /* Mechanical Stepper Controls */
-    .controls-strip {
+    /* Execution Order Pipeline Navigation */
+    .pipeline-nav {
       width: 100%;
-      max-width: 1180px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    .playback-btns {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .mech-btn {
-      padding: 7px 14px;
-      background: var(--card-bg);
-      border: 2px solid var(--ink);
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 800;
-      color: var(--ink);
-      cursor: pointer;
-      box-shadow: 2px 2px 0 var(--ink);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.12s ease;
-    }
-
-    .mech-btn:hover {
-      background: #fff4d6;
-      transform: translateY(-1px);
-    }
-
-    .mech-btn:active {
-      transform: translate(2px, 2px);
-      box-shadow: 0 0 0 var(--ink);
-    }
-
-    .mech-btn.primary {
-      background: var(--accent);
-    }
-
-    .speed-slider-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11.5px;
-      font-weight: 700;
-    }
-
-    /* Station Status Ribbon */
-    .stations-ribbon {
-      width: 100%;
-      max-width: 1180px;
+      max-width: 1200px;
       display: flex;
       gap: 6px;
       overflow-x: auto;
       padding-bottom: 6px;
       margin-bottom: 12px;
+      scrollbar-width: thin;
     }
 
-    .station-node {
+    .pipe-step-btn {
       flex: 1;
-      min-width: 130px;
-      background: var(--card-bg);
-      border: 1.5px solid var(--ink);
+      min-width: 125px;
+      background: var(--paper-card);
+      border: 1.5px solid var(--border-subtle);
       border-radius: 8px;
-      padding: 6px 10px;
+      padding: 8px 10px;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
       gap: 2px;
-      font-size: 10px;
-      transition: all 0.2s ease;
-      opacity: 0.45;
+      text-align: left;
+      transition: all 0.15s ease;
+      opacity: 0.55;
     }
 
-    .station-node.active-stage {
+    .pipe-step-btn.active-stage {
       opacity: 1;
-      background: #fff4d6;
-      border-color: var(--ink);
-      box-shadow: 2px 2px 0 var(--ink);
+      border-color: var(--border-ink);
+      background: #ffffff;
+      box-shadow: 2px 2px 0 var(--border-ink);
+    }
+
+    .pipe-step-btn.current {
+      background: #fff8e1;
+      border-color: var(--border-ink);
+      box-shadow: 2px 2px 0 var(--border-ink);
+      transform: translateY(-2px);
+      border-top: 4px solid var(--brass);
+    }
+
+    .step-order {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 800;
+      color: var(--ink-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .step-name {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .step-badge {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Controls Strip */
+    .controls-strip {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .playback-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .ctrl-btn {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border-ink);
+      background: #ffffff;
+      color: var(--ink);
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--border-ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.12s ease;
+    }
+
+    .ctrl-btn:hover {
+      background: #fdf2d0;
       transform: translateY(-1px);
     }
 
-    .station-node.current-stage {
-      opacity: 1;
-      background: var(--accent);
-      border-color: var(--ink);
-      box-shadow: 2px 2px 0 var(--ink);
-      transform: translateY(-2px);
+    .ctrl-btn.primary {
+      background: var(--brass);
+      color: #1a1405;
     }
 
-    .station-title {
+    .speed-control {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* THE VISUAL FACTORY FLOOR */
+    .foundry-floor-card {
+      width: 100%;
+      max-width: 1200px;
+      background: #ffffff;
+      border: 2px solid var(--border-ink);
+      border-radius: 14px;
+      box-shadow: 6px 6px 0 var(--border-ink);
+      padding: 20px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Active Station Stage Spotlight */
+    .stage-spotlight-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #faf8f3;
+      border: 1.5px solid var(--border-ink);
+      border-radius: 8px;
+      padding: 8px 14px;
+      margin-bottom: 16px;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.06);
+    }
+
+    .spotlight-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .spotlight-icon {
+      font-size: 20px;
+    }
+
+    .spotlight-title {
+      font-size: 13px;
       font-weight: 800;
       color: var(--ink);
+    }
+
+    .spotlight-desc {
+      font-size: 11.5px;
+      color: var(--ink-muted);
+    }
+
+    .spotlight-stats {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* Conveyor Tracks & Rows Layout */
+    .conveyor-assembly {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .stream-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink-muted);
+      border-bottom: 1px dashed var(--border-subtle);
+      padding-bottom: 4px;
+    }
+
+    /* Physical Cassette Cards Container */
+    .cassette-stream {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+      min-height: 240px;
+    }
+
+    /* Tactile Row Cassette Card */
+    .row-cassette {
+      background: var(--paper-card);
+      border: 2px solid var(--border-ink);
+      border-radius: 8px;
+      padding: 10px 12px;
+      box-shadow: 3px 3px 0 var(--border-ink);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .row-cassette:hover {
+      transform: translateY(-2px);
+      box-shadow: 4px 4px 0 var(--border-ink);
+    }
+
+    .row-cassette.status-active {
+      border-color: var(--brass-dark);
+      background: #fffbee;
+      box-shadow: 0 0 0 2px var(--brass);
+    }
+
+    .row-cassette.status-passed {
+      border-color: #059669;
+      background: #f0fdf4;
+    }
+
+    .row-cassette.status-rejected {
+      border-color: #dc2626;
+      background: #fef2f2;
+      opacity: 0.55;
+    }
+
+    .cassette-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .station-param {
+    .cassette-id {
       font-family: var(--font-mono);
-      font-size: 9.5px;
+      font-size: 10.5px;
+      font-weight: 800;
+      background: #ece8de;
+      padding: 1px 6px;
+      border-radius: 4px;
+      color: var(--ink);
+    }
+
+    .cassette-verdict {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .cassette-verdict.pass { background: #d1fae5; color: #065f46; }
+    .cassette-verdict.fail { background: #fee2e2; color: #991b1b; }
+    .cassette-verdict.pending { background: #f3f4f6; color: #4b5563; }
+
+    .cassette-main {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .cassette-attrs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .attr-pill {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      background: #f3efe6;
+      padding: 2px 6px;
+      border-radius: 4px;
       color: var(--ink-muted);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      border: 1px solid rgba(0,0,0,0.06);
     }
 
-    /* Main SVG Drawing Canvas */
-    .canvas-card {
-      width: 100%;
-      max-width: 1180px;
-      background: var(--card-bg);
-      border: 2px solid var(--ink);
-      border-radius: 14px;
-      box-shadow: 6px 6px 0 var(--ink);
-      overflow: hidden;
-      position: relative;
-      margin-bottom: 16px;
+    .attr-pill.highlight {
+      background: #fef3c7;
+      color: #92400e;
+      font-weight: 700;
+      border-color: #fde68a;
     }
 
-    #machineSvg {
+    /* Bottom Inspection Deck & Result View */
+    .inspection-deck {
       width: 100%;
-      height: 700px;
-      display: block;
-      background: #fbfaf5;
-    }
-
-    /* Telemetry Log & Output Table */
-    .telemetry-tray {
-      width: 100%;
-      max-width: 1180px;
+      max-width: 1200px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 14px;
     }
 
     @media (max-width: 860px) {
-      .telemetry-tray { grid-template-columns: 1fr; }
+      .inspection-deck { grid-template-columns: 1fr; }
     }
 
-    .telemetry-card {
-      background: var(--card-bg);
-      border: 2px solid var(--ink);
-      border-radius: 10px;
-      padding: 12px 16px;
-      box-shadow: 3px 3px 0 var(--ink);
+    .deck-card {
+      background: var(--paper-card);
+      border: 2px solid var(--border-ink);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 4px 4px 0 var(--border-ink);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .telemetry-header {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--ink-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-bottom: 1.5px solid var(--ink);
-      padding-bottom: 6px;
-      margin-bottom: 8px;
+    .deck-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1.5px solid var(--border-ink);
+      padding-bottom: 6px;
     }
 
-    .log-scroller {
-      height: 140px;
-      overflow-y: auto;
-      font-size: 11px;
-      line-height: 1.5;
-      font-family: var(--font-mono);
+    /* Explanation Microscope */
+    .microscope-body {
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--ink);
       display: flex;
       flex-direction: column;
-      gap: 4px;
-    }
-
-    .log-line {
-      display: flex;
       gap: 8px;
-      padding: 2px 4px;
-      border-radius: 4px;
     }
 
-    .log-line.pass { background: rgba(16, 185, 129, 0.12); color: #047857; font-weight: 600; }
-    .log-line.fail { background: rgba(239, 68, 68, 0.12); color: #b91c1c; }
-    .log-line.info { color: var(--ink-muted); }
+    .microscope-clause {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      background: #fbf7ee;
+      border: 1px solid var(--brass);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--brass-dark);
+      font-weight: 700;
+    }
 
-    .result-table-wrap {
-      height: 140px;
+    .microscope-verdict-box {
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #faf8f5;
+    }
+
+    /* Final Result Matrix */
+    .matrix-table-wrap {
+      max-height: 190px;
       overflow-y: auto;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
     }
 
-    .result-table {
+    .matrix-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 11px;
+      font-size: 11.5px;
       text-align: left;
     }
 
-    .result-table th {
-      background: var(--paper);
-      border-bottom: 1.5px solid var(--ink);
-      padding: 4px 8px;
+    .matrix-table th {
+      background: #f4efe4;
+      border-bottom: 1.5px solid var(--border-ink);
+      padding: 6px 10px;
       font-weight: 800;
+      font-family: var(--font-mono);
+      position: sticky;
+      top: 0;
     }
 
-    .result-table td {
-      border-bottom: 1px solid rgba(35, 30, 22, 0.12);
-      padding: 4px 8px;
+    .matrix-table td {
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 6px 10px;
     }
 
-    /* Hand-ink filter definition */
-    svg filter#hand {
-      color-interpolation-filters: sRGB;
+    .matrix-table tr:hover td {
+      background: #fffbee;
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. Header -->
-  <header class="machine-header">
-    <div class="machine-title-group">
-      <h1>
-        <span>⚙️ TABULATOR RELATIONALIS &bull; FIG. 16</span>
-      </h1>
-      <p>Bespoke Hand-Inked Relational Computing Apparatus &bull; Physical Execution Factory for Any Query</p>
+  <!-- Header -->
+  <header class="foundry-header">
+    <div class="header-titles">
+      <h1>⚙️ THE RELATIONAL DATA FOUNDRY</h1>
+      <p>Visual Execution Factory · Understand How Any SQL Query Physically Processes Data Tuples</p>
     </div>
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <span class="header-badge">ISOMETRIC 3D SIMULATOR</span>
-      <a href="index.html" style="font-size: 11.5px; font-weight: 700; color: var(--ink); text-decoration: none; padding: 4px 10px; border: 1.5px solid var(--ink); border-radius: 999px; background: #ffffff;">← Back to App</a>
+    <div class="header-actions">
+      <span class="badge-pill">EXECUTION ORDER ARCHITECTURE</span>
+      <a href="index.html" class="btn-return">← Back to Visualizer</a>
     </div>
   </header>
 
-  <!-- 2. Interactive SQL Query Console -->
-  <section class="query-console-wrap">
-    <div class="preset-row">
+  <!-- SQL Query Console -->
+  <section class="console-card">
+    <div class="presets-scroll-bar">
       <span class="preset-label">Query Archetypes:</span>
-      <button class="preset-chip active" onclick="loadQueryPreset(0)">1. Sieve Filter (WHERE)</button>
-      <button class="preset-chip" onclick="loadQueryPreset(1)">2. Dual Hash Join</button>
-      <button class="preset-chip" onclick="loadQueryPreset(2)">3. Rotary Group By &amp; Agg</button>
-      <button class="preset-chip" onclick="loadQueryPreset(3)">4. Having Balance Scale</button>
-      <button class="preset-chip" onclick="loadQueryPreset(4)">5. Sliding Window Lens</button>
-      <button class="preset-chip" onclick="loadQueryPreset(5)">6. Escalator &amp; Limit Guillotine</button>
-      <button class="preset-chip" onclick="loadQueryPreset(6)">7. Full Enterprise Factory</button>
-      <button class="preset-chip" onclick="loadQueryPreset(7)">8. Left Anti-Join Chute</button>
+      <button class="preset-btn active" onclick="selectPreset(0)">1. Filter Sieve (WHERE)</button>
+      <button class="preset-btn" onclick="selectPreset(1)">2. Hash Inner Join</button>
+      <button class="preset-btn" onclick="selectPreset(2)">3. Group By &amp; Aggregate</button>
+      <button class="preset-btn" onclick="selectPreset(3)">4. Having Quality Gate</button>
+      <button class="preset-btn" onclick="selectPreset(4)">5. Window Running Total</button>
+      <button class="preset-btn" onclick="selectPreset(5)">6. Order By &amp; Top-N Limit</button>
+      <button class="preset-btn" onclick="selectPreset(6)">7. Complete Enterprise Query</button>
+      <button class="preset-btn" onclick="selectPreset(7)">8. Left Anti-Join (IS NULL)</button>
     </div>
 
-    <div class="query-input-row">
-      <input type="text" id="queryInput" class="query-input-box" value="SELECT name, salary FROM employees WHERE salary > 50000 ORDER BY salary DESC LIMIT 4;" spellcheck="false" />
-      <button class="compile-btn" onclick="compileAndMountQuery()">
-        <span>⚙️ Assemble Apparatus</span>
+    <div class="query-bar">
+      <input type="text" id="queryInput" class="query-input" value="SELECT name, salary, dept_id FROM employees WHERE salary > 50000 ORDER BY salary DESC LIMIT 4;" spellcheck="false" />
+      <button class="btn-assemble" onclick="assemblePipeline()">
+        <span>⚙️ Assemble Pipeline</span>
       </button>
     </div>
   </section>
 
-  <!-- 3. Stepper & Playback Controls -->
+  <!-- Execution Order Pipeline Stepper -->
+  <div class="pipeline-nav" id="pipelineNav">
+    <!-- Populated dynamically via JS -->
+  </div>
+
+  <!-- Playback Controls -->
   <div class="controls-strip">
-    <div class="playback-btns">
-      <button class="mech-btn primary" id="btnPlayPause" onclick="togglePlayPause()">
-        <span id="playIcon">▶</span> <span id="playText">Run Machine</span>
+    <div class="playback-group">
+      <button class="ctrl-btn primary" id="btnPlayPause" onclick="togglePlayPause()">
+        <span id="playIcon">▶</span> <span id="playText">Run Pipeline</span>
       </button>
-      <button class="mech-btn" onclick="stepForward()">
-        <span>⏭ Step Cycle</span>
+      <button class="ctrl-btn" onclick="stepForward()">
+        <span>⏭ Step Next Station</span>
       </button>
-      <button class="mech-btn" onclick="resetMachine()">
-        <span>⏮ Rewind Feeder</span>
-      </button>
-      <button class="mech-btn" onclick="toggleXRay()">
-        <span>🔬 X-Ray Chassis</span>
+      <button class="ctrl-btn" onclick="resetPipeline()">
+        <span>⏮ Rewind to Start</span>
       </button>
     </div>
 
-    <div class="speed-slider-wrap">
-      <span>Cycle Cadence:</span>
-      <input type="range" id="speedSlider" min="1" max="4" value="2" oninput="updateCadence(this.value)" />
-      <span id="speedLabel" style="font-family: var(--font-mono); width: 36px;">1.0x</span>
+    <div class="speed-control">
+      <span>Playback Speed:</span>
+      <select id="speedSelect" onchange="changeSpeed(this.value)" style="padding: 4px 8px; font-family: var(--font-mono); border: 1.5px solid var(--border-ink); border-radius: 6px; font-weight: 700;">
+        <option value="1600">0.5x Slow Motion</option>
+        <option value="1000" selected>1.0x Normal</option>
+        <option value="500">2.0x Fast</option>
+      </select>
     </div>
   </div>
 
-  <!-- 4. Active Station Flow Ribbon -->
-  <div class="stations-ribbon" id="stationRibbon">
-    <!-- Dynamically rendered station telemetry -->
-  </div>
-
-  <!-- 5. Isometric Hand-Inked SVG Machine -->
-  <div class="canvas-card">
-    <svg id="machineSvg" viewBox="0 0 1140 700">
-      <defs>
-        <!-- Authentic Colorfigures Hand-Inked Fountain Line Wobble Filter -->
-        <filter id="hand" x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.85" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-
-        <!-- Drop Shadows -->
-        <filter id="shadowFilter" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="3" dy="3" stdDeviation="2" flood-color="#41538f" flood-opacity="0.25" />
-        </filter>
-      </defs>
-
-      <!-- Drawing Layer Generated in JS -->
-      <g id="sceneRoot" filter="url(#hand)"></g>
-    </svg>
-  </div>
-
-  <!-- 6. Physical Inspection Log & Output Tray -->
-  <div class="telemetry-tray">
-    <div class="telemetry-card">
-      <div class="telemetry-header">
-        <span>📜 Mechanical Ticker Log</span>
-        <span id="processedCountBadge" style="color: var(--ink);">0 Records Processed</span>
+  <!-- THE VISUAL FACTORY FLOOR -->
+  <div class="foundry-floor-card">
+    <div class="stage-spotlight-bar" id="stageSpotlightBar">
+      <div class="spotlight-left">
+        <span class="spotlight-icon" id="stageIcon">📥</span>
+        <div>
+          <div class="spotlight-title" id="stageTitle">1. Ingestion Station: FROM employees</div>
+          <div class="spotlight-desc" id="stageDesc">Feeding raw data punchcard cassettes into the assembly line.</div>
+        </div>
       </div>
-      <div class="log-scroller" id="tickerLog">
-        <div class="log-line info">Ready. Click "Run Machine" or "Step Cycle" to begin punchcard ingestion.</div>
+      <div class="spotlight-stats" id="stageStats">8 Rows Ingested</div>
+    </div>
+
+    <div class="conveyor-assembly">
+      <div class="stream-header">
+        <span id="streamCategoryLabel">Current Punchcard Cassettes on Assembly Belt</span>
+        <span id="streamCountLabel">8 Records Available</span>
+      </div>
+
+      <!-- Physical Row Cassettes -->
+      <div class="cassette-stream" id="cassetteStream">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Inspection Microscope & Live Result Matrix -->
+  <div class="inspection-deck">
+    <!-- Left: Microscope -->
+    <div class="deck-card">
+      <div class="deck-header">
+        <span>🔬 Station Logic Microscope</span>
+        <span id="currentClauseTag" style="color: var(--brass-dark); font-weight: 800;">CLAUSE 1 of 8</span>
+      </div>
+      <div class="microscope-body">
+        <div class="microscope-clause" id="microscopeClause">
+          FROM employees
+        </div>
+        <div class="microscope-verdict-box" id="microscopeExplanation">
+          Loading 8 physical employee records into memory buffers. Each cassette holds the primary attributes: Employee ID, Name, Department, and Salary.
+        </div>
       </div>
     </div>
 
-    <div class="telemetry-card">
-      <div class="telemetry-header">
-        <span>🧺 Primacy Output Tray</span>
-        <span id="outputRowsBadge" style="color: #10b981;">0 Rows Output</span>
+    <!-- Right: Result Matrix -->
+    <div class="deck-card">
+      <div class="deck-header">
+        <span>🧺 Final Relational Output Tray</span>
+        <span id="outputTupleCount" style="color: var(--accent-pass);">0 Tuples Prepared</span>
       </div>
-      <div class="result-table-wrap">
-        <table class="result-table" id="resultTable">
+      <div class="matrix-table-wrap">
+        <table class="matrix-table" id="resultTable">
           <thead id="resultThead">
-            <tr><th>Row</th><th>Record</th></tr>
+            <tr><th>#</th><th>Name</th><th>Dept</th><th>Salary</th></tr>
           </thead>
           <tbody id="resultTbody">
-            <tr><td colspan="2" style="color: var(--ink-muted); text-align: center; padding: 20px;">Output tray empty. Run query to produce cards.</td></tr>
+            <tr><td colspan="4" style="text-align: center; color: var(--ink-subtle); padding: 20px;">Pipeline active. Advance to final SELECT stage to inspect results.</td></tr>
           </tbody>
         </table>
       </div>
@@ -543,399 +766,8 @@
   </div>
 
   <script>
-/* ============================================================
-   Colorfigures core: projection, shapes, shading, ink, labels, page shell.
-   A figure page includes this file (scripts/build.py inlines it), then calls mountFigure({...}).
-   See SKILL.md for the drawing contract and conventions.
-   One fixed view (front-left-top) and one fixed light (from above, behind the viewer's right shoulder: the front is lit,
-   the left side is in shade, and cast shadows fall toward the lower left of the screen).
-   ============================================================ */
-
-/* ---------- palettes ---------- */
-const PALS = {
-  mustard: { l:'#f4b829', m:'#d49c1f', d:'#4e4a18' },
-  tomato:  { l:'#ef6a4c', m:'#cf5038', d:'#4a2219' },
-  mint:    { l:'#93d3b0', m:'#71b693', d:'#1f4034' },
-  cobalt:  { l:'#76a0e2', m:'#5a82c6', d:'#1c2948' },
-  blush:   { l:'#f3a6bb', m:'#d8869c', d:'#4b2430' },
-};
-const METAL   = { l:'#eef0f0', m:'#c6ccce', d:'#8f989b' };
-const CLEAR   = { l:'#e4f2f4', m:'#c4dfe4', d:'#97b9c0' };
-const CERAMIC = { l:'#fbfaf3', m:'#e3e0d2', d:'#bdb8a6' };
-const DARK    = { l:'#55504a', m:'#3d3935', d:'#272421' };
-const INK = '#231e16';
-const SHADOW = '#41538f';
-
-/* ---------- projection (x = depth toward viewer-right, y = toward viewer-left, z = up) ---------- */
-const C = Math.cos(Math.PI/6), S = Math.sin(Math.PI/6);
-let OX = 0, OY = 0;
-/* VIEW turns the object in 90° steps about a vertical axis through its centre (RC):
-   0 = front (+x) and left (+y) faces toward the viewer, 1 = turned once (the +y side becomes the front)…
-   Figures keep modelling in their own coordinates; P / Dv / vis / tone / depthOf all apply the turn. */
-let VIEW = 0, RC = [0, 0];
-const VIEW_NAMES = ['front', 'left side', 'back', 'right side'];
-const TURNS = [0, 2];                 // the views the UI offers: front and back (figures still draw correctly in all four)
-const rotV = ([x,y,z]) => { switch (VIEW & 3){ case 1: return [y,-x,z]; case 2: return [-x,-y,z]; case 3: return [-y,x,z]; default: return [x,y,z]; } };
-const rotXY = (x,y) => { const r = rotV([x-RC[0], y-RC[1], 0]); return [r[0]+RC[0], r[1]+RC[1]]; };
-const P0 = (x,y,z) => [(x-y)*C + OX, (x+y)*S - z + OY];                       // raw iso, no turn
-const P  = (x,y,z) => { const [a,b] = rotXY(x,y); return [(a-b)*C + OX, (a+b)*S - z + OY]; };
-const Dv = (x,y,z) => { const [a,b,c] = rotV([x,y,z]); return [(a-b)*C, (a+b)*S - c]; };
-// distance toward the viewer in the current view: draw parts with smaller depth first
-const depthOf = p => { const [a,b] = rotXY(p[0],p[1]); return a + b + p[2]; };
-// sort [{at:[x,y,z], svg}] back-to-front for the current view and join
-const byDepth = parts => parts.filter(Boolean).sort((p,q) => depthOf(p.at) - depthOf(q.at)).map(p => p.svg).join('');
-const f  = v => v.toFixed(1);
-const pd = (pts, close=true) => 'M' + pts.map(p => { const q = P(p[0],p[1],p[2]); return f(q[0])+' '+f(q[1]); }).join('L') + (close ? 'Z' : '');
-const sp = pts => 'M' + pts.map(q => f(q[0])+' '+f(q[1])).join('L') + 'Z';
-
-/* ---------- 2D shapes in a plane's (u,v) coords (v up), mapped to 3D by a plane ---------- */
-const arcUV  = (cu,cv,r,a0,a1,n=7) => { const o=[]; for (let i=0;i<=n;i++){ const a=(a0+(a1-a0)*i/n)*Math.PI/180; o.push([cu+r*Math.cos(a), cv+r*Math.sin(a)]); } return o; };
-const rrUV   = (u0,v0,u1,v1,r,n=7) => r <= 0 ? rectUV(u0,v0,u1,v1) : [...arcUV(u1-r,v0+r,r,-90,0,n), ...arcUV(u1-r,v1-r,r,0,90,n), ...arcUV(u0+r,v1-r,r,90,180,n), ...arcUV(u0+r,v0+r,r,180,270,n)];
-const rectUV = (u0,v0,u1,v1) => [[u0,v0],[u1,v0],[u1,v1],[u0,v1]];
-const ellUV  = (cu,cv,ru,rv,n=24) => Array.from({length:n}, (_,i) => { const a=i/n*2*Math.PI; return [cu+ru*Math.cos(a), cv+rv*Math.sin(a)]; });
-const PX = x => ([u,v]) => [x,u,v];      // front-facing plane x = const   (u = y, v = z)
-const PY = y => ([u,v]) => [u,y,v];      // side plane y = const           (u = x, v = z)
-const PZ = z => ([u,v]) => [u,v,z];      // horizontal plane z = const     (u = x, v = y)
-const on = (plane, uv) => uv.map(plane);
-
-/* ---------- vectors + shading ---------- */
-const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]], dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
-const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
-const norm=a=>{ const l=Math.hypot(...a)||1; return a.map(v=>v/l); };
-const avg=ps=>ps.reduce((s,p)=>[s[0]+p[0]/ps.length,s[1]+p[1]/ps.length,s[2]+p[2]/ps.length],[0,0,0]);
-const vis = n => { const r = rotV(n); return r[0]+r[1]+r[2] > 1e-6; };   // viewer looks from (+1,+1,+1) after the turn
-const facing = vis;                                                       // readable alias: is this face toward the viewer?
-const SHADOW_K = 0.85, AZ_MIN = 20, AZ_MAX = 160;
-// cast shadows are drawn shorter than the shading light implies (0.45 × height instead of 0.85 ×): long shadows of tall
-// parts on thin supports (a lamp shade, a fan head) land far from the object and read as separate blobs
-const SHADOW_LEN = 0.45;
-let L = [0,0,1], SH = [0,0];
-function setLight(deg){ const a=deg*Math.PI/180; SH=[SHADOW_K*Math.cos(a), SHADOW_K*Math.sin(a)]; L=norm([-SH[0],-SH[1],1]); }
-const LIN = norm([.6,.2,1]);                       // fixed light for interiors / small props
-const tone  = (n,m) => { const d=dot(rotV(n),L);   return d>-.15 ? m.l : d>-.45 ? m.m : m.d; };   // exterior, follows the sun
-const toneI = (n,m) => { const d=dot(rotV(n),LIN); return d>.6 ? m.l : d>.05 ? m.m : m.d; };      // interior / props
-const mix = (a,b,t) => '#' + [1,3,5].map(i => Math.round(parseInt(a.substr(i,2),16)*(1-t) + parseInt(b.substr(i,2),16)*t).toString(16).padStart(2,'0')).join('');
-const matOf = hex => ({ l:hex, m:mix(hex,'#000000',.16), d:mix(hex,'#000000',.42) });
-const ease = t => t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
-
-/* ---------- drawing primitives (all return SVG strings) ---------- */
-const ink   = (d,w=1.0) => `<path d="${d}" fill="none" stroke="${INK}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"/>`;
-const fill  = (d,c,extra='') => `<path d="${d}" fill="${c}" ${extra}/>`;
-const face  = (d,c) => `<path d="${d}" fill="${c}" stroke="${c}" stroke-width=".7" stroke-linejoin="round"/>`;
-const shape = (pts,c,w=.9) => fill(pd(pts),c) + (w ? ink(pd(pts),w) : '');
-const line  = (pts,w=.9) => ink(pd(pts,false),w);
-// Loft between two rings of equal length (closed). colour(n) picks each strip's fill; flip = seen from inside.
-function loft(A, B, colour, flip=false){
-  const n=A.length, cen=avg(A.concat(B)); let s='';
-  for (let i=0;i<n;i++){
-    const a0=A[i], a1=A[(i+1)%n], b1=B[(i+1)%n], b0=B[i];
-    let nr = norm(cross(sub(a1,a0), sub(b0,a0)));
-    if (!isFinite(nr[0])) continue;
-    if (dot(nr, sub(avg([a0,a1,b1,b0]), cen)) < 0) nr = nr.map(v=>-v);
-    if (flip) nr = nr.map(v=>-v);
-    if (vis(nr)) s += face(pd([a0,a1,b1,b0]), colour(nr));
-  }
-  return s;
-}
-function hull(pts){
-  pts = pts.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
-  const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]); const lo=[], up=[];
-  for (const p of pts){ while(lo.length>=2 && cr(lo[lo.length-2],lo[lo.length-1],p)<=0) lo.pop(); lo.push(p); }
-  for (const p of pts.reverse()){ while(up.length>=2 && cr(up[up.length-2],up[up.length-1],p)<=0) up.pop(); up.push(p); }
-  lo.pop(); up.pop(); return lo.concat(up);
-}
-// Silhouette ink, weighted by how thick the part is on screen (like a hand inker): the w you pass is the most it gets.
-// Thickness = 2 × area / perimeter of the outline (a rod's diameter, about half a box's width), as a share of the
-// frame width. A long thin rod, a handle or a knob stays light (~1–1.5); a grinder, kettle or machine body gets the
-// heavy ~2.4–2.8. Thin parts stay thin and parts keep air between them.
-const hullInk = (pts3, w=1.4) => { const h = hull(pts3.map(p=>P(...p))); let a = 0, per = 0;
-  for (let i = 0; i < h.length; i++){ const p = h[i], q = h[(i+1) % h.length]; a += p[0]*q[1] - q[0]*p[1]; per += Math.hypot(q[0]-p[0], q[1]-p[1]); }
-  const thick = per ? Math.abs(a) / per / (INK_K * INK_REF_VB) : 0;
-  return ink(sp(h), Math.min(w, .9 + 20*thick)); };
-// Axis-aligned box: three visible faces, shaded, each outlined. shade = tone (sunlit) or toneI (interior).
-function box(x0,y0,z0,x1,y1,z1,m,shade=toneI,w=.9){
-  // all six faces, drawn only when they face the viewer (sides first, then top) — correct in every VIEW
-  const F = [
-    [[0,1,0],  [[x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1]]],
-    [[1,0,0],  [[x1,y0,z0],[x1,y1,z0],[x1,y1,z1],[x1,y0,z1]]],
-    [[0,-1,0], [[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1]]],
-    [[-1,0,0], [[x0,y0,z0],[x0,y1,z0],[x0,y1,z1],[x0,y0,z1]]],
-    [[0,0,1],  [[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]]] ];
-  return F.filter(([n]) => vis(n)).map(([n,q]) => shape(q, shade(n,m), w)).join('');
-}
-// Rounded-profile extrusion: profile (u=y, v=z) swept along x from x0 to x1. Body of most machines.
-function extrude(profileUV, x0, x1, m, shade=tone){ return loft(on(PX(x0),profileUV), on(PX(x1),profileUV), n=>shade(n,m)); }
-// Vertical cylinder (axis z) centred (x,y), radius r from z0 to z1, with top cap.
-function cyl(x,y,z0,z1,r,m,shade=toneI,w=1.2,n=24){
-  const A=on(PZ(z0),ellUV(x,y,r,r,n)), B=on(PZ(z1),ellUV(x,y,r,r,n));
-  return loft(A,B,nr=>shade(nr,m)) + fill(pd(B),shade([0,0,1],m)) + hullInk([...A,...B],w) + ink(pd(B),w*.8);
-}
-// Cylinder lying along x (e.g. a knob or dial sticking out of a front face): centred (y,z), from x0 to x1.
-function cylX(x0,x1,y,z,r,m,shade=toneI,w=1.1,n=20){
-  const A=on(PX(x0),ellUV(y,z,r,r,n)), B=on(PX(x1),ellUV(y,z,r,r,n));
-  // cap on whichever end faces the viewer (the +x end in VIEW 0)
-  const capB = vis([1,0,0]), cap = capB ? B : A, cn = capB ? [1,0,0] : [-1,0,0];
-  return loft(A,B,nr=>shade(nr,m)) + (vis(cn) ? fill(pd(cap),shade(cn,m)) : '') + hullInk([...A,...B],w) + (vis(cn) ? ink(pd(cap),w*.8) : '');
-}
-// Cylinder between any two 3D points a and b (a lamp arm, a rod, a pipe at an angle, a handle bar), radius r.
-// The end facing the viewer gets a cap. For a tapered part (a cone, a lamp shade) pass r1 for the radius at b.
-function rod(a, b, r, m, shade=toneI, w=1, r1=r, n=16){
-  const d = norm(sub(b, a)), u = norm(cross(d, Math.abs(d[2]) < .9 ? [0,0,1] : [1,0,0])), v = cross(d, u);
-  const ring = (p, rr) => Array.from({length:n}, (_,i) => { const t = i/n*2*Math.PI, c = Math.cos(t)*rr, s2 = Math.sin(t)*rr;
-    return [p[0] + u[0]*c + v[0]*s2, p[1] + u[1]*c + v[1]*s2, p[2] + u[2]*c + v[2]*s2]; });
-  const A = ring(a, r), B = ring(b, r1), capB = vis(d), cap = capB ? B : A, cn = capB ? d : d.map(x => -x);
-  return loft(A, B, nr => shade(nr, m)) + (Math.max(r, r1) > 0 ? fill(pd(cap), shade(cn, m)) + ink(pd(cap), w*.8) : '') + hullInk([...A, ...B], w);
-}
-// Text lying flat on a front plane x = const, centred at (y,z) baseline; reads left-to-right on screen.
-const txM = (o, U, V) => `matrix(${U[0].toFixed(4)} ${U[1].toFixed(4)} ${V[0].toFixed(4)} ${V[1].toFixed(4)} ${f(o[0])} ${f(o[1])})`;
-const tx = (x,y,z,str,size,col=INK,weight=700) => { const o=P(x,y,z);
-  return `<text transform="${txM(o, Dv(0,-1,0), Dv(0,0,-1))}" font-size="${size}" fill="${col}" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-weight="${weight}" letter-spacing=".04em">${str}</text>`; };
-// Text on a side plane y = const, centred at (x,z).
-const txY = (x,y,z,str,size,col=INK,weight=700) => { const o=P(x,y,z);
-  return `<text transform="${txM(o, Dv(1,0,0), Dv(0,0,-1))}" font-size="${size}" fill="${col}" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-weight="${weight}" letter-spacing=".04em">${str}</text>`; };
-// Cast shadow of a set of 3D points (any outline of the object), pushed along the light onto z = 0.
-// the light stays put relative to the viewer, so the shadow is cast in turned coordinates
-// z0: the surface it falls on (a board, a counter); clip it to that surface with clipTo(...) if it could spill off.
-// clip: the 3D outline of the surface it falls on (e.g. boardTop(...)), so it can't spill over the edge.
-const castShadow = (pts3, z0=0, clip=null) => { const k = SHADOW_LEN / SHADOW_K;
-  const s = fill(sp(hull(pts3.map(([x,y,z]) => { const [a,b] = rotXY(x,y); return P0(a+(z-z0)*SH[0]*k, b+(z-z0)*SH[1]*k, z0); }))), SHADOW);
-  return clip ? clipTo(clip, s) : s; };
-// A board for the object to stand on (a tray, a desk top, a counter): a rounded slab from (x0,y0) to (x1,y1), h thick.
-// Draw it first; then castShadow(points, h, boardTop(x0,y0,x1,y1,h,r)) so shadows lie on it and stop at its edge.
-const BOARD = { l:'#e6e1d4', m:'#cfc8b8', d:'#aaa293' }, WOOD = { l:'#d9a86c', m:'#bf8a4f', d:'#8e6236' };
-const boardTop = (x0,y0,x1,y1,h=3,r=5) => on(PZ(h), rrUV(x0,y0,x1,y1,r));
-function board(x0,y0,x1,y1,h=3,r=5,m=BOARD){
-  const A = on(PZ(0), rrUV(x0,y0,x1,y1,r)), B = boardTop(x0,y0,x1,y1,h,r);
-  return loft(A, B, n => toneI(n, m)) + fill(pd(B), m.l) + ink(pd(B), 1) + hullInk([...A, ...B], 1.8);
-}
-// Group helpers: clickable target, clip to an opening.
-const act  = (name, inner, data='') => `<g data-act="${name}" ${data}>${inner}</g>`;
-let _clipN = 0;
-// Part label (for "how does it work" figures): a cream pill with a leader line to a 3D point on the part.
-// dx, dy = where the pill sits, in screen units at the reference zoom (they scale with the figure like stroke widths).
-// on = that part is working right now (the pill turns the accent colour). Labels can be hidden with the Labels switch.
-function tag(p3, dx, dy, text, on=false){
-  const k = INK_K, [X,Y] = P(...p3), fs = 8.6*k, w = text.length*fs*.62 + fs*1.5, h = fs*1.8, cx = X + dx*k, cy = Y + dy*k;
-  return `<g class="tag${on ? ' on' : ''}"><path d="M${f(X)} ${f(Y)}L${f(cx)} ${f(cy)}" fill="none" stroke="${INK}" stroke-width="1"/>`
-    + `<circle cx="${f(X)}" cy="${f(Y)}" r="${f(1.3*k)}" fill="${INK}"/>`
-    + `<rect x="${f(cx-w/2)}" y="${f(cy-h/2)}" width="${f(w)}" height="${f(h)}" rx="${f(h/2)}" fill="${on ? 'var(--accent,#f4b829)' : '#fff4d6'}" stroke="${INK}" stroke-width="1.2"/>`
-    + `<text x="${f(cx)}" y="${f(cy+fs*.36)}" font-size="${f(fs)}" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-weight="800" letter-spacing=".04em" fill="${INK}">${text}</text></g>`;
-}
-const clipTo = (pts3, inner) => { const id = 'k' + (++_clipN); return `<clipPath id="${id}"><path d="${pd(pts3)}"/></clipPath><g clip-path="url(#${id})">${inner}</g>`; };
-
-/* ---------- constant on-screen line weight ----------
-   Stroke widths are written in model units, and each figure is zoomed to fill the frame, so a small
-   object would get fat lines. INK_K rescales every stroke-width (and the wobble/grain filter) so all
-   figures match the reference zoom of the booth / vending machine (viewBox ≈ 585 units wide). */
-const INK_REF_VB = 585;
-let INK_K = 1;
-const inkScale = svg => INK_K === 1 ? svg : svg.replace(/stroke-width="([\d.]+)"/g, (_, w) => `stroke-width="${(+w * INK_K).toFixed(2)}"`);
-
-/* ---------- page shell ---------- */
-const CORE_CSS = `
-  :root{--paper:#f2efe7;--ink:#231e16;--muted:#857d6e;--rule:#ddd6c8}
-  *{box-sizing:border-box} html,body{margin:0;height:100%}
-  body{background-color:var(--paper);
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .39  0 0 0 0 .33  .16 0 0 0 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>");
-    overflow-x:hidden;color:var(--ink);font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;display:flex;flex-direction:column;align-items:center;padding:24px 16px 32px}
-  header{width:100%;max-width:760px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
-  header h1{font-size:13px;font-weight:600;margin:0;letter-spacing:.02em} header span{color:var(--muted)}
-  #fig{width:100%;max-width:760px;height:auto;display:block;margin:4px 0 8px;user-select:none;overflow:visible}
-  #fig [data-act]{cursor:pointer}
-  #readout, .idea{display:none}   /* status line + big idea are off: the buttons and motion tell the story */
-  .idea{width:100%;max-width:760px;margin:-6px 0 16px;font-size:12.5px;line-height:1.5;text-align:center;color:var(--ink)}
-  .idea strong{letter-spacing:.12em;text-transform:uppercase;font-size:11px;margin-right:8px}
-  #readout{position:relative;min-height:1.4em;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;text-align:center;text-shadow:0 0 3px var(--paper),0 0 6px var(--paper),0 0 10px var(--paper)}
-  .stage{position:relative;width:100%;max-width:760px}
-  .actions{position:absolute;top:4px;left:0;display:flex;flex-direction:column;align-items:flex-start;gap:8px;z-index:2;max-width:220px}
-  .actions .cap{color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 2px}
-  html.nolabels #fig .tag{display:none}
-  .ctl[hidden]{display:none}
-  /* ui.flash(text): a short note under the buttons ("the can is empty — refill it"); the status line itself stays hidden */
-  .toast{position:absolute;left:0;z-index:3;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;background:var(--paper);
-    border:1.5px solid var(--ink);border-radius:8px;padding:4px 9px;box-shadow:2px 2px 0 var(--ink);opacity:0;transition:opacity .2s;pointer-events:none;max-width:240px}
-  .toast.show{opacity:1}
-  .made-with{width:100%;max-width:760px;margin-top:18px;text-align:right;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
-  .made-with a{color:var(--muted);text-decoration:none} .made-with a:hover{color:var(--ink)}
-  .stats{position:absolute;top:4px;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:10px;z-index:2;text-align:right}
-  .stat .k{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-  .stat .v{font-size:34px;font-weight:800;line-height:1.05;letter-spacing:-.01em;font-variant-numeric:tabular-nums;color:var(--ink)}
-  .stat.small .v{font-size:20px}
-  .stat .v.bump{animation:bump .35s ease-out}
-  @keyframes bump{0%{transform:scale(1.18)}100%{transform:none}}
-  .stepwrap{position:relative;display:flex;align-items:center;gap:8px}
-  .act{font:inherit;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer;white-space:nowrap}
-  .act:hover{background:color-mix(in srgb,var(--paper) 92%,var(--ink))}
-  .act .car{margin-left:6px;font-size:10px}
-  .act:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-  .chips{display:none;flex-wrap:wrap;gap:6px;background:var(--paper);border:2px solid var(--ink);border-radius:12px;box-shadow:3px 3px 0 var(--ink);
-    padding:8px;width:max-content;max-width:min(300px,62vw);position:absolute;left:calc(100% + 10px);top:-4px;z-index:3}
-  .stepwrap.open .chips{display:flex}
-  .chip{white-space:nowrap;font:inherit;font-size:11.5px;font-weight:700;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:8px;padding:4px 8px;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
-  .chip:hover{background:var(--accent,#f4b829);transform:translate(-1px,-1px)}
-  .chip.current{background:var(--ink);color:var(--paper)} .chip.current:hover{background:var(--ink);transform:none}
-  .chip.off{opacity:.45} .chip.off:hover{transform:none;background:var(--paper)}
-  
-  @media (max-width:560px){body{padding:14px 12px 24px}header span,.actions .cap{display:none}.actions{flex-direction:row;flex-wrap:wrap;gap:6px}.act{font-size:12px;padding:4px 11px}.stats{position:static;flex-direction:row;justify-content:flex-end;gap:18px;margin-bottom:4px}.actions{position:static;max-width:none;margin:6px 0 4px}.chips{left:0;top:calc(100% + 8px)}}
-  .controls{width:100%;max-width:760px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px 28px;border-top:1px solid var(--rule);padding-top:16px}
-  .ctl{display:flex;flex-direction:column;gap:6px}
-  .ctl label{color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
-  input[type=range]{width:100%;accent-color:var(--ink)}
-  .row{display:flex;gap:8px;flex-wrap:wrap}
-  button{font:inherit;color:var(--ink);background:transparent;border:1.5px solid var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer}
-  button:hover{background:#0000000d}
-  .sw{width:26px;height:26px;padding:0;border-radius:50%} .sw[aria-pressed=true]{outline:2px solid var(--ink);outline-offset:2px}`;
-
-const filterFor = k => `<filter id="hand" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">
-  <feTurbulence type="fractalNoise" baseFrequency="${(0.045/k).toFixed(4)}" numOctaves="2" seed="4" result="warp"/>
-  <feDisplacementMap id="wob" in="SourceGraphic" in2="warp" scale="${(2.4*k).toFixed(2)}" xChannelSelector="R" yChannelSelector="G" result="wob"/>
-  <feTurbulence type="fractalNoise" baseFrequency="${(0.9/k).toFixed(4)}" numOctaves="3" seed="11" result="n1"/>
-  <feColorMatrix in="n1" type="matrix" values=".3 0 0 0 .84  .3 0 0 0 .84  .3 0 0 0 .84  0 0 0 0 1" result="grain"/>
-  <feTurbulence type="fractalNoise" baseFrequency="${(0.012/k).toFixed(4)}" numOctaves="2" seed="7" result="n2"/>
-  <feColorMatrix in="n2" type="matrix" values=".3 0 0 0 .85  .3 0 0 0 .85  .3 0 0 0 .85  0 0 0 0 1" result="blot"/>
-  <feBlend in="wob" in2="grain" mode="multiply" result="g1"/><feBlend in="g1" in2="blot" mode="multiply" result="g2"/>
-  <feComposite in="g2" in2="wob" operator="in"/></filter>`;
-
-/* mountFigure({
-     fig:'03', title:'Photo booth', hint:'click the curtain…',
-     size:[W,D,H],                 // bounding box, used to frame the view (shadow range included)
-     palette:'mustard',            // default PALS key
-     state:{...},                  // figure state (st.pal is built in)
-     scene: (st, m) => svgString,  // m = current palette {l,m,d}
-     readout: st => 'text',        // status line under the figure
-     buttons: [{label, onClick(st, ui)}      // listed in the order the user should do them
-               | {label, choices: st => [{label, onClick(st,ui), current?, disabled?, why?}]}],   // opens a picker
-     stats: st => [{label, value, small?}],   // optional: big numbers top-right (credit, change, score)
-     credit: false,                // optional: hide the small "Made with Colorfigures" link
-     acts: { name(st, el, ui){} },  // clicks on act(name, …) groups; el has dataset
-     params(st, q){}               // optional: read URLSearchParams for screenshot states
-   })  -> ui = { st, render, animate(stepFn), flash(text,ms) }
-   animate(step): calls step(dt seconds) every frame and re-renders until step returns false. */
-addEventListener('error', e => { document.documentElement.dataset.errors = (document.documentElement.dataset.errors || '') + ' ' + e.message + ';'; });
-function mountFigure(cfg){
-  document.title = cfg.title;
-  const style = document.createElement('style'); style.textContent = CORE_CSS; document.head.appendChild(style);
-  document.body.innerHTML = `
-    <header><h1>Fig. ${cfg.fig} — ${cfg.title}</h1><span>${cfg.hint || ''}</span></header>
-    <div class="stage">
-      ${cfg.buttons && cfg.buttons.length ? `<div class="actions" id="btns"><div class="cap">${cfg.buttonsLabel || 'Try it'}</div></div>` : ''}
-      ${cfg.stats ? '<div class="stats" id="stats"></div>' : ''}
-      <div class="toast" id="toast" role="status"></div>
-      <svg id="fig" role="img" aria-label="${cfg.title}"><defs id="fdefs"></defs><g id="art" filter="url(#hand)"></g></svg>
-    </div>
-    <div id="readout"></div>
-    ${cfg.idea ? `<p class="idea"><strong>The big idea</strong>${cfg.idea}</p>` : ''}
-    <div class="controls">
-      <div class="ctl"><label for="wb">Hand-drawn wobble</label><input id="wb" type="range" min="0" max="7" step="0.1" value="2.4"></div>
-      <div class="ctl"><label>Colour</label><div class="row" id="pals"></div></div>
-      <div class="ctl" id="lblctl" hidden><label>Labels</label><div class="row"><button id="lbl" aria-pressed="true">On</button></div></div>
-    </div>
-    ${cfg.credit === false ? '' : '<footer class="made-with"><a href="https://april-zhu.com/colorfigures" target="_blank" rel="noopener">Made with Colorfigures ↗</a></footer>'}`;
-  const st = cfg.state || {};            // kept as the same object, so a figure may hold on to it
-  if (!st.pal) st.pal = cfg.palette || 'mustard';
-  if (st.az == null) st.az = 105;
-  const q = new URLSearchParams(location.search);
-  if (PALS[q.get('pal')]) st.pal = q.get('pal');
-  if (cfg.params) cfg.params(st, q);
-
-  // frame on the object itself: centred, filling ~60% of the width / ~78% of the height of a 4:3 view.
-  // The cast shadow is allowed to spill outside the frame (svg overflow is visible).
-  const [W,D,H] = cfg.size, pts = [];
-  OX = OY = 0; RC = cfg.center || [W/2, D/2];
-  VIEW = 0;
-  for (const x of [0,W]) for (const y of [0,D]) for (const z of [0,H]) pts.push(P(x,y,z));
-  const xs=pts.map(p=>p[0]), ys=pts.map(p=>p[1]);
-  const bw = Math.max(...xs)-Math.min(...xs), bh = Math.max(...ys)-Math.min(...ys);
-  // the object fills ~74% of the width / ~88% of the height, nudged right of centre so the buttons (top left) stay clear
-  const vbW = Math.max(bw/.74, bh/.88/.75), vbH = vbW*.75;
-  OX = (vbW-bw)/2 + vbW*.06 - Math.min(...xs); OY = vbH*.04 - Math.min(...ys);   // sit a little high: shadows fall downward
-  const svg = document.getElementById('fig');
-  svg.setAttribute('viewBox', `0 0 ${f(vbW)} ${f(vbH)}`);
-  INK_K = vbW / INK_REF_VB;
-  document.getElementById('fdefs').innerHTML = filterFor(INK_K);
-
-  const art = document.getElementById('art'), readout = document.getElementById('readout');
-  const ui = { st };
-  ui.render = () => { _clipN = 0; document.documentElement.style.setProperty('--accent', PALS[st.pal].l); art.innerHTML = inkScale(cfg.scene(st, PALS[st.pal])); if (!ui._flash) readout.textContent = cfg.readout ? cfg.readout(st) : ''; if (ui.drawStats) ui.drawStats(); };
-  // big numbers in the top-right corner (credit, change, score…); a value that changes gets a little bump
-  const statsEl = document.getElementById('stats'), prevStats = {};
-  ui.drawStats = () => { if (!statsEl) return;
-    const list = cfg.stats(st).filter(Boolean), html = list.map(x => `<div class="stat${x.small ? ' small' : ''}"><div class="k">${x.label}</div><div class="v" data-k="${x.label}">${x.value}</div></div>`).join('');
-    if (statsEl._html !== html){ statsEl._html = html; statsEl.innerHTML = html;
-      statsEl.querySelectorAll('.v').forEach(v => { if (prevStats[v.dataset.k] != null && prevStats[v.dataset.k] !== v.textContent) v.classList.add('bump'); prevStats[v.dataset.k] = v.textContent; }); } };
-  let flashT = 0;
-  const toast = document.getElementById('toast');
-  ui.flash = (text, ms=1600) => { ui._flash = true; readout.textContent = text; toast.textContent = text;
-    toast.style.top = ((document.getElementById('btns') ? document.getElementById('btns').offsetTop + document.getElementById('btns').offsetHeight : 0) + 8) + 'px'; toast.classList.add('show');
-    clearTimeout(flashT); flashT = setTimeout(() => { ui._flash = false; toast.classList.remove('show'); ui.render(); }, ms); };
-  // animations run on a ~60 fps timer rather than requestAnimationFrame, so they also run in headless test shots
-  ui.animate = step => { let last = performance.now();
-    const loop = () => { const now = performance.now(), dt = Math.max(0, Math.min(.05,(now-last)/1000)); last = now; const more = step(dt) !== false; ui.render(); if (more) setTimeout(loop, 16); };
-    setTimeout(loop, 16); };
-
-  // clickable parts react on press, not on click: while something animates, the scene is redrawn every frame, so the
-  // element under the pointer is replaced between press and release and a 'click' would never fire
-  svg.addEventListener('pointerdown', e => { if (e.button) return; const a = e.target.closest('[data-act]'); if (!a || !cfg.acts || !cfg.acts[a.dataset.act]) return;
-    e.preventDefault(); cfg.acts[a.dataset.act](st, a, ui); ui.render(); });
-  const btns = document.getElementById('btns');
-  const stepEls = [];
-  if (btns) cfg.buttons.forEach((b, i) => {
-    const wrap = document.createElement('div'); wrap.className = 'stepwrap';
-    const el = document.createElement('button'); el.className = 'act';
-    el.innerHTML = `${b.label}${b.choices ? '<span class="car">▾</span>' : ''}`;
-    wrap.appendChild(el); btns.appendChild(wrap); stepEls.push(el);
-    if (!b.choices){ el.onclick = () => { closeChips(); b.onClick(st, ui); ui.render(); }; return; }
-    const chips = document.createElement('div'); chips.className = 'chips'; wrap.appendChild(chips);
-    el.onclick = e => { e.stopPropagation(); const open = !wrap.classList.contains('open'); closeChips();
-      if (!open) return;
-      chips.innerHTML = '';
-      // every choice stays clickable, so nothing silently ignores a press:
-      //   current:true  = the one in use (shown selected); a press just says so
-      //   disabled:true = not possible right now (shown faded); a press says why (c.why, or a generic note)
-      for (const c of b.choices(st)){ const ch = document.createElement('button'); ch.className = 'chip' + (c.current ? ' current' : c.disabled ? ' off' : ''); ch.textContent = c.label;
-        if (c.current) ch.setAttribute('aria-pressed', 'true');
-        ch.onclick = ev => { ev.stopPropagation(); closeChips();
-          if (c.current) return ui.flash(`${c.label} — already set`);
-          if (c.disabled) return ui.flash(c.why || `${c.label} isn't possible right now`);
-          c.onClick(st, ui); ui.render(); }; chips.appendChild(ch); }
-      wrap.classList.add('open'); };
-  });
-  function closeChips(){ document.querySelectorAll('.stepwrap.open').forEach(w => w.classList.remove('open')); }
-  document.addEventListener('click', closeChips);
-
-  document.getElementById('wb').oninput = e => document.getElementById('wob').setAttribute('scale', (e.target.value * INK_K).toFixed(2));
-  const pals = document.getElementById('pals');
-  for (const [k,p] of Object.entries(PALS)){
-    const b = document.createElement('button'); b.className='sw'; b.title=k; b.style.background=p.l; b.setAttribute('aria-pressed', k===st.pal);
-    b.onclick = () => { st.pal=k; [...pals.children].forEach(c=>c.setAttribute('aria-pressed', c===b)); ui.render(); };
-    pals.appendChild(b);
-  }
-  // labels: the switch appears when the figure draws any tag(); ?labels=0 starts with them hidden
-  const lblctl = document.getElementById('lblctl'), lbl = document.getElementById('lbl');
-  const setLabels = on => { document.documentElement.classList.toggle('nolabels', !on); lbl.textContent = on ? 'On' : 'Off'; lbl.setAttribute('aria-pressed', on); };
-  lbl.onclick = () => setLabels(document.documentElement.classList.contains('nolabels'));
-  if (q.get('labels') === '0') setLabels(false);
-  // testing: ?press=Label@ms,Label@ms clicks the buttons whose text starts with Label at those times after load
-  // (any order, repeats allowed); Label>Choice picks a choice from a picker button (?press=Speed>3@300).
-  // Script errors and unknown labels are recorded on <html data-errors="…">
-  window.__st = st;
-  const noteErr = m => { document.documentElement.dataset.errors = (document.documentElement.dataset.errors || '') + ' ' + m + ';'; };
-  const starts = (el, t) => el.textContent.trim().toLowerCase().startsWith(t.trim().toLowerCase());
-  if (q.has('press')) q.get('press').split(',').forEach(item => { const [what, ms] = item.split('@'), [label, choice] = what.split('>');
-    setTimeout(() => { const b = [...document.querySelectorAll('.act')].find(b => starts(b, label));
-      if (!b) return noteErr(`no button "${label}"`);
-      b.click(); if (choice == null) return;
-      const c = [...b.parentElement.querySelectorAll('.chip')].find(c => starts(c, choice));
-      if (c && !c.disabled) c.click(); else noteErr(`no choice "${choice}" in "${label}"`); }, +ms || 0); });
-  setLight(st.az); ui.render();
-  if (art.querySelector('.tag')) lblctl.hidden = false;
-  return ui;
-}
-
-</script>
-  <script>
     /* =========================================================================
-       DATASETS (Physical Punchcard Records)
+       CANONICAL CORPORATE DATASETS (PUNCHCARDS)
        ========================================================================= */
     const RAW_EMPLOYEES = [
       { emp_id: 101, name: 'Alice Miller', dept_id: 'ENG', salary: 125000, tenure: 14 },
@@ -951,72 +783,67 @@ function mountFigure(cfg){
     const RAW_DEPARTMENTS = [
       { id: 'ENG', dept_name: 'Engineering', budget: 500000 },
       { id: 'ANA', dept_name: 'Analytics',   budget: 350000 },
-      { id: 'FIN', dept_name: 'Finance',     budget: 280000 },
-      { id: 'MKT', dept_name: 'Marketing',   budget: 200000 }
+      { id: 'FIN', dept_name: 'Finance',     budget: 280000 }
     ];
 
     /* =========================================================================
-       QUERY ARCHETYPES
+       8 CANONICAL QUERY ARCHETYPES
        ========================================================================= */
     const PRESETS = [
       {
-        title: "1. Sieve Filter (WHERE)",
-        sql: "SELECT name, salary FROM employees WHERE salary > 50000 ORDER BY salary DESC LIMIT 4;"
+        title: "1. Filter Sieve (WHERE)",
+        sql: "SELECT name, salary, dept_id FROM employees WHERE salary > 50000 ORDER BY salary DESC LIMIT 4;"
       },
       {
-        title: "2. Dual Hash Join",
+        title: "2. Hash Inner Join",
         sql: "SELECT e.name, d.dept_name, e.salary FROM employees e JOIN departments d ON e.dept_id = d.id;"
       },
       {
-        title: "3. Rotary Group By & Agg",
+        title: "3. Group By & Aggregate",
         sql: "SELECT dept_id, COUNT(*), AVG(salary) FROM employees GROUP BY dept_id;"
       },
       {
-        title: "4. Having Balance Scale",
+        title: "4. Having Quality Gate",
         sql: "SELECT dept_id, COUNT(*), SUM(salary) FROM employees GROUP BY dept_id HAVING COUNT(*) >= 2;"
       },
       {
-        title: "5. Sliding Window Lens",
+        title: "5. Window Running Total",
         sql: "SELECT name, salary, SUM(salary) OVER (ORDER BY salary) AS running_total FROM employees;"
       },
       {
-        title: "6. Escalator & Limit Guillotine",
+        title: "6. Order By & Top-N Limit",
         sql: "SELECT name, salary FROM employees ORDER BY salary DESC LIMIT 3;"
       },
       {
-        title: "7. Full Enterprise Factory",
-        sql: "SELECT e.dept_id, COUNT(*), AVG(e.salary) FROM employees e JOIN departments d ON e.dept_id = d.id WHERE e.salary > 30000 GROUP BY e.dept_id HAVING AVG(e.salary) > 60000 ORDER BY AVG(e.salary) DESC LIMIT 2;"
+        title: "7. Complete Enterprise Query",
+        sql: "SELECT e.dept_id, COUNT(*), AVG(e.salary) FROM employees e JOIN departments d ON e.dept_id = d.id WHERE e.salary >= 40000 GROUP BY e.dept_id HAVING AVG(e.salary) > 60000 ORDER BY AVG(e.salary) DESC LIMIT 2;"
       },
       {
-        title: "8. Left Anti-Join Chute",
+        title: "8. Left Anti-Join (IS NULL)",
         sql: "SELECT e.name, e.dept_id FROM employees e LEFT JOIN departments d ON e.dept_id = d.id WHERE d.id IS NULL;"
       }
     ];
 
     /* =========================================================================
-       DYNAMIC AST ANALYZER & MACHINE STATE
+       PIPELINE EXECUTION PHASES (SQL LOGICAL EXECUTION ORDER)
        ========================================================================= */
-    let parsedQuery = null;
-    let machineState = {
-      stepIndex: 0,
-      isPlaying: false,
-      isXRay: false,
-      timer: null,
-      cadenceMs: 900,
-      records: [],
-      joinedRecords: [],
-      filteredRecords: [],
-      groupedRecords: {},
-      havingRecords: [],
-      windowedRecords: [],
-      orderedRecords: [],
-      finalOutput: []
-    };
+    let currentStationIndex = 0;
+    let isPlaying = false;
+    let playTimer = null;
+    let stepCadence = 1000;
+    let activeParsed = null;
+    let pipelineStages = [];
+
+    function selectPreset(idx) {
+      document.querySelectorAll('.preset-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+      document.getElementById('queryInput').value = PRESETS[idx].sql;
+      assemblePipeline();
+    }
 
     function parseSql(sql) {
       const clean = sql.trim().replace(/;$/, '');
       const hasJoin = /JOIN\s+([a-zA-Z_]+)/i.test(clean);
-      const isLeftJoin = /LEFT\s+JOIN/i.test(clean);
+      const isLeft = /LEFT\s+JOIN/i.test(clean);
       const hasWhere = /\bWHERE\b/i.test(clean);
       const hasGroupBy = /\bGROUP\s+BY\b/i.test(clean);
       const hasHaving = /\bHAVING\b/i.test(clean);
@@ -1024,14 +851,13 @@ function mountFigure(cfg){
       const hasOrderBy = /\bORDER\s+BY\b/i.test(clean);
       const hasLimit = /\bLIMIT\s+(\d+)/i.test(clean);
 
-      // Extract details
       let whereExpr = '';
       if (hasWhere) {
         const match = clean.match(/WHERE\s+(.*?)(?=\s+GROUP\s+BY|\s+HAVING|\s+ORDER\s+BY|\s+LIMIT|$)/i);
         if (match) whereExpr = match[1].trim();
       }
 
-      let groupByCol = '';
+      let groupByCol = 'dept_id';
       if (hasGroupBy) {
         const match = clean.match(/GROUP\s+BY\s+(.*?)(?=\s+HAVING|\s+ORDER\s+BY|\s+LIMIT|$)/i);
         if (match) groupByCol = match[1].trim().split(',')[0].trim().replace(/^e\./, '');
@@ -1043,16 +869,16 @@ function mountFigure(cfg){
         if (match) havingExpr = match[1].trim();
       }
 
-      let limitCount = 999;
+      let limitN = 999;
       if (hasLimit) {
         const match = clean.match(/LIMIT\s+(\d+)/i);
-        if (match) limitCount = parseInt(match[1], 10);
+        if (match) limitN = parseInt(match[1], 10);
       }
 
       return {
         raw: sql,
         hasJoin,
-        isLeftJoin,
+        isLeft,
         hasWhere,
         whereExpr,
         hasGroupBy,
@@ -1062,664 +888,451 @@ function mountFigure(cfg){
         hasWindow,
         hasOrderBy,
         hasLimit,
-        limitCount
+        limitN
       };
     }
 
-    function loadQueryPreset(idx) {
-      document.querySelectorAll('.preset-chip').forEach((c, i) => c.classList.toggle('active', i === idx));
-      document.getElementById('queryInput').value = PRESETS[idx].sql;
-      compileAndMountQuery();
-    }
-
-    function compileAndMountQuery() {
+    function assemblePipeline() {
       const sql = document.getElementById('queryInput').value;
-      parsedQuery = parseSql(sql);
-      buildStationRibbon();
-      executeLogicalPipeline();
-      renderScene();
-      resetMachine();
+      activeParsed = parseSql(sql);
+      buildPipelineStages();
+      renderPipelineNav();
+      currentStationIndex = 0;
+      updateStageView();
     }
 
-    /* =========================================================================
-       LOGICAL RELATIONAL PIPELINE EVALUATION
-       ========================================================================= */
-    function executeLogicalPipeline() {
-      // 1. Ingestion
-      let base = RAW_EMPLOYEES.map(e => ({ ...e, _status: 'raw' }));
+    function buildPipelineStages() {
+      const q = activeParsed;
+      pipelineStages = [];
 
-      // 2. Join
-      let joined = [];
-      if (parsedQuery.hasJoin) {
-        base.forEach(e => {
+      // 1. FROM (Ingestion)
+      let fromRows = RAW_EMPLOYEES.map(e => ({
+        ...e,
+        _status: 'passed',
+        _verdict: 'Loaded',
+        _reason: 'Read from physical storage buffer'
+      }));
+      pipelineStages.push({
+        id: 'stage_from',
+        orderNum: 1,
+        title: 'FROM employees',
+        icon: '📥',
+        clause: 'FROM employees',
+        desc: 'Scan storage blocks and ingest raw tuples into memory buffers.',
+        active: true,
+        rows: fromRows
+      });
+
+      // 2. JOIN
+      let joinRows = [];
+      if (q.hasJoin) {
+        fromRows.forEach(e => {
           const dept = RAW_DEPARTMENTS.find(d => d.id === e.dept_id);
           if (dept) {
-            joined.push({ ...e, dept_name: dept.dept_name, budget: dept.budget, _joined: true });
-          } else if (parsedQuery.isLeftJoin) {
-            joined.push({ ...e, dept_name: null, budget: null, _joined: false, _nullPadded: true });
+            joinRows.push({
+              ...e,
+              dept_name: dept.dept_name,
+              budget: dept.budget,
+              _status: 'passed',
+              _verdict: 'Matched',
+              _reason: `Key ${e.dept_id} == ${dept.id}`
+            });
+          } else if (q.isLeft) {
+            joinRows.push({
+              ...e,
+              dept_name: null,
+              budget: null,
+              _status: 'passed',
+              _verdict: 'NULL Padded',
+              _reason: `No dept match; LEFT JOIN preserves row with NULLs`
+            });
+          } else {
+            joinRows.push({
+              ...e,
+              dept_name: 'NONE',
+              _status: 'rejected',
+              _verdict: 'Dropped',
+              _reason: `No matching department for dept_id '${e.dept_id}'`
+            });
           }
         });
       } else {
-        joined = base.map(b => ({ ...b, _joined: false }));
+        joinRows = fromRows.map(r => ({ ...r, _reason: 'Direct pass (no JOIN in query)' }));
       }
 
-      // 3. Where Filter
-      let filtered = [];
-      joined.forEach(r => {
-        let pass = true;
-        if (parsedQuery.hasWhere) {
-          if (/salary\s*>\s*(\d+)/i.test(parsedQuery.whereExpr)) {
-            const val = parseInt(parsedQuery.whereExpr.match(/salary\s*>\s*(\d+)/i)[1], 10);
-            pass = r.salary > val;
-          } else if (/salary\s*>=\s*(\d+)/i.test(parsedQuery.whereExpr)) {
-            const val = parseInt(parsedQuery.whereExpr.match(/salary\s*>=\s*(\d+)/i)[1], 10);
-            pass = r.salary >= val;
-          } else if (/IS\s+NULL/i.test(parsedQuery.whereExpr)) {
-            pass = r.dept_name === null;
-          }
-        }
-        r._wherePass = pass;
-        if (pass) filtered.push(r);
+      pipelineStages.push({
+        id: 'stage_join',
+        orderNum: 2,
+        title: q.hasJoin ? 'JOIN departments' : 'JOIN (Bypassed)',
+        icon: '🔗',
+        clause: q.hasJoin ? 'JOIN departments ON employees.dept_id = departments.id' : '/* No JOIN required */',
+        desc: q.hasJoin ? 'Probe hash table on join keys. Match or drop records based on relational integrity.' : 'No secondary table joined; tuples bypass directly to next station.',
+        active: q.hasJoin,
+        rows: joinRows
       });
 
-      // 4. Group By & Aggregates
-      let grouped = {};
-      let aggregatedList = [];
-      if (parsedQuery.hasGroupBy) {
-        const col = parsedQuery.groupByCol || 'dept_id';
-        filtered.forEach(r => {
-          const k = r[col] || 'Other';
-          if (!grouped[k]) grouped[k] = [];
-          grouped[k].push(r);
+      // 3. WHERE Filter
+      const prevJoinRows = joinRows.filter(r => r._status !== 'rejected');
+      let whereRows = [];
+      prevJoinRows.forEach(r => {
+        let pass = true;
+        let testLog = '';
+        if (q.hasWhere) {
+          if (/salary\s*>\s*(\d+)/i.test(q.whereExpr)) {
+            const v = parseInt(q.whereExpr.match(/salary\s*>\s*(\d+)/i)[1], 10);
+            pass = r.salary > v;
+            testLog = `$${r.salary.toLocaleString()} > $${v.toLocaleString()} is ${pass ? 'TRUE' : 'FALSE'}`;
+          } else if (/salary\s*>=\s*(\d+)/i.test(q.whereExpr)) {
+            const v = parseInt(q.whereExpr.match(/salary\s*>=\s*(\d+)/i)[1], 10);
+            pass = r.salary >= v;
+            testLog = `$${r.salary.toLocaleString()} >= $${v.toLocaleString()} is ${pass ? 'TRUE' : 'FALSE'}`;
+          } else if (/IS\s+NULL/i.test(q.whereExpr)) {
+            pass = r.dept_name === null;
+            testLog = `dept_name is ${r.dept_name === null ? 'NULL (TRUE)' : 'NOT NULL (FALSE)'}`;
+          }
+        } else {
+          testLog = 'No WHERE clause: all rows pass unconditionally';
+        }
+
+        whereRows.push({
+          ...r,
+          _status: pass ? 'passed' : 'rejected',
+          _verdict: pass ? 'Passed' : 'Sifted Out',
+          _reason: testLog
+        });
+      });
+
+      pipelineStages.push({
+        id: 'stage_where',
+        orderNum: 3,
+        title: q.hasWhere ? `WHERE ${q.whereExpr}` : 'WHERE (Bypassed)',
+        icon: '🔍',
+        clause: q.hasWhere ? `WHERE ${q.whereExpr}` : '/* No WHERE filter applied */',
+        desc: q.hasWhere ? 'Evaluate row-level Boolean predicates. Non-matching rows fall through the scrap chute.' : 'All candidate rows flow freely to the grouping station.',
+        active: q.hasWhere,
+        rows: whereRows
+      });
+
+      // 4. GROUP BY & Aggregates
+      const prevWhereRows = whereRows.filter(r => r._status !== 'rejected');
+      let groupRows = [];
+      if (q.hasGroupBy) {
+        const groups = {};
+        prevWhereRows.forEach(r => {
+          const k = r[q.groupByCol] || 'Other';
+          if (!groups[k]) groups[k] = [];
+          groups[k].push(r);
         });
 
-        Object.keys(grouped).forEach(k => {
-          const rows = grouped[k];
-          const count = rows.length;
-          const sumSal = rows.reduce((acc, x) => acc + x.salary, 0);
+        Object.keys(groups).forEach(k => {
+          const list = groups[k];
+          const count = list.length;
+          const sumSal = list.reduce((a, b) => a + b.salary, 0);
           const avgSal = Math.round(sumSal / count);
-          aggregatedList.push({
-            groupKey: k,
+          groupRows.push({
+            name: `Group: ${k}`,
+            dept_id: k,
             count: count,
             avg_salary: avgSal,
             sum_salary: sumSal,
-            rows: rows
+            _status: 'passed',
+            _verdict: `${count} Rows Bundled`,
+            _reason: `Collapsed ${count} tuples into 1 summary group ingot for ${k}`
           });
         });
+      } else {
+        groupRows = prevWhereRows.map(r => ({ ...r, _reason: 'No GROUP BY: rows remain individual tuples' }));
       }
 
-      // 5. Having Filter
-      let havingList = [];
-      if (parsedQuery.hasHaving && parsedQuery.hasGroupBy) {
-        aggregatedList.forEach(g => {
+      pipelineStages.push({
+        id: 'stage_group',
+        orderNum: 4,
+        title: q.hasGroupBy ? `GROUP BY ${q.groupByCol}` : 'GROUP BY (Bypassed)',
+        icon: '🗂️',
+        clause: q.hasGroupBy ? `GROUP BY ${q.groupByCol}` : '/* No GROUP BY aggregation */',
+        desc: q.hasGroupBy ? 'Partition rows into rotary accumulator cylinders and compress into consolidated summary ingots.' : 'Tuples remain distinct rows without rollup compression.',
+        active: q.hasGroupBy,
+        rows: groupRows
+      });
+
+      // 5. HAVING
+      let havingRows = [];
+      if (q.hasHaving && q.hasGroupBy) {
+        groupRows.forEach(g => {
           let pass = true;
-          if (/COUNT\s*\(\s*\*\s*\)\s*>=\s*(\d+)/i.test(parsedQuery.havingExpr)) {
-            const n = parseInt(parsedQuery.havingExpr.match(/COUNT\s*\(\s*\*\s*\)\s*>=\s*(\d+)/i)[1], 10);
+          let testLog = '';
+          if (/COUNT\s*\(\s*\*\s*\)\s*>=\s*(\d+)/i.test(q.havingExpr)) {
+            const n = parseInt(q.havingExpr.match(/COUNT\s*\(\s*\*\s*\)\s*>=\s*(\d+)/i)[1], 10);
             pass = g.count >= n;
-          } else if (/AVG.*?>\s*(\d+)/i.test(parsedQuery.havingExpr)) {
-            const v = parseInt(parsedQuery.havingExpr.match(/AVG.*?>\s*(\d+)/i)[1], 10);
+            testLog = `Count ${g.count} >= ${n} is ${pass ? 'TRUE' : 'FALSE'}`;
+          } else if (/AVG.*?>\s*(\d+)/i.test(q.havingExpr)) {
+            const v = parseInt(q.havingExpr.match(/AVG.*?>\s*(\d+)/i)[1], 10);
             pass = g.avg_salary > v;
+            testLog = `AVG salary $${g.avg_salary.toLocaleString()} > $${v.toLocaleString()} is ${pass ? 'TRUE' : 'FALSE'}`;
           }
-          g._havingPass = pass;
-          if (pass) havingList.push(g);
+
+          havingRows.push({
+            ...g,
+            _status: pass ? 'passed' : 'rejected',
+            _verdict: pass ? 'Qualified' : 'Underweight',
+            _reason: testLog
+          });
         });
       } else {
-        havingList = aggregatedList;
+        havingRows = groupRows.map(r => ({ ...r, _reason: 'No HAVING clause applied' }));
       }
 
-      // 6. Window Function
-      let windowedList = [];
-      if (parsedQuery.hasWindow) {
-        let running = 0;
-        const sorted = [...filtered].sort((a,b) => a.salary - b.salary);
-        sorted.forEach(r => {
-          running += r.salary;
-          windowedList.push({ ...r, running_total: running });
+      pipelineStages.push({
+        id: 'stage_having',
+        orderNum: 5,
+        title: q.hasHaving ? `HAVING ${q.havingExpr}` : 'HAVING (Bypassed)',
+        icon: '⚖️',
+        clause: q.hasHaving ? `HAVING ${q.havingExpr}` : '/* No HAVING post-aggregation filter */',
+        desc: q.hasHaving ? 'Weigh aggregate group ingots on the balance scale. Underweight groups get dumped.' : 'All groups qualify for projection and ordering.',
+        active: q.hasHaving,
+        rows: havingRows
+      });
+
+      // 6. WINDOW OVER()
+      const prevHavingRows = havingRows.filter(r => r._status !== 'rejected');
+      let windowRows = [];
+      if (q.hasWindow) {
+        let runningTotal = 0;
+        const sorted = [...prevHavingRows].sort((a,b) => (a.salary || 0) - (b.salary || 0));
+        sorted.forEach((r, idx) => {
+          runningTotal += (r.salary || 0);
+          windowRows.push({
+            ...r,
+            running_total: runningTotal,
+            _status: 'passed',
+            _verdict: `Frame #${idx+1}`,
+            _reason: `Sliding window computed cumulative sum: $${runningTotal.toLocaleString()}`
+          });
+        });
+      } else {
+        windowRows = prevHavingRows.map(r => ({ ...r, _reason: 'Direct pass (no window functions)' }));
+      }
+
+      pipelineStages.push({
+        id: 'stage_window',
+        orderNum: 6,
+        title: q.hasWindow ? 'WINDOW OVER()' : 'WINDOW (Bypassed)',
+        icon: '🪟',
+        clause: q.hasWindow ? 'SUM(salary) OVER (ORDER BY salary)' : '/* No Window clause */',
+        desc: q.hasWindow ? 'Sliding optical aperture frame travels along rows to compute running metrics without collapsing tuples.' : 'No window frames computed.',
+        active: q.hasWindow,
+        rows: windowRows
+      });
+
+      // 7. ORDER BY & LIMIT
+      let orderRows = [...windowRows];
+      if (q.hasOrderBy) {
+        orderRows.sort((a, b) => {
+          const valA = a.salary || a.avg_salary || 0;
+          const valB = b.salary || b.avg_salary || 0;
+          return valB - valA; // DESC
         });
       }
 
-      // 7. Order By & Limit
-      let working = parsedQuery.hasGroupBy ? havingList : (parsedQuery.hasWindow ? windowedList : filtered);
-      let ordered = [...working];
-      if (parsedQuery.hasOrderBy) {
-        ordered.sort((a,b) => (b.salary || b.avg_salary || 0) - (a.salary || a.avg_salary || 0));
-      }
-      let finalOut = ordered.slice(0, parsedQuery.limitCount);
+      let slicedRows = [];
+      orderRows.forEach((r, idx) => {
+        const pass = idx < q.limitN;
+        slicedRows.push({
+          ...r,
+          _status: pass ? 'passed' : 'rejected',
+          _verdict: pass ? `Rank #${idx+1}` : `Exceeded Limit (${idx+1} > ${q.limitN})`,
+          _reason: pass ? `Within LIMIT ${q.limitN}` : `Guillotine dropped at N=${q.limitN}`
+        });
+      });
 
-      machineState.records = base;
-      machineState.joinedRecords = joined;
-      machineState.filteredRecords = filtered;
-      machineState.groupedRecords = grouped;
-      machineState.havingRecords = havingList;
-      machineState.windowedRecords = windowedList;
-      machineState.orderedRecords = ordered;
-      machineState.finalOutput = finalOut;
+      pipelineStages.push({
+        id: 'stage_order',
+        orderNum: 7,
+        title: q.hasLimit ? `ORDER & LIMIT ${q.limitN}` : (q.hasOrderBy ? 'ORDER BY DESC' : 'ORDER (Bypassed)'),
+        icon: '📶',
+        clause: q.hasOrderBy ? (q.hasLimit ? `ORDER BY ... LIMIT ${q.limitN}` : 'ORDER BY ...') : '/* Natural Order */',
+        desc: 'Escalator reorders rows into height sequence; heavy guillotine drops down to shear off excess records.',
+        active: q.hasOrderBy || q.hasLimit,
+        rows: slicedRows
+      });
+
+      // 8. SELECT (Projection)
+      const finalSurviving = slicedRows.filter(r => r._status !== 'rejected');
+      pipelineStages.push({
+        id: 'stage_select',
+        orderNum: 8,
+        title: 'SELECT Columns',
+        icon: '🏷️',
+        clause: 'SELECT final attributes',
+        desc: 'Overhead stamping press punches out unselected columns and deposits pristine cards into the Output Tray.',
+        active: true,
+        rows: finalSurviving.map(r => ({
+          ...r,
+          _verdict: 'Completed Tuple',
+          _reason: 'Polished, projected, and delivered to consumer'
+        }))
+      });
     }
 
     /* =========================================================================
-       STATION RIBBON TELEMETRY
+       RENDERERS
        ========================================================================= */
-    function buildStationRibbon() {
-      const ribbon = document.getElementById('stationRibbon');
-      const q = parsedQuery;
-
-      const stations = [
-        { id: 'st_from', name: '1. Ingestion Hopper', sub: 'FROM employees', active: true },
-        { id: 'st_join', name: '2. Hash Join Drum', sub: q.hasJoin ? 'JOIN departments' : 'Bypassed', active: q.hasJoin },
-        { id: 'st_where', name: '3. Caliper Sieve', sub: q.hasWhere ? q.whereExpr : 'Bypassed (All pass)', active: q.hasWhere },
-        { id: 'st_group', name: '4. Rotary Carousel', sub: q.hasGroupBy ? `BY ${q.groupByCol}` : 'Bypassed', active: q.hasGroupBy },
-        { id: 'st_having', name: '5. Balance Grate', sub: q.hasHaving ? q.havingExpr : 'Bypassed', active: q.hasHaving },
-        { id: 'st_window', name: '6. Sliding Lens', sub: q.hasWindow ? 'OVER (ORDER BY sal)' : 'Bypassed', active: q.hasWindow },
-        { id: 'st_order', name: '7. Guillotine Blade', sub: q.hasLimit ? `LIMIT ${q.limitCount}` : (q.hasOrderBy ? 'ORDER BY' : 'Direct Pass'), active: q.hasOrderBy || q.hasLimit },
-        { id: 'st_select', name: '8. Output Press', sub: 'SELECT columns', active: true }
-      ];
-
-      ribbon.innerHTML = stations.map(s => `
-        <div class="station-node ${s.active ? 'active-stage' : ''}" id="${s.id}">
-          <div class="station-title">
-            <span>${s.name}</span>
+    function renderPipelineNav() {
+      const nav = document.getElementById('pipelineNav');
+      nav.innerHTML = pipelineStages.map((s, idx) => `
+        <button class="pipe-step-btn ${s.active ? 'active-stage' : ''} ${idx === currentStationIndex ? 'current' : ''}" onclick="jumpToStation(${idx})">
+          <div class="step-order">
+            <span>STEP 0${s.orderNum}</span>
             <span>${s.active ? '⚡' : '—'}</span>
           </div>
-          <div class="station-param">${s.sub}</div>
-        </div>
+          <div class="step-name">${s.icon} ${s.title.split(' ')[0]}</div>
+          <div class="step-badge">${s.active ? s.title : 'Bypassed'}</div>
+        </button>
+      `).join('');
+    }
+
+    function jumpToStation(idx) {
+      currentStationIndex = idx;
+      updateStageView();
+    }
+
+    function updateStageView() {
+      const stage = pipelineStages[currentStationIndex];
+      renderPipelineNav();
+
+      // Spotlight Header
+      document.getElementById('stageIcon').textContent = stage.icon;
+      document.getElementById('stageTitle').textContent = `Step ${stage.orderNum}: ${stage.title}`;
+      document.getElementById('stageDesc').textContent = stage.desc;
+
+      const passedCount = stage.rows.filter(r => r._status !== 'rejected').length;
+      document.getElementById('stageStats').textContent = `${passedCount} of ${stage.rows.length} Passed`;
+
+      // Stream Labels
+      document.getElementById('streamCategoryLabel').textContent = `Station 0${stage.orderNum} Work Area (${stage.title})`;
+      document.getElementById('streamCountLabel').textContent = `${stage.rows.length} Total Tuples at Station`;
+
+      // Render Cassettes
+      const stream = document.getElementById('cassetteStream');
+      stream.innerHTML = stage.rows.map(r => {
+        const isPassed = r._status === 'passed';
+        const isRejected = r._status === 'rejected';
+        const verdictCls = isPassed ? 'pass' : (isRejected ? 'fail' : 'pending');
+
+        return `
+          <div class="row-cassette ${isPassed ? 'status-passed' : (isRejected ? 'status-rejected' : 'status-active')}">
+            <div class="cassette-top">
+              <span class="cassette-id">#${r.emp_id || 'GRP'}</span>
+              <span class="cassette-verdict ${verdictCls}">${r._verdict}</span>
+            </div>
+            <div class="cassette-main">${r.name || 'Group Aggregate'}</div>
+            <div class="cassette-attrs">
+              ${r.dept_id ? `<span class="attr-pill">Dept: <strong>${r.dept_id}</strong></span>` : ''}
+              ${r.salary ? `<span class="attr-pill highlight">Sal: <strong>$${r.salary.toLocaleString()}</strong></span>` : ''}
+              ${r.dept_name ? `<span class="attr-pill">Org: <strong>${r.dept_name}</strong></span>` : ''}
+              ${r.count ? `<span class="attr-pill highlight">Count: <strong>${r.count}</strong></span>` : ''}
+              ${r.avg_salary ? `<span class="attr-pill highlight">Avg: <strong>$${r.avg_salary.toLocaleString()}</strong></span>` : ''}
+              ${r.running_total ? `<span class="attr-pill highlight">CumSum: <strong>$${r.running_total.toLocaleString()}</strong></span>` : ''}
+            </div>
+            <div style="font-size: 10.5px; color: var(--ink-muted); margin-top: 4px; font-family: var(--font-mono); border-top: 1px dotted var(--border-subtle); padding-top: 4px;">
+              ${r._reason}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Microscope
+      document.getElementById('currentClauseTag').textContent = `STEP 0${stage.orderNum} OF 08`;
+      document.getElementById('microscopeClause').textContent = stage.clause;
+      document.getElementById('microscopeExplanation').innerHTML = `
+        <strong>Mechanical Station Action:</strong><br/>
+        ${stage.desc}<br/><br/>
+        <strong>Telemetry:</strong> ${passedCount} records successfully cleared this phase. ${stage.rows.length - passedCount} records were shunted to scrap or rejected by relational rules.
+      `;
+
+      // Update Final Table
+      updateFinalOutputTable();
+    }
+
+    function updateFinalOutputTable() {
+      const finalStage = pipelineStages[pipelineStages.length - 1];
+      const rows = finalStage.rows;
+      const thead = document.getElementById('resultThead');
+      const tbody = document.getElementById('resultTbody');
+
+      document.getElementById('outputTupleCount').textContent = `${rows.length} Tuples Prepared`;
+
+      if (rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #b91c1c; padding: 20px;">0 tuples survived all quality gates. Result is an empty set.</td></tr>`;
+        return;
+      }
+
+      const keys = Object.keys(rows[0]).filter(k => !k.startsWith('_'));
+      thead.innerHTML = `<tr><th>#</th>${keys.map(k => `<th>${k.toUpperCase()}</th>`).join('')}</tr>`;
+
+      tbody.innerHTML = rows.map((r, i) => `
+        <tr>
+          <td><strong>${i + 1}</strong></td>
+          ${keys.map(k => `<td>${r[k] !== null ? (typeof r[k] === 'number' && k.includes('sal') ? '$' + r[k].toLocaleString() : r[k]) : '<em style="color:#ef4444;">NULL</em>'}</td>`).join('')}
+        </tr>
       `).join('');
     }
 
     /* =========================================================================
-       ISOMETRIC HAND-INKED SVG GENERATOR (FIG. 16 APPARATUS)
-       ========================================================================= */
-    function renderScene() {
-      const root = document.getElementById('sceneRoot');
-      const q = parsedQuery;
-      let svg = '';
-
-      // Set isometric view origin for drawing
-      OX = 570;
-      OY = 480;
-      setLight(120);
-
-      // 1. Cast Floor Shadows (Flat slate-blue #41538f)
-      svg += `
-        <g id="shadows" opacity="0.32">
-          <!-- Main Chassis Shadow -->
-          <polygon points="120,620 480,680 980,590 740,510" fill="${SHADOW}" />
-          <!-- Feeder Tower Shadow -->
-          <polygon points="180,480 340,540 420,490 260,430" fill="${SHADOW}" />
-          <!-- Output Bin Shadow -->
-          <polygon points="860,630 1020,600 1080,620 920,650" fill="${SHADOW}" />
-        </g>
-      `;
-
-      // 2. Oak Base Console & Brass Feet
-      // [x, y, z] isometric boxes
-      svg += drawIsoChassis();
-
-      // 3. Station 1: Dual Input Chutes (FROM & JOIN Feeder)
-      svg += drawHopperStation(q.hasJoin);
-
-      // 4. Station 2: Hash Join Interlock Drum
-      if (q.hasJoin) {
-        svg += drawHashJoinDrum();
-      } else {
-        svg += drawBypassConveyor(-180, -40, 190, 80);
-      }
-
-      // 5. Station 3: WHERE Caliper Sieve & Kick-Lever
-      svg += drawCaliperSieve(q.hasWhere, q.whereExpr);
-
-      // 6. Station 4: Rotary Group By Carousel & Balance Tubes
-      if (q.hasGroupBy) {
-        svg += drawGroupCarousel(q.groupByCol);
-      } else {
-        svg += drawStraightConveyor(0, -30, 120, 100);
-      }
-
-      // 7. Station 5: Window Sliding Lens Frame
-      if (q.hasWindow) {
-        svg += drawWindowLens();
-      }
-
-      // 8. Station 6: Stepped Sorter Escalator & Guillotine Slicer (ORDER BY / LIMIT)
-      svg += drawGuillotineSlicer(q.hasLimit, q.limitCount);
-
-      // 9. Station 7: Stamping Die & Output Velvet Tray
-      svg += drawOutputTray();
-
-      // 10. Moving Punchcards Layer
-      svg += drawAnimatedPunchcards();
-
-      // 11. Callout Pill Badges with Leader Lines
-      svg += drawLeaderCallouts();
-
-      root.innerHTML = svg;
-    }
-
-    /* ---------- ISOMETRIC DRAWING PRIMITIVES FOR MACHINE ---------- */
-    function drawIsoChassis() {
-      // Main Cast-Iron & Enameled Console Cabinet
-      let s = '';
-      const w = 460, d = 260, h = 180;
-      // Front face
-      s += shape([
-        [-w/2, d/2, 0], [w/2, d/2, 0], [w/2, d/2, h], [-w/2, d/2, h]
-      ], CERAMIC.l, 1.5);
-      // Left side face
-      s += shape([
-        [-w/2, -d/2, 0], [-w/2, d/2, 0], [-w/2, d/2, h], [-w/2, -d/2, h]
-      ], CERAMIC.d, 1.5);
-      // Top platform
-      s += shape([
-        [-w/2, -d/2, h], [w/2, -d/2, h], [w/2, d/2, h], [-w/2, d/2, h]
-      ], CERAMIC.m, 1.5);
-
-      // Brass corner riveted brackets
-      const brackets = [
-        [-w/2, d/2, h], [w/2, d/2, h], [-w/2, -d/2, h], [w/2, -d/2, h]
-      ];
-      brackets.forEach(([bx, by, bz]) => {
-        const p = P(bx, by, bz);
-        s += `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${PALS.mustard.l}" stroke="${INK}" stroke-width="1.2" />`;
-      });
-
-      // Nameplate: TABULATOR-9000 RELATIONAL ENGINE
-      const npP = P(0, d/2 + 1, h/2);
-      s += `
-        <g transform="translate(${npP[0] - 65}, ${npP[1] - 12})">
-          <rect width="130" height="24" rx="4" fill="${PALS.mustard.l}" stroke="${INK}" stroke-width="1.2" />
-          <text x="65" y="16" font-family="${'ui-monospace, monospace'}" font-size="9.5" font-weight="900" fill="${INK}" text-anchor="middle" letter-spacing="1">RELATIONAL-9000</text>
-        </g>
-      `;
-
-      return s;
-    }
-
-    function drawHopperStation(hasJoin) {
-      let s = '';
-      // Left Hopper A (Employees Table)
-      const h1 = [[-240, 20, 260], [-170, 20, 260], [-170, 80, 260], [-240, 80, 260]];
-      s += shape(h1, METAL.l, 1.2);
-      s += line([[-240, 20, 260], [-200, 30, 200]], 1.2);
-      s += line([[-170, 80, 260], [-170, 50, 200]], 1.2);
-
-      // Inscribed Tag: TABLE A
-      const p1 = P(-205, 50, 262);
-      s += `<text x="${p1[0]}" y="${p1[1] - 4}" font-size="8.5" font-weight="800" fill="${INK}" text-anchor="middle">TABLE A [employees]</text>`;
-
-      if (hasJoin) {
-        // Right Hopper B (Departments Table)
-        const h2 = [[-240, -80, 260], [-170, -80, 260], [-170, -20, 260], [-240, -20, 260]];
-        s += shape(h2, PALS.cobalt.l, 1.2);
-        const p2 = P(-205, -50, 262);
-        s += `<text x="${p2[0]}" y="${p2[1] - 4}" font-size="8.5" font-weight="800" fill="${INK}" text-anchor="middle">TABLE B [departments]</text>`;
-      }
-
-      return s;
-    }
-
-    function drawHashJoinDrum() {
-      let s = '';
-      // Revolving Meshing Gear Drum
-      const [cx, cy, cz] = [-130, 0, 210];
-      const ptsTop = ellUV(cx, cy, 32, 24).map(PZ(cz + 20));
-      const ptsBot = ellUV(cx, cy, 32, 24).map(PZ(cz));
-      s += loft(ptsTop, ptsBot, () => PALS.cobalt.m);
-      s += shape(ptsTop, PALS.cobalt.l, 1.2);
-
-      // Central Spindle
-      const spTop = P(cx, cy, cz + 35);
-      const spBot = P(cx, cy, cz);
-      s += `<line x1="${spTop[0]}" y1="${spTop[1]}" x2="${spBot[0]}" y2="${spBot[1]}" stroke="${INK}" stroke-width="2.5" />`;
-
-      // Interlocking Feeler Pin
-      const pFeel = P(cx + 25, cy + 15, cz + 10);
-      s += `<circle cx="${pFeel[0]}" cy="${pFeel[1]}" r="5" fill="${PALS.mustard.l}" stroke="${INK}" stroke-width="1.2" />`;
-
-      return s;
-    }
-
-    function drawCaliperSieve(hasWhere, expr) {
-      let s = '';
-      const [cx, cy, cz] = [-40, 0, 210];
-
-      // Brass Caliper Micrometer Bar
-      s += shape([
-        [cx - 15, cy - 35, cz + 25], [cx + 15, cy - 35, cz + 25],
-        [cx + 15, cy + 35, cz + 25], [cx - 15, cy + 35, cz + 25]
-      ], PALS.mustard.l, 1.2);
-
-      // Gauge dial
-      const pDial = P(cx, cy - 40, cz + 30);
-      s += `
-        <circle cx="${pDial[0]}" cy="${pDial[1]}" r="12" fill="#ffffff" stroke="${INK}" stroke-width="1.2" />
-        <line x1="${pDial[0]}" y1="${pDial[1]}" x2="${pDial[0] + 6}" y2="${pDial[1] - 6}" stroke="${PALS.tomato.l}" stroke-width="1.5" stroke-linecap="round" />
-        <circle cx="${pDial[0]}" cy="${pDial[1]}" r="2" fill="${INK}" />
-      `;
-
-      // Sifter Sieve Grate underneath
-      const grate = [
-        [cx - 20, cy - 25, cz], [cx + 20, cy - 25, cz],
-        [cx + 20, cy + 25, cz], [cx - 20, cy + 25, cz]
-      ];
-      s += shape(grate, hasWhere ? PALS.tomato.l : METAL.l, 1.2);
-
-      // Rejection Shunt Pipe dropping below
-      const pShunt = P(cx, cy + 35, cz - 20);
-      s += `
-        <path d="M ${pDial[0] + 20} ${pDial[1] + 40} Q ${pDial[0] + 35} ${pDial[1] + 65} ${pShunt[0]} ${pShunt[1] + 20}" fill="none" stroke="${INK}" stroke-width="3" stroke-dasharray="3,3" />
-      `;
-
-      return s;
-    }
-
-    function drawGroupCarousel(groupByCol) {
-      let s = '';
-      const [cx, cy, cz] = [70, 0, 210];
-
-      // Rotary Hub
-      const ptsHub = ellUV(cx, cy, 40, 28).map(PZ(cz + 10));
-      s += shape(ptsHub, PALS.mint.m, 1.2);
-
-      // 3 Glass Accumulator Cylinders (Eng, Ana, Fin)
-      const offsets = [
-        { label: 'ENG', dx: -20, dy: -20, col: PALS.mint.l },
-        { label: 'ANA', dx: 15, dy: -18, col: PALS.mint.m },
-        { label: 'FIN', dx: 0, dy: 22, col: PALS.mint.d }
-      ];
-
-      offsets.forEach(off => {
-        const tx = cx + off.dx, ty = cy + off.dy;
-        const cBot = ellUV(tx, ty, 10, 8).map(PZ(cz));
-        const cTop = ellUV(tx, ty, 10, 8).map(PZ(cz + 36));
-        s += loft(cTop, cBot, () => CLEAR.l);
-        s += shape(cTop, CLEAR.l, 1);
-
-        // Group Ingot Plate inside
-        const pLbl = P(tx, ty, cz + 18);
-        s += `<text x="${pLbl[0]}" y="${pLbl[1]}" font-size="7.5" font-weight="900" fill="${INK}" text-anchor="middle">${off.label}</text>`;
-      });
-
-      return s;
-    }
-
-    function drawWindowLens() {
-      let s = '';
-      const [cx, cy, cz] = [130, 0, 225];
-      // Sliding Brass Aperture Frame
-      const framePts = [
-        [cx - 15, cy - 25, cz], [cx + 15, cy - 25, cz],
-        [cx + 15, cy + 25, cz], [cx - 15, cy + 25, cz]
-      ];
-      s += shape(framePts, PALS.blush.l, 1.4);
-
-      // Glass Lens Core
-      const pLens = P(cx, cy, cz);
-      s += `<circle cx="${pLens[0]}" cy="${pLens[1]}" r="14" fill="${CLEAR.l}" stroke="${INK}" stroke-width="1.2" opacity="0.8" />`;
-      s += `<text x="${pLens[0]}" y="${pLens[1] + 3}" font-size="7" font-weight="900" fill="${INK}" text-anchor="middle">OVER()</text>`;
-
-      return s;
-    }
-
-    function drawGuillotineSlicer(hasLimit, n) {
-      let s = '';
-      const [cx, cy, cz] = [170, 0, 200];
-
-      // Stepped Sorting Incline Rack (ORDER BY)
-      s += shape([
-        [cx - 20, cy - 20, cz - 10], [cx + 10, cy - 20, cz + 15],
-        [cx + 10, cy + 20, cz + 15], [cx - 20, cy + 20, cz - 10]
-      ], METAL.l, 1.2);
-
-      // Heavy Slicing Guillotine Blade
-      if (hasLimit) {
-        const bPos = P(cx + 8, cy, cz + 30);
-        s += `
-          <g transform="translate(${bPos[0]}, ${bPos[1]})">
-            <rect x="-8" y="-22" width="16" height="28" fill="${PALS.tomato.l}" stroke="${INK}" stroke-width="1.2" />
-            <polygon points="-8,6 8,6 0,14" fill="${METAL.d}" stroke="${INK}" stroke-width="1" />
-            <text x="0" y="-8" font-size="7.5" font-weight="900" fill="#ffffff" text-anchor="middle">N=${n}</text>
-          </g>
-        `;
-      }
-
-      return s;
-    }
-
-    function drawOutputTray() {
-      let s = '';
-      const [cx, cy, cz] = [230, 0, 185];
-
-      // Velvet-lined Output Basin
-      const trayPts = [
-        [cx - 20, cy - 30, cz], [cx + 35, cy - 30, cz],
-        [cx + 35, cy + 30, cz], [cx - 20, cy + 30, cz]
-      ];
-      s += shape(trayPts, PALS.mustard.l, 1.5);
-
-      // Stamping Die Press Overhead
-      const pPress = P(cx + 8, cy, cz + 45);
-      s += `
-        <g transform="translate(${pPress[0]}, ${pPress[1]})">
-          <circle cx="0" cy="-10" r="10" fill="${METAL.l}" stroke="${INK}" stroke-width="1.2" />
-          <rect x="-6" y="-4" width="12" height="18" fill="${INK}" />
-          <text x="0" y="8" font-size="7.5" font-weight="900" fill="#ffffff" text-anchor="middle">SELECT</text>
-        </g>
-      `;
-
-      return s;
-    }
-
-    function drawStraightConveyor(x0, y0, z0, len) {
-      let s = '';
-      s += shape([
-        [x0, y0 - 15, z0], [x0 + len, y0 - 15, z0],
-        [x0 + len, y0 + 15, z0], [x0, y0 + 15, z0]
-      ], METAL.m, 1);
-      return s;
-    }
-
-    function drawBypassConveyor(x0, y0, z0, len) {
-      let s = '';
-      s += shape([
-        [x0, y0 - 10, z0], [x0 + len, y0 - 10, z0],
-        [x0 + len, y0 + 10, z0], [x0, y0 + 10, z0]
-      ], METAL.d, 1);
-      const p = P(x0 + len/2, y0, z0);
-      s += `<text x="${p[0]}" y="${p[1]}" font-size="7" font-weight="700" fill="#ffffff" text-anchor="middle">BYPASS</text>`;
-      return s;
-    }
-
-    function drawAnimatedPunchcards() {
-      let s = '';
-      const step = machineState.stepIndex;
-      const recs = machineState.records;
-
-      // Draw active punchcards moving along conveyor track
-      recs.forEach((r, idx) => {
-        // Compute position based on step and record index
-        const progress = Math.max(0, Math.min(1, (step - idx * 0.4) / 5));
-        if (progress <= 0 || progress >= 1 && !r._wherePass && parsedQuery.hasWhere) return;
-
-        // Path coordinates from Hopper (-200) to Output (+230)
-        let curX = -200 + progress * 430;
-        let curY = 0;
-        let curZ = 205;
-
-        // If rejected by WHERE, deflect down discard chute
-        if (!r._wherePass && curX > -40 && parsedQuery.hasWhere) {
-          curY += (curX - (-40)) * 1.2;
-          curZ -= (curX - (-40)) * 0.8;
-        }
-
-        const p = P(curX, curY, curZ);
-        const cardCol = r._wherePass ? PALS.mint.l : PALS.tomato.l;
-
-        s += `
-          <g transform="translate(${p[0] - 14}, ${p[1] - 8})">
-            <!-- Physical Punchcard Body -->
-            <polygon points="0,0 24,0 28,4 28,16 0,16" fill="${cardCol}" stroke="${INK}" stroke-width="1.1" />
-            <!-- Punch Holes -->
-            <circle cx="6" cy="5" r="1.2" fill="${INK}" />
-            <circle cx="10" cy="5" r="1.2" fill="${INK}" />
-            <circle cx="6" cy="11" r="1.2" fill="${INK}" />
-            <text x="13" y="11" font-size="5.5" font-weight="800" fill="${INK}">#${r.emp_id}</text>
-          </g>
-        `;
-      });
-
-      return s;
-    }
-
-    function drawLeaderCallouts() {
-      let s = '';
-      const q = parsedQuery;
-
-      // Colorfigures Leader Callout Tags
-      const tags = [
-        { label: 'FIG. 16a · DUAL INGESTION HOPPERS', at: [-210, 40, 270], dx: -60, dy: -40 },
-        { label: q.hasWhere ? `FIG. 16b · PREDICATE CALIPER [${q.whereExpr}]` : 'FIG. 16b · CALIPER (BYPASS)', at: [-40, 0, 240], dx: 0, dy: -55 },
-        { label: q.hasGroupBy ? `FIG. 16c · ROTARY ACCUMULATOR [BY ${q.groupByCol}]` : 'FIG. 16c · ROTARY ACCUMULATOR', at: [70, 0, 240], dx: 0, dy: -50 },
-        { label: 'FIG. 16d · PRIMACY OUTPUT TRAY', at: [230, 0, 210], dx: 50, dy: -45 }
-      ];
-
-      tags.forEach(t => {
-        const base = P(t.at[0], t.at[1], t.at[2]);
-        const tx = base[0] + t.dx;
-        const ty = base[1] + t.dy;
-
-        // Dotted leader line
-        s += `
-          <polyline points="${base[0]},${base[1]} ${base[0]},${ty + 8} ${tx + (t.dx > 0 ? 0 : 90)},${ty + 8}" fill="none" stroke="${INK}" stroke-width="1.1" stroke-dasharray="2,2" />
-          <circle cx="${base[0]}" cy="${base[1]}" r="2.5" fill="${INK}" />
-        `;
-
-        // Pill badge
-        const badgeW = t.label.length * 6.2 + 14;
-        const badgeX = t.dx > 0 ? tx : tx - (badgeW - 90);
-        s += `
-          <g transform="translate(${badgeX}, ${ty})">
-            <rect width="${badgeW}" height="17" rx="8.5" fill="#fffdfa" stroke="${INK}" stroke-width="1.2" />
-            <text x="${badgeW/2}" y="11.5" font-size="8" font-weight="800" fill="${INK}" text-anchor="middle">${t.label}</text>
-          </g>
-        `;
-      });
-
-      return s;
-    }
-
-    /* =========================================================================
-       PLAYBACK & STEPPING ENGINE
+       PLAYBACK CONTROLS
        ========================================================================= */
     function togglePlayPause() {
-      machineState.isPlaying = !machineState.isPlaying;
-      const btn = document.getElementById('btnPlayPause');
+      isPlaying = !isPlaying;
       const icon = document.getElementById('playIcon');
-      const txt = document.getElementById('playText');
+      const text = document.getElementById('playText');
+      const btn = document.getElementById('btnPlayPause');
 
-      if (machineState.isPlaying) {
+      if (isPlaying) {
         icon.textContent = '⏸';
-        txt.textContent = 'Pause';
+        text.textContent = 'Pause';
         btn.classList.add('primary');
-        startMachineLoop();
+        startLoop();
       } else {
         icon.textContent = '▶';
-        txt.textContent = 'Run Machine';
-        clearInterval(machineState.timer);
+        text.textContent = 'Run Pipeline';
+        clearInterval(playTimer);
       }
     }
 
-    function startMachineLoop() {
-      clearInterval(machineState.timer);
-      machineState.timer = setInterval(() => {
-        stepForward();
-      }, machineState.cadenceMs);
-    }
-
-    function updateCadence(val) {
-      const speeds = { '1': 1400, '2': 900, '3': 500, '4': 250 };
-      const labels = { '1': '0.5x', '2': '1.0x', '3': '2.0x', '4': '3.5x' };
-      machineState.cadenceMs = speeds[val] || 900;
-      document.getElementById('speedLabel').textContent = labels[val] || '1.0x';
-      if (machineState.isPlaying) startMachineLoop();
+    function startLoop() {
+      clearInterval(playTimer);
+      playTimer = setInterval(() => {
+        if (currentStationIndex < pipelineStages.length - 1) {
+          currentStationIndex++;
+          updateStageView();
+        } else {
+          togglePlayPause();
+        }
+      }, stepCadence);
     }
 
     function stepForward() {
-      machineState.stepIndex += 1;
-      const recIdx = Math.floor(machineState.stepIndex * 0.4);
-
-      if (recIdx < RAW_EMPLOYEES.length) {
-        const r = RAW_EMPLOYEES[recIdx];
-        const pass = machineState.joinedRecords[recIdx]?._wherePass !== false;
-        logTicker(`Card #${r.emp_id} [${r.name}, $${r.salary}] processed through Caliper -> ${pass ? 'PASSED to Accumulator' : 'KICKED into Discard Bin'}`, pass ? 'pass' : 'fail');
+      if (currentStationIndex < pipelineStages.length - 1) {
+        currentStationIndex++;
+      } else {
+        currentStationIndex = 0;
       }
-
-      // Update Ticker & Results
-      updateTelemetryDisplays();
-      renderScene();
-
-      if (machineState.stepIndex > 20) {
-        logTicker(`🏁 Query Execution Completed. Output tray holds final relational tuples.`, 'pass');
-        if (machineState.isPlaying) togglePlayPause();
-      }
+      updateStageView();
     }
 
-    function resetMachine() {
-      machineState.stepIndex = 0;
-      document.getElementById('tickerLog').innerHTML = `
-        <div class="log-line info">Feeder rewound. Punchcards ready in Hopper A. Click "Run Machine" to process.</div>
-      `;
-      updateTelemetryDisplays();
-      renderScene();
+    function resetPipeline() {
+      currentStationIndex = 0;
+      updateStageView();
     }
 
-    function toggleXRay() {
-      machineState.isXRay = !machineState.isXRay;
-      renderScene();
+    function changeSpeed(val) {
+      stepCadence = parseInt(val, 10);
+      if (isPlaying) startLoop();
     }
 
-    function logTicker(msg, type = 'info') {
-      const scroller = document.getElementById('tickerLog');
-      const div = document.createElement('div');
-      div.className = `log-line ${type}`;
-      div.textContent = `[TICK ${machineState.stepIndex.toString().padStart(2, '0')}] ${msg}`;
-      scroller.appendChild(div);
-      scroller.scrollTop = scroller.scrollHeight;
-    }
-
-    function updateTelemetryDisplays() {
-      const processedCount = Math.min(RAW_EMPLOYEES.length, Math.floor(machineState.stepIndex * 0.4) + 1);
-      document.getElementById('processedCountBadge').textContent = `${processedCount} / ${RAW_EMPLOYEES.length} Cards Ingested`;
-
-      const tbody = document.getElementById('resultTbody');
-      const thead = document.getElementById('resultThead');
-      const out = machineState.finalOutput;
-
-      if (machineState.stepIndex < 6) {
-        tbody.innerHTML = `<tr><td colspan="4" style="color: var(--ink-muted); text-align: center; padding: 20px;">Processing punchcards through relational apparatus...</td></tr>`;
-        return;
-      }
-
-      if (out.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="color: #b91c1c; text-align: center; padding: 20px;">Empty set (0 records met conditions).</td></tr>`;
-        return;
-      }
-
-      // Populate output table
-      const keys = Object.keys(out[0]).filter(k => !k.startsWith('_') && k !== 'rows');
-      thead.innerHTML = `<tr><th>#</th>${keys.map(k => `<th>${k.toUpperCase()}</th>`).join('')}</tr>`;
-
-      tbody.innerHTML = out.map((row, i) => `
-        <tr>
-          <td><strong>${i + 1}</strong></td>
-          ${keys.map(k => `<td>${row[k] !== null ? row[k] : '<em style="color:#ef4444;">NULL</em>'}</td>`).join('')}
-        </tr>
-      `).join('');
-
-      document.getElementById('outputRowsBadge').textContent = `${out.length} Tuples Ready`;
-    }
-
-    // Initialize on page load
+    // Initialize
     window.addEventListener('DOMContentLoaded', () => {
-      loadQueryPreset(0);
+      selectPreset(0);
     });
   </script>
 </body>
