@@ -2291,6 +2291,9 @@ function switchMainView(targetId) {
     if (window.LEETCODE_ARENA) window.LEETCODE_ARENA.init();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("⚡ Welcome to the LeetCode 50 Arena! Concept Masterclass, 100 MCQs, 100 Drills and Interactive Test Judge loaded!", 5000, 'celebrate');
   }
+  if (targetId === 'viewTactileEngine') {
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🧺 Welcome to the Tactile SQL Relational Washer! Hand-inked isometric physical query engine ready!", 5000, 'celebrate');
+  }
 }
 
 window.switchMainView = switchMainView;
