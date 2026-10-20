@@ -15063,11 +15063,33 @@ function renderTopicPathways() {
   if (currentPathwayStage === 4) renderPathwayCaseStudies();
 }
 
+window.toggleCurriculumAnalyticsDrawer = function() {
+  const dash = document.getElementById('curriculumAnalyticsDashboard');
+  const btn = document.getElementById('btnToggleCurriculumAnalytics');
+  if (!dash) return;
+  const isHidden = dash.style.display === 'none';
+  dash.style.display = isHidden ? 'grid' : 'none';
+  if (btn) btn.innerHTML = isHidden ? 'Hide Analytics ▴' : 'Show Analytics ▾';
+  if (isHidden) {
+    if (typeof renderActivityHeatmap === 'function') renderActivityHeatmap();
+    if (typeof renderPillarMasteryRadar === 'function') renderPillarMasteryRadar();
+  }
+};
+
+window.scrollPathwayModules = function(dir) {
+  const nav = document.getElementById('pathwayModulesNav');
+  if (nav) nav.scrollBy({ left: dir * 460, behavior: 'smooth' });
+};
+
 function selectPathwayModule(moduleId) {
   currentPathwayModuleId = moduleId;
   currentPathwayMcqIndex = 0;
   if (window.soundFX) window.soundFX.playPop();
   renderTopicPathways();
+  setTimeout(() => {
+    const activeBtn = document.querySelector('.pathway-mod-card.active');
+    if (activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }, 40);
 }
 
 function selectPathwayStage(stageNum) {

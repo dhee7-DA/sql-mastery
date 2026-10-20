@@ -82,6 +82,15 @@
             <span id="currentJourneyPill" style="display:none;">Day 1</span>
           </button>
 
+          <!-- 6. TACTILE SQL WASHER (Direct Tab - Colorfigures Fig. 15) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavTactileEngine" data-view="viewTactileEngine" onclick="selectNavView('viewTactileEngine', 'SQL Washer 🧺', null)" title="Hand-Inked Isometric SQL Relational Washer (Colorfigures Fig. 15)" style="background: rgba(244, 184, 41, 0.12); border: 1.5px solid #f4b829;">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">🧺</span>
+              <span class="nav-group-title" style="color: #f4b829; font-weight: 800;">SQL Washer</span>
+            </span>
+            <span class="nav-item-tag accent" style="background: #f4b829; color: #231e16; font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 800;">Fig. 15</span>
+          </button>
+
           <!-- 5. PRACTICE DROPDOWN -->
           <div class="nav-group-dropdown" id="navGroupPractice">
             <button class="nav-group-trigger" id="btnGroupPractice" onclick="toggleNavGroupDropdown('navGroupPractice', event)">
@@ -434,8 +443,17 @@
             </div>
           </div>
 
-          <!-- Real-Time Curriculum Analytics: Heatmap & 6-Pillar Radar -->
-          <div class="curriculum-analytics-dashboard">
+          <!-- Real-Time Curriculum Analytics: Collapsible Drawer -->
+          <div class="analytics-drawer-bar" style="display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-default); border-radius: 8px; padding: 8px 14px; cursor: pointer; margin-top: 10px;" onclick="toggleCurriculumAnalyticsDrawer()">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 16px;">📊</span>
+              <span style="font-size: 12px; font-weight: 700; color: var(--text-primary);">112-Day Deliberate Practice Heatmap &amp; 6-Pillar Relational Competency Radar</span>
+              <span class="status-pill" style="font-size: 10px; padding: 1px 6px;">Telemetry</span>
+            </div>
+            <button class="card-nav-btn" id="btnToggleCurriculumAnalytics" style="font-size: 11px; padding: 2px 10px;">Show Analytics ▾</button>
+          </div>
+
+          <div class="curriculum-analytics-dashboard" id="curriculumAnalyticsDashboard" style="display: none; margin-top: 10px;">
             <div class="analytics-card heatmap-card">
               <div class="analytics-header">
                 <div class="analytics-title-wrap">
@@ -467,7 +485,19 @@
             </div>
           </div>
 
-          <!-- Module Selector Grid -->
+          <!-- Module Selector Track Header with Carousel Controls -->
+          <div class="pathway-nav-track-header">
+            <div class="pathway-nav-track-title">
+              <span>🗺️ Curriculum Topic Modules</span>
+              <span class="status-pill" style="font-size: 10px; padding: 1px 6px; background: rgba(56, 189, 248, 0.15); color: #38bdf8;">15 Modules Available</span>
+            </div>
+            <div class="pathway-nav-carousel-controls">
+              <button class="pathway-carousel-btn" onclick="scrollPathwayModules(-1)" title="Scroll Left (Previous Topics)">◀ Prev Topics</button>
+              <button class="pathway-carousel-btn" onclick="scrollPathwayModules(1)" title="Scroll Right (Next Topics)">Next Topics ▶</button>
+            </div>
+          </div>
+
+          <!-- Module Selector Horizontal Track -->
           <div class="pathway-modules-nav" id="pathwayModulesNav">
             <!-- Dynamically populated via app.js -->
           </div>

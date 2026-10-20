@@ -30,7 +30,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Referencing a SELECT alias in the WHERE clause triggers an immediate compile failure.",
       "Integer division truncates decimals in SQL Server / PostgreSQL unless cast to numeric."
     ],
-    practiceGoal: "Complete Section 01 Levels 1–20 to master foundational syntax.",
+    practiceGoal: "Complete Section 01 Levels 1–20 to master foundational syntax."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(56,189,248,0.2)"/>
@@ -100,7 +101,8 @@ const LEARNING_JOURNEY_DAYS = [
       "col = NULL yields UNKNOWN and returns 0 rows without throwing an error.",
       "NOT IN (..., NULL) evaluates to UNKNOWN for all rows, returning an empty result set."
     ],
-    practiceGoal: "Solve 20 WHERE predicate quests to master three-valued logic.",
+    practiceGoal: "Solve 20 WHERE predicate quests to master three-valued logic."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(16,185,129,0.2)"/>
@@ -147,7 +149,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Offset pagination without a unique secondary sort key causes missing or duplicate rows across pages.",
       "Dialects differ on default NULL sorting (PostgreSQL puts NULLs last in ASC, Oracle puts them first)."
     ],
-    practiceGoal: "Clear 20 sorting quests to guarantee deterministic result sets.",
+    practiceGoal: "Clear 20 sorting quests to guarantee deterministic result sets."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(245,158,11,0.2)"/>
@@ -192,7 +195,8 @@ const LEARNING_JOURNEY_DAYS = [
       "COUNT(*) counts all rows including NULLs; COUNT(column) ignores NULLs and can distort denominators.",
       "Writing WHERE SUM(amount) > 1000 causes an error; aggregate filters must go in HAVING."
     ],
-    practiceGoal: "Complete 20 aggregation quests to master group-level analytics.",
+    practiceGoal: "Complete 20 aggregation quests to master group-level analytics."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(168,85,247,0.2)"/>
@@ -241,7 +245,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Placing right-table conditions in WHERE (e.g. WHERE right.status = 'active') drops NULLs and kills LEFT JOIN.",
       "Duplicate keys on the right side cause Cartesian row multiplication (fan-out)."
     ],
-    practiceGoal: "Solve 20 INNER and 20 LEFT JOIN quests in the Relational JOIN Arena.",
+    practiceGoal: "Solve 20 INNER and 20 LEFT JOIN quests in the Relational JOIN Arena."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(56,189,248,0.2)"/>
@@ -288,7 +293,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Coalescing IDs: In FULL OUTER JOIN, SELECT a.id drops orphans from table B! Use COALESCE(a.id, b.id).",
       "Infinite recursion or missing top-level roots in SELF JOIN if managers don't have NULL parent IDs."
     ],
-    practiceGoal: "Clear 30 quests across FULL OUTER and SELF JOIN disciplines.",
+    practiceGoal: "Clear 30 quests across FULL OUTER and SELF JOIN disciplines."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(236,72,153,0.2)"/>
@@ -340,7 +346,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Accidental CROSS JOIN caused by omitting the ON clause on large tables can crash database memory.",
       "Overlapping intervals: The correct overlap predicate is (start_a <= end_b AND end_a >= start_b)."
     ],
-    practiceGoal: "Solve 20 Non-Equi and 10 CROSS JOIN quests to finish the JOIN Master Arena.",
+    practiceGoal: "Solve 20 Non-Equi and 10 CROSS JOIN quests to finish the JOIN Master Arena."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(245,158,11,0.2)"/>
@@ -388,7 +395,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Attempting to write WHERE ROW_NUMBER() = 1 directly causes a syntax error! Window functions evaluate after WHERE.",
       "Using RANK() when pagination requires dense numbering creates gaps in rank sequences."
     ],
-    practiceGoal: "Master the 'Top N per Category' pattern with 20 Window Ranking quests.",
+    practiceGoal: "Master the 'Top N per Category' pattern with 20 Window Ranking quests."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(236,72,153,0.2)"/>
@@ -446,7 +454,8 @@ const LEARNING_JOURNEY_DAYS = [
       "The default frame `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW` groups identical timestamps into the same running total.",
       "Division by zero in percentage growth: Wrap the denominator with NULLIF(LAG(sales), 0)."
     ],
-    practiceGoal: "Solve 20 Running Total and LAG/LEAD quests in Section 06.",
+    practiceGoal: "Solve 20 Running Total and LAG/LEAD quests in Section 06."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(236,72,153,0.2)"/>
@@ -498,7 +507,8 @@ const LEARNING_JOURNEY_DAYS = [
       "In older PostgreSQL versions (<12), CTEs were optimization fences (materialized to disk). In modern engines they are inlined.",
       "Correlated subqueries in the SELECT clause execute once per outer row, creating an O(N*M) performance penalty."
     ],
-    practiceGoal: "Build 20 multi-stage CTE pipelines in Section 07.",
+    practiceGoal: "Build 20 multi-stage CTE pipelines in Section 07."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(99,102,241,0.2)"/>
@@ -548,7 +558,8 @@ const LEARNING_JOURNEY_DAYS = [
       "If lower thresholds precede higher thresholds in CASE, the higher threshold will never be reached.",
       "Forgetting the ELSE branch: unhandled rows evaluate to NULL by default, which may contaminate sums."
     ],
-    practiceGoal: "Solve 20 conditional pivoting quests in Section 08.",
+    practiceGoal: "Solve 20 conditional pivoting quests in Section 08."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(245,158,11,0.2)"/>
@@ -593,7 +604,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Column aliases in the 2nd query of a set operation are completely ignored; the 1st query defines column names.",
       "Unnecessary UNION causes an expensive disk/memory sort spill; use UNION ALL whenever possible."
     ],
-    practiceGoal: "Complete 20 Set Operation quests to master schema harmonization.",
+    practiceGoal: "Complete 20 Set Operation quests to master schema harmonization."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(56,189,248,0.2)"/>
@@ -644,7 +656,8 @@ const LEARNING_JOURNEY_DAYS = [
       "CHECK (score >= 0) allows NULL values unless accompanied by an explicit NOT NULL constraint.",
       "Adding a column with a volatile DEFAULT on large tables can acquire an exclusive table lock."
     ],
-    practiceGoal: "Solve 20 DDL and constraint architecture quests in Section 10.",
+    practiceGoal: "Solve 20 DDL and constraint architecture quests in Section 10."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(56,189,248,0.2)"/>
@@ -689,7 +702,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Omitting WHERE in UPDATE/DELETE modifies every single row in the table.",
       "Deadlocks occur when two concurrent transactions update the same rows in opposite order."
     ],
-    practiceGoal: "Complete 20 atomic mutation and upsert quests in Section 11.",
+    practiceGoal: "Complete 20 atomic mutation and upsert quests in Section 11."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(239,68,68,0.2)"/>
@@ -734,7 +748,8 @@ const LEARNING_JOURNEY_DAYS = [
       "REFRESH MATERIALIZED VIEW locks the view for reads unless CONCURRENTLY is specified (which requires a unique index).",
       "Nested views (views on views on views) hide underlying query complexity and cause severe performance degradation."
     ],
-    practiceGoal: "Clear 20 Views and Materialized Views quests in Section 12.",
+    practiceGoal: "Clear 20 Views and Materialized Views quests in Section 12."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(16,185,129,0.2)"/>
@@ -780,7 +795,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Wrapping an indexed column in a function (WHERE DATE(created_at) = ...) blinds the index and forces a full table scan.",
       "Outdated table statistics cause the cost optimizer to choose disastrous execution plans; run ANALYZE regularly."
     ],
-    practiceGoal: "Solve 20 query optimization and EXPLAIN ANALYZE quests in Section 13.",
+    practiceGoal: "Solve 20 query optimization and EXPLAIN ANALYZE quests in Section 13."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(244,63,94,0.2)"/>
@@ -825,7 +841,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Wrapping partition/clustering keys in scalar functions disables metadata pruning, triggering multi-terabyte scans.",
       "SELECT * on Parquet external lakehouses defeats columnar projection pushdown."
     ],
-    practiceGoal: "Clear 20 Modern Cloud Warehouse and QUALIFY quests in Section 14.",
+    practiceGoal: "Clear 20 Modern Cloud Warehouse and QUALIFY quests in Section 14."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(56,189,248,0.2)"/>
@@ -870,7 +887,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Using CROSS JOIN LATERAL on an empty array [] drops the entire parent row! Use LEFT JOIN LATERAL ... ON TRUE.",
       "Comparing extracted text: payload->'status' = 'succeeded' fails because \"succeeded\" != 'succeeded'. Use ->>."
     ],
-    practiceGoal: "Solve 20 JSON extraction, lateral unnesting, and GIN quests in Section 15.",
+    practiceGoal: "Solve 20 JSON extraction, lateral unnesting, and GIN quests in Section 15."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(6,182,212,0.2)"/>
@@ -914,7 +932,8 @@ const LEARNING_JOURNEY_DAYS = [
       "Summing daily balances across accounts: You cannot SUM running balances across time without creating fictitious money!",
       "Missing weekends in daily moving averages: Use RANGE BETWEEN INTERVAL '30 DAYS' PRECEDING instead of ROWS."
     ],
-    practiceGoal: "Master time-series financial calculations across 20 advanced analytical quests.",
+    practiceGoal: "Master time-series financial calculations across 20 advanced analytical quests."
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(16,185,129,0.2)"/>
@@ -958,7 +977,8 @@ const LEARNING_JOURNEY_DAYS = [
     silentTraps: [
       "Over-complicating queries: Always look for the cleanest set-based or windowed solution before writing deeply nested logic."
     ],
-    practiceGoal: "Conquer the 30 Boss Challenges to complete your SQL Foundry journey!",
+    practiceGoal: "Conquer the 30 Boss Challenges to complete your SQL Foundry journey!"
+,
     svgExplainer: `<svg viewBox="0 0 820 180" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
   <rect width="820" height="180" fill="#080c14" rx="10" stroke="rgba(255,255,255,0.08)"/>
   <rect x="15" y="12" width="790" height="28" fill="rgba(255,255,255,0.02)" rx="6" stroke="rgba(245,158,11,0.2)"/>
@@ -1071,8 +1091,13 @@ class LearningJourneyEngine {
 
   selectDay(dayIndex) {
     this.selectedDayIndex = dayIndex;
+    document.querySelectorAll('.journey-node-card').forEach((node, idx) => {
+      node.classList.toggle('selected', idx === dayIndex);
+      if (idx === dayIndex) {
+        node.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
     this.renderActiveDossier();
-    // Scroll dossier into view smoothly
     const dossierEl = document.getElementById('journeyActiveDossier');
     if (dossierEl) {
       dossierEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
