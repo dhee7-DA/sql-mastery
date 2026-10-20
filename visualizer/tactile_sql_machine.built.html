@@ -1,13 +1,548 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>SQL Foundry · Relational Washer & Execution Engine (Fig. 15)</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧺</text></svg>">
+  <meta charset="UTF-8">
+  <title>Fig. 16 · The Relational Computing Apparatus & Mechanical Query Factory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --paper: #f2efe7;
+      --ink: #231e16;
+      --ink-muted: #857d6e;
+      --card-bg: #fffdfa;
+      --accent: #f4b829;
+      --accent-tomato: #ef6a4c;
+      --accent-mint: #93d3b0;
+      --accent-cobalt: #76a0e2;
+      --shadow-cast: #41538f;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --font-serif: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052, serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 20px 40px 20px;
+      overflow-x: hidden;
+    }
+
+    /* Ambient paper grain */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(var(--ink) 0.75px, transparent 0.75px);
+      background-size: 24px 24px;
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* Top Console Header */
+    .machine-header {
+      width: 100%;
+      max-width: 1180px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .machine-title-group h1 {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .machine-title-group p {
+      font-size: 11.5px;
+      color: var(--ink-muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      background: #fff4d6;
+      border: 1.5px solid var(--ink);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    /* Interactive Query Console */
+    .query-console-wrap {
+      width: 100%;
+      max-width: 1180px;
+      background: var(--card-bg);
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 4px 4px 0 var(--ink);
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .preset-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .preset-label {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      margin-right: 4px;
+    }
+
+    .preset-chip {
+      background: var(--paper);
+      border: 1.5px solid var(--ink);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      color: var(--ink);
+    }
+
+    .preset-chip:hover {
+      background: #fff4d6;
+      transform: translateY(-1px);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .preset-chip.active {
+      background: var(--accent);
+      color: var(--ink);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .query-input-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .query-input-box {
+      flex: 1;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 10px 14px;
+      background: #ffffff;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      color: var(--ink);
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.08);
+      outline: none;
+    }
+
+    .query-input-box:focus {
+      border-color: #0284c7;
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.08), 0 0 0 3px rgba(2, 132, 199, 0.2);
+    }
+
+    .compile-btn {
+      padding: 10px 18px;
+      background: #10b981;
+      color: #ffffff;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: all 0.12s ease;
+    }
+
+    .compile-btn:hover {
+      background: #059669;
+      transform: translateY(-1px);
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .compile-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0 0 0 var(--ink);
+    }
+
+    /* Mechanical Stepper Controls */
+    .controls-strip {
+      width: 100%;
+      max-width: 1180px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .playback-btns {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .mech-btn {
+      padding: 7px 14px;
+      background: var(--card-bg);
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--ink);
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.12s ease;
+    }
+
+    .mech-btn:hover {
+      background: #fff4d6;
+      transform: translateY(-1px);
+    }
+
+    .mech-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0 0 0 var(--ink);
+    }
+
+    .mech-btn.primary {
+      background: var(--accent);
+    }
+
+    .speed-slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    /* Station Status Ribbon */
+    .stations-ribbon {
+      width: 100%;
+      max-width: 1180px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .station-node {
+      flex: 1;
+      min-width: 130px;
+      background: var(--card-bg);
+      border: 1.5px solid var(--ink);
+      border-radius: 8px;
+      padding: 6px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 10px;
+      transition: all 0.2s ease;
+      opacity: 0.45;
+    }
+
+    .station-node.active-stage {
+      opacity: 1;
+      background: #fff4d6;
+      border-color: var(--ink);
+      box-shadow: 2px 2px 0 var(--ink);
+      transform: translateY(-1px);
+    }
+
+    .station-node.current-stage {
+      opacity: 1;
+      background: var(--accent);
+      border-color: var(--ink);
+      box-shadow: 2px 2px 0 var(--ink);
+      transform: translateY(-2px);
+    }
+
+    .station-title {
+      font-weight: 800;
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .station-param {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: var(--ink-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Main SVG Drawing Canvas */
+    .canvas-card {
+      width: 100%;
+      max-width: 1180px;
+      background: var(--card-bg);
+      border: 2px solid var(--ink);
+      border-radius: 14px;
+      box-shadow: 6px 6px 0 var(--ink);
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    #machineSvg {
+      width: 100%;
+      height: 700px;
+      display: block;
+      background: #fbfaf5;
+    }
+
+    /* Telemetry Log & Output Table */
+    .telemetry-tray {
+      width: 100%;
+      max-width: 1180px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .telemetry-tray { grid-template-columns: 1fr; }
+    }
+
+    .telemetry-card {
+      background: var(--card-bg);
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      padding: 12px 16px;
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .telemetry-header {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1.5px solid var(--ink);
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .log-scroller {
+      height: 140px;
+      overflow-y: auto;
+      font-size: 11px;
+      line-height: 1.5;
+      font-family: var(--font-mono);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .log-line {
+      display: flex;
+      gap: 8px;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    .log-line.pass { background: rgba(16, 185, 129, 0.12); color: #047857; font-weight: 600; }
+    .log-line.fail { background: rgba(239, 68, 68, 0.12); color: #b91c1c; }
+    .log-line.info { color: var(--ink-muted); }
+
+    .result-table-wrap {
+      height: 140px;
+      overflow-y: auto;
+    }
+
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      text-align: left;
+    }
+
+    .result-table th {
+      background: var(--paper);
+      border-bottom: 1.5px solid var(--ink);
+      padding: 4px 8px;
+      font-weight: 800;
+    }
+
+    .result-table td {
+      border-bottom: 1px solid rgba(35, 30, 22, 0.12);
+      padding: 4px 8px;
+    }
+
+    /* Hand-ink filter definition */
+    svg filter#hand {
+      color-interpolation-filters: sRGB;
+    }
+  </style>
 </head>
 <body>
-<script>
+
+  <!-- 1. Header -->
+  <header class="machine-header">
+    <div class="machine-title-group">
+      <h1>
+        <span>⚙️ TABULATOR RELATIONALIS &bull; FIG. 16</span>
+      </h1>
+      <p>Bespoke Hand-Inked Relational Computing Apparatus &bull; Physical Execution Factory for Any Query</p>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span class="header-badge">ISOMETRIC 3D SIMULATOR</span>
+      <a href="index.html" style="font-size: 11.5px; font-weight: 700; color: var(--ink); text-decoration: none; padding: 4px 10px; border: 1.5px solid var(--ink); border-radius: 999px; background: #ffffff;">← Back to App</a>
+    </div>
+  </header>
+
+  <!-- 2. Interactive SQL Query Console -->
+  <section class="query-console-wrap">
+    <div class="preset-row">
+      <span class="preset-label">Query Archetypes:</span>
+      <button class="preset-chip active" onclick="loadQueryPreset(0)">1. Sieve Filter (WHERE)</button>
+      <button class="preset-chip" onclick="loadQueryPreset(1)">2. Dual Hash Join</button>
+      <button class="preset-chip" onclick="loadQueryPreset(2)">3. Rotary Group By &amp; Agg</button>
+      <button class="preset-chip" onclick="loadQueryPreset(3)">4. Having Balance Scale</button>
+      <button class="preset-chip" onclick="loadQueryPreset(4)">5. Sliding Window Lens</button>
+      <button class="preset-chip" onclick="loadQueryPreset(5)">6. Escalator &amp; Limit Guillotine</button>
+      <button class="preset-chip" onclick="loadQueryPreset(6)">7. Full Enterprise Factory</button>
+      <button class="preset-chip" onclick="loadQueryPreset(7)">8. Left Anti-Join Chute</button>
+    </div>
+
+    <div class="query-input-row">
+      <input type="text" id="queryInput" class="query-input-box" value="SELECT name, salary FROM employees WHERE salary > 50000 ORDER BY salary DESC LIMIT 4;" spellcheck="false" />
+      <button class="compile-btn" onclick="compileAndMountQuery()">
+        <span>⚙️ Assemble Apparatus</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 3. Stepper & Playback Controls -->
+  <div class="controls-strip">
+    <div class="playback-btns">
+      <button class="mech-btn primary" id="btnPlayPause" onclick="togglePlayPause()">
+        <span id="playIcon">▶</span> <span id="playText">Run Machine</span>
+      </button>
+      <button class="mech-btn" onclick="stepForward()">
+        <span>⏭ Step Cycle</span>
+      </button>
+      <button class="mech-btn" onclick="resetMachine()">
+        <span>⏮ Rewind Feeder</span>
+      </button>
+      <button class="mech-btn" onclick="toggleXRay()">
+        <span>🔬 X-Ray Chassis</span>
+      </button>
+    </div>
+
+    <div class="speed-slider-wrap">
+      <span>Cycle Cadence:</span>
+      <input type="range" id="speedSlider" min="1" max="4" value="2" oninput="updateCadence(this.value)" />
+      <span id="speedLabel" style="font-family: var(--font-mono); width: 36px;">1.0x</span>
+    </div>
+  </div>
+
+  <!-- 4. Active Station Flow Ribbon -->
+  <div class="stations-ribbon" id="stationRibbon">
+    <!-- Dynamically rendered station telemetry -->
+  </div>
+
+  <!-- 5. Isometric Hand-Inked SVG Machine -->
+  <div class="canvas-card">
+    <svg id="machineSvg" viewBox="0 0 1140 700">
+      <defs>
+        <!-- Authentic Colorfigures Hand-Inked Fountain Line Wobble Filter -->
+        <filter id="hand" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.85" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+
+        <!-- Drop Shadows -->
+        <filter id="shadowFilter" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="3" dy="3" stdDeviation="2" flood-color="#41538f" flood-opacity="0.25" />
+        </filter>
+      </defs>
+
+      <!-- Drawing Layer Generated in JS -->
+      <g id="sceneRoot" filter="url(#hand)"></g>
+    </svg>
+  </div>
+
+  <!-- 6. Physical Inspection Log & Output Tray -->
+  <div class="telemetry-tray">
+    <div class="telemetry-card">
+      <div class="telemetry-header">
+        <span>📜 Mechanical Ticker Log</span>
+        <span id="processedCountBadge" style="color: var(--ink);">0 Records Processed</span>
+      </div>
+      <div class="log-scroller" id="tickerLog">
+        <div class="log-line info">Ready. Click "Run Machine" or "Step Cycle" to begin punchcard ingestion.</div>
+      </div>
+    </div>
+
+    <div class="telemetry-card">
+      <div class="telemetry-header">
+        <span>🧺 Primacy Output Tray</span>
+        <span id="outputRowsBadge" style="color: #10b981;">0 Rows Output</span>
+      </div>
+      <div class="result-table-wrap">
+        <table class="result-table" id="resultTable">
+          <thead id="resultThead">
+            <tr><th>Row</th><th>Record</th></tr>
+          </thead>
+          <tbody id="resultTbody">
+            <tr><td colspan="2" style="color: var(--ink-muted); text-align: center; padding: 20px;">Output tray empty. Run query to produce cards.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
 /* ============================================================
    Colorfigures core: projection, shapes, shading, ink, labels, page shell.
    A figure page includes this file (scripts/build.py inlines it), then calls mountFigure({...}).
@@ -398,863 +933,794 @@ function mountFigure(cfg){
 }
 
 </script>
-<script>
-/* ============================================================================
-   SQL FOUNDRY: RELATIONAL WASHER & PHYSICAL EXECUTION ENGINE (FIG. 15)
-   Hand-inked isometric mechanical figure demonstrating how SQL queries
-   execute as an authentic physical centrifugal separation process.
-   ============================================================================ */
-
-/* ---------- geometry (x = depth, y = width, z = up) ---------- */
-const W = 62, D = 65, H = 88, PL = 4, RCR = 7;         // depth, width, height, foot height, corner radius
-const OUT = rrUV(0, PL, D, H, RCR);                     // body profile in (y,z)
-const CY = D/2, CZ = 39;                                // porthole centre on the front
-const RO = 19, RB = 23.5, RG = 16.5, BT = 4.5;          // opening (drum) radius, bezel outer, glass radius, bezel thickness
-const DRUM_D = 40;                                      // drum depth
-const PANEL = [2, 68, D-2, H-2];                        // control strip
-const DRW = [42, 72, 60, 83];                           // lexical predicate drawer opening y0,z0,y1,z1
-const DIAL = [34, 77, 5.2];                             // y, z, r
-const DISP = [11.8, 73, 24.6, 81.5];
-const BTN = [7, 77, 3.1];
-const DOOR_MAX = 98 * Math.PI/180, DRAWER_MAX = 15;
-const hy = CY - RB - 1, uc = RB + 1;                    // hinge line & bezel centre in door coords
-
-const STEEL = { l:'#8c9599', m:'#6a7377', d:'#454d51' };
-const RUBBER = { l:'#5a5752', m:'#403d39', d:'#2a2825' };
-const GREEN = '#43c25c', RED = '#e2483d', AMBER = '#f2b431';
-
-/* ---------- helpers for the back and sides ---------- */
-const txB = (x,y,z,str,size,col=INK,weight=700) => `<text transform="${txM(P(x,y,z), Dv(0,1,0), Dv(0,0,-1))}" font-size="${size}" fill="${col}" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-weight="${weight}" letter-spacing=".04em">${str}</text>`;
-const txR = (x,y,z,str,size,col=INK,weight=700) => `<text transform="${txM(P(x,y,z), Dv(-1,0,0), Dv(0,0,-1))}" font-size="${size}" fill="${col}" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-weight="${weight}" letter-spacing=".04em">${str}</text>`;
-
-function smooth3(pts, it=3){
-  for (let k=0;k<it;k++){ const o=[pts[0]];
-    for (let i=0;i<pts.length-1;i++){ const a=pts[i], b=pts[i+1];
-      o.push(a.map((v,j)=>v*.75+b[j]*.25), a.map((v,j)=>v*.25+b[j]*.75)); }
-    o.push(pts[pts.length-1]); pts=o; }
-  return pts;
-}
-
-function tube(pts, r, m, rib=false){
-  const q = smooth3(pts), d = pd(q, false), sw = w => `style="stroke-width:${f(w)}"`, cap = 'fill="none" stroke-linecap="round" stroke-linejoin="round"';
-  const hl = 'M' + q.map(p => { const [X,Y] = P(...p); return f(X - r*.35)+' '+f(Y - r*.35); }).join('L');
-  return `<path d="${d}" ${cap} stroke="${INK}" ${sw(2*r + 2.4*INK_K)}/>` + `<path d="${d}" ${cap} stroke="${m.m}" ${sw(2*r)}/>`
-    + (rib ? `<path d="${d}" fill="none" stroke="${m.d}" ${sw(2*r)} stroke-dasharray=".45 1.1" opacity=".55"/>` : '')
-    + `<path d="${hl}" ${cap} stroke="${m.l}" ${sw(r*.55)} opacity=".85"/>`;
-}
-const screw = (pl, u, v, r=1.1) => shape(on(pl, ellUV(u, v, r, r, 12)), METAL.m, .7) + ink(pd(on(pl, [[u-r*.7, v-r*.25],[u+r*.7, v+r*.25]]), false), .6);
-
-/* ---------- SQL Execution Programs (Real Relational Physical Stages) ---------- */
-const PROGS = [
-  { name:'WHERE',  min:15, T:8,  fill:1.2, wash:4.5, drain:5.8, ang:55,  desc:'Centrifugal Filter (sal > $50k)' },
-  { name:'JOIN',   min:45, T:10, fill:1.5, wash:6.5, drain:7.5, ang:105, desc:'Hash Key Interlock & Mesh' },
-  { name:'GROUP',  min:30, T:7,  fill:1.0, wash:4.0, drain:5.0, ang:155, desc:'Hydraulic Bucket Compaction' },
-  { name:'WINDOW', min:20, T:6,  fill:0.8, wash:3.5, drain:4.2, ang:205, desc:'Sliding Partition Aperture' },
-  { name:'SCAN',   min:10, T:4,  fill:0.4, wash:2.0, drain:2.5, ang:255, desc:'Sequential Drum Tumble' }
-];
-
-const sstep = (a,b,t) => { const k = Math.min(1, Math.max(0, (t-a)/(b-a || 1e-9))); return k*k*(3-2*k); };
-const phaseAt = (p,t) => t < p.fill ? 'fill' : t < p.wash ? 'wash' : t < p.drain ? 'drain' : 'spin';
-
-function omegaAt(p,t){
-  const ph = phaseAt(p,t);
-  if (ph === 'fill') return 0.8;
-  if (ph === 'wash') return 2.8 * (Math.sin((t - p.fill) * Math.PI / 1.5) >= 0 ? 1 : -1);
-  if (ph === 'drain') return 1.4;
-  return (1.6 + 21 * sstep(p.drain, p.drain + 1.2, t)) * (1 - sstep(p.T - .7, p.T, t));
-}
-function angleAt(p,t){ let a = 0; for (let s = 0; s < t; s += .01) a += omegaAt(p, s) * Math.min(.01, t - s); return a; }
-function waterAt(p,t){ if (!p.fill) return 0; if (t < p.fill) return sstep(0, p.fill, t); if (t < p.wash) return 1; if (t < p.drain) return 1 - sstep(p.wash, p.drain, t); return 0; }
-
-/* ---------- SQL Data Tuples (Physical Punchcards with Employee / Salary Records) ---------- */
-function chaikin(pts, it=2){
-  for (let k=0;k<it;k++){ const o=[]; for (let i=0;i<pts.length;i++){ const a=pts[i], b=pts[(i+1)%pts.length];
-    o.push([a[0]*.75+b[0]*.25, a[1]*.75+b[1]*.25], [a[0]*.25+b[0]*.75, a[1]*.25+b[1]*.75]); } pts=o; }
-  return pts;
-}
-
-// Data punchcard tokens
-const SHAPES = {
-  card: { body: chaikin([[-5.6,-3.6],[5.6,-3.6],[5.6,3.6],[-5.6,3.6]], 1),
-          notch: [[-4.5, 3.6], [-3.5, 2.2], [-2.5, 3.6]],
-          lines: [[[-4.5,-2.2],[4.5,-2.2]]] }
-};
-
-// 6 Tuples: Bob ($42k), Dave ($35k), and Frank ($28k) fail WHERE sal > 50k
-const TUPLES = [
-  { k:'card', tag:'101 ALICE $95k', col:'#3e86d9', d:6.5, heap:[-125, 11,   10], pass:true },
-  { k:'card', tag:'102 BOB $42k',   col:'#e2473a', d:5.5, heap:[-160, 9,   -25], pass:false },
-  { k:'card', tag:'103 CAROL $88k', col:'#f2c230', d:4.5, heap:[-82, 12,    75], pass:true },
-  { k:'card', tag:'104 DAVE $35k',  col:'#fbf7ea', d:3.8, heap:[-108, 9.5,  15], pass:false },
-  { k:'card', tag:'105 EVAN $110k', col:'#38a565', d:3.2, heap:[-150, 4.5,-110], pass:true },
-  { k:'card', tag:'106 FRANK $28k', col:'#d94f86', d:2.6, heap:[-62, 8,    160], pass:false },
-];
-
-function tupleCard(c, cy, cz, psi, op=1){
-  const sh = SHAPES.card, X = W - c.d, k = 1.35, cs = k*Math.cos(psi), sn = k*Math.sin(psi);
-  const T = ([u,v]) => [X, cy + u*cs - v*sn, cz + u*sn + v*cs];
-  const m = matOf(c.col);
-  let s = fill(pd(sh.body.map(T)), m.l);
-  s += fill(pd(sh.notch.map(T)), '#1f1e1a');
-  for (const l of sh.lines) s += ink(pd(l.map(T), false), .8);
-  s += ink(pd(sh.body.map(T)), 1.1);
-  return op < 1 ? `<g opacity="${op}">${s}</g>` : s;
-}
-
-/* ---------- Results Basket on the Engine Floor ---------- */
-const BASKET = { x0: W + 7, x1: W + 29, y0: 36, y1: 62, h: 11, r: 4 };
-const SPOTS = [[W+13,43,20],[W+22,53,-35],[W+15,55,80],[W+23,43,140],[W+18,49,-100],[W+14,48,45]];
-const FLY = .45, GAP = .28;
-const xferEnd = () => (TUPLES.length - 1) * GAP + FLY;
-
-const itemP = (st, i) => st.xfer ? Math.min(1, Math.max(0, (st.xfer.T - i*GAP) / FLY)) : 1;
-function whereIs(st, i){
-  if (!st.xfer) return st.tuplesLoc === 'basket' ? 'basket' : 'drum';
-  const p = itemP(st, i);
-  if (st.xfer.dir === 'out') return p <= 0 ? 'drum' : p >= 1 ? 'basket' : p;
-  return p <= 0 ? 'basket' : p >= 1 ? 'drum' : 1 - p;
-}
-
-function tupleCard3(c, ctr, e1, e2, psi, op=1){
-  const sh = SHAPES.card, k = 1.35, cs = k*Math.cos(psi), sn = k*Math.sin(psi);
-  const T = ([u,v]) => { const a = u*cs - v*sn, b = u*sn + v*cs; return [ctr[0]+a*e1[0]+b*e2[0], ctr[1]+a*e1[1]+b*e2[1], ctr[2]+a*e1[2]+b*e2[2]]; };
-  const m = matOf(c.col);
-  let s = fill(pd(sh.body.map(T)), m.l);
-  s += fill(pd(sh.notch.map(T)), '#1f1e1a');
-  for (const l of sh.lines) s += ink(pd(l.map(T), false), .8);
-  s += ink(pd(sh.body.map(T)), 1.1);
-  return op < 1 ? `<g opacity="${op}">${s}</g>` : s;
-}
-
-const drumPos = c => { const [h0, hr] = c.heap, a = h0*Math.PI/180; return [W - c.d, CY + hr*Math.cos(a), CZ + hr*Math.sin(a)]; };
-const basketPos = i => { const [x,y,t] = SPOTS[i]; return [x, y, BASKET.h - 2.2 + i*.35, t*Math.PI/180]; };
-
-function flying(st){
-  const parts = [];
-  TUPLES.forEach((c, i) => {
-    const w = whereIs(st, i); if (typeof w !== 'number') return;
-    const a = drumPos(c), [bx,by,bz,bt] = basketPos(i), q = ease(w);
-    const ctr = [a[0] + (bx-a[0])*q + 4*Math.sin(Math.PI*q), a[1] + (by-a[1])*q, a[2] + (bz-a[2])*q + 16*Math.sin(Math.PI*q)];
-    const e2 = norm([q, 0, 1-q]);
-    parts.push({ at: ctr, svg: tupleCard3(c, ctr, [0,1,0], e2, c.heap[2]*Math.PI/180*(1-q) + bt*q + 2.2*Math.sin(Math.PI*q)) });
-  });
-  return parts;
-}
-
-const PL_M = { l:'#7cc4ea', m:'#5aa6d0', d:'#2f6d92' };
-const bRing = (z, ins) => { const B = BASKET; return on(PZ(z), rrUV(B.x0+ins, B.y0+ins, B.x1-ins, B.y1-ins, B.r)); };
-const basketShadow = () => castShadow([...bRing(0, 1.5), ...bRing(BASKET.h, 0)]);
-const basketAt = () => [(BASKET.x0 + BASKET.x1)/2, (BASKET.y0 + BASKET.y1)/2, BASKET.h/2];
-
-function basket(st){
-  const B = BASKET, ring = bRing;
-  let s = '';
-  const top = ring(B.h, 0), bot = ring(0, 1.5);
-  s += loft(bot, top, n => toneI(n, PL_M));
-  let sl = '';
-  if (facing([1,0,0]))  for (let y = B.y0 + 6; y <= B.y1 - 6; y += 4) sl += pd([[B.x1-.6, y, 3.5],[B.x1-.6, y, 7.5]], false);
-  if (facing([-1,0,0])) for (let y = B.y0 + 6; y <= B.y1 - 6; y += 4) sl += pd([[B.x0+.6, y, 3.5],[B.x0+.6, y, 7.5]], false);
-  if (facing([0,1,0]))  for (let x = B.x0 + 6; x <= B.x1 - 6; x += 4) sl += pd([[x, B.y1-.6, 3.5],[x, B.y1-.6, 7.5]], false);
-  if (facing([0,-1,0])) for (let x = B.x0 + 6; x <= B.x1 - 6; x += 4) sl += pd([[x, B.y0+.6, 3.5],[x, B.y0+.6, 7.5]], false);
-  s += `<path d="${sl}" fill="none" stroke="${PL_M.d}" stroke-width="1.6" stroke-linecap="round"/>`;
-  s += hullInk([...bot, ...top], 1.4);
-  let inside = fill(pd(top), PL_M.d) + fill(pd(ring(B.h - 3, 1)), mix(PL_M.d, '#000000', .2));
-  TUPLES.forEach((c, i) => { if (whereIs(st, i) !== 'basket') return; const [x,y,z,t] = basketPos(i); inside += tupleCard3(c, [x,y,z], [0,1,0], [1,0,0], t); });
-  s += clipTo(top, inside);
-  s += ink(pd(top), 1.4) + ink(pd(ring(B.h, 1.2)), .7);
-  return s;
-}
-
-/* ---------- Predicate Injection Canister (Pours WHERE syntax into drawer) ---------- */
-function soapBox(st){
-  if (st.predicateAnim == null) return '';
-  const t = st.predicateAnim, inn = Math.min(1, t/.2), out = t > .85 ? (t-.85)/.15 : 0;
-  const tilt = (t < .2 ? 0 : t < .35 ? (t-.2)/.15 : t < .85 ? 1 : 1 - out) * 112 * Math.PI/180;
-  const base = [W + DRAWER_MAX*.5, 59, 96 + 10*(1-ease(inn)) + 10*ease(out)], op = Math.min(inn, 1-out);
-  const c = Math.cos(tilt), sn = Math.sin(tilt), wx = 6, wy = 9, h = 12;
-  const X = ([x,y,z]) => [base[0] + x, base[1] + y*c - z*sn, base[2] + y*sn + z*c], R = ([x,y,z]) => [x, y*c - z*sn, y*sn + z*c];
-  const BOX = matOf('#f08a2b');
-  const F = [
-    [[1,0,0],  [[wx/2,-wy/2,0],[wx/2,wy/2,0],[wx/2,wy/2,h],[wx/2,-wy/2,h]]],
-    [[-1,0,0], [[-wx/2,-wy/2,0],[-wx/2,wy/2,0],[-wx/2,wy/2,h],[-wx/2,-wy/2,h]]],
-    [[0,1,0],  [[-wx/2,wy/2,0],[wx/2,wy/2,0],[wx/2,wy/2,h],[wx/2,-wy/2,h]]],
-    [[0,-1,0], [[-wx/2,-wy/2,0],[wx/2,-wy/2,0],[wx/2,-wy/2,h],[-wx/2,-wy/2,h]]],
-    [[0,0,1],  [[-wx/2,-wy/2,h],[wx/2,-wy/2,h],[wx/2,wy/2,h],[-wx/2,-wy/2,h]]],
-    [[0,0,-1], [[-wx/2,-wy/2,0],[wx/2,-wy/2,0],[wx/2,wy/2,0],[-wx/2,wy/2,0]]] ];
-  let s = '';
-  for (const [n, q] of F){ const rn = R(n); if (!vis(rn)) continue;
-    s += shape(q.map(X), n[2] === 1 ? '#fbf7ea' : toneI(rn, BOX), 1);
-    if (n[0] === 1) s += fill(pd([[wx/2+.05,-wy/2,h*.45],[wx/2+.05,wy/2,h*.45],[wx/2+.05,wy/2,h*.7],[wx/2+.05,-wy/2,h*.7]].map(X)), '#fbf7ea'); }
-  if (t > .33 && t < .87){
-    const sp = X([0, -wy/2, h]), zb = DRW[3] - 1.2, ys = 51;
-    s += `<path d="${pd([sp, [sp[0]-1, ys, zb]], false)}" fill="none" stroke="#6fa6e8" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1.6 1.3" stroke-dashoffset="${f(-t*60)}"/>`;
-  }
-  return `<g opacity="${f(op)}">${s}</g>`;
-}
-
-/* ---------- State helpers ---------- */
-const prog = st => PROGS[st.prog];
-const fmt = ms => (ms / 10).toFixed(2) + 'ms';
-const remaining = st => { const p = prog(st); return st.run ? Math.max(1, Math.ceil(p.min * (1 - st.tau / p.T))) : p.min; };
-
-/* ---------- The Drum (Centrifugal Relational Washing Machine) ---------- */
-const ringX = (x, r, n=36) => on(PX(x), ellUV(CY, CZ, r, r, n));
-const wallVis = (dy, dz) => { const r = rotV([0, -dy, -dz]); return r[0] + r[1] + r[2]; };
-
-function drum(st){
-  const p = prog(st), t = st.tau, run = st.run;
-  const A = run ? angleAt(p, t) : st.restA, om = run ? omegaAt(p, t) : 0, fast = Math.abs(om) > 7;
-  let s = fill(pd(ringX(W - DRUM_D, RO)), '#2b3134');
-  s += ink(pd(ringX(W - DRUM_D + .1, 5)), .8);
-
-  const secs = [[0,7,0],[7,16,.18],[16,DRUM_D,.36]];
-  for (const [a,b,k] of secs){
-    const dm = { l:mix(STEEL.l,'#000000',k), m:mix(STEEL.m,'#000000',k), d:mix(STEEL.d,'#000000',k) };
-    s += loft(ringX(W - a, RO), ringX(W - b, RO), n => toneI(n, dm), true);
-  }
-
-  // Perforated perforations / motion streaks
-  const dep = [2.5, 6, 9.5, 13, 16.5, 20, 24];
-  if (fast){
-    for (const d of dep){ const arc = ellUV(CY, CZ, RO-.05, RO-.05, 48).filter(([y,z]) => wallVis(y-CY, z-CZ) > 0).map(([y,z]) => [W-d,y,z]);
-      s += `<path d="${pd(arc,false)}" fill="none" stroke="#1d2224" stroke-width=".9" stroke-dasharray="1 2.4" opacity=".7"/>`; }
-  } else {
-    let dots = '';
-    for (const d of dep) for (let i = 0; i < 24; i++){
-      const a = A + (i + (d*.37 % 1)) / 24 * 2*Math.PI, cy = Math.cos(a), sz = Math.sin(a);
-      if (wallVis(cy, sz) < .15) continue;
-      const q = (da, dx) => [W - d + dx, CY + (RO-.05)*Math.cos(a+da), CZ + (RO-.05)*Math.sin(a+da)];
-      dots += pd([q(-.035,-.45), q(.035,-.45), q(.035,.45), q(-.035,.45)]);
-    }
-    s += `<path d="${dots}" fill="#20262a"/>`;
-  }
-
-  // 3 Internal lifters / baffles
-  for (let k = 0; k < 3; k++){
-    const a = A + k * 2*Math.PI/3 + .4;
-    if (wallVis(Math.cos(a), Math.sin(a)) < -.2) continue;
-    const q = (r, da, d) => [W - d, CY + r*Math.cos(a+da), CZ + r*Math.sin(a+da)];
-    const op = fast ? ' opacity=".45"' : '';
-    s += `<g${op}>` + shape([q(RO,-.2,1), q(RO,-.2,DRUM_D-4), q(RO-2.4,0,DRUM_D-4), q(RO-2.4,0,1)], '#9aa3a6', .7)
-       + shape([q(RO,.2,1), q(RO,.2,DRUM_D-4), q(RO-2.4,0,DRUM_D-4), q(RO-2.4,0,1)], '#b8c0c2', .7) + `</g>`;
-  }
-
-  // Tuples in the drum: Centrifuged!
-  // In WHERE program: non-matching rows (pass=false) are flung out through perforations when spinning fast!
-  const spread = run ? sstep(0, .9, t) * (1 - sstep(p.T - .8, p.T, t)) : 0;
-  const spinK = run ? sstep(p.drain, p.drain + 1, t) * (1 - sstep(p.T - .8, p.T, t)) : 0;
-  const filteredAway = (c) => run && p.name === 'WHERE' && !c.pass && t > p.drain;
-
-  const items = TUPLES.map((c, i) => ({ c, i }))
-    .filter(o => whereIs(st, o.i) === 'drum' && !filteredAway(o.c))
-    .map(({ c, i }) => {
-      const [h0, hr, ht] = c.heap, even = -Math.PI/2 + i * 2*Math.PI/TUPLES.length;
-      const base = h0*Math.PI/180 * (1-spread) + even * spread;
-      const ang = base + A * spread;
-      const r = hr * (1-spread) + (9.5 + 2.2*Math.sin(A*1.3 + i*1.7)) * spread * (1-spinK) + 14.3 * spinK * spread;
-      const psi = ht*Math.PI/180 + A * spread * (1 + .25*Math.sin(i));
-      return { c, ang, r, psi };
-    }).sort((a,b) => b.c.d - a.c.d);
-
-  for (const o of items){
-    if (fast) for (let g = 3; g >= 1; g--){ const ga = o.ang - Math.sign(om) * g * .26;
-      s += tupleCard(o.c, CY + o.r*Math.cos(ga), CZ + o.r*Math.sin(ga), o.psi - Math.sign(om)*g*.26, .34 - g*.08); }
-    s += tupleCard(o.c, CY + o.r*Math.cos(o.ang), CZ + o.r*Math.sin(o.ang), o.psi);
-  }
-
-  // Relational wash fluid / turbulence waves
-  const lv = run ? waterAt(p, t) : 0;
-  if (lv > .01){
-    const zl = CZ - RO - 1 + lv * 17, xw = W - 2, top = [];
-    for (let y = CY + RO + 2; y >= CY - RO - 2; y -= 1)
-      top.push([xw, y, zl + 1.1*Math.sin(y*.55 + t*7) + .6*Math.sin(y*.21 - t*4) + .07*(y-CY)*Math.sign(om)]);
-    const poly = [...top, [xw, CY-RO-2, CZ-RO-3], [xw, CY+RO+2, CZ-RO-3]];
-    s += fill(pd(poly), '#4f9fdc', 'opacity=".42"');
-    s += `<path d="${pd(top,false)}" fill="none" stroke="#d7f0ff" stroke-width="1.2" stroke-linecap="round" opacity=".9"/>`;
-    if (phaseAt(p,t) === 'wash') for (let i = 0; i < 9; i++){
-      const y = CY - 13 + i*3.3 + Math.sin(t*3 + i)*1.2, z = zl + 1.1*Math.sin(y*.55 + t*7) + .3;
-      s += fill(pd(on(PX(xw - .2), ellUV(y, z, 1 + (i%3)*.35, .8 + (i%2)*.3, 10))), '#ffffff', 'opacity=".85"');
-    }
-  }
-
-  // Rubber mouth gasket
-  s += loft(ringX(W, RO - 2.2), ringX(W - 3, RO - 2.2), n => toneI(n, RUBBER), true);
-  s += fill(pd(ringX(W, RO)) + pd(ringX(W, RO - 2.2)), RUBBER.m, 'fill-rule="evenodd"') + ink(pd(ringX(W, RO - 2.2)), .9);
-  return s;
-}
-
-/* ---------- The Porthole Door (Bezel Ring + Glass) ---------- */
-const dP = (a,u,v,th) => [W + a*Math.cos(th) + u*Math.sin(th), hy - a*Math.sin(th) + u*Math.cos(th), v];
-const dRing = (a, r, th, n=40) => ellUV(uc, CZ, r, r, n).map(([u,v]) => dP(a,u,v,th));
-
-function dBox(a0,a1,u0,u1,v0,v1,m,th,w=1){
-  const c = (a,u,v) => dP(a,u,v,th), nA = [Math.cos(th), -Math.sin(th), 0], nU = [Math.sin(th), Math.cos(th), 0];
-  const F = [
-    [nA, [c(a1,u0,v0),c(a1,u1,v0),c(a1,u1,v1),c(a1,u0,v1)]], [nA.map(x=>-x), [c(a0,u0,v0),c(a0,u1,v0),c(a0,u1,v1),c(a0,u0,v1)]],
-    [nU, [c(a0,u1,v0),c(a1,u1,v0),c(a1,u1,v1),c(a0,u1,v1)]], [nU.map(x=>-x), [c(a0,u0,v0),c(a1,u0,v0),c(a1,u0,v1),c(a0,u0,v1)]],
-    [[0,0,1], [c(a0,u0,v1),c(a1,u0,v1),c(a1,u1,v1),c(a0,u1,v1)]] ];
-  return F.filter(([n]) => vis(n)).map(([n,q]) => shape(q, toneI(n,m), w)).join('');
-}
-
-const BEZEL = { l:'#f4f5f3', m:'#c9cfd0', d:'#8f989b' };
-
-function door(st){
-  const th = ease(st.door) * DOOR_MAX, nF = [Math.cos(th), -Math.sin(th), 0];
-  let s = '';
-  for (const z of [CZ+9, CZ-13]) s += dBox(.5, 3.4, -1, 3, z, z+4, METAL, th, .9);
-  s += loft(dRing(0, RB, th), dRing(BT, RB, th), n => toneI(n, BEZEL));
-  if (vis(nF)){
-    s += loft(dRing(1.5, RG, th), dRing(BT, RG, th), n => toneI(n, { l:'#d9dedf', m:'#aab2b4', d:'#7d8689' }), true);
-    const gl = dRing(1.5, RG, th);
-    s += fill(pd(gl), '#cfe9f0', `opacity="${st.door > 0 ? .5 : .2}"`);
-    const st1 = [[-9,-15],[-3,-15],[13,13],[7,13]].map(([u,v]) => dP(1.5, uc+u, CZ+v, th));
-    const st2 = [[-0,-15],[2.5,-15],[18.5,13],[16,13]].map(([u,v]) => dP(1.5, uc+u, CZ+v, th));
-    s += clipTo(gl, fill(pd(st1),'#ffffff','opacity=".36"') + fill(pd(st2),'#ffffff','opacity=".36"'));
-    const fo = dRing(BT, RB, th), fi = dRing(BT, RG, th);
-    s += `<path d="${pd(fo)}${pd(fi)}" fill="${toneI(nF, BEZEL)}" fill-rule="evenodd"/>`;
-    s += ink(pd(dRing(BT+.05, RG + 3.2, th)), .7) + ink(pd(fi), 1.5) + ink(pd(fo), 1.8);
-    s += dBox(BT-1, BT+2, 2*RB - 2, 2*RB + 3, CZ - 6.5, CZ + 6.5, BEZEL, th, 1.1);
-    s += dBox(BT+2, BT+2.6, 2*RB, 2*RB + 2.5, CZ - 5, CZ + 5, matOf('#9aa3a6'), th, .8);
-  } else {
-    const bo = dRing(0, RB, th), bi = dRing(0, RG, th);
-    s += `<path d="${pd(bo)}${pd(bi)}" fill="${toneI(nF.map(x=>-x), BEZEL)}" fill-rule="evenodd"/>` + ink(pd(bo), 1.8);
-    s += fill(pd(bi), '#cfe9f0', 'opacity=".35"');
-    const b0 = dRing(0, RG, th), b1 = dRing(-4, RG - 3.5, th), b2 = dRing(-6, RG - 8, th);
-    s += `<g opacity=".72">` + loft(b0, b1, n => toneI(n, CLEAR)) + loft(b1, b2, n => toneI(n, CLEAR)) + fill(pd(b2), CLEAR.l) + `</g>`;
-    s += ink(pd(b2), .9) + hullInk([...b0, ...b1, ...b2], 1.2);
-    const gl = [[-4,-9],[-1.5,-9],[6,6],[3.5,6]].map(([u,v]) => dP(-5.2, uc+u, CZ+v, th));
-    s += fill(pd(gl), '#ffffff', 'opacity=".45"');
-  }
-  return act('door', s);
-}
-
-/* ---------- Lexical Detergent Drawer (WHERE / JOIN / GROUP inputs) ---------- */
-function drawer(st){
-  const s0 = ease(st.drawer) * DRAWER_MAX, xf = W + s0;
-  const [y0,z0,y1,z1] = DRW;
-  let s = '';
-  if (s0 > .2){
-    const by0 = y0 + .6, by1 = y1 - .6, bz0 = z0 + .6, bz1 = z1 - 1.2;
-    const sw = facing([0,1,0]) ? by1 : by0;
-    s += shape([[W,sw,bz0],[xf,sw,bz0],[xf,sw,bz1],[W,sw,bz1]], '#d6dadb', 1);
-    s += shape([[W,by0,bz1],[xf,by0,bz1],[xf,by1,bz1],[W,by1,bz1]], '#eef0f0', 1);
-    // 3 SQL syntax slots: WHERE (I) | JOIN (II) | AGG (S)
-    const comp = [[by0+.8, by0+5.2, '#3a3e40'], [by0+6, by1-5.4, '#3a3e40'], [by1-4.6, by1-.8, '#3a3e40']];
-    const xa = W + .2, xb = xf - .9;
-    if (xb > xa) comp.forEach(([a,b,c], i) => {
-      s += shape([[xa,a,bz1],[xb,a,bz1],[xb,b,bz1],[xa,b,bz1]], c, .7);
-      if (i === 1 && st.predicateLvl > .02) s += fill(pd([[xa,a+.6,bz1+.05],[xb-.6,a+.6,bz1+.05],[xb-.6,b-.6,bz1+.05],[xa,b-.6,bz1+.05]]), '#dfe9f7', `opacity="${f(Math.min(1, st.predicateLvl*1.4))}"`) +
-        `<path d="${[0,1,2,3,4,5].slice(0, Math.ceil(st.predicateLvl*6)).map(k => pd(on(PZ(bz1+.1), ellUV(xa + (xb-xa)*(.2+.13*k), a+1.5+(k%3)*1.6, .35, .35, 6)))).join('')}" fill="#6fa6e8"/>`;
-      if (i === 2) s += fill(pd([[xa,a+.5,bz1+.05],[xb-.5,a+.5,bz1+.05],[xb-.5,b-.5,bz1+.05],[xa,b-.5,bz1+.05]]), '#c99de8', 'opacity=".9"');
-    });
-  }
-  const m = { l:'#f7f6f1', m:'#dcdad0', d:'#a8a597' };
-  s += box(xf, y0+.2, z0+.2, xf + 1.4, y1-.2, z1-.2, m, toneI, 1.2);
-  s += shape(on(PX(xf + 1.45), rrUV(y0 + 4, z0 + 1.6, y1 - 4, z0 + 3.4, .9)), '#3a3e40', .8);
-  s += tx(xf + 1.5, (y0+y1)/2, z0 + 6.1, 'WHERE JOIN AGG', 2.3, '#6a6658', 800);
-  return act('drawer', s);
-}
-
-/* ---------- Control Panel Pieces ---------- */
-function dial(st){
-  const [y,z,r] = DIAL, F = W + .25;
-  let s = cylX(F, F + 2.6, y, z, r, BEZEL, toneI, 1.2, 28);
-  const a = PROGS[st.prog].ang * Math.PI/180, ca = Math.cos(a), sa = Math.sin(a);
-  const bar = [[-1.1,-4.3],[1.1,-4.3],[1.1,4.3],[-1.1,4.3]].map(([u,v]) => [y + u*sa + v*ca, z - u*ca + v*sa]);
-  const B0 = on(PX(F + 2.6), bar), B1 = on(PX(F + 4.4), bar);
-  s += loft(B0, B1, n => toneI(n, BEZEL)) + fill(pd(B1), BEZEL.l) + hullInk([...B0, ...B1], 1) + ink(pd(B1), .8);
-  s += fill(pd(on(PX(F + 4.45), ellUV(y + 3.2*ca, z + 3.2*sa, .7, .7, 10))), RED);
-  let t = '';
-  PROGS.forEach((p, i) => {
-    const pa = p.ang * Math.PI/180, sel = i === st.prog;
-    t += fill(pd(on(PX(W + .3), ellUV(y + 6*Math.cos(pa), z + 6*Math.sin(pa), .7, .7, 10))), sel ? GREEN : '#b5b2a6');
-    t += tx(W + .3, y + 8*Math.cos(pa), z + 8*Math.sin(pa) - .9, p.name[0], 2.6, sel ? INK : '#6a6658', 800);
-  });
-  return t + act('dial', s);
-}
-
-function display(st){
-  const [y0,z0,y1,z1] = DISP, cy = (y0+y1)/2, p = prog(st);
-  let s = shape(on(PX(W + .3), rrUV(y0, z0, y1, z1, 1.6)), '#1d2a26', 1.2);
-  let l1, l2;
-  if (st.done && !st.run){ l1 = 'SQL PASS'; l2 = '3 ROWS'; }
-  else if (st.run){ const ph = phaseAt(p, st.tau); l1 = st.paused ? 'PAUSED' : { fill:'PARSE', wash:'FILTER', drain:'FLUSH', spin:'CENTRIFUGE' }[ph]; l2 = fmt(remaining(st)); }
-  else { l1 = p.name; l2 = fmt(p.min); }
-  s += tx(W + .4, cy, z0 + 5.6, l1, 2.5, '#8af0ae', 700);
-  s += tx(W + .4, cy, z0 + 1.7, l2, 3.6, '#8af0ae', 800);
-  return s;
-}
-
-function startBtn(st){
-  const [y,z,r] = BTN, lit = st.run ? (st.paused ? AMBER : GREEN) : st.done ? GREEN : '#b5b2a6';
-  let s = fill(pd(on(PX(W + .25), ellUV(y, z, r + 1, r + 1, 24))), lit) + ink(pd(on(PX(W + .25), ellUV(y, z, r + 1, r + 1, 24))), .9);
-  s += cylX(W + .3, W + 2.4, y, z, r, BEZEL, toneI, 1.1, 24);
-  const tri = [[y + 1, z - 1.4], [y + 1, z + 1.4], [y - 1.4, z]];
-  s += fill(pd(on(PX(W + 2.45), tri)), INK);
-  return act('start', s) + tx(W + .3, y, PANEL[1] + 1.4, 'EXECUTE', 1.8, '#6a6658', 800);
-}
-
-/* ---------- The Back and Right Side ---------- */
-const BK = PX(-.15);
-const CORD = [[-1.6,12,82],[-3.6,12.4,79.5],[-5,13,71],[-5.8,13.6,44],[-6.2,14.2,16],[-6.8,15.2,3.4],[-7.6,17.6,1],[-8.6,20,1.2],[-9.5,20.5,1.7]];
-const INLET = [[-4.6,44,81],[-7.6,44.4,79],[-10,45,72],[-11.6,45.6,50],[-12.4,46,22],[-12.8,45.4,6],[-14,44.2,1.6],[-16.5,42.6,1.3]];
-const DRAIN_UP = [[-2.6,24,13],[-2.9,24,30],[-2.9,24,52],[-3,24.2,66]];
-const DRAIN_DN = [[-3,24.2,66],[-3.4,24.5,70.5],[-6.6,25.2,72],[-9.4,25.8,67],[-12.6,26.4,52],[-15.6,26.8,30],[-17.6,27.2,12],[-19.4,27.6,3],[-22,28,1.4],[-25,28.4,1.4]];
-const HOSE_M = matOf('#a9b0b2'), CORD_M = { l:'#5b5650', m:'#2f2c29', d:'#1b1917' }, INLET_M = { l:'#ffffff', m:'#e8ecec', d:'#b9c0c1' };
-const TAP_B = matOf('#3e86d9'), TAP_R = matOf('#e2483d'), CAPS = matOf('#dedbd0');
-
-function backFace(m){
-  const tb = tone([-1,0,0], m), dk = mix(tb, '#000000', .06);
-  let s = '';
-  s += shape(on(BK, rrUV(32, 24, 58, 64, 3)), dk, 1.2);
-  for (const z of [55.5, 52, 48.5, 45]) s += shape(on(PX(-.2), rrUV(37, z, 53, z + 1.6, .8)), mix(tb, '#000000', .45), .7);
-  for (const [u,v] of [[35,27],[55,27],[35,61],[55,61]]) s += screw(PX(-.2), u, v);
-  for (const u of [22, 36, 58]) s += screw(PX(-.2), u, 85.3, 1);
-  s += shape(on(PX(-.2), rectUV(36, 7.5, 58, 19)), '#fbf7ea', .9);
-  s += txB(-.3, 47, 15.8, 'SQL-WASH 15', 2, INK, 800);
-  s += txB(-.3, 47, 13, 'DUCKDB-WASM 2.0', 1.25, '#6a6658', 700);
-  let bc = ''; for (let i = 0; i < 18; i++){ const u = 39 + i*.9; if (i % 3 !== 1) bc += pd([[-.25, u, 8.8],[-.25, u, 11.2]], false); }
-  s += `<path d="${bc}" fill="none" stroke="${INK}" stroke-width=".7"/>`;
-  s += txB(-.3, 48, 76, 'QUERY', 1.8, mix(tb, '#000000', .6), 800);
-  s += txB(-.3, 24, 8.5, 'SLUDGE', 1.8, mix(tb, '#000000', .6), 800);
-  return s;
-}
-
-function backBits(){
-  let s = '';
-  for (const [y,z] of [[17,40],[61,44],[40,70]]) s += cylX(-1.2, 0, y, z, 2.6, CAPS, toneI, .9, 18) + ink(pd(on(PX(-1.25), [[y-1.3, z],[y+1.3, z]]), false), .7);
-  s += cylX(-1.6, 0, 12, 82, 1.9, RUBBER, toneI, .9, 18);
-  s += cylX(-2.6, 0, 24, 13, 2.5, HOSE_M, toneI, 1, 18);
-  s += cylX(-2.4, 0, 52, 81, 1.4, METAL, toneI, .8, 18) + cylX(-4.6, -2.4, 52, 81, 2.2, TAP_R, toneI, 1, 18);
-  s += cylX(-2.4, 0, 44, 81, 1.4, METAL, toneI, .8, 18) + cylX(-4.6, -2.4, 44, 81, 2.3, TAP_B, toneI, 1, 18);
-  const mid = pts => avg(pts);
-  const plug = box(-14, 18, 0, -9.5, 23, 3.4, CORD_M, toneI, 1) + [19.5, 21.5].map(y =>
-      `<path d="${pd([[-14, y, 1.7],[-16.6, y, 1.7]], false)}" fill="none" stroke="${INK}" stroke-width="1.5" stroke-linecap="round"/>`
-    + `<path d="${pd([[-14, y, 1.7],[-16.6, y, 1.7]], false)}" fill="none" stroke="${METAL.m}" style="stroke-width:.5" stroke-linecap="round"/>`).join('');
-  s += byDepth([
-    { at: mid(CORD), svg: tube(CORD, .75, CORD_M) },
-    { at: [-11.75, 20.5, 1.7], svg: plug },
-    { at: mid(INLET), svg: tube(INLET, 1.3, INLET_M) + cylX(-19.6, -16.5, 42.4, 1.6, 1.6, TAP_B, toneI, .9, 18) },
-    { at: mid(DRAIN_UP), svg: tube(DRAIN_UP, 1.8, HOSE_M, true) + box(-5.2, 21.6, 58, -1.8, 26.4, 61.5, METAL, toneI, .9) },
-    { at: mid(DRAIN_DN), svg: tube(DRAIN_DN, 1.8, HOSE_M, true) },
-  ]);
-  return s;
-}
-
-function sideRight(m){
-  const sm = tone([0,-1,0], m), pl = PY(-.2), tc = mix(sm, m.d, .3);
-  let s = '';
-  s += shape(on(pl, rrUV(12, 36, W - 12, 64, 6)), mix(sm, '#ffffff', .12), 1.2);
-  for (const [u,v,r] of [[W-20, 56, 3.4],[W-27, 59.5, 2],[W-25, 52.5, 1.4]]) s += shape(on(PY(-.25), ellUV(u, v, r, r, 16)), tc, .9);
-  s += txR(W/2 - 3, -.3, 47, 'SQL-WASH', 4.6, tc, 800);
-  s += txR(W/2 - 3, -.3, 41, 'RELATIONAL DRIVE', 2.4, tc, 800);
-  for (let k = 0; k < 6; k++){ const u = 7 + k*2.6; s += shape(on(PY(-.25), rrUV(u, 10, u + 1.2, 22, .6)), mix(sm, '#000000', .45), .7); }
-  s += shape(on(PY(-.25), [[W-17, 12],[W-9, 12],[W-13, 19]]), '#f2c230', .9);
-  s += txR(W - 13, -.3, 12.8, '!', 4, INK, 900);
-  return s;
-}
-
-/* ---------- Inside View: Database Engine Mechanics (X-Ray) ---------- */
-const XT0 = 15, XT1 = W - 3, RT = 22.5;
-const XD0 = W - 2 - 38, XD1 = W - 2;
-const XPU = 10, RPU = 17;
-const MOT = { x0: 13, x1: 31, y: CY + 6, z: 10.5, r: 4.6, rp: 2.3 };
-const PUMP = { x0: 44, x1: 56, y: 10.5, z: 9, r: 4 };
-const TUBM = { l:'#eef0ee', m:'#cdd3d2', d:'#9aa4a4' }, ALU = { l:'#e6e9ea', m:'#b9c0c3', d:'#7f888c' };
-const MOTM = { l:'#7d8a96', m:'#5e6b77', d:'#3c4650' }, CONC = { l:'#d6d2c8', m:'#b5b0a4', d:'#8a857a' };
-const VALVE = { l:'#f2efe6', m:'#d6d1c3', d:'#a29c8b' }, COPPER = { l:'#e6a46d', m:'#c47c45', d:'#8a4e24' };
-const WATER = '#4f9fdc';
-const ringT = (x, r, n=40) => on(PX(x), ellUV(CY, CZ, r, r, n));
-const tubZ = dy => CZ - Math.sqrt(RT*RT - dy*dy);
-const tubTop = dy => CZ + Math.sqrt(RT*RT - dy*dy);
-
-function coil(a, b, r, turns, w=1){
-  const d = norm(sub(b, a)), u = norm(cross(d, [1,0,0])), v = cross(d, u), pts = [], n = turns*14;
-  for (let i = 0; i <= n; i++){ const t = i/n, g = t*turns*2*Math.PI, c = Math.cos(g)*r, s = Math.sin(g)*r;
-    pts.push([a[0]+(b[0]-a[0])*t + u[0]*c + v[0]*s, a[1]+(b[1]-a[1])*t + u[1]*c + v[1]*s, a[2]+(b[2]-a[2])*t + u[2]*c + v[2]*s]); }
-  const dd = pd(pts, false);
-  return `<path d="${dd}" fill="none" stroke="${INK}" stroke-width="${2.2*w}" stroke-linecap="round"/><path d="${dd}" fill="none" stroke="${METAL.m}" style="stroke-width:.55" stroke-linecap="round"/>`;
-}
-
-function tubPart(st, k, sway, A, lv, heat){
-  const op = (o, s) => `<g opacity="${o}">${s}</g>`, back = vis([-1,0,0]), front = vis([1,0,0]);
-  const A0 = ringT(XT0, RT), A1 = ringT(XT1, RT);
-  let s = '';
-  s += op(.55, loft(A0, A1, n => toneI(n, TUBM), true) + (!back ? fill(pd(A0), TUBM.d) : '') + (!front ? fill(pd(A1), TUBM.d) : ''));
-  if (lv > .01){
-    const zl = CZ - RT + .6 + lv*19, a0 = Math.asin(Math.max(-1, Math.min(1, (zl - CZ)/(RT - .4))));
-    const prof = arcUV(CY, CZ, RT - .4, 180 - a0*180/Math.PI, 360 + a0*180/Math.PI, 24);
-    s += op(.5, extrude(prof, XT0 + .4, XT1 - .4, { l:'#9fd0f2', m:'#6fb2e6', d:'#3f86c4' }, toneI));
-  }
-  const hm = heat > 0 ? { l: mix(COPPER.l, '#ff7a2a', heat), m: mix(COPPER.m, '#ff5a1a', heat), d: mix(COPPER.d, '#c2300a', heat) } : COPPER;
-  const hz = tubZ(0) + 2.1;
-  s += rod([XT1 - 2, CY - 3, hz], [XT0 + 9, CY - 3, hz], .75, hm) + rod([XT0 + 9, CY + 3, hz], [XT1 - 2, CY + 3, hz], .75, hm)
-     + rod([XT0 + 9, CY - 3, hz], [XT0 + 9, CY + 3, hz], .75, hm);
-  if (heat > .05) s += `<path d="${pd([[XT1 - 2, CY, hz],[XT0 + 9, CY, hz]], false)}" stroke="#ff8a3a" style="stroke-width:${f(6*heat)}" opacity="${f(.25*heat)}" stroke-linecap="round"/>`;
-
-  const R0 = ringT(XD0, RO), R1 = ringT(XD1, RO);
-  s += loft(R0, R1, n => toneI(n, STEEL));
-  let dots = '';
-  const fast = Math.abs(st.run ? omegaAt(prog(st), st.tau) : 0) > 7;
-  for (let x = XD0 + 3; x < XD1 - 2; x += 3.4) for (let i = 0; i < 30; i++){
-    const a = A + (i + (x*.37 % 1)) / 30 * 2*Math.PI, n = [0, Math.cos(a), Math.sin(a)];
-    if (d3(rotV(n), [1,1,1]) < .25) continue;
-    const q = (da, dx) => [x + dx, CY + (RO+.05)*Math.cos(a+da), CZ + (RO+.05)*Math.sin(a+da)];
-    dots += fast ? pd([q(-.25,0), q(.25,0)], false) : pd([q(-.03,-.45), q(.03,-.45), q(.03,.45), q(-.03,.45)]);
-  }
-  s += fast ? `<path d="${dots}" fill="none" stroke="#2a3134" stroke-width=".8" opacity=".6"/>` : `<path d="${dots}" fill="#2a3134"/>`;
-  if (back){ s += fill(pd(R0), toneI([-1,0,0], STEEL));
-    for (let j = 0; j < 3; j++){ const a = A + j*2*Math.PI/3; s += shape(on(PX(XD0 - .3), [[CY + 2*Math.cos(a+.5), CZ + 2*Math.sin(a+.5)], [CY + 17*Math.cos(a+.12), CZ + 17*Math.sin(a+.12)], [CY + 17*Math.cos(a-.12), CZ + 17*Math.sin(a-.12)], [CY + 2*Math.cos(a-.5), CZ + 2*Math.sin(a-.5)]]), ALU.m, .8); }
-    s += ink(pd(R0), 1); }
-  s += hullInk([...R0, ...R1], 1.6) + ink(pd(R1), .9);
-
-  if (front) s += clipTo(ringX(XD1, RO - .2), drum(st));
-  s += op(.32, loft(A0, A1, n => toneI(n, TUBM)) + (back ? fill(pd(A0), toneI([-1,0,0], TUBM)) : ''));
-  s += ink(pd(A0), .9) + ink(pd(A1), .9) + hullInk([...A0, ...A1], 1.6);
-
-  const g0 = ringT(XT1, RT - 1.5), g1 = ringT(W - .3, RO + 1.2);
-  s += op(.85, loft(g1, g0, n => toneI(n, RUBBER))) + ink(pd(g0), .8);
-  return s;
-}
-
-function pulleyBelt(st, A){
-  let s = '';
-  const fx = vis([1,0,0]) ? XPU + 1.2 : XPU - 1.2, fn = vis([1,0,0]) ? [1,0,0] : [-1,0,0];
-  s += rod([XPU - 1.4, CY, CZ], [XT0, CY, CZ], 1.5, METAL);
-  s += cylX(XPU - 1.2, XPU + 1.2, CY, CZ, RPU, ALU, toneI, 1.4, 40);
-  let win = '';
-  for (let j = 0; j < 5; j++){ const a0 = A + j*2*Math.PI/5;
-    win += pd(on(PX(fx + (fn[0] > 0 ? .05 : -.05)), [...arcUV(CY, CZ, 5.5, (a0+.22)*180/Math.PI, (a0+1.0)*180/Math.PI, 5), ...arcUV(CY, CZ, 13.5, (a0+1.0)*180/Math.PI, (a0+.22)*180/Math.PI, 7)])); }
-  s += `<path d="${win}" fill="${ALU.d}" stroke="${INK}" stroke-width=".7"/>`;
-  s += shape(on(PX(fx + fn[0]*.1), ellUV(CY, CZ, 3, 3, 16)), ALU.m, .8);
-
-  const c1 = [CY, CZ], c2 = [MOT.y, MOT.z], r1 = RPU + .3, r2 = MOT.rp + .3, d = [c2[0]-c1[0], c2[1]-c1[1]];
-  const L = Math.hypot(...d), ph = Math.atan2(d[1], d[0]), be = Math.acos((r1 - r2)/L);
-  const pt = (c, r, a) => [c[0] + r*Math.cos(a), c[1] + r*Math.sin(a)], loop = [];
-  for (let i = 0; i <= 10; i++) loop.push(pt(c2, r2, ph + be - 2*be*i/10));
-  for (let i = 0; i <= 40; i++) loop.push(pt(c1, r1, ph - be - (2*Math.PI - 2*be)*i/40));
-  const bp = pd(on(PX(XPU), loop));
-  s += `<path d="${bp}" fill="none" stroke="${INK}" style="stroke-width:${f(2.6*INK_K + 1.6)}" stroke-linejoin="round"/>`
-     + `<path d="${bp}" fill="none" stroke="#3a3632" style="stroke-width:1.6" stroke-linejoin="round"/>`
-     + `<path d="${bp}" fill="none" stroke="#8a8378" style="stroke-width:.6" stroke-dasharray="1 2.2" stroke-dashoffset="${f(-A*RPU)}"/>`;
-  s += cylX(XPU - 1.2, XPU + 1.2, MOT.y, MOT.z, MOT.rp, METAL, toneI, 1, 16);
-  const ma = A * RPU / MOT.rp;
-  s += ink(pd(on(PX(fx + fn[0]*.1), [[MOT.y, MOT.z], [MOT.y + 1.8*Math.cos(ma), MOT.z + 1.8*Math.sin(ma)]]), false), .9);
-  return s;
-}
-
-function motor(st, A){
-  let s = cylX(MOT.x0, MOT.x1, MOT.y, MOT.z, MOT.r, MOTM, toneI, 1.4, 24);
-  for (let x = MOT.x0 + 3; x < MOT.x1 - 2; x += 2.6) s += line(arcUV(MOT.y, MOT.z, MOT.r + .05, 30, 200, 8).map(([y, z]) => [x, y, z]), .6);
-  s += rod([XPU + 1.3, MOT.y, MOT.z], [MOT.x0, MOT.y, MOT.z], .8, METAL);
-  s += box(MOT.x0 + 4, MOT.y - 2, MOT.z + MOT.r - .5, MOT.x1 - 4, MOT.y + 2, tubZ(MOT.y - CY) + .4, DARK, toneI, .9);
-  return s;
-}
-
-function pump(st, t, running){
-  let s = cylX(PUMP.x0, PUMP.x1, PUMP.y, PUMP.z, PUMP.r, DARK, toneI, 1.3, 20);
-  s += box(PUMP.x0 + 2, PUMP.y - 3, PL, PUMP.x1 - 2, PUMP.y + 3, PUMP.z - PUMP.r + .3, DARK, toneI, .8);
-  const cap = vis([1,0,0]) ? PUMP.x1 + .1 : PUMP.x0 - .1, a = running ? t*30 : 0;
-  for (let j = 0; j < 4; j++){ const g = a + j*Math.PI/2; s += ink(pd(on_(cap, g)), .7); }
-  return s;
-  function on_(x, g){ return on(PX(x), [[PUMP.y, PUMP.z], [PUMP.y + 3*Math.cos(g), PUMP.z + 3*Math.sin(g)]]); }
-}
-
-function mechanism(st, m, k){
-  const p = prog(st), t = st.tau, run = st.run, ph = run ? phaseAt(p, t) : null;
-  const A = run ? angleAt(p, t) : st.restA, om = run ? omegaAt(p, t) : 0;
-  const lv = run ? waterAt(p, t) : 0, heat = ph === 'wash' ? sstep(p.fill, p.fill + .8, t) * (1 - sstep(p.wash - 1, p.wash, t)) : 0;
-  const sh = Math.max(0, (Math.abs(om) - 6) / 14), sway = [0, sh*1.6*Math.sin(t*41), sh*1.1*Math.sin(t*53 + 1) + (lv*-1.2)];
-  const [sx, sy] = Dv(...sway);
-  const hung = svg => { OX += sx; OY += sy; try { return svg(); } finally { OX -= sx; OY -= sy; } };
-  const parts = [
-    { at: [XPU, MOT.y - 2, MOT.z + 2], svg: hung(() => pulleyBelt(st, A)) },
-    { at: [(MOT.x0 + MOT.x1)/2, MOT.y, MOT.z], svg: hung(() => motor(st, A)) },
-    { at: [(XT0 + XT1)/2, CY, CZ], svg: hung(() => tubPart(st, k, sway, A, lv, heat)) },
-    { at: [(PUMP.x0 + PUMP.x1)/2, PUMP.y, PUMP.z], svg: pump(st, t, ph === 'drain' || ph === 'spin') },
-    { at: [34, CY - 13, H - 12], svg: hung(() => coil([34, CY - 13, tubTop(13)], [34, CY - 26, H - 3], 1.8, 8)) },
-    { at: [34, CY + 13, H - 12], svg: hung(() => coil([34, CY + 13, tubTop(13)], [34, CY + 26, H - 3], 1.8, 8)) },
-  ];
-  return byDepth(parts);
-}
-
-/* ---------- Part Callouts (Leader Lines & Cream Pills) ---------- */
-function callouts(items){
-  const pts = []; for (const x of [0, W]) for (const y of [0, D]) for (const z of [0, H]) pts.push(P(x, y, z));
-  const xmin = Math.min(...pts.map(p => p[0])), xmax = Math.max(...pts.map(p => p[0])), cx = (xmin + xmax)/2;
-  const k = INK_K, fs = 8.6*k, hgt = fs*1.8, gap = hgt + 3*k;
-  const L = [], R = [];
-  const svgEl = document.getElementById('fig'), vb = svgEl.viewBox.baseVal, btn = document.getElementById('btns');
-  const wMax = Math.max(...items.map(it => it.text.length))*fs*.62 + fs*1.5 + 12*k;
-  const roomL = xmin - vb.x >= wMax, roomR = vb.x + vb.width - xmax >= wMax;
-  for (const it of items){ const [X, Y] = P(...it.at); ((X < cx && roomL) || !roomR ? L : R).push({ ...it, X, Y }); }
-  let s = '';
-  let top = { [-1]: fs, [1]: fs };
-  if (btn && svgEl.getScreenCTM()){ const r = btn.getBoundingClientRect(), q = new DOMPoint(r.right, r.bottom + 50).matrixTransform(svgEl.getScreenCTM().inverse());
-    if (q.y > 0) top[-1] = q.y + hgt; }
-  for (const [col, side] of [[L, -1], [R, 1]]){
-    col.sort((a, b) => a.Y - b.Y);
-    const place = () => { let y = -1e9; for (const c of col){ c.py = Math.max(c.Y, y + gap, top[side]); y = c.py; } };
-    place();
-    const shift = col.length ? Math.max(0, col.reduce((a, c) => a + c.py - c.Y, 0) / col.length) : 0;
-    const room = col.length ? col[0].py - top[side] : 0; for (const c of col) c.py -= Math.min(shift, room);
-    for (const c of col){
-      const w = c.text.length*fs*.62 + fs*1.5;
-      let px = side < 0 ? xmin - 10*k - w/2 : xmax + 10*k + w/2; px = Math.max(vb.x + w/2 + 2*k, Math.min(vb.x + vb.width - w/2 - 2*k, px));
-      const ex = px - side*w/2;
-      s += `<g class="tag${c.on ? ' on' : ''}"><path d="M${f(c.X)} ${f(c.Y)}L${f(ex + side*-4*k)} ${f(c.py)}L${f(ex)} ${f(c.py)}" fill="none" stroke="${INK}" stroke-width="1"/>`
-        + `<circle cx="${f(c.X)}" cy="${f(c.Y)}" r="${f(1.4*k)}" fill="${INK}"/>`
-        + `<rect x="${f(px - w/2)}" y="${f(c.py - hgt/2)}" width="${f(w)}" height="${f(hgt)}" rx="${f(hgt/2)}" fill="${c.on ? 'var(--accent,#f4b829)' : '#fff4d6'}" stroke="${INK}" stroke-width="1.2"/>`
-        + `<text x="${f(px)}" y="${f(c.py + fs*.36)}" font-size="${f(fs)}" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-weight="800" letter-spacing=".04em" fill="${INK}">${c.text}</text></g>`;
-    }
-  }
-  return s;
-}
-
-function surfaceLabels(st, FRONT, BACK){
-  const th = ease(st.door) * DOOR_MAX, s0 = ease(st.drawer) * DRAWER_MAX, L = [];
-  if (FRONT) L.push(
-    { at: dP(BT, uc + RB*.72, CZ - RB*.7, th), text: 'PORTHOLE DOOR', on: st.door > 0 },
-    { at: [W + .3, (DISP[0] + DISP[2])/2, (DISP[1] + DISP[3])/2], text: 'QUERY TELEMETRY', on: st.run },
-    { at: [W + 1, DIAL[0], DIAL[1] + DIAL[2]], text: 'SQL STAGE DIAL', on: false },
-    { at: [W + 1, BTN[0], BTN[1] + BTN[2]], text: 'START EXECUTION', on: st.run },
-    { at: [W + s0, (DRW[0] + DRW[2])/2, DRW[3]], text: 'PREDICATE INGESTION', on: st.drawer > 0 },
-    { at: [W + .2, 9.5, 9.75], text: 'SLUDGE PURGE TRAP', on: false });
-  if (BACK) L.push(
-    { at: [-4.6, 48, 83], text: 'INPUT STREAM (FROM)', on: false },
-    { at: [-1.6, 12, 83.5], text: 'POWER FEED (ACID)', on: false },
-    { at: [-3, 24, 30], text: 'FILTER PURGE HOSE', on: false });
-  return L;
-}
-
-/* ---------- Master Scene Drawing Function ---------- */
-function scene(st, m){
-  const p = prog(st);
-  const FRONT = facing([1,0,0]), BACK = facing([-1,0,0]), LEFT = facing([0,1,0]), RIGHT = facing([0,-1,0]);
-  const showBasket = st.door > .02 || st.tuplesLoc === 'basket' || st.xfer;
-  let s = castShadow([...on(PX(0), OUT), ...on(PX(W), OUT)]);
-  if (st.door > .02){ const th = ease(st.door) * DOOR_MAX; s += castShadow(dRing(0, RB, th, 24).concat(dRing(BT, RB, th, 24))); }
-  if (showBasket) s += basketShadow();
-
-  const om = st.run ? omegaAt(p, st.tau) : 0, shake = Math.max(0, (Math.abs(om) - 8) / 12);
-  const jx = shake * (.55*Math.sin(st.tau*97) + .3*Math.sin(st.tau*151)), jy = shake * (.45*Math.sin(st.tau*123 + 1));
-  OX += jx; OY += jy;
-
-  try {
-    s += byDepth([[5,D-5],[5,5],[W-5,D-5],[W-5,5]].map(([x,y]) => ({ at:[x,y,0], svg: cyl(x, y, 0, PL + .5, 2.6, RUBBER, toneI, 1, 16) })));
-
-    let body = '';
-    const X = PX(W);
-    if (FRONT){
-      const inner = drum(st);
-      body += clipTo(ringX(W, RO), st.door > .02 ? act('door', fill(pd(ringX(W, RO)), 'transparent') + inner) : inner);
-      const dr = rectUV(DRW[0], DRW[1], DRW[2], DRW[3]);
-      body += fill(pd(on(PX(W), dr)), '#1f1d1a');
-      body += `<path d="${pd(on(X, OUT))}${pd(ringX(W, RO))}${pd(on(X, dr))}" fill="${tone([1,0,0], m)}" fill-rule="evenodd"/>`;
-      body += ink(pd(ringX(W, RO)), 1.6);
-      const pnl = on(PX(W + .15), rrUV(...PANEL, 4));
-      body += `<path d="${pd(pnl)}${pd(on(PX(W + .15), dr))}" fill="${mix(tone([1,0,0], m), '#ffffff', .62)}" fill-rule="evenodd"/>`;
-      body += ink(pd(pnl), 1.3) + ink(pd(on(PX(W + .15), dr)), 1.6);
-      body += shape(on(PX(W + .15), rrUV(4.5, 7, 14.5, 12.5, 1.5)), mix(tone([1,0,0], m), '#000000', .06), 1);
-      body += ink(pd(on(PX(W + .2), [[8,9.75],[11,9.75]]), false), 1);
-      body += tx(W + .3, 46, 8.6, 'SQL-WASH 15', 2.6, tone([1,0,0], m) === m.d ? m.l : m.d, 800);
-    }
-    if (BACK) body += fill(pd(on(PX(0), OUT)), tone([-1,0,0], m)) + backFace(m);
-
-    body += extrude(OUT, 0, W, m);
-    if (LEFT){
-      const sm = tone([0,1,0], m);
-      body += shape(on(PY(D + .2), rrUV(12, 30, W - 12, 62, 6)), mix(sm, '#ffffff', .12), 1.2);
-      const tc = mix(sm, m.d, .3);
-      body += txY(W/2, D + .3, 49, 'QUERY ENGINE', 6.5, tc, 800);
-      body += txY(W/2, D + .3, 40, 'RELATIONAL WASHER · ACID', 3.2, tc, 800);
-      let v = ''; for (const z of [12, 16, 20]) v += pd([[14, D + .2, z], [W - 14, D + .2, z]], false);
-      body += `<path d="${v}" fill="none" stroke="${INK}" stroke-width="1.4" stroke-linecap="round" opacity=".7"/>`;
-    }
-    if (RIGHT) body += sideRight(m);
-
-    const tp = PZ(H + .1);
-    body += shape(on(tp, rrUV(16, 18, 34, 44, 2)), '#fbf7ea', 1);
-    for (const k of [0,1,2,3]) body += ink(pd(on(tp, [[29 - k*3.6, 22], [29 - k*3.6, k === 0 ? 40 : 35]]), false), k === 0 ? 1.1 : .7);
-
-    if (FRONT) body += ink(pd(on(X, OUT)), 2.2);
-    if (BACK) body += ink(pd(on(PX(0), OUT)), 2.2);
-    body += hullInk([...on(PX(0), OUT), ...on(PX(W), OUT)], 2.8);
-
-    let mounted = display(st) + dial(st) + startBtn(st);
-    mounted += tx(W + .3, CY, PANEL[1] - 3.2, st.run ? 'LOCK (ACID)' : 'UNLOCKED', 1.9, st.run ? RED : '#6a6658', 800);
-    for (const z of [CZ + 9, CZ - 13]) mounted += cyl(W + 1.6, hy + 1, z - .5, z + 4.5, 1.3, METAL, toneI, .9, 14);
-
-    const th = ease(st.door) * DOOR_MAX, s0 = ease(st.drawer) * DRAWER_MAX;
-    const parts = [
-      { at: dP(BT/2, uc, CZ, th), svg: door(st) },
-      showBasket && { at: basketAt(), svg: basket(st) },
-      { at: [W + s0 + .7, (DRW[0]+DRW[2])/2, (DRW[1]+DRW[3])/2], svg: drawer(st) },
-      st.predicateAnim != null && { at: [W + DRAWER_MAX*.5, 59, 100], svg: soapBox(st) },
-      ...flying(st)
+  <script>
+    /* =========================================================================
+       DATASETS (Physical Punchcard Records)
+       ========================================================================= */
+    const RAW_EMPLOYEES = [
+      { emp_id: 101, name: 'Alice Miller', dept_id: 'ENG', salary: 125000, tenure: 14 },
+      { emp_id: 102, name: 'Bob Chen',     dept_id: 'FIN', salary: 42000,  tenure: 36 },
+      { emp_id: 103, name: 'Carol Smith',  dept_id: 'ANA', salary: 92000,  tenure: 8 },
+      { emp_id: 104, name: 'Dave Brown',   dept_id: 'ENG', salary: 35000,  tenure: 22 },
+      { emp_id: 105, name: 'Evan Davis',   dept_id: 'ANA', salary: 110000, tenure: 48 },
+      { emp_id: 106, name: 'Frank Jackson',dept_id: 'FIN', salary: 28000,  tenure: 26 },
+      { emp_id: 107, name: 'Grace Taylor', dept_id: 'ENG', salary: 145000, tenure: 19 },
+      { emp_id: 108, name: 'Hank Wilson',  dept_id: 'HR',  salary: 58000,  tenure: 12 }
     ];
-    const frontStuff = FRONT ? mounted + byDepth(parts) : byDepth(parts) + mounted;
 
-    const k = ease(st.xr || 0);
-    if (k > 0){
-      const far = `<g opacity="${f(.5*k)}">` + loft(on(PX(0), OUT), on(PX(W), OUT), n => mix(toneI(n.map(v => -v), m), '#f2efe7', .55), true)
-        + (FRONT ? fill(pd(on(PX(0), OUT)), mix(m.d, '#f2efe7', .5)) : '') + (BACK ? fill(pd(on(PX(W), OUT)), mix(m.d, '#f2efe7', .5)) : '') + `</g>`;
-      body = far + mechanism(st, m, k) + `<g opacity="${f(1 - .8*k)}">${body}</g>` + `<g opacity="${f(.6*k)}">` + hullInk([...on(PX(0), OUT), ...on(PX(W), OUT)], 2.8) + `</g>`;
-    }
-    if (FRONT) s += backBits() + body + frontStuff;
-    else       s += frontStuff + body + backBits();
+    const RAW_DEPARTMENTS = [
+      { id: 'ENG', dept_name: 'Engineering', budget: 500000 },
+      { id: 'ANA', dept_name: 'Analytics',   budget: 350000 },
+      { id: 'FIN', dept_name: 'Finance',     budget: 280000 },
+      { id: 'MKT', dept_name: 'Marketing',   budget: 200000 }
+    ];
 
-    s += callouts(surfaceLabels(st, FRONT, BACK));
-  } finally { OX -= jx; OY -= jy; }
-  return s;
-}
-
-/* ---------- Interactivity & User Interface Pipeline ---------- */
-let ui;
-const tick = cb => ui.animate(cb);
-
-function toggleDoor(st, ui, andThen=null){
-  if (st.run) return ui.flash('engine locked while query is executing');
-  st.doorT = st.doorT ? 0 : 1;
-  tick(dt => {
-    const g = Math.sign(st.doorT - st.door);
-    st.door = Math.min(1, Math.max(0, st.door + g * dt / .4));
-    if (st.door === st.doorT){ if (andThen) andThen(); return false; }
-    return true;
-  });
-}
-
-function swingDoor(st, target, andThen=null){
-  st.doorT = target;
-  tick(dt => {
-    const g = Math.sign(st.doorT - st.door);
-    st.door = Math.min(1, Math.max(0, st.door + g * dt / .4));
-    if (st.door === st.doorT){ if (andThen) andThen(); return false; }
-    return true;
-  });
-}
-
-function transfer(st, dir, andThen){
-  st.xfer = { dir, T:0 };
-  const dur = xferEnd();
-  tick(dt => {
-    st.xfer.T += dt;
-    if (st.xfer.T >= dur){ st.tuplesLoc = dir === 'out' ? 'basket' : 'drum'; st.xfer = null; if (andThen) andThen(); return false; }
-    return true;
-  });
-}
-
-function start(st, ui){
-  if (st.door > 0) return ui.flash('porthole door is open — close to seal vacuum');
-  if (st.tuplesLoc === 'basket' && !st.xfer) return ui.flash('basket is empty — load tuples into drum first');
-  if (st.done && !st.run){ st.done = false; st.tau = 0; }
-  st.run = !st.run;
-  if (st.run){
-    ui.flash(`Executing ${prog(st).name} Stage…`, 2000);
-    const p = prog(st);
-    tick(dt => {
-      if (!st.run) return false;
-      st.tau += dt;
-      if (st.tau >= p.T){
-        st.run = false; st.tau = p.T; st.done = true;
-        st.restA = angleAt(p, p.T) % (2*Math.PI);
-        ui.flash(`${p.name} Complete! Tuples filtered successfully.`, 3000);
-        return false;
+    /* =========================================================================
+       QUERY ARCHETYPES
+       ========================================================================= */
+    const PRESETS = [
+      {
+        title: "1. Sieve Filter (WHERE)",
+        sql: "SELECT name, salary FROM employees WHERE salary > 50000 ORDER BY salary DESC LIMIT 4;"
+      },
+      {
+        title: "2. Dual Hash Join",
+        sql: "SELECT e.name, d.dept_name, e.salary FROM employees e JOIN departments d ON e.dept_id = d.id;"
+      },
+      {
+        title: "3. Rotary Group By & Agg",
+        sql: "SELECT dept_id, COUNT(*), AVG(salary) FROM employees GROUP BY dept_id;"
+      },
+      {
+        title: "4. Having Balance Scale",
+        sql: "SELECT dept_id, COUNT(*), SUM(salary) FROM employees GROUP BY dept_id HAVING COUNT(*) >= 2;"
+      },
+      {
+        title: "5. Sliding Window Lens",
+        sql: "SELECT name, salary, SUM(salary) OVER (ORDER BY salary) AS running_total FROM employees;"
+      },
+      {
+        title: "6. Escalator & Limit Guillotine",
+        sql: "SELECT name, salary FROM employees ORDER BY salary DESC LIMIT 3;"
+      },
+      {
+        title: "7. Full Enterprise Factory",
+        sql: "SELECT e.dept_id, COUNT(*), AVG(e.salary) FROM employees e JOIN departments d ON e.dept_id = d.id WHERE e.salary > 30000 GROUP BY e.dept_id HAVING AVG(e.salary) > 60000 ORDER BY AVG(e.salary) DESC LIMIT 2;"
+      },
+      {
+        title: "8. Left Anti-Join Chute",
+        sql: "SELECT e.name, e.dept_id FROM employees e LEFT JOIN departments d ON e.dept_id = d.id WHERE d.id IS NULL;"
       }
-      return true;
+    ];
+
+    /* =========================================================================
+       DYNAMIC AST ANALYZER & MACHINE STATE
+       ========================================================================= */
+    let parsedQuery = null;
+    let machineState = {
+      stepIndex: 0,
+      isPlaying: false,
+      isXRay: false,
+      timer: null,
+      cadenceMs: 900,
+      records: [],
+      joinedRecords: [],
+      filteredRecords: [],
+      groupedRecords: {},
+      havingRecords: [],
+      windowedRecords: [],
+      orderedRecords: [],
+      finalOutput: []
+    };
+
+    function parseSql(sql) {
+      const clean = sql.trim().replace(/;$/, '');
+      const hasJoin = /JOIN\s+([a-zA-Z_]+)/i.test(clean);
+      const isLeftJoin = /LEFT\s+JOIN/i.test(clean);
+      const hasWhere = /\bWHERE\b/i.test(clean);
+      const hasGroupBy = /\bGROUP\s+BY\b/i.test(clean);
+      const hasHaving = /\bHAVING\b/i.test(clean);
+      const hasWindow = /\bOVER\s*\(/i.test(clean);
+      const hasOrderBy = /\bORDER\s+BY\b/i.test(clean);
+      const hasLimit = /\bLIMIT\s+(\d+)/i.test(clean);
+
+      // Extract details
+      let whereExpr = '';
+      if (hasWhere) {
+        const match = clean.match(/WHERE\s+(.*?)(?=\s+GROUP\s+BY|\s+HAVING|\s+ORDER\s+BY|\s+LIMIT|$)/i);
+        if (match) whereExpr = match[1].trim();
+      }
+
+      let groupByCol = '';
+      if (hasGroupBy) {
+        const match = clean.match(/GROUP\s+BY\s+(.*?)(?=\s+HAVING|\s+ORDER\s+BY|\s+LIMIT|$)/i);
+        if (match) groupByCol = match[1].trim().split(',')[0].trim().replace(/^e\./, '');
+      }
+
+      let havingExpr = '';
+      if (hasHaving) {
+        const match = clean.match(/HAVING\s+(.*?)(?=\s+ORDER\s+BY|\s+LIMIT|$)/i);
+        if (match) havingExpr = match[1].trim();
+      }
+
+      let limitCount = 999;
+      if (hasLimit) {
+        const match = clean.match(/LIMIT\s+(\d+)/i);
+        if (match) limitCount = parseInt(match[1], 10);
+      }
+
+      return {
+        raw: sql,
+        hasJoin,
+        isLeftJoin,
+        hasWhere,
+        whereExpr,
+        hasGroupBy,
+        groupByCol,
+        hasHaving,
+        havingExpr,
+        hasWindow,
+        hasOrderBy,
+        hasLimit,
+        limitCount
+      };
+    }
+
+    function loadQueryPreset(idx) {
+      document.querySelectorAll('.preset-chip').forEach((c, i) => c.classList.toggle('active', i === idx));
+      document.getElementById('queryInput').value = PRESETS[idx].sql;
+      compileAndMountQuery();
+    }
+
+    function compileAndMountQuery() {
+      const sql = document.getElementById('queryInput').value;
+      parsedQuery = parseSql(sql);
+      buildStationRibbon();
+      executeLogicalPipeline();
+      renderScene();
+      resetMachine();
+    }
+
+    /* =========================================================================
+       LOGICAL RELATIONAL PIPELINE EVALUATION
+       ========================================================================= */
+    function executeLogicalPipeline() {
+      // 1. Ingestion
+      let base = RAW_EMPLOYEES.map(e => ({ ...e, _status: 'raw' }));
+
+      // 2. Join
+      let joined = [];
+      if (parsedQuery.hasJoin) {
+        base.forEach(e => {
+          const dept = RAW_DEPARTMENTS.find(d => d.id === e.dept_id);
+          if (dept) {
+            joined.push({ ...e, dept_name: dept.dept_name, budget: dept.budget, _joined: true });
+          } else if (parsedQuery.isLeftJoin) {
+            joined.push({ ...e, dept_name: null, budget: null, _joined: false, _nullPadded: true });
+          }
+        });
+      } else {
+        joined = base.map(b => ({ ...b, _joined: false }));
+      }
+
+      // 3. Where Filter
+      let filtered = [];
+      joined.forEach(r => {
+        let pass = true;
+        if (parsedQuery.hasWhere) {
+          if (/salary\s*>\s*(\d+)/i.test(parsedQuery.whereExpr)) {
+            const val = parseInt(parsedQuery.whereExpr.match(/salary\s*>\s*(\d+)/i)[1], 10);
+            pass = r.salary > val;
+          } else if (/salary\s*>=\s*(\d+)/i.test(parsedQuery.whereExpr)) {
+            const val = parseInt(parsedQuery.whereExpr.match(/salary\s*>=\s*(\d+)/i)[1], 10);
+            pass = r.salary >= val;
+          } else if (/IS\s+NULL/i.test(parsedQuery.whereExpr)) {
+            pass = r.dept_name === null;
+          }
+        }
+        r._wherePass = pass;
+        if (pass) filtered.push(r);
+      });
+
+      // 4. Group By & Aggregates
+      let grouped = {};
+      let aggregatedList = [];
+      if (parsedQuery.hasGroupBy) {
+        const col = parsedQuery.groupByCol || 'dept_id';
+        filtered.forEach(r => {
+          const k = r[col] || 'Other';
+          if (!grouped[k]) grouped[k] = [];
+          grouped[k].push(r);
+        });
+
+        Object.keys(grouped).forEach(k => {
+          const rows = grouped[k];
+          const count = rows.length;
+          const sumSal = rows.reduce((acc, x) => acc + x.salary, 0);
+          const avgSal = Math.round(sumSal / count);
+          aggregatedList.push({
+            groupKey: k,
+            count: count,
+            avg_salary: avgSal,
+            sum_salary: sumSal,
+            rows: rows
+          });
+        });
+      }
+
+      // 5. Having Filter
+      let havingList = [];
+      if (parsedQuery.hasHaving && parsedQuery.hasGroupBy) {
+        aggregatedList.forEach(g => {
+          let pass = true;
+          if (/COUNT\s*\(\s*\*\s*\)\s*>=\s*(\d+)/i.test(parsedQuery.havingExpr)) {
+            const n = parseInt(parsedQuery.havingExpr.match(/COUNT\s*\(\s*\*\s*\)\s*>=\s*(\d+)/i)[1], 10);
+            pass = g.count >= n;
+          } else if (/AVG.*?>\s*(\d+)/i.test(parsedQuery.havingExpr)) {
+            const v = parseInt(parsedQuery.havingExpr.match(/AVG.*?>\s*(\d+)/i)[1], 10);
+            pass = g.avg_salary > v;
+          }
+          g._havingPass = pass;
+          if (pass) havingList.push(g);
+        });
+      } else {
+        havingList = aggregatedList;
+      }
+
+      // 6. Window Function
+      let windowedList = [];
+      if (parsedQuery.hasWindow) {
+        let running = 0;
+        const sorted = [...filtered].sort((a,b) => a.salary - b.salary);
+        sorted.forEach(r => {
+          running += r.salary;
+          windowedList.push({ ...r, running_total: running });
+        });
+      }
+
+      // 7. Order By & Limit
+      let working = parsedQuery.hasGroupBy ? havingList : (parsedQuery.hasWindow ? windowedList : filtered);
+      let ordered = [...working];
+      if (parsedQuery.hasOrderBy) {
+        ordered.sort((a,b) => (b.salary || b.avg_salary || 0) - (a.salary || a.avg_salary || 0));
+      }
+      let finalOut = ordered.slice(0, parsedQuery.limitCount);
+
+      machineState.records = base;
+      machineState.joinedRecords = joined;
+      machineState.filteredRecords = filtered;
+      machineState.groupedRecords = grouped;
+      machineState.havingRecords = havingList;
+      machineState.windowedRecords = windowedList;
+      machineState.orderedRecords = ordered;
+      machineState.finalOutput = finalOut;
+    }
+
+    /* =========================================================================
+       STATION RIBBON TELEMETRY
+       ========================================================================= */
+    function buildStationRibbon() {
+      const ribbon = document.getElementById('stationRibbon');
+      const q = parsedQuery;
+
+      const stations = [
+        { id: 'st_from', name: '1. Ingestion Hopper', sub: 'FROM employees', active: true },
+        { id: 'st_join', name: '2. Hash Join Drum', sub: q.hasJoin ? 'JOIN departments' : 'Bypassed', active: q.hasJoin },
+        { id: 'st_where', name: '3. Caliper Sieve', sub: q.hasWhere ? q.whereExpr : 'Bypassed (All pass)', active: q.hasWhere },
+        { id: 'st_group', name: '4. Rotary Carousel', sub: q.hasGroupBy ? `BY ${q.groupByCol}` : 'Bypassed', active: q.hasGroupBy },
+        { id: 'st_having', name: '5. Balance Grate', sub: q.hasHaving ? q.havingExpr : 'Bypassed', active: q.hasHaving },
+        { id: 'st_window', name: '6. Sliding Lens', sub: q.hasWindow ? 'OVER (ORDER BY sal)' : 'Bypassed', active: q.hasWindow },
+        { id: 'st_order', name: '7. Guillotine Blade', sub: q.hasLimit ? `LIMIT ${q.limitCount}` : (q.hasOrderBy ? 'ORDER BY' : 'Direct Pass'), active: q.hasOrderBy || q.hasLimit },
+        { id: 'st_select', name: '8. Output Press', sub: 'SELECT columns', active: true }
+      ];
+
+      ribbon.innerHTML = stations.map(s => `
+        <div class="station-node ${s.active ? 'active-stage' : ''}" id="${s.id}">
+          <div class="station-title">
+            <span>${s.name}</span>
+            <span>${s.active ? '⚡' : '—'}</span>
+          </div>
+          <div class="station-param">${s.sub}</div>
+        </div>
+      `).join('');
+    }
+
+    /* =========================================================================
+       ISOMETRIC HAND-INKED SVG GENERATOR (FIG. 16 APPARATUS)
+       ========================================================================= */
+    function renderScene() {
+      const root = document.getElementById('sceneRoot');
+      const q = parsedQuery;
+      let svg = '';
+
+      // Set isometric view origin for drawing
+      OX = 570;
+      OY = 480;
+      setLight(120);
+
+      // 1. Cast Floor Shadows (Flat slate-blue #41538f)
+      svg += `
+        <g id="shadows" opacity="0.32">
+          <!-- Main Chassis Shadow -->
+          <polygon points="120,620 480,680 980,590 740,510" fill="${SHADOW}" />
+          <!-- Feeder Tower Shadow -->
+          <polygon points="180,480 340,540 420,490 260,430" fill="${SHADOW}" />
+          <!-- Output Bin Shadow -->
+          <polygon points="860,630 1020,600 1080,620 920,650" fill="${SHADOW}" />
+        </g>
+      `;
+
+      // 2. Oak Base Console & Brass Feet
+      // [x, y, z] isometric boxes
+      svg += drawIsoChassis();
+
+      // 3. Station 1: Dual Input Chutes (FROM & JOIN Feeder)
+      svg += drawHopperStation(q.hasJoin);
+
+      // 4. Station 2: Hash Join Interlock Drum
+      if (q.hasJoin) {
+        svg += drawHashJoinDrum();
+      } else {
+        svg += drawBypassConveyor(-180, -40, 190, 80);
+      }
+
+      // 5. Station 3: WHERE Caliper Sieve & Kick-Lever
+      svg += drawCaliperSieve(q.hasWhere, q.whereExpr);
+
+      // 6. Station 4: Rotary Group By Carousel & Balance Tubes
+      if (q.hasGroupBy) {
+        svg += drawGroupCarousel(q.groupByCol);
+      } else {
+        svg += drawStraightConveyor(0, -30, 120, 100);
+      }
+
+      // 7. Station 5: Window Sliding Lens Frame
+      if (q.hasWindow) {
+        svg += drawWindowLens();
+      }
+
+      // 8. Station 6: Stepped Sorter Escalator & Guillotine Slicer (ORDER BY / LIMIT)
+      svg += drawGuillotineSlicer(q.hasLimit, q.limitCount);
+
+      // 9. Station 7: Stamping Die & Output Velvet Tray
+      svg += drawOutputTray();
+
+      // 10. Moving Punchcards Layer
+      svg += drawAnimatedPunchcards();
+
+      // 11. Callout Pill Badges with Leader Lines
+      svg += drawLeaderCallouts();
+
+      root.innerHTML = svg;
+    }
+
+    /* ---------- ISOMETRIC DRAWING PRIMITIVES FOR MACHINE ---------- */
+    function drawIsoChassis() {
+      // Main Cast-Iron & Enameled Console Cabinet
+      let s = '';
+      const w = 460, d = 260, h = 180;
+      // Front face
+      s += shape([
+        [-w/2, d/2, 0], [w/2, d/2, 0], [w/2, d/2, h], [-w/2, d/2, h]
+      ], CERAMIC.l, 1.5);
+      // Left side face
+      s += shape([
+        [-w/2, -d/2, 0], [-w/2, d/2, 0], [-w/2, d/2, h], [-w/2, -d/2, h]
+      ], CERAMIC.d, 1.5);
+      // Top platform
+      s += shape([
+        [-w/2, -d/2, h], [w/2, -d/2, h], [w/2, d/2, h], [-w/2, d/2, h]
+      ], CERAMIC.m, 1.5);
+
+      // Brass corner riveted brackets
+      const brackets = [
+        [-w/2, d/2, h], [w/2, d/2, h], [-w/2, -d/2, h], [w/2, -d/2, h]
+      ];
+      brackets.forEach(([bx, by, bz]) => {
+        const p = P(bx, by, bz);
+        s += `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${PALS.mustard.l}" stroke="${INK}" stroke-width="1.2" />`;
+      });
+
+      // Nameplate: TABULATOR-9000 RELATIONAL ENGINE
+      const npP = P(0, d/2 + 1, h/2);
+      s += `
+        <g transform="translate(${npP[0] - 65}, ${npP[1] - 12})">
+          <rect width="130" height="24" rx="4" fill="${PALS.mustard.l}" stroke="${INK}" stroke-width="1.2" />
+          <text x="65" y="16" font-family="${'ui-monospace, monospace'}" font-size="9.5" font-weight="900" fill="${INK}" text-anchor="middle" letter-spacing="1">RELATIONAL-9000</text>
+        </g>
+      `;
+
+      return s;
+    }
+
+    function drawHopperStation(hasJoin) {
+      let s = '';
+      // Left Hopper A (Employees Table)
+      const h1 = [[-240, 20, 260], [-170, 20, 260], [-170, 80, 260], [-240, 80, 260]];
+      s += shape(h1, METAL.l, 1.2);
+      s += line([[-240, 20, 260], [-200, 30, 200]], 1.2);
+      s += line([[-170, 80, 260], [-170, 50, 200]], 1.2);
+
+      // Inscribed Tag: TABLE A
+      const p1 = P(-205, 50, 262);
+      s += `<text x="${p1[0]}" y="${p1[1] - 4}" font-size="8.5" font-weight="800" fill="${INK}" text-anchor="middle">TABLE A [employees]</text>`;
+
+      if (hasJoin) {
+        // Right Hopper B (Departments Table)
+        const h2 = [[-240, -80, 260], [-170, -80, 260], [-170, -20, 260], [-240, -20, 260]];
+        s += shape(h2, PALS.cobalt.l, 1.2);
+        const p2 = P(-205, -50, 262);
+        s += `<text x="${p2[0]}" y="${p2[1] - 4}" font-size="8.5" font-weight="800" fill="${INK}" text-anchor="middle">TABLE B [departments]</text>`;
+      }
+
+      return s;
+    }
+
+    function drawHashJoinDrum() {
+      let s = '';
+      // Revolving Meshing Gear Drum
+      const [cx, cy, cz] = [-130, 0, 210];
+      const ptsTop = ellUV(cx, cy, 32, 24).map(PZ(cz + 20));
+      const ptsBot = ellUV(cx, cy, 32, 24).map(PZ(cz));
+      s += loft(ptsTop, ptsBot, () => PALS.cobalt.m);
+      s += shape(ptsTop, PALS.cobalt.l, 1.2);
+
+      // Central Spindle
+      const spTop = P(cx, cy, cz + 35);
+      const spBot = P(cx, cy, cz);
+      s += `<line x1="${spTop[0]}" y1="${spTop[1]}" x2="${spBot[0]}" y2="${spBot[1]}" stroke="${INK}" stroke-width="2.5" />`;
+
+      // Interlocking Feeler Pin
+      const pFeel = P(cx + 25, cy + 15, cz + 10);
+      s += `<circle cx="${pFeel[0]}" cy="${pFeel[1]}" r="5" fill="${PALS.mustard.l}" stroke="${INK}" stroke-width="1.2" />`;
+
+      return s;
+    }
+
+    function drawCaliperSieve(hasWhere, expr) {
+      let s = '';
+      const [cx, cy, cz] = [-40, 0, 210];
+
+      // Brass Caliper Micrometer Bar
+      s += shape([
+        [cx - 15, cy - 35, cz + 25], [cx + 15, cy - 35, cz + 25],
+        [cx + 15, cy + 35, cz + 25], [cx - 15, cy + 35, cz + 25]
+      ], PALS.mustard.l, 1.2);
+
+      // Gauge dial
+      const pDial = P(cx, cy - 40, cz + 30);
+      s += `
+        <circle cx="${pDial[0]}" cy="${pDial[1]}" r="12" fill="#ffffff" stroke="${INK}" stroke-width="1.2" />
+        <line x1="${pDial[0]}" y1="${pDial[1]}" x2="${pDial[0] + 6}" y2="${pDial[1] - 6}" stroke="${PALS.tomato.l}" stroke-width="1.5" stroke-linecap="round" />
+        <circle cx="${pDial[0]}" cy="${pDial[1]}" r="2" fill="${INK}" />
+      `;
+
+      // Sifter Sieve Grate underneath
+      const grate = [
+        [cx - 20, cy - 25, cz], [cx + 20, cy - 25, cz],
+        [cx + 20, cy + 25, cz], [cx - 20, cy + 25, cz]
+      ];
+      s += shape(grate, hasWhere ? PALS.tomato.l : METAL.l, 1.2);
+
+      // Rejection Shunt Pipe dropping below
+      const pShunt = P(cx, cy + 35, cz - 20);
+      s += `
+        <path d="M ${pDial[0] + 20} ${pDial[1] + 40} Q ${pDial[0] + 35} ${pDial[1] + 65} ${pShunt[0]} ${pShunt[1] + 20}" fill="none" stroke="${INK}" stroke-width="3" stroke-dasharray="3,3" />
+      `;
+
+      return s;
+    }
+
+    function drawGroupCarousel(groupByCol) {
+      let s = '';
+      const [cx, cy, cz] = [70, 0, 210];
+
+      // Rotary Hub
+      const ptsHub = ellUV(cx, cy, 40, 28).map(PZ(cz + 10));
+      s += shape(ptsHub, PALS.mint.m, 1.2);
+
+      // 3 Glass Accumulator Cylinders (Eng, Ana, Fin)
+      const offsets = [
+        { label: 'ENG', dx: -20, dy: -20, col: PALS.mint.l },
+        { label: 'ANA', dx: 15, dy: -18, col: PALS.mint.m },
+        { label: 'FIN', dx: 0, dy: 22, col: PALS.mint.d }
+      ];
+
+      offsets.forEach(off => {
+        const tx = cx + off.dx, ty = cy + off.dy;
+        const cBot = ellUV(tx, ty, 10, 8).map(PZ(cz));
+        const cTop = ellUV(tx, ty, 10, 8).map(PZ(cz + 36));
+        s += loft(cTop, cBot, () => CLEAR.l);
+        s += shape(cTop, CLEAR.l, 1);
+
+        // Group Ingot Plate inside
+        const pLbl = P(tx, ty, cz + 18);
+        s += `<text x="${pLbl[0]}" y="${pLbl[1]}" font-size="7.5" font-weight="900" fill="${INK}" text-anchor="middle">${off.label}</text>`;
+      });
+
+      return s;
+    }
+
+    function drawWindowLens() {
+      let s = '';
+      const [cx, cy, cz] = [130, 0, 225];
+      // Sliding Brass Aperture Frame
+      const framePts = [
+        [cx - 15, cy - 25, cz], [cx + 15, cy - 25, cz],
+        [cx + 15, cy + 25, cz], [cx - 15, cy + 25, cz]
+      ];
+      s += shape(framePts, PALS.blush.l, 1.4);
+
+      // Glass Lens Core
+      const pLens = P(cx, cy, cz);
+      s += `<circle cx="${pLens[0]}" cy="${pLens[1]}" r="14" fill="${CLEAR.l}" stroke="${INK}" stroke-width="1.2" opacity="0.8" />`;
+      s += `<text x="${pLens[0]}" y="${pLens[1] + 3}" font-size="7" font-weight="900" fill="${INK}" text-anchor="middle">OVER()</text>`;
+
+      return s;
+    }
+
+    function drawGuillotineSlicer(hasLimit, n) {
+      let s = '';
+      const [cx, cy, cz] = [170, 0, 200];
+
+      // Stepped Sorting Incline Rack (ORDER BY)
+      s += shape([
+        [cx - 20, cy - 20, cz - 10], [cx + 10, cy - 20, cz + 15],
+        [cx + 10, cy + 20, cz + 15], [cx - 20, cy + 20, cz - 10]
+      ], METAL.l, 1.2);
+
+      // Heavy Slicing Guillotine Blade
+      if (hasLimit) {
+        const bPos = P(cx + 8, cy, cz + 30);
+        s += `
+          <g transform="translate(${bPos[0]}, ${bPos[1]})">
+            <rect x="-8" y="-22" width="16" height="28" fill="${PALS.tomato.l}" stroke="${INK}" stroke-width="1.2" />
+            <polygon points="-8,6 8,6 0,14" fill="${METAL.d}" stroke="${INK}" stroke-width="1" />
+            <text x="0" y="-8" font-size="7.5" font-weight="900" fill="#ffffff" text-anchor="middle">N=${n}</text>
+          </g>
+        `;
+      }
+
+      return s;
+    }
+
+    function drawOutputTray() {
+      let s = '';
+      const [cx, cy, cz] = [230, 0, 185];
+
+      // Velvet-lined Output Basin
+      const trayPts = [
+        [cx - 20, cy - 30, cz], [cx + 35, cy - 30, cz],
+        [cx + 35, cy + 30, cz], [cx - 20, cy + 30, cz]
+      ];
+      s += shape(trayPts, PALS.mustard.l, 1.5);
+
+      // Stamping Die Press Overhead
+      const pPress = P(cx + 8, cy, cz + 45);
+      s += `
+        <g transform="translate(${pPress[0]}, ${pPress[1]})">
+          <circle cx="0" cy="-10" r="10" fill="${METAL.l}" stroke="${INK}" stroke-width="1.2" />
+          <rect x="-6" y="-4" width="12" height="18" fill="${INK}" />
+          <text x="0" y="8" font-size="7.5" font-weight="900" fill="#ffffff" text-anchor="middle">SELECT</text>
+        </g>
+      `;
+
+      return s;
+    }
+
+    function drawStraightConveyor(x0, y0, z0, len) {
+      let s = '';
+      s += shape([
+        [x0, y0 - 15, z0], [x0 + len, y0 - 15, z0],
+        [x0 + len, y0 + 15, z0], [x0, y0 + 15, z0]
+      ], METAL.m, 1);
+      return s;
+    }
+
+    function drawBypassConveyor(x0, y0, z0, len) {
+      let s = '';
+      s += shape([
+        [x0, y0 - 10, z0], [x0 + len, y0 - 10, z0],
+        [x0 + len, y0 + 10, z0], [x0, y0 + 10, z0]
+      ], METAL.d, 1);
+      const p = P(x0 + len/2, y0, z0);
+      s += `<text x="${p[0]}" y="${p[1]}" font-size="7" font-weight="700" fill="#ffffff" text-anchor="middle">BYPASS</text>`;
+      return s;
+    }
+
+    function drawAnimatedPunchcards() {
+      let s = '';
+      const step = machineState.stepIndex;
+      const recs = machineState.records;
+
+      // Draw active punchcards moving along conveyor track
+      recs.forEach((r, idx) => {
+        // Compute position based on step and record index
+        const progress = Math.max(0, Math.min(1, (step - idx * 0.4) / 5));
+        if (progress <= 0 || progress >= 1 && !r._wherePass && parsedQuery.hasWhere) return;
+
+        // Path coordinates from Hopper (-200) to Output (+230)
+        let curX = -200 + progress * 430;
+        let curY = 0;
+        let curZ = 205;
+
+        // If rejected by WHERE, deflect down discard chute
+        if (!r._wherePass && curX > -40 && parsedQuery.hasWhere) {
+          curY += (curX - (-40)) * 1.2;
+          curZ -= (curX - (-40)) * 0.8;
+        }
+
+        const p = P(curX, curY, curZ);
+        const cardCol = r._wherePass ? PALS.mint.l : PALS.tomato.l;
+
+        s += `
+          <g transform="translate(${p[0] - 14}, ${p[1] - 8})">
+            <!-- Physical Punchcard Body -->
+            <polygon points="0,0 24,0 28,4 28,16 0,16" fill="${cardCol}" stroke="${INK}" stroke-width="1.1" />
+            <!-- Punch Holes -->
+            <circle cx="6" cy="5" r="1.2" fill="${INK}" />
+            <circle cx="10" cy="5" r="1.2" fill="${INK}" />
+            <circle cx="6" cy="11" r="1.2" fill="${INK}" />
+            <text x="13" y="11" font-size="5.5" font-weight="800" fill="${INK}">#${r.emp_id}</text>
+          </g>
+        `;
+      });
+
+      return s;
+    }
+
+    function drawLeaderCallouts() {
+      let s = '';
+      const q = parsedQuery;
+
+      // Colorfigures Leader Callout Tags
+      const tags = [
+        { label: 'FIG. 16a · DUAL INGESTION HOPPERS', at: [-210, 40, 270], dx: -60, dy: -40 },
+        { label: q.hasWhere ? `FIG. 16b · PREDICATE CALIPER [${q.whereExpr}]` : 'FIG. 16b · CALIPER (BYPASS)', at: [-40, 0, 240], dx: 0, dy: -55 },
+        { label: q.hasGroupBy ? `FIG. 16c · ROTARY ACCUMULATOR [BY ${q.groupByCol}]` : 'FIG. 16c · ROTARY ACCUMULATOR', at: [70, 0, 240], dx: 0, dy: -50 },
+        { label: 'FIG. 16d · PRIMACY OUTPUT TRAY', at: [230, 0, 210], dx: 50, dy: -45 }
+      ];
+
+      tags.forEach(t => {
+        const base = P(t.at[0], t.at[1], t.at[2]);
+        const tx = base[0] + t.dx;
+        const ty = base[1] + t.dy;
+
+        // Dotted leader line
+        s += `
+          <polyline points="${base[0]},${base[1]} ${base[0]},${ty + 8} ${tx + (t.dx > 0 ? 0 : 90)},${ty + 8}" fill="none" stroke="${INK}" stroke-width="1.1" stroke-dasharray="2,2" />
+          <circle cx="${base[0]}" cy="${base[1]}" r="2.5" fill="${INK}" />
+        `;
+
+        // Pill badge
+        const badgeW = t.label.length * 6.2 + 14;
+        const badgeX = t.dx > 0 ? tx : tx - (badgeW - 90);
+        s += `
+          <g transform="translate(${badgeX}, ${ty})">
+            <rect width="${badgeW}" height="17" rx="8.5" fill="#fffdfa" stroke="${INK}" stroke-width="1.2" />
+            <text x="${badgeW/2}" y="11.5" font-size="8" font-weight="800" fill="${INK}" text-anchor="middle">${t.label}</text>
+          </g>
+        `;
+      });
+
+      return s;
+    }
+
+    /* =========================================================================
+       PLAYBACK & STEPPING ENGINE
+       ========================================================================= */
+    function togglePlayPause() {
+      machineState.isPlaying = !machineState.isPlaying;
+      const btn = document.getElementById('btnPlayPause');
+      const icon = document.getElementById('playIcon');
+      const txt = document.getElementById('playText');
+
+      if (machineState.isPlaying) {
+        icon.textContent = '⏸';
+        txt.textContent = 'Pause';
+        btn.classList.add('primary');
+        startMachineLoop();
+      } else {
+        icon.textContent = '▶';
+        txt.textContent = 'Run Machine';
+        clearInterval(machineState.timer);
+      }
+    }
+
+    function startMachineLoop() {
+      clearInterval(machineState.timer);
+      machineState.timer = setInterval(() => {
+        stepForward();
+      }, machineState.cadenceMs);
+    }
+
+    function updateCadence(val) {
+      const speeds = { '1': 1400, '2': 900, '3': 500, '4': 250 };
+      const labels = { '1': '0.5x', '2': '1.0x', '3': '2.0x', '4': '3.5x' };
+      machineState.cadenceMs = speeds[val] || 900;
+      document.getElementById('speedLabel').textContent = labels[val] || '1.0x';
+      if (machineState.isPlaying) startMachineLoop();
+    }
+
+    function stepForward() {
+      machineState.stepIndex += 1;
+      const recIdx = Math.floor(machineState.stepIndex * 0.4);
+
+      if (recIdx < RAW_EMPLOYEES.length) {
+        const r = RAW_EMPLOYEES[recIdx];
+        const pass = machineState.joinedRecords[recIdx]?._wherePass !== false;
+        logTicker(`Card #${r.emp_id} [${r.name}, $${r.salary}] processed through Caliper -> ${pass ? 'PASSED to Accumulator' : 'KICKED into Discard Bin'}`, pass ? 'pass' : 'fail');
+      }
+
+      // Update Ticker & Results
+      updateTelemetryDisplays();
+      renderScene();
+
+      if (machineState.stepIndex > 20) {
+        logTicker(`🏁 Query Execution Completed. Output tray holds final relational tuples.`, 'pass');
+        if (machineState.isPlaying) togglePlayPause();
+      }
+    }
+
+    function resetMachine() {
+      machineState.stepIndex = 0;
+      document.getElementById('tickerLog').innerHTML = `
+        <div class="log-line info">Feeder rewound. Punchcards ready in Hopper A. Click "Run Machine" to process.</div>
+      `;
+      updateTelemetryDisplays();
+      renderScene();
+    }
+
+    function toggleXRay() {
+      machineState.isXRay = !machineState.isXRay;
+      renderScene();
+    }
+
+    function logTicker(msg, type = 'info') {
+      const scroller = document.getElementById('tickerLog');
+      const div = document.createElement('div');
+      div.className = `log-line ${type}`;
+      div.textContent = `[TICK ${machineState.stepIndex.toString().padStart(2, '0')}] ${msg}`;
+      scroller.appendChild(div);
+      scroller.scrollTop = scroller.scrollHeight;
+    }
+
+    function updateTelemetryDisplays() {
+      const processedCount = Math.min(RAW_EMPLOYEES.length, Math.floor(machineState.stepIndex * 0.4) + 1);
+      document.getElementById('processedCountBadge').textContent = `${processedCount} / ${RAW_EMPLOYEES.length} Cards Ingested`;
+
+      const tbody = document.getElementById('resultTbody');
+      const thead = document.getElementById('resultThead');
+      const out = machineState.finalOutput;
+
+      if (machineState.stepIndex < 6) {
+        tbody.innerHTML = `<tr><td colspan="4" style="color: var(--ink-muted); text-align: center; padding: 20px;">Processing punchcards through relational apparatus...</td></tr>`;
+        return;
+      }
+
+      if (out.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="color: #b91c1c; text-align: center; padding: 20px;">Empty set (0 records met conditions).</td></tr>`;
+        return;
+      }
+
+      // Populate output table
+      const keys = Object.keys(out[0]).filter(k => !k.startsWith('_') && k !== 'rows');
+      thead.innerHTML = `<tr><th>#</th>${keys.map(k => `<th>${k.toUpperCase()}</th>`).join('')}</tr>`;
+
+      tbody.innerHTML = out.map((row, i) => `
+        <tr>
+          <td><strong>${i + 1}</strong></td>
+          ${keys.map(k => `<td>${row[k] !== null ? row[k] : '<em style="color:#ef4444;">NULL</em>'}</td>`).join('')}
+        </tr>
+      `).join('');
+
+      document.getElementById('outputRowsBadge').textContent = `${out.length} Tuples Ready`;
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadQueryPreset(0);
     });
-  }
-}
-
-function cycleProg(st, ui){
-  if (st.run) return ui.flash('query optimizer locked while running');
-  st.prog = (st.prog + 1) % PROGS.length;
-  st.done = false;
-  ui.flash(`Stage: ${prog(st).name} · ${prog(st).desc}`);
-}
-
-function injectPredicate(st, ui){
-  if (st.run) return ui.flash('machine is running — cannot inject predicate');
-  if (st.predicateAnim != null) return;
-  st.drawerT = 1;
-  st.predicateAnim = 0;
-  ui.flash('Injecting WHERE salary > 50000 predicate…', 1800);
-  tick(dt => {
-    if (st.drawer < 1){ st.drawer = Math.min(1, st.drawer + dt / .25); return true; }
-    st.predicateAnim += dt / 1.3;
-    if (st.predicateAnim >= 1){
-      st.predicateAnim = null; st.predicateLvl = 1; st.drawerT = 0;
-      tick(d => { st.drawer = Math.max(0, st.drawer - d / .3); return st.drawer > 0; });
-      ui.flash('Predicate primed in lexical chamber!', 2000);
-      return false;
-    }
-    return true;
-  });
-}
-
-function loadTuples(st, ui){
-  if (st.run) return ui.flash('engine is executing query');
-  if (st.xfer) return;
-  if (st.tuplesLoc === 'drum') return ui.flash('drum is already loaded with tuples');
-  const go = () => { ui.flash('loading tuples into drum…', 1600); transfer(st, 'in', () => swingDoor(st, 0, () => ui.flash('tuples loaded — inject predicate, then execute', 2000))); };
-  st.doorT ? go() : swingDoor(st, 1, go);
-}
-
-function toggleXray(st, ui){
-  st.xrT = st.xrT ? 0 : 1;
-  ui.flash(st.xrT ? 'X-Ray Internals ON: Buffer Pool, Motor & B+Tree Belt' : 'X-Ray Internals OFF');
-  tick(dt => {
-    const g = Math.sign(st.xrT - (st.xr || 0));
-    st.xr = Math.min(1, Math.max(0, (st.xr || 0) + g * dt / .35));
-    return st.xr !== st.xrT;
-  });
-}
-
-/* ---------- Mount Colorfigures Machine ---------- */
-ui = mountFigure({
-  fig:'15', title:'SQL Relational Washer & Execution Engine',
-  hint:'load tuples, inject predicate, choose query stage, run cycle — then unload to basket',
-  idea:"Physical relational query execution: the WHERE predicate centrifuges non-matching rows out through the drum perforations, while matching tuples emerge clean into the output basket.",
-  size:[W, D, H], palette:'mint',
-  state:{
-    prog:0, run:false, paused:false, tau:0, done:false,
-    door:0, doorT:0, drawer:0, drawerT:0, restA:0,
-    predicateLvl:0, predicateAnim:null, tuplesLoc:'basket', xfer:null, xr:0, xrT:0
-  },
-  scene,
-  readout: st => {
-    const p = prog(st);
-    if (st.run){
-      const ph = { fill:'parsing query', wash:'evaluating predicates', drain:'purging false tuples', spin:'centrifuging valid rows' }[phaseAt(p, st.tau)];
-      return `${p.name} · ${ph} · ${fmt(remaining(st))} left`;
-    }
-    if (st.tuplesLoc === 'basket' && !st.xfer) return st.door > 0 ? 'tuples waiting in the basket — load into drum to begin' : 'ready — load employee tuples from basket';
-    if (st.door > 0) return 'door open — click porthole to close and seal';
-    if (st.done) return 'query execution complete — unload 3 filtered tuples to basket';
-    return `${p.name} · ${p.desc} — click dial to change stage, execute to run`;
-  },
-  buttons:[
-    { label:'🧺 Load Tuples (FROM)', onClick:(st,ui) => loadTuples(st,ui) },
-    { label:'🧪 Inject Predicate (WHERE)', onClick:(st,ui) => injectPredicate(st,ui) },
-    { label:'⚙️ Query Stage', choices: st => PROGS.map((p,i) => ({ label:`${p.name}: ${p.desc}`, current: st.prog === i, disabled: st.run, why: 'engine locked while executing',
-        onClick:(st,ui) => { if (st.run) return ui.flash('engine locked while running'); st.prog = i; st.done = false; } })) },
-    { label:'▶ Run Query Execution', onClick:(st,ui) => start(st,ui) },
-    { label:'🔬 Toggle X-Ray Internals', onClick:(st,ui) => toggleXray(st,ui) },
-    { label:'🧺 Unload Results (SELECT)', onClick:(st,ui) => {
-        if (!st.doorT) return toggleDoor(st, ui, true);
-        if (st.xfer) return;
-        if (st.tuplesLoc === 'drum'){ ui.flash('unloading clean results to basket…', 1600); transfer(st, 'out', () => ui.flash('clean tuples landed in result basket', 1800)); }
-        else ui.flash('drum is already empty'); } },
-    { label:'🚪 Toggle Door', onClick:(st,ui) => toggleDoor(st,ui) },
-  ],
-  buttonsLabel:'Query Controls',
-  acts:{
-    dial:(st,el,ui) => cycleProg(st,ui),
-    start:(st,el,ui) => start(st,ui),
-    door:(st,el,ui) => toggleDoor(st,ui),
-    drawer:(st,el,ui) => { st.drawerT = st.drawerT ? 0 : 1; tick(dt => { const g = Math.sign(st.drawerT - st.drawer); st.drawer = Math.min(1, Math.max(0, st.drawer + g * dt / .4)); return st.drawer !== st.drawerT; }); }
-  }
-});
-</script>
+  </script>
 </body>
 </html>
