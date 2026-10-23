@@ -156,9 +156,11 @@ window.LEETCODE_ARENA = (() => {
     sidebarFilter: '',
     sidebarPillar: 'all', // 'all' | 'filters' | 'joins' | 'aggs' | 'subqueries' | 'windows' | 'strings'
     sidebarDiff: 'all', // 'all' | 'Easy' | 'Medium' | 'Hard'
+    sidebarCompany: 'all', // 'all' | 'Amazon' | 'Google' | 'Meta' | 'Stripe' | 'Apple' | 'Uber' | 'Bloomberg' | 'Citadel' | 'Netflix'
     topicsSearch: '',
     topicsPillar: 'all',
     topicsDiff: 'all',
+    topicsCompany: 'all',
     mcqFilter: 'all', // 'all' | 'traps' | 'unanswered'
     mcqSearch: '',
     probFilter: 'all',
@@ -470,6 +472,20 @@ window.LEETCODE_ARENA = (() => {
             <button class="lc-sidebar-diff-pill diff-hard ${state.sidebarDiff === 'Hard' ? 'active' : ''}" data-diff-id="Hard">🔴 ${counts.hard}</button>
           </div>
 
+          <!-- FAANG & Top Tech Company Filter Strip -->
+          <div class="lc-sidebar-comp-strip" id="lcSidebarCompanyStrip">
+            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'all' ? 'active' : ''}" data-comp-id="all" title="All Companies">All Cos</button>
+            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Amazon' ? 'active' : ''}" data-comp-id="Amazon" title="Amazon (296 problems)">Amazon</button>
+            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Google' ? 'active' : ''}" data-comp-id="Google" title="Google (263 problems)">Google</button>
+            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Meta' ? 'active' : ''}" data-comp-id="Meta" title="Meta (152 problems)">Meta</button>
+            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Stripe' ? 'active' : ''}" data-comp-id="Stripe" title="Stripe (57 problems)">Stripe</button>
+            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Apple' ? 'active' : ''}" data-comp-id="Apple" title="Apple (47 problems)">Apple</button>
+            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Uber' ? 'active' : ''}" data-comp-id="Uber" title="Uber (57 problems)">Uber</button>
+            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Bloomberg' ? 'active' : ''}" data-comp-id="Bloomberg" title="Bloomberg (33 problems)">Bloomberg</button>
+            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Citadel' ? 'active' : ''}" data-comp-id="Citadel" title="Citadel (22 problems)">Citadel</button>
+            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Netflix' ? 'active' : ''}" data-comp-id="Netflix" title="Netflix (7 problems)">Netflix</button>
+          </div>
+
           <!-- Scrollable Tree Nav -->
           <div class="lc-sidebar-tree" id="lcSidebarTree"></div>
 
@@ -587,6 +603,17 @@ window.LEETCODE_ARENA = (() => {
       });
     });
 
+    // Hook up Sidebar Company Filter
+    container.querySelectorAll('.lc-sidebar-comp-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.sidebarCompany = btn.dataset.compId;
+        container.querySelectorAll('.lc-sidebar-comp-pill').forEach(b => {
+          b.classList.toggle('active', b.dataset.compId === state.sidebarCompany);
+        });
+        renderSidebarTree();
+      });
+    });
+
     // Hook up Top Prev / Next
     const btnTopPrev = container.querySelector('#btnTopPrev');
     if (btnTopPrev) {
@@ -649,6 +676,7 @@ window.LEETCODE_ARENA = (() => {
     const filter = state.sidebarFilter;
     const activePillar = state.sidebarPillar || 'all';
     const activeDiff = state.sidebarDiff || 'all';
+    const activeComp = state.sidebarCompany || 'all';
 
     // Top Shortcut to Topic Directory Hub
     const isTopicsStage = state.activeStage === 'topics';
@@ -674,7 +702,7 @@ window.LEETCODE_ARENA = (() => {
 
       const probs = data.leetcodeProblems || data.problems || [];
       const isActiveConcept = meta.id === state.activeConceptId;
-      const isExpanded = state.expandedConcepts[meta.id] || (filter.length > 0) || (activeDiff !== 'all') || (activePillar !== 'all') || isActiveConcept;
+      const isExpanded = state.expandedConcepts[meta.id] || (filter.length > 0) || (activeDiff !== 'all') || (activeComp !== 'all') || (activePillar !== 'all') || isActiveConcept;
 
       // Filter problems if search is active
       let matchingProbs = filter ? probs.filter(p => {
@@ -688,8 +716,13 @@ window.LEETCODE_ARENA = (() => {
         matchingProbs = matchingProbs.filter(p => (p.difficulty || '').toLowerCase() === activeDiff.toLowerCase());
       }
 
+      // Filter by company if active
+      if (activeComp !== 'all') {
+        matchingProbs = matchingProbs.filter(p => (p.companies || []).some(c => c.toLowerCase() === activeComp.toLowerCase()));
+      }
+
       // If filtering and no matches in this concept, skip unless title matches
-      if ((filter || activeDiff !== 'all') && matchingProbs.length === 0 && !meta.title.toLowerCase().includes(filter)) {
+      if ((filter || activeDiff !== 'all' || activeComp !== 'all') && matchingProbs.length === 0 && !meta.title.toLowerCase().includes(filter)) {
         return;
       }
 
@@ -933,6 +966,7 @@ window.LEETCODE_ARENA = (() => {
     const q = (state.topicsSearch || '').toLowerCase().trim();
     const selectedPillar = state.topicsPillar || 'all';
     const selectedDiff = state.topicsDiff || 'all';
+    const selectedComp = state.topicsCompany || 'all';
 
     const matchingConcepts = CONCEPTS_META.filter(meta => {
       // Pillar filter
@@ -945,6 +979,12 @@ window.LEETCODE_ARENA = (() => {
       if (selectedDiff !== 'all') {
         const hasDiff = probs.some(p => (p.difficulty || '').toLowerCase() === selectedDiff.toLowerCase());
         if (!hasDiff) return false;
+      }
+
+      // Company filter
+      if (selectedComp !== 'all') {
+        const hasComp = probs.some(p => (p.companies || []).some(c => c.toLowerCase() === selectedComp.toLowerCase()));
+        if (!hasComp) return false;
       }
 
       // Search query
@@ -983,6 +1023,9 @@ window.LEETCODE_ARENA = (() => {
       let displayProbs = allProbs;
       if (selectedDiff !== 'all') {
         displayProbs = displayProbs.filter(p => (p.difficulty || '').toLowerCase() === selectedDiff.toLowerCase());
+      }
+      if (selectedComp !== 'all') {
+        displayProbs = displayProbs.filter(p => (p.companies || []).some(c => c.toLowerCase() === selectedComp.toLowerCase()));
       }
       if (q) {
         const qMatches = displayProbs.filter(p => 
@@ -1164,6 +1207,20 @@ window.LEETCODE_ARENA = (() => {
             <button class="lc-diff-tab-btn ${selectedDiff === 'Medium' ? 'active' : ''}" data-diff-id="Medium">🟡 Medium Only (${counts.med})</button>
             <button class="lc-diff-tab-btn ${selectedDiff === 'Hard' ? 'active' : ''}" data-diff-id="Hard">🔴 Hard Only (${counts.hard})</button>
           </div>
+
+          <!-- FAANG & Top Tech Company Filter Strip -->
+          <div class="lc-topics-comp-strip" id="lcTopicsCompStrip">
+            <button class="lc-comp-tab-btn ${selectedComp === 'all' ? 'active' : ''}" data-comp-id="all">🏢 All Companies (${totalProblems})</button>
+            <button class="lc-comp-tab-btn ${selectedComp === 'Amazon' ? 'active' : ''}" data-comp-id="Amazon">📦 Amazon (296)</button>
+            <button class="lc-comp-tab-btn ${selectedComp === 'Google' ? 'active' : ''}" data-comp-id="Google">🔍 Google (263)</button>
+            <button class="lc-comp-tab-btn ${selectedComp === 'Meta' ? 'active' : ''}" data-comp-id="Meta">🌐 Meta (152)</button>
+            <button class="lc-comp-tab-btn ${selectedComp === 'Stripe' ? 'active' : ''}" data-comp-id="Stripe">💳 Stripe (57)</button>
+            <button class="lc-comp-tab-btn ${selectedComp === 'Apple' ? 'active' : ''}" data-comp-id="Apple">🍏 Apple (47)</button>
+            <button class="lc-comp-tab-btn ${selectedComp === 'Uber' ? 'active' : ''}" data-comp-id="Uber">🚗 Uber (57)</button>
+            <button class="lc-comp-tab-btn ${selectedComp === 'Bloomberg' ? 'active' : ''}" data-comp-id="Bloomberg">📊 Bloomberg (33)</button>
+            <button class="lc-comp-tab-btn ${selectedComp === 'Citadel' ? 'active' : ''}" data-comp-id="Citadel">🏰 Citadel (22)</button>
+            <button class="lc-comp-tab-btn ${selectedComp === 'Netflix' ? 'active' : ''}" data-comp-id="Netflix">🎬 Netflix (7)</button>
+          </div>
         </div>
 
         <!-- Topics Grid -->
@@ -1215,6 +1272,14 @@ window.LEETCODE_ARENA = (() => {
       });
     });
 
+    // Hook company tabs
+    canvas.querySelectorAll('.lc-comp-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.topicsCompany = btn.dataset.compId;
+        renderTopicsDirectory();
+      });
+    });
+
     // Hook reset button
     const btnReset = canvas.querySelector('#btnResetTopicsFilter');
     if (btnReset) {
@@ -1222,6 +1287,7 @@ window.LEETCODE_ARENA = (() => {
         state.topicsSearch = '';
         state.topicsPillar = 'all';
         state.topicsDiff = 'all';
+        state.topicsCompany = 'all';
         renderTopicsDirectory();
       });
     }

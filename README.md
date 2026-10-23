@@ -98,6 +98,17 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
 
 ---
 
+### 🟡 Phase 6: Query Engine Physics, Cloud Warehouses & Principal Boss Gauntlet
+| Day | Module Directory | Focus & Enterprise Skills | Difficulty | Status |
+|---|---|---|---|---|
+| **Day 16** | [`day-16-explain-analyze-indexing`](./day-16-explain-analyze-indexing) | Query Execution Plans, Cost Models, B+Tree Physics & Covering Indexes | Principal | ✅ Completed (5/5) |
+| **Day 17** | [`day-17-cloud-warehousing-snowflake-bigquery`](./day-17-cloud-warehousing-snowflake-bigquery) | Columnar Storage, Micro-Partition Pruning & QUALIFY Deduplication | Principal | ✅ Completed (4/4) |
+| **Day 18** | [`day-18-json-semi-structured-arrays`](./day-18-json-semi-structured-arrays) | Semi-Structured JSONB, GIN Inverted Indexes & LATERAL Unnesting | Principal | ✅ Completed (4/4) |
+| **Day 19** | [`day-19-gaps-islands-financial-streaks`](./day-19-gaps-islands-financial-streaks) | Temporal Gaps & Islands, Sessionization & Continuous Running Balances | Staff Quant | ✅ Completed (3/3) |
+| **Day 20** | [`day-20-grand-enterprise-gauntlet`](./day-20-grand-enterprise-gauntlet) | Multi-Pillar Boss Gauntlet, Recursive BOMs, Wash Trading Audit & Graduation | Grand Boss | 🏆 Completed (5/5) |
+
+---
+
 ## 📁 Repository Architecture
 
 ```text

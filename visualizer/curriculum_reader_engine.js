@@ -22,7 +22,7 @@
                     <span id="readerDayBadge" class="status-pill pill-from" style="font-size: 11px; font-weight: 800; padding: 2px 8px;">DAY 01</span>
                     <h3 id="readerDayTitle" style="margin: 0; font-size: 17px; font-weight: 800; color: var(--text-primary, #18181b);">Basic SELECT &amp; Projections</h3>
                   </div>
-                  <div style="font-size: 12px; color: var(--text-muted, #71717a); margin-top: 2px;">SQL Mastery Production Compendium &bull; Days 01&ndash;15</div>
+                  <div style="font-size: 12px; color: var(--text-muted, #71717a); margin-top: 2px;">SQL Mastery Production Compendium &bull; Days 01&ndash;20 Complete</div>
                 </div>
               </div>
               <button class="btn-drawer-close" onclick="window.CurriculumReaderEngine.close()" title="Close Reader" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted);">&times;</button>

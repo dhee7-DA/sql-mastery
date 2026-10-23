@@ -1298,6 +1298,9 @@ class LearningJourneyEngine {
               <span>⚡ Launch Quests</span>
               <span style="font-size: 11px; opacity: 0.85;">(${day.questRange})</span>
             </button>
+            <button class="action-btn action-btn-secondary" style="margin-top: 6px; background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="if (window.CurriculumReaderEngine) window.CurriculumReaderEngine.openDay(${day.day})">
+              <span>📖 Read Full Theory &amp; Defense</span>
+            </button>
             <button class="action-btn action-btn-secondary" style="margin-top: 6px;" onclick="window.learningJourneyEngine.advanceToNextDay(${day.day})">
               ${isCompleted ? '✓ Completed (Advance Again)' : '🎉 Mark Mastered &amp; Advance Sir Bloops ➡️'}
             </button>

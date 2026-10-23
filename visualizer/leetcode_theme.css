@@ -1616,6 +1616,78 @@ code.lc-code-pill {
   border-color: rgba(220, 38, 38, 0.25);
 }
 
+/* FAANG & Top Tech Company Filter Strips */
+.lc-sidebar-comp-strip {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 10px 6px 10px;
+  border-bottom: 1px solid var(--border-subtle, #e4e4e7);
+  background: var(--bg-surface, #ffffff);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.lc-sidebar-comp-strip::-webkit-scrollbar {
+  display: none;
+}
+.lc-sidebar-comp-pill {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs, 4px);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted, #71717a);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.12s ease;
+  font-family: var(--font-sans, inherit);
+}
+.lc-sidebar-comp-pill:hover {
+  background: var(--bg-hover, #f4f4f5);
+  color: var(--text-primary, #18181b);
+}
+.lc-sidebar-comp-pill.active {
+  background: rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.3);
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.lc-topics-comp-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-top: 8px;
+  padding: 2px 0;
+}
+.lc-topics-comp-strip::-webkit-scrollbar {
+  display: none;
+}
+.lc-comp-tab-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  background: var(--bg-surface, #ffffff);
+  color: var(--text-secondary, #52525b);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.lc-comp-tab-btn:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+.lc-comp-tab-btn.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
 .lc-tree-hub-entry {
   display: flex;
   align-items: center;
