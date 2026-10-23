@@ -211,15 +211,15 @@ window.LEETCODE_ARENA = (() => {
     // Augment with 300+ Official Master Vault
     if (window.LEETCODE_300_VAULT && Array.isArray(window.LEETCODE_300_VAULT)) {
       const catMap = {
-        'concept-1': ['Filtering', 'Basic Select'],
+        'concept-1': ['Filtering', 'Basic Select', 'CASE Logic'],
         'concept-2': ['Joins', 'Anti-Joins'],
-        'concept-3': ['Aggregations', 'Math'],
+        'concept-3': ['Aggregations', 'Math', 'CASE Logic'],
         'concept-4': ['Sorting', 'HAVING'],
         'concept-5': ['Cross Joins', 'Joins'],
         'concept-6': ['Subqueries', 'Functions'],
-        'concept-7': ['Regex', 'String Functions'],
+        'concept-7': ['Regex', 'String Functions', 'Date Functions', 'Dates'],
         'concept-8': ['Window Functions'],
-        'concept-9': ['Gaps & Islands', 'Window Functions'],
+        'concept-9': ['Gaps & Islands', 'Window Functions', 'Dates'],
         'concept-10': ['DML Mutations', 'Set Operations'],
         'concept-11': ['Recursive CTEs', 'Pivoting', 'Dynamic SQL']
       };
