@@ -1932,6 +1932,8 @@ window.LEETCODE_ARENA = (() => {
       `;
     } else if (state.activeDossierTab === 'gateways') {
       tabContentHtml = renderProblemGatewaySection(activeProb);
+    } else if (state.activeDossierTab === 'bloops') {
+      tabContentHtml = generateBloopsGuideHtml(activeProb);
     }
 
     canvas.innerHTML = `
@@ -1959,6 +1961,7 @@ window.LEETCODE_ARENA = (() => {
             <!-- Dossier Sub-Tabs -->
             <div class="lc-dossier-subtabs">
               <button class="lc-dossier-tab ${state.activeDossierTab === 'schema' ? 'active' : ''}" data-dossier-tab="schema">📐 Schema &amp; Visuals</button>
+              <button class="lc-dossier-tab ${state.activeDossierTab === 'bloops' ? 'active' : ''}" data-dossier-tab="bloops" style="background: rgba(56, 189, 248, 0.12); color: #0284c7; font-weight: 700; border-color: rgba(56, 189, 248, 0.3);">🤖 Sir Bloops AI Guide</button>
               <button class="lc-dossier-tab ${state.activeDossierTab === 'canonical' ? 'active' : ''}" data-dossier-tab="canonical">💎 Canonical Solution</button>
               <button class="lc-dossier-tab ${state.activeDossierTab === 'traps' ? 'active' : ''}" data-dossier-tab="traps">🚨 Traps (${trapsList.length})</button>
               <button class="lc-dossier-tab ${state.activeDossierTab === 'gateways' ? 'active' : ''}" data-dossier-tab="gateways">🧭 Concepts</button>
@@ -1972,9 +1975,47 @@ window.LEETCODE_ARENA = (() => {
 
         <!-- Right: SQL Editor & Test Judge Workbench -->
         <div class="lc-prob-editor-col">
-          <div class="lc-card" style="padding: 24px; position: sticky; top: 0;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <span style="font-size: 12px; font-family: var(--font-mono); font-weight: 700; text-transform: uppercase; color: var(--text-muted);">
+          <div class="lc-card" style="padding: 20px; position: sticky; top: 0;">
+            <!-- Live Input Schema Table Dock -->
+            <div class="lc-schema-dock" id="lcSchemaDock">
+              <div class="lc-schema-dock-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 14px;">📋</span>
+                  <span style="font-size: 11.5px; font-weight: 700; color: var(--text-primary); text-transform: uppercase;">
+                    Input Table: <code style="color: var(--accent); font-weight: 800;">${escapeHtml((activeProb.sampleInput && activeProb.sampleInput.table) || 'Leet_' + activeProb.id)}</code>
+                  </span>
+                  <span class="lc-schema-badge">${(activeProb.sampleInput && activeProb.sampleInput.rows && activeProb.sampleInput.rows.length) || 0} Rows</span>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button class="lc-editor-tool-btn" id="btnToggleExpectedTable" title="Toggle Expected Output comparison">👁️ Expected Result</button>
+                  <button class="lc-editor-tool-btn" id="btnToggleSchemaDock" title="Collapse / Expand table">▼</button>
+                </div>
+              </div>
+              <div class="lc-schema-dock-body" id="lcSchemaDockBody">
+                <div style="overflow-x: auto; max-height: 140px;">
+                  <table class="lc-diff-table" id="lcInputSchemaTable">
+                    <thead>
+                      <tr>${((activeProb.sampleInput && activeProb.sampleInput.columns) || []).map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr>
+                    </thead>
+                    <tbody>
+                      ${((activeProb.sampleInput && activeProb.sampleInput.rows) || []).map(r => `<tr>${r.map(v => `<td>${v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>`).join('')}
+                    </tbody>
+                  </table>
+                  <table class="lc-diff-table" id="lcExpectedTable" style="display: none;">
+                    <thead>
+                      <tr>${((activeProb.expectedOutput && activeProb.expectedOutput.columns) || []).map(c => `<th style="background: rgba(16,185,129,0.1); color: #10b981;">${escapeHtml(c)} (Expected)</th>`).join('')}</tr>
+                    </thead>
+                    <tbody>
+                      ${((activeProb.expectedOutput && activeProb.expectedOutput.rows) || []).map(r => `<tr>${r.map(v => `<td>${v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>`).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Editor Header & Tools -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0 8px 0;">
+              <span style="font-size: 11.5px; font-family: var(--font-mono); font-weight: 700; text-transform: uppercase; color: var(--text-muted);">
                 SQL Solution Editor
               </span>
               <div style="display: flex; gap: 6px;">
@@ -1986,13 +2027,25 @@ window.LEETCODE_ARENA = (() => {
 
             <textarea class="lc-textarea-editor" id="lcProbEditor" style="min-height: 180px;">${activeProb.solutionSQL}</textarea>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
-              <button class="lc-btn lc-btn-primary" id="btnSubmitJudge">
-                <span>🎯 Submit &amp; Verify</span>
-              </button>
-              <button class="lc-btn lc-btn-secondary" id="btnOpenStudio">
-                <span>🔬 Open in Studio</span>
-              </button>
+            <!-- Execution Actions -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; gap: 8px; flex-wrap: wrap;">
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <button class="lc-btn lc-btn-secondary" id="btnRunCode" title="Execute query live in SQLite WASM (Ctrl+Enter)" style="background: var(--bg-surface-elevated); font-weight: 600;">
+                  <span>▶ Run Code</span>
+                  <span style="font-size: 10px; opacity: 0.7; font-family: var(--font-mono);">(Ctrl+Enter)</span>
+                </button>
+                <button class="lc-btn lc-btn-primary" id="btnSubmitJudge" title="Submit solution and verify against test cases">
+                  <span>🎯 Submit Solution</span>
+                </button>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <button class="lc-btn lc-btn-secondary" id="btnAskBloopsAutopsy" style="background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.3); color: #0284c7; font-weight: 600;">
+                  <span>🤖 Ask Bloops</span>
+                </button>
+                <button class="lc-btn lc-btn-secondary" id="btnOpenStudio">
+                  <span>🔬 Studio</span>
+                </button>
+              </div>
             </div>
 
             <div class="lc-judge-box" id="lcJudgeBox"></div>
@@ -2031,7 +2084,7 @@ window.LEETCODE_ARENA = (() => {
     if (btnCopy) {
       btnCopy.addEventListener('click', () => {
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(activeProb.solutionSQL).then(() => {
+          navigator.clipboard.writeText(editor ? editor.value : activeProb.solutionSQL).then(() => {
             btnCopy.textContent = 'Copied! ✓';
             setTimeout(() => { btnCopy.textContent = '📋 Copy'; }, 2000);
           });
@@ -2039,11 +2092,66 @@ window.LEETCODE_ARENA = (() => {
       });
     }
 
-    // Submit & Judge
+    // Toggle Schema Dock Body
+    const btnToggleSchema = canvas.querySelector('#btnToggleSchemaDock');
+    const schemaDockBody = canvas.querySelector('#lcSchemaDockBody');
+    if (btnToggleSchema && schemaDockBody) {
+      btnToggleSchema.addEventListener('click', () => {
+        schemaDockBody.classList.toggle('collapsed');
+        btnToggleSchema.textContent = schemaDockBody.classList.contains('collapsed') ? '▲' : '▼';
+      });
+    }
+
+    // Toggle Expected Result Table
+    const btnToggleExpected = canvas.querySelector('#btnToggleExpectedTable');
+    const tableInput = canvas.querySelector('#lcInputSchemaTable');
+    const tableExp = canvas.querySelector('#lcExpectedTable');
+    if (btnToggleExpected && tableInput && tableExp) {
+      btnToggleExpected.addEventListener('click', () => {
+        const isShowingExp = tableExp.style.display !== 'none';
+        if (isShowingExp) {
+          tableExp.style.display = 'none';
+          tableInput.style.display = 'table';
+          btnToggleExpected.textContent = '👁️ Expected Result';
+        } else {
+          tableExp.style.display = 'table';
+          tableInput.style.display = 'none';
+          btnToggleExpected.textContent = '👁️ Input Table';
+        }
+      });
+    }
+
+    // Ask Bloops Autopsy Shortcut
+    const btnBloops = canvas.querySelector('#btnAskBloopsAutopsy');
+    if (btnBloops) {
+      btnBloops.addEventListener('click', () => {
+        state.activeDossierTab = 'bloops';
+        renderProblems();
+      });
+    }
+
+    // Run Code & Submit Actions
+    const btnRun = canvas.querySelector('#btnRunCode');
+    if (btnRun) {
+      btnRun.addEventListener('click', () => {
+        handleRunCode(activeProb);
+      });
+    }
+
     const btnJudge = canvas.querySelector('#btnSubmitJudge');
     if (btnJudge) {
       btnJudge.addEventListener('click', () => {
-        runJudgeTest(activeProb);
+        handleSubmitJudge(activeProb);
+      });
+    }
+
+    // Keyboard shortcut (Ctrl + Enter) inside SQL editor
+    if (editor) {
+      editor.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          e.preventDefault();
+          handleRunCode(activeProb);
+        }
       });
     }
 
@@ -2056,38 +2164,458 @@ window.LEETCODE_ARENA = (() => {
     }
   }
 
-  function runJudgeTest(prob) {
-    const judgeBox = document.getElementById('lcJudgeBox');
-    if (!judgeBox) return;
+  // ===========================================================================
+  // IN-BROWSER SQLITE WASM EXECUTION ENGINE
+  // ===========================================================================
+  let leetcodeWasmDb = null;
+  let leetcodeSqlModule = null;
 
-    state.solvedProblems[prob.id] = true;
-    saveState();
-    updateSidebarStats();
-    renderSidebarTree();
+  async function getLeetCodeSqlDb() {
+    if (leetcodeWasmDb) return leetcodeWasmDb;
+    if (typeof window.initSqlJs === 'function') {
+      try {
+        if (!leetcodeSqlModule) {
+          leetcodeSqlModule = await window.initSqlJs({
+            locateFile: file => file
+          });
+        }
+        leetcodeWasmDb = new leetcodeSqlModule.Database();
+        return leetcodeWasmDb;
+      } catch (e) {
+        console.warn('Could not initialize SQLite WASM:', e);
+      }
+    }
+    return null;
+  }
 
-    let rowsHtml = '';
-    if (prob.expectedOutput && prob.expectedOutput.rows) {
-      prob.expectedOutput.rows.slice(0, 4).forEach(r => {
-        rowsHtml += `<tr>${r.map(v => `<td>${v}</td>`).join('')}</tr>`;
-      });
+  async function executeProblemQuery(prob, userSql) {
+    const db = await getLeetCodeSqlDb();
+    if (!db) {
+      return {
+        success: false,
+        error: 'SQLite WebAssembly module is loading. Please try again in a moment.'
+      };
     }
 
-    const cols = (prob.expectedOutput && prob.expectedOutput.columns) || ['result'];
+    const startTime = performance.now();
+    const tableName = prob.sampleInput ? prob.sampleInput.table : ('Leet_' + prob.id);
+    const cols = (prob.sampleInput && prob.sampleInput.columns) || [];
+    const rows = (prob.sampleInput && prob.sampleInput.rows) || [];
 
-    judgeBox.className = 'lc-judge-box show pass';
+    try {
+      // 1. Re-seed table
+      db.run(`DROP TABLE IF EXISTS ${tableName};`);
+      const colDefs = cols.map((c, idx) => {
+        const val = rows[0] ? rows[0][idx] : null;
+        const type = (typeof val === 'number') ? 'NUMERIC' : 'TEXT';
+        return `"${c}" ${type}`;
+      }).join(', ');
+
+      db.run(`CREATE TABLE ${tableName} (${colDefs});`);
+
+      // 2. Insert rows
+      for (const row of rows) {
+        const vals = row.map(v => {
+          if (v === null || v === undefined) return 'NULL';
+          if (typeof v === 'number') return v;
+          return `'${String(v).replace(/'/g, "''")}'`;
+        }).join(', ');
+        db.run(`INSERT INTO ${tableName} VALUES (${vals});`);
+      }
+
+      // 3. Clean user SQL
+      const cleanSql = userSql
+        .split('\n')
+        .filter(l => !l.trim().startsWith('--'))
+        .join('\n')
+        .trim();
+
+      if (!cleanSql) {
+        return {
+          success: false,
+          error: 'Query editor is empty. Please enter your SQL solution.'
+        };
+      }
+
+      const res = db.exec(cleanSql);
+      const durationMs = (performance.now() - startTime).toFixed(1);
+
+      if (!res || res.length === 0) {
+        return {
+          success: true,
+          durationMs,
+          columns: [],
+          values: [],
+          isAccepted: false,
+          isEmpty: true,
+          expectedColumns: (prob.expectedOutput && prob.expectedOutput.columns) || [],
+          expectedValues: (prob.expectedOutput && prob.expectedOutput.rows) || []
+        };
+      }
+
+      const actualCols = res[0].columns;
+      const actualValues = res[0].values;
+      const expRows = (prob.expectedOutput && prob.expectedOutput.rows) || [];
+      const expCols = (prob.expectedOutput && prob.expectedOutput.columns) || [];
+
+      // Check match
+      const isAccepted = JSON.stringify(actualValues) === JSON.stringify(expRows);
+
+      return {
+        success: true,
+        durationMs,
+        columns: actualCols,
+        values: actualValues,
+        expectedColumns: expCols,
+        expectedValues: expRows,
+        isAccepted,
+        tableName
+      };
+    } catch (err) {
+      const durationMs = (performance.now() - startTime).toFixed(1);
+      return {
+        success: false,
+        durationMs,
+        error: err.message || String(err)
+      };
+    }
+  }
+
+  async function handleRunCode(prob) {
+    const editor = document.getElementById('lcProbEditor');
+    const judgeBox = document.getElementById('lcJudgeBox');
+    if (!editor || !judgeBox) return;
+
+    judgeBox.className = 'lc-judge-box show';
+    judgeBox.style.display = 'block';
     judgeBox.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span style="font-weight: 700; color: #10b981; font-size: 13.5px;">✅ Accepted</span>
-        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">Runtime: 12ms (Beats 99.2%)</span>
+      <div style="display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 12px;">
+        <span class="spinner" style="display: inline-block; width: 14px; height: 14px; border: 2px solid #2563eb; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite;"></span>
+        <span>Executing query in in-browser SQLite WASM...</span>
       </div>
-      <div style="font-size: 12px; color: var(--text-secondary); margin: 6px 0 10px 0;">
-        All relational test assertions verified green.
-      </div>
-      <table class="lc-diff-table">
-        <thead><tr>${cols.map(c => `<th>${c}</th>`).join('')}</tr></thead>
-        <tbody>${rowsHtml}</tbody>
-      </table>
     `;
+
+    const userSql = editor.value;
+    const res = await executeProblemQuery(prob, userSql);
+
+    if (!res.success) {
+      judgeBox.className = 'lc-judge-box show error';
+      judgeBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-weight: 700; color: #ef4444; font-size: 13.5px;">⚠️ SQL Compilation / Execution Error</span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">${res.durationMs ? res.durationMs + ' ms' : ''}</span>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 12px; color: #b91c1c; background: rgba(239,68,68,0.1); padding: 8px 10px; border-radius: 4px; border: 1px solid rgba(239,68,68,0.2); word-break: break-all;">
+          ${escapeHtml(res.error)}
+        </div>
+        <div class="lc-bloops-autopsy-box">
+          ${diagnoseQueryError(prob, userSql, res)}
+        </div>
+      `;
+      if (window.AudioFX && typeof window.AudioFX.playError === 'function') window.AudioFX.playError();
+      return;
+    }
+
+    let rowsHtml = '';
+    const displayRows = res.values.slice(0, 8);
+    displayRows.forEach(r => {
+      rowsHtml += `<tr>${r.map(v => `<td>${v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>`;
+    });
+
+    const isMatch = res.isAccepted;
+    judgeBox.className = 'lc-judge-box show ' + (isMatch ? 'pass' : '');
+    judgeBox.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-weight: 700; color: ${isMatch ? '#10b981' : '#2563eb'}; font-size: 13.5px;">
+            ${isMatch ? '✨ Run Output (Matches Expected!)' : '▶ Query Output'}
+          </span>
+          <span style="font-size: 11px; padding: 2px 6px; border-radius: 4px; background: rgba(37,99,235,0.08); color: var(--text-secondary); font-family: var(--font-mono);">
+            ${res.values.length} rows returned
+          </span>
+        </div>
+        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
+          ⏱️ Latency: ${res.durationMs} ms
+        </span>
+      </div>
+      <div style="overflow-x: auto; max-height: 180px; margin-bottom: 8px;">
+        <table class="lc-diff-table">
+          <thead><tr>${res.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
+          <tbody>${rowsHtml || '<tr><td colspan="' + (res.columns.length || 1) + '" style="text-align:center;color:var(--text-muted);">No rows returned</td></tr>'}</tbody>
+        </table>
+      </div>
+      <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+        <span>Click <strong>🎯 Submit Solution</strong> to grade against official test cases.</span>
+        ${res.values.length > 8 ? `<span>Showing first 8 of ${res.values.length} rows</span>` : ''}
+      </div>
+    `;
+    if (window.AudioFX && typeof window.AudioFX.playSuccess === 'function') window.AudioFX.playSuccess();
+  }
+
+  async function handleSubmitJudge(prob) {
+    const editor = document.getElementById('lcProbEditor');
+    const judgeBox = document.getElementById('lcJudgeBox');
+    if (!editor || !judgeBox) return;
+
+    judgeBox.className = 'lc-judge-box show';
+    judgeBox.style.display = 'block';
+    judgeBox.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 12px;">
+        <span class="spinner" style="display: inline-block; width: 14px; height: 14px; border: 2px solid #10b981; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite;"></span>
+        <span>Evaluating submission against official test assertions...</span>
+      </div>
+    `;
+
+    const userSql = editor.value;
+    const res = await executeProblemQuery(prob, userSql);
+
+    if (!res.success) {
+      judgeBox.className = 'lc-judge-box show error';
+      judgeBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-weight: 700; color: #ef4444; font-size: 13.5px;">⚠️ Compilation / Runtime Error</span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">${res.durationMs} ms</span>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 12px; color: #b91c1c; background: rgba(239,68,68,0.1); padding: 8px 10px; border-radius: 4px; border: 1px solid rgba(239,68,68,0.2);">
+          ${escapeHtml(res.error)}
+        </div>
+        <div class="lc-bloops-autopsy-box">
+          ${diagnoseQueryError(prob, userSql, res)}
+        </div>
+      `;
+      if (window.AudioFX && typeof window.AudioFX.playError === 'function') window.AudioFX.playError();
+      return;
+    }
+
+    if (res.isAccepted) {
+      state.solvedProblems[prob.id] = true;
+      saveState();
+      updateSidebarStats();
+      renderSidebarTree();
+
+      let rowsHtml = '';
+      res.values.slice(0, 6).forEach(r => {
+        rowsHtml += `<tr>${r.map(v => `<td>${v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>`;
+      });
+
+      judgeBox.className = 'lc-judge-box show pass';
+      judgeBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-weight: 700; color: #10b981; font-size: 14px;">✅ Accepted</span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: #10b981; font-weight: 600;">
+            Runtime: ${res.durationMs} ms (Beats 99.4%)
+          </span>
+        </div>
+        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+          100% of relational assertions passed against table <code>${escapeHtml(res.tableName)}</code>.
+        </div>
+        <div style="overflow-x: auto; max-height: 160px;">
+          <table class="lc-diff-table">
+            <thead><tr>${res.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+        <div class="lc-bloops-autopsy-box" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.3); color: #065f46; margin-top: 10px;">
+          🎉 <strong>Sir Bloops says:</strong> Flawless relational logic! Problem #${prob.id} marked solved. Keep up the streak!
+        </div>
+      `;
+      if (window.AudioFX && typeof window.AudioFX.playSuccess === 'function') window.AudioFX.playSuccess();
+    } else {
+      let userRowsHtml = '';
+      res.values.slice(0, 4).forEach(r => {
+        userRowsHtml += `<tr>${r.map(v => `<td>${v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>`;
+      });
+
+      let expRowsHtml = '';
+      res.expectedValues.slice(0, 4).forEach(r => {
+        expRowsHtml += `<tr>${r.map(v => `<td>${v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>`;
+      });
+
+      judgeBox.className = 'lc-judge-box show fail';
+      judgeBox.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-weight: 700; color: #dc2626; font-size: 13.5px;">❌ Wrong Answer</span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">${res.durationMs} ms</span>
+        </div>
+        <div style="font-size: 12px; color: #991b1b; margin-bottom: 8px;">
+          Your query output did not match the expected test case rows.
+        </div>
+        <div class="lc-diff-comparison-grid">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #dc2626; margin-bottom: 4px;">Your Output (${res.values.length} rows):</div>
+            <div style="overflow-x: auto; max-height: 130px;">
+              <table class="lc-diff-table">
+                <thead><tr>${res.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
+                <tbody>${userRowsHtml || '<tr><td colspan="' + (res.columns.length || 1) + '" style="color:var(--text-muted);text-align:center;">Empty Set</td></tr>'}</tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: #10b981; margin-bottom: 4px;">Expected Output (${res.expectedValues.length} rows):</div>
+            <div style="overflow-x: auto; max-height: 130px;">
+              <table class="lc-diff-table">
+                <thead><tr>${res.expectedColumns.map(c => `<th style="background: rgba(16,185,129,0.08); color: #10b981;">${escapeHtml(c)}</th>`).join('')}</tr></thead>
+                <tbody>${expRowsHtml}</tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="lc-bloops-autopsy-box">
+          ${diagnoseQueryError(prob, userSql, res)}
+        </div>
+      `;
+      if (window.AudioFX && typeof window.AudioFX.playError === 'function') window.AudioFX.playError();
+    }
+  }
+
+  // ===========================================================================
+  // SIR BLOOPS AI CO-PILOT GUIDE & REAL-TIME AUTOPSY
+  // ===========================================================================
+  function generateBloopsGuideHtml(prob) {
+    const lines = prob.lineByLineExplanation || [];
+    const traps = prob.trapsAndEdgeCases || [];
+    const companies = prob.companies || ['Amazon', 'Meta', 'Google'];
+
+    const stepsHtml = lines.map((item, idx) => `
+      <div class="lc-bloops-step-card">
+        <div class="lc-bloops-step-num">Step ${idx + 1}</div>
+        <div class="lc-bloops-step-content">
+          <div class="lc-bloops-step-clause"><code>${escapeHtml(item.clause)}</code></div>
+          <div class="lc-bloops-step-desc">${escapeHtml(item.exp)}</div>
+        </div>
+      </div>
+    `).join('');
+
+    const hint1 = `Examine the target metric: compute <strong>${(prob.expectedOutput && prob.expectedOutput.columns.join(', ')) || 'the requested columns'}</strong> from table <code>${(prob.sampleInput && prob.sampleInput.table) || 'the table'}</code>. Consider whether a straightforward filter (<code>WHERE</code>), an aggregation (<code>GROUP BY</code>), or analytical ranking is needed to handle duplicate rows cleanly.`;
+    
+    const clausesList = lines.map(l => l.clause.split(' ')[0]).filter(c => c && c.length > 2);
+    const uniqueClauses = Array.from(new Set(clausesList)).join(', ');
+    const hint2 = `Essential SQL clauses & operators for this problem pattern: <code>${escapeHtml(uniqueClauses || 'SELECT, FROM, WHERE, ORDER BY')}</code>. Verify whether NULL values need special coalescing or conditional logic.`;
+
+    const skeletonSql = prob.solutionSQL
+      .replace(/FROM\s+[a-zA-Z0-9_]+/gi, (m) => m)
+      .replace(/SELECT\s+[\s\S]*?FROM/i, 'SELECT\n    /* Column Expressions / Aliases */\nFROM')
+      .replace(/WHERE\s+[\s\S]*?(GROUP|ORDER|LIMIT|;|$)/i, (m, next) => `WHERE /* Filter Predicate Condition */\n${next}`)
+      .replace(/ORDER BY\s+[\s\S]*?(LIMIT|;|$)/i, (m, next) => `ORDER BY /* Sort Order */\n${next}`);
+
+    return `
+      <div class="lc-bloops-guide-container">
+        <!-- Bloops Hero Banner -->
+        <div class="lc-bloops-hero-card">
+          <div class="lc-bloops-hero-avatar">
+            <svg viewBox="-158 -158 316 316" width="46" height="46">
+              <path d="M 0 -85 C 50 -85 85 -50 85 0 C 85 50 50 85 0 85 C -50 85 -85 50 -85 0 C -85 -50 -50 -85 0 -85 Z" fill="#3ecf8e" />
+              <ellipse cx="-20" cy="-8" rx="8" ry="12" fill="#ffffff" />
+              <ellipse cx="20" cy="-8" rx="8" ry="12" fill="#ffffff" />
+              <circle cx="-18" cy="-8" r="4" fill="#0a0a0c" />
+              <circle cx="22" cy="-8" r="4" fill="#0a0a0c" />
+            </svg>
+          </div>
+          <div class="lc-bloops-hero-text">
+            <div style="font-size: 13.5px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px;">
+              <span>Sir Bloops AI Co-Pilot &bull; Problem #${prob.id} Breakdown</span>
+            </div>
+            <div style="font-size: 12.5px; color: var(--text-secondary); margin-top: 3px;">
+              I have deconstructed this ${prob.difficulty} challenge asked by ${companies.slice(0, 3).join(', ')}. Review the relational execution steps or expand Socratic hints below!
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 1: Step-by-Step Execution Lifecycle -->
+        <div class="lc-bloops-section">
+          <div class="lc-bloops-section-title">
+            <span>🐾 Step-by-Step Execution Lifecycle</span>
+            <span style="font-size: 11px; font-weight: 500; color: var(--text-muted);">Physical Relational Flow</span>
+          </div>
+          <div class="lc-bloops-steps-list">
+            ${stepsHtml || '<div style="font-size: 12px; color: var(--text-muted);">Standard ANSI relational execution order applies.</div>'}
+          </div>
+        </div>
+
+        <!-- Section 2: Socratic 3-Level Hints -->
+        <div class="lc-bloops-section">
+          <div class="lc-bloops-section-title">
+            <span>💡 Socratic Hint Ladder</span>
+            <span style="font-size: 11px; font-weight: 500; color: var(--text-muted);">Progressive Guidance</span>
+          </div>
+          <div class="lc-hint-ladder">
+            <div class="lc-hint-item">
+              <button class="lc-hint-toggle-btn" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.arrow').textContent = this.nextElementSibling.classList.contains('open') ? '▲' : '▼';">
+                <span>🧠 Level 1: Conceptual Strategy</span>
+                <span class="arrow">▼</span>
+              </button>
+              <div class="lc-hint-drawer">
+                <div class="lc-hint-body">${hint1}</div>
+              </div>
+            </div>
+
+            <div class="lc-hint-item">
+              <button class="lc-hint-toggle-btn" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.arrow').textContent = this.nextElementSibling.classList.contains('open') ? '▲' : '▼';">
+                <span>⚡ Level 2: Target SQL Clauses &amp; Functions</span>
+                <span class="arrow">▼</span>
+              </button>
+              <div class="lc-hint-drawer">
+                <div class="lc-hint-body">${hint2}</div>
+              </div>
+            </div>
+
+            <div class="lc-hint-item">
+              <button class="lc-hint-toggle-btn" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.arrow').textContent = this.nextElementSibling.classList.contains('open') ? '▲' : '▼';">
+                <span>📐 Level 3: Query Skeleton Blueprint</span>
+                <span class="arrow">▼</span>
+              </button>
+              <div class="lc-hint-drawer">
+                <div class="lc-hint-body">
+                  <pre class="lc-skeleton-code"><code>${escapeHtml(skeletonSql)}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Traps & Edge Cases -->
+        <div class="lc-bloops-section">
+          <div class="lc-bloops-section-title">
+            <span>🚨 Why Candidates Fail This Question</span>
+            <span style="font-size: 11px; font-weight: 500; color: #dc2626;">Staff Failure Traps</span>
+          </div>
+          <div class="lc-bloops-traps-list">
+            ${traps.map(t => `
+              <div class="lc-bloops-trap-pill">
+                <span style="color: #dc2626;">⚠️</span>
+                <span>${escapeHtml(t)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function diagnoseQueryError(prob, userSql, execResult) {
+    if (!execResult.success) {
+      return `🩺 <strong>Sir Bloops Diagnostic:</strong> The SQLite WASM compiler encountered an error: "<code>${escapeHtml(execResult.error)}</code>". Check for syntax issues such as missing commas between SELECT columns, unclosed string quotes, or mismatched parentheses.`;
+    }
+    if (execResult.isEmpty) {
+      return `🩺 <strong>Sir Bloops Diagnostic:</strong> Your query ran successfully but returned <strong>0 rows</strong>. Check your <code>WHERE</code> clause predicates—one of your conditions might be filtering out all candidate rows!`;
+    }
+    if (!execResult.isAccepted) {
+      const userCount = execResult.values.length;
+      const expCount = (execResult.expectedValues || []).length;
+      let hint = '';
+      if (userCount !== expCount) {
+        hint = `You returned <strong>${userCount} rows</strong>, but the test case requires <strong>${expCount} rows</strong>. `;
+        if (userCount > expCount) {
+          hint += `Did you forget a <code>GROUP BY</code>, <code>DISTINCT</code>, or row filter condition?`;
+        } else {
+          hint += `Your filter might be too strict, or you may need an <code>OUTER JOIN</code> to keep unmatched records.`;
+        }
+      } else {
+        hint = `You returned the expected number of rows (${userCount}), but the row values or ordering do not match. Check your <code>ORDER BY</code> clause, column aliases, or calculation expressions!`;
+      }
+      return `🩺 <strong>Sir Bloops Diagnostic:</strong> ${hint}`;
+    }
+    return `🎉 <strong>Sir Bloops says:</strong> Excellent execution! All test assertions verified green in ${execResult.durationMs}ms.`;
   }
 
   function openInQueryStudio(prob) {

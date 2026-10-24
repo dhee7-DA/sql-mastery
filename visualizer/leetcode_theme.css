@@ -2292,3 +2292,242 @@ code.lc-code-pill {
   border: 1px dashed var(--border-subtle, #e4e4e7);
   border-radius: var(--radius-md, 8px);
 }
+
+/* ==========================================================================
+   LIVE SCHEMA DOCK & TEST RUNNER WORKBENCH
+   ========================================================================== */
+.lc-schema-dock {
+  background: var(--bg-surface-elevated, #f8fafc);
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  border-radius: var(--radius-sm, 6px);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.lc-schema-dock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--bg-surface, #ffffff);
+  border-bottom: 1px solid var(--border-subtle, #e4e4e7);
+}
+
+.lc-schema-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  font-family: var(--font-mono, monospace);
+}
+
+.lc-schema-dock-body {
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+}
+
+.lc-schema-dock-body.collapsed {
+  display: none;
+}
+
+/* Judge Box Extended States */
+.lc-judge-box.fail {
+  display: block;
+  background: rgba(220, 38, 38, 0.06);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.lc-judge-box.error {
+  display: block;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.lc-diff-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .lc-diff-comparison-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   SIR BLOOPS AI CO-PILOT & STEP-BY-STEP PROBLEM GUIDE
+   ========================================================================== */
+.lc-bloops-hero-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: var(--radius-sm, 6px);
+  margin-bottom: 18px;
+}
+
+.lc-bloops-hero-avatar {
+  flex-shrink: 0;
+  animation: bloopsBounce 3s ease-in-out infinite;
+}
+
+@keyframes bloopsBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.lc-bloops-section {
+  margin-bottom: 20px;
+}
+
+.lc-bloops-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border-subtle, #e4e4e7);
+  padding-bottom: 4px;
+}
+
+.lc-bloops-step-card {
+  display: flex;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--bg-surface-elevated, #f8fafc);
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  border-radius: 6px;
+  margin-bottom: 8px;
+  transition: all 0.15s ease;
+}
+
+.lc-bloops-step-card:hover {
+  border-color: #38bdf8;
+  background: #ffffff;
+}
+
+.lc-bloops-step-num {
+  font-size: 11px;
+  font-weight: 800;
+  font-family: var(--font-mono, monospace);
+  padding: 2px 8px;
+  height: fit-content;
+  background: rgba(37, 99, 235, 0.12);
+  color: #2563eb;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.lc-bloops-step-content {
+  flex: 1;
+}
+
+.lc-bloops-step-clause code {
+  font-size: 12px;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  color: var(--accent, #c2410c);
+}
+
+.lc-bloops-step-desc {
+  font-size: 12px;
+  color: var(--text-secondary, #475569);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+/* Socratic Hint Ladder */
+.lc-hint-item {
+  margin-bottom: 8px;
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg-surface, #ffffff);
+}
+
+.lc-hint-toggle-btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary, #0f172a);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s ease;
+}
+
+.lc-hint-toggle-btn:hover {
+  background: var(--bg-hover, #f8fafc);
+}
+
+.lc-hint-drawer {
+  display: none;
+  padding: 12px 14px;
+  background: var(--bg-surface-elevated, #f8fafc);
+  border-top: 1px dashed var(--border-subtle, #e4e4e7);
+}
+
+.lc-hint-drawer.open {
+  display: block;
+}
+
+.lc-hint-body {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-secondary, #475569);
+}
+
+.lc-skeleton-code {
+  margin: 0;
+  padding: 10px;
+  background: #0f172a;
+  color: #38bdf8;
+  border-radius: 4px;
+  font-size: 11.5px;
+  font-family: var(--font-mono, monospace);
+  overflow-x: auto;
+}
+
+.lc-bloops-traps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lc-bloops-trap-pill {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(220, 38, 38, 0.05);
+  border-left: 3px solid #dc2626;
+  border-radius: 0 4px 4px 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #991b1b;
+}
+
+.lc-bloops-autopsy-box {
+  padding: 12px 14px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #0369a1;
+}
+
