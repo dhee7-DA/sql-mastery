@@ -144,7 +144,7 @@ window.LEETCODE_ARENA = (() => {
   // State
   let state = {
     activeConceptId: 'concept-1',
-    activeStage: 'topics', // 'topics' | 'problems' | 'masterclass' | 'mcqs' | 'drills'
+    activeStage: 'problems', // Default directly to Problem Solving Studio!
     activeProblemId: 1757,
     activeDrillId: 1,
     activeMcqIdx: 0,
@@ -772,33 +772,6 @@ window.LEETCODE_ARENA = (() => {
           </div>
 
           <div class="lc-tree-items ${isExpanded ? 'open' : ''}" id="treeItems_${meta.id}">
-            <!-- Sub-Item: Theory -->
-            <div class="lc-tree-sub-item ${isActiveConcept && state.activeStage === 'masterclass' ? 'active' : ''}" data-stage="masterclass" data-concept-id="${meta.id}">
-              <span style="display: flex; align-items: center; gap: 6px;">
-                <span>📖</span>
-                <span>Theory &amp; Visuals</span>
-              </span>
-              <span style="font-size: 10px; color: var(--text-muted);">${(data.masterclass && data.masterclass.chapters ? data.masterclass.chapters.length : 8)} Ch</span>
-            </div>
-
-            <!-- Sub-Item: MCQs -->
-            <div class="lc-tree-sub-item ${isActiveConcept && state.activeStage === 'mcqs' ? 'active' : ''}" data-stage="mcqs" data-concept-id="${meta.id}">
-              <span style="display: flex; align-items: center; gap: 6px;">
-                <span>🧠</span>
-                <span>Concept MCQs</span>
-              </span>
-              <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted);">${mcqSolved}/100</span>
-            </div>
-
-            <!-- Sub-Item: Drills -->
-            <div class="lc-tree-sub-item ${isActiveConcept && state.activeStage === 'drills' ? 'active' : ''}" data-stage="drills" data-concept-id="${meta.id}">
-              <span style="display: flex; align-items: center; gap: 6px;">
-                <span>⚡</span>
-                <span>Prep Drills</span>
-              </span>
-              <span style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted);">${drillSolved}/100</span>
-            </div>
-
             <!-- Problems List -->
             <div class="lc-tree-prob-group">
               ${probItemsHtml || '<div style="font-size: 11px; color: var(--text-muted); padding: 4px 8px;">No matching problems</div>'}
@@ -1137,98 +1110,24 @@ window.LEETCODE_ARENA = (() => {
 
     canvas.innerHTML = `
       <div class="lc-topics-hub-view">
-        <!-- Hero Header -->
-        <header class="lc-topics-hero">
-          <div class="lc-topics-hero-badge">
-            <span class="lc-topics-hero-dot"></span>
-            <span>TOPIC COLLECTIONS &amp; CURATED TRACKS</span>
-          </div>
-          <h1 class="lc-topics-hero-title">Browse SQL Topics by Core Technique</h1>
-          <p class="lc-topics-hero-desc">
-            Organized into 6 conceptual pillars spanning 11 comprehensive domains. Every topic is fully loaded with LeetCode problems, visual theory chapters, 100 flashcard MCQs, and 100 active recall query drills.
-          </p>
-
-          <!-- Stat Badges Ribbon -->
-          <div class="lc-topics-hero-stats">
-            <div class="lc-hero-stat-pill">
-              <span class="lc-hero-stat-val">11</span>
-              <span class="lc-hero-stat-lbl">Topics</span>
+        <!-- Minimalist Hero Header -->
+        <header class="lc-topics-hero" style="padding: 16px 20px 14px 20px; border-bottom: 1px solid var(--border-subtle); background: var(--bg-surface);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span class="lc-topics-hero-dot" style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent);"></span>
+                <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 0.04em;">TOPIC COLLECTIONS DIRECTORY</span>
+              </div>
+              <h1 style="font-size: 18px; font-weight: 700; color: var(--text-primary); margin: 0 0 2px 0; letter-spacing: -0.01em;">Browse SQL Topics by Core Technique</h1>
+              <p style="font-size: 12px; color: var(--text-muted); margin: 0;">11 Core Relational Pillars &bull; ${totalProblems} Curated Problems &bull; Click any topic to start solving</p>
             </div>
-            <div class="lc-hero-stat-pill">
-              <span class="lc-hero-stat-val">${totalProblems}</span>
-              <span class="lc-hero-stat-lbl">Problems</span>
-            </div>
-            <div class="lc-hero-stat-pill">
-              <span class="lc-hero-stat-val" style="color: #16a34a;">${counts.easy}</span>
-              <span class="lc-hero-stat-lbl">Easy</span>
-            </div>
-            <div class="lc-hero-stat-pill">
-              <span class="lc-hero-stat-val" style="color: #d97706;">${counts.med}</span>
-              <span class="lc-hero-stat-lbl">Medium</span>
-            </div>
-            <div class="lc-hero-stat-pill">
-              <span class="lc-hero-stat-val" style="color: #dc2626;">${counts.hard}</span>
-              <span class="lc-hero-stat-lbl">Hard</span>
-            </div>
-            <div class="lc-hero-stat-pill">
-              <span class="lc-hero-stat-val" style="color: var(--accent);">${totalSolved}</span>
-              <span class="lc-hero-stat-lbl">Solved</span>
-            </div>
-            <div class="lc-hero-stat-pill">
-              <span class="lc-hero-stat-val">88</span>
-              <span class="lc-hero-stat-lbl">Chapters</span>
-            </div>
-            <div class="lc-hero-stat-pill">
-              <span class="lc-hero-stat-val">1,100</span>
-              <span class="lc-hero-stat-lbl">MCQs</span>
-            </div>
-            <div class="lc-hero-stat-pill">
-              <span class="lc-hero-stat-val">1,100</span>
-              <span class="lc-hero-stat-lbl">Drills</span>
+            <div class="lc-topics-search-box" style="max-width: 260px; margin: 0;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" class="lc-topics-search-input" id="lcTopicsSearchInput" placeholder="Filter topics or concepts..." value="${escapeHtml(state.topicsSearch)}">
+              ${state.topicsSearch ? `<button class="lc-topics-search-clear" id="btnTopicsSearchClear">✕</button>` : ''}
             </div>
           </div>
         </header>
-
-        <!-- Search & Filter Ribbon -->
-        <div class="lc-topics-toolbar">
-          <div class="lc-topics-search-box">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" class="lc-topics-search-input" id="lcTopicsSearchInput" placeholder="Instant search by keyword (e.g. 'DENSE_RANK', 'cross join', 'median', 'gaps', '185')..." value="${escapeHtml(state.topicsSearch)}">
-            ${state.topicsSearch ? `<button class="lc-topics-search-clear" id="btnTopicsSearchClear">✕</button>` : ''}
-          </div>
-
-          <!-- Topic Pillars Tabs -->
-          <div class="lc-topics-pillar-tabs" id="lcTopicsPillarTabs">
-            ${TOPIC_PILLARS.map(p => `
-              <button class="lc-pillar-tab-btn ${selectedPillar === p.id ? 'active' : ''}" data-pillar-id="${p.id}">
-                <span>${p.icon}</span>
-                <span>${escapeHtml(p.label)}</span>
-              </button>
-            `).join('')}
-          </div>
-
-          <!-- Difficulty Filter Strip -->
-          <div class="lc-topics-diff-strip" id="lcTopicsDiffStrip">
-            <button class="lc-diff-tab-btn ${selectedDiff === 'all' ? 'active' : ''}" data-diff-id="all">All Difficulties (${totalProblems})</button>
-            <button class="lc-diff-tab-btn ${selectedDiff === 'Easy' ? 'active' : ''}" data-diff-id="Easy">🟢 Easy Only (${counts.easy})</button>
-            <button class="lc-diff-tab-btn ${selectedDiff === 'Medium' ? 'active' : ''}" data-diff-id="Medium">🟡 Medium Only (${counts.med})</button>
-            <button class="lc-diff-tab-btn ${selectedDiff === 'Hard' ? 'active' : ''}" data-diff-id="Hard">🔴 Hard Only (${counts.hard})</button>
-          </div>
-
-          <!-- FAANG & Top Tech Company Filter Strip -->
-          <div class="lc-topics-comp-strip" id="lcTopicsCompStrip">
-            <button class="lc-comp-tab-btn ${selectedComp === 'all' ? 'active' : ''}" data-comp-id="all">🏢 All Companies (${totalProblems})</button>
-            <button class="lc-comp-tab-btn ${selectedComp === 'Amazon' ? 'active' : ''}" data-comp-id="Amazon">📦 Amazon (296)</button>
-            <button class="lc-comp-tab-btn ${selectedComp === 'Google' ? 'active' : ''}" data-comp-id="Google">🔍 Google (263)</button>
-            <button class="lc-comp-tab-btn ${selectedComp === 'Meta' ? 'active' : ''}" data-comp-id="Meta">🌐 Meta (152)</button>
-            <button class="lc-comp-tab-btn ${selectedComp === 'Stripe' ? 'active' : ''}" data-comp-id="Stripe">💳 Stripe (57)</button>
-            <button class="lc-comp-tab-btn ${selectedComp === 'Apple' ? 'active' : ''}" data-comp-id="Apple">🍏 Apple (47)</button>
-            <button class="lc-comp-tab-btn ${selectedComp === 'Uber' ? 'active' : ''}" data-comp-id="Uber">🚗 Uber (57)</button>
-            <button class="lc-comp-tab-btn ${selectedComp === 'Bloomberg' ? 'active' : ''}" data-comp-id="Bloomberg">📊 Bloomberg (33)</button>
-            <button class="lc-comp-tab-btn ${selectedComp === 'Citadel' ? 'active' : ''}" data-comp-id="Citadel">🏰 Citadel (22)</button>
-            <button class="lc-comp-tab-btn ${selectedComp === 'Netflix' ? 'active' : ''}" data-comp-id="Netflix">🎬 Netflix (7)</button>
-          </div>
-        </div>
 
         <!-- Topics Grid -->
         ${matchingConcepts.length > 0 ? `

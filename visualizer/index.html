@@ -9,13 +9,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/vqa3wut.css">
-  <link rel="stylesheet" href="style.css?v=96">
+  <link rel="stylesheet" href="style.css?v=97">
   <link rel="stylesheet" href="jpmorgan_theme.css?v=3">
   <link rel="stylesheet" href="leetcode_theme.css?v=311">
   <link rel="stylesheet" href="sql_terminal_theme.css?v=105">
   <link rel="stylesheet" href="mock_interview_theme.css?v=106">
   <link rel="stylesheet" href="company_mastery_theme.css?v=200">
-  <link rel="stylesheet" href="command_palette.css?v=1">
+  <link rel="stylesheet" href="command_palette.css?v=2">
 </head>
 <body>
   <div class="app-layout">
@@ -61,7 +61,7 @@
           <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavCompanyHub" data-view="viewCompanyHub" onclick="selectNavView('viewCompanyHub', 'Companies &amp; Domains', null)" title="10 Domains &amp; 70+ Premier Target Employers">
             <span class="nav-group-lead">
               <span class="nav-group-icon">🏛️</span>
-              <span class="nav-group-title">Companies &amp; Domains</span>
+              <span class="nav-group-title">Companies</span>
             </span>
             <span class="nav-item-tag accent" style="background: var(--accent, #c2410c); color: #fff; font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 700;">70+</span>
           </button>
@@ -190,19 +190,18 @@
             </div>
           </div>
 
-          <!-- 5. LEARN DROPDOWN -->
-          <div class="nav-group-dropdown" id="navGroupLearn">
-            <button class="nav-group-trigger" id="btnGroupLearn" onclick="toggleNavGroupDropdown('navGroupLearn', event)">
+          <!-- 5. EXPLORE & LABS DROPDOWN -->
+          <div class="nav-group-dropdown" id="navGroupExplore">
+            <button class="nav-group-trigger" id="btnGroupExplore" onclick="toggleNavGroupDropdown('navGroupExplore', event)">
               <span class="nav-group-lead">
-                <span class="nav-group-icon">🔬</span>
-                <span class="nav-group-title">Learn</span>
+                <span class="nav-group-icon">📚</span>
+                <span class="nav-group-title">Explore</span>
               </span>
               <svg class="nav-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              <span id="currentLearnPill" style="display:none;">Learn</span>
             </button>
             <div class="nav-dropdown-menu">
-              <div class="nav-dropdown-header">Interactive Core &amp; Curriculum</div>
-              <button class="nav-dropdown-item nav-tab" data-view="viewLearningJourney" onclick="selectNavView('viewLearningJourney', 'Learning Journey', 'navGroupLearn')">
+              <div class="nav-dropdown-header">Interactive Core &amp; Labs</div>
+              <button class="nav-dropdown-item nav-tab" data-view="viewLearningJourney" onclick="selectNavView('viewLearningJourney', 'Learning Journey', 'navGroupExplore')">
                 <span class="nav-item-icon">🗺️</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
@@ -212,122 +211,7 @@
                   <span class="nav-item-desc">Visual curriculum roadmap &amp; interactive daily milestone tracker</span>
                 </div>
               </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewGuidedLab" onclick="selectNavView('viewGuidedLab', 'Guided Lab', 'navGroupLearn')">
-                <span class="nav-item-icon">🔬</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Guided Lab</span>
-                    <span class="nav-item-tag">Visualizer</span>
-                  </div>
-                  <span class="nav-item-desc">Step-by-step physical query lifecycle &amp; memory buffer</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewPathways" onclick="selectNavView('viewPathways', 'Pathways', 'navGroupLearn')">
-                <span class="nav-item-icon">🧭</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Topic Pathways</span>
-                    <span class="nav-item-tag">Curriculum</span>
-                  </div>
-                  <span class="nav-item-desc">4-stage mastery roadmap: Masterclass to Pro</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Quests', 'navGroupLearn')">
-                <span class="nav-item-icon">🎮</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Interactive Quests</span>
-                    <span class="nav-item-tag">Puzzles</span>
-                  </div>
-                  <span class="nav-item-desc">Token assembly trays, blanks &amp; logic bug fixer</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewWindowMatrix" onclick="selectNavView('viewWindowMatrix', 'Window Cockpit', 'navGroupLearn')">
-                <span class="nav-item-icon">🪟</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Window Cockpit</span>
-                    <span class="nav-item-tag accent">Day 11-12</span>
-                  </div>
-                  <span class="nav-item-desc">Partitioning, Ranking Matrix, Sliding Frames &amp; Offsets</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item" onclick="openCurriculumReader(1)">
-                <span class="nav-item-icon">📖</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Curriculum Theory &amp; Defense</span>
-                    <span class="nav-item-tag accent">Days 01&ndash;15</span>
-                  </div>
-                  <span class="nav-item-desc">In-app textbook theory, daily logs &amp; interview defenses</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewTactileEngine" onclick="selectNavView('viewTactileEngine', 'SQL Machine', 'navGroupLearn')">
-                <span class="nav-item-icon">⚙️</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Tactile SQL Machine</span>
-                    <span class="nav-item-tag accent">Fig. 16</span>
-                  </div>
-                  <span class="nav-item-desc">Hand-inked physical relational machine &amp; query washer</span>
-                </div>
-              </button>
-            </div>
-          </div>
-
-          <!-- 6. REFERENCE DROPDOWN -->
-          <div class="nav-group-dropdown" id="navGroupReference">
-            <button class="nav-group-trigger" id="btnGroupReference" onclick="toggleNavGroupDropdown('navGroupReference', event)">
-              <span class="nav-group-lead">
-                <span class="nav-group-icon">📚</span>
-                <span class="nav-group-title">Reference</span>
-              </span>
-              <svg class="nav-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              <span id="currentReferencePill" style="display:none;">Reference</span>
-            </button>
-            <div class="nav-dropdown-menu">
-              <div class="nav-dropdown-header">Documentation &amp; Data Model</div>
-              <button class="nav-dropdown-item nav-tab" data-view="viewExplainer" onclick="selectNavView('viewExplainer', 'Study Docs', 'navGroupReference')">
-                <span class="nav-item-icon">📚</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Study Docs</span>
-                    <span class="nav-item-tag">Deep-Dives</span>
-                  </div>
-                  <span class="nav-item-desc">Under-the-hood engine theory, gotchas &amp; AST diffs</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewDeconstructor" onclick="selectNavView('viewDeconstructor', 'Deconstructor', 'navGroupReference')">
-                <span class="nav-item-icon">🔍</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Deconstructor</span>
-                    <span class="nav-item-tag">Mental Models</span>
-                  </div>
-                  <span class="nav-item-desc">Break down ambiguous business questions step-by-step</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewEnterpriseERD" onclick="selectNavView('viewEnterpriseERD', 'ERD Map', 'navGroupReference')">
-                <span class="nav-item-icon">🗺️</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Enterprise ERD</span>
-                    <span class="nav-item-tag">Topology</span>
-                  </div>
-                  <span class="nav-item-desc">Relational entity diagrams &amp; foreign key relationships</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewVennMatrix" onclick="selectNavView('viewVennMatrix', 'Venn Matrix', 'navGroupReference')">
-                <span class="nav-item-icon">⭕</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Venn &amp; Euler Matrix</span>
-                    <span class="nav-item-tag accent">Topology</span>
-                  </div>
-                  <span class="nav-item-desc">Interactive live-row set physics for Joins &amp; Set Ops</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewWindowMatrix" onclick="selectNavView('viewWindowMatrix', 'Window Cockpit', 'navGroupReference')">
+              <button class="nav-dropdown-item nav-tab" data-view="viewWindowMatrix" onclick="selectNavView('viewWindowMatrix', 'Window Cockpit', 'navGroupExplore')">
                 <span class="nav-item-icon">🪟</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
@@ -337,20 +221,91 @@
                   <span class="nav-item-desc">Sliding Frames, Ranking Dissection &amp; Offset Vectors</span>
                 </div>
               </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Quests', 'navGroupExplore')">
+                <span class="nav-item-icon">🎮</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Interactive Quests</span>
+                    <span class="nav-item-tag">Puzzles</span>
+                  </div>
+                  <span class="nav-item-desc">Token assembly trays, blanks &amp; logic bug fixer</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item" onclick="openCurriculumReader(1)">
+                <span class="nav-item-icon">📖</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Curriculum Theory Compendium</span>
+                    <span class="nav-item-tag accent">Theory</span>
+                  </div>
+                  <span class="nav-item-desc">In-app textbook theory, daily logs &amp; interview defenses</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewTactileEngine" onclick="selectNavView('viewTactileEngine', 'SQL Machine', 'navGroupExplore')">
+                <span class="nav-item-icon">⚙️</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Tactile SQL Machine</span>
+                    <span class="nav-item-tag accent">Fig. 16</span>
+                  </div>
+                  <span class="nav-item-desc">Hand-inked physical relational machine &amp; query washer</span>
+                </div>
+              </button>
+              <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Documentation &amp; Schema</div>
+              <button class="nav-dropdown-item nav-tab" data-view="viewExplainer" onclick="selectNavView('viewExplainer', 'Study Docs', 'navGroupExplore')">
+                <span class="nav-item-icon">📚</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Study Docs</span>
+                    <span class="nav-item-tag">Deep-Dives</span>
+                  </div>
+                  <span class="nav-item-desc">Under-the-hood engine theory, gotchas &amp; AST diffs</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewDeconstructor" onclick="selectNavView('viewDeconstructor', 'Deconstructor', 'navGroupExplore')">
+                <span class="nav-item-icon">🔍</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Query Deconstructor</span>
+                    <span class="nav-item-tag">Mental Models</span>
+                  </div>
+                  <span class="nav-item-desc">Clause-by-clause query isolator and semantic breakdown</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewEnterpriseERD" onclick="selectNavView('viewEnterpriseERD', 'ERD Map', 'navGroupExplore')">
+                <span class="nav-item-icon">🗺️</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Enterprise ERD Map</span>
+                    <span class="nav-item-tag">Topology</span>
+                  </div>
+                  <span class="nav-item-desc">Relational entity diagrams &amp; foreign key relationships</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewVennMatrix" onclick="selectNavView('viewVennMatrix', 'Venn Matrix', 'navGroupExplore')">
+                <span class="nav-item-icon">⭕</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Venn &amp; Euler Matrix</span>
+                    <span class="nav-item-tag accent">Topology</span>
+                  </div>
+                  <span class="nav-item-desc">Interactive live-row set physics for Joins &amp; Set Ops</span>
+                </div>
+              </button>
             </div>
           </div>
         </nav>
       </div>
 
-      <div class="header-right">
-        <!-- Compact Habit Counters -->
-        <!-- Quick Search / Command Palette Button (Ctrl+K) -->
+      <div class="header-center">
         <button class="header-cmd-palette-btn" id="btnHeaderCmdPalette" onclick="if(window.SQL_CMD_PALETTE) window.SQL_CMD_PALETTE.open();" title="Search problems, companies, and views (Ctrl+K or Cmd+K)">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <span class="cmd-palette-label">Search or jump to...</span>
           <kbd class="cmd-palette-kbd">⌘K</kbd>
         </button>
+      </div>
 
+      <div class="header-right">
         <div class="header-stats-strip">
           <span class="header-stat-chip" id="userStreakCounter" title="Daily SQL Mastery Streak (Click to open Calendar)" style="cursor: pointer;" onclick="if(window.dailyStreak) window.dailyStreak.open();">
             <span class="stat-icon">🔥</span>
@@ -1869,7 +1824,7 @@
 <script src="leetcode_section10_data.js?v=1"></script>
 <script src="leetcode_section11_data.js?v=1"></script>
 <script src="leetcode_300_master_vault.js"></script>
-<script src="leetcode_arena_engine.js?v=311"></script>
+<script src="leetcode_arena_engine.js?v=312"></script>
 <script src="sql-wasm.js"></script>
 <script src="sql_terminal_data.js?v=105"></script>
 <script src="sql_terminal_engine.js?v=105"></script>
@@ -1878,7 +1833,7 @@
 <script src="company_mastery_engine.js?v=200"></script>
 <script src="curriculum_compendium_data.js"></script>
 <script src="curriculum_reader_engine.js"></script>
-<script src="command_palette.js?v=1"></script>
+<script src="command_palette.js?v=2"></script>
 <script src="app.js?v=100"></script>
 <script>
   // Automatic Hash & Default View Router

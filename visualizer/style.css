@@ -2117,12 +2117,24 @@ body {
   padding: 0 16px;
   flex-shrink: 0;
   z-index: 100;
+  gap: 12px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  max-width: 320px;
+  min-width: 140px;
+  margin: 0 8px;
 }
 
 .header-divider {

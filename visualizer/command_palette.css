@@ -329,6 +329,9 @@
 .header-cmd-palette-btn {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 280px;
   gap: 8px;
   height: 28px;
   padding: 0 10px;
