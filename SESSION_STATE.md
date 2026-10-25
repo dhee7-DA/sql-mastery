@@ -6,7 +6,7 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: **Linear-Grade UI/UX Overhaul (3-Column Zero-Collision Header · Direct Problem Studio Default · Streamlined 25px Filters · Quiet Docked Sir Bloops)**
+- **Current Sprint**: **Linear-Grade UI/UX Overhaul (Collapsible Layout Switcher · Zen Focus Mode · 3-Column Zero-Collision Header · Direct Problem Studio Default)**
 - **Active Module**: [`day-20-grand-enterprise-gauntlet`](./day-20-grand-enterprise-gauntlet) (Multi-Pillar Integration & Graduation)
 - **Current Dialect**: **PostgreSQL 16+ / MySQL 8.0+ / Snowflake / DuckDB / BigQuery (ANSI SQL Standard)**
 - **Major Milestones Achieved**: 
@@ -15,15 +15,17 @@
   - 🏆 **IN-BROWSER SQLITE WASM TEST RUNNER ARENA (Client-Side Test Judge & Sir Bloops AI Co-Pilot)!**
   - 🏆 **INSTITUTIONAL DOMAIN & COMPANY MASTERY HUB (10 Verticals: FinTech, Quant, E-Commerce, Social, Streaming, Mobility, Cloud, HealthTech, IoT, Cyber · 70+ Employers · 14 Full Mock Tracks)!**
   - 🏆 **TACTILE 3D RELATIONAL PINBALL & CLOCKWORK MACHINE (Fig. 16 Physical Apparatus)!**
+  - 🏆 **COLLAPSIBLE WORKSPACE LAYOUT SWITCHER (3 Mode Toggles: ◧ Split Screen, ◨ Full Code Editor, ◩ Full Problem Spec with 1-Click Restore)!**
+  - 🏆 **DISTRACTION-FREE ZEN FOCUS MODE (⛶ Zen Button Maximizes Query Editor from Edge-to-Edge, Hiding Navigation and Toolbars)!**
+  - 🏆 **SIDEBAR COLLAPSE-ALL & DOCKED SAMPLE DATA ACCORDIONS (Instant 1-Click Topic Collapsing, Sample Tables Auto-Collapsed for Vertical Height)!**
   - 🏆 **DESKTOP-GRADE COMMAND PALETTE & 3-COLUMN HEADER (Dedicated Centered ⌘K Search Bar, Zero Text/Tab Collisions, 6-Tab Streamlined Left Nav)!**
   - 🏆 **DIRECT PROBLEM SOLVING WORKSPACE DEFAULT (Opens Instantly to Code Editor, Schema Visualizer & Live Test Runner instead of Cluttered Directory Banner)!**
-  - 🏆 **STREAMLINED LEETCODE FILTER TOOLBAR (Single Compact 25px Row Replacing 3 Bulky Strips, Pure High-Density Problem Tree in Sidebar)!**
   - 🏆 **QUIET DOCKED SIR BLOOPS ASSISTANT (Starts Quietly Parked in Bottom Dock, Elegant Docked Error Toasts, Zero UI Obstruction)!**
   - 🏆 **IN-APP THEORY & INTERVIEW DEFENSE COMPENDIUM (21 Modules Accessible via 1-Click Reader Modal)!**
   - 🏆 **CORPORATE CASE STUDIES EXPANDED TO 2,540 FULL PRODUCTION SCENARIOS!**
 - **Next Immediate Action**: Live practice across Domain Verticals in the Mastery Hub and LeetCode SQLite WASM Arena.
 - **Total Problems Completed in Intensive**: 120+ Core Curriculum Problems + 323 LeetCode Official Problems + 1,850 Interactive Quests
-- **Last Updated**: 2026-10-25 17:10 IST
+- **Last Updated**: 2026-10-25 17:20 IST
 
 ---
 
