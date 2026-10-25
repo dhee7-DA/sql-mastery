@@ -1002,3 +1002,34 @@
   - Enhanced minimized state (`transform: translateY(calc(100% + 20px)); opacity: 0; pointer-events: none;`) to tuck completely out of the way.
   - Added direct 1-click toggle button in the bottom statusbar (`🐙 Sir Bloops`) to easily summon or dismiss the companion at will.
 
+
+
+### 📅 Entry 32: 2026-10-25 (Evening) - Linear-Grade UI/UX Overhaul: Ctrl+K Command Palette, Streamlined LeetCode Filter Toolbar, and Sir Bloops Quiet Docked Mode
+
+#### 🎯 Focus & Architectural Objectives
+1. **Implement Desktop-Grade Command Palette (`Ctrl+K` / `Cmd+K`)**: Provide instantaneous 2-keystroke navigation across all 323 LeetCode SQL problems, 70+ target employers, 10 domains, and 16 platform tools.
+2. **Streamline LeetCode Arena Sidebar**: Consolidate 3 sprawling button pill strips (Topic, Difficulty, Company) into a single compact 25px filter toolbar, recovering 150px+ of vertical height for the problems tree.
+3. **Default Sir Bloops Companion to Quiet Docked Mode**: Eliminate obtrusive avatar overlaps and greetings on page load. Sir Bloops now stays neatly parked in the footer statusbar dock with subtle docked error toasts on query execution errors.
+
+#### 🛠️ Key Deliverables & Implementation Details
+1. **Command Palette (`command_palette.js` & `command_palette.css`)**:
+   - Global listener for `Ctrl+K`, `Cmd+K`, and `/`.
+   - Header trigger button (`🔍 Search or jump to... ⌘K`).
+   - Fuzzy search with real-time substring highlight (`<mark class="cmd-mark">`).
+   - Indexes 323 LeetCode problems (with difficulty badges), 70+ employers (Amazon, Google, Stripe, etc.), 10 domains, and 16 view workspaces.
+   - Category filter pills (`All`, `Problems`, `Companies`, `Views`, `Actions`).
+   - Arrow key navigation (`Up` / `Down`), `Enter` to execute, `Escape` to dismiss.
+2. **Streamlined LeetCode Filter Toolbar (`leetcode_arena_engine.js` & `leetcode_theme.css`)**:
+   - Replaced 450px vertical filter pile with a single row of 3 styled `<select>` controls: Topic, Difficulty, and Company.
+   - Dynamic reset button (`✕`) displayed only when active filters exist.
+   - Seamless state synchronization with `state.sidebarPillar`, `state.sidebarDiff`, and `state.sidebarCompany`.
+3. **Sir Bloops Quiet Docked Mode (`buddy_engine.js` & `style.css`)**:
+   - Default `isMinimized = true` stored in `localStorage`.
+   - Zero intrusive greeting bubbles covering the workspace on page load.
+   - `showDockedToast` displays an elegant toast above the status bar on syntax or execution error without violently expanding the full avatar.
+   - Footer button displays docked vs active state indicator (`🐙 Sir Bloops`).
+
+#### 🔬 Verification & Test Evidence
+- `validate_html.js`: Exact tag balance (61 open/close divs in header, clean layout and footer).
+- `test_engine_boot.js`: Verified all 22 view panels exist and 192/192 buttons balanced.
+- `test_palette_and_filters.js`: Verified valid JS syntax and HTTP 200 responses on `http://localhost:8000`.
