@@ -148,6 +148,9 @@ window.LEETCODE_ARENA = (() => {
     activeProblemId: 1757,
     layoutMode: 'split', // 'split' | 'editor' | 'problem'
     zenMode: false,
+    activeSchemaView: 'data', // 'data' | 'target' | 'diagram'
+    userCode: {},
+    revealedSolutions: {},
     schemaDockCollapsed: true, // Collapsed by default so editor has room
     dossierDetailsCollapsed: false,
     allConceptsCollapsed: false,
@@ -526,32 +529,31 @@ window.LEETCODE_ARENA = (() => {
               <button class="lc-sidebar-toggle-btn" id="btnExpandSidebar" title="Show Sidebar (Ctrl+B)" style="display: ${state.sidebarCollapsed ? 'flex' : 'none'};">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
               </button>
+              <button class="lc-hub-back-btn" id="btnStudioBackHub" title="Return to Topic Collections Hub">
+                <span>🗂️</span>
+                <span>Topics Hub</span>
+              </button>
               <div class="lc-breadcrumbs">
-                <span class="lc-crumb-root" id="lcCrumbRoot" title="Click to view all Topic Collections">Arena</span>
-                <span class="lc-crumb-sep">/</span>
                 <span class="lc-crumb-concept" id="lcCrumbConcept">${state.activeStage === 'topics' ? 'Topic Collections Directory' : data.title}</span>
                 <span class="lc-crumb-sep">/</span>
-                <span class="lc-crumb-item" id="lcCrumbItem">${state.activeStage === 'topics' ? '11 Topics · 126 Curated Problems' : (currentProb ? '#' + currentProb.id + ' ' + currentProb.title : 'Overview')}</span>
+                <span class="lc-crumb-item" id="lcCrumbItem">${state.activeStage === 'topics' ? totalProblems + ' Curated Problems' : (currentProb ? '#' + currentProb.id + ' ' + currentProb.title : 'Overview')}</span>
               </div>
             </div>
 
-            <!-- Segmented Stage Controller -->
+            <!-- Segmented Stage Controller: 4 Clean Modes -->
             <div class="lc-segmented-pill">
-              <button class="lc-seg-btn ${state.activeStage === 'topics' ? 'active' : ''}" data-stage="topics" title="Topic Collections Directory &amp; Hub">
-                <span>🗂️ Topics Hub</span>
+              <button class="lc-seg-btn ${state.activeStage === 'problems' ? 'active' : ''}" data-stage="problems" title="Solve LeetCode Problem in Order of Learning">
+                <span>📖 Problem Studio</span>
               </button>
-              <button class="lc-seg-btn ${state.activeStage === 'problems' ? 'active' : ''}" data-stage="problems" title="Solve LeetCode Problem">
-                <span>Problem</span>
+              <button class="lc-seg-btn ${state.activeStage === 'masterclass' ? 'active' : ''}" data-stage="masterclass" title="Visual SVG Mechanics &amp; Relational Theory">
+                <span>💡 Concept Theory</span>
               </button>
-              <button class="lc-seg-btn ${state.activeStage === 'masterclass' ? 'active' : ''}" data-stage="masterclass" title="Visual SVG Mechanics &amp; Theory">
-                <span>Theory</span>
-              </button>
-              <button class="lc-seg-btn ${state.activeStage === 'mcqs' ? 'active' : ''}" data-stage="mcqs" title="Interactive 100 MCQs Flashcard Mode">
-                <span>MCQs</span>
+              <button class="lc-seg-btn ${state.activeStage === 'mcqs' ? 'active' : ''}" data-stage="mcqs" title="Interactive MCQs Flashcard Mode">
+                <span>⚡ MCQs</span>
                 <span class="lc-seg-counter" id="lcSegMcqCount">${(data.mcqs || []).length}</span>
               </button>
               <button class="lc-seg-btn ${state.activeStage === 'drills' ? 'active' : ''}" data-stage="drills" title="Query Construction Drills">
-                <span>Drills</span>
+                <span>🎯 Drills</span>
                 <span class="lc-seg-counter" id="lcSegDrillCount">${(data.drills || []).length}</span>
               </button>
             </div>
@@ -562,10 +564,10 @@ window.LEETCODE_ARENA = (() => {
                 <button class="lc-layout-btn ${state.layoutMode === 'split' ? 'active' : ''}" data-layout="split" title="Split Screen: Problem &amp; Code Editor side-by-side">
                   <span>◧ Split</span>
                 </button>
-                <button class="lc-layout-btn ${state.layoutMode === 'editor' ? 'active' : ''}" data-layout="editor" title="Full Editor: Expand Code Editor to full width">
-                  <span>◨ Code</span>
+                <button class="lc-layout-btn ${state.layoutMode === 'editor' ? 'active' : ''}" data-layout="editor" title="Full Editor: Maximize Code Editor">
+                  <span>◨ Editor</span>
                 </button>
-                <button class="lc-layout-btn ${state.layoutMode === 'problem' ? 'active' : ''}" data-layout="problem" title="Full Problem: Expand Problem Spec &amp; Schema">
+                <button class="lc-layout-btn ${state.layoutMode === 'problem' ? 'active' : ''}" data-layout="problem" title="Full Spec: Maximize Problem &amp; Schema">
                   <span>◩ Spec</span>
                 </button>
               </div>
@@ -574,8 +576,10 @@ window.LEETCODE_ARENA = (() => {
                 <span>⛶ Zen</span>
               </button>
 
-              <button class="lc-bar-nav-btn" id="btnTopPrev" title="Previous item (Alt+Left)">←</button>
-              <button class="lc-bar-nav-btn" id="btnTopNext" title="Next item (Alt+Right)">→</button>
+              <div class="lc-step-btn-group" style="display: flex; gap: 2px;">
+                <button class="lc-bar-nav-btn" id="btnTopPrev" title="Previous item (Alt+Left)">◀</button>
+                <button class="lc-bar-nav-btn" id="btnTopNext" title="Next item (Alt+Right)">▶</button>
+              </div>
             </div>
           </header>
 
@@ -630,6 +634,12 @@ window.LEETCODE_ARENA = (() => {
     const brand = container.querySelector('#btnSidebarBrand');
     if (brand) {
       brand.addEventListener('click', () => switchStage('topics'));
+    }
+
+    // Hook studio back to hub button
+    const btnBackHub = container.querySelector('#btnStudioBackHub');
+    if (btnBackHub) {
+      btnBackHub.addEventListener('click', () => switchStage('topics'));
     }
 
     // Hook breadcrumbs root click
@@ -1851,219 +1861,383 @@ window.LEETCODE_ARENA = (() => {
     const companiesList = activeProb.companies || ['Meta', 'Amazon', 'Google'];
     const diffClass = (activeProb.difficulty || 'Medium').toLowerCase();
 
-    // Tab content generator
-    let tabContentHtml = '';
-    if (state.activeDossierTab === 'schema') {
-      tabContentHtml = `
-        ${svgContent ? `
-          <div style="margin-bottom: 20px;">
-            <div class="lc-prob-svg-wrap">${svgContent}</div>
-          </div>
-        ` : ''}
-        ${activeProb.sampleInput ? `
-          <div class="lc-sample-tables-wrap">
-            <div style="font-size: 11.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">Sample Input Table: <code>${escapeHtml(activeProb.sampleInput.table || 'Table')}</code></div>
-            <table class="lc-diff-table" style="margin-bottom: 16px;">
-              <thead><tr>${(activeProb.sampleInput.columns || []).map(c => `<th>${c}</th>`).join('')}</tr></thead>
-              <tbody>${(activeProb.sampleInput.rows || []).slice(0, 5).map(r => `<tr>${r.map(v => `<td>${v}</td>`).join('')}</tr>`).join('')}</tbody>
+    const sample = activeProb.sampleInput || { table: 'Products', columns: [], rows: [] };
+    const sampleTable = sample.table || 'Table';
+    const sampleCols = sample.columns || [];
+    const sampleRows = sample.rows || [];
+
+    const expected = activeProb.expectedOutput || { columns: [], rows: [] };
+    const expCols = expected.columns || [];
+    const expRows = expected.rows || [];
+
+    const isSolved = !!state.solvedProblems[activeProb.id];
+    const isRevealed = isSolved || !!state.revealedSolutions[activeProb.id];
+
+    // Determine starter SQL
+    const colListStr = sampleCols.slice(0, 4).join(', ');
+    const defaultStarterSql = `-- LeetCode #${activeProb.id}: ${activeProb.title}
+-- Table: ${sampleTable} (${colListStr || 'columns...'})
+-- Target: Return ${expRows.length} expected row${expRows.length === 1 ? '' : 's'}
+
+SELECT 
+    
+FROM ${sampleTable}
+WHERE ;`;
+
+    let userOrStarterSql = state.userCode[activeProb.id];
+    if (userOrStarterSql === undefined) {
+      userOrStarterSql = isSolved ? activeProb.solutionSQL : defaultStarterSql;
+      state.userCode[activeProb.id] = userOrStarterSql;
+    }
+
+    const currentSchemaView = state.activeSchemaView || 'data'; // 'data' | 'target' | 'diagram'
+
+    // Helper to render Inspector body
+    function getInspectorBodyHtml(view) {
+      if (view === 'target') {
+        return `
+          <div class="lc-table-scroll-wrap">
+            <table class="lc-diff-table lc-target-table">
+              <thead><tr>${expCols.map(c => `<th>${escapeHtml(c)} <span style="font-size:9.5px; opacity:0.75; font-weight:normal;">(Expected)</span></th>`).join('')}</tr></thead>
+              <tbody>
+                ${expRows.length > 0 ? expRows.map(r => `<tr>${r.map(v => `<td>${v === null ? '<span class="lc-null-badge">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>`).join('') : '<tr><td colspan="1" style="text-align:center;color:var(--text-muted);padding:14px;">No expected rows defined</td></tr>'}
+              </tbody>
             </table>
           </div>
-        ` : ''}
-      `;
-    } else if (state.activeDossierTab === 'canonical') {
-      let solutionLinesHtml = '';
-      (activeProb.lineByLineExplanation || []).forEach(line => {
-        solutionLinesHtml += `
-          <div class="lc-solution-line">
-            <div><div class="lc-solution-code-clause">${renderClauseWithKeywordLinks(line.clause)}</div></div>
-            <div><div class="lc-solution-explanation">${line.exp}</div></div>
+        `;
+      }
+      if (view === 'diagram' && svgContent) {
+        return `
+          <div class="lc-prob-svg-wrap">
+            ${svgContent}
           </div>
         `;
-      });
-      tabContentHtml = `
-        <div style="margin-bottom: 16px;">
-          <div class="lc-canonical-code-box">
-            ${renderHighlightedSQLWithArrows(activeProb.solutionSQL)}
-          </div>
-        </div>
-        ${solutionLinesHtml ? `<div class="lc-solution-lines-table">${solutionLinesHtml}</div>` : ''}
-      `;
-    } else if (state.activeDossierTab === 'traps') {
-      tabContentHtml = `
-        <div class="lc-callout-card danger">
-          <div class="lc-callout-title">🚨 Critical Interview Traps (Why Candidates Fail):</div>
-          <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 13.5px; line-height: 1.6; color: var(--status-fail);">
-            ${trapsList.map(t => `<li>${t}</li>`).join('')}
-          </ul>
+      }
+      // Default: 'data'
+      return `
+        <div class="lc-table-scroll-wrap">
+          <table class="lc-diff-table lc-schema-table">
+            <thead><tr>${sampleCols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
+            <tbody>
+              ${sampleRows.length > 0 ? sampleRows.map(r => `<tr>${r.map(v => `<td>${v === null ? '<span class="lc-null-badge">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>`).join('') : '<tr><td colspan="1" style="text-align:center;color:var(--text-muted);padding:14px;">No sample data rows</td></tr>'}
+            </tbody>
+          </table>
         </div>
       `;
-    } else if (state.activeDossierTab === 'gateways') {
-      tabContentHtml = renderProblemGatewaySection(activeProb);
-    } else if (state.activeDossierTab === 'bloops') {
-      tabContentHtml = generateBloopsGuideHtml(activeProb);
     }
 
     canvas.innerHTML = `
-      <div class="lc-problem-studio-grid ${state.layoutMode === 'editor' ? 'layout-editor' : (state.layoutMode === 'problem' ? 'layout-problem' : '')}">
-        <!-- Left: Problem Dossier -->
-        <div class="lc-prob-dossier-col">
-          ${state.layoutMode === 'problem' ? `
-            <div class="lc-layout-banner">
-              <span class="lc-layout-banner-text">◩ Problem Spec Focus Mode (Code Editor Collapsed)</span>
-              <button class="lc-layout-restore-btn" id="btnRestoreSplitFromSpec">◀ Restore Split View</button>
+      <div class="lc-canvas-inner">
+        <!-- 3-Phase Guided Order of Learning Stepper Banner -->
+        <div class="lc-learning-stepper">
+          <div class="lc-step-pill active" id="stepIndicator1">
+            <span class="lc-step-num">1</span>
+            <div class="lc-step-text">
+              <strong>Step 1: Understand</strong>
+              <span>Spec &amp; Schema Inspector</span>
             </div>
-          ` : ''}
-          <!-- Problem Header Card -->
-          <div class="lc-card" style="padding: 24px;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-              <div>
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                  <span style="font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--accent);">LEETCODE #${activeProb.id}</span>
-                  <span class="lc-diff-badge lc-diff-${diffClass}">${activeProb.difficulty}</span>
-                  <span style="font-size: 11px; color: var(--text-muted);">&bull; ${escapeHtml(freqText)}</span>
-                </div>
-                <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em;">${escapeHtml(activeProb.title)}</h1>
-              </div>
-              <div class="lc-company-row">
-                ${companiesList.slice(0, 3).map(c => `<span class="lc-company-pill">${c}</span>`).join('')}
-              </div>
+          </div>
+          <div class="lc-step-connector"></div>
+          <div class="lc-step-pill" id="stepIndicator2">
+            <span class="lc-step-num">2</span>
+            <div class="lc-step-text">
+              <strong>Step 2: Solve</strong>
+              <span>SQL Solution Workspace</span>
             </div>
-
-            <p style="font-size: 13.5px; line-height: 1.6; color: var(--text-secondary); margin: 0 0 16px 0; white-space: pre-line;">${promptText}</p>
-
-            <!-- Dossier Sub-Tabs -->
-            <div class="lc-dossier-subtabs">
-              <button class="lc-dossier-tab ${state.activeDossierTab === 'schema' ? 'active' : ''}" data-dossier-tab="schema">📐 Schema &amp; Visuals</button>
-              <button class="lc-dossier-tab ${state.activeDossierTab === 'bloops' ? 'active' : ''}" data-dossier-tab="bloops" style="background: rgba(56, 189, 248, 0.12); color: #0284c7; font-weight: 700; border-color: rgba(56, 189, 248, 0.3);">🤖 Sir Bloops AI Guide</button>
-              <button class="lc-dossier-tab ${state.activeDossierTab === 'canonical' ? 'active' : ''}" data-dossier-tab="canonical">💎 Canonical Solution</button>
-              <button class="lc-dossier-tab ${state.activeDossierTab === 'traps' ? 'active' : ''}" data-dossier-tab="traps">🚨 Traps (${trapsList.length})</button>
-              <button class="lc-dossier-tab ${state.activeDossierTab === 'gateways' ? 'active' : ''}" data-dossier-tab="gateways">🧭 Concepts</button>
-            </div>
-
-            <div class="lc-dossier-body" style="margin-top: 14px;">
-              ${tabContentHtml}
+          </div>
+          <div class="lc-step-connector"></div>
+          <div class="lc-step-pill" id="stepIndicator3">
+            <span class="lc-step-num">3</span>
+            <div class="lc-step-text">
+              <strong>Step 3: Verify &amp; Defend</strong>
+              <span>WASM Judge &amp; Traps</span>
             </div>
           </div>
         </div>
 
-        <!-- Right: SQL Editor & Test Judge Workbench -->
-        <div class="lc-prob-editor-col">
-          ${state.layoutMode === 'editor' ? `
-            <div class="lc-layout-banner">
-              <span class="lc-layout-banner-text">◨ Full Code Editor Focus Mode (Problem Spec Collapsed)</span>
-              <button class="lc-layout-restore-btn" id="btnRestoreSplitFromEditor">◀ Restore Split View</button>
-            </div>
-          ` : ''}
-          <div class="lc-card" style="padding: 20px; position: sticky; top: 0;">
-            <!-- Live Input Schema Table Dock -->
-            <div class="lc-schema-dock" id="lcSchemaDock">
-              <div class="lc-schema-dock-header">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <span style="font-size: 14px;">📋</span>
-                  <span style="font-size: 11.5px; font-weight: 700; color: var(--text-primary); text-transform: uppercase;">
-                    Input Table: <code style="color: var(--accent); font-weight: 800;">${escapeHtml((activeProb.sampleInput && activeProb.sampleInput.table) || 'Leet_' + activeProb.id)}</code>
-                  </span>
-                  <span class="lc-schema-badge">${(activeProb.sampleInput && activeProb.sampleInput.rows && activeProb.sampleInput.rows.length) || 0} Rows</span>
-                </div>
-                <div style="display: flex; gap: 6px;">
-                  <button class="lc-editor-tool-btn" id="btnToggleExpectedTable" title="Toggle Expected Output comparison">👁️ Expected Result</button>
-                  <button class="lc-editor-tool-btn" id="btnToggleSchemaDock" title="Collapse / Expand table">▼</button>
-                </div>
+        <!-- 2-Column Split Studio Grid -->
+        <div class="lc-problem-studio-grid ${state.layoutMode === 'editor' ? 'layout-editor' : (state.layoutMode === 'problem' ? 'layout-problem' : '')}">
+          <!-- Left: Phase 1 (Understand Spec, Schema, Guidance) -->
+          <div class="lc-prob-dossier-col">
+            ${state.layoutMode === 'problem' ? `
+              <div class="lc-layout-banner">
+                <span class="lc-layout-banner-text">◩ Problem Spec Focus Mode (Code Editor Collapsed)</span>
+                <button class="lc-layout-restore-btn" id="btnRestoreSplitFromSpec">◀ Restore Split View</button>
               </div>
-              <div class="lc-schema-dock-body ${state.schemaDockCollapsed ? 'collapsed' : ''}" id="lcSchemaDockBody">
-                <div style="overflow-x: auto; max-height: 140px;">
-                  <table class="lc-diff-table" id="lcInputSchemaTable">
-                    <thead>
-                      <tr>${((activeProb.sampleInput && activeProb.sampleInput.columns) || []).map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr>
-                    </thead>
-                    <tbody>
-                      ${((activeProb.sampleInput && activeProb.sampleInput.rows) || []).map(r => `<tr>${r.map(v => `<td>${v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>`).join('')}
-                    </tbody>
-                  </table>
-                  <table class="lc-diff-table" id="lcExpectedTable" style="display: none;">
-                    <thead>
-                      <tr>${((activeProb.expectedOutput && activeProb.expectedOutput.columns) || []).map(c => `<th style="background: rgba(16,185,129,0.1); color: #10b981;">${escapeHtml(c)} (Expected)</th>`).join('')}</tr>
-                    </thead>
-                    <tbody>
-                      ${((activeProb.expectedOutput && activeProb.expectedOutput.rows) || []).map(r => `<tr>${r.map(v => `<td>${v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>`).join('')}
-                    </tbody>
-                  </table>
+            ` : ''}
+
+            <!-- Problem Card -->
+            <div class="lc-card lc-spec-card">
+              <div class="lc-prob-header-meta">
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <span class="lc-prob-id-badge">LEETCODE #${activeProb.id}</span>
+                  <span class="lc-diff-badge lc-diff-${diffClass}">${activeProb.difficulty}</span>
+                  <span class="lc-prob-acceptance">• ${escapeHtml(freqText)}</span>
+                </div>
+                <div class="lc-company-row">
+                  ${companiesList.slice(0, 3).map(c => `<span class="lc-company-pill">${c}</span>`).join('')}
                 </div>
               </div>
-            </div>
 
-            <!-- Editor Header & Tools -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0 8px 0;">
-              <span style="font-size: 11.5px; font-family: var(--font-mono); font-weight: 700; text-transform: uppercase; color: var(--text-muted);">
-                SQL Solution Editor
-              </span>
-              <div style="display: flex; gap: 6px;">
-                <button class="lc-editor-tool-btn" id="btnFillSolution" title="Fill with canonical code">⚡ Fill Solution</button>
-                <button class="lc-editor-tool-btn" id="btnCopyCanonicalSql" title="Copy SQL">📋 Copy</button>
-                <button class="lc-editor-tool-btn" id="btnResetEditor" title="Clear editor">↺ Reset</button>
+              <h1 class="lc-prob-title">${escapeHtml(activeProb.title)}</h1>
+              <div class="lc-prob-desc">${promptText}</div>
+
+              <!-- Single Source of Truth: Interactive Schema & Data Inspector -->
+              <div class="lc-schema-inspector-card">
+                <div class="lc-inspector-header">
+                  <div class="lc-inspector-title">
+                    <span style="font-size: 14px;">📋</span>
+                    <strong>${escapeHtml(sampleTable)}</strong>
+                    <span class="lc-inspector-badge">${sampleRows.length} rows</span>
+                  </div>
+                  <div class="lc-inspector-tabs" id="lcInspectorTabs">
+                    <button class="lc-insp-tab ${currentSchemaView === 'data' ? 'active' : ''}" data-view="data">📊 Sample Data</button>
+                    <button class="lc-insp-tab ${currentSchemaView === 'target' ? 'active' : ''}" data-view="target">🎯 Expected (${expRows.length})</button>
+                    ${svgContent ? `<button class="lc-insp-tab ${currentSchemaView === 'diagram' ? 'active' : ''}" data-view="diagram">📐 Flowchart</button>` : ''}
+                  </div>
+                </div>
+                <div class="lc-inspector-body" id="lcInspectorBody">
+                  ${getInspectorBodyHtml(currentSchemaView)}
+                </div>
+              </div>
+
+              <!-- Progressive Guidance & Defense Drawers -->
+              <div class="lc-learning-drawers-container">
+                <!-- Drawer 1: Sir Bloops Strategy Guide -->
+                <details class="lc-learning-drawer" id="drawerBloops">
+                  <summary class="lc-drawer-summary">
+                    <div class="lc-drawer-summary-left">
+                      <span class="lc-drawer-icon">💡</span>
+                      <strong>Need a Hint? (Sir Bloops Strategy Guide)</strong>
+                    </div>
+                    <span class="lc-drawer-toggle-badge">Socratic Guide ▾</span>
+                  </summary>
+                  <div class="lc-drawer-body">
+                    ${generateBloopsGuideHtml(activeProb)}
+                  </div>
+                </details>
+
+                <!-- Drawer 2: Critical Interview Traps -->
+                <details class="lc-learning-drawer" id="drawerTraps">
+                  <summary class="lc-drawer-summary">
+                    <div class="lc-drawer-summary-left">
+                      <span class="lc-drawer-icon">🚨</span>
+                      <strong>Critical Interview Traps &amp; Edge Cases</strong>
+                      <span class="lc-drawer-count-badge">${trapsList.length} Traps</span>
+                    </div>
+                    <span class="lc-drawer-toggle-badge">Inspect Pitfalls ▾</span>
+                  </summary>
+                  <div class="lc-drawer-body">
+                    <div class="lc-callout-card danger">
+                      <div class="lc-callout-title">🚨 Why Candidates Fail This in Technical Rounds:</div>
+                      <ul class="lc-traps-bullet-list">
+                        ${trapsList.map(t => `<li>${escapeHtml(t)}</li>`).join('')}
+                      </ul>
+                    </div>
+                  </div>
+                </details>
+
+                <!-- Drawer 3: Canonical Golden Solution -->
+                <details class="lc-learning-drawer" id="drawerCanonical" ${isRevealed ? 'open' : ''}>
+                  <summary class="lc-drawer-summary">
+                    <div class="lc-drawer-summary-left">
+                      <span class="lc-drawer-icon">💎</span>
+                      <strong>Canonical Golden Solution &amp; Line-by-Line Breakdown</strong>
+                      ${isRevealed ? '<span class="lc-drawer-status-unlocked">Unlocked ✓</span>' : '<span class="lc-drawer-status-locked">Locked 🔒</span>'}
+                    </div>
+                    <span class="lc-drawer-toggle-badge">${isRevealed ? 'Breakdown ▾' : 'Reveal Solution ▾'}</span>
+                  </summary>
+                  <div class="lc-drawer-body" id="canonicalDrawerBody">
+                    ${!isRevealed ? `
+                      <div class="lc-solution-lock-banner">
+                        <p style="margin: 0 0 10px 0; font-size: 13px; color: var(--text-secondary);">
+                          Try writing your own query in the editor first to build true relational muscle! When ready, you can unlock the golden solution here.
+                        </p>
+                        <button class="lc-btn lc-btn-secondary" id="btnUnlockCanonical" style="font-weight: 600;">
+                          🔓 Reveal Golden Solution
+                        </button>
+                      </div>
+                    ` : `
+                      <div class="lc-canonical-wrap">
+                        <div class="lc-canonical-code-box">
+                          ${renderHighlightedSQLWithArrows(activeProb.solutionSQL)}
+                        </div>
+                        ${(activeProb.lineByLineExplanation && activeProb.lineByLineExplanation.length > 0) ? `
+                          <div class="lc-solution-lines-table">
+                            ${activeProb.lineByLineExplanation.map(line => `
+                              <div class="lc-solution-line">
+                                <div><div class="lc-solution-code-clause">${renderClauseWithKeywordLinks(line.clause)}</div></div>
+                                <div><div class="lc-solution-explanation">${escapeHtml(line.exp)}</div></div>
+                              </div>
+                            `).join('')}
+                          </div>
+                        ` : ''}
+                      </div>
+                    `}
+                  </div>
+                </details>
+
+                <!-- Drawer 4: Concept Bridges & Theory Masterclass -->
+                <details class="lc-learning-drawer" id="drawerConcepts">
+                  <summary class="lc-drawer-summary">
+                    <div class="lc-drawer-summary-left">
+                      <span class="lc-drawer-icon">🧭</span>
+                      <strong>Related Concepts &amp; Theory Masterclasses</strong>
+                    </div>
+                    <span class="lc-drawer-toggle-badge">Explore ▾</span>
+                  </summary>
+                  <div class="lc-drawer-body">
+                    ${renderProblemGatewaySection(activeProb)}
+                  </div>
+                </details>
               </div>
             </div>
+          </div>
 
-            <textarea class="lc-textarea-editor" id="lcProbEditor" style="min-height: 180px;">${activeProb.solutionSQL}</textarea>
+          <!-- Right: Phase 2 (Solve & Verify in Editor) -->
+          <div class="lc-prob-editor-col">
+            ${state.layoutMode === 'editor' ? `
+              <div class="lc-layout-banner">
+                <span class="lc-layout-banner-text">◨ Full Code Editor Focus Mode (Problem Spec Collapsed)</span>
+                <button class="lc-layout-restore-btn" id="btnRestoreSplitFromEditor">◀ Restore Split View</button>
+              </div>
+            ` : ''}
 
-            <!-- Execution Actions -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; gap: 8px; flex-wrap: wrap;">
-              <div style="display: flex; gap: 8px; align-items: center;">
-                <button class="lc-btn lc-btn-secondary" id="btnRunCode" title="Execute query live in SQLite WASM (Ctrl+Enter)" style="background: var(--bg-surface-elevated); font-weight: 600;">
-                  <span>▶ Run Code</span>
-                  <span style="font-size: 10px; opacity: 0.7; font-family: var(--font-mono);">(Ctrl+Enter)</span>
-                </button>
-                <button class="lc-btn lc-btn-primary" id="btnSubmitJudge" title="Submit solution and verify against test cases">
-                  <span>🎯 Submit Solution</span>
-                </button>
+            <div class="lc-card lc-editor-card" style="padding: 20px; position: sticky; top: 16px;">
+              <!-- Editor Status Top Bar -->
+              <div class="lc-editor-top-bar">
+                <div class="lc-editor-meta-left">
+                  <span class="lc-engine-dot"></span>
+                  <span class="lc-editor-engine-label">SQLite WASM Sandbox</span>
+                  <span class="lc-editor-target-pill">Target: ${expRows.length} rows</span>
+                </div>
+                <div class="lc-editor-tools-group">
+                  <button class="lc-tool-btn" id="btnFillSolution" title="Fill with canonical golden SQL">⚡ Fill Golden Code</button>
+                  <button class="lc-tool-btn" id="btnCopyCanonicalSql" title="Copy SQL to clipboard">📋 Copy</button>
+                  <button class="lc-tool-btn" id="btnResetEditor" title="Reset editor to starter SQL template">↺ Reset</button>
+                </div>
               </div>
-              <div style="display: flex; gap: 8px; align-items: center;">
-                <button class="lc-btn lc-btn-secondary" id="btnAskBloopsAutopsy" style="background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.3); color: #0284c7; font-weight: 600;">
-                  <span>🤖 Ask Bloops</span>
-                </button>
-                <button class="lc-btn lc-btn-secondary" id="btnOpenStudio">
-                  <span>🔬 Studio</span>
-                </button>
+
+              <!-- Main SQL Textarea Editor -->
+              <textarea class="lc-textarea-editor" id="lcProbEditor" placeholder="-- Write your SQL query here...">${escapeHtml(userOrStarterSql)}</textarea>
+
+              <!-- Execution Action Strip -->
+              <div class="lc-editor-action-strip">
+                <div class="lc-action-primary-group">
+                  <button class="lc-btn lc-btn-secondary" id="btnRunCode" title="Execute query live in SQLite WASM (Ctrl+Enter)">
+                    <span>▶ Run Code</span>
+                    <span class="lc-shortcut-hint">Ctrl+↵</span>
+                  </button>
+                  <button class="lc-btn lc-btn-primary" id="btnSubmitJudge" title="Submit solution and verify against test cases">
+                    <span>🎯 Submit Solution</span>
+                  </button>
+                </div>
+                <div class="lc-action-secondary-group">
+                  <button class="lc-btn lc-btn-ghost" id="btnAskBloopsAutopsy" title="Get instant AI guidance or diagnosis">
+                    <span>🤖 Ask Bloops</span>
+                  </button>
+                  <button class="lc-btn lc-btn-ghost" id="btnOpenStudio" title="Open schema and query in full Visual Studio">
+                    <span>🔬 Studio</span>
+                  </button>
+                </div>
               </div>
+
+              <!-- Judge Output Box (Phase 3 Results) -->
+              <div class="lc-judge-box" id="lcJudgeBox"></div>
             </div>
-
-            <div class="lc-judge-box" id="lcJudgeBox"></div>
           </div>
         </div>
       </div>
     `;
 
-    // Hook dossier tabs
-    canvas.querySelectorAll('.lc-dossier-tab').forEach(tab => {
+    // -------------------------------------------------------------------------
+    // EVENT LISTENERS & PROGRESSIVE DISCLOSURE WIRING
+    // -------------------------------------------------------------------------
+
+    // 1. Inspector Tab Switching (Sample Data | Target Output | Flowchart Diagram)
+    const inspTabs = canvas.querySelectorAll('#lcInspectorTabs .lc-insp-tab');
+    const inspBody = canvas.querySelector('#lcInspectorBody');
+    inspTabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        state.activeDossierTab = tab.dataset.dossierTab;
-        renderProblems();
+        const view = tab.dataset.view;
+        state.activeSchemaView = view;
+        inspTabs.forEach(t => t.classList.toggle('active', t.dataset.view === view));
+        if (inspBody) {
+          inspBody.innerHTML = getInspectorBodyHtml(view);
+        }
       });
     });
 
-    // Hook editor quick tools
+    // 2. Unlock Canonical Solution Button
+    const btnUnlock = canvas.querySelector('#btnUnlockCanonical');
+    if (btnUnlock) {
+      btnUnlock.addEventListener('click', () => {
+        state.revealedSolutions[activeProb.id] = true;
+        const drawer = canvas.querySelector('#drawerCanonical');
+        if (drawer) {
+          const body = drawer.querySelector('#canonicalDrawerBody');
+          if (body) {
+            let solutionLinesHtml = '';
+            (activeProb.lineByLineExplanation || []).forEach(line => {
+              solutionLinesHtml += `
+                <div class="lc-solution-line">
+                  <div><div class="lc-solution-code-clause">${renderClauseWithKeywordLinks(line.clause)}</div></div>
+                  <div><div class="lc-solution-explanation">${escapeHtml(line.exp)}</div></div>
+                </div>
+              `;
+            });
+            body.innerHTML = `
+              <div class="lc-canonical-wrap">
+                <div class="lc-canonical-code-box">
+                  ${renderHighlightedSQLWithArrows(activeProb.solutionSQL)}
+                </div>
+                ${solutionLinesHtml ? `<div class="lc-solution-lines-table">${solutionLinesHtml}</div>` : ''}
+              </div>
+            `;
+          }
+          const badge = drawer.querySelector('.lc-drawer-status-locked');
+          if (badge) {
+            badge.className = 'lc-drawer-status-unlocked';
+            badge.textContent = 'Unlocked ✓';
+          }
+          drawer.open = true;
+        }
+      });
+    }
+
+    // 3. Editor Quick Tools
+    const editor = canvas.querySelector('#lcProbEditor');
     const btnFill = canvas.querySelector('#btnFillSolution');
     const btnReset = canvas.querySelector('#btnResetEditor');
-    const editor = canvas.querySelector('#lcProbEditor');
+    const btnCopy = canvas.querySelector('#btnCopyCanonicalSql');
+
+    if (editor) {
+      editor.addEventListener('input', () => {
+        state.userCode[activeProb.id] = editor.value;
+      });
+    }
+
     if (btnFill && editor) {
       btnFill.addEventListener('click', () => {
         editor.value = activeProb.solutionSQL;
-        editor.focus();
-      });
-    }
-    if (btnReset && editor) {
-      btnReset.addEventListener('click', () => {
-        editor.value = '';
+        state.userCode[activeProb.id] = activeProb.solutionSQL;
         editor.focus();
       });
     }
 
-    // Copy SQL
-    const btnCopy = canvas.querySelector('#btnCopyCanonicalSql');
+    if (btnReset && editor) {
+      btnReset.addEventListener('click', () => {
+        editor.value = defaultStarterSql;
+        state.userCode[activeProb.id] = defaultStarterSql;
+        editor.focus();
+      });
+    }
+
     if (btnCopy) {
       btnCopy.addEventListener('click', () => {
+        const valToCopy = editor ? editor.value : activeProb.solutionSQL;
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(editor ? editor.value : activeProb.solutionSQL).then(() => {
+          navigator.clipboard.writeText(valToCopy).then(() => {
             btnCopy.textContent = 'Copied! ✓';
             setTimeout(() => { btnCopy.textContent = '📋 Copy'; }, 2000);
           });
@@ -2071,56 +2245,37 @@ window.LEETCODE_ARENA = (() => {
       });
     }
 
-    // Toggle Schema Dock Body
-    const btnToggleSchema = canvas.querySelector('#btnToggleSchemaDock');
-    const schemaDockBody = canvas.querySelector('#lcSchemaDockBody');
-    if (btnToggleSchema && schemaDockBody) {
-      btnToggleSchema.addEventListener('click', () => {
-        state.schemaDockCollapsed = !state.schemaDockCollapsed;
-        schemaDockBody.classList.toggle('collapsed', state.schemaDockCollapsed);
-        btnToggleSchema.textContent = state.schemaDockCollapsed ? '▶' : '▼';
-      });
-    }
-
-    // Restore split from layout banners
+    // 4. Restore Split Layout Banners
     const btnResSpec = canvas.querySelector('#btnRestoreSplitFromSpec');
     if (btnResSpec) {
-      btnResSpec.addEventListener('click', () => setLayout('split'));
+      btnResSpec.addEventListener('click', () => {
+        state.layoutMode = 'split';
+        renderActiveStage();
+        renderShell();
+      });
     }
     const btnResEd = canvas.querySelector('#btnRestoreSplitFromEditor');
     if (btnResEd) {
-      btnResEd.addEventListener('click', () => setLayout('split'));
+      btnResEd.addEventListener('click', () => {
+        state.layoutMode = 'split';
+        renderActiveStage();
+        renderShell();
+      });
     }
 
-    // Toggle Expected Result Table
-    const btnToggleExpected = canvas.querySelector('#btnToggleExpectedTable');
-    const tableInput = canvas.querySelector('#lcInputSchemaTable');
-    const tableExp = canvas.querySelector('#lcExpectedTable');
-    if (btnToggleExpected && tableInput && tableExp) {
-      btnToggleExpected.addEventListener('click', () => {
-        const isShowingExp = tableExp.style.display !== 'none';
-        if (isShowingExp) {
-          tableExp.style.display = 'none';
-          tableInput.style.display = 'table';
-          btnToggleExpected.textContent = '👁️ Expected Result';
-        } else {
-          tableExp.style.display = 'table';
-          tableInput.style.display = 'none';
-          btnToggleExpected.textContent = '👁️ Input Table';
+    // 5. Ask Bloops Autopsy Shortcut (Expands Drawer 1 & Scrolls Smoothly)
+    const btnBloops = canvas.querySelector('#btnAskBloopsAutopsy');
+    if (btnBloops) {
+      btnBloops.addEventListener('click', () => {
+        const drawer = canvas.querySelector('#drawerBloops');
+        if (drawer) {
+          drawer.open = true;
+          drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
       });
     }
 
-    // Ask Bloops Autopsy Shortcut
-    const btnBloops = canvas.querySelector('#btnAskBloopsAutopsy');
-    if (btnBloops) {
-      btnBloops.addEventListener('click', () => {
-        state.activeDossierTab = 'bloops';
-        renderProblems();
-      });
-    }
-
-    // Run Code & Submit Actions
+    // 6. Run Code & Submit Actions
     const btnRun = canvas.querySelector('#btnRunCode');
     if (btnRun) {
       btnRun.addEventListener('click', () => {
@@ -2135,7 +2290,7 @@ window.LEETCODE_ARENA = (() => {
       });
     }
 
-    // Keyboard shortcut (Ctrl + Enter) inside SQL editor
+    // 7. Keyboard Shortcut (Ctrl + Enter) inside SQL editor
     if (editor) {
       editor.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
@@ -2145,7 +2300,7 @@ window.LEETCODE_ARENA = (() => {
       });
     }
 
-    // Open in Studio
+    // 8. Open in Studio
     const btnStudio = canvas.querySelector('#btnOpenStudio');
     if (btnStudio) {
       btnStudio.addEventListener('click', () => {
@@ -2379,9 +2534,14 @@ window.LEETCODE_ARENA = (() => {
 
     if (res.isAccepted) {
       state.solvedProblems[prob.id] = true;
+      state.revealedSolutions[prob.id] = true;
       saveState();
       updateSidebarStats();
       renderSidebarTree();
+
+      const allProblems = (getSectionData() && (getSectionData().leetcodeProblems || getSectionData().problems)) || [];
+      const currIdx = allProblems.findIndex(p => p.id === prob.id);
+      const nextProb = (currIdx >= 0 && currIdx < allProblems.length - 1) ? allProblems[currIdx + 1] : null;
 
       let rowsHtml = '';
       res.values.slice(0, 6).forEach(r => {
@@ -2408,7 +2568,33 @@ window.LEETCODE_ARENA = (() => {
         <div class="lc-bloops-autopsy-box" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.3); color: #065f46; margin-top: 10px;">
           🎉 <strong>Sir Bloops says:</strong> Flawless relational logic! Problem #${prob.id} marked solved. Keep up the streak!
         </div>
+        <div class="lc-judge-accepted-actions" style="display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;">
+          ${nextProb ? `
+            <button class="lc-btn lc-btn-primary" id="btnJudgeNextProb" style="padding: 7px 16px; font-size: 12px;">
+              <span>Next Problem: #${nextProb.id} ${escapeHtml(nextProb.title)} →</span>
+            </button>
+          ` : ''}
+          <button class="lc-btn lc-btn-secondary" id="btnJudgeRevealCanonical" style="padding: 7px 16px; font-size: 12px;">
+            <span>💎 View Canonical Breakdown</span>
+          </button>
+        </div>
       `;
+
+      const btnNext = judgeBox.querySelector('#btnJudgeNextProb');
+      if (btnNext) {
+        btnNext.addEventListener('click', () => stepProblem(1));
+      }
+      const btnReveal = judgeBox.querySelector('#btnJudgeRevealCanonical');
+      if (btnReveal) {
+        btnReveal.addEventListener('click', () => {
+          const drawer = document.getElementById('drawerCanonical');
+          if (drawer) {
+            drawer.open = true;
+            drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        });
+      }
+
       if (window.AudioFX && typeof window.AudioFX.playSuccess === 'function') window.AudioFX.playSuccess();
     } else {
       let userRowsHtml = '';
