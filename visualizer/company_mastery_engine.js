@@ -1,18 +1,14 @@
 /**
  * =============================================================================
- * DOMAIN & COMPANY MASTERY HUB ENGINE (ENTERPRISE EDITION)
- * 10 Canonical Industry Domains · 70+ Premier Global Employers
- * Deep-dive interview intelligence, domain relational data physics,
- * empirical probability matrices, and curated LeetCode 323 + Case Study drills.
+ * DOMAIN & COMPANY MASTERY HUB ENGINE (ENTERPRISE EDITION - REDESIGNED)
+ * 10 Canonical Industry Domains · 75+ Premier Global Employers · 323 LeetCode Vault
+ * Clean Single-Focus Directory & Dedicated Employer Track Navigation
  * =============================================================================
  */
 
 window.CompanyMasteryEngine = (function() {
   'use strict';
 
-  // ===========================================================================
-  // 1. THE 10 INDUSTRY DOMAIN CATALOGS
-  // ===========================================================================
   const DOMAIN_CATALOG = {
     all: {
       id: "all",
@@ -570,40 +566,95 @@ window.CompanyMasteryEngine = (function() {
     }
   };
 
+
   // Helper to dynamically synthesize a company profile if not explicitly defined above
   function getCompanyProfile(companyKey) {
     if (COMPANY_PROFILES[companyKey]) {
       return COMPANY_PROFILES[companyKey];
     }
 
+    // Try fuzzy match without punctuation or spaces
+    const clean = (companyKey || '').replace(/[^a-z0-9]/gi, '').toLowerCase();
+    for (const k in COMPANY_PROFILES) {
+      if (k.replace(/[^a-z0-9]/gi, '').toLowerCase() === clean) {
+        return COMPANY_PROFILES[k];
+      }
+    }
+
     // Lookup which domain this company belongs to
     let foundDomain = DOMAIN_CATALOG.all;
     for (const dKey in DOMAIN_CATALOG) {
-      if (DOMAIN_CATALOG[dKey].companies && DOMAIN_CATALOG[dKey].companies.includes(companyKey)) {
-        foundDomain = DOMAIN_CATALOG[dKey];
-        break;
+      if (DOMAIN_CATALOG[dKey].companies) {
+        const found = DOMAIN_CATALOG[dKey].companies.some(c => c.replace(/[^a-z0-9]/gi, '').toLowerCase() === clean);
+        if (found) {
+          foundDomain = DOMAIN_CATALOG[dKey];
+          break;
+        }
       }
     }
 
     return {
       name: companyKey,
       badge: foundDomain.name,
-      icon: foundDomain.icon,
+      icon: foundDomain.icon || '🏢',
       domain: foundDomain.id,
       tier: "Tier 1 Enterprise Employer",
       dialect: "ANSI SQL · PostgreSQL · Snowflake",
       screenFormat: "45-min technical screen & real-world relational schema evaluation",
-      coreFocus: foundDomain.coreFocus,
-      interviewPattern: `Specialized domain problem solving in ${foundDomain.name} testing ${foundDomain.tagline}.`,
-      topSyntax: foundDomain.topSyntax,
-      probabilities: foundDomain.domainProbabilities,
+      coreFocus: foundDomain.coreFocus || "Relational modeling, Window Analytics, Gaps & Islands, Aggregate Rollups.",
+      interviewPattern: `Specialized domain problem solving in ${foundDomain.name} testing ${foundDomain.tagline || 'core relational patterns'}.`,
+      topSyntax: foundDomain.topSyntax || ["DENSE_RANK()", "COALESCE()", "SELF JOIN", "RECURSIVE CTE"],
+      probabilities: foundDomain.domainProbabilities || [
+        { topic: "Window Analytics & Rankings", pct: 90 },
+        { topic: "Multi-Table Relational Joins", pct: 85 },
+        { topic: "Conditional Aggregation (CASE WHEN)", pct: 80 }
+      ],
       mockTrackId: null
     };
   }
 
+  // Curated list of premier employers across all industry verticals
+  const FEATURED_EMPLOYERS = [
+    { key: 'Amazon', name: 'Amazon & AWS', domain: 'ecommerce', tier: 'Tier 1 FAANG / Cloud', icon: '📦' },
+    { key: 'Google', name: 'Google & YouTube', domain: 'social', tier: 'Tier 1 FAANG / Search', icon: '🔍' },
+    { key: 'Meta', name: 'Meta (Facebook / IG)', domain: 'social', tier: 'Tier 1 FAANG / AdTech', icon: '📱' },
+    { key: 'Apple', name: 'Apple', domain: 'iot', tier: 'Tier 1 Tech / Consumer', icon: '🍏' },
+    { key: 'Stripe', name: 'Stripe', domain: 'fintech', tier: 'Tier 1 FinTech Unicorn', icon: '💳' },
+    { key: 'Citadel', name: 'Citadel Securities', domain: 'quant', tier: 'Tier 1 Quantitative HFT', icon: '🏛️' },
+    { key: 'Jane Street', name: 'Jane Street', domain: 'quant', tier: 'Tier 1 Quantitative Trading', icon: '⚡' },
+    { key: 'Bloomberg', name: 'Bloomberg LP', domain: 'quant', tier: 'Financial Terminal Scale', icon: '📊' },
+    { key: 'Netflix', name: 'Netflix', domain: 'streaming', tier: 'Tier 1 Streaming Media', icon: '🍿' },
+    { key: 'Spotify', name: 'Spotify', domain: 'streaming', tier: 'Tier 1 Audio Streaming', icon: '🎧' },
+    { key: 'Snowflake', name: 'Snowflake', domain: 'cloud', tier: 'Cloud Data Warehouse', icon: '❄️' },
+    { key: 'Databricks', name: 'Databricks', domain: 'cloud', tier: 'Lakehouse & Spark Analytics', icon: '🧱' },
+    { key: 'Microsoft', name: 'Microsoft', domain: 'cloud', tier: 'Tier 1 Tech & Azure', icon: '💻' },
+    { key: 'Uber', name: 'Uber Technologies', domain: 'marketplace', tier: 'Mobility & Marketplace', icon: '🚗' },
+    { key: 'Airbnb', name: 'Airbnb', domain: 'marketplace', tier: 'Travel & Hospitality', icon: '🏡' },
+    { key: 'DoorDash', name: 'DoorDash', domain: 'marketplace', tier: 'Logistics & Food Delivery', icon: '🥡' },
+    { key: 'Shopify', name: 'Shopify', domain: 'ecommerce', tier: 'E-Commerce Merchant Scale', icon: '🛍️' },
+    { key: 'Walmart', name: 'Walmart Global Tech', domain: 'ecommerce', tier: 'Enterprise Retail Scale', icon: '🛒' },
+    { key: 'PayPal', name: 'PayPal', domain: 'fintech', tier: 'Global Payments Network', icon: '💸' },
+    { key: 'Plaid', name: 'Plaid', domain: 'fintech', tier: 'FinTech Banking APIs', icon: '🔌' },
+    { key: 'Coinbase', name: 'Coinbase', domain: 'fintech', tier: 'Digital Assets & Crypto', icon: '🪙' },
+    { key: 'Tesla', name: 'Tesla', domain: 'iot', tier: 'Automotive & Telemetry IoT', icon: '⚡' },
+    { key: 'Cloudflare', name: 'Cloudflare', domain: 'cyber', tier: 'CDN & Edge Infrastructure', icon: '🛡️' },
+    { key: 'CrowdStrike', name: 'CrowdStrike', domain: 'cyber', tier: 'Cyber Threat Intelligence', icon: '🦅' },
+    { key: 'Epic Systems', name: 'Epic Systems', domain: 'health', tier: 'Healthcare Records (EHR)', icon: '🏥' },
+    { key: 'Twitter/X', name: 'Twitter / X', domain: 'social', tier: 'Real-Time Social Graph', icon: '🐦' },
+    { key: 'TikTok', name: 'TikTok / ByteDance', domain: 'social', tier: 'Video Feed Analytics', icon: '🎵' },
+    { key: 'Snap', name: 'Snap Inc.', domain: 'social', tier: 'Ephemeral Messaging & Ads', icon: '👻' },
+    { key: 'Two Sigma', name: 'Two Sigma', domain: 'quant', tier: 'Systematic Quantitative Fund', icon: '📈' },
+    { key: 'Goldman Sachs', name: 'Goldman Sachs', domain: 'quant', tier: 'Global Investment Banking', icon: '🏦' }
+  ];
+
   // ===========================================================================
   // 3. ENGINE STATE & INITIALIZATION
   // ===========================================================================
+  let viewMode = 'directory'; // 'directory' | 'company' | 'domain'
+  let directoryTab = 'employers'; // 'employers' | 'domains' | 'problems'
+  let directoryDomainFilter = 'all'; // Filter within employers tab
+  let directorySearch = ''; // Filter text in directory mode
+
   let activeDomain = 'all';
   let activeCompany = 'all';
   let activeDifficulty = 'all';
@@ -613,8 +664,9 @@ window.CompanyMasteryEngine = (function() {
 
   function init() {
     const container = document.getElementById('viewCompanyHub');
-    if (!container) return;
-    render(container);
+    if (container) {
+      render(container);
+    }
   }
 
   function getVaultProblems() {
@@ -633,10 +685,13 @@ window.CompanyMasteryEngine = (function() {
         if (!domains.includes(activeDomain)) return false;
       }
 
-      // Company Match
+      // Company Match with clean fuzzy match
       if (activeCompany !== 'all') {
-        const companies = p.companies || [];
-        const hasCompany = companies.some(c => c.toLowerCase() === activeCompany.toLowerCase());
+        const cleanTarget = activeCompany.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const hasCompany = (p.companies || []).some(c => {
+          const cleanC = c.toLowerCase().replace(/[^a-z0-9]/g, '');
+          return cleanC.includes(cleanTarget) || cleanTarget.includes(cleanC);
+        });
         if (!hasCompany) return false;
       }
 
@@ -687,147 +742,302 @@ window.CompanyMasteryEngine = (function() {
       if (activeDomain === 'all') return vault.length;
       return vault.filter(p => (p.domains || []).includes(activeDomain)).length;
     }
-    return vault.filter(p => (p.companies || []).some(c => c.toLowerCase() === companyKey.toLowerCase())).length;
+    const cleanTarget = companyKey.toLowerCase().replace(/[^a-z0-9]/g, '');
+    return vault.filter(p => (p.companies || []).some(c => {
+      const cleanC = c.toLowerCase().replace(/[^a-z0-9]/g, '');
+      return cleanC.includes(cleanTarget) || cleanTarget.includes(cleanC);
+    })).length;
+  }
+
+  function getCompanyDifficultyCounts(companyKey) {
+    const vault = getVaultProblems();
+    let easy = 0, med = 0, hard = 0, total = 0;
+    const cleanTarget = (companyKey === 'all') ? '' : companyKey.toLowerCase().replace(/[^a-z0-9]/g, '');
+    
+    vault.forEach(p => {
+      if (cleanTarget) {
+        const match = (p.companies || []).some(c => {
+          const cleanC = c.toLowerCase().replace(/[^a-z0-9]/g, '');
+          return cleanC.includes(cleanTarget) || cleanTarget.includes(cleanC);
+        });
+        if (!match) return;
+      }
+      total++;
+      const diff = (p.difficulty || 'Medium').toLowerCase();
+      if (diff === 'easy') easy++;
+      else if (diff === 'hard') hard++;
+      else med++;
+    });
+
+    return { easy, med, hard, total };
   }
 
   // ===========================================================================
   // 4. MAIN VIEW RENDERER
   // ===========================================================================
   function render(container) {
-    const domain = DOMAIN_CATALOG[activeDomain] || DOMAIN_CATALOG.all;
-    const profile = activeCompany === 'all' 
-      ? { ...COMPANY_PROFILES.all, name: activeDomain === 'all' ? "All Top Companies" : `${domain.name} (All Firms)`, icon: domain.icon, coreFocus: domain.coreFocus, probabilities: domain.domainProbabilities, topSyntax: domain.topSyntax }
-      : getCompanyProfile(activeCompany);
+    if (!container) {
+      container = document.getElementById('viewCompanyHub');
+    }
+    if (!container) return;
 
-    const filteredProblems = getFilteredProblems();
-    const totalCount = filteredProblems.length;
-
-    // Get list of companies to display in ribbon
-    let displayCompanies = [];
-    if (activeDomain === 'all') {
-      displayCompanies = ['all', 'Amazon', 'Google', 'Meta', 'Apple', 'Stripe', 'Citadel', 'JaneStreet', 'Bloomberg', 'Netflix', 'Spotify', 'Uber', 'Airbnb', 'Snowflake', 'Microsoft', 'Coinbase', 'Tesla', 'EpicSystems', 'Cloudflare'];
+    // Check if in Directory Mode or Dedicated Track Mode
+    if (viewMode === 'directory') {
+      renderDirectoryMode(container);
     } else {
-      displayCompanies = ['all', ...(domain.companies || [])];
+      renderDedicatedTrackMode(container);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 4A. DIRECTORY HUB (HOME LAUNCHPAD) - CLEAN, SCANNABLE, ZERO-CLUTTER
+  // ---------------------------------------------------------------------------
+  function renderDirectoryMode(container) {
+    const vault = getVaultProblems();
+    const totalVaultCount = vault.length;
+
+    // Filter employers if domain filter or search is active
+    let displayEmployers = FEATURED_EMPLOYERS;
+    if (directoryDomainFilter !== 'all') {
+      displayEmployers = displayEmployers.filter(e => e.domain === directoryDomainFilter);
+    }
+    if (directorySearch.trim()) {
+      const q = directorySearch.toLowerCase().trim();
+      displayEmployers = displayEmployers.filter(e => 
+        e.name.toLowerCase().includes(q) || 
+        e.tier.toLowerCase().includes(q) || 
+        e.domain.toLowerCase().includes(q)
+      );
+    }
+
+    // Filter domains if search active
+    let displayDomains = Object.keys(DOMAIN_CATALOG).filter(k => k !== 'all');
+    if (directorySearch.trim()) {
+      const q = directorySearch.toLowerCase().trim();
+      displayDomains = displayDomains.filter(k => {
+        const d = DOMAIN_CATALOG[k];
+        return d.name.toLowerCase().includes(q) || d.tagline.toLowerCase().includes(q) || (d.companies || []).some(c => c.toLowerCase().includes(q));
+      });
     }
 
     container.innerHTML = `
       <div class="company-hub-wrapper">
-        <!-- Top Institutional Header -->
-        <header class="company-hub-header">
-          <div class="hub-header-left">
-            <div class="hub-title-row">
-              <span class="hub-title-icon">🏛️</span>
-              <div>
-                <h1 class="hub-title">Institutional Domain &amp; Company Mastery Hub</h1>
-                <p class="hub-subtitle">
-                  10 Core Industry Verticals · 70+ Premier Employers · Authentic LeetCode 323 Vault with live WASM Judge &amp; 14 Timed Mock Screens.
-                </p>
-              </div>
+        <!-- Sleek Directory Top Navigation Bar -->
+        <header class="company-directory-topbar">
+          <div class="hub-header-brand">
+            <span class="hub-brand-icon">🏛️</span>
+            <div>
+              <h1 class="hub-brand-title">Company &amp; Industry Tracks</h1>
+              <p class="hub-brand-sub">75 Premier Employers &bull; 10 Industry Domains &bull; ${totalVaultCount} WASM-Judged Problems</p>
             </div>
           </div>
-          <div class="hub-header-stats">
-            <div class="hub-stat-card">
-              <div class="hub-stat-val">10 Domains</div>
-              <div class="hub-stat-lbl">Industry Verticals</div>
-            </div>
-            <div class="hub-stat-card">
-              <div class="hub-stat-val">70+ Firms</div>
-              <div class="hub-stat-lbl">Target Employers</div>
-            </div>
-            <div class="hub-stat-card">
-              <div class="hub-stat-val">323 Problems</div>
-              <div class="hub-stat-lbl">WASM Verified</div>
-            </div>
-            <div class="hub-stat-card">
-              <div class="hub-stat-val">14 Screens</div>
-              <div class="hub-stat-lbl">45-Min Timed</div>
-            </div>
+
+          <!-- Segmented Toggle: 3 Clean View Modes -->
+          <div class="hub-tab-segmented">
+            <button class="hub-seg-btn ${directoryTab === 'employers' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryTab('employers')">
+              <span>🏢 Top Employers (${FEATURED_EMPLOYERS.length})</span>
+            </button>
+            <button class="hub-seg-btn ${directoryTab === 'domains' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryTab('domains')">
+              <span>🌐 Industry Domains (10)</span>
+            </button>
+            <button class="hub-seg-btn ${directoryTab === 'problems' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryTab('problems')">
+              <span>📋 All Problems (${totalVaultCount})</span>
+            </button>
+          </div>
+
+          <!-- Quick Search Filter -->
+          <div class="hub-search-field">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="hub-search-input-box" id="hubDirSearch" placeholder="Filter company or domain..." value="${escapeHtml(directorySearch)}" oninput="window.CompanyMasteryEngine.onDirectorySearch(this.value)">
+            ${directorySearch ? '<button class="hub-search-clear" onclick="window.CompanyMasteryEngine.clearDirectorySearch()">✕</button>' : ''}
           </div>
         </header>
 
-        <!-- Tier 1: Domain Navigation Ribbon -->
-        <div class="domain-selector-section">
-          <div class="domain-selector-header">
-            <span class="sec-badge">STEP 1</span>
-            <span class="sec-title">Select Industry Domain / Vertical</span>
+        <!-- SUB-VIEW 1: TOP EMPLOYERS CARDS DIRECTORY -->
+        ${directoryTab === 'employers' ? `
+          <!-- Domain Filter Quick Pills -->
+          <div class="company-domain-pills-bar">
+            <button class="domain-filter-pill ${directoryDomainFilter === 'all' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryDomainFilter('all')">All Sectors</button>
+            <button class="domain-filter-pill ${directoryDomainFilter === 'cloud' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryDomainFilter('cloud')">☁️ Cloud &amp; Warehouses</button>
+            <button class="domain-filter-pill ${directoryDomainFilter === 'quant' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryDomainFilter('quant')">📈 Quant &amp; Wall St</button>
+            <button class="domain-filter-pill ${directoryDomainFilter === 'fintech' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryDomainFilter('fintech')">💳 FinTech &amp; Payments</button>
+            <button class="domain-filter-pill ${directoryDomainFilter === 'ecommerce' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryDomainFilter('ecommerce')">🛒 E-Commerce &amp; Retail</button>
+            <button class="domain-filter-pill ${directoryDomainFilter === 'social' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryDomainFilter('social')">💬 Social &amp; AdTech</button>
+            <button class="domain-filter-pill ${directoryDomainFilter === 'streaming' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryDomainFilter('streaming')">🎬 Streaming Media</button>
+            <button class="domain-filter-pill ${directoryDomainFilter === 'marketplace' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryDomainFilter('marketplace')">🚗 Mobility &amp; Logistics</button>
+            <button class="domain-filter-pill ${directoryDomainFilter === 'cyber' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryDomainFilter('cyber')">🛡️ Cybersecurity</button>
+            <button class="domain-filter-pill ${directoryDomainFilter === 'health' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryDomainFilter('health')">🧬 Healthcare</button>
+            <button class="domain-filter-pill ${directoryDomainFilter === 'iot' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDirectoryDomainFilter('iot')">⚡ Automotive &amp; IoT</button>
           </div>
-          <div class="domain-selector-ribbon" id="domainRibbon">
-            ${Object.keys(DOMAIN_CATALOG).map(dKey => {
-              const d = DOMAIN_CATALOG[dKey];
-              const isSelected = activeDomain === dKey;
-              const count = getDomainQuestionCount(dKey);
+
+          <!-- Company Cards Grid -->
+          <div class="company-directory-grid">
+            ${displayEmployers.map(emp => {
+              const prof = getCompanyProfile(emp.key);
+              const counts = getCompanyDifficultyCounts(emp.key);
+              const qCount = counts.total;
               return `
-                <button class="domain-tab-btn ${isSelected ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDomain('${dKey}')">
-                  <span class="domain-tab-icon">${d.icon}</span>
-                  <div class="domain-tab-info">
-                    <span class="domain-tab-name">${d.name}</span>
-                    <span class="domain-tab-meta">${count} Problems</span>
+                <div class="company-directory-card" onclick="window.CompanyMasteryEngine.openCompanyTrack('${emp.key}')">
+                  <div class="company-card-header">
+                    <div class="company-card-title-group">
+                      <span class="company-card-avatar">${emp.icon || prof.icon || '🏢'}</span>
+                      <div>
+                        <h3 class="company-card-name">${emp.name}</h3>
+                        <span class="company-card-domain-badge">${prof.badge}</span>
+                      </div>
+                    </div>
+                    <span class="company-card-count-badge">${qCount} Problems</span>
                   </div>
-                </button>
+
+                  <p class="company-card-focus">${escapeHtml(prof.coreFocus || '')}</p>
+
+                  <div class="company-card-specs-row">
+                    <span class="company-spec-tag dialect">${prof.dialect ? prof.dialect.split('·')[0].trim() : 'PostgreSQL'}</span>
+                    <span class="company-spec-tag tier">${emp.tier || prof.tier || 'Tier 1'}</span>
+                    ${prof.mockTrackId ? `<span class="company-spec-tag mock">🎯 45m Mock</span>` : ''}
+                  </div>
+
+                  <div class="company-card-syntax-row">
+                    ${(prof.topSyntax || []).slice(0, 3).map(s => `<span class="company-syntax-pill">${escapeHtml(s)}</span>`).join('')}
+                  </div>
+
+                  <div class="company-card-footer">
+                    <div class="company-card-diff-dots">
+                      <span class="dot-count easy">🟢 ${counts.easy}</span>
+                      <span class="dot-count medium">🟡 ${counts.med}</span>
+                      <span class="dot-count hard">🔴 ${counts.hard}</span>
+                    </div>
+                    <button class="company-card-open-btn" onclick="event.stopPropagation(); window.CompanyMasteryEngine.openCompanyTrack('${emp.key}')">
+                      <span>Explore Track →</span>
+                    </button>
+                  </div>
+                </div>
               `;
             }).join('')}
-          </div>
-        </div>
-
-        <!-- Domain Architecture & ERD Spotlight Banner -->
-        ${domain.id !== 'all' ? `
-          <div class="domain-architecture-spotlight">
-            <div class="spotlight-left">
-              <div class="spotlight-badge-row">
-                <span class="spotlight-domain-pill">${domain.icon} ${domain.name} Architecture</span>
-                <span class="spotlight-tagline-pill">${domain.badge}</span>
-              </div>
-              <h3 class="spotlight-title">${domain.tagline}</h3>
-              <p class="spotlight-focus">${domain.coreFocus}</p>
-            </div>
-            <div class="spotlight-right">
-              ${domain.erdKey && window.DOMAIN_ERD_ENGINE ? `
-                <button class="spotlight-erd-btn" onclick="window.CompanyMasteryEngine.openDomainERD('${domain.erdKey}')">
-                  <span class="btn-icon">📐</span>
-                  <div class="btn-text">
-                    <strong>Inspect ${domain.name} ERD Diagram</strong>
-                    <small>Interactive Visual Multi-Table Relational Model</small>
-                  </div>
-                </button>
-              ` : ''}
-            </div>
           </div>
         ` : ''}
 
-        <!-- Tier 2: Company Selector Ribbon within Domain -->
-        <div class="company-selector-section">
-          <div class="company-selector-header">
-            <span class="sec-badge">STEP 2</span>
-            <span class="sec-title">Select Employer (${activeDomain === 'all' ? 'Featured FAANG & Wall Street' : domain.name + ' Firms'})</span>
-          </div>
-          <div class="company-selector-ribbon" id="companyRibbon">
-            ${displayCompanies.map(cKey => {
-              const compProf = cKey === 'all' 
-                ? { name: activeDomain === 'all' ? "All Top Companies" : `All ${domain.name}`, icon: "🌐" }
-                : getCompanyProfile(cKey);
-              const count = getCompanyQuestionCount(cKey);
-              const isSelected = activeCompany === cKey;
+        <!-- SUB-VIEW 2: INDUSTRY DOMAINS CARDS DIRECTORY -->
+        ${directoryTab === 'domains' ? `
+          <div class="domain-directory-grid">
+            ${displayDomains.map(dKey => {
+              const d = DOMAIN_CATALOG[dKey];
+              const dCount = getDomainQuestionCount(dKey);
               return `
-                <button class="company-tab-btn ${isSelected ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setCompany('${cKey}')">
-                  <span class="company-tab-icon">${compProf.icon}</span>
-                  <span class="company-tab-name">${compProf.name}</span>
-                  <span class="company-tab-count">${count}</span>
-                </button>
+                <div class="domain-directory-card" onclick="window.CompanyMasteryEngine.openDomainTrack('${dKey}')">
+                  <div class="domain-card-header">
+                    <div class="domain-card-title-group">
+                      <span class="domain-card-icon">${d.icon}</span>
+                      <div>
+                        <h3 class="domain-card-name">${d.name}</h3>
+                        <span class="domain-card-badge">${d.badge}</span>
+                      </div>
+                    </div>
+                    <span class="domain-card-count-badge">${dCount} Problems</span>
+                  </div>
+
+                  <p class="domain-card-tagline">${escapeHtml(d.tagline)}</p>
+                  <p class="domain-card-focus"><strong>Relational Focus:</strong> ${escapeHtml(d.coreFocus)}</p>
+
+                  <div class="domain-card-employers">
+                    <span class="domain-emp-label">Target Employers:</span>
+                    ${(d.companies || []).slice(0, 6).map(c => `
+                      <span class="domain-emp-chip" onclick="event.stopPropagation(); window.CompanyMasteryEngine.openCompanyTrack('${c}')">${c}</span>
+                    `).join('')}
+                    ${(d.companies || []).length > 6 ? `<span class="domain-emp-chip more">+${(d.companies.length - 6)}</span>` : ''}
+                  </div>
+
+                  <div class="domain-card-footer">
+                    ${d.erdKey && window.DOMAIN_ERD_ENGINE ? `
+                      <button class="domain-erd-action-btn" onclick="event.stopPropagation(); window.CompanyMasteryEngine.openDomainERD('${d.erdKey}')">
+                        <span>📐 View ERD Model</span>
+                      </button>
+                    ` : '<div></div>'}
+                    <button class="domain-card-open-btn" onclick="event.stopPropagation(); window.CompanyMasteryEngine.openDomainTrack('${dKey}')">
+                      <span>Open Domain Track (${dCount}) →</span>
+                    </button>
+                  </div>
+                </div>
               `;
             }).join('')}
           </div>
-        </div>
+        ` : ''}
 
-        <!-- Selected Company Dossier Card -->
+        <!-- SUB-VIEW 3: ALL PROBLEMS DIRECTORY -->
+        ${directoryTab === 'problems' ? renderAllProblemsTable() : ''}
+      </div>
+
+      <!-- Detail Modal Mount Point -->
+      <div id="companyProblemModal" class="company-modal-overlay" style="display: none;" onclick="window.CompanyMasteryEngine.handleModalOverlayClick(event)">
+        <div class="company-modal-dialog">
+          <div id="companyModalContent"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ---------------------------------------------------------------------------
+  // 4B. DEDICATED TRACK VIEW (SINGLE PAGE ON ONE SCREEN)
+  // ---------------------------------------------------------------------------
+  function renderDedicatedTrackMode(container) {
+    const isCompanyMode = viewMode === 'company';
+    const domain = DOMAIN_CATALOG[activeDomain] || DOMAIN_CATALOG.all;
+    const profile = isCompanyMode
+      ? getCompanyProfile(activeCompany)
+      : { ...COMPANY_PROFILES.all, name: domain.name, icon: domain.icon, coreFocus: domain.coreFocus, probabilities: domain.domainProbabilities, topSyntax: domain.topSyntax, badge: domain.badge, tier: "Industry Vertical Track", dialect: "ANSI SQL · PostgreSQL · Snowflake · BigQuery", screenFormat: `45-min domain relational technical screen on ${domain.name}` };
+
+    const filteredProblems = getFilteredProblems();
+    const totalCount = filteredProblems.length;
+    const counts = isCompanyMode ? getCompanyDifficultyCounts(activeCompany) : getCompanyDifficultyCounts('all');
+
+    container.innerHTML = `
+      <div class="company-hub-wrapper">
+        <!-- Sleek 44px Dedicated Track Action Bar -->
+        <header class="company-track-topbar">
+          <div class="track-bar-left">
+            <button class="track-back-btn" onclick="window.CompanyMasteryEngine.backToDirectory()" title="Return to Company &amp; Domain Directory">
+              <span class="track-back-arrow">←</span>
+              <span>Back to Hub</span>
+            </button>
+
+            <div class="track-bar-sep"></div>
+
+            <div class="track-bar-title-group">
+              <span class="track-bar-icon">${profile.icon}</span>
+              <span class="track-bar-name">${profile.name} ${isCompanyMode ? 'Interview Track' : 'Domain Track'}</span>
+              <span class="track-bar-tier">${profile.tier}</span>
+              <span class="track-bar-domain">${profile.badge || domain.name}</span>
+              <span class="track-bar-count">${totalCount} Curated Problems</span>
+            </div>
+          </div>
+
+          <div class="track-bar-right">
+            ${profile.mockTrackId ? `
+              <button class="track-cta-btn primary" onclick="window.CompanyMasteryEngine.launchMockTrack('${profile.mockTrackId}')">
+                <span>🎯 45-Min Mock Screen</span>
+              </button>
+            ` : ''}
+            <button class="track-cta-btn secondary" onclick="window.CompanyMasteryEngine.jumpToArena()">
+              <span>⚡ Practice in Arena</span>
+            </button>
+            ${domain.erdKey && window.DOMAIN_ERD_ENGINE ? `
+              <button class="track-cta-btn tertiary" onclick="window.CompanyMasteryEngine.openDomainERD('${domain.erdKey}')">
+                <span>📐 View ERD Diagram</span>
+              </button>
+            ` : ''}
+          </div>
+        </header>
+
+        <!-- Compact Scannable Interview Dossier -->
         <div class="company-dossier-card">
           <div class="dossier-main-col">
             <div class="dossier-header-bar">
               <div class="dossier-badge-row">
                 <span class="dossier-tier-pill">${profile.tier}</span>
                 <span class="dossier-category-pill">${profile.badge}</span>
-                ${profile.mockTrackId ? `<span class="dossier-live-screen-pill">🎯 Interactive 45-Min Screen Available</span>` : ''}
+                ${profile.mockTrackId ? `<span class="dossier-live-screen-pill">🎯 Interactive 45-Min Timed Screen</span>` : ''}
               </div>
-              <h2 class="dossier-company-name">${profile.icon} ${profile.name} Interview Dossier</h2>
+              <h2 class="dossier-company-name">${profile.icon} ${profile.name} Technical Dossier</h2>
             </div>
 
             <p class="dossier-focus-desc"><strong>Core Relational Focus:</strong> ${profile.coreFocus}</p>
@@ -847,22 +1057,6 @@ window.CompanyMasteryEngine = (function() {
                   ${(profile.topSyntax || []).map(s => `<span class="syntax-tag">${s}</span>`).join('')}
                 </div>
               </div>
-            </div>
-
-            <div class="dossier-actions-bar">
-              ${profile.mockTrackId ? `
-                <button class="dossier-launch-btn primary" onclick="window.CompanyMasteryEngine.launchMockTrack('${profile.mockTrackId}')">
-                  <span>🚀 Launch 45-Min ${profile.name} Timed Screen</span>
-                </button>
-              ` : ''}
-              <button class="dossier-launch-btn secondary" onclick="window.CompanyMasteryEngine.jumpToArena()">
-                <span>⚡ Open in LeetCode 323 Arena</span>
-              </button>
-              ${domain.erdKey && window.DOMAIN_ERD_ENGINE ? `
-                <button class="dossier-launch-btn tertiary" onclick="window.CompanyMasteryEngine.openDomainERD('${domain.erdKey}')">
-                  <span>📐 View Domain ERD</span>
-                </button>
-              ` : ''}
             </div>
           </div>
 
@@ -884,14 +1078,14 @@ window.CompanyMasteryEngine = (function() {
           </div>
         </div>
 
-        <!-- Filter & Search Bar -->
+        <!-- Filter & Search Controls for Target Problems -->
         <div class="hub-controls-row">
           <div class="hub-search-box">
             <span class="search-icon">🔍</span>
             <input type="text" 
                    id="hubProblemSearch" 
                    class="hub-search-input" 
-                   placeholder="Search 323 problems by # (e.g. 185), title, keyword (e.g. QUALIFY, DENSE_RANK)..." 
+                   placeholder="Search ${profile.name} problems by #, title, keyword (e.g. QUALIFY, DENSE_RANK)..." 
                    value="${escapeHtml(searchQuery)}" 
                    oninput="window.CompanyMasteryEngine.onSearchChange(this.value)" />
             ${searchQuery ? `<button class="search-clear-btn" onclick="window.CompanyMasteryEngine.clearSearch()">✕</button>` : ''}
@@ -899,10 +1093,10 @@ window.CompanyMasteryEngine = (function() {
 
           <div class="hub-filter-group">
             <div class="diff-filter-btns">
-              <button class="diff-btn ${activeDifficulty === 'all' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('all')">All</button>
-              <button class="diff-btn easy ${activeDifficulty === 'easy' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('easy')">Easy</button>
-              <button class="diff-btn medium ${activeDifficulty === 'medium' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('medium')">Medium</button>
-              <button class="diff-btn hard ${activeDifficulty === 'hard' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('hard')">Hard</button>
+              <button class="diff-btn ${activeDifficulty === 'all' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('all')">All (${totalCount})</button>
+              <button class="diff-btn easy ${activeDifficulty === 'easy' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('easy')">🟢 Easy (${counts.easy})</button>
+              <button class="diff-btn medium ${activeDifficulty === 'medium' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('medium')">🟡 Medium (${counts.med})</button>
+              <button class="diff-btn hard ${activeDifficulty === 'hard' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('hard')">🔴 Hard (${counts.hard})</button>
             </div>
 
             <div class="sort-selector">
@@ -928,7 +1122,7 @@ window.CompanyMasteryEngine = (function() {
             <div class="hub-empty-state">
               <div class="empty-icon">📂</div>
               <h3>No matching interview problems found</h3>
-              <p>Try resetting the search keywords or selecting "All Companies".</p>
+              <p>Try resetting the search keywords or selecting "All Difficulties".</p>
               <button class="empty-reset-btn" onclick="window.CompanyMasteryEngine.resetFilters()">Reset All Filters</button>
             </div>
           ` : filteredProblems.map(p => renderProblemCard(p)).join('')}
@@ -940,6 +1134,53 @@ window.CompanyMasteryEngine = (function() {
         <div class="company-modal-dialog">
           <div id="companyModalContent"></div>
         </div>
+      </div>
+    `;
+  }
+
+  function renderAllProblemsTable() {
+    const filtered = getFilteredProblems();
+    return `
+      <!-- Filter & Search Controls -->
+      <div class="hub-controls-row">
+        <div class="hub-search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" 
+                 id="hubProblemSearch" 
+                 class="hub-search-input" 
+                 placeholder="Search all 323 problems by #, title, company, or keyword..." 
+                 value="${escapeHtml(searchQuery)}" 
+                 oninput="window.CompanyMasteryEngine.onSearchChange(this.value)" />
+          ${searchQuery ? `<button class="search-clear-btn" onclick="window.CompanyMasteryEngine.clearSearch()">✕</button>` : ''}
+        </div>
+
+        <div class="hub-filter-group">
+          <div class="diff-filter-btns">
+            <button class="diff-btn ${activeDifficulty === 'all' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('all')">All</button>
+            <button class="diff-btn easy ${activeDifficulty === 'easy' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('easy')">Easy</button>
+            <button class="diff-btn medium ${activeDifficulty === 'medium' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('medium')">Medium</button>
+            <button class="diff-btn hard ${activeDifficulty === 'hard' ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDifficulty('hard')">Hard</button>
+          </div>
+
+          <div class="sort-selector">
+            <label for="hubSortSelect">Sort by:</label>
+            <select id="hubSortSelect" class="hub-select" onchange="window.CompanyMasteryEngine.setSort(this.value)">
+              <option value="probability" ${activeSort === 'probability' ? 'selected' : ''}>Interview Frequency</option>
+              <option value="id" ${activeSort === 'id' ? 'selected' : ''}>LeetCode #</option>
+              <option value="difficulty" ${activeSort === 'difficulty' ? 'selected' : ''}>Difficulty</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="hub-problems-grid" id="hubProblemsGrid">
+        ${filtered.length === 0 ? `
+          <div class="hub-empty-state">
+            <div class="empty-icon">📂</div>
+            <h3>No matching interview problems found</h3>
+            <button class="empty-reset-btn" onclick="window.CompanyMasteryEngine.resetFilters()">Reset All Filters</button>
+          </div>
+        ` : filtered.map(p => renderProblemCard(p)).join('')}
       </div>
     `;
   }
@@ -962,8 +1203,8 @@ window.CompanyMasteryEngine = (function() {
         <div class="prob-card-category"><span class="cat-dot"></span>${escapeHtml(p.category || 'Relational Core')}</div>
 
         <div class="prob-card-companies">
-          ${companies.slice(0, 4).map(c => `<span class="company-tag">${c}</span>`).join('')}
-          ${companies.length > 4 ? `<span class="company-tag more">+${companies.length - 4}</span>` : ''}
+          ${companies.slice(0, 4).map(c => `<span class="company-tag" onclick="event.stopPropagation(); window.CompanyMasteryEngine.openCompanyTrack('${c}')">${c}</span>`).join('')}
+          ${companies.length > 4 ? `<span class="company-tag more">+ ${companies.length - 4}</span>` : ''}
         </div>
 
         <div class="prob-card-round">
@@ -1010,61 +1251,70 @@ window.CompanyMasteryEngine = (function() {
         <button class="modal-close-btn" onclick="window.CompanyMasteryEngine.closeModal()">✕</button>
       </div>
 
-      <div class="modal-company-strip">
-        <span class="strip-label">Tested frequently at:</span>
-        ${companies.map(c => `<span class="modal-company-pill">${c}</span>`).join('')}
-        <span class="modal-round-tag">Round: ${escapeHtml(problem.interviewRound || 'Phone Screen')}</span>
-      </div>
-
-      <div class="modal-tabs-bar">
-        <button class="modal-tab-btn active" id="tabBtnSpec" onclick="window.CompanyMasteryEngine.switchModalTab('spec')">📋 Schema &amp; Problem</button>
-        <button class="modal-tab-btn" id="tabBtnSolution" onclick="window.CompanyMasteryEngine.switchModalTab('solution')">✨ Enterprise Solution</button>
-        <button class="modal-tab-btn" id="tabBtnLogic" onclick="window.CompanyMasteryEngine.switchModalTab('logic')">🧠 Execution Breakdown</button>
-        <button class="modal-tab-btn" id="tabBtnTraps" onclick="window.CompanyMasteryEngine.switchModalTab('traps')">⚠️ Pitfalls &amp; Traps</button>
-      </div>
-
-      <div class="modal-tab-body" id="modalTabBody">
-        ${renderModalTabSpec(problem)}
-      </div>
-
-      <div class="modal-footer-bar">
-        <div class="modal-footer-left">
-          <button class="modal-btn secondary" onclick="window.CompanyMasteryEngine.copyCurrentSQL()">📋 Copy Golden SQL</button>
+      <div class="modal-body">
+        <div class="modal-meta-strip">
+          <div class="meta-item">
+            <span class="meta-lbl">Target Employers</span>
+            <div class="meta-companies">
+              ${companies.map(c => `<span class="company-tag">${c}</span>`).join('')}
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-lbl">Interview Stage</span>
+            <span class="meta-val">${escapeHtml(problem.interviewRound || 'Technical Screen')}</span>
+          </div>
         </div>
-        <div class="modal-footer-right">
-          <button class="modal-btn primary" onclick="window.CompanyMasteryEngine.openInArena(${problem.id})">
-            <span>⚡ Open in LeetCode Arena &amp; Run WASM</span>
-          </button>
+
+        <div class="modal-tabs-bar">
+          <button class="modal-tab-btn active" data-tab="spec" onclick="window.CompanyMasteryEngine.switchModalTab('spec')">Problem Spec &amp; Schema</button>
+          <button class="modal-tab-btn" data-tab="solution" onclick="window.CompanyMasteryEngine.switchModalTab('solution')">Canonical Solution</button>
+          <button class="modal-tab-btn" data-tab="logic" onclick="window.CompanyMasteryEngine.switchModalTab('logic')">Relational Logic</button>
+          <button class="modal-tab-btn" data-tab="traps" onclick="window.CompanyMasteryEngine.switchModalTab('traps')">Interview Traps</button>
         </div>
+
+        <div class="modal-tab-pane" id="modalTabContent">
+          ${renderModalTabSpec(problem)}
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="modal-action-btn secondary" onclick="window.CompanyMasteryEngine.copyCurrentSQL()">
+          <span>📋 Copy SQL</span>
+        </button>
+        <button class="modal-action-btn primary" onclick="window.CompanyMasteryEngine.openInArena(${problem.id})">
+          <span>⚡ Launch in LeetCode 323 Studio</span>
+        </button>
       </div>
     `;
 
     modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
   }
 
   function renderModalTabSpec(problem) {
+    const input = problem.sampleInput || {};
+    const expected = problem.expectedOutput || {};
+
     return `
-      <div class="modal-tab-pane">
+      <div class="tab-pane-spec">
         <div class="spec-section">
-          <h4 class="spec-sec-title">Problem Statement</h4>
-          <div class="spec-prompt-box">
-            <pre class="prompt-text">${escapeHtml(problem.prompt || problem.title)}</pre>
-          </div>
+          <h4 class="spec-heading">Problem Description</h4>
+          <p class="spec-prompt">${escapeHtml(problem.prompt || problem.description || 'No description available.')}</p>
         </div>
 
-        <div class="spec-section">
-          <h4 class="spec-sec-title">Relational Schema Definition</h4>
-          <div class="schema-code-box">
-            <pre><code>${escapeHtml(problem.schemaDescription || 'Standard relational schema')}</code></pre>
-          </div>
-        </div>
-
-        ${problem.sampleInput ? `
+        ${input.table ? `
           <div class="spec-section">
-            <h4 class="spec-sec-title">Sample Test Input</h4>
-            <div class="sample-data-box">
-              <pre><code>${escapeHtml(typeof problem.sampleInput === 'object' ? JSON.stringify(problem.sampleInput, null, 2) : problem.sampleInput)}</code></pre>
+            <h4 class="spec-heading">Input Table: <code>${input.table}</code></h4>
+            <div class="spec-table-scroll">
+              <table class="spec-data-table">
+                <thead>
+                  <tr>${(input.columns || []).map(col => `<th>${col}</th>`).join('')}</tr>
+                </thead>
+                <tbody>
+                  ${(input.rows || []).map(row => `
+                    <tr>${row.map(val => `<td>${val === null ? '<span class="null-val">NULL</span>' : escapeHtml(val)}</td>`).join('')}</tr>
+                  `).join('')}
+                </tbody>
+              </table>
             </div>
           </div>
         ` : ''}
@@ -1073,137 +1323,74 @@ window.CompanyMasteryEngine = (function() {
   }
 
   function renderModalTabSolution(problem) {
-    const sql = problem.solutionSQL || '-- No solution query provided';
     return `
-      <div class="modal-tab-pane">
-        <div class="solution-header-row">
-          <div>
-            <span class="solution-tag">ANSI SQL / MySQL 8.0+ / PostgreSQL</span>
-            <span class="complexity-tag">Optimal O(N) or O(N log N) Execution</span>
-          </div>
-          <button class="copy-sql-pill-btn" onclick="window.CompanyMasteryEngine.copyCurrentSQL()">Copy SQL</button>
+      <div class="tab-pane-solution">
+        <div class="solution-header-bar">
+          <span class="sql-badge">ANSI SQL / MySQL 8.0</span>
+          <span class="verified-badge">✓ WASM Verified</span>
         </div>
-        <div class="golden-sql-editor">
-          <pre><code class="language-sql">${escapeHtml(sql)}</code></pre>
-        </div>
-
-        ${problem.alternativeSolutions && problem.alternativeSolutions.length > 0 ? `
-          <div class="alt-solutions-block">
-            <h4 class="alt-title">Alternative Industry Solution (${problem.alternativeSolutions[0].name})</h4>
-            <div class="alt-sql-box">
-              <pre><code>${escapeHtml(problem.alternativeSolutions[0].sql)}</code></pre>
-            </div>
-            <p class="alt-desc">${escapeHtml(problem.alternativeSolutions[0].explanation || '')}</p>
-          </div>
-        ` : ''}
+        <pre class="solution-sql-block"><code>${escapeHtml(problem.solutionSQL || '-- No solution provided.')}</code></pre>
       </div>
     `;
   }
 
   function renderModalTabLogic(problem) {
-    const lines = problem.lineByLineExplanation || [];
     return `
-      <div class="modal-tab-pane">
-        <h4 class="logic-title">Step-by-Step Query Assembly Line</h4>
-        <div class="logic-steps-list">
-          ${lines.length > 0 ? lines.map((step, idx) => `
-            <div class="logic-step-item">
-              <div class="logic-step-num">${idx + 1}</div>
-              <div class="logic-step-text">${escapeHtml(step)}</div>
-            </div>
-          `).join('') : `
-            <div class="logic-step-item">
-              <div class="logic-step-num">1</div>
-              <div class="logic-step-text">Formulate candidate rows via FROM and JOIN conditions.</div>
-            </div>
-            <div class="logic-step-item">
-              <div class="logic-step-num">2</div>
-              <div class="logic-step-text">Apply WHERE filter before grouping to prune irrelevant tuples early.</div>
-            </div>
-            <div class="logic-step-item">
-              <div class="logic-step-num">3</div>
-              <div class="logic-step-text">Perform analytical aggregation or window partitioning.</div>
-            </div>
-          `}
-        </div>
+      <div class="tab-pane-logic">
+        <h4 class="logic-heading">Execution Mechanics</h4>
+        <p class="logic-text">${escapeHtml(problem.explanation || problem.strategy || 'Solve using standard relational grouping, window rankings, or anti-joins.')}</p>
       </div>
     `;
   }
 
   function renderModalTabTraps(problem) {
-    const traps = problem.trapsAndEdgeCases || [];
+    const traps = problem.trapsAndEdgeCases || problem.traps || [];
     return `
-      <div class="modal-tab-pane">
-        <div class="traps-warning-banner">
-          <span class="warning-icon">⚠️</span>
-          <div>
-            <strong>Why 70% of Candidates Fail this Question:</strong>
-            <p>Interviewers design these tests specifically to catch subtle relational edge cases, NULL evaluation anomalies, and tie-breaking ambiguity.</p>
-          </div>
-        </div>
-
-        <div class="traps-list">
-          ${traps.length > 0 ? traps.map(trap => `
-            <div class="trap-card-item">
-              <span class="trap-bullet">💥</span>
-              <div class="trap-content">${escapeHtml(trap)}</div>
-            </div>
-          `).join('') : `
-            <div class="trap-card-item">
-              <span class="trap-bullet">💥</span>
-              <div class="trap-content">Three-Valued Logic: Comparing against NULL with = NULL evaluates to UNKNOWN, silently dropping rows. Always use IS NULL.</div>
-            </div>
-            <div class="trap-card-item">
-              <span class="trap-bullet">💥</span>
-              <div class="trap-content">Deterministic Ordering: Without secondary tie-breaker columns in ORDER BY, databases return non-deterministic row positions across shards.</div>
-            </div>
-          `}
-        </div>
+      <div class="tab-pane-traps">
+        <h4 class="traps-heading">Edge Cases &amp; Candidate Traps</h4>
+        <ul class="traps-list">
+          ${traps.length > 0 
+            ? traps.map(t => `<li>${escapeHtml(t)}</li>`).join('')
+            : '<li>Three-Valued Logic NULL handling in WHERE clause predicates.</li><li>Duplicate keys or ties in ranking functions (RANK vs DENSE_RANK).</li>'}
+        </ul>
       </div>
     `;
   }
 
   function switchModalTab(tabKey) {
     if (!activeModalProblem) return;
-    const body = document.getElementById('modalTabBody');
-    if (!body) return;
-
-    ['spec', 'solution', 'logic', 'traps'].forEach(k => {
-      const btn = document.getElementById(`tabBtn${k.charAt(0).toUpperCase() + k.slice(1)}`);
-      if (btn) btn.classList.toggle('active', k === tabKey);
+    document.querySelectorAll('.modal-tab-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.tab === tabKey);
     });
 
-    if (tabKey === 'spec') body.innerHTML = renderModalTabSpec(activeModalProblem);
-    else if (tabKey === 'solution') body.innerHTML = renderModalTabSolution(activeModalProblem);
-    else if (tabKey === 'logic') body.innerHTML = renderModalTabLogic(activeModalProblem);
-    else if (tabKey === 'traps') body.innerHTML = renderModalTabTraps(activeModalProblem);
+    const content = document.getElementById('modalTabContent');
+    if (!content) return;
+
+    if (tabKey === 'spec') content.innerHTML = renderModalTabSpec(activeModalProblem);
+    else if (tabKey === 'solution') content.innerHTML = renderModalTabSolution(activeModalProblem);
+    else if (tabKey === 'logic') content.innerHTML = renderModalTabLogic(activeModalProblem);
+    else if (tabKey === 'traps') content.innerHTML = renderModalTabTraps(activeModalProblem);
   }
 
   function closeModal() {
+    activeModalProblem = null;
     const modal = document.getElementById('companyProblemModal');
     if (modal) modal.style.display = 'none';
-    document.body.style.overflow = '';
-    activeModalProblem = null;
   }
 
   function handleModalOverlayClick(e) {
-    if (e.target && e.target.id === 'companyProblemModal') {
+    if (e.target.id === 'companyProblemModal') {
       closeModal();
     }
   }
 
   function copyCurrentSQL() {
-    if (!activeModalProblem) return;
-    const sql = activeModalProblem.solutionSQL || '';
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(sql).then(() => {
-        alert('✨ Golden SQL query copied to clipboard!');
-      }).catch(() => {
-        prompt('Copy your query:', sql);
-      });
-    } else {
-      prompt('Copy your query:', sql);
-    }
+    if (!activeModalProblem || !activeModalProblem.solutionSQL) return;
+    navigator.clipboard.writeText(activeModalProblem.solutionSQL).then(() => {
+      if (window.SQL_BUDDY && typeof window.SQL_BUDDY.say === 'function') {
+        window.SQL_BUDDY.say("📋 Copied canonical SQL solution to clipboard!", 2500, 'celebrate');
+      }
+    });
   }
 
   function openInArena(problemId) {
@@ -1243,52 +1430,91 @@ window.CompanyMasteryEngine = (function() {
     }
   }
 
-  // Filter setters
-  function setDomain(domainKey) {
+  function openCompanyTrack(companyKey) {
+    activeCompany = companyKey;
+    activeDomain = 'all';
+    viewMode = 'company';
+    searchQuery = '';
+    activeDifficulty = 'all';
+    render();
+    const cont = document.getElementById('viewCompanyHub');
+    if (cont) cont.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function openDomainTrack(domainKey) {
     activeDomain = domainKey;
-    activeCompany = 'all'; // reset company filter on domain change
-    const container = document.getElementById('viewCompanyHub');
-    if (container) render(container);
+    activeCompany = 'all';
+    viewMode = 'domain';
+    searchQuery = '';
+    activeDifficulty = 'all';
+    render();
+    const cont = document.getElementById('viewCompanyHub');
+    if (cont) cont.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function backToDirectory() {
+    viewMode = 'directory';
+    activeCompany = 'all';
+    activeDomain = 'all';
+    searchQuery = '';
+    render();
+    const cont = document.getElementById('viewCompanyHub');
+    if (cont) cont.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function setDirectoryTab(tab) {
+    directoryTab = tab;
+    render();
+  }
+
+  function setDirectoryDomainFilter(dKey) {
+    directoryDomainFilter = dKey;
+    render();
+  }
+
+  function onDirectorySearch(val) {
+    directorySearch = val;
+    render();
+  }
+
+  function clearDirectorySearch() {
+    directorySearch = '';
+    render();
+  }
+
+  function setDomain(domainKey) {
+    openDomainTrack(domainKey);
   }
 
   function setCompany(companyKey) {
-    activeCompany = companyKey;
-    const container = document.getElementById('viewCompanyHub');
-    if (container) render(container);
+    openCompanyTrack(companyKey);
   }
 
   function setDifficulty(diff) {
     activeDifficulty = diff;
-    const container = document.getElementById('viewCompanyHub');
-    if (container) render(container);
+    render();
   }
 
   function setSort(sortKey) {
     activeSort = sortKey;
-    const container = document.getElementById('viewCompanyHub');
-    if (container) render(container);
+    render();
   }
 
   function onSearchChange(val) {
     searchQuery = val;
-    const container = document.getElementById('viewCompanyHub');
-    if (container) render(container);
+    render();
   }
 
   function clearSearch() {
     searchQuery = '';
-    const container = document.getElementById('viewCompanyHub');
-    if (container) render(container);
+    render();
   }
 
   function resetFilters() {
-    activeDomain = 'all';
-    activeCompany = 'all';
     activeDifficulty = 'all';
     searchQuery = '';
     activeSort = 'probability';
-    const container = document.getElementById('viewCompanyHub');
-    if (container) render(container);
+    render();
   }
 
   function escapeHtml(str) {
@@ -1319,8 +1545,16 @@ window.CompanyMasteryEngine = (function() {
     launchMockTrack,
     jumpToArena,
     openDomainERD,
+    openCompanyTrack,
+    openDomainTrack,
+    backToDirectory,
+    setDirectoryTab,
+    setDirectoryDomainFilter,
+    onDirectorySearch,
+    clearDirectorySearch,
     DOMAIN_CATALOG,
-    COMPANY_PROFILES
+    COMPANY_PROFILES,
+    FEATURED_EMPLOYERS
   };
 
 })();
