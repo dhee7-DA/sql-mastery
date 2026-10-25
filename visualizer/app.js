@@ -2294,7 +2294,7 @@ function switchMainView(targetId) {
   }
   if (targetId === 'viewCompanyHub') {
     if (window.CompanyMasteryEngine) window.CompanyMasteryEngine.init();
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏢 Welcome to the Target Company Mastery Hub! FAANG & Wall Street interview intelligence, probabilities, and curated drills loaded!", 5000, 'celebrate');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏛️ Welcome to the Institutional Domain & Company Hub! 10 Industry Verticals, 70+ Premier Employers, and curated LeetCode drills loaded!", 5000, 'celebrate');
   }
   if (targetId === 'viewTactileEngine') {
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🧺 Welcome to the Tactile SQL Relational Washer! Hand-inked isometric physical query engine ready!", 5000, 'celebrate');

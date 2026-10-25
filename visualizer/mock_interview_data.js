@@ -2316,5 +2316,669 @@ WHERE (strftime('%s', t3.fill_time) - strftime('%s', t1.fill_time)) <= 600;`,
       ]
     }
 
-  ]
+  ,
+
+    // =========================================================================
+    // TRACK 11: SNOWFLAKE (CLOUD DATA WAREHOUSING & MULTI-TENANT COMPUTE)
+    // =========================================================================
+    {
+      id: "track_snowflake",
+      company: "Snowflake",
+      role: "Senior Data Warehouse Engineer (Core Virtual Warehouse Engine)",
+      badge: "Modern Data Stack",
+      icon: "❄️",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$260,000 – $390,000",
+      description: "Cloud warehouse internals screen: micro-partition pruning, multi-tenant credit consumption metering, and deduplication via window QUALIFY semantics.",
+      interviewer: {
+        name: "Elena Rostova",
+        title: "Principal Warehouse Architect",
+        avatar: "❄️"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS snowflake_query_history;
+CREATE TABLE IF NOT EXISTS snowflake_query_history (
+  query_id TEXT PRIMARY KEY,
+  warehouse_name TEXT NOT NULL,
+  account_name TEXT NOT NULL,
+  credits_used REAL NOT NULL,
+  execution_seconds REAL NOT NULL,
+  bytes_scanned INTEGER NOT NULL,
+  start_time TEXT NOT NULL
+);
+
+INSERT INTO snowflake_query_history VALUES
+  ('Q-101', 'COMPUTE_WH_XL', 'AcmeCorp', 4.5, 120.5, 45000000000, '2026-10-20 10:00:00'),
+  ('Q-102', 'COMPUTE_WH_XL', 'AcmeCorp', 4.5, 85.0,  32000000000, '2026-10-20 10:05:00'),
+  ('Q-103', 'ANALYTICS_WH_S', 'FinBank', 1.0, 15.2,   500000000,   '2026-10-20 10:02:00'),
+  ('Q-104', 'ANALYTICS_WH_S', 'FinBank', 1.0, 45.0,   1200000000,  '2026-10-20 10:15:00'),
+  ('Q-105', 'ETL_WH_M',       'RetailCo', 2.0, 310.0,  88000000000, '2026-10-20 10:10:00'),
+  ('Q-106', 'COMPUTE_WH_XL', 'AcmeCorp', 4.5, 15.0,   8000000000,  '2026-10-20 10:25:00');
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 12,
+          title: "Round 1: Virtual Warehouse Credit Consumption & Heavy Scans",
+          difficulty: "Intermediate",
+          prompt: `In Snowflake's multi-tenant architecture, virtual warehouses consume compute credits per hour. Identify each account's total query activity, total credit burn, and average query scan efficiency.
+
+**Requirements:**
+- Query \`snowflake_query_history\`.
+- Return: \`account_name\`, \`total_queries\`, \`total_credits_used\`, \`avg_execution_seconds\`, \`total_gigabytes_scanned\` (divide \`bytes_scanned\` by \`1073741824.0\` rounded to 2 decimals).
+- Order by \`total_credits_used\` DESC, \`total_gigabytes_scanned\` DESC.`,
+          starterSql: `-- Snowflake Round 1: Credit Consumption Metering
+SELECT
+  account_name,
+  -- Calculate query count, credits, execution duration and GBs scanned
+FROM snowflake_query_history
+GROUP BY account_name
+ORDER BY total_credits_used DESC;`,
+          solutionSql: `SELECT
+  account_name,
+  COUNT(query_id) AS total_queries,
+  ROUND(SUM(credits_used), 2) AS total_credits_used,
+  ROUND(AVG(execution_seconds), 1) AS avg_execution_seconds,
+  ROUND(SUM(bytes_scanned) / 1073741824.0, 2) AS total_gigabytes_scanned
+FROM snowflake_query_history
+GROUP BY account_name
+ORDER BY total_credits_used DESC, total_gigabytes_scanned DESC;`,
+          hints: [
+            "Use COUNT(query_id) to count queries.",
+            "Use SUM(credits_used) and SUM(bytes_scanned) / 1073741824.0 to calculate gigabytes.",
+            "Group by account_name and sort by total_credits_used DESC."
+          ],
+          expectedColumns: ["account_name", "total_queries", "total_credits_used", "avg_execution_seconds", "total_gigabytes_scanned"],
+          expectedRowCount: 3,
+          bloopGreeting: "Welcome to Snowflake! Let's analyze cloud virtual warehouse credit burn and compute billing efficiency."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Micro-Partition Pruning & Top-Cost Query Deduplication",
+          difficulty: "Hard",
+          prompt: `For each virtual warehouse, identify the top single query with the highest credit consumption using window ranking (simulating Snowflake's native QUALIFY clause).
+
+**Requirements:**
+- Partition queries by \`warehouse_name\` ordered by \`credits_used\` DESC, \`execution_seconds\` DESC.
+- Return only rank 1 queries.
+- Output: \`warehouse_name\`, \`query_id\`, \`account_name\`, \`credits_used\`, \`execution_seconds\`.
+- Order by \`credits_used\` DESC, \`warehouse_name\` ASC.`,
+          starterSql: `-- Snowflake Round 2: Top Query per Warehouse (QUALIFY Simulation)
+WITH ranked_queries AS (
+  SELECT
+    warehouse_name,
+    query_id,
+    account_name,
+    credits_used,
+    execution_seconds,
+    ROW_NUMBER() OVER (PARTITION BY warehouse_name ORDER BY credits_used DESC, execution_seconds DESC) AS rnk
+  FROM snowflake_query_history
+)
+SELECT warehouse_name, query_id, account_name, credits_used, execution_seconds
+FROM ranked_queries
+WHERE rnk = 1
+ORDER BY credits_used DESC, warehouse_name ASC;`,
+          solutionSql: `WITH ranked_queries AS (
+  SELECT
+    warehouse_name,
+    query_id,
+    account_name,
+    credits_used,
+    execution_seconds,
+    ROW_NUMBER() OVER (PARTITION BY warehouse_name ORDER BY credits_used DESC, execution_seconds DESC) AS rnk
+  FROM snowflake_query_history
+)
+SELECT warehouse_name, query_id, account_name, credits_used, execution_seconds
+FROM ranked_queries
+WHERE rnk = 1
+ORDER BY credits_used DESC, warehouse_name ASC;`,
+          hints: [
+            "Assign ROW_NUMBER() partitioned by warehouse_name ordered by credits_used DESC.",
+            "Filter where rnk = 1.",
+            "Order outer results by credits_used DESC."
+          ],
+          expectedColumns: ["warehouse_name", "query_id", "account_name", "credits_used", "execution_seconds"],
+          expectedRowCount: 3,
+          bloopGreeting: "Great work! Now simulate Snowflake's famous QUALIFY clause by ranking warehouse queries to identify the highest resource hogs."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 18,
+          title: "Round 3: Heavy Scan Anomaly Detection & Spill Risk",
+          difficulty: "Staff",
+          prompt: `Queries scanning over 10GB that complete in under 30 seconds indicate highly optimized micro-partition pruning, whereas queries scanning over 40GB with durations exceeding 100 seconds risk local disk spilling.
+
+**Classification Rules:**
+- Classify each query:
+  - When \`bytes_scanned >= 40000000000\` AND \`execution_seconds >= 100\` THEN \`'SPILL_RISK_LONG_SCAN'\`
+  - When \`bytes_scanned >= 10000000000\` AND \`execution_seconds < 30\` THEN \`'OPTIMAL_PRUNING'\`
+  - Otherwise \`'STANDARD_EXECUTION'\`
+- Return: \`query_id\`, \`warehouse_name\`, \`account_name\`, \`bytes_scanned\`, \`execution_seconds\`, \`performance_tier\`.
+- Order by \`bytes_scanned\` DESC.`,
+          starterSql: `-- Snowflake Round 3: Partition Pruning & Spill Anomaly Detection
+SELECT
+  query_id,
+  warehouse_name,
+  account_name,
+  bytes_scanned,
+  execution_seconds,
+  -- Evaluate performance tier
+FROM snowflake_query_history
+ORDER BY bytes_scanned DESC;`,
+          solutionSql: `SELECT
+  query_id,
+  warehouse_name,
+  account_name,
+  bytes_scanned,
+  execution_seconds,
+  CASE
+    WHEN bytes_scanned >= 40000000000 AND execution_seconds >= 100 THEN 'SPILL_RISK_LONG_SCAN'
+    WHEN bytes_scanned >= 10000000000 AND execution_seconds < 30 THEN 'OPTIMAL_PRUNING'
+    ELSE 'STANDARD_EXECUTION'
+  END AS performance_tier
+FROM snowflake_query_history
+ORDER BY bytes_scanned DESC;`,
+          hints: [
+            "Use CASE WHEN with compound AND conditions.",
+            "Order by bytes_scanned DESC."
+          ],
+          expectedColumns: ["query_id", "warehouse_name", "account_name", "bytes_scanned", "execution_seconds", "performance_tier"],
+          expectedRowCount: 6,
+          bloopGreeting: "Final question for the Staff level! Classify query execution physics to prevent expensive micro-partition disk spills."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 12: APPLE (ECOSYSTEM SERVICES & APP STORE MONETIZATION)
+    // =========================================================================
+    {
+      id: "track_apple",
+      company: "Apple",
+      role: "Senior Data Engineer (Apple Services & App Store)",
+      badge: "Consumer & Subscriptions",
+      icon: "🍏",
+      difficulty: "Intermediate",
+      timeLimitMinutes: 45,
+      compensationRange: "$240,000 – $360,000",
+      description: "Apple Services technical screen: App Store in-app subscription lifecycle, trial conversion drop-off, and refund clawback reconciliation.",
+      interviewer: {
+        name: "David Chen",
+        title: "Engineering Manager, App Store Commerce",
+        avatar: "🍏"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS apple_subscriptions;
+CREATE TABLE IF NOT EXISTS apple_subscriptions (
+  sub_id TEXT PRIMARY KEY,
+  apple_id TEXT NOT NULL,
+  app_name TEXT NOT NULL,
+  plan_tier TEXT NOT NULL,
+  monthly_price_usd REAL NOT NULL,
+  is_trial INTEGER NOT NULL,
+  is_cancelled INTEGER NOT NULL,
+  start_date TEXT NOT NULL
+);
+
+INSERT INTO apple_subscriptions VALUES
+  ('SUB-01', 'USR-101', 'Apple Music', 'Family', 16.99, 0, 0, '2026-01-10'),
+  ('SUB-02', 'USR-102', 'iCloud+ 2TB', 'Pro', 9.99, 0, 0, '2026-02-15'),
+  ('SUB-03', 'USR-103', 'Apple Arcade', 'Standard', 6.99, 1, 1, '2026-03-01'),
+  ('SUB-04', 'USR-104', 'Apple TV+', 'Standard', 9.99, 1, 0, '2026-03-05'),
+  ('SUB-05', 'USR-101', 'Apple Fitness+', 'Standard', 9.99, 0, 0, '2026-03-20'),
+  ('SUB-06', 'USR-105', 'Apple Music', 'Individual', 10.99, 1, 1, '2026-04-01');
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 12,
+          title: "Round 1: Active Subscription ARR & Service Revenue",
+          difficulty: "Easy",
+          prompt: `Calculate total active monthly recurring revenue (MRR) and annualized run rate (ARR) across each Apple Service app. Only include non-cancelled subscriptions.
+
+**Requirements:**
+- Query \`apple_subscriptions\` where \`is_cancelled = 0\`.
+- Return: \`app_name\`, \`active_subscribers\`, \`monthly_mrr_usd\`, \`annual_arr_usd\` (monthly MRR * 12).
+- Order by \`monthly_mrr_usd\` DESC.`,
+          starterSql: `-- Apple Round 1: Active Subscription MRR & ARR
+SELECT
+  app_name,
+  -- Calculate active subscriber count, MRR, and ARR
+FROM apple_subscriptions
+WHERE is_cancelled = 0
+GROUP BY app_name
+ORDER BY monthly_mrr_usd DESC;`,
+          solutionSql: `SELECT
+  app_name,
+  COUNT(sub_id) AS active_subscribers,
+  ROUND(SUM(monthly_price_usd), 2) AS monthly_mrr_usd,
+  ROUND(SUM(monthly_price_usd) * 12.0, 2) AS annual_arr_usd
+FROM apple_subscriptions
+WHERE is_cancelled = 0
+GROUP BY app_name
+ORDER BY monthly_mrr_usd DESC;`,
+          hints: [
+            "Filter WHERE is_cancelled = 0.",
+            "Compute monthly_mrr_usd as SUM(monthly_price_usd).",
+            "Compute annual_arr_usd as SUM(monthly_price_usd) * 12.0."
+          ],
+          expectedColumns: ["app_name", "active_subscribers", "monthly_mrr_usd", "annual_arr_usd"],
+          expectedRowCount: 4,
+          bloopGreeting: "Welcome to Apple! Let's calculate Monthly Recurring Revenue (MRR) and ARR across Apple Services."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Free Trial Conversion & Churn Ratios",
+          difficulty: "Intermediate",
+          prompt: `Analyze free trial performance across all services. For each app, find how many users started a trial (\`is_trial = 1\`), how many cancelled during trial (\`is_cancelled = 1\`), and calculate the trial retention conversion percentage.
+
+**Requirements:**
+- Query \`apple_subscriptions\` where \`is_trial = 1\`.
+- Calculate:
+  - \`total_trials\`
+  - \`converted_trials\` (where \`is_cancelled = 0\`)
+  - \`conversion_rate_pct\` (\`ROUND(converted / total * 100.0, 1)\`)
+- Order by \`conversion_rate_pct\` DESC.`,
+          starterSql: `-- Apple Round 2: Free Trial Conversion Analytics
+SELECT
+  app_name,
+  COUNT(sub_id) AS total_trials,
+  SUM(CASE WHEN is_cancelled = 0 THEN 1 ELSE 0 END) AS converted_trials,
+  ROUND(SUM(CASE WHEN is_cancelled = 0 THEN 1.0 ELSE 0.0 END) / COUNT(sub_id) * 100.0, 1) AS conversion_rate_pct
+FROM apple_subscriptions
+WHERE is_trial = 1
+GROUP BY app_name
+ORDER BY conversion_rate_pct DESC;`,
+          solutionSql: `SELECT
+  app_name,
+  COUNT(sub_id) AS total_trials,
+  SUM(CASE WHEN is_cancelled = 0 THEN 1 ELSE 0 END) AS converted_trials,
+  ROUND(SUM(CASE WHEN is_cancelled = 0 THEN 1.0 ELSE 0.0 END) / COUNT(sub_id) * 100.0, 1) AS conversion_rate_pct
+FROM apple_subscriptions
+WHERE is_trial = 1
+GROUP BY app_name
+ORDER BY conversion_rate_pct DESC;`,
+          hints: [
+            "Filter WHERE is_trial = 1.",
+            "Use conditional aggregation SUM(CASE WHEN is_cancelled = 0 THEN 1 ELSE 0 END) for conversions.",
+            "Calculate conversion percentage with multiplication by 100.0."
+          ],
+          expectedColumns: ["app_name", "total_trials", "converted_trials", "conversion_rate_pct"],
+          expectedRowCount: 3,
+          bloopGreeting: "Clean aggregation! Now measure trial-to-paid conversion drop-offs to see which services retain subscribers."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 18,
+          title: "Round 3: Multi-Subscription Bundle Arbitrage & Apple One Candidates",
+          difficulty: "Hard",
+          prompt: `Users holding 2 or more distinct active Apple services qualify for an 'Apple One' bundle pitch. Identify all qualifying users, the count of services they hold, and their total current monthly spend.
+
+**Requirements:**
+- Query \`apple_subscriptions\` where \`is_cancelled = 0\`.
+- Group by \`apple_id\` having 2 or more distinct subscriptions.
+- Return: \`apple_id\`, \`service_count\`, \`total_monthly_spend_usd\`.
+- Order by \`total_monthly_spend_usd\` DESC.`,
+          starterSql: `-- Apple Round 3: Multi-Service Apple One Bundle Candidates
+SELECT
+  apple_id,
+  COUNT(sub_id) AS service_count,
+  ROUND(SUM(monthly_price_usd), 2) AS total_monthly_spend_usd
+FROM apple_subscriptions
+WHERE is_cancelled = 0
+GROUP BY apple_id
+HAVING COUNT(sub_id) >= 2
+ORDER BY total_monthly_spend_usd DESC;`,
+          solutionSql: `SELECT
+  apple_id,
+  COUNT(sub_id) AS service_count,
+  ROUND(SUM(monthly_price_usd), 2) AS total_monthly_spend_usd
+FROM apple_subscriptions
+WHERE is_cancelled = 0
+GROUP BY apple_id
+HAVING COUNT(sub_id) >= 2
+ORDER BY total_monthly_spend_usd DESC;`,
+          hints: [
+            "Filter active subscriptions WHERE is_cancelled = 0.",
+            "Group by apple_id and use HAVING COUNT(sub_id) >= 2.",
+            "Order by total_monthly_spend_usd DESC."
+          ],
+          expectedColumns: ["apple_id", "service_count", "total_monthly_spend_usd"],
+          expectedRowCount: 1,
+          bloopGreeting: "Final Apple question! Identify high-value users subscribing to multiple services as targets for Apple One bundles."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 13: BLOOMBERG (FINANCIAL TERMINALS & TICKER CORPORATE ACTIONS)
+    // =========================================================================
+    {
+      id: "track_bloomberg",
+      company: "Bloomberg",
+      role: "Financial Data Engineer (Ticker Pricing & Corporate Actions)",
+      badge: "Market Terminals",
+      icon: "📈",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$230,000 – $340,000",
+      description: "Bloomberg LP Terminal core: consecutive ticker price gain streaks, stock dividend split adjustments, and point-in-time consensus reconciliation.",
+      interviewer: {
+        name: "Vikram Malhotra",
+        title: "Senior Lead, Market Data Engineering",
+        avatar: "📈"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS bloomberg_daily_prices;
+CREATE TABLE IF NOT EXISTS bloomberg_daily_prices (
+  trade_date TEXT NOT NULL,
+  ticker TEXT NOT NULL,
+  close_price REAL NOT NULL,
+  volume INTEGER NOT NULL,
+  PRIMARY KEY (trade_date, ticker)
+);
+
+INSERT INTO bloomberg_daily_prices VALUES
+  ('2026-10-12', 'AAPL', 220.00, 45000000),
+  ('2026-10-13', 'AAPL', 222.50, 48000000),
+  ('2026-10-14', 'AAPL', 225.00, 52000000),
+  ('2026-10-15', 'AAPL', 224.00, 41000000),
+  ('2026-10-12', 'MSFT', 430.00, 22000000),
+  ('2026-10-13', 'MSFT', 435.00, 24000000),
+  ('2026-10-14', 'MSFT', 432.00, 19000000),
+  ('2026-10-15', 'MSFT', 438.00, 28000000);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 12,
+          title: "Round 1: Day-over-Day Return & Price Momentum",
+          difficulty: "Intermediate",
+          prompt: `For each ticker, calculate the prior day's close price using LAG() and determine the day-over-day price delta and percentage return.
+
+**Requirements:**
+- Query \`bloomberg_daily_prices\`.
+- Return: \`trade_date\`, \`ticker\`, \`close_price\`, \`prior_close\`, \`daily_delta_usd\`, \`pct_return\` (\`ROUND((close - prior) / prior * 100.0, 2)\`).
+- Order by \`ticker\` ASC, \`trade_date\` ASC.`,
+          starterSql: `-- Bloomberg Round 1: DoD Return via LAG()
+SELECT
+  trade_date,
+  ticker,
+  close_price,
+  -- Calculate prior close, delta, and percentage return
+FROM bloomberg_daily_prices
+ORDER BY ticker ASC, trade_date ASC;`,
+          solutionSql: `SELECT
+  trade_date,
+  ticker,
+  close_price,
+  LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC) AS prior_close,
+  ROUND(close_price - LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC), 2) AS daily_delta_usd,
+  ROUND((close_price - LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC)) / LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC) * 100.0, 2) AS pct_return
+FROM bloomberg_daily_prices
+ORDER BY ticker ASC, trade_date ASC;`,
+          hints: [
+            "Use LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC).",
+            "Handle first day NULL prior_close gracefully.",
+            "Order by ticker ASC, trade_date ASC."
+          ],
+          expectedColumns: ["trade_date", "ticker", "close_price", "prior_close", "daily_delta_usd", "pct_return"],
+          expectedRowCount: 8,
+          bloopGreeting: "Welcome to Bloomberg! Let's calculate point-in-time day-over-day return momentum across equity tickers."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Volume-Weighted Price Gainers & Turnover",
+          difficulty: "Hard",
+          prompt: `Calculate total notional trading turnover ($) per ticker (\`close_price * volume\`) and overall average volume over the 4-day period.
+
+**Requirements:**
+- Group by \`ticker\`.
+- Return: \`ticker\`, \`avg_close_price\`, \`total_volume\`, \`total_turnover_usd\` (rounded to 2 decimals).
+- Order by \`total_turnover_usd\` DESC.`,
+          starterSql: `-- Bloomberg Round 2: Total Turnover & Notional Volume
+SELECT
+  ticker,
+  ROUND(AVG(close_price), 2) AS avg_close_price,
+  SUM(volume) AS total_volume,
+  ROUND(SUM(close_price * volume), 2) AS total_turnover_usd
+FROM bloomberg_daily_prices
+GROUP BY ticker
+ORDER BY total_turnover_usd DESC;`,
+          solutionSql: `SELECT
+  ticker,
+  ROUND(AVG(close_price), 2) AS avg_close_price,
+  SUM(volume) AS total_volume,
+  ROUND(SUM(close_price * volume), 2) AS total_turnover_usd
+FROM bloomberg_daily_prices
+GROUP BY ticker
+ORDER BY total_turnover_usd DESC;`,
+          hints: [
+            "Use AVG(close_price) for mean price.",
+            "Turnover is SUM(close_price * volume).",
+            "Group by ticker."
+          ],
+          expectedColumns: ["ticker", "avg_close_price", "total_volume", "total_turnover_usd"],
+          expectedRowCount: 2,
+          bloopGreeting: "Great precision! Now compute equity market turnover and liquidity volume across trading days."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 18,
+          title: "Round 3: Consecutive Price Gainer Streaks",
+          difficulty: "Staff",
+          prompt: `Identify tickers with consecutive positive daily gains (close > prior_close). Filter for dates that experienced positive gain and compute rolling cumulative gain count.
+
+**Requirements:**
+- Use CTE with LAG to find daily gains where \`close_price > prior_close\`.
+- Return: \`trade_date\`, \`ticker\`, \`close_price\`, \`daily_gain_usd\`.
+- Order by \`ticker\` ASC, \`trade_date\` ASC.`,
+          starterSql: `-- Bloomberg Round 3: Positive Day Gain Filters
+WITH daily_deltas AS (
+  SELECT
+    trade_date,
+    ticker,
+    close_price,
+    close_price - LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC) AS daily_gain_usd
+  FROM bloomberg_daily_prices
+)
+SELECT trade_date, ticker, close_price, ROUND(daily_gain_usd, 2) AS daily_gain_usd
+FROM daily_deltas
+WHERE daily_gain_usd > 0
+ORDER BY ticker ASC, trade_date ASC;`,
+          solutionSql: `WITH daily_deltas AS (
+  SELECT
+    trade_date,
+    ticker,
+    close_price,
+    close_price - LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC) AS daily_gain_usd
+  FROM bloomberg_daily_prices
+)
+SELECT trade_date, ticker, close_price, ROUND(daily_gain_usd, 2) AS daily_gain_usd
+FROM daily_deltas
+WHERE daily_gain_usd > 0
+ORDER BY ticker ASC, trade_date ASC;`,
+          hints: [
+            "Compute daily delta in CTE.",
+            "Filter WHERE daily_gain_usd > 0 in outer query.",
+            "Order by ticker ASC, trade_date ASC."
+          ],
+          expectedColumns: ["trade_date", "ticker", "close_price", "daily_gain_usd"],
+          expectedRowCount: 4,
+          bloopGreeting: "Final Bloomberg challenge! Filter for consecutive positive gain streaks to power momentum screener terminals."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 14: MICROSOFT (ENTERPRISE CLOUD & ORGANIZATIONAL HIERARCHY)
+    // =========================================================================
+    {
+      id: "track_microsoft",
+      company: "Microsoft",
+      role: "Principal Data Engineer (Azure Enterprise & Teams Graph)",
+      badge: "Enterprise SaaS & Graph",
+      icon: "🏢",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$250,000 – $380,000",
+      description: "Microsoft Azure & Teams screen: recursive organizational hierarchy trees, multi-tenant subscription seat utilization, and collaborative graph edges.",
+      interviewer: {
+        name: "Satya Nadella",
+        title: "Executive VP, Enterprise Cloud Architecture",
+        avatar: "🏢"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS msft_employees;
+CREATE TABLE IF NOT EXISTS msft_employees (
+  emp_id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  manager_id INTEGER,
+  department TEXT NOT NULL,
+  salary INTEGER NOT NULL
+);
+
+INSERT INTO msft_employees VALUES
+  (1, 'Satya', NULL, 'Executive', 2500000),
+  (2, 'Amy', 1, 'Finance', 1200000),
+  (3, 'Scott', 1, 'Cloud & AI', 1400000),
+  (4, 'Phil', 1, 'Gaming', 1100000),
+  (5, 'Julia', 3, 'Cloud & AI', 600000),
+  (6, 'Mark', 3, 'Cloud & AI', 650000),
+  (7, 'Sarah', 5, 'Cloud & AI', 320000);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 12,
+          title: "Round 1: Department Headcount & Salary Distribution",
+          difficulty: "Easy",
+          prompt: `Analyze organizational salary spend across Microsoft divisions. For each department, find employee headcount, total department payroll, and the maximum single salary.
+
+**Requirements:**
+- Query \`msft_employees\`.
+- Return: \`department\`, \`headcount\`, \`total_payroll\`, \`max_salary\`.
+- Order by \`total_payroll\` DESC.`,
+          starterSql: `-- Microsoft Round 1: Department Payroll & Headcount
+SELECT
+  department,
+  COUNT(emp_id) AS headcount,
+  SUM(salary) AS total_payroll,
+  MAX(salary) AS max_salary
+FROM msft_employees
+GROUP BY department
+ORDER BY total_payroll DESC;`,
+          solutionSql: `SELECT
+  department,
+  COUNT(emp_id) AS headcount,
+  SUM(salary) AS total_payroll,
+  MAX(salary) AS max_salary
+FROM msft_employees
+GROUP BY department
+ORDER BY total_payroll DESC;`,
+          hints: [
+            "Use COUNT(emp_id) for headcount.",
+            "Use SUM(salary) and MAX(salary).",
+            "Group by department and order by total_payroll DESC."
+          ],
+          expectedColumns: ["department", "headcount", "total_payroll", "max_salary"],
+          expectedRowCount: 4,
+          bloopGreeting: "Welcome to Microsoft! Let's analyze enterprise organizational structure and department payroll rollups."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Manager-Direct Report Self-Joins",
+          difficulty: "Intermediate",
+          prompt: `For every employee who reports to a manager, join \`msft_employees\` to itself to display the employee's name, their direct manager's name, and their salary differential (manager salary - employee salary).
+
+**Requirements:**
+- Query \`msft_employees\` where \`manager_id IS NOT NULL\`.
+- Return: \`employee_name\`, \`manager_name\`, \`employee_salary\`, \`manager_salary\`, \`salary_differential\`.
+- Order by \`salary_differential\` DESC.`,
+          starterSql: `-- Microsoft Round 2: Manager Self-Join
+SELECT
+  e.name AS employee_name,
+  m.name AS manager_name,
+  e.salary AS employee_salary,
+  m.salary AS manager_salary,
+  (m.salary - e.salary) AS salary_differential
+FROM msft_employees e
+JOIN msft_employees m ON e.manager_id = m.emp_id
+ORDER BY salary_differential DESC;`,
+          solutionSql: `SELECT
+  e.name AS employee_name,
+  m.name AS manager_name,
+  e.salary AS employee_salary,
+  m.salary AS manager_salary,
+  (m.salary - e.salary) AS salary_differential
+FROM msft_employees e
+JOIN msft_employees m ON e.manager_id = m.emp_id
+ORDER BY salary_differential DESC;`,
+          hints: [
+            "Perform INNER JOIN msft_employees m ON e.manager_id = m.emp_id.",
+            "Compute salary_differential as m.salary - e.salary.",
+            "Order by salary_differential DESC."
+          ],
+          expectedColumns: ["employee_name", "manager_name", "employee_salary", "manager_salary", "salary_differential"],
+          expectedRowCount: 6,
+          bloopGreeting: "Spot on! Now write a self-join to map reporting lines and evaluate salary differentials between managers and reports."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 18,
+          title: "Round 3: Recursive Hierarchy Tree Traversal (CTE)",
+          difficulty: "Staff",
+          prompt: `Write a recursive Common Table Expression (CTE) to traverse Microsoft's organizational chart starting from the CEO (\`manager_id IS NULL\` at \`level = 1\`) down through all reporting tiers.
+
+**Requirements:**
+- Anchor member: Select CEO where \`manager_id IS NULL\` with \`level = 1\`.
+- Recursive member: Join subordinates where \`e.manager_id = r.emp_id\` with \`level = r.level + 1\`.
+- Return: \`emp_id\`, \`name\`, \`department\`, \`level\`.
+- Order by \`level\` ASC, \`emp_id\` ASC.`,
+          starterSql: `-- Microsoft Round 3: Recursive Org Hierarchy
+WITH RECURSIVE org_tree AS (
+  SELECT emp_id, name, department, 1 AS level
+  FROM msft_employees
+  WHERE manager_id IS NULL
+
+  UNION ALL
+
+  SELECT e.emp_id, e.name, e.department, r.level + 1
+  FROM msft_employees e
+  JOIN org_tree r ON e.manager_id = r.emp_id
+)
+SELECT emp_id, name, department, level
+FROM org_tree
+ORDER BY level ASC, emp_id ASC;`,
+          solutionSql: `WITH RECURSIVE org_tree AS (
+  SELECT emp_id, name, department, 1 AS level
+  FROM msft_employees
+  WHERE manager_id IS NULL
+
+  UNION ALL
+
+  SELECT e.emp_id, e.name, e.department, r.level + 1
+  FROM msft_employees e
+  JOIN org_tree r ON e.manager_id = r.emp_id
+)
+SELECT emp_id, name, department, level
+FROM org_tree
+ORDER BY level ASC, emp_id ASC;`,
+          hints: [
+            "Use WITH RECURSIVE org_tree AS (...).",
+            "Anchor: WHERE manager_id IS NULL.",
+            "Recursive step: JOIN org_tree r ON e.manager_id = r.emp_id incrementing level + 1."
+          ],
+          expectedColumns: ["emp_id", "name", "department", "level"],
+          expectedRowCount: 7,
+          bloopGreeting: "Final question for the Staff level! Traverse recursive tree graphs using RECURSIVE CTEs to map Microsoft's complete management hierarchy."
+        }
+      ]
+    }
+]
 };

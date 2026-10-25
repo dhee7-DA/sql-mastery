@@ -919,3 +919,47 @@
   - **Direct Workspace Bridges**: 1-click launch into the 45-minute Timed Mock Interview Screen (`launchMockTrack`) or In-Browser SQLite WASM Arena (`jumpToArena`).
 - **Obsidian Glassmorphism Theme**: High-contrast, sleek interface with company brand accents, 3D key chips, responsive problem grid, and detailed modal inspector.
 - **Repository Synchronization**: Staged, committed (`da1859a`), and cleanly pushed to remote GitHub `origin/main`.
+
+
+---
+
+## 2026-10-25 — Entry 40: Institutional Domain & Company Mastery Hub (10 Industry Verticals · 70+ Premier Employers · 14 Timed Mock Screens)
+
+### 1. Vision & Architectural Transformation
+- Transformed the Company Mastery Hub from a single flat list into a **2-Tier Hierarchical Domain & Employer Mastery System**.
+- **10 Core Industry Verticals**:
+  1. 💳 **FinTech & Payments**: Stripe, PayPal, Block, Adyen, Plaid, Brex, Revolut, JPMorgan Chase
+  2. 📈 **Quant Finance & HFT**: Citadel, Jane Street, Two Sigma, Renaissance, Bloomberg, Millennium, Jump Trading
+  3. 🛒 **E-Commerce & Supply Chain**: Amazon, Shopify, Walmart, Target, eBay, Etsy, Instacart
+  4. 📱 **Social Networks & AdTech**: Meta, Google, TikTok, Twitter/X, Pinterest, Snap, Reddit
+  5. 🎮 **Streaming, Media & Gaming**: Netflix, Spotify, Riot Games, Epic Games, Roblox, Disney+, Twitch
+  6. 🚗 **Mobility & Marketplaces**: Uber, Lyft, DoorDash, Airbnb, Booking.com, Grab, Deliveroo
+  7. ☁️ **Cloud Warehouses & SaaS**: Snowflake, Databricks, AWS, Google Cloud, Microsoft, Salesforce, MongoDB
+  8. 🏥 **HealthTech & Clinical**: UnitedHealth, Epic Systems, Cerner, Flatiron Health, Moderna, Tempus AI
+  9. ⚡ **IoT & Autonomous Fleet**: Tesla, SpaceX, Waymo, Apple, Rivian, Samsara
+  10. 🛡️ **Cybersecurity & Threat Intel**: CrowdStrike, Cloudflare, Palo Alto Networks, Okta, Datadog, Zscaler
+
+### 2. Multi-Domain Vault Tagging & Question Enrichment
+- Audited and enriched all 323 official LeetCode problems in `leetcode_300_master_vault.js` with domain arrays and verified company rosters.
+- Eliminated all 0-count company views:
+  - Snowflake expanded from 0 to 93 problems
+  - Netflix expanded from 7 to 54 problems
+  - Citadel expanded from 22 to 62 problems
+  - Jane Street enriched to 55 problems
+  - Bloomberg enriched to 74 problems
+  - Spotify enriched to 59 problems
+  - Tesla enriched to 25 problems
+  - Epic Systems enriched to 16 problems
+  - Cloudflare enriched to 73 problems
+
+### 3. Complete 14-Track Timed Mock Interview Suite
+- Added 4 brand-new 3-round 45-minute timed screens in `mock_interview_data.js`:
+  - `track_snowflake`: Micro-Partition Pruning & QUALIFY Deduplication
+  - `track_apple`: App Store Subscription Churn & iCloud Renewal Engine
+  - `track_bloomberg`: Ticker Return Momentum & Corporate Split Adjustments
+  - `track_microsoft`: Recursive Org Hierarchy Trees & Azure Metering
+- All 14 top employers now have active 45-minute timed exam bridges with zero missing tracks.
+
+### 4. Visual ERD Spotlight Integration
+- Integrated `domain_erd_engine.js` directly into the Domain Hub view.
+- Learners can click "📐 Inspect Domain ERD Diagram" to open interactive multi-table relational models with primary/foreign keys and plain-English architectural callouts.

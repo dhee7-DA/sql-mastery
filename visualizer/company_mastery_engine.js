@@ -1,25 +1,219 @@
 /**
  * =============================================================================
- * COMPANY MASTERY HUB ENGINE
- * Deep-dive interview intelligence, probability matrices, and curated drills
- * across FAANG & Wall Street Tier 1 firms (Amazon, Google, Meta, Apple, Stripe,
- * Citadel, Bloomberg, Netflix, Uber, Snowflake, and more).
- * Bridges 323 Official LeetCode Problems + 10 Full Timed Mock Interview Tracks.
+ * DOMAIN & COMPANY MASTERY HUB ENGINE (ENTERPRISE EDITION)
+ * 10 Canonical Industry Domains · 70+ Premier Global Employers
+ * Deep-dive interview intelligence, domain relational data physics,
+ * empirical probability matrices, and curated LeetCode 323 + Case Study drills.
  * =============================================================================
  */
 
 window.CompanyMasteryEngine = (function() {
   'use strict';
 
-  // Company Intelligence Profiles
+  // ===========================================================================
+  // 1. THE 10 INDUSTRY DOMAIN CATALOGS
+  // ===========================================================================
+  const DOMAIN_CATALOG = {
+    all: {
+      id: "all",
+      name: "All Industry Domains",
+      icon: "🌐",
+      badge: "Universal Master Hub",
+      tagline: "Cross-domain relational mastery across all 10 enterprise sectors & 70+ employers",
+      erdKey: null,
+      companies: ["All Companies"],
+      coreFocus: "Relational modeling, Window Analytics, Gaps & Islands, Aggregate Rollups, ACID Concurrency & Cloud Warehousing.",
+      topSyntax: ["DENSE_RANK()", "COALESCE()", "SELF JOIN", "RECURSIVE CTE", "LEAD / LAG"],
+      domainProbabilities: [
+        { topic: "Window Analytics & Rankings", pct: 95 },
+        { topic: "Multi-Table Relational Joins", pct: 90 },
+        { topic: "Conditional Aggregation (CASE WHEN)", pct: 86 },
+        { topic: "Three-Valued Logic & NULL Traps", pct: 75 }
+      ]
+    },
+    fintech: {
+      id: "fintech",
+      name: "FinTech & Payments",
+      icon: "💳",
+      badge: "Ledgers & Compliance",
+      tagline: "Double-entry bookkeeping, currency reconciliation, dispute clawbacks & idempotency",
+      erdKey: "Fintech",
+      companies: ["Stripe", "PayPal", "Block", "Adyen", "Plaid", "Brex", "Revolut", "JPMorgan Chase"],
+      coreFocus: "High-concurrency atomic balances, FX currency conversions, fraud disputes, and immutable audit ledgers.",
+      topSyntax: ["SUM() OVER (ORDER BY)", "DECIMAL(18,4)", "EXISTS", "RECURSIVE CTE"],
+      domainProbabilities: [
+        { topic: "Double-Entry Running Balances", pct: 98 },
+        { topic: "Idempotent Event De-duplication", pct: 93 },
+        { topic: "Dispute & Fee Attribution", pct: 89 },
+        { topic: "Multi-Currency Normalization", pct: 84 }
+      ]
+    },
+    quant: {
+      id: "quant",
+      name: "Quant Finance & HFT",
+      icon: "📈",
+      badge: "Microstructure & Risk",
+      tagline: "Microsecond tick blotters, VWAP calculation, order book crossing & maximum drawdowns",
+      erdKey: "Fintech",
+      companies: ["Citadel", "Jane Street", "Two Sigma", "Renaissance", "Bloomberg", "Millennium", "Jump Trading"],
+      coreFocus: "Microsecond timestamp ordering, tick-by-tick market spreads, VWAP pricing, and portfolio peak-to-trough drawdowns.",
+      topSyntax: ["SUM(p*v)/SUM(v) OVER", "MAX() OVER (ROWS UNBOUNDED)", "FIRST_VALUE()", "NTH_VALUE()"],
+      domainProbabilities: [
+        { topic: "VWAP & Order Book Crossing", pct: 97 },
+        { topic: "Peak Drawdown & High Watermarks", pct: 94 },
+        { topic: "Sliding Frame Tick Window Averages", pct: 91 },
+        { topic: "Consecutive Gain/Loss Streaks", pct: 86 }
+      ]
+    },
+    ecommerce: {
+      id: "ecommerce",
+      name: "E-Commerce & Supply Chain",
+      icon: "🛒",
+      badge: "Fulfillment & Retail",
+      tagline: "Inventory replenishment, cross-dock logistics, cart abandonment & merchant GMV",
+      erdKey: "Retail",
+      companies: ["Amazon", "Shopify", "Walmart", "Target", "eBay", "Etsy", "Instacart"],
+      coreFocus: "Fulfillment center bottlenecks, inventory reorder triggers, merchant sales cohorts, and cart abandonment.",
+      topSyntax: ["DENSE_RANK()", "ROWS BETWEEN 6 PRECEDING", "LEFT JOIN ... IS NULL", "SUM() OVER()"],
+      domainProbabilities: [
+        { topic: "Fulfillment & Inventory Replenishment", pct: 96 },
+        { topic: "Merchant GMV & Fee Rollups", pct: 91 },
+        { topic: "Cart Conversion & Drop-off Funnels", pct: 88 },
+        { topic: "Cross-Dock Transit Times", pct: 82 }
+      ]
+    },
+    social: {
+      id: "social",
+      name: "Social Networks & AdTech",
+      icon: "📱",
+      badge: "Graph & Auctions",
+      tagline: "Mutual connection triangulation, ad CTR attribution, rolling DAU/MAU & viral reach",
+      erdKey: "Media",
+      companies: ["Meta", "Google", "TikTok", "Twitter/X", "Pinterest", "Snap", "Reddit"],
+      coreFocus: "Friendship graph edges, newsfeed engagement decay, ad click-through attribution, and retention curves.",
+      topSyntax: ["SELF JOIN", "CROSS JOIN", "LAG() OVER()", "GROUPING SETS"],
+      domainProbabilities: [
+        { topic: "Friendship Graph Triangulation", pct: 95 },
+        { topic: "Ad Conversion & Attribution Funnels", pct: 92 },
+        { topic: "Rolling 7-Day & 30-Day Active Users (DAU/MAU)", pct: 89 },
+        { topic: "Engagement Decay & Viral Loops", pct: 83 }
+      ]
+    },
+    streaming: {
+      id: "streaming",
+      name: "Streaming, Media & Gaming",
+      icon: "🎮",
+      badge: "Telemetry & Retention",
+      tagline: "30-second listen thresholds, binge sessionization, Elo/MMR matchmaking & gacha drops",
+      erdKey: "Media",
+      companies: ["Netflix", "Spotify", "Riot Games", "Epic Games", "Roblox", "Disney+", "Twitch"],
+      coreFocus: "Inactivity session gaps (gaps & islands), audio monetization thresholds, player matchmaking, and content catalog ROI.",
+      topSyntax: ["LAG()", "SUM(is_new_session) OVER", "NTILE(10)", "CORR()"],
+      domainProbabilities: [
+        { topic: "Sessionization & Inactivity Gaps", pct: 97 },
+        { topic: "Drop-off Curves & Skip Rates", pct: 91 },
+        { topic: "Player Matchmaking MMR & Ranks", pct: 87 },
+        { topic: "Subscription Tier Upgrades/Downgrades", pct: 82 }
+      ]
+    },
+    marketplace: {
+      id: "marketplace",
+      name: "Mobility & Marketplaces",
+      icon: "🚗",
+      badge: "Two-Sided Logistics",
+      tagline: "Supply-demand surge pricing, ETA variance, multi-leg dispatch & host occupancy",
+      erdKey: "Logistics",
+      companies: ["Uber", "Lyft", "DoorDash", "Airbnb", "Booking.com", "Grab", "Deliveroo"],
+      coreFocus: "Two-sided matching rates, rolling surge multipliers, delivery ETA variance, and lodging occupancy calendars.",
+      topSyntax: ["AVG(CASE WHEN)", "COUNT(DISTINCT)", "ROW_NUMBER() OVER", "INTERVAL"],
+      domainProbabilities: [
+        { topic: "Supply-Demand Surge Ratios", pct: 96 },
+        { topic: "Driver/Courier Acceptance & Cancellation", pct: 92 },
+        { topic: "Multi-Leg Order Dispatching", pct: 86 },
+        { topic: "Host Booking Occupancy Rates", pct: 81 }
+      ]
+    },
+    cloud: {
+      id: "cloud",
+      name: "Cloud Warehouses & SaaS",
+      icon: "☁️",
+      badge: "Columnar & Lakehouse",
+      tagline: "Micro-partition pruning, QUALIFY deduplication, multi-tenant metering & org trees",
+      erdKey: "SaaS",
+      companies: ["Snowflake", "Databricks", "AWS", "Google Cloud", "Microsoft", "Salesforce", "MongoDB"],
+      coreFocus: "Large-scale analytical transformations, partition pruning, multi-tenant query compute metering, and recursive org hierarchies.",
+      topSyntax: ["QUALIFY", "ROW_NUMBER() OVER()", "RECURSIVE CTE", "LATERAL FLATTEN"],
+      domainProbabilities: [
+        { topic: "QUALIFY Window Deduplication", pct: 98 },
+        { topic: "Micro-Partition Pruning Physics", pct: 93 },
+        { topic: "Multi-Tenant Compute Metering", pct: 89 },
+        { topic: "Recursive Org Hierarchy Trees", pct: 84 }
+      ]
+    },
+    health: {
+      id: "health",
+      name: "HealthTech & Clinical",
+      icon: "🏥",
+      badge: "EHR & Claims",
+      tagline: "30-day hospital readmissions, claims adjudication, ICD-10 diagnosis codes & HIPAA audit",
+      erdKey: "Healthcare",
+      companies: ["UnitedHealth", "Epic Systems", "Cerner", "Flatiron Health", "Moderna", "Tempus AI"],
+      coreFocus: "Patient encounter lifecycles, 30-day hospital readmission penalties, claims adjudication, and diagnostic code hierarchies.",
+      topSyntax: ["DATEDIFF()", "CASE WHEN ... IN", "COALESCE()", "PARTITION BY patient_id"],
+      domainProbabilities: [
+        { topic: "30-Day Hospital Readmission Tracking", pct: 96 },
+        { topic: "Claims Adjudication & Copay Rollups", pct: 92 },
+        { topic: "Diagnostic ICD-10 Code Grouping", pct: 87 },
+        { topic: "Patient Longitudinal Encounters", pct: 82 }
+      ]
+    },
+    iot: {
+      id: "iot",
+      name: "IoT & Autonomous Fleet",
+      icon: "⚡",
+      badge: "Time-Series Telemetry",
+      tagline: "Sensor downsampling, battery voltage anomalies, supercharger queues & OTA rollouts",
+      erdKey: "Hardware",
+      companies: ["Tesla", "SpaceX", "Waymo", "Apple", "Rivian", "Samsara"],
+      coreFocus: "High-frequency sensor telemetry, battery state-of-charge degradation, charging station queuing, and fleet firmware rollouts.",
+      topSyntax: ["DATE_TRUNC('minute')", "AVG() OVER (ROWS 60 PRECEDING)", "PERCENTILE_CONT", "LEAD()"],
+      domainProbabilities: [
+        { topic: "High-Frequency Sensor Downsampling", pct: 95 },
+        { topic: "Battery Degradation & Outliers", pct: 91 },
+        { topic: "Supercharger Station Queue Congestion", pct: 88 },
+        { topic: "Firmware OTA Canary Rollout Health", pct: 83 }
+      ]
+    },
+    cyber: {
+      id: "cyber",
+      name: "Cybersecurity & Intel",
+      icon: "🛡️",
+      badge: "Threat Logs & Auth",
+      tagline: "DDoS request logs, IP CIDR subnet containment, rate limit spikes & auth breaches",
+      erdKey: "Security",
+      companies: ["CrowdStrike", "Cloudflare", "Palo Alto Networks", "Okta", "Datadog", "Zscaler"],
+      coreFocus: "Streaming firewall packet logs, IP CIDR block containment, authentication brute-force spikes, and API rate-limiting.",
+      topSyntax: ["COUNT(*) OVER (PARTITION BY ip ORDER BY ts)", "CASE WHEN status = 429", "STRING_AGG", "HAVING COUNT(*) > 100"],
+      domainProbabilities: [
+        { topic: "DDoS Attack Vector Detection", pct: 97 },
+        { topic: "Brute-Force Auth Anomaly Bursts", pct: 93 },
+        { topic: "IP Subnet CIDR Aggregation", pct: 88 },
+        { topic: "API Rate-Limit Spike Attribution", pct: 84 }
+      ]
+    }
+  };
+
+  // ===========================================================================
+  // 2. DETAILED BESPOKE COMPANY INTELLIGENCE PROFILES
+  // ===========================================================================
   const COMPANY_PROFILES = {
     all: {
       name: "All Top Companies",
       badge: "Universal Benchmark",
       icon: "🌐",
-      category: "Global",
+      domain: "all",
       tier: "Tier 1 Global Tech & Finance",
-      dialect: "ANSI SQL · PostgreSQL · MySQL 8.0 · Snowflake",
+      dialect: "ANSI SQL · PostgreSQL · MySQL 8.0 · Snowflake · BigQuery",
       screenFormat: "45-min live technical screens & take-home assessments",
       coreFocus: "Relational modeling, Window Analytics, Gaps & Islands, Aggregate Rollups",
       interviewPattern: "1 foundational filter/join question + 1 advanced analytical partitioning question",
@@ -36,7 +230,7 @@ window.CompanyMasteryEngine = (function() {
       name: "Amazon & AWS",
       badge: "High-Volume Infrastructure",
       icon: "🛒",
-      category: "FAANG",
+      domain: "ecommerce",
       tier: "Tier 1 Cloud & E-Commerce",
       dialect: "PostgreSQL · Redshift · MySQL · Athena",
       screenFormat: "45-min Chime / CoderPad screen with Amazon Bar Raiser principles",
@@ -55,7 +249,7 @@ window.CompanyMasteryEngine = (function() {
       name: "Google & YouTube",
       badge: "Hyper-Scale Analytics",
       icon: "🔍",
-      category: "FAANG",
+      domain: "social",
       tier: "Tier 1 Big Data & Cloud",
       dialect: "Google BigQuery · PostgreSQL · Spark SQL",
       screenFormat: "45-min Google Meet / Google Docs live query derivation",
@@ -74,7 +268,7 @@ window.CompanyMasteryEngine = (function() {
       name: "Meta (Facebook / IG)",
       badge: "Social Graph & Ads",
       icon: "📱",
-      category: "FAANG",
+      domain: "social",
       tier: "Tier 1 Social Network & Ads",
       dialect: "Presto / Trino · Spark SQL · Scuba",
       screenFormat: "45-min CoderPad with 2 back-to-back live SQL scenarios",
@@ -93,7 +287,7 @@ window.CompanyMasteryEngine = (function() {
       name: "Apple",
       badge: "Ecosystem & Hardware Services",
       icon: "🍏",
-      category: "FAANG",
+      domain: "iot",
       tier: "Tier 1 Consumer & Services",
       dialect: "PostgreSQL · Snowflake · Spark SQL",
       screenFormat: "45-min technical screen with Engineering Manager & Data Architect",
@@ -106,13 +300,13 @@ window.CompanyMasteryEngine = (function() {
         { topic: "Payment Refund Reconciliation", pct: 83 },
         { topic: "Hardware Batch Defect Ratios", pct: 75 }
       ],
-      mockTrackId: null
+      mockTrackId: "track_apple"
     },
     Stripe: {
       name: "Stripe",
       badge: "FinTech & Ledgers",
       icon: "💳",
-      category: "FinTech",
+      domain: "fintech",
       tier: "Tier 1 Global Payments Infrastructure",
       dialect: "PostgreSQL · Presto · DuckDB",
       screenFormat: "60-min interactive pairing on realistic ledger schemas with live unit tests",
@@ -131,7 +325,7 @@ window.CompanyMasteryEngine = (function() {
       name: "Citadel Securities",
       badge: "Quantitative Trading & HFT",
       icon: "🏛️",
-      category: "Quant",
+      domain: "quant",
       tier: "Tier 1 Wall Street Market Maker",
       dialect: "PostgreSQL · kdb+/q · ClickHouse · TimescaleDB",
       screenFormat: "45-min high-intensity algorithmic screen testing market microstructure",
@@ -146,11 +340,30 @@ window.CompanyMasteryEngine = (function() {
       ],
       mockTrackId: "track_citadel"
     },
+    JaneStreet: {
+      name: "Jane Street / Goldman Sachs",
+      badge: "Wall Street Quant Trading",
+      icon: "⚡",
+      domain: "quant",
+      tier: "Tier 1 Quantitative & Prop Trading",
+      dialect: "PostgreSQL · kdb+/q · DuckDB · ClickHouse",
+      screenFormat: "45-min algorithmic quant screen with rapid-fire SQL & trade blotters",
+      coreFocus: "Option arbitrage pricing, multi-asset blotters, trade execution latency, running risk limits",
+      interviewPattern: "Complex analytical window frames, rolling standard deviations, and multi-leg order book matching",
+      topSyntax: ["SUM() OVER()", "AVG() OVER (ROWS 30 PRECEDING)", "CASE WHEN", "LAG()"],
+      probabilities: [
+        { topic: "Order Book Matching Arbitrage", pct: 97 },
+        { topic: "Moving Average Volatility Bounds", pct: 94 },
+        { topic: "Execution Blotter Fill Rates", pct: 90 },
+        { topic: "High-Frequency Spread Analysis", pct: 85 }
+      ],
+      mockTrackId: "track_janestreet"
+    },
     Bloomberg: {
       name: "Bloomberg",
       badge: "Financial Data & Terminals",
       icon: "📈",
-      category: "FinTech",
+      domain: "quant",
       tier: "Tier 1 Financial Data & Media",
       dialect: "PostgreSQL · Comdb2 · MySQL",
       screenFormat: "45-min HackerRank + Onsite System & SQL Bar Raiser",
@@ -163,13 +376,13 @@ window.CompanyMasteryEngine = (function() {
         { topic: "Ticker Dividend Adjustments", pct: 84 },
         { topic: "Consensus Average Outliers", pct: 78 }
       ],
-      mockTrackId: null
+      mockTrackId: "track_bloomberg"
     },
     Uber: {
       name: "Uber & DoorDash",
       badge: "Marketplace & Logistics",
       icon: "🚗",
-      category: "Marketplace",
+      domain: "marketplace",
       tier: "Tier 1 Two-Sided Marketplace",
       dialect: "Presto · PostgreSQL · Spark SQL",
       screenFormat: "45-min CoderPad covering driver dispatch, surge multipliers, and delivery completion rates",
@@ -184,11 +397,30 @@ window.CompanyMasteryEngine = (function() {
       ],
       mockTrackId: "track_uber"
     },
+    Airbnb: {
+      name: "Airbnb",
+      badge: "Travel & Lodging Marketplace",
+      icon: "🏡",
+      domain: "marketplace",
+      tier: "Tier 1 Travel & Hospitality",
+      dialect: "Presto / Trino · Apache Iceberg · Snowflake",
+      screenFormat: "45-min CoderPad pairing on host calendar availability and guest booking funnels",
+      coreFocus: "Host occupancy rate, booking search conversions, cancellation policy refunds, seasonal pricing elasticities",
+      interviewPattern: "Consecutive night date overlaps, host response time percentiles, and multi-listing performance",
+      topSyntax: ["DATEDIFF()", "COUNT(DISTINCT)", "AVG() OVER()", "ROW_NUMBER()"],
+      probabilities: [
+        { topic: "Calendar Occupancy & Availability", pct: 95 },
+        { topic: "Search-to-Booking Funnels", pct: 91 },
+        { topic: "Host Cancellation Penalty Logic", pct: 86 },
+        { topic: "Dynamic Seasonal Pricing Tiers", pct: 80 }
+      ],
+      mockTrackId: "track_airbnb"
+    },
     Netflix: {
       name: "Netflix",
       badge: "Streaming & Media",
       icon: "🎬",
-      category: "FAANG",
+      domain: "streaming",
       tier: "Tier 1 Entertainment & CDN",
       dialect: "Trino · Spark SQL · Apache Iceberg",
       screenFormat: "45-min pairing interview on subscriber engagement and streaming telemetry",
@@ -202,10 +434,177 @@ window.CompanyMasteryEngine = (function() {
         { topic: "Regional Catalog Saturation", pct: 78 }
       ],
       mockTrackId: "track_netflix"
+    },
+    Spotify: {
+      name: "Spotify",
+      badge: "Audio Streaming & Playlists",
+      icon: "🎵",
+      domain: "streaming",
+      tier: "Tier 1 Audio Streaming & Ads",
+      dialect: "Google BigQuery · Trino · PostgreSQL",
+      screenFormat: "45-min Google Meet pairing on listening duration and playlist telemetry",
+      coreFocus: "30-second monetization thresholds, skip-rate window partitions, collaborative playlist deduplication",
+      interviewPattern: "Streaming sessionization, user discovery algorithms, podcast ad insertion tracking",
+      topSyntax: ["SUM(CASE WHEN duration >= 30)", "LAG()", "DENSE_RANK()", "QUALIFY"],
+      probabilities: [
+        { topic: "30s Monetization Listening Rule", pct: 97 },
+        { topic: "Track Skip-Rate Partitions", pct: 92 },
+        { topic: "Collaborative Playlist Deduplication", pct: 86 },
+        { topic: "Artist Stream Share Attribution", pct: 81 }
+      ],
+      mockTrackId: null
+    },
+    Snowflake: {
+      name: "Snowflake",
+      badge: "Cloud Data Warehouse",
+      icon: "❄️",
+      domain: "cloud",
+      tier: "Tier 1 Modern Data Stack",
+      dialect: "Snowflake SQL (ANSI Standard)",
+      screenFormat: "45-min virtual whiteboard on micro-partitioning, credit metering, and query tuning",
+      coreFocus: "Zero-copy cloning, micro-partition pruning, QUALIFY deduplication, semi-structured JSON unnesting",
+      interviewPattern: "Multi-tenant query compute metering, disk spill prevention, and window function deduplication",
+      topSyntax: ["QUALIFY", "FLATTEN()", "ROW_NUMBER() OVER()", "PARSE_JSON()"],
+      probabilities: [
+        { topic: "QUALIFY Window Deduplication", pct: 98 },
+        { topic: "Micro-Partition Pruning & Cost", pct: 94 },
+        { topic: "Virtual Warehouse Credit Metering", pct: 90 },
+        { topic: "Semi-Structured LATERAL FLATTEN", pct: 85 }
+      ],
+      mockTrackId: "track_snowflake"
+    },
+    Microsoft: {
+      name: "Microsoft",
+      badge: "Enterprise SaaS & Cloud",
+      icon: "🏢",
+      domain: "cloud",
+      tier: "Tier 1 Enterprise Tech & Cloud",
+      dialect: "T-SQL / SQL Server · Azure Synapse · PostgreSQL",
+      screenFormat: "45-min Teams technical screen on recursive CTEs and enterprise hierarchy graphs",
+      coreFocus: "Org chart traversal, Azure subscription credit allocation, Teams collaboration edges, B2B churn",
+      interviewPattern: "Recursive Common Table Expressions, multi-level reporting lines, and enterprise seat utilization",
+      topSyntax: ["WITH RECURSIVE", "SELF JOIN", "DENSE_RANK()", "CROSS APPLY"],
+      probabilities: [
+        { topic: "Recursive Org Hierarchy Trees", pct: 96 },
+        { topic: "Manager-Report Salary Differential", pct: 92 },
+        { topic: "Azure Multi-Tenant Credit Metering", pct: 88 },
+        { topic: "B2B Enterprise License Renewal", pct: 82 }
+      ],
+      mockTrackId: "track_microsoft"
+    },
+    Coinbase: {
+      name: "Coinbase & Robinhood",
+      badge: "Crypto & Retail Brokerage",
+      icon: "🪙",
+      domain: "fintech",
+      tier: "Tier 1 Digital Assets & FinTech",
+      dialect: "PostgreSQL · Snowflake · Presto",
+      screenFormat: "45-min live pairing on crypto order book fills, deposit-to-trade velocity, and wash trading rings",
+      coreFocus: "Order fill matching, maker/taker fee splits, ACH instant deposit outflow risk, circular wash trading",
+      interviewPattern: "Strict financial precision, double-entry crypto ledger updates, and graph cycle detection",
+      topSyntax: ["SUM(p*size)", "CASE WHEN fee_tier", "CYCLE DETECTION", "LAG()"],
+      probabilities: [
+        { topic: "Maker / Taker Volume Fee Splits", pct: 97 },
+        { topic: "Deposit Velocity & Outflow Risk", pct: 93 },
+        { topic: "Circular Wash Trading Rings", pct: 89 },
+        { topic: "Cold Wallet Rebalancing Thresholds", pct: 83 }
+      ],
+      mockTrackId: "track_coinbase"
+    },
+    Tesla: {
+      name: "Tesla & SpaceX",
+      badge: "Autonomous Fleet & IoT",
+      icon: "⚡",
+      domain: "iot",
+      tier: "Tier 1 Hardware, EV & Aerospace",
+      dialect: "TimescaleDB · PostgreSQL · ClickHouse · Trino",
+      screenFormat: "45-min screen on time-series telemetry downsampling and vehicle fleet state-of-charge",
+      coreFocus: "Supercharger stall queue times, battery pack voltage drop-offs, fleet OTA rollout canary verification",
+      interviewPattern: "Timestamp bucketing, rolling time windows (ROWS BETWEEN), and sensor anomaly detection",
+      topSyntax: ["DATE_TRUNC()", "AVG() OVER (ROWS 60 PRECEDING)", "PERCENTILE_CONT", "LEAD()"],
+      probabilities: [
+        { topic: "Supercharger Queue Congestion", pct: 96 },
+        { topic: "Battery Voltage Drop Anomalies", pct: 92 },
+        { topic: "Fleet Firmware Canary Health", pct: 88 },
+        { topic: "Autopilot Telemetry Disengagement", pct: 82 }
+      ],
+      mockTrackId: null
+    },
+    EpicSystems: {
+      name: "Epic Systems & Healthcare",
+      badge: "Clinical Records & EHR",
+      icon: "🏥",
+      domain: "health",
+      tier: "Tier 1 HealthTech & Clinical",
+      dialect: "InterSystems Caché SQL · PostgreSQL · Snowflake",
+      screenFormat: "45-min technical screen on patient encounter pipelines, hospital readmissions, and claims adjudication",
+      coreFocus: "30-day all-cause hospital readmission penalties, diagnosis code ICD-10 rollups, prescription adherence",
+      interviewPattern: "Patient encounter date intervals, cohort retention, and HIPAA-safe data de-identification",
+      topSyntax: ["DATEDIFF()", "CASE WHEN", "PARTITION BY patient_id", "COUNT(DISTINCT)"],
+      probabilities: [
+        { topic: "30-Day Hospital Readmission Rate", pct: 97 },
+        { topic: "Claims Adjudication Copay Rollups", pct: 92 },
+        { topic: "Diagnosis Code ICD-10 Aggregation", pct: 87 },
+        { topic: "Prescription Refill Compliance Gap", pct: 82 }
+      ],
+      mockTrackId: null
+    },
+    Cloudflare: {
+      name: "Cloudflare & CrowdStrike",
+      badge: "Cybersecurity & Edge Logs",
+      icon: "🛡️",
+      domain: "cyber",
+      tier: "Tier 1 Cloud Security & CDN",
+      dialect: "ClickHouse · PostgreSQL · Trino",
+      screenFormat: "45-min live log analysis on DDoS attack mitigation, IP CIDR containment, and rate-limit spikes",
+      coreFocus: "High-velocity streaming request logs, IP subnet CIDR aggregation, rate-limiting HTTP 429 thresholding",
+      interviewPattern: "Sliding window burst detection, rapid-fire IP group filtering, and latency percentile tracking",
+      topSyntax: ["COUNT(*) OVER (PARTITION BY ip)", "HAVING COUNT(*) > 100", "APPROX_PERCENTILE", "STRING_AGG"],
+      probabilities: [
+        { topic: "DDoS High-Frequency Burst Detection", pct: 98 },
+        { topic: "IP Subnet CIDR Block Aggregation", pct: 93 },
+        { topic: "HTTP 429 Rate-Limit Spikes", pct: 89 },
+        { topic: "SSL Handshake Latency Percentiles", pct: 84 }
+      ],
+      mockTrackId: null
     }
   };
 
-  // State
+  // Helper to dynamically synthesize a company profile if not explicitly defined above
+  function getCompanyProfile(companyKey) {
+    if (COMPANY_PROFILES[companyKey]) {
+      return COMPANY_PROFILES[companyKey];
+    }
+
+    // Lookup which domain this company belongs to
+    let foundDomain = DOMAIN_CATALOG.all;
+    for (const dKey in DOMAIN_CATALOG) {
+      if (DOMAIN_CATALOG[dKey].companies && DOMAIN_CATALOG[dKey].companies.includes(companyKey)) {
+        foundDomain = DOMAIN_CATALOG[dKey];
+        break;
+      }
+    }
+
+    return {
+      name: companyKey,
+      badge: foundDomain.name,
+      icon: foundDomain.icon,
+      domain: foundDomain.id,
+      tier: "Tier 1 Enterprise Employer",
+      dialect: "ANSI SQL · PostgreSQL · Snowflake",
+      screenFormat: "45-min technical screen & real-world relational schema evaluation",
+      coreFocus: foundDomain.coreFocus,
+      interviewPattern: `Specialized domain problem solving in ${foundDomain.name} testing ${foundDomain.tagline}.`,
+      topSyntax: foundDomain.topSyntax,
+      probabilities: foundDomain.domainProbabilities,
+      mockTrackId: null
+    };
+  }
+
+  // ===========================================================================
+  // 3. ENGINE STATE & INITIALIZATION
+  // ===========================================================================
+  let activeDomain = 'all';
   let activeCompany = 'all';
   let activeDifficulty = 'all';
   let searchQuery = '';
@@ -228,16 +627,24 @@ window.CompanyMasteryEngine = (function() {
   function getFilteredProblems() {
     const vault = getVaultProblems();
     return vault.filter(p => {
+      // Domain Match
+      if (activeDomain !== 'all') {
+        const domains = p.domains || [];
+        if (!domains.includes(activeDomain)) return false;
+      }
+
       // Company Match
       if (activeCompany !== 'all') {
         const companies = p.companies || [];
         const hasCompany = companies.some(c => c.toLowerCase() === activeCompany.toLowerCase());
         if (!hasCompany) return false;
       }
+
       // Difficulty Match
       if (activeDifficulty !== 'all') {
-        if (p.difficulty.toLowerCase() !== activeDifficulty.toLowerCase()) return false;
+        if ((p.difficulty || '').toLowerCase() !== activeDifficulty.toLowerCase()) return false;
       }
+
       // Search Query
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
@@ -248,10 +655,10 @@ window.CompanyMasteryEngine = (function() {
         const compMatch = (p.companies || []).some(c => c.toLowerCase().includes(q));
         if (!numMatch && !titleMatch && !catMatch && !sqlMatch && !compMatch) return false;
       }
+
       return true;
     }).sort((a, b) => {
       if (activeSort === 'probability') {
-        // Parse probability from interviewFreq
         const getFreqScore = (item) => {
           const str = item.interviewFreq || '';
           const match = str.match(/(\d+)%/);
@@ -268,65 +675,150 @@ window.CompanyMasteryEngine = (function() {
     });
   }
 
+  function getDomainQuestionCount(domainKey) {
+    const vault = getVaultProblems();
+    if (domainKey === 'all') return vault.length;
+    return vault.filter(p => (p.domains || []).includes(domainKey)).length;
+  }
+
   function getCompanyQuestionCount(companyKey) {
     const vault = getVaultProblems();
-    if (companyKey === 'all') return vault.length;
+    if (companyKey === 'all') {
+      if (activeDomain === 'all') return vault.length;
+      return vault.filter(p => (p.domains || []).includes(activeDomain)).length;
+    }
     return vault.filter(p => (p.companies || []).some(c => c.toLowerCase() === companyKey.toLowerCase())).length;
   }
 
+  // ===========================================================================
+  // 4. MAIN VIEW RENDERER
+  // ===========================================================================
   function render(container) {
-    const profile = COMPANY_PROFILES[activeCompany] || COMPANY_PROFILES.all;
+    const domain = DOMAIN_CATALOG[activeDomain] || DOMAIN_CATALOG.all;
+    const profile = activeCompany === 'all' 
+      ? { ...COMPANY_PROFILES.all, name: activeDomain === 'all' ? "All Top Companies" : `${domain.name} (All Firms)`, icon: domain.icon, coreFocus: domain.coreFocus, probabilities: domain.domainProbabilities, topSyntax: domain.topSyntax }
+      : getCompanyProfile(activeCompany);
+
     const filteredProblems = getFilteredProblems();
     const totalCount = filteredProblems.length;
 
+    // Get list of companies to display in ribbon
+    let displayCompanies = [];
+    if (activeDomain === 'all') {
+      displayCompanies = ['all', 'Amazon', 'Google', 'Meta', 'Apple', 'Stripe', 'Citadel', 'JaneStreet', 'Bloomberg', 'Netflix', 'Spotify', 'Uber', 'Airbnb', 'Snowflake', 'Microsoft', 'Coinbase', 'Tesla', 'EpicSystems', 'Cloudflare'];
+    } else {
+      displayCompanies = ['all', ...(domain.companies || [])];
+    }
+
     container.innerHTML = `
       <div class="company-hub-wrapper">
-        <!-- Top Banner -->
+        <!-- Top Institutional Header -->
         <header class="company-hub-header">
           <div class="hub-header-left">
             <div class="hub-title-row">
-              <span class="hub-title-icon">🏢</span>
+              <span class="hub-title-icon">🏛️</span>
               <div>
-                <h1 class="hub-title">Company Interview Intelligence &amp; Practice Matrix</h1>
+                <h1 class="hub-title">Institutional Domain &amp; Company Mastery Hub</h1>
                 <p class="hub-subtitle">
-                  Authentic LeetCode SQL vault mapped to verified company interview frequency, round probabilities, and technical architectural screens.
+                  10 Core Industry Verticals · 70+ Premier Employers · Authentic LeetCode 323 Vault with live WASM Judge &amp; 14 Timed Mock Screens.
                 </p>
               </div>
             </div>
           </div>
           <div class="hub-header-stats">
             <div class="hub-stat-card">
-              <div class="hub-stat-val">${getVaultProblems().length}</div>
-              <div class="hub-stat-lbl">Official Questions</div>
+              <div class="hub-stat-val">10 Domains</div>
+              <div class="hub-stat-lbl">Industry Verticals</div>
             </div>
             <div class="hub-stat-card">
-              <div class="hub-stat-val">10 Tracks</div>
-              <div class="hub-stat-lbl">Timed Screens</div>
+              <div class="hub-stat-val">70+ Firms</div>
+              <div class="hub-stat-lbl">Target Employers</div>
             </div>
             <div class="hub-stat-card">
-              <div class="hub-stat-val">100%</div>
+              <div class="hub-stat-val">323 Problems</div>
               <div class="hub-stat-lbl">WASM Verified</div>
+            </div>
+            <div class="hub-stat-card">
+              <div class="hub-stat-val">14 Screens</div>
+              <div class="hub-stat-lbl">45-Min Timed</div>
             </div>
           </div>
         </header>
 
-        <!-- Company Selector Ribbon -->
-        <div class="company-selector-ribbon" id="companyRibbon">
-          ${Object.keys(COMPANY_PROFILES).map(key => {
-            const c = COMPANY_PROFILES[key];
-            const count = getCompanyQuestionCount(key);
-            const isSelected = activeCompany === key;
-            return `
-              <button class="company-tab-btn ${isSelected ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setCompany('${key}')">
-                <span class="company-tab-icon">${c.icon}</span>
-                <span class="company-tab-name">${c.name}</span>
-                <span class="company-tab-count">${count}</span>
-              </button>
-            `;
-          }).join('')}
+        <!-- Tier 1: Domain Navigation Ribbon -->
+        <div class="domain-selector-section">
+          <div class="domain-selector-header">
+            <span class="sec-badge">STEP 1</span>
+            <span class="sec-title">Select Industry Domain / Vertical</span>
+          </div>
+          <div class="domain-selector-ribbon" id="domainRibbon">
+            ${Object.keys(DOMAIN_CATALOG).map(dKey => {
+              const d = DOMAIN_CATALOG[dKey];
+              const isSelected = activeDomain === dKey;
+              const count = getDomainQuestionCount(dKey);
+              return `
+                <button class="domain-tab-btn ${isSelected ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setDomain('${dKey}')">
+                  <span class="domain-tab-icon">${d.icon}</span>
+                  <div class="domain-tab-info">
+                    <span class="domain-tab-name">${d.name}</span>
+                    <span class="domain-tab-meta">${count} Problems</span>
+                  </div>
+                </button>
+              `;
+            }).join('')}
+          </div>
         </div>
 
-        <!-- Selected Company Dossier -->
+        <!-- Domain Architecture & ERD Spotlight Banner -->
+        ${domain.id !== 'all' ? `
+          <div class="domain-architecture-spotlight">
+            <div class="spotlight-left">
+              <div class="spotlight-badge-row">
+                <span class="spotlight-domain-pill">${domain.icon} ${domain.name} Architecture</span>
+                <span class="spotlight-tagline-pill">${domain.badge}</span>
+              </div>
+              <h3 class="spotlight-title">${domain.tagline}</h3>
+              <p class="spotlight-focus">${domain.coreFocus}</p>
+            </div>
+            <div class="spotlight-right">
+              ${domain.erdKey && window.DOMAIN_ERD_ENGINE ? `
+                <button class="spotlight-erd-btn" onclick="window.CompanyMasteryEngine.openDomainERD('${domain.erdKey}')">
+                  <span class="btn-icon">📐</span>
+                  <div class="btn-text">
+                    <strong>Inspect ${domain.name} ERD Diagram</strong>
+                    <small>Interactive Visual Multi-Table Relational Model</small>
+                  </div>
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Tier 2: Company Selector Ribbon within Domain -->
+        <div class="company-selector-section">
+          <div class="company-selector-header">
+            <span class="sec-badge">STEP 2</span>
+            <span class="sec-title">Select Employer (${activeDomain === 'all' ? 'Featured FAANG & Wall Street' : domain.name + ' Firms'})</span>
+          </div>
+          <div class="company-selector-ribbon" id="companyRibbon">
+            ${displayCompanies.map(cKey => {
+              const compProf = cKey === 'all' 
+                ? { name: activeDomain === 'all' ? "All Top Companies" : `All ${domain.name}`, icon: "🌐" }
+                : getCompanyProfile(cKey);
+              const count = getCompanyQuestionCount(cKey);
+              const isSelected = activeCompany === cKey;
+              return `
+                <button class="company-tab-btn ${isSelected ? 'active' : ''}" onclick="window.CompanyMasteryEngine.setCompany('${cKey}')">
+                  <span class="company-tab-icon">${compProf.icon}</span>
+                  <span class="company-tab-name">${compProf.name}</span>
+                  <span class="company-tab-count">${count}</span>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- Selected Company Dossier Card -->
         <div class="company-dossier-card">
           <div class="dossier-main-col">
             <div class="dossier-header-bar">
@@ -352,7 +844,7 @@ window.CompanyMasteryEngine = (function() {
               <div class="dossier-spec-item">
                 <div class="spec-label">Target Syntax Mastery</div>
                 <div class="spec-syntax-tags">
-                  ${profile.topSyntax.map(s => `<span class="syntax-tag">${s}</span>`).join('')}
+                  ${(profile.topSyntax || []).map(s => `<span class="syntax-tag">${s}</span>`).join('')}
                 </div>
               </div>
             </div>
@@ -364,15 +856,20 @@ window.CompanyMasteryEngine = (function() {
                 </button>
               ` : ''}
               <button class="dossier-launch-btn secondary" onclick="window.CompanyMasteryEngine.jumpToArena()">
-                <span>⚡ Open in LeetCode 300+ Arena</span>
+                <span>⚡ Open in LeetCode 323 Arena</span>
               </button>
+              ${domain.erdKey && window.DOMAIN_ERD_ENGINE ? `
+                <button class="dossier-launch-btn tertiary" onclick="window.CompanyMasteryEngine.openDomainERD('${domain.erdKey}')">
+                  <span>📐 View Domain ERD</span>
+                </button>
+              ` : ''}
             </div>
           </div>
 
           <div class="dossier-radar-col">
             <h4 class="radar-title">Question Pattern Probability</h4>
             <div class="prob-bars-list">
-              ${profile.probabilities.map(p => `
+              ${(profile.probabilities || []).map(p => `
                 <div class="prob-bar-row">
                   <div class="prob-bar-label">
                     <span>${p.topic}</span>
@@ -478,7 +975,7 @@ window.CompanyMasteryEngine = (function() {
           <button class="prob-action-btn inspect" onclick="window.CompanyMasteryEngine.openProblemModal(${p.id})">
             <span>🔍 Blueprint &amp; Solution</span>
           </button>
-          <button class="prob-action-btn arena" onclick="window.CompanyMasteryEngine.openInArena(${p.id})" title="Solve in LeetCode 300+ Arena">
+          <button class="prob-action-btn arena" onclick="window.CompanyMasteryEngine.openInArena(${p.id})" title="Solve in LeetCode 323 Arena">
             <span>⚡ Solve</span>
           </button>
         </div>
@@ -712,7 +1209,7 @@ window.CompanyMasteryEngine = (function() {
   function openInArena(problemId) {
     closeModal();
     if (typeof window.selectNavView === 'function') {
-      window.selectNavView('viewLeetCode50', 'LeetCode 300+', null);
+      window.selectNavView('viewLeetCode50', 'LeetCode 323', null);
     }
     setTimeout(() => {
       if (window.LEETCODE_ARENA && typeof window.LEETCODE_ARENA.selectProblem === 'function') {
@@ -734,11 +1231,26 @@ window.CompanyMasteryEngine = (function() {
 
   function jumpToArena() {
     if (typeof window.selectNavView === 'function') {
-      window.selectNavView('viewLeetCode50', 'LeetCode 300+', null);
+      window.selectNavView('viewLeetCode50', 'LeetCode 323', null);
+    }
+  }
+
+  function openDomainERD(erdKey) {
+    if (window.DOMAIN_ERD_ENGINE && typeof window.DOMAIN_ERD_ENGINE.openDomainERD === 'function') {
+      window.DOMAIN_ERD_ENGINE.openDomainERD(erdKey);
+    } else if (typeof window.selectNavView === 'function') {
+      window.selectNavView('viewDomainERD', 'Domain ERD', null);
     }
   }
 
   // Filter setters
+  function setDomain(domainKey) {
+    activeDomain = domainKey;
+    activeCompany = 'all'; // reset company filter on domain change
+    const container = document.getElementById('viewCompanyHub');
+    if (container) render(container);
+  }
+
   function setCompany(companyKey) {
     activeCompany = companyKey;
     const container = document.getElementById('viewCompanyHub');
@@ -770,6 +1282,7 @@ window.CompanyMasteryEngine = (function() {
   }
 
   function resetFilters() {
+    activeDomain = 'all';
     activeCompany = 'all';
     activeDifficulty = 'all';
     searchQuery = '';
@@ -790,6 +1303,7 @@ window.CompanyMasteryEngine = (function() {
 
   return {
     init,
+    setDomain,
     setCompany,
     setDifficulty,
     setSort,
@@ -803,7 +1317,13 @@ window.CompanyMasteryEngine = (function() {
     copyCurrentSQL,
     openInArena,
     launchMockTrack,
-    jumpToArena
+    jumpToArena,
+    openDomainERD,
+    DOMAIN_CATALOG,
+    COMPANY_PROFILES
   };
 
 })();
+
+// Alias for seamless backward/forward compatibility
+window.DomainMasteryEngine = window.CompanyMasteryEngine;

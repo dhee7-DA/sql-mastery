@@ -6,20 +6,20 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: **20-Day Master Curriculum 100% Complete + LeetCode 323 Official Mega Vault + FAANG & Wall Street Company Hub Deployed**
+- **Current Sprint**: **Institutional Domain & Company Mastery Hub Deployed (10 Industry Verticals · 70+ Premier Employers · 14 Full Mock Tracks · Complete LeetCode 323 Vault Mapping)**
 - **Active Module**: [`day-20-grand-enterprise-gauntlet`](./day-20-grand-enterprise-gauntlet) (Multi-Pillar Integration & Graduation)
 - **Current Dialect**: **PostgreSQL 16+ / MySQL 8.0+ / Snowflake / DuckDB / BigQuery (ANSI SQL Standard)**
 - **Major Milestones Achieved**: 
   - 🏆 **FULL 20-DAY SYSTEMATIC CURRICULUM DEPLOYED (Days 01 to 20 Complete with Theory, DDL, Benchmarks & Defense)!**
   - 🏆 **LEETCODE 300+ MEGA VAULT DEPLOYED (323 Official LeetCode Problems with Schemas, Test Cases & Golden Solutions)!**
   - 🏆 **IN-BROWSER SQLITE WASM TEST RUNNER ARENA (Client-Side Test Judge & Sir Bloops AI Co-Pilot)!**
-  - 🏆 **FAANG & WALL STREET COMPANY MASTERY HUB (10 Tracks: Amazon, Google, Meta, Apple, Stripe, Citadel, Bloomberg, Netflix, Uber, Snowflake)!**
+  - 🏆 **INSTITUTIONAL DOMAIN & COMPANY MASTERY HUB (10 Verticals: FinTech, Quant, E-Commerce, Social, Streaming, Mobility, Cloud, HealthTech, IoT, Cyber · 70+ Employers · 14 Full Mock Tracks)!**
   - 🏆 **TACTILE 3D RELATIONAL PINBALL & CLOCKWORK MACHINE (Fig. 16 Physical Apparatus)!**
   - 🏆 **IN-APP THEORY & INTERVIEW DEFENSE COMPENDIUM (21 Modules Accessible via 1-Click Reader Modal)!**
   - 🏆 **CORPORATE CASE STUDIES EXPANDED TO 2,540 FULL PRODUCTION SCENARIOS!**
-- **Next Immediate Action**: Live practice in the Target Company Mastery Hub and LeetCode SQLite WASM Arena.
+- **Next Immediate Action**: Live practice across Domain Verticals in the Mastery Hub and LeetCode SQLite WASM Arena.
 - **Total Problems Completed in Intensive**: 120+ Core Curriculum Problems + 323 LeetCode Official Problems + 1,850 Interactive Quests
-- **Last Updated**: 2026-10-25 13:10 IST
+- **Last Updated**: 2026-10-25 15:35 IST
 
 ---
 
@@ -174,12 +174,14 @@
 - **Automated Test Judge**: Client executes queries against live test tables, comparing outputs against golden solutions with diff highlighting and pass/fail badges.
 - **Sir Bloops AI Guide**: Added animated, interactive Co-Pilot offering hints, syntax tips, and performance warnings without revealing solutions prematurely.
 
-### 19. 2026-10-25 (FAANG & Wall Street Target Company Mastery Hub)
-- **10 Target Company Tracks**: Deployed dedicated tracks for Amazon/AWS, Google/YouTube, Meta, Apple, Stripe, Citadel, Bloomberg, Netflix, Uber, and Snowflake.
-- **Company Intelligence Profiles**: Documented dialect standards (BigQuery, Trino, Redshift, Snowflake, PostgreSQL), 45-minute technical screen formats, core testing topics, and top syntax patterns.
-- **Empirical Interview Probabilities**: Built dynamic probability distribution bars for each company across the 323 LeetCode problems.
-- **Direct Workspace Bridges**: 1-click launch into the 45-min Timed Mock Interview Screen or In-Browser SQLite WASM Arena.
-- **Glassmorphism Design System**: Delivered high-contrast, modern obsidian theme with company brand accents in `company_mastery_theme.css` and engine in `company_mastery_engine.js`.
+### 20. 2026-10-25 (Institutional Domain & Company Mastery Hub V2)
+- **10 Industry Verticals Architecture**: Refactored the hub to support 10 foundational domains (FinTech, Quant, E-Commerce, Social, Streaming, Mobility, Cloud Warehousing, HealthTech, IoT Telemetry, Cybersecurity).
+- **70+ Premier Target Employers**: Embedded curated company sets across every domain (e.g., Stripe, PayPal, Citadel, Jane Street, Amazon, Shopify, Meta, TikTok, Netflix, Spotify, Uber, Airbnb, Snowflake, Microsoft, UnitedHealth, Epic Systems, Tesla, Cloudflare).
+- **Domain Relational ERD Spotlight**: Direct visual linkage to `domain_erd_engine.js` so learners can inspect interactive multi-table schemas and foreign key relationships per industry vertical.
+- **LeetCode 323 Multi-Domain Enrichment**: Every problem tagged with real-world domains and companies, ensuring 0 empty company views and rich problem sets (15 to 297 problems per employer).
+- **14 Full 45-Min Mock Interview Tracks**: Deployed new tracks for Snowflake, Apple, Bloomberg, and Microsoft in `mock_interview_data.js`, ensuring all top firms have verified 3-round timed technical screens with live DDL and golden solutions.
+- **Obsidian Theme & Dual-Tier Ribbon**: Upgraded `company_mastery_theme.css` with a 2-step navigation ribbon (Step 1: Domain -> Step 2: Employer), domain architecture cards, and responsive modal inspector.
+
 
 
 
