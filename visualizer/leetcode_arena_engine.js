@@ -159,7 +159,7 @@ window.LEETCODE_ARENA = (() => {
     activeDrillIdx: 0,
     activeChapterIdx: 0,
     activeDossierTab: 'schema', // 'schema' | 'canonical' | 'traps' | 'gateways'
-    sidebarCollapsed: false,
+    sidebarCollapsed: true, // Collapsed by default for spacious, distraction-free workspace!
     expandedConcepts: { 'concept-1': true },
     sidebarFilter: '',
     sidebarPillar: 'all', // 'all' | 'filters' | 'joins' | 'aggs' | 'subqueries' | 'windows' | 'strings'
@@ -523,27 +523,31 @@ window.LEETCODE_ARENA = (() => {
 
         <!-- Right Studio Main Workspace -->
         <main class="lc-workspace-studio">
-          <!-- Slim 48px Breadcrumb Bar -->
+          <!-- Slim 44px IDE Action Bar -->
           <header class="lc-studio-bar">
             <div class="lc-studio-bar-left">
-              <button class="lc-sidebar-toggle-btn" id="btnExpandSidebar" title="Show Sidebar (Ctrl+B)" style="display: ${state.sidebarCollapsed ? 'flex' : 'none'};">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+              <button class="lc-problems-drawer-btn" id="btnExpandSidebar" title="Browse problem catalog (Ctrl+B)">
+                <span style="font-size: 13px;">☰</span>
+                <span>Problem Catalog</span>
+                <span class="lc-problems-count-pill">${totalProblems}</span>
               </button>
-              <button class="lc-hub-back-btn" id="btnStudioBackHub" title="Return to Topic Collections Hub">
-                <span>🗂️</span>
-                <span>Topics Hub</span>
-              </button>
-              <div class="lc-breadcrumbs">
-                <span class="lc-crumb-concept" id="lcCrumbConcept">${state.activeStage === 'topics' ? 'Topic Collections Directory' : data.title}</span>
-                <span class="lc-crumb-sep">/</span>
-                <span class="lc-crumb-item" id="lcCrumbItem">${state.activeStage === 'topics' ? totalProblems + ' Curated Problems' : (currentProb ? '#' + currentProb.id + ' ' + currentProb.title : 'Overview')}</span>
+
+              <div class="lc-nav-arrows" style="display: flex; gap: 2px;">
+                <button class="lc-arrow-btn" id="btnTopPrev" title="Previous problem (Alt+Left)">◀</button>
+                <button class="lc-arrow-btn" id="btnTopNext" title="Next problem (Alt+Right)">▶</button>
+              </div>
+
+              <div class="lc-bar-problem-title">
+                <span class="lc-bar-prob-id">#${currentProb ? currentProb.id : '1757'}</span>
+                <span class="lc-bar-prob-name">${currentProb ? escapeHtml(currentProb.title) : 'Problem'}</span>
+                <span class="lc-diff-badge lc-diff-${currentProb ? (currentProb.difficulty || 'Medium').toLowerCase() : 'easy'}">${currentProb ? currentProb.difficulty : 'Easy'}</span>
               </div>
             </div>
 
             <!-- Segmented Stage Controller: 4 Clean Modes -->
             <div class="lc-segmented-pill">
               <button class="lc-seg-btn ${state.activeStage === 'problems' ? 'active' : ''}" data-stage="problems" title="Solve LeetCode Problem in Order of Learning">
-                <span>📖 Problem Studio</span>
+                <span>📖 Problem &amp; Spec</span>
               </button>
               <button class="lc-seg-btn ${state.activeStage === 'masterclass' ? 'active' : ''}" data-stage="masterclass" title="Visual SVG Mechanics &amp; Relational Theory">
                 <span>💡 Concept Theory</span>
@@ -575,11 +579,6 @@ window.LEETCODE_ARENA = (() => {
               <button class="lc-bar-nav-btn" id="btnToggleZen" title="Zen Focus Mode: Hide headers and sidebar">
                 <span>⛶ Zen</span>
               </button>
-
-              <div class="lc-step-btn-group" style="display: flex; gap: 2px;">
-                <button class="lc-bar-nav-btn" id="btnTopPrev" title="Previous item (Alt+Left)">◀</button>
-                <button class="lc-bar-nav-btn" id="btnTopNext" title="Next item (Alt+Right)">▶</button>
-              </div>
             </div>
           </header>
 
@@ -1886,7 +1885,7 @@ WHERE ;`;
 
     let userOrStarterSql = state.userCode[activeProb.id];
     if (userOrStarterSql === undefined) {
-      userOrStarterSql = isSolved ? activeProb.solutionSQL : defaultStarterSql;
+      userOrStarterSql = defaultStarterSql;
       state.userCode[activeProb.id] = userOrStarterSql;
     }
 
@@ -1928,36 +1927,9 @@ WHERE ;`;
 
     canvas.innerHTML = `
       <div class="lc-canvas-inner">
-        <!-- 3-Phase Guided Order of Learning Stepper Banner -->
-        <div class="lc-learning-stepper">
-          <div class="lc-step-pill active" id="stepIndicator1">
-            <span class="lc-step-num">1</span>
-            <div class="lc-step-text">
-              <strong>Step 1: Understand</strong>
-              <span>Spec &amp; Schema Inspector</span>
-            </div>
-          </div>
-          <div class="lc-step-connector"></div>
-          <div class="lc-step-pill" id="stepIndicator2">
-            <span class="lc-step-num">2</span>
-            <div class="lc-step-text">
-              <strong>Step 2: Solve</strong>
-              <span>SQL Solution Workspace</span>
-            </div>
-          </div>
-          <div class="lc-step-connector"></div>
-          <div class="lc-step-pill" id="stepIndicator3">
-            <span class="lc-step-num">3</span>
-            <div class="lc-step-text">
-              <strong>Step 3: Verify &amp; Defend</strong>
-              <span>WASM Judge &amp; Traps</span>
-            </div>
-          </div>
-        </div>
-
         <!-- 2-Column Split Studio Grid -->
         <div class="lc-problem-studio-grid ${state.layoutMode === 'editor' ? 'layout-editor' : (state.layoutMode === 'problem' ? 'layout-problem' : '')}">
-          <!-- Left: Phase 1 (Understand Spec, Schema, Guidance) -->
+          <!-- Left: Spec, Schema & Guidance -->
           <div class="lc-prob-dossier-col">
             ${state.layoutMode === 'problem' ? `
               <div class="lc-layout-banner">

@@ -2292,8 +2292,7 @@ function switchMainView(targetId) {
   }
   if (targetId === 'viewLeetCode50') {
     if (window.LEETCODE_ARENA) window.LEETCODE_ARENA.init();
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("⚡ Welcome to the LeetCode 50 Arena! Concept Masterclass, 100 MCQs, 100 Drills and Interactive Test Judge loaded!", 5000, 'celebrate');
-  }
+      }
   if (targetId === 'viewCompanyHub') {
     if (window.CompanyMasteryEngine) window.CompanyMasteryEngine.init();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏛️ Welcome to the Institutional Domain & Company Hub! 10 Industry Verticals, 70+ Premier Employers, and curated LeetCode drills loaded!", 5000, 'celebrate');
