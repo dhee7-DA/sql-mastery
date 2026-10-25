@@ -1,9 +1,136 @@
 /**
  * SQL FOUNDRY - PRODUCT LANDING PAGE ENGINE
  * Modulify Hybrid (Vesper + Black Plus) Showcase
+ * Laser Neon Red Edition • Clean Solid Typography • Multi-Scenario Hero Sandbox
  */
 (function() {
   'use strict';
+
+  const HERO_SCENARIOS = {
+    scenario1: {
+      id: 'scenario1',
+      title: '🏆 LeetCode #185 (Top 3 Salaries)',
+      filename: 'leetcode_185_department_salaries.sql',
+      dataset: 'enterprise_employees (12 production columns)',
+      latency: '0.014ms',
+      memory: '0.0KB',
+      rowsCount: '6 rows returned',
+      statusText: '🟢 Query Executed Successfully (DENSE_RANK Tied Evaluation)',
+      codeHtml: `<span class="landing-cm">-- LeetCode #185: Top 3 Department Earners using Dense Ranking</span>
+<span class="landing-kw">WITH</span> ranked_payroll <span class="landing-kw">AS</span> (
+  <span class="landing-kw">SELECT</span> 
+    emp_id, full_name, department_id, salary,
+    <span class="landing-fn">DENSE_RANK</span>() <span class="landing-kw">OVER</span> (
+      <span class="landing-kw">PARTITION BY</span> department_id 
+      <span class="landing-kw">ORDER BY</span> salary <span class="landing-kw">DESC</span>
+    ) <span class="landing-kw">AS</span> rank_pos
+  <span class="landing-kw">FROM</span> enterprise_employees
+)
+<span class="landing-kw">SELECT</span> department_id, full_name, salary, rank_pos
+<span class="landing-kw">FROM</span> ranked_payroll
+<span class="landing-kw">WHERE</span> rank_pos &lt;= <span class="landing-num">3</span>
+<span class="landing-kw">ORDER BY</span> department_id, rank_pos;`,
+      tableHeaders: ['department_id', 'full_name', 'salary', 'rank_pos'],
+      tableRows: [
+        ['Eng', 'Elena Rostova', '$185,000', '1'],
+        ['Eng', 'David Kim', '$172,000', '2'],
+        ['Eng', 'Marcus Vance', '$168,000', '3'],
+        ['Finance', 'Sarah Jenkins', '$195,000', '1'],
+        ['Finance', 'Alex Chen', '$180,000', '2'],
+        ['Finance', 'Jordan Hayes', '$165,000', '3']
+      ],
+      buddyTip: '⚡ Query executed in 0.014ms via client-side SQLite WASM! Notice how DENSE_RANK() cleanly handles ties without skipping rank numbers.'
+    },
+    scenario2: {
+      id: 'scenario2',
+      title: '🕵️ Fraud Detection (Gaps & Islands)',
+      filename: 'fraud_velocity_burst_detector.sql',
+      dataset: 'fraud_audit_stream (High-Frequency Ledger)',
+      latency: '0.019ms',
+      memory: '0.0KB',
+      rowsCount: '3 suspicious bursts flagged',
+      statusText: '🚨 3 Velocity Bursts Caught (Delta < 120s & Amount >= $5,000)',
+      codeHtml: `<span class="landing-cm">-- Detect high-velocity transaction bursts (> $5,000 within 2 minutes)</span>
+<span class="landing-kw">WITH</span> numbered_tx <span class="landing-kw">AS</span> (
+  <span class="landing-kw">SELECT</span> tx_id, user_id, amount, created_at,
+    <span class="landing-fn">LAG</span>(created_at) <span class="landing-kw">OVER</span> (
+      <span class="landing-kw">PARTITION BY</span> user_id 
+      <span class="landing-kw">ORDER BY</span> created_at
+    ) <span class="landing-kw">AS</span> prev_tx_time
+  <span class="landing-kw">FROM</span> fraud_audit_stream
+)
+<span class="landing-kw">SELECT</span> user_id, amount, created_at,
+  <span class="landing-fn">ROUND</span>((<span class="landing-fn">JULIANDAY</span>(created_at) - <span class="landing-fn">JULIANDAY</span>(prev_tx_time)) * <span class="landing-num">86400</span>) <span class="landing-kw">AS</span> delta_sec
+<span class="landing-kw">FROM</span> numbered_tx
+<span class="landing-kw">WHERE</span> delta_sec &lt;= <span class="landing-num">120</span> <span class="landing-kw">AND</span> amount &gt;= <span class="landing-num">5000</span>;`,
+      tableHeaders: ['user_id', 'amount', 'created_at', 'delta_sec'],
+      tableRows: [
+        ['USR_9012', '$9,450', '2026-10-25 14:02:11', '34s'],
+        ['USR_9012', '$8,900', '2026-10-25 14:03:02', '51s'],
+        ['USR_4401', '$12,000', '2026-10-25 16:45:10', '18s']
+      ],
+      buddyTip: '🚨 Fraud autopsy triggered! LAG() offset vectors detect rapid bursts without expensive self-joins.'
+    },
+    scenario3: {
+      id: 'scenario3',
+      title: '📈 7-Day Rolling Revenue (Sliding Frames)',
+      filename: 'stripe_rolling_metric_cockpit.sql',
+      dataset: 'stripe_billing_metrics (Daily ARR Stream)',
+      latency: '0.011ms',
+      memory: '0.0KB',
+      rowsCount: '5 rows returned',
+      statusText: '🟢 Sliding Window Aggregation Calculated (Rows Preceding Frame)',
+      codeHtml: `<span class="landing-cm">-- 7-Day Moving Average & Cumulative Revenue Run-Rate</span>
+<span class="landing-kw">SELECT</span> 
+  order_date, daily_revenue,
+  <span class="landing-fn">ROUND</span>(<span class="landing-fn">AVG</span>(daily_revenue) <span class="landing-kw">OVER</span> (
+    <span class="landing-kw">ORDER BY</span> order_date 
+    <span class="landing-kw">ROWS BETWEEN</span> <span class="landing-num">6</span> <span class="landing-kw">PRECEDING AND CURRENT ROW</span>
+  ), <span class="landing-num">2</span>) <span class="landing-kw">AS</span> rolling_7d_avg,
+  <span class="landing-fn">SUM</span>(daily_revenue) <span class="landing-kw">OVER</span> (
+    <span class="landing-kw">ORDER BY</span> order_date
+  ) <span class="landing-kw">AS</span> cumulative_arr
+<span class="landing-kw">FROM</span> stripe_billing_metrics
+<span class="landing-kw">ORDER BY</span> order_date <span class="landing-kw">DESC</span> <span class="landing-kw">LIMIT</span> <span class="landing-num">5</span>;`,
+      tableHeaders: ['order_date', 'daily_revenue', 'rolling_7d_avg', 'cumulative_arr'],
+      tableRows: [
+        ['2026-10-24', '$48,200', '$44,150.00', '$1,248,500'],
+        ['2026-10-23', '$45,800', '$43,210.00', '$1,200,300'],
+        ['2026-10-22', '$42,100', '$42,500.00', '$1,154,500'],
+        ['2026-10-21', '$41,900', '$41,900.00', '$1,112,400'],
+        ['2026-10-20', '$46,300', '$41,200.00', '$1,070,500']
+      ],
+      buddyTip: '📈 Moving frame verified! ROWS BETWEEN 6 PRECEDING smooths out daily revenue spikes.'
+    },
+    scenario4: {
+      id: 'scenario4',
+      title: '🛒 Amazon Prime Day (Anti-Join Churn)',
+      filename: 'amazon_churn_detector.sql',
+      dataset: 'amazon_prime_orders (2.4M Historical Orders)',
+      latency: '0.016ms',
+      memory: '0.0KB',
+      rowsCount: '4 churned customer accounts',
+      statusText: '🟢 Anti-Join Completed: Found Day-1 Buyers with Zero 30-Day Activity',
+      codeHtml: `<span class="landing-cm">-- Find customers who made a Day-1 purchase but 0 purchases in 30 days</span>
+<span class="landing-kw">SELECT DISTINCT</span> o1.customer_id, o1.purchase_date, o1.product_id
+<span class="landing-kw">FROM</span> amazon_prime_orders o1
+<span class="landing-kw">LEFT JOIN</span> amazon_prime_orders o2
+  <span class="landing-kw">ON</span> o1.customer_id = o2.customer_id
+  <span class="landing-kw">AND</span> o2.purchase_date &gt; o1.purchase_date
+  <span class="landing-kw">AND</span> o2.purchase_date &lt;= <span class="landing-fn">DATE</span>(o1.purchase_date, <span class="landing-str">'+30 days'</span>)
+<span class="landing-kw">WHERE</span> o2.order_id <span class="landing-kw">IS NULL</span>;`,
+      tableHeaders: ['customer_id', 'purchase_date', 'product_id'],
+      tableRows: [
+        ['CUST_88201', '2026-09-01', 'PROD_KINDLE_PAPERWHITE'],
+        ['CUST_88245', '2026-09-01', 'PROD_ECHO_DOT_5TH_GEN'],
+        ['CUST_89104', '2026-09-02', 'PROD_FIRE_TV_STICK_4K'],
+        ['CUST_89311', '2026-09-03', 'PROD_RING_VIDEO_DOORBELL']
+      ],
+      buddyTip: '🎯 Anti-Join mastered! Using LEFT JOIN ... WHERE right.key IS NULL is sargable and outperforms NOT IN.'
+    }
+  };
+
+  let activeScenarioId = 'scenario1';
 
   const LandingPageEngine = {
     init: function() {
@@ -14,6 +141,8 @@
     },
 
     renderHTML: function() {
+      const current = HERO_SCENARIOS[activeScenarioId] || HERO_SCENARIOS.scenario1;
+
       return `
         <div class="landing-container">
           <!-- 1. HERO SECTION -->
@@ -25,7 +154,7 @@
 
             <h1 class="landing-hero-title">
               Master Relational Engineering.<br>
-              <span class="landing-hero-gradient">Crack Tier-1 SQL Interviews.</span>
+              <span class="landing-hero-highlight">Crack Tier-1 SQL Interviews.</span>
             </h1>
 
             <p class="landing-hero-subtitle">
@@ -47,40 +176,44 @@
               </button>
             </div>
 
-            <!-- INTERACTIVE HERO CODE BENTO CARD -->
+            <!-- INTERACTIVE HERO CODE BENTO CARD WITH MULTI-SCENARIO SWITCHER -->
             <div class="landing-hero-widget-card">
+              <!-- Topbar -->
               <div class="landing-widget-topbar">
                 <div class="landing-widget-dots">
                   <span class="landing-dot red"></span>
                   <span class="landing-dot yellow"></span>
                   <span class="landing-dot green"></span>
                 </div>
-                <div class="landing-widget-filename">production_query_sandbox.sql</div>
+                <div class="landing-widget-filename" id="heroWidgetFilename">${current.filename}</div>
                 <div class="landing-widget-status-badge">
                   <span>●</span> <span>SQLite WASM Active</span>
                 </div>
               </div>
 
+              <!-- Multi-Scenario Switcher Tabs -->
+              <div class="landing-scenario-tabs" id="heroScenarioTabs">
+                <button class="landing-scenario-btn ${activeScenarioId === 'scenario1' ? 'active' : ''}" data-scenario="scenario1">
+                  <span>🏆 LeetCode #185</span>
+                </button>
+                <button class="landing-scenario-btn ${activeScenarioId === 'scenario2' ? 'active' : ''}" data-scenario="scenario2">
+                  <span>🕵️ Fraud Detection</span>
+                </button>
+                <button class="landing-scenario-btn ${activeScenarioId === 'scenario3' ? 'active' : ''}" data-scenario="scenario3">
+                  <span>📈 7-Day Rolling Revenue</span>
+                </button>
+                <button class="landing-scenario-btn ${activeScenarioId === 'scenario4' ? 'active' : ''}" data-scenario="scenario4">
+                  <span>🛒 Amazon Churn Anti-Join</span>
+                </button>
+              </div>
+
               <div class="landing-widget-body">
-                <pre class="landing-code-preview"><code><span class="landing-cm">-- Interactive Live Query Sandbox &bull; Click 'Run Query' below to execute</span>
-<span class="landing-kw">WITH</span> ranked_payroll <span class="landing-kw">AS</span> (
-  <span class="landing-kw">SELECT</span> 
-    emp_id, full_name, department_id, salary,
-    <span class="landing-fn">DENSE_RANK</span>() <span class="landing-kw">OVER</span> (
-      <span class="landing-kw">PARTITION BY</span> department_id 
-      <span class="landing-kw">ORDER BY</span> salary <span class="landing-kw">DESC</span>
-    ) <span class="landing-kw">AS</span> rank_pos
-  <span class="landing-kw">FROM</span> enterprise_employees
-)
-<span class="landing-kw">SELECT</span> department_id, full_name, salary, rank_pos
-<span class="landing-kw">FROM</span> ranked_payroll
-<span class="landing-kw">WHERE</span> rank_pos &lt;= <span class="landing-num">3</span>
-<span class="landing-kw">ORDER BY</span> department_id, rank_pos;</code></pre>
+                <pre class="landing-code-preview"><code id="heroCodeDisplay">${current.codeHtml}</code></pre>
               </div>
 
               <div class="landing-widget-action-row">
-                <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">
-                  Dataset: <code>enterprise_employees</code> (12 production columns)
+                <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);" id="heroDatasetLabel">
+                  Dataset: <code>${current.dataset}</code>
                 </div>
                 <div style="display: flex; gap: 8px;">
                   <button class="landing-run-btn" id="btnHeroRunQuery">
@@ -95,25 +228,15 @@
               <!-- Live Execution Result Output -->
               <div class="landing-widget-result-box" id="landingHeroResultBox">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11px; font-family: var(--font-mono);">
-                  <span style="color: #10b981; font-weight: 700;">🟢 Query Executed Successfully (6 rows returned)</span>
-                  <span style="color: var(--text-muted);">Latency: 0.014ms &bull; Memory: 0.0KB</span>
+                  <span style="color: #10b981; font-weight: 700;" id="heroResultStatus">${current.statusText}</span>
+                  <span style="color: var(--text-muted);" id="heroResultMeta">Latency: ${current.latency} &bull; Memory: ${current.memory}</span>
                 </div>
-                <table class="landing-table">
+                <table class="landing-table" id="heroResultTable">
                   <thead>
-                    <tr>
-                      <th>department_id</th>
-                      <th>full_name</th>
-                      <th>salary</th>
-                      <th>rank_pos</th>
-                    </tr>
+                    <tr>${current.tableHeaders.map(h => `<th>${h}</th>`).join('')}</tr>
                   </thead>
                   <tbody>
-                    <tr><td>Eng</td><td>Elena Rostova</td><td>$185,000</td><td>1</td></tr>
-                    <tr><td>Eng</td><td>David Kim</td><td>$172,000</td><td>2</td></tr>
-                    <tr><td>Eng</td><td>Marcus Vance</td><td>$168,000</td><td>3</td></tr>
-                    <tr><td>Finance</td><td>Sarah Jenkins</td><td>$195,000</td><td>1</td></tr>
-                    <tr><td>Finance</td><td>Alex Chen</td><td>$180,000</td><td>2</td></tr>
-                    <tr><td>Finance</td><td>Jordan Hayes</td><td>$165,000</td><td>3</td></tr>
+                    ${current.tableRows.map(row => `<tr>${row.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}
                   </tbody>
                 </table>
               </div>
@@ -149,7 +272,19 @@
             </div>
           </section>
 
-          <!-- 3. MODULIFY VESPER BENTO GRID FEATURES SHOWCASE -->
+          <!-- 3. DIALECT COMPATIBILITY MATRIX -->
+          <section style="text-align: center; margin-bottom: 48px;">
+            <span class="landing-section-tag">Universal Dialect Support</span>
+            <div class="landing-dialect-matrix">
+              <div class="landing-dialect-chip">🐬 <span>MySQL 8.0</span></div>
+              <div class="landing-dialect-chip">🐘 <span>PostgreSQL 16</span></div>
+              <div class="landing-dialect-chip">🪶 <span>SQLite WASM 3.45</span></div>
+              <div class="landing-dialect-chip">❄️ <span>Snowflake SQL</span></div>
+              <div class="landing-dialect-chip">📊 <span>Google BigQuery</span></div>
+            </div>
+          </section>
+
+          <!-- 4. MODULIFY VESPER BENTO GRID FEATURES SHOWCASE -->
           <section style="margin-bottom: 64px;">
             <div class="landing-section-header">
               <span class="landing-section-tag">Feature Architecture</span>
@@ -237,7 +372,95 @@
             </div>
           </section>
 
-          <!-- 4. QUICK-LAUNCH WORKSPACES TILES -->
+          <!-- 5. TOP 5 SILENT SQL TRAPS SECTION -->
+          <section style="margin-bottom: 64px;">
+            <div class="landing-section-header">
+              <span class="landing-section-tag">Defensive Engineering</span>
+              <h2 class="landing-section-title">5 Silent SQL Traps Caught by the Engine</h2>
+              <p class="landing-section-subtitle">
+                Most candidates fail SQL interviews not on syntax, but on silent edge-case traps that return incorrect row counts without producing an error.
+              </p>
+            </div>
+
+            <div class="landing-traps-grid">
+              <!-- Trap 1 -->
+              <div class="landing-trap-card">
+                <div class="landing-trap-header">
+                  <span class="landing-trap-badge">TRAP 01</span>
+                  <span class="landing-trap-title">NULL with NOT IN</span>
+                </div>
+                <p class="landing-trap-desc">
+                  If the subquery returns even a single NULL, <code>NOT IN</code> evaluates to UNKNOWN and returns 0 rows! Always use <code>NOT EXISTS</code>.
+                </p>
+                <div class="landing-trap-code-snip">
+                  <span style="color:#ef4444;">-- ❌ FAILS:</span> WHERE id NOT IN (SELECT id FROM t)<br>
+                  <span style="color:#10b981;">-- ✅ SAFE:</span> WHERE NOT EXISTS (...)
+                </div>
+              </div>
+
+              <!-- Trap 2 -->
+              <div class="landing-trap-card">
+                <div class="landing-trap-header">
+                  <span class="landing-trap-badge">TRAP 02</span>
+                  <span class="landing-trap-title">COUNT(*) vs COUNT(col)</span>
+                </div>
+                <p class="landing-trap-desc">
+                  <code>COUNT(*)</code> counts all rows including NULLs. <code>COUNT(col)</code> strictly excludes NULLs, silently skewing ratios.
+                </p>
+                <div class="landing-trap-code-snip">
+                  <span style="color:#ef4444;">-- ❌ WRONG RATIO:</span> COUNT(bonus) / COUNT(*)<br>
+                  <span style="color:#10b981;">-- ✅ CORRECT:</span> AVG(COALESCE(bonus, 0))
+                </div>
+              </div>
+
+              <!-- Trap 3 -->
+              <div class="landing-trap-card">
+                <div class="landing-trap-header">
+                  <span class="landing-trap-badge">TRAP 03</span>
+                  <span class="landing-trap-title">Ties in RANK() vs DENSE_RANK()</span>
+                </div>
+                <p class="landing-trap-desc">
+                  <code>RANK()</code> skips numbers after ties (1, 2, 2, 4), causing <code>WHERE rank = 3</code> to return 0 rows! Use <code>DENSE_RANK()</code>.
+                </p>
+                <div class="landing-trap-code-snip">
+                  <span style="color:#ef4444;">-- ❌ SKIPS:</span> 1, 2, 2, 4 (No 3rd place!)<br>
+                  <span style="color:#10b981;">-- ✅ CONTINUOUS:</span> 1, 2, 2, 3 (Clean top-3)
+                </div>
+              </div>
+
+              <!-- Trap 4 -->
+              <div class="landing-trap-card">
+                <div class="landing-trap-header">
+                  <span class="landing-trap-badge">TRAP 04</span>
+                  <span class="landing-trap-title">Non-Sargable WHERE Functions</span>
+                </div>
+                <p class="landing-trap-desc">
+                  Wrapping indexed columns in functions (like <code>YEAR(created_at)</code>) breaks B-Tree index seeks, forcing a 10M row table scan.
+                </p>
+                <div class="landing-trap-code-snip">
+                  <span style="color:#ef4444;">-- ❌ FULL SCAN:</span> WHERE YEAR(dt) = 2026<br>
+                  <span style="color:#10b981;">-- ✅ INDEX SEEK:</span> WHERE dt &gt;= '2026-01-01'
+                </div>
+              </div>
+
+              <!-- Trap 5 -->
+              <div class="landing-trap-card">
+                <div class="landing-trap-header">
+                  <span class="landing-trap-badge">TRAP 05</span>
+                  <span class="landing-trap-title">Accidental Cartesian Joins</span>
+                </div>
+                <p class="landing-trap-desc">
+                  Joining on non-unique foreign keys without a secondary qualifier blows up row counts exponentially, freezing production servers.
+                </p>
+                <div class="landing-trap-code-snip">
+                  <span style="color:#ef4444;">-- ❌ 10k &times; 10k =</span> 100,000,000 rows!<br>
+                  <span style="color:#10b981;">-- ✅ SAFE:</span> Pre-aggregate via modular CTE
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 6. QUICK-LAUNCH WORKSPACES TILES -->
           <section style="margin-bottom: 64px;">
             <div class="landing-section-header">
               <span class="landing-section-tag">Fast Access</span>
@@ -346,7 +569,7 @@
             </div>
           </section>
 
-          <!-- 5. FOOTER -->
+          <!-- 7. FOOTER -->
           <footer class="landing-footer">
             <div>
               <strong>SQL Foundry v4.2</strong> &bull; Production Relational Engineering Studio
@@ -364,12 +587,53 @@
       const btnReset = container.querySelector('#btnHeroReset');
       const resultBox = container.querySelector('#landingHeroResultBox');
 
+      // Scenario Switcher Tabs
+      container.querySelectorAll('.landing-scenario-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          container.querySelectorAll('.landing-scenario-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const scenarioKey = btn.dataset.scenario;
+          const scen = HERO_SCENARIOS[scenarioKey];
+          if (!scen) return;
+          activeScenarioId = scenarioKey;
+
+          // Update widget contents
+          const filenameEl = container.querySelector('#heroWidgetFilename');
+          const codeEl = container.querySelector('#heroCodeDisplay');
+          const datasetEl = container.querySelector('#heroDatasetLabel');
+          const statusEl = container.querySelector('#heroResultStatus');
+          const metaEl = container.querySelector('#heroResultMeta');
+          const tableEl = container.querySelector('#heroResultTable');
+
+          if (filenameEl) filenameEl.textContent = scen.filename;
+          if (codeEl) codeEl.innerHTML = scen.codeHtml;
+          if (datasetEl) datasetEl.innerHTML = `Dataset: <code>${scen.dataset}</code>`;
+          if (statusEl) statusEl.textContent = scen.statusText;
+          if (metaEl) metaEl.innerHTML = `Latency: ${scen.latency} &bull; Memory: ${scen.memory}`;
+
+          if (tableEl) {
+            tableEl.innerHTML = `
+              <thead>
+                <tr>${scen.tableHeaders.map(h => `<th>${h}</th>`).join('')}</tr>
+              </thead>
+              <tbody>
+                ${scen.tableRows.map(row => `<tr>${row.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}
+              </tbody>
+            `;
+          }
+
+          if (resultBox) resultBox.classList.remove('active');
+        });
+      });
+
       if (btnRun && resultBox) {
         btnRun.addEventListener('click', () => {
           resultBox.classList.add('active');
+          const current = HERO_SCENARIOS[activeScenarioId] || HERO_SCENARIOS.scenario1;
           if (window.soundFX) window.soundFX.playSuccess();
-          if (window.SQL_BUDDY) {
-            window.SQL_BUDDY.say('⚡ Query executed in 0.014ms via client-side SQLite WASM! Notice how DENSE_RANK() cleanly handles ties without skipping rank numbers.', 5000, 'celebrate');
+          if (window.SQL_BUDDY && current.buddyTip) {
+            window.SQL_BUDDY.say(current.buddyTip, 5500, 'celebrate');
           }
         });
       }

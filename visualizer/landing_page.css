@@ -1,6 +1,7 @@
 /* ==========================================================================
    SQL FOUNDRY - PRODUCT LANDING PAGE & FEATURE SHOWCASE
    Modulify Hybrid (Vesper + Black Plus) Bento Architecture
+   Laser Neon Red Edition • Clean Solid Typography • Zero AI Gradient
    ========================================================================== */
 
 .landing-container {
@@ -31,22 +32,22 @@
   gap: 8px;
   padding: 4px 14px;
   border-radius: 999px;
-  background: var(--accent-soft, rgba(192, 38, 211, 0.08));
-  border: 1px solid var(--accent-border, rgba(192, 38, 211, 0.25));
+  background: var(--accent-soft, rgba(225, 29, 72, 0.08));
+  border: 1px solid var(--accent-border, rgba(225, 29, 72, 0.25));
   font-family: var(--font-mono, monospace);
   font-size: 11px;
   font-weight: 600;
-  color: var(--accent, #c026d3);
+  color: var(--accent, #e11d48);
   margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(192, 38, 211, 0.08);
+  box-shadow: 0 2px 8px rgba(225, 29, 72, 0.08);
 }
 
 .landing-pulse-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--accent, #c026d3);
-  box-shadow: 0 0 8px var(--accent, #c026d3);
+  background: var(--accent, #e11d48);
+  box-shadow: 0 0 8px var(--accent, #e11d48);
   animation: landingPulse 2s infinite;
 }
 
@@ -57,26 +58,28 @@
 }
 
 .landing-hero-title {
-  font-size: 44px;
+  font-size: 46px;
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.03em;
   margin: 0 0 16px 0;
-  max-width: 820px;
+  max-width: 860px;
+  color: var(--text-primary, #18181b);
 }
 
-.landing-hero-gradient {
-  background: linear-gradient(135deg, var(--accent, #c026d3) 0%, #db2777 50%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Clean Solid High-Contrast Headline (Zero AI Gradient) */
+.landing-hero-highlight {
+  color: var(--accent, #e11d48);
+  font-weight: 800;
   display: inline-block;
+  letter-spacing: -0.03em;
 }
 
 .landing-hero-subtitle {
   font-size: 16px;
   line-height: 1.6;
   color: var(--text-secondary, #52525b);
-  max-width: 720px;
+  max-width: 740px;
   margin: 0 auto 28px auto;
 }
 
@@ -86,30 +89,30 @@
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
 }
 
 .landing-cta-primary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, var(--accent, #c026d3) 0%, #a21caf 100%);
+  background: var(--accent, #e11d48);
   color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   padding: 11px 22px;
   font-family: var(--font-sans, inherit);
   font-size: 13.5px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(192, 38, 211, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(225, 29, 72, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
 }
 
 .landing-cta-primary:hover {
-  background: linear-gradient(135deg, #d946ef 0%, var(--accent, #c026d3) 100%);
-  box-shadow: 0 6px 24px rgba(192, 38, 211, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  background: var(--accent-hover, #be123c);
+  box-shadow: 0 6px 24px rgba(225, 29, 72, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transform: translateY(-2px);
 }
 
@@ -138,15 +141,15 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. HERO INTERACTIVE CODE BENTO CARD (Vesper & Black Plus DNA)
+   2. HERO INTERACTIVE CODE BENTO CARD WITH MULTI-SCENARIO TABS
    -------------------------------------------------------------------------- */
 .landing-hero-widget-card {
   width: 100%;
-  max-width: 900px;
+  max-width: 920px;
   background: var(--bg-surface, #ffffff);
   border: 1px solid var(--border-default, #e4e4e7);
   border-radius: 14px;
-  box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.10), 0 0 0 1px rgba(0, 0, 0, 0.03);
   overflow: hidden;
   text-align: left;
   position: relative;
@@ -187,7 +190,7 @@
   border-radius: 50%;
 }
 
-.landing-dot.red { background: #ef4444; }
+.landing-dot.red { background: #ff2a51; }
 .landing-dot.yellow { background: #f59e0b; }
 .landing-dot.green { background: #10b981; }
 
@@ -205,11 +208,64 @@
   font-family: var(--font-mono, monospace);
   font-size: 10.5px;
   font-weight: 600;
-  color: #16a34a;
-  background: rgba(22, 163, 74, 0.1);
-  border: 1px solid rgba(22, 163, 74, 0.25);
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
   padding: 2px 8px;
   border-radius: 999px;
+}
+
+/* Multi-Scenario Switcher Tabs inside Hero Sandbox */
+.landing-scenario-tabs {
+  display: flex;
+  background: var(--bg-surface-elevated, #f4f4f5);
+  border-bottom: 1px solid var(--border-subtle, #e4e4e7);
+  overflow-x: auto;
+  padding: 4px 8px;
+  gap: 4px;
+}
+
+[data-theme="active-builders-dark"] .landing-scenario-tabs,
+[data-theme="cursor-dark"] .landing-scenario-tabs {
+  background: #14141a;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+.landing-scenario-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted, #71717a);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.landing-scenario-btn:hover {
+  color: var(--text-primary, #18181b);
+  background: var(--bg-hover, #e4e4e7);
+}
+
+.landing-scenario-btn.active {
+  color: var(--text-primary, #18181b);
+  background: var(--bg-surface, #ffffff);
+  border-color: var(--border-subtle, #d4d4d8);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="active-builders-dark"] .landing-scenario-btn.active,
+[data-theme="cursor-dark"] .landing-scenario-btn.active {
+  background: #1b1b24;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .landing-widget-body {
@@ -226,7 +282,7 @@
   overflow-x: auto;
 }
 
-.landing-kw { color: var(--accent, #c026d3); font-weight: 700; }
+.landing-kw { color: var(--accent, #e11d48); font-weight: 700; }
 .landing-fn { color: #0284c7; font-weight: 600; }
 .landing-str { color: #16a34a; }
 .landing-num { color: #d97706; }
@@ -253,23 +309,23 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--accent, #c026d3);
+  background: var(--accent, #e11d48);
   color: #ffffff;
   border: none;
   border-radius: 6px;
-  padding: 6px 14px;
+  padding: 7px 16px;
   font-family: var(--font-mono, monospace);
   font-size: 11.5px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease;
-  box-shadow: 0 2px 8px rgba(192, 38, 211, 0.28);
+  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.3);
 }
 
 .landing-run-btn:hover {
-  background: var(--accent-hover, #a21caf);
+  background: var(--accent-hover, #be123c);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(192, 38, 211, 0.4);
+  box-shadow: 0 4px 16px rgba(225, 29, 72, 0.45);
 }
 
 .landing-widget-result-box {
@@ -364,7 +420,7 @@
   font-size: 32px;
   font-weight: 800;
   font-family: var(--font-mono, monospace);
-  color: var(--accent, #c026d3);
+  color: var(--accent, #e11d48);
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin-bottom: 6px;
@@ -395,7 +451,7 @@
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--accent, #c026d3);
+  color: var(--accent, #e11d48);
   letter-spacing: 0.06em;
   margin-bottom: 8px;
   display: block;
@@ -455,7 +511,7 @@
 .landing-bento-card:hover {
   transform: translateY(-3px);
   border-color: var(--border-hover, #a1a1aa);
-  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--accent-border, rgba(192, 38, 211, 0.25));
+  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--accent-border, rgba(225, 29, 72, 0.25));
 }
 
 [data-theme="active-builders-dark"] .landing-bento-card,
@@ -466,8 +522,8 @@
 
 [data-theme="active-builders-dark"] .landing-bento-card:hover,
 [data-theme="cursor-dark"] .landing-bento-card:hover {
-  border-color: rgba(232, 121, 249, 0.3);
-  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.7), 0 0 20px rgba(232, 121, 249, 0.08);
+  border-color: rgba(255, 42, 81, 0.35);
+  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 42, 81, 0.12);
 }
 
 .landing-bento-card.span-2 {
@@ -525,8 +581,8 @@
   gap: 6px;
   font-family: var(--font-mono, monospace);
   font-size: 11.5px;
-  font-weight: 600;
-  color: var(--accent, #c026d3);
+  font-weight: 700;
+  color: var(--accent, #e11d48);
   background: transparent;
   border: none;
   padding: 0;
@@ -535,12 +591,122 @@
 }
 
 .landing-bento-action-link:hover {
-  color: var(--accent-hover, #a21caf);
+  color: var(--accent-hover, #be123c);
   transform: translateX(3px);
 }
 
 /* --------------------------------------------------------------------------
-   5. QUICK LAUNCH TILES
+   5. TOP 5 SILENT SQL TRAPS SECTION
+   -------------------------------------------------------------------------- */
+.landing-traps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin-bottom: 64px;
+}
+
+.landing-trap-card {
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #e4e4e7);
+  border-radius: 10px;
+  padding: 16px;
+  transition: all 0.18s ease;
+}
+
+.landing-trap-card:hover {
+  border-color: var(--accent, #e11d48);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="active-builders-dark"] .landing-trap-card,
+[data-theme="cursor-dark"] .landing-trap-card {
+  background: #111116;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.landing-trap-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.landing-trap-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(225, 29, 72, 0.1);
+  color: var(--accent, #e11d48);
+}
+
+.landing-trap-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary, #18181b);
+}
+
+.landing-trap-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary, #52525b);
+  margin-bottom: 10px;
+}
+
+.landing-trap-code-snip {
+  background: var(--bg-surface-elevated, #f4f4f5);
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11.5px;
+  color: var(--text-primary, #18181b);
+  line-height: 1.4;
+}
+
+[data-theme="active-builders-dark"] .landing-trap-code-snip,
+[data-theme="cursor-dark"] .landing-trap-code-snip {
+  background: #0d0d12;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+/* --------------------------------------------------------------------------
+   6. DIALECT COMPATIBILITY MATRIX
+   -------------------------------------------------------------------------- */
+.landing-dialect-matrix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 64px;
+}
+
+.landing-dialect-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #e4e4e7);
+  border-radius: 999px;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary, #18181b);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="active-builders-dark"] .landing-dialect-chip,
+[data-theme="cursor-dark"] .landing-dialect-chip {
+  background: #111116;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   7. QUICK LAUNCH TILES
    -------------------------------------------------------------------------- */
 .landing-launch-grid {
   display: grid;
@@ -564,7 +730,7 @@
 
 .landing-launch-tile:hover {
   transform: translateY(-2px);
-  border-color: var(--border-focus, #c026d3);
+  border-color: var(--border-focus, #e11d48);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
@@ -596,7 +762,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   6. FOOTER
+   8. FOOTER
    -------------------------------------------------------------------------- */
 .landing-footer {
   border-top: 1px solid var(--border-default, #e4e4e7);
