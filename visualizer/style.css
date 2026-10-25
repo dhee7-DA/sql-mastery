@@ -3488,20 +3488,28 @@ body {
 .nav-groups-container {
   display: flex;
   align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
+  gap: 4px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.nav-groups-container::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-group-dropdown {
   position: relative;
+  flex-shrink: 0;
 }
 
 .nav-group-trigger {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  width: 178px;
-  height: 34px;
+  justify-content: center;
+  gap: 6px;
+  width: auto;
+  height: 32px;
   padding: 0 10px;
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
@@ -3514,6 +3522,7 @@ body {
   transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .nav-group-lead {
@@ -9252,20 +9261,48 @@ body {
 
 /* Enhanced Modern IDE Footer */
 .app-footer {
-  height: 38px;
-  background: var(--bg-surface-elevated, #0d1117);
+  height: 32px;
+  background: var(--bg-surface);
   border-top: 1px solid var(--border-default);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 18px;
+  padding: 0 16px;
   font-size: 11px;
   color: var(--text-muted);
   flex-shrink: 0;
-  gap: 16px;
+  gap: 12px;
   font-family: var(--font-mono, monospace);
   user-select: none;
   z-index: 100;
+}
+
+.footer-hint {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.footer-mascot-btn {
+  background: var(--bg-surface-elevated, #f4f4f5);
+  border: 1px solid var(--border-default, #d4d4d8);
+  color: var(--text-secondary, #52525b);
+  font-family: var(--font-mono, monospace);
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+
+.footer-mascot-btn:hover {
+  background: var(--bg-hover, #e4e4e7);
+  color: var(--text-primary, #18181b);
+  border-color: var(--border-hover, #a1a1aa);
 }
 
 .footer-left-group,
@@ -14373,24 +14410,20 @@ body {
    ============================================================================= */
 .sql-buddy-container {
   position: fixed;
-  bottom: 38px;
-  right: 24px;
+  bottom: 42px;
+  right: 20px;
   z-index: 9999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   pointer-events: none;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sql-buddy-container.minimized {
-  transform: translateY(55px);
-  opacity: 0.65;
-}
-
-.sql-buddy-container.minimized:hover {
-  transform: translateY(0px);
-  opacity: 1;
+  transform: translateY(calc(100% + 20px));
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Mascot Settings & Customizer Card (Docked Cleanly to the Left of Mascot) */
@@ -14398,7 +14431,7 @@ body {
   pointer-events: auto;
   position: absolute;
   bottom: 0px;
-  right: 155px;
+  right: 75px;
   width: 310px;
   max-height: 480px;
   overflow-y: auto;
@@ -14664,8 +14697,8 @@ body {
 
 .bloub-svg {
   display: block;
-  width: 140px;
-  height: 140px;
+  width: 64px;
+  height: 64px;
   background: transparent !important;
   border: none !important;
   outline: none !important;
@@ -14763,16 +14796,16 @@ body {
 .buddy-speech-bubble {
   pointer-events: auto;
   position: relative;
-  max-width: 300px;
+  max-width: 260px;
   background: rgba(10, 10, 14, 0.95);
   color: #f1f5f9;
   border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-  padding: 10px 14px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
-  margin-bottom: 8px;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  margin-bottom: 6px;
   font-family: system-ui, -apple-system, sans-serif;
-  animation: buddySpeechPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: buddySpeechPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   backdrop-filter: blur(16px);
 }
 

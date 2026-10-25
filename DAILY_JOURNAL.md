@@ -963,3 +963,42 @@
 ### 4. Visual ERD Spotlight Integration
 - Integrated `domain_erd_engine.js` directly into the Domain Hub view.
 - Learners can click "📐 Inspect Domain ERD Diagram" to open interactive multi-table relational models with primary/foreign keys and plain-English architectural callouts.
+
+---
+
+## 🏆 Entry 41: Overall App UI/UX Decluttering & Minimalist Design Polish
+
+- **Date**: 2026-10-25 16:20 IST
+- **Status**: ✅ Completed & Verified
+- **Focus**: Global layout decluttering, top navigation streamlining, polite companion sizing, and statusbar cleanup.
+
+### 1. Top Navigation Overcrowding Resolved
+- **Problem**: The top navbar was burdened with 7 direct buttons (each hardcoded to `width: 178px;`), plus 3 dropdown menus, badges, streaks, and utility icons. On standard displays, this forced multi-row wrapping, button collisions, and visual chaos.
+- **Solution**:
+  - Streamlined primary navigation to the 4 essential daily workspaces:
+    1. `⚡ LeetCode` (`323` badge)
+    2. `<> Studio` (Query engine & schema inspector)
+    3. `🏛️ Companies & Domains` (`70+` badge)
+    4. `🎯 Mock Screen` (`45m` badge)
+  - Organized all secondary vaults cleanly into 3 dropdown hubs:
+    - **Practice ▾**: SQL Terminal (WASM), MCQs Vault (2.1k), Syntax Gym (1.7k), Case Studies (2.5k), Problem Bank, Capstones (10), Amazon Sim (30d), JPMorgan Sim (30d), Trap Memory Gym (SRS), and Activity Heatmap.
+    - **Learn ▾**: 20-Day Learning Journey, Guided Lab, Topic Pathways, Quests, Window Cockpit, Curriculum Theory, and Tactile SQL Machine.
+    - **Reference ▾**: Study Docs, Deconstructor, Enterprise ERD, and Venn Matrix.
+  - Replaced rigid `width: 178px` with auto-sized buttons (`width: auto !important; height: 32px; padding: 0 10px;`) and added `flex-wrap: nowrap; overflow-x: auto;` to eliminate any possible wrapping.
+
+### 2. Statusbar Clutter & Duplication Removed
+- **Problem**: Bottom status bar repeated `🔥 11d Streak` and `⚡ 155 XP` from the topbar, alongside unnecessary static labels.
+- **Solution**:
+  - Refactored footer into 3 crisp zones:
+    - **Left**: Engine & AST Status (`• MySQL 8.0 Ready` · `Valid AST` · Active Track).
+    - **Center**: Mode indicator (`Deliberate Practice Mode`).
+    - **Right**: Clear keyboard shortcuts (`⌨️ 1-4 Pick • Enter Run • Esc Close`), Compendium link, and Mascot toggle button.
+
+### 3. Sir Bloops Mascot Tamed
+- **Problem**: At 140px by 140px floating at `bottom: 38px; right: 24px;`, Sir Bloops covered problem solutions, action buttons, and query tables. Even when minimized, it left an 85px obstructive blob.
+- **Solution**:
+  - Scaled default SVG down to a polite, elegant 64px x 64px.
+  - Updated speech bubble max-width from 300px to 260px with clean 8px radius and subtle backdrop blur.
+  - Enhanced minimized state (`transform: translateY(calc(100% + 20px)); opacity: 0; pointer-events: none;`) to tuck completely out of the way.
+  - Added direct 1-click toggle button in the bottom statusbar (`🐙 Sir Bloops`) to easily summon or dismiss the companion at will.
+

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/vqa3wut.css">
-  <link rel="stylesheet" href="style.css?v=93">
+  <link rel="stylesheet" href="style.css?v=94">
   <link rel="stylesheet" href="jpmorgan_theme.css?v=3">
   <link rel="stylesheet" href="leetcode_theme.css?v=310">
   <link rel="stylesheet" href="sql_terminal_theme.css?v=105">
@@ -37,17 +37,17 @@
 
         <!-- Unified Navigation Switcher -->
         <nav class="nav-groups-container">
-          <!-- 1. LEETCODE 300+ ARENA (Default Active) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab active" id="btnNavLeetCode" data-view="viewLeetCode50" onclick="selectNavView('viewLeetCode50', 'LeetCode 300+', null)" title="LeetCode 300+ Official SQL Mega Arena">
+          <!-- 1. LEETCODE 323 ARENA (Default Active) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab active" id="btnNavLeetCode" data-view="viewLeetCode50" onclick="selectNavView('viewLeetCode50', 'LeetCode 323', null)" title="LeetCode 323 Official SQL Arena">
             <span class="nav-group-lead">
               <span class="nav-group-icon">⚡</span>
-              <span class="nav-group-title">LeetCode 300+</span>
+              <span class="nav-group-title">LeetCode</span>
             </span>
             <span class="nav-item-tag accent" style="background: #f59e0b; color: #000; font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 800;">323</span>
           </button>
 
-          <!-- 2. STUDIO (Direct Link) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="selectNavView('viewStudio', 'Studio', null)" title="Query Execution Studio">
+          <!-- 2. STUDIO (Direct Tab) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="selectNavView('viewStudio', 'Studio', null)" title="Query Execution Studio &amp; Schema Inspector">
             <span class="nav-group-lead">
               <span class="nav-group-icon">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
@@ -56,49 +56,22 @@
             </span>
           </button>
 
-          <!-- 3. SQL TERMINAL (Direct Tab) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavSqlTerminal" data-view="viewSqlTerminal" onclick="selectNavView('viewSqlTerminal', 'SQL Terminal', null)" title="Interactive SQLite WASM Terminal">
-            <span class="nav-group-lead">
-              <span class="nav-group-icon">💻</span>
-              <span class="nav-group-title">Terminal</span>
-            </span>
-            <span id="currentTerminalPill" style="display:none;">WASM</span>
-          </button>
-
-          <!-- 4. FAANG MOCK INTERVIEW (Direct Tab) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavMockInterview" data-view="viewMockInterview" onclick="selectNavView('viewMockInterview', 'Interview 🎯', null)" title="45-Minute Timed FAANG &amp; Wall Street Mock Interview Screen">
-            <span class="nav-group-lead">
-              <span class="nav-group-icon">🎯</span>
-              <span class="nav-group-title">Interview</span>
-            </span>
-            <span id="currentInterviewPill" style="display:none;">45m</span>
-          </button>
-
-          <!-- 5. DOMAIN & COMPANY MASTERY HUB (Direct Tab) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavCompanyHub" data-view="viewCompanyHub" onclick="selectNavView('viewCompanyHub', 'Domain &amp; Company Hub', null)" title="10 Domains &amp; 70+ Premier Target Employers">
+          <!-- 3. DOMAIN & COMPANY MASTERY HUB (Direct Tab) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavCompanyHub" data-view="viewCompanyHub" onclick="selectNavView('viewCompanyHub', 'Companies &amp; Domains', null)" title="10 Domains &amp; 70+ Premier Target Employers">
             <span class="nav-group-lead">
               <span class="nav-group-icon">🏛️</span>
-              <span class="nav-group-title">Domain &amp; Company</span>
+              <span class="nav-group-title">Companies &amp; Domains</span>
             </span>
-            <span class="nav-item-tag accent" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: #fff; font-size: 9px; padding: 1px 6px; border-radius: 4px; font-weight: 800;">10 Domains · 70+ Firms</span>
+            <span class="nav-item-tag accent" style="background: var(--accent, #c2410c); color: #fff; font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 700;">70+</span>
           </button>
 
-          <!-- 6. LEARNING JOURNEY (Direct Tab) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavLearningJourney" data-view="viewLearningJourney" onclick="selectNavView('viewLearningJourney', 'Learning Journey', null)" title="20-Day Learning Journey">
+          <!-- 4. FAANG & WALL STREET MOCK SCREEN (Direct Tab) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavMockInterview" data-view="viewMockInterview" onclick="selectNavView('viewMockInterview', 'Mock Screen', null)" title="45-Minute Timed Technical Interview Screen">
             <span class="nav-group-lead">
-              <span class="nav-group-icon">🗺️</span>
-              <span class="nav-group-title">Journey</span>
+              <span class="nav-group-icon">🎯</span>
+              <span class="nav-group-title">Mock Screen</span>
             </span>
-            <span id="currentJourneyPill" style="display:none;">Day 1</span>
-          </button>
-
-          <!-- 7. TACTILE SQL MACHINE (Direct Tab - Colorfigures Fig. 16) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavTactileEngine" data-view="viewTactileEngine" onclick="selectNavView('viewTactileEngine', 'SQL Machine ⚙️', null)" title="Hand-Inked Isometric SQL Relational Machine (Colorfigures Fig. 16)" style="background: rgba(244, 184, 41, 0.12); border: 1.5px solid #f4b829;">
-            <span class="nav-group-lead">
-              <span class="nav-group-icon">⚙️</span>
-              <span class="nav-group-title" style="color: #f4b829; font-weight: 800;">SQL Machine</span>
-            </span>
-            <span class="nav-item-tag accent" style="background: #f4b829; color: #231e16; font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 800;">Fig. 16</span>
+            <span class="nav-item-tag" style="background: rgba(16, 185, 129, 0.15); color: #10b981; font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 700;">45m</span>
           </button>
 
           <!-- PRACTICE DROPDOWN -->
@@ -113,14 +86,94 @@
             </button>
             <div class="nav-dropdown-menu">
               <div class="nav-dropdown-header">Drill &amp; Test Vaults</div>
-              <button class="nav-dropdown-item nav-tab" data-view="viewCompanyHub" onclick="selectNavView('viewCompanyHub', 'Domain &amp; Company Hub', 'navGroupPractice')">
+              <button class="nav-dropdown-item nav-tab" data-view="viewSqlTerminal" onclick="selectNavView('viewSqlTerminal', 'SQL Terminal', 'navGroupPractice')">
+                <span class="nav-item-icon">💻</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">SQL Terminal (WASM)</span>
+                    <span class="nav-item-tag accent">WASM Engine</span>
+                  </div>
+                  <span class="nav-item-desc">In-browser SQLite sandbox with 12 production tables</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewMcqs" onclick="selectNavView('viewMcqs', 'MCQs (2.1k)', 'navGroupPractice')">
+                <span class="nav-item-icon">🧠</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">MCQs Vault</span>
+                    <span class="nav-item-tag accent">2,100</span>
+                  </div>
+                  <span class="nav-item-desc">High-frequency interview traps &amp; edge cases</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewSyntaxGym" onclick="selectNavView('viewSyntaxGym', 'Syntax Gym', 'navGroupPractice')">
+                <span class="nav-item-icon">⚡</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Syntax Gym</span>
+                    <span class="nav-item-tag accent">1,700</span>
+                  </div>
+                  <span class="nav-item-desc">Speed &amp; muscle memory drills across 10 schemas</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewCases" onclick="selectNavView('viewCases', 'Case Studies', 'navGroupPractice')">
+                <span class="nav-item-icon">💼</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Case Studies</span>
+                    <span class="nav-item-tag accent">2,540</span>
+                  </div>
+                  <span class="nav-item-desc">Real-world production business incident dossiers</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewProblems" onclick="selectNavView('viewProblems', 'Problem Bank', 'navGroupPractice')">
+                <span class="nav-item-icon">🏆</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Problem Bank</span>
+                    <span class="nav-item-tag">Challenges</span>
+                  </div>
+                  <span class="nav-item-desc">Graded SQL interview challenges by difficulty</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewCapstones" onclick="selectNavView('viewCapstones', 'Capstones (10)', 'navGroupPractice')">
+                <span class="nav-item-icon">🎓</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Guided Capstones</span>
+                    <span class="nav-item-tag accent">Top 5 Domains</span>
+                  </div>
+                  <span class="nav-item-desc">10 production finance &amp; data projects with topic bridges</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewAmazonStory" onclick="selectNavView('viewAmazonStory', 'Amazon Analyst (30d)', 'navGroupPractice')">
+                <span class="nav-item-icon">📦</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Amazon Analyst Story</span>
+                    <span class="nav-item-tag" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">30-Day Sim</span>
+                  </div>
+                  <span class="nav-item-desc">Day-in-the-life L4 Data Analyst onboarding &amp; Prime Day war room</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewJPMorganStory" onclick="selectNavView('viewJPMorganStory', 'JPMorgan Analyst (30d)', 'navGroupPractice')">
                 <span class="nav-item-icon">🏛️</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
-                    <span class="nav-item-title">Domain &amp; Company Hub</span>
-                    <span class="nav-item-tag accent" style="background: #3b82f6; color: #fff;">10 Domains · 70+ Firms</span>
+                    <span class="nav-item-title">JPMorgan Analyst (30d)</span>
+                    <span class="nav-item-tag" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4);">Wall St</span>
                   </div>
-                  <span class="nav-item-desc">FinTech, Quant, HealthTech, Gaming, Cloud, Streaming &amp; Marketplaces</span>
+                  <span class="nav-item-desc">Quantitative risk, core banking ledgers, AML &amp; treasury</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewTrapGym" onclick="selectNavView('viewTrapGym', 'Trap Gym (SRS)', 'navGroupPractice')">
+                <span class="nav-item-icon">🧠</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Trap Memory Gym</span>
+                    <span class="nav-item-tag accent" id="trapSrsNavBadge">🔥 36 Due</span>
+                  </div>
+                  <span class="nav-item-desc">Spaced repetition (Leitner SRS) for 36 critical production traps</span>
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Activity Heatmap', 'navGroupPractice'); setTimeout(()=>{ const el = document.getElementById('curriculumActivityHeatmap'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 120);">
@@ -133,21 +186,8 @@
                   <span class="nav-item-desc">GitHub-style deliberate practice matrix &amp; habit tracking</span>
                 </div>
               </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewMockInterview" onclick="selectNavView('viewMockInterview', 'Interview 🎯', 'navGroupPractice')">
-                <span class="nav-item-icon">🎯</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Mock Interview (45m)</span>
-                    <span class="nav-item-tag accent">FAANG &amp; Quant</span>
-                  </div>
-                  <span class="nav-item-desc">Timed 3-round technical screen with Sir Bloop and test judge</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewSqlTerminal" onclick="selectNavView('viewSqlTerminal', 'SQL Terminal', 'navGroupPractice')">
-                <span class="nav-item-icon">💻</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">SQL Terminal (WASM)</span>
+            </div>
+          </div>
                     <span class="nav-item-tag accent">WASM Engine</span>
                   </div>
                   <span class="nav-item-desc">In-browser SQLite sandbox with 12 production tables</span>
@@ -247,7 +287,17 @@
               <span id="currentLearnPill" style="display:none;">Learn</span>
             </button>
             <div class="nav-dropdown-menu">
-              <div class="nav-dropdown-header">Interactive Core</div>
+              <div class="nav-dropdown-header">Interactive Core &amp; Curriculum</div>
+              <button class="nav-dropdown-item nav-tab" data-view="viewLearningJourney" onclick="selectNavView('viewLearningJourney', 'Learning Journey', 'navGroupLearn')">
+                <span class="nav-item-icon">🗺️</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">20-Day Learning Journey</span>
+                    <span class="nav-item-tag accent">Day 01–20</span>
+                  </div>
+                  <span class="nav-item-desc">Visual curriculum roadmap &amp; interactive daily milestone tracker</span>
+                </div>
+              </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewGuidedLab" onclick="selectNavView('viewGuidedLab', 'Guided Lab', 'navGroupLearn')">
                 <span class="nav-item-icon">🔬</span>
                 <div class="nav-item-text">
@@ -259,7 +309,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewPathways" onclick="selectNavView('viewPathways', 'Pathways', 'navGroupLearn')">
-                <span class="nav-item-icon">🗺️</span>
+                <span class="nav-item-icon">🧭</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Topic Pathways</span>
@@ -298,14 +348,14 @@
                   <span class="nav-item-desc">In-app textbook theory, daily logs &amp; interview defenses</span>
                 </div>
               </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewTactileEngine" onclick="selectNavView('viewTactileEngine', 'Tactile Engine', 'navGroupLearn')">
-                <span class="nav-item-icon">🧺</span>
+              <button class="nav-dropdown-item nav-tab" data-view="viewTactileEngine" onclick="selectNavView('viewTactileEngine', 'SQL Machine', 'navGroupLearn')">
+                <span class="nav-item-icon">⚙️</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
-                    <span class="nav-item-title">Tactile SQL Washer</span>
-                    <span class="nav-item-tag accent" style="background: #f4b829; color: #231e16; border: 1px solid #231e16;">Isometric Fig. 15</span>
+                    <span class="nav-item-title">Tactile SQL Machine</span>
+                    <span class="nav-item-tag accent">Fig. 16</span>
                   </div>
-                  <span class="nav-item-desc">Hand-inked physical query washer, centrifugal filter &amp; B+Tree belt</span>
+                  <span class="nav-item-desc">Hand-inked physical relational machine &amp; query washer</span>
                 </div>
               </button>
             </div>
@@ -1799,26 +1849,22 @@
     <div class="footer-left-group">
       <div class="footer-status">
         <span class="status-dot"></span>
-        <span id="activeQueryStats">MySQL 8.0 &bull; Engine Ready</span>
+        <span id="activeQueryStats">MySQL 8.0 &bull; Ready</span>
       </div>
       <span class="footer-tag" id="footerAstTag">Valid AST</span>
       <span class="footer-track-pill" id="footerActiveTrack">Section 01: Foundations &amp; Projections (100)</span>
     </div>
 
     <div class="footer-center-group">
-      <span class="footer-streak">🔥 11d Streak</span>
-      <span class="footer-sep">&bull;</span>
-      <span class="footer-xp">⚡ 155 XP</span>
-      <span class="footer-sep">&bull;</span>
-      <span class="footer-badge">Deliberate Practice Arcade</span>
+      <span class="footer-hint">Deliberate Practice Mode</span>
     </div>
 
     <div class="footer-right-group">
-      <span class="footer-mascot-indicator">🐙 Sir Bloops-a-Lot</span>
+      <span class="footer-shortcut-hint">⌨️ 1-4 Pick &bull; Enter Run &bull; Esc Close</span>
       <span class="footer-sep">|</span>
       <a href="../FOUNDATIONS_MASTER_COMPENDIUM.md" target="_blank" class="footer-link">📖 Compendium</a>
       <span class="footer-sep">|</span>
-      <span class="footer-shortcut-hint">⌨️ 1-4 Pick &bull; Enter Run</span>
+      <button class="footer-mascot-btn" id="footerMascotToggle" onclick="if(window.SQL_BUDDY) window.SQL_BUDDY.toggleMinimize();" title="Toggle Assistant Mascot">🐙 Sir Bloops</button>
     </div>
   </footer>
 </div>
@@ -1911,7 +1957,7 @@
 <script src="company_mastery_engine.js?v=200"></script>
 <script src="curriculum_compendium_data.js"></script>
 <script src="curriculum_reader_engine.js"></script>
-<script src="app.js?v=97"></script>
+<script src="app.js?v=98"></script>
 <script>
   // Automatic Hash & Default View Router
   (function() {

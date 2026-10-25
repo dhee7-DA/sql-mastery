@@ -2182,11 +2182,11 @@ const NAV_GROUPS_MAP = {
   viewVennMatrix: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Venn Matrix' },
   viewWindowMatrix: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Window Cockpit' },
 
-  viewLearningJourney: { triggerId: 'btnNavLearningJourney', pillId: null, label: 'Learning Journey' },
-  viewLeetCode50: { triggerId: 'btnNavLeetCode', pillId: null, label: 'LeetCode 50' },
-  viewCompanyHub: { triggerId: 'btnNavCompanyHub', pillId: null, label: 'Company Hub' },
-  viewSqlTerminal: { triggerId: 'btnNavSqlTerminal', pillId: null, label: 'SQL Terminal' },
-  viewMockInterview: { triggerId: 'btnNavMockInterview', pillId: null, label: 'Interview 🎯' },
+  viewLearningJourney: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Learning Journey' },
+  viewLeetCode50: { triggerId: 'btnNavLeetCode', pillId: null, label: 'LeetCode 323' },
+  viewCompanyHub: { triggerId: 'btnNavCompanyHub', pillId: null, label: 'Companies & Domains' },
+  viewSqlTerminal: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'SQL Terminal' },
+  viewMockInterview: { triggerId: 'btnNavMockInterview', pillId: null, label: 'Mock Screen' },
   viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Studio' }
 };
 
