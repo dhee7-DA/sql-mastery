@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="leetcode_theme.css?v=310">
   <link rel="stylesheet" href="sql_terminal_theme.css?v=105">
   <link rel="stylesheet" href="mock_interview_theme.css?v=106">
+  <link rel="stylesheet" href="company_mastery_theme.css?v=1">
 </head>
 <body>
   <div class="app-layout">
@@ -73,7 +74,16 @@
             <span id="currentInterviewPill" style="display:none;">45m</span>
           </button>
 
-          <!-- 5. LEARNING JOURNEY (Direct Tab) -->
+          <!-- 5. COMPANY MASTERY HUB (Direct Tab) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavCompanyHub" data-view="viewCompanyHub" onclick="selectNavView('viewCompanyHub', 'Company Hub', null)" title="FAANG &amp; Wall Street Target Company Mastery Hub">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">🏢</span>
+              <span class="nav-group-title">Company Hub</span>
+            </span>
+            <span class="nav-item-tag accent" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: #fff; font-size: 9px; padding: 1px 6px; border-radius: 4px; font-weight: 800;">10 Tracks</span>
+          </button>
+
+          <!-- 6. LEARNING JOURNEY (Direct Tab) -->
           <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavLearningJourney" data-view="viewLearningJourney" onclick="selectNavView('viewLearningJourney', 'Learning Journey', null)" title="20-Day Learning Journey">
             <span class="nav-group-lead">
               <span class="nav-group-icon">🗺️</span>
@@ -82,7 +92,7 @@
             <span id="currentJourneyPill" style="display:none;">Day 1</span>
           </button>
 
-          <!-- 6. TACTILE SQL MACHINE (Direct Tab - Colorfigures Fig. 16) -->
+          <!-- 7. TACTILE SQL MACHINE (Direct Tab - Colorfigures Fig. 16) -->
           <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavTactileEngine" data-view="viewTactileEngine" onclick="selectNavView('viewTactileEngine', 'SQL Machine ⚙️', null)" title="Hand-Inked Isometric SQL Relational Machine (Colorfigures Fig. 16)" style="background: rgba(244, 184, 41, 0.12); border: 1.5px solid #f4b829;">
             <span class="nav-group-lead">
               <span class="nav-group-icon">⚙️</span>
@@ -91,7 +101,7 @@
             <span class="nav-item-tag accent" style="background: #f4b829; color: #231e16; font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 800;">Fig. 16</span>
           </button>
 
-          <!-- 5. PRACTICE DROPDOWN -->
+          <!-- PRACTICE DROPDOWN -->
           <div class="nav-group-dropdown" id="navGroupPractice">
             <button class="nav-group-trigger" id="btnGroupPractice" onclick="toggleNavGroupDropdown('navGroupPractice', event)">
               <span class="nav-group-lead">
@@ -103,6 +113,16 @@
             </button>
             <div class="nav-dropdown-menu">
               <div class="nav-dropdown-header">Drill &amp; Test Vaults</div>
+              <button class="nav-dropdown-item nav-tab" data-view="viewCompanyHub" onclick="selectNavView('viewCompanyHub', 'Company Hub', 'navGroupPractice')">
+                <span class="nav-item-icon">🏢</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Company Mastery Tracks</span>
+                    <span class="nav-item-tag accent" style="background: #3b82f6; color: #fff;">10 FAANG+</span>
+                  </div>
+                  <span class="nav-item-desc">Meta, Amazon, Google, Stripe &amp; Citadel interview tracks</span>
+                </div>
+              </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Activity Heatmap', 'navGroupPractice'); setTimeout(()=>{ const el = document.getElementById('curriculumActivityHeatmap'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 120);">
                 <span class="nav-item-icon">📅</span>
                 <div class="nav-item-text">
@@ -1618,6 +1638,13 @@
   <!-- VIEW: Timed FAANG / Wall Street Mock Interview Screen -->
   <div class="view-panel" id="viewMockInterview"></div>
 
+  <!-- VIEW: FAANG & Wall Street Company Mastery Hub -->
+  <div class="view-panel" id="viewCompanyHub">
+    <div id="companyHubContentRoot">
+      <!-- Dynamically populated by company_mastery_engine.js -->
+    </div>
+  </div>
+
   <!-- VIEW: Tactile Isometric SQL Engine (Colorfigures Edition) -->
   <div class="view-panel" id="viewTactileEngine" style="padding: 0; min-height: 850px;">
     <div style="background: #f2efe7; border-bottom: 2px solid #231e16; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 0 rgba(35,30,22,0.06);">
@@ -1881,6 +1908,7 @@
 <script src="sql_terminal_engine.js?v=105"></script>
 <script src="mock_interview_data.js?v=106"></script>
 <script src="mock_interview_engine.js?v=106"></script>
+<script src="company_mastery_engine.js"></script>
 <script src="curriculum_compendium_data.js"></script>
 <script src="curriculum_reader_engine.js"></script>
 <script src="app.js?v=97"></script>
@@ -1893,6 +1921,8 @@
         if (typeof window.selectNavView === 'function') window.selectNavView('viewGuidedLab', 'Guided Lab', 'navGroupLearn');
       } else if (hash === 'interview' || hash === 'mock' || hash === 'mockinterview') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewMockInterview', 'Interview 🎯', null);
+      } else if (hash === 'company' || hash === 'companyhub' || hash === 'companies') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewCompanyHub', 'Company Hub', null);
       } else if (hash === 'terminal' || hash === 'sqlterminal') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewSqlTerminal', 'SQL Terminal', null);
       } else if (hash === 'studio') {

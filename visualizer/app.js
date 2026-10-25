@@ -2184,6 +2184,7 @@ const NAV_GROUPS_MAP = {
 
   viewLearningJourney: { triggerId: 'btnNavLearningJourney', pillId: null, label: 'Learning Journey' },
   viewLeetCode50: { triggerId: 'btnNavLeetCode', pillId: null, label: 'LeetCode 50' },
+  viewCompanyHub: { triggerId: 'btnNavCompanyHub', pillId: null, label: 'Company Hub' },
   viewSqlTerminal: { triggerId: 'btnNavSqlTerminal', pillId: null, label: 'SQL Terminal' },
   viewMockInterview: { triggerId: 'btnNavMockInterview', pillId: null, label: 'Interview 🎯' },
   viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Studio' }
@@ -2290,6 +2291,10 @@ function switchMainView(targetId) {
   if (targetId === 'viewLeetCode50') {
     if (window.LEETCODE_ARENA) window.LEETCODE_ARENA.init();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("⚡ Welcome to the LeetCode 50 Arena! Concept Masterclass, 100 MCQs, 100 Drills and Interactive Test Judge loaded!", 5000, 'celebrate');
+  }
+  if (targetId === 'viewCompanyHub') {
+    if (window.CompanyMasteryEngine) window.CompanyMasteryEngine.init();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏢 Welcome to the Target Company Mastery Hub! FAANG & Wall Street interview intelligence, probabilities, and curated drills loaded!", 5000, 'celebrate');
   }
   if (targetId === 'viewTactileEngine') {
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🧺 Welcome to the Tactile SQL Relational Washer! Hand-inked isometric physical query engine ready!", 5000, 'celebrate');
