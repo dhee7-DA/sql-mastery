@@ -6,10 +6,15 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: **Laser Neon Red Visual Overhaul & Feature Showcase (Zero AI Gradient · 4-Scenario Hero Sandbox · Top 5 Silent Traps · Universal Dialect Matrix)**
+- **Current Sprint**: **LeetCode Studio Inner Page Overhaul (Guided 3-Phase "Order of Learning" · Progressive Guidance Drawers · Single Schema Inspector · Zero Table Duplication)**
 - **Active Module**: [`day-20-grand-enterprise-gauntlet`](./day-20-grand-enterprise-gauntlet) (Multi-Pillar Integration & Graduation)
 - **Current Dialect**: **PostgreSQL 16+ / MySQL 8.0+ / Snowflake / DuckDB / BigQuery (ANSI SQL Standard)**
 - **Major Milestones Achieved**: 
+  - 🏆 **GUIDED 3-PHASE "ORDER OF LEARNING" INNER WORKSPACE DEPLOYED**: Reorganized the LeetCode Problem Studio into an intuitive, tranquil learning progression:
+    1. **Phase 1: Understand (Problem & Schema Inspector)**: Clean problem statement with a single interactive Schema & Data Inspector (`📊 Sample Data`, `🎯 Expected Output`, `📐 Flowchart Diagram`). Completely eliminated the 3 duplicate sample tables that previously cluttered the screen!
+    2. **Phase 2: Solve (Focused SQL Solution Workspace)**: Eradicated the bulky top schema dock from the editor column, freeing 80% vertical space for a 300px+ editor with starter query templates and quick actions (`Fill Golden Code`, `Copy`, `Reset`).
+    3. **Phase 3: Verify & Defend (Progressive Guidance & Judge Autopsy)**: Canonical Golden Solutions and Traps are tucked into clean progressive accordions (`Need a Hint?`, `Critical Traps`, `Canonical Solution`, `Concept Bridges`) so answers aren't spoiled prematurely. Upon passing tests, users get an instant `Next Problem →` button and 1-click canonical breakdown reveal.
+  - 🏆 **STUDIO TOOLBAR STREAMLINING**: Simplified the 5-button stage strip into 4 clean, distinct modes (`📖 Problem Studio`, `💡 Concept Theory`, `⚡ MCQs`, `🎯 Drills`) and moved `Topics Hub` to a dedicated `← Topics Hub` breadcrumb back link.
   - 🏆 **FULL 20-DAY SYSTEMATIC CURRICULUM DEPLOYED (Days 01 to 20 Complete with Theory, DDL, Benchmarks & Defense)!**
   - 🏆 **LASER NEON RED PALETTE OVERHAUL (ZERO AI GRADIENTS)**: Replaced purple/magenta with high-voltage Laser Neon Red (`#e11d48` in light mode, `#ff2a51` in dark mode). Eliminated rainbow AI text gradients in favor of razor-sharp, solid developer typography and solid laser CTA buttons.
   - 🏆 **MULTI-SCENARIO INTERACTIVE HERO SANDBOX**: Added 4 switchable live scenario tabs directly in the hero sandbox (LeetCode #185 Dense Rank, Fraud Velocity Burst LAG Detection, 7-Day Rolling Revenue Window Frame, and Amazon Anti-Join Churn).
