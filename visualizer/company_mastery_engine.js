@@ -973,10 +973,10 @@ window.CompanyMasteryEngine = (function() {
 
         <div class="prob-card-actions">
           <button class="prob-action-btn inspect" onclick="window.CompanyMasteryEngine.openProblemModal(${p.id})">
-            <span>🔍 Blueprint &amp; Solution</span>
+            <span>Blueprint</span>
           </button>
           <button class="prob-action-btn arena" onclick="window.CompanyMasteryEngine.openInArena(${p.id})" title="Solve in LeetCode 323 Arena">
-            <span>⚡ Solve</span>
+            <span>⚡ Solve in WASM</span>
           </button>
         </div>
       </div>
