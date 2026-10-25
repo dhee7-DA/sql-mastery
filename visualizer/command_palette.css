@@ -1,0 +1,372 @@
+/* ==========================================================================
+   SQL FOUNDRY - COMMAND PALETTE (CTRL+K / CMD+K)
+   Active Builders Minimalist Desktop-Grade Spotlight Modal
+   ========================================================================== */
+
+.cmd-palette-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+  background: rgba(15, 15, 18, 0.48);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: cmdFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cmdFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cmd-palette-container {
+  width: 90%;
+  max-width: 640px;
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #e4e4e7);
+  border-radius: var(--radius-md, 8px);
+  box-shadow: 0 16px 48px -8px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  animation: cmdSlideDown 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cmdSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 1. SEARCH INPUT ROW */
+.cmd-palette-search-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-subtle, #f4f4f5);
+  background: var(--bg-surface, #ffffff);
+}
+
+.cmd-search-icon {
+  color: var(--text-muted, #71717a);
+  flex-shrink: 0;
+}
+
+.cmd-palette-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: var(--font-sans, inherit);
+  font-size: 14px;
+  color: var(--text-primary, #18181b);
+  letter-spacing: -0.01em;
+}
+
+.cmd-palette-input::placeholder {
+  color: var(--text-muted, #a1a1aa);
+  font-weight: 400;
+}
+
+.cmd-palette-esc-hint kbd {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  padding: 2px 5px;
+  color: var(--text-muted, #71717a);
+  background: var(--bg-hover, #f4f4f5);
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  border-radius: 4px;
+}
+
+/* 2. CATEGORY FILTER STRIP */
+.cmd-palette-filter-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: var(--bg-canvas, #fafafa);
+  border-bottom: 1px solid var(--border-subtle, #f4f4f5);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cmd-palette-filter-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.cmd-filter-pill {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: var(--radius-xs, 4px);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted, #71717a);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.12s ease;
+  font-family: var(--font-sans, inherit);
+}
+
+.cmd-filter-pill:hover {
+  background: var(--bg-hover, #f4f4f5);
+  color: var(--text-primary, #18181b);
+}
+
+.cmd-filter-pill.active {
+  background: var(--bg-surface, #ffffff);
+  border-color: var(--border-subtle, #e4e4e7);
+  color: var(--accent, #c2410c);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* 3. RESULTS LIST */
+.cmd-palette-results {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 48vh;
+  padding: 6px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle, #e4e4e7) transparent;
+}
+
+.cmd-result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: var(--radius-xs, 4px);
+  cursor: pointer;
+  transition: background 0.08s ease;
+  border: 1px solid transparent;
+}
+
+.cmd-result-item:hover,
+.cmd-result-item.selected {
+  background: var(--bg-hover, #f4f4f5);
+  border-color: var(--border-subtle, #e4e4e7);
+}
+
+.cmd-result-item.selected {
+  background: var(--accent-soft, rgba(194, 65, 12, 0.06));
+  border-color: var(--accent-border, rgba(194, 65, 12, 0.2));
+}
+
+.cmd-item-icon {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  flex-shrink: 0;
+}
+
+.cmd-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.cmd-item-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary, #18181b);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cmd-result-item.selected .cmd-item-title {
+  color: var(--accent, #c2410c);
+}
+
+.cmd-item-sub {
+  font-size: 10.5px;
+  color: var(--text-muted, #71717a);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.cmd-mark {
+  background: rgba(194, 65, 12, 0.16);
+  color: inherit;
+  font-weight: 700;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.cmd-item-badge {
+  font-size: 9.5px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--bg-hover, #f4f4f5);
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  color: var(--text-muted, #71717a);
+  font-family: var(--font-mono, monospace);
+  flex-shrink: 0;
+}
+
+.cmd-item-badge.easy {
+  color: #16a34a;
+  background: rgba(22, 163, 74, 0.08);
+  border-color: rgba(22, 163, 74, 0.2);
+}
+
+.cmd-item-badge.medium {
+  color: #d97706;
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.2);
+}
+
+.cmd-item-badge.hard {
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.2);
+}
+
+.cmd-item-badge.badge-view {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.cmd-item-badge.badge-action {
+  color: #9333ea;
+  background: rgba(147, 51, 234, 0.08);
+  border-color: rgba(147, 51, 234, 0.2);
+}
+
+.cmd-item-action-hint {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: var(--text-muted, #a1a1aa);
+  opacity: 0;
+  margin-left: 6px;
+  flex-shrink: 0;
+  transition: opacity 0.1s ease;
+}
+
+.cmd-result-item.selected .cmd-item-action-hint {
+  opacity: 1;
+  color: var(--accent, #c2410c);
+}
+
+/* 4. EMPTY STATE */
+.cmd-palette-empty {
+  padding: 36px 20px;
+  text-align: center;
+}
+
+.cmd-empty-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+  opacity: 0.6;
+}
+
+.cmd-empty-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #18181b);
+}
+
+.cmd-empty-desc {
+  font-size: 11px;
+  color: var(--text-muted, #71717a);
+  margin-top: 4px;
+  max-width: 360px;
+  margin-inline: auto;
+  line-height: 1.4;
+}
+
+/* 5. FOOTER */
+.cmd-palette-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: var(--bg-canvas, #fafafa);
+  border-top: 1px solid var(--border-subtle, #f4f4f5);
+  font-size: 10px;
+  color: var(--text-muted, #71717a);
+}
+
+.cmd-footer-keys {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cmd-footer-keys kbd {
+  font-family: var(--font-mono, monospace);
+  font-size: 9.5px;
+  padding: 1px 4px;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  border-radius: 3px;
+  color: var(--text-secondary, #52525b);
+  margin-right: 2px;
+}
+
+.cmd-footer-meta {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+}
+
+/* 6. HEADER COMMAND PALETTE TRIGGER BUTTON */
+.header-cmd-palette-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 10px;
+  background: var(--bg-hover, #f4f4f5);
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  border-radius: var(--radius-xs, 4px);
+  color: var(--text-muted, #71717a);
+  font-family: var(--font-sans, inherit);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  user-select: none;
+}
+
+.header-cmd-palette-btn:hover {
+  background: var(--bg-surface, #ffffff);
+  border-color: var(--border-default, #d4d4d8);
+  color: var(--text-primary, #18181b);
+}
+
+.cmd-palette-label {
+  display: inline-block;
+}
+
+.cmd-palette-kbd {
+  font-family: var(--font-mono, monospace);
+  font-size: 9.5px;
+  font-weight: 600;
+  padding: 1px 4px;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  border-radius: 3px;
+  color: var(--text-muted, #71717a);
+}
+
+@media (max-width: 768px) {
+  .cmd-palette-label {
+    display: none;
+  }
+}

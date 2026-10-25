@@ -453,37 +453,41 @@ window.LEETCODE_ARENA = (() => {
             ${state.sidebarFilter ? `<button class="lc-search-clear" id="btnSidebarFilterClear">✕</button>` : ''}
           </div>
 
-          <!-- Topic Pillar Filter Strip -->
-          <div class="lc-sidebar-pillar-strip" id="lcSidebarPillarStrip">
-            <button class="lc-sidebar-pillar-pill ${state.sidebarPillar === 'all' ? 'active' : ''}" data-pillar-id="all">All</button>
-            <button class="lc-sidebar-pillar-pill ${state.sidebarPillar === 'filters' ? 'active' : ''}" data-pillar-id="filters">3VL</button>
-            <button class="lc-sidebar-pillar-pill ${state.sidebarPillar === 'joins' ? 'active' : ''}" data-pillar-id="joins">Joins</button>
-            <button class="lc-sidebar-pillar-pill ${state.sidebarPillar === 'aggs' ? 'active' : ''}" data-pillar-id="aggs">Aggs</button>
-            <button class="lc-sidebar-pillar-pill ${state.sidebarPillar === 'subqueries' ? 'active' : ''}" data-pillar-id="subqueries">CTEs</button>
-            <button class="lc-sidebar-pillar-pill ${state.sidebarPillar === 'windows' ? 'active' : ''}" data-pillar-id="windows">Windows</button>
-            <button class="lc-sidebar-pillar-pill ${state.sidebarPillar === 'strings' ? 'active' : ''}" data-pillar-id="strings">Strings</button>
-          </div>
+          <!-- Compact Streamlined Filter Toolbar (Single Row Controls) -->
+          <div class="lc-sidebar-filter-bar">
+            <select id="lcFilterTopic" class="lc-compact-select" title="Filter by Topic">
+              <option value="all" ${state.sidebarPillar === 'all' ? 'selected' : ''}>Topic: All</option>
+              <option value="filters" ${state.sidebarPillar === 'filters' ? 'selected' : ''}>3VL &amp; Filters</option>
+              <option value="joins" ${state.sidebarPillar === 'joins' ? 'selected' : ''}>Joins &amp; Sets</option>
+              <option value="aggs" ${state.sidebarPillar === 'aggs' ? 'selected' : ''}>Aggregates</option>
+              <option value="subqueries" ${state.sidebarPillar === 'subqueries' ? 'selected' : ''}>CTEs &amp; Subs</option>
+              <option value="windows" ${state.sidebarPillar === 'windows' ? 'selected' : ''}>Window Funcs</option>
+              <option value="strings" ${state.sidebarPillar === 'strings' ? 'selected' : ''}>Strings &amp; Regex</option>
+            </select>
 
-          <!-- Difficulty Filter Strip -->
-          <div class="lc-sidebar-diff-strip" id="lcSidebarDiffStrip">
-            <button class="lc-sidebar-diff-pill ${state.sidebarDiff === 'all' ? 'active' : ''}" data-diff-id="all">All (${totalProblems})</button>
-            <button class="lc-sidebar-diff-pill diff-easy ${state.sidebarDiff === 'Easy' ? 'active' : ''}" data-diff-id="Easy">🟢 ${counts.easy}</button>
-            <button class="lc-sidebar-diff-pill diff-med ${state.sidebarDiff === 'Medium' ? 'active' : ''}" data-diff-id="Medium">🟡 ${counts.med}</button>
-            <button class="lc-sidebar-diff-pill diff-hard ${state.sidebarDiff === 'Hard' ? 'active' : ''}" data-diff-id="Hard">🔴 ${counts.hard}</button>
-          </div>
+            <select id="lcFilterDiff" class="lc-compact-select" title="Filter by Difficulty">
+              <option value="all" ${state.sidebarDiff === 'all' ? 'selected' : ''}>Diff: All</option>
+              <option value="Easy" ${state.sidebarDiff === 'Easy' ? 'selected' : ''}>🟢 Easy (${counts.easy})</option>
+              <option value="Medium" ${state.sidebarDiff === 'Medium' ? 'selected' : ''}>🟡 Med (${counts.med})</option>
+              <option value="Hard" ${state.sidebarDiff === 'Hard' ? 'selected' : ''}>🔴 Hard (${counts.hard})</option>
+            </select>
 
-          <!-- FAANG & Top Tech Company Filter Strip -->
-          <div class="lc-sidebar-comp-strip" id="lcSidebarCompanyStrip">
-            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'all' ? 'active' : ''}" data-comp-id="all" title="All Companies">All Cos</button>
-            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Amazon' ? 'active' : ''}" data-comp-id="Amazon" title="Amazon (296 problems)">Amazon</button>
-            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Google' ? 'active' : ''}" data-comp-id="Google" title="Google (263 problems)">Google</button>
-            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Meta' ? 'active' : ''}" data-comp-id="Meta" title="Meta (152 problems)">Meta</button>
-            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Stripe' ? 'active' : ''}" data-comp-id="Stripe" title="Stripe (57 problems)">Stripe</button>
-            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Apple' ? 'active' : ''}" data-comp-id="Apple" title="Apple (47 problems)">Apple</button>
-            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Uber' ? 'active' : ''}" data-comp-id="Uber" title="Uber (57 problems)">Uber</button>
-            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Bloomberg' ? 'active' : ''}" data-comp-id="Bloomberg" title="Bloomberg (33 problems)">Bloomberg</button>
-            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Citadel' ? 'active' : ''}" data-comp-id="Citadel" title="Citadel (22 problems)">Citadel</button>
-            <button class="lc-sidebar-comp-pill ${state.sidebarCompany === 'Netflix' ? 'active' : ''}" data-comp-id="Netflix" title="Netflix (7 problems)">Netflix</button>
+            <select id="lcFilterCompany" class="lc-compact-select" title="Filter by Target Company">
+              <option value="all" ${state.sidebarCompany === 'all' ? 'selected' : ''}>Co: All</option>
+              <option value="Amazon" ${state.sidebarCompany === 'Amazon' ? 'selected' : ''}>Amazon</option>
+              <option value="Google" ${state.sidebarCompany === 'Google' ? 'selected' : ''}>Google</option>
+              <option value="Meta" ${state.sidebarCompany === 'Meta' ? 'selected' : ''}>Meta</option>
+              <option value="Stripe" ${state.sidebarCompany === 'Stripe' ? 'selected' : ''}>Stripe</option>
+              <option value="Apple" ${state.sidebarCompany === 'Apple' ? 'selected' : ''}>Apple</option>
+              <option value="Uber" ${state.sidebarCompany === 'Uber' ? 'selected' : ''}>Uber</option>
+              <option value="Bloomberg" ${state.sidebarCompany === 'Bloomberg' ? 'selected' : ''}>Bloomberg</option>
+              <option value="Citadel" ${state.sidebarCompany === 'Citadel' ? 'selected' : ''}>Citadel</option>
+              <option value="Netflix" ${state.sidebarCompany === 'Netflix' ? 'selected' : ''}>Netflix</option>
+            </select>
+
+            ${(state.sidebarPillar !== 'all' || state.sidebarDiff !== 'all' || state.sidebarCompany !== 'all' || state.sidebarFilter) ? `
+              <button class="lc-filter-reset-btn" id="btnSidebarFilterReset" title="Reset all filters">✕</button>
+            ` : ''}
           </div>
 
           <!-- Scrollable Tree Nav -->
@@ -581,38 +585,41 @@ window.LEETCODE_ARENA = (() => {
       });
     });
 
-    // Hook up Sidebar Pillar Filter
-    container.querySelectorAll('.lc-sidebar-pillar-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.sidebarPillar = btn.dataset.pillarId;
-        container.querySelectorAll('.lc-sidebar-pillar-pill').forEach(b => {
-          b.classList.toggle('active', b.dataset.pillarId === state.sidebarPillar);
-        });
+    // Hook up Compact Select Filters
+    const filterTopic = container.querySelector('#lcFilterTopic');
+    if (filterTopic) {
+      filterTopic.addEventListener('change', (e) => {
+        state.sidebarPillar = e.target.value;
         renderSidebarTree();
       });
-    });
+    }
 
-    // Hook up Sidebar Difficulty Filter
-    container.querySelectorAll('.lc-sidebar-diff-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.sidebarDiff = btn.dataset.diffId;
-        container.querySelectorAll('.lc-sidebar-diff-pill').forEach(b => {
-          b.classList.toggle('active', b.dataset.diffId === state.sidebarDiff);
-        });
+    const filterDiff = container.querySelector('#lcFilterDiff');
+    if (filterDiff) {
+      filterDiff.addEventListener('change', (e) => {
+        state.sidebarDiff = e.target.value;
         renderSidebarTree();
       });
-    });
+    }
 
-    // Hook up Sidebar Company Filter
-    container.querySelectorAll('.lc-sidebar-comp-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.sidebarCompany = btn.dataset.compId;
-        container.querySelectorAll('.lc-sidebar-comp-pill').forEach(b => {
-          b.classList.toggle('active', b.dataset.compId === state.sidebarCompany);
-        });
+    const filterCompany = container.querySelector('#lcFilterCompany');
+    if (filterCompany) {
+      filterCompany.addEventListener('change', (e) => {
+        state.sidebarCompany = e.target.value;
         renderSidebarTree();
       });
-    });
+    }
+
+    const filterReset = container.querySelector('#btnSidebarFilterReset');
+    if (filterReset) {
+      filterReset.addEventListener('click', () => {
+        state.sidebarPillar = 'all';
+        state.sidebarDiff = 'all';
+        state.sidebarCompany = 'all';
+        state.sidebarFilter = '';
+        renderShell();
+      });
+    }
 
     // Hook up Top Prev / Next
     const btnTopPrev = container.querySelector('#btnTopPrev');

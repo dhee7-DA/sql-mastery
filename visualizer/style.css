@@ -14420,6 +14420,38 @@ body {
   pointer-events: none;
 }
 
+.bloub-docked-toast {
+  position: fixed;
+  bottom: 34px;
+  right: 18px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-primary, #18181b);
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--accent, #c2410c);
+  border-radius: var(--radius-xs, 4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  user-select: none;
+}
+.bloub-docked-toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.bloub-docked-toast:hover {
+  background: var(--bg-hover, #f4f4f5);
+}
+
 /* Mascot Settings & Customizer Card (Docked Cleanly to the Left of Mascot) */
 .bloub-customizer-card {
   pointer-events: auto;

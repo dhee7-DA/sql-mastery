@@ -392,7 +392,13 @@ const SQL_BUDDY = (() => {
 
   let animFrameId = null;
   let bubbleTimeout = null;
-  let isMinimized = false;
+  let isMinimized = (function() {
+    try {
+      return localStorage.getItem("sql_buddy_minimized") !== "false";
+    } catch(e) {
+      return true;
+    }
+  })();
   let isCustomizerOpen = false;
   let isHovered = false;
 
@@ -908,6 +914,13 @@ const SQL_BUDDY = (() => {
       sleepPill.innerText = isMinimized ? "💤 Sleeping" : "👁️ Active";
       sleepPill.classList.toggle("active", isMinimized);
     }
+
+    const footerBtn = document.getElementById("footerMascotToggle");
+    if (footerBtn) {
+      footerBtn.innerHTML = isMinimized ? `🐙 Sir Bloops` : `🐙 Sir Bloops <span style="font-size:9px;color:var(--accent,#c2410c);font-weight:700;">●</span>`;
+      footerBtn.classList.toggle("active", !isMinimized);
+      footerBtn.title = isMinimized ? "Sir Bloops is parked in dock. Click to summon companion." : "Sir Bloops is active. Click to park companion in dock.";
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -1094,13 +1107,20 @@ const SQL_BUDDY = (() => {
     if (animFrameId) cancelAnimationFrame(animFrameId);
     animFrameId = requestAnimationFrame(update);
 
-    // Initial Greeting
-    setTimeout(() => {
-      say("👋 Ahoy! I'm Sir Bloops-a-Lot, your living SQL companion! Let's conquer Section 01 together!", 6000, "happy");
-    }, 1200);
-
     // If theme sync active, sync now
     if (isThemeSyncEnabled) syncThemeColor();
+
+    if (isMinimized) {
+      container.classList.add("minimized");
+    }
+    updateSettingsUI();
+
+    // Initial Greeting only if not minimized
+    if (!isMinimized) {
+      setTimeout(() => {
+        say("👋 Ahoy! I'm Sir Bloops-a-Lot, your living SQL companion! Let's conquer Section 01 together!", 6000, "happy");
+      }, 1200);
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -1279,15 +1299,38 @@ const SQL_BUDDY = (() => {
     say(`🚀 Query executed successfully! Returned ${rowCount} row${rowCount === 1 ? "" : "s"}. Clean execution plan!`, 4500, "happy");
   }
 
+  function showDockedToast(msg) {
+    let toast = document.getElementById("bloubDockedToast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "bloubDockedToast";
+      toast.className = "bloub-docked-toast";
+      toast.onclick = () => toggleMinimize();
+      document.body.appendChild(toast);
+    }
+    toast.textContent = "🐙 " + msg;
+    toast.classList.add("visible");
+    setTimeout(() => {
+      toast.classList.remove("visible");
+    }, 5500);
+  }
+
   function onQueryRunError(errorMsg) {
     if (performance.now() - initializedAt < 2500) return;
     const trimmed = (errorMsg || "Syntax error").substring(0, 65);
     SOUNDS.playAlert();
-    say(`⚠️ Engine caught an error: "${trimmed}". Check your aliases and clauses!`, 6000, "alert");
+    if (isMinimized) {
+      showDockedToast(`Engine caught an error: "${trimmed}"`);
+    } else {
+      say(`⚠️ Engine caught an error: "${trimmed}". Check your aliases and clauses!`, 6000, "alert");
+    }
   }
 
   function toggleMinimize() {
     isMinimized = !isMinimized;
+    try {
+      localStorage.setItem("sql_buddy_minimized", isMinimized ? "true" : "false");
+    } catch (e) {}
     const container = document.getElementById("sqlBuddyContainer");
     if (container) {
       container.classList.toggle("minimized", isMinimized);

@@ -9,12 +9,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/vqa3wut.css">
-  <link rel="stylesheet" href="style.css?v=95">
+  <link rel="stylesheet" href="style.css?v=96">
   <link rel="stylesheet" href="jpmorgan_theme.css?v=3">
-  <link rel="stylesheet" href="leetcode_theme.css?v=310">
+  <link rel="stylesheet" href="leetcode_theme.css?v=311">
   <link rel="stylesheet" href="sql_terminal_theme.css?v=105">
   <link rel="stylesheet" href="mock_interview_theme.css?v=106">
   <link rel="stylesheet" href="company_mastery_theme.css?v=200">
+  <link rel="stylesheet" href="command_palette.css?v=1">
 </head>
 <body>
   <div class="app-layout">
@@ -343,6 +344,13 @@
 
       <div class="header-right">
         <!-- Compact Habit Counters -->
+        <!-- Quick Search / Command Palette Button (Ctrl+K) -->
+        <button class="header-cmd-palette-btn" id="btnHeaderCmdPalette" onclick="if(window.SQL_CMD_PALETTE) window.SQL_CMD_PALETTE.open();" title="Search problems, companies, and views (Ctrl+K or Cmd+K)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmd-palette-label">Search or jump to...</span>
+          <kbd class="cmd-palette-kbd">⌘K</kbd>
+        </button>
+
         <div class="header-stats-strip">
           <span class="header-stat-chip" id="userStreakCounter" title="Daily SQL Mastery Streak (Click to open Calendar)" style="cursor: pointer;" onclick="if(window.dailyStreak) window.dailyStreak.open();">
             <span class="stat-icon">🔥</span>
@@ -1824,7 +1832,7 @@
 <script src="traps_interview_secrets.js?v=57"></script>
 <script src="audio_fx.js"></script>
 <script src="study_library_data.js?v=65"></script>
-<script src="buddy_engine.js?v=86"></script>
+<script src="buddy_engine.js?v=87"></script>
 <script src="gym_blitz_engine.js?v=57"></script>
 <script src="gym_mastery_radar.js?v=57"></script>
 <script src="gym_autopsy_engine.js?v=57"></script>
@@ -1861,7 +1869,7 @@
 <script src="leetcode_section10_data.js?v=1"></script>
 <script src="leetcode_section11_data.js?v=1"></script>
 <script src="leetcode_300_master_vault.js"></script>
-<script src="leetcode_arena_engine.js?v=310"></script>
+<script src="leetcode_arena_engine.js?v=311"></script>
 <script src="sql-wasm.js"></script>
 <script src="sql_terminal_data.js?v=105"></script>
 <script src="sql_terminal_engine.js?v=105"></script>
@@ -1870,7 +1878,8 @@
 <script src="company_mastery_engine.js?v=200"></script>
 <script src="curriculum_compendium_data.js"></script>
 <script src="curriculum_reader_engine.js"></script>
-<script src="app.js?v=99"></script>
+<script src="command_palette.js?v=1"></script>
+<script src="app.js?v=100"></script>
 <script>
   // Automatic Hash & Default View Router
   (function() {
