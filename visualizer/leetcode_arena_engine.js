@@ -144,7 +144,7 @@ window.LEETCODE_ARENA = (() => {
   // State
   let state = {
     activeConceptId: 'concept-1',
-    activeStage: 'problems', // Default directly to Problem Solving Studio!
+    activeStage: 'topics', // Default directly to Home Page / Topics Launchpad Hub!
     activeProblemId: 1757,
     layoutMode: 'split', // 'split' | 'editor' | 'problem'
     zenMode: false,
@@ -329,10 +329,22 @@ window.LEETCODE_ARENA = (() => {
       // Don't intercept if user is typing in input or textarea
       if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
 
-      // Ctrl+B / Cmd+B: Toggle sidebar
+      // Escape key closes Catalog Drawer
+      if (e.key === 'Escape') {
+        const drawer = document.getElementById('lcCatalogDrawer');
+        if (drawer && drawer.classList.contains('open')) {
+          e.preventDefault();
+          toggleCatalogDrawer(false);
+          return;
+        }
+      }
+
+      // Ctrl+B / Cmd+B: Toggle Problem Catalog drawer
       if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
         e.preventDefault();
-        toggleSidebar();
+        if (state.activeStage === 'problems') {
+          toggleCatalogDrawer();
+        }
         return;
       }
 
@@ -416,12 +428,18 @@ window.LEETCODE_ARENA = (() => {
     }
   }
 
-  function toggleSidebar() {
-    state.sidebarCollapsed = !state.sidebarCollapsed;
-    const sidebar = document.getElementById('lcStudioSidebar');
-    const btnExpand = document.getElementById('btnExpandSidebar');
-    if (sidebar) sidebar.classList.toggle('collapsed', state.sidebarCollapsed);
-    if (btnExpand) btnExpand.style.display = state.sidebarCollapsed ? 'flex' : 'none';
+  function toggleCatalogDrawer(forceState) {
+    const drawer = document.getElementById('lcCatalogDrawer');
+    const backdrop = document.getElementById('lcDrawerBackdrop');
+    if (!drawer) return;
+    const isOpen = drawer.classList.contains('open');
+    const shouldOpen = typeof forceState === 'boolean' ? forceState : !isOpen;
+    drawer.classList.toggle('open', shouldOpen);
+    if (backdrop) backdrop.classList.toggle('open', shouldOpen);
+  }
+
+  function toggleSidebar(forceState) {
+    toggleCatalogDrawer(forceState);
   }
 
   // ---------------------------------------------------------------------------
@@ -438,101 +456,125 @@ window.LEETCODE_ARENA = (() => {
     const totalProblems = counts.total || 126;
     const solvedCount = Object.keys(state.solvedProblems).length;
     const currentProb = getCurrentActiveProblem();
+    const currentConcept = CONCEPTS_META.find(m => m.id === state.activeConceptId) || CONCEPTS_META[0];
 
-    container.innerHTML = `
-      <div class="lc-studio-layout">
-        <!-- Left Collapsible Linear Sidebar -->
-        <aside class="lc-sidebar ${state.sidebarCollapsed ? 'collapsed' : ''}" id="lcStudioSidebar">
-          <div class="lc-sidebar-header">
-            <div class="lc-sidebar-brand" id="btnSidebarBrand" style="cursor: pointer;" title="Open Topic Collections Hub">
+    // =========================================================================
+    // 1. HOME LAUNCHPAD (TOPICS HUB DIRECTORY) - SINGLE PAGE FOCUS
+    // =========================================================================
+    if (state.activeStage === 'topics') {
+      container.innerHTML = `
+        <div class="lc-studio-layout lc-single-page-layout lc-topics-stage">
+          <header class="lc-hub-topbar">
+            <div class="lc-brand-title">
               <span class="lc-brand-dot"></span>
-              <span class="lc-sidebar-title">LeetCode SQL</span>
-              <span class="lc-brand-badge">${totalProblems}</span>
+              <span class="lc-brand-name">LeetCode SQL Mastery</span>
+              <span class="lc-brand-badge">${totalProblems} Problems</span>
+              <span class="lc-brand-subbadge">11 Foundational Topics</span>
             </div>
-            <button class="lc-sidebar-toggle-btn" id="btnToggleSidebar" title="Collapse sidebar (Ctrl+B)">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
-            </button>
-          </div>
 
-          <!-- Quick Search Filter -->
-          <div class="lc-sidebar-search-box">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" class="lc-sidebar-search-input" id="lcSidebarSearchInput" placeholder="Filter concepts or #ID..." value="${escapeHtml(state.sidebarFilter)}">
-            ${state.sidebarFilter ? `<button class="lc-search-clear" id="btnSidebarFilterClear">✕</button>` : ''}
-          </div>
-
-          <!-- Compact Streamlined Filter Toolbar (Single Row Controls) -->
-          <div class="lc-sidebar-filter-bar">
-            <select id="lcFilterTopic" class="lc-compact-select" title="Filter by Topic">
-              <option value="all" ${state.sidebarPillar === 'all' ? 'selected' : ''}>Topic: All</option>
-              <option value="filters" ${state.sidebarPillar === 'filters' ? 'selected' : ''}>3VL &amp; Filters</option>
-              <option value="joins" ${state.sidebarPillar === 'joins' ? 'selected' : ''}>Joins &amp; Sets</option>
-              <option value="aggs" ${state.sidebarPillar === 'aggs' ? 'selected' : ''}>Aggregates</option>
-              <option value="subqueries" ${state.sidebarPillar === 'subqueries' ? 'selected' : ''}>CTEs &amp; Subs</option>
-              <option value="windows" ${state.sidebarPillar === 'windows' ? 'selected' : ''}>Window Funcs</option>
-              <option value="strings" ${state.sidebarPillar === 'strings' ? 'selected' : ''}>Strings &amp; Regex</option>
-            </select>
-
-            <select id="lcFilterDiff" class="lc-compact-select" title="Filter by Difficulty">
-              <option value="all" ${state.sidebarDiff === 'all' ? 'selected' : ''}>Diff: All</option>
-              <option value="Easy" ${state.sidebarDiff === 'Easy' ? 'selected' : ''}>🟢 Easy (${counts.easy})</option>
-              <option value="Medium" ${state.sidebarDiff === 'Medium' ? 'selected' : ''}>🟡 Med (${counts.med})</option>
-              <option value="Hard" ${state.sidebarDiff === 'Hard' ? 'selected' : ''}>🔴 Hard (${counts.hard})</option>
-            </select>
-
-            <select id="lcFilterCompany" class="lc-compact-select" title="Filter by Target Company">
-              <option value="all" ${state.sidebarCompany === 'all' ? 'selected' : ''}>Co: All</option>
-              <option value="Amazon" ${state.sidebarCompany === 'Amazon' ? 'selected' : ''}>Amazon</option>
-              <option value="Google" ${state.sidebarCompany === 'Google' ? 'selected' : ''}>Google</option>
-              <option value="Meta" ${state.sidebarCompany === 'Meta' ? 'selected' : ''}>Meta</option>
-              <option value="Stripe" ${state.sidebarCompany === 'Stripe' ? 'selected' : ''}>Stripe</option>
-              <option value="Apple" ${state.sidebarCompany === 'Apple' ? 'selected' : ''}>Apple</option>
-              <option value="Uber" ${state.sidebarCompany === 'Uber' ? 'selected' : ''}>Uber</option>
-              <option value="Bloomberg" ${state.sidebarCompany === 'Bloomberg' ? 'selected' : ''}>Bloomberg</option>
-              <option value="Citadel" ${state.sidebarCompany === 'Citadel' ? 'selected' : ''}>Citadel</option>
-              <option value="Netflix" ${state.sidebarCompany === 'Netflix' ? 'selected' : ''}>Netflix</option>
-            </select>
-
-            ${(state.sidebarPillar !== 'all' || state.sidebarDiff !== 'all' || state.sidebarCompany !== 'all' || state.sidebarFilter) ? `
-              <button class="lc-filter-reset-btn" id="btnSidebarFilterReset" title="Reset all filters">✕</button>
-            ` : ''}
-          </div>
-
-          <!-- Sidebar Collapsible Overview Bar -->
-          <div class="lc-sidebar-action-bar">
-            <span style="font-size: 10px; color: var(--text-muted); font-family: var(--font-mono);">${totalProblems} problems</span>
-            <button class="lc-collapse-all-btn" id="btnToggleAllConcepts" title="Collapse or Expand all topic accordions">
-              ${state.allConceptsCollapsed ? '▸ Expand All' : '▾ Collapse All'}
-            </button>
-          </div>
-
-          <!-- Scrollable Tree Nav -->
-          <div class="lc-sidebar-tree" id="lcSidebarTree"></div>
-
-          <!-- Minimalist Progress Footer -->
-          <div class="lc-sidebar-footer">
-            <div class="lc-sidebar-progress-row">
-              <span>Curriculum Progress</span>
-              <span id="lcSidebarSolvedText">${solvedCount} / ${totalProblems}</span>
+            <div class="lc-hub-top-right">
+              <span class="lc-hub-stat-pill">✓ ${solvedCount} / ${totalProblems} Solved</span>
+              <button class="lc-hub-resume-btn" id="btnResumeLastProb" title="Resume problem solving">
+                <span>🚀 Continue #${currentProb ? currentProb.id : '1757'}</span>
+              </button>
             </div>
-            <div class="lc-sidebar-progress-track">
-              <div class="lc-sidebar-progress-bar" id="lcSidebarProgressBar" style="width: ${(solvedCount / totalProblems) * 100}%;"></div>
-            </div>
-          </div>
-        </aside>
+          </header>
 
-        <!-- Right Studio Main Workspace -->
-        <main class="lc-workspace-studio">
-          <!-- Slim 44px IDE Action Bar -->
+          <div class="lc-canvas-body lc-hub-canvas" id="lcCanvasBody"></div>
+        </div>
+      `;
+
+      const btnResume = container.querySelector('#btnResumeLastProb');
+      if (btnResume) {
+        btnResume.addEventListener('click', () => {
+          openConceptProblems(state.activeConceptId, currentProb ? currentProb.id : 1757);
+        });
+      }
+      return;
+    }
+
+    // =========================================================================
+    // 2. PROBLEM SOLVING STUDIO - SINGLE PAGE FOCUS (FULL SCREEN DEDICATED)
+    // =========================================================================
+    if (state.activeStage === 'problems') {
+      container.innerHTML = `
+        <div class="lc-studio-layout lc-single-page-layout lc-problem-stage">
+          <!-- Slide-out Catalog Drawer (Clean overlay, zero clutter when closed) -->
+          <div class="lc-drawer-backdrop" id="lcDrawerBackdrop"></div>
+          <aside class="lc-catalog-drawer" id="lcCatalogDrawer">
+            <div class="lc-drawer-header">
+              <div class="lc-drawer-title-group">
+                <span class="lc-brand-dot"></span>
+                <span class="lc-drawer-title">Problem Catalog</span>
+                <span class="lc-drawer-count-badge">${totalProblems}</span>
+              </div>
+              <button class="lc-drawer-close-btn" id="btnCloseCatalogDrawer" title="Close Catalog (Esc)">✕</button>
+            </div>
+
+            <!-- Drawer Search Filter -->
+            <div class="lc-drawer-search-box">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" class="lc-drawer-search-input" id="lcSidebarSearchInput" placeholder="Filter problems or #ID..." value="${escapeHtml(state.sidebarFilter || '')}">
+              ${state.sidebarFilter ? `<button class="lc-search-clear" id="btnSidebarFilterClear">✕</button>` : ''}
+            </div>
+
+            <!-- Drawer Filters -->
+            <div class="lc-drawer-filter-bar">
+              <select id="lcFilterTopic" class="lc-compact-select" title="Filter by Topic">
+                <option value="all" ${state.sidebarPillar === 'all' ? 'selected' : ''}>Topic: All</option>
+                <option value="filters" ${state.sidebarPillar === 'filters' ? 'selected' : ''}>3VL &amp; Filters</option>
+                <option value="joins" ${state.sidebarPillar === 'joins' ? 'selected' : ''}>Joins &amp; Sets</option>
+                <option value="aggs" ${state.sidebarPillar === 'aggs' ? 'selected' : ''}>Aggregates</option>
+                <option value="subqueries" ${state.sidebarPillar === 'subqueries' ? 'selected' : ''}>CTEs &amp; Subs</option>
+                <option value="windows" ${state.sidebarPillar === 'windows' ? 'selected' : ''}>Window Funcs</option>
+                <option value="strings" ${state.sidebarPillar === 'strings' ? 'selected' : ''}>Strings &amp; Regex</option>
+              </select>
+
+              <select id="lcFilterDiff" class="lc-compact-select" title="Filter by Difficulty">
+                <option value="all" ${state.sidebarDiff === 'all' ? 'selected' : ''}>Diff: All</option>
+                <option value="Easy" ${state.sidebarDiff === 'Easy' ? 'selected' : ''}>🟢 Easy (${counts.easy})</option>
+                <option value="Medium" ${state.sidebarDiff === 'Medium' ? 'selected' : ''}>🟡 Med (${counts.med})</option>
+                <option value="Hard" ${state.sidebarDiff === 'Hard' ? 'selected' : ''}>🔴 Hard (${counts.hard})</option>
+              </select>
+
+              <select id="lcFilterCompany" class="lc-compact-select" title="Filter by Company">
+                <option value="all" ${state.sidebarCompany === 'all' ? 'selected' : ''}>Co: All</option>
+                <option value="Amazon" ${state.sidebarCompany === 'Amazon' ? 'selected' : ''}>Amazon</option>
+                <option value="Google" ${state.sidebarCompany === 'Google' ? 'selected' : ''}>Google</option>
+                <option value="Meta" ${state.sidebarCompany === 'Meta' ? 'selected' : ''}>Meta</option>
+                <option value="Stripe" ${state.sidebarCompany === 'Stripe' ? 'selected' : ''}>Stripe</option>
+                <option value="Apple" ${state.sidebarCompany === 'Apple' ? 'selected' : ''}>Apple</option>
+                <option value="Uber" ${state.sidebarCompany === 'Uber' ? 'selected' : ''}>Uber</option>
+                <option value="Bloomberg" ${state.sidebarCompany === 'Bloomberg' ? 'selected' : ''}>Bloomberg</option>
+              </select>
+            </div>
+
+            <!-- Scrollable Problem Tree Nav in Drawer -->
+            <div class="lc-drawer-tree" id="lcSidebarTree"></div>
+
+            <!-- Drawer Footer Progress -->
+            <div class="lc-drawer-footer">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 600;">
+                <span>Curriculum Progress</span>
+                <span id="lcSidebarSolvedText">${solvedCount} / ${totalProblems}</span>
+              </div>
+              <div class="lc-drawer-progress-track">
+                <div class="lc-drawer-progress-bar" id="lcSidebarProgressBar" style="width: ${(solvedCount / totalProblems) * 100}%;"></div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Sleek 44px Problem Action Bar -->
           <header class="lc-studio-bar">
             <div class="lc-studio-bar-left">
-              <button class="lc-problems-drawer-btn" id="btnExpandSidebar" title="Browse problem catalog (Ctrl+B)">
-                <span style="font-size: 13px;">☰</span>
-                <span>Problem Catalog</span>
-                <span class="lc-problems-count-pill">${totalProblems}</span>
+              <button class="lc-back-hub-btn" id="btnStudioBackHub" title="Return to Topics Launchpad">
+                <span class="lc-back-arrow">←</span>
+                <span>Back to Hub</span>
               </button>
 
-              <div class="lc-nav-arrows" style="display: flex; gap: 2px;">
+              <div class="lc-bar-sep"></div>
+
+              <div class="lc-nav-arrows">
                 <button class="lc-arrow-btn" id="btnTopPrev" title="Previous problem (Alt+Left)">◀</button>
                 <button class="lc-arrow-btn" id="btnTopNext" title="Next problem (Alt+Right)">▶</button>
               </div>
@@ -541,193 +583,246 @@ window.LEETCODE_ARENA = (() => {
                 <span class="lc-bar-prob-id">#${currentProb ? currentProb.id : '1757'}</span>
                 <span class="lc-bar-prob-name">${currentProb ? escapeHtml(currentProb.title) : 'Problem'}</span>
                 <span class="lc-diff-badge lc-diff-${currentProb ? (currentProb.difficulty || 'Medium').toLowerCase() : 'easy'}">${currentProb ? currentProb.difficulty : 'Easy'}</span>
+                <span class="lc-bar-topic-tag">${escapeHtml(currentConcept ? currentConcept.title : 'SQL')}</span>
               </div>
             </div>
 
-            <!-- Segmented Stage Controller: 4 Clean Modes -->
-            <div class="lc-segmented-pill">
-              <button class="lc-seg-btn ${state.activeStage === 'problems' ? 'active' : ''}" data-stage="problems" title="Solve LeetCode Problem in Order of Learning">
-                <span>📖 Problem &amp; Spec</span>
+            <div class="lc-studio-bar-right">
+              <button class="lc-catalog-drawer-btn" id="btnOpenCatalogDrawer" title="Browse problem catalog (Ctrl+B)">
+                <span style="font-size: 13px;">📋</span>
+                <span>Problem Catalog</span>
+                <span class="lc-problems-count-pill">${totalProblems}</span>
               </button>
-              <button class="lc-seg-btn ${state.activeStage === 'masterclass' ? 'active' : ''}" data-stage="masterclass" title="Visual SVG Mechanics &amp; Relational Theory">
-                <span>💡 Concept Theory</span>
-              </button>
-              <button class="lc-seg-btn ${state.activeStage === 'mcqs' ? 'active' : ''}" data-stage="mcqs" title="Interactive MCQs Flashcard Mode">
-                <span>⚡ MCQs</span>
-                <span class="lc-seg-counter" id="lcSegMcqCount">${(data.mcqs || []).length}</span>
-              </button>
-              <button class="lc-seg-btn ${state.activeStage === 'drills' ? 'active' : ''}" data-stage="drills" title="Query Construction Drills">
-                <span>🎯 Drills</span>
-                <span class="lc-seg-counter" id="lcSegDrillCount">${(data.drills || []).length}</span>
-              </button>
-            </div>
 
-            <!-- Studio Bar Layout Mode & Controls -->
-            <div class="lc-studio-bar-right" style="display: flex; align-items: center; gap: 6px;">
-              <div class="lc-layout-pill-group" id="lcLayoutGroup" title="Workspace Layout (Ctrl+L)">
-                <button class="lc-layout-btn ${state.layoutMode === 'split' ? 'active' : ''}" data-layout="split" title="Split Screen: Problem &amp; Code Editor side-by-side">
+              <div class="lc-layout-pill-group" id="lcLayoutGroup" title="Workspace Layout">
+                <button class="lc-layout-btn ${state.layoutMode === 'split' ? 'active' : ''}" data-layout="split" title="Split Screen: Problem &amp; Editor">
                   <span>◧ Split</span>
                 </button>
-                <button class="lc-layout-btn ${state.layoutMode === 'editor' ? 'active' : ''}" data-layout="editor" title="Full Editor: Maximize Code Editor">
+                <button class="lc-layout-btn ${state.layoutMode === 'editor' ? 'active' : ''}" data-layout="editor" title="Full Editor">
                   <span>◨ Editor</span>
                 </button>
-                <button class="lc-layout-btn ${state.layoutMode === 'problem' ? 'active' : ''}" data-layout="problem" title="Full Spec: Maximize Problem &amp; Schema">
+                <button class="lc-layout-btn ${state.layoutMode === 'problem' ? 'active' : ''}" data-layout="problem" title="Full Spec">
                   <span>◩ Spec</span>
                 </button>
               </div>
 
-              <button class="lc-bar-nav-btn" id="btnToggleZen" title="Zen Focus Mode: Hide headers and sidebar">
+              <button class="lc-bar-nav-btn" id="btnToggleZen" title="Zen Focus Mode">
                 <span>⛶ Zen</span>
               </button>
             </div>
           </header>
 
-          <!-- Main Dynamic Canvas -->
+          <!-- Problem Workspace Canvas -->
           <div class="lc-canvas-body" id="lcCanvasBody"></div>
-        </main>
-      </div>
-    `;
+        </div>
+      `;
 
-    renderSidebarTree();
+      // Render problem tree in drawer
+      renderSidebarTree();
 
-    // Hook up sidebar collapse toggle
-    const btnToggle = container.querySelector('#btnToggleSidebar');
-    if (btnToggle) btnToggle.addEventListener('click', toggleSidebar);
+      // Hook up Catalog Drawer
+      const btnOpenDrawer = container.querySelector('#btnOpenCatalogDrawer');
+      if (btnOpenDrawer) btnOpenDrawer.addEventListener('click', () => toggleCatalogDrawer());
 
-    const btnExpand = container.querySelector('#btnExpandSidebar');
-    if (btnExpand) btnExpand.addEventListener('click', toggleSidebar);
+      const btnCloseDrawer = container.querySelector('#btnCloseCatalogDrawer');
+      if (btnCloseDrawer) btnCloseDrawer.addEventListener('click', () => toggleCatalogDrawer(false));
 
-    // Hook up Layout Switcher Buttons
-    container.querySelectorAll('.lc-layout-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.layoutMode = btn.dataset.layout;
-        renderActiveStage();
-        renderShell();
+      const drawerBackdrop = container.querySelector('#lcDrawerBackdrop');
+      if (drawerBackdrop) drawerBackdrop.addEventListener('click', () => toggleCatalogDrawer(false));
+
+      // Hook studio back to hub button
+      const btnBackHub = container.querySelector('#btnStudioBackHub');
+      if (btnBackHub) btnBackHub.addEventListener('click', () => switchStage('topics'));
+
+      // Layout mode buttons
+      container.querySelectorAll('.lc-layout-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.layoutMode = btn.dataset.layout;
+          renderShell();
+          renderActiveStage();
+        });
       });
-    });
 
-    // Hook up Zen Focus Mode Button
-    const btnZen = container.querySelector('#btnToggleZen');
-    if (btnZen) {
-      btnZen.addEventListener('click', () => {
-        toggleZenMode();
-      });
+      // Zen mode
+      const btnZen = container.querySelector('#btnToggleZen');
+      if (btnZen) btnZen.addEventListener('click', () => toggleZenMode());
+
+      // Prev / Next Problem buttons
+      const btnTopPrev = container.querySelector('#btnTopPrev');
+      if (btnTopPrev) btnTopPrev.addEventListener('click', () => stepProblem(-1));
+
+      const btnTopNext = container.querySelector('#btnTopNext');
+      if (btnTopNext) btnTopNext.addEventListener('click', () => stepProblem(1));
+
+      // Drawer search
+      const searchInput = container.querySelector('#lcSidebarSearchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          state.sidebarFilter = e.target.value.toLowerCase().trim();
+          renderSidebarTree();
+        });
+      }
+
+      const searchClear = container.querySelector('#btnSidebarFilterClear');
+      if (searchClear) {
+        searchClear.addEventListener('click', () => {
+          state.sidebarFilter = '';
+          renderShell();
+          renderActiveStage();
+        });
+      }
+
+      // Drawer filters
+      const filterTopic = container.querySelector('#lcFilterTopic');
+      if (filterTopic) {
+        filterTopic.addEventListener('change', (e) => {
+          state.sidebarPillar = e.target.value;
+          renderSidebarTree();
+        });
+      }
+
+      const filterDiff = container.querySelector('#lcFilterDiff');
+      if (filterDiff) {
+        filterDiff.addEventListener('change', (e) => {
+          state.sidebarDiff = e.target.value;
+          renderSidebarTree();
+        });
+      }
+
+      const filterCompany = container.querySelector('#lcFilterCompany');
+      if (filterCompany) {
+        filterCompany.addEventListener('change', (e) => {
+          state.sidebarCompany = e.target.value;
+          renderSidebarTree();
+        });
+      }
+      return;
     }
 
-    // Hook up Collapse All Concepts in Sidebar
-    const btnCollapseAll = container.querySelector('#btnToggleAllConcepts');
-    if (btnCollapseAll) {
-      btnCollapseAll.addEventListener('click', () => {
-        state.allConceptsCollapsed = !state.allConceptsCollapsed;
-        if (state.allConceptsCollapsed) {
-          state.expandedConcepts = {};
-        } else {
-          CONCEPTS_META.forEach(m => { state.expandedConcepts[m.id] = true; });
-        }
-        renderSidebarTree();
-        btnCollapseAll.textContent = state.allConceptsCollapsed ? '▸ Expand All' : '▾ Collapse All';
-      });
+    // =========================================================================
+    // 3. MCQS FLASHCARD ARENA - SINGLE PAGE FOCUS
+    // =========================================================================
+    if (state.activeStage === 'mcqs') {
+      const mcqs = data.mcqs || [];
+      container.innerHTML = `
+        <div class="lc-studio-layout lc-single-page-layout lc-mcqs-stage">
+          <header class="lc-studio-bar">
+            <div class="lc-studio-bar-left">
+              <button class="lc-back-hub-btn" id="btnStudioBackHub" title="Return to Topics Launchpad">
+                <span class="lc-back-arrow">←</span>
+                <span>Back to Hub</span>
+              </button>
+              <div class="lc-bar-sep"></div>
+              <span class="lc-bar-mode-badge">⚡ MCQs FLASHCARD MODE</span>
+              <span class="lc-bar-topic-tag">${escapeHtml(currentConcept ? currentConcept.title : 'SQL')}</span>
+            </div>
+
+            <div class="lc-studio-bar-right">
+              <span class="lc-counter-pill">Question ${(state.activeMcqIdx || 0) + 1} of ${mcqs.length}</span>
+              <div class="lc-nav-arrows">
+                <button class="lc-arrow-btn" id="btnTopPrev" title="Previous question (←)">◀</button>
+                <button class="lc-arrow-btn" id="btnTopNext" title="Next question (→)">▶</button>
+              </div>
+            </div>
+          </header>
+
+          <div class="lc-canvas-body" id="lcCanvasBody"></div>
+        </div>
+      `;
+
+      const btnBackHub = container.querySelector('#btnStudioBackHub');
+      if (btnBackHub) btnBackHub.addEventListener('click', () => switchStage('topics'));
+
+      const btnTopPrev = container.querySelector('#btnTopPrev');
+      if (btnTopPrev) btnTopPrev.addEventListener('click', () => stepMcq(-1));
+
+      const btnTopNext = container.querySelector('#btnTopNext');
+      if (btnTopNext) btnTopNext.addEventListener('click', () => stepMcq(1));
+      return;
     }
 
-    // Hook brand click to open topic directory
-    const brand = container.querySelector('#btnSidebarBrand');
-    if (brand) {
-      brand.addEventListener('click', () => switchStage('topics'));
+    // =========================================================================
+    // 4. RAPID QUERY DRILLS - SINGLE PAGE FOCUS
+    // =========================================================================
+    if (state.activeStage === 'drills') {
+      const drills = data.drills || [];
+      container.innerHTML = `
+        <div class="lc-studio-layout lc-single-page-layout lc-drills-stage">
+          <header class="lc-studio-bar">
+            <div class="lc-studio-bar-left">
+              <button class="lc-back-hub-btn" id="btnStudioBackHub" title="Return to Topics Launchpad">
+                <span class="lc-back-arrow">←</span>
+                <span>Back to Hub</span>
+              </button>
+              <div class="lc-bar-sep"></div>
+              <span class="lc-bar-mode-badge">🎯 QUERY DRILL MODE</span>
+              <span class="lc-bar-topic-tag">${escapeHtml(currentConcept ? currentConcept.title : 'SQL')}</span>
+            </div>
+
+            <div class="lc-studio-bar-right">
+              <span class="lc-counter-pill">Drill ${(state.activeDrillIdx || 0) + 1} of ${drills.length}</span>
+              <div class="lc-nav-arrows">
+                <button class="lc-arrow-btn" id="btnTopPrev" title="Previous drill (Alt+←)">◀</button>
+                <button class="lc-arrow-btn" id="btnTopNext" title="Next drill (Alt+→)">▶</button>
+              </div>
+            </div>
+          </header>
+
+          <div class="lc-canvas-body" id="lcCanvasBody"></div>
+        </div>
+      `;
+
+      const btnBackHub = container.querySelector('#btnStudioBackHub');
+      if (btnBackHub) btnBackHub.addEventListener('click', () => switchStage('topics'));
+
+      const btnTopPrev = container.querySelector('#btnTopPrev');
+      if (btnTopPrev) btnTopPrev.addEventListener('click', () => stepDrill(-1));
+
+      const btnTopNext = container.querySelector('#btnTopNext');
+      if (btnTopNext) btnTopNext.addEventListener('click', () => stepDrill(1));
+      return;
     }
 
-    // Hook studio back to hub button
-    const btnBackHub = container.querySelector('#btnStudioBackHub');
-    if (btnBackHub) {
-      btnBackHub.addEventListener('click', () => switchStage('topics'));
-    }
+    // =========================================================================
+    // 5. CONCEPT THEORY MASTERCLASS - SINGLE PAGE FOCUS
+    // =========================================================================
+    if (state.activeStage === 'masterclass') {
+      const chapters = (data.masterclass && data.masterclass.chapters) || [];
+      container.innerHTML = `
+        <div class="lc-studio-layout lc-single-page-layout lc-theory-stage">
+          <header class="lc-studio-bar">
+            <div class="lc-studio-bar-left">
+              <button class="lc-back-hub-btn" id="btnStudioBackHub" title="Return to Topics Launchpad">
+                <span class="lc-back-arrow">←</span>
+                <span>Back to Hub</span>
+              </button>
+              <div class="lc-bar-sep"></div>
+              <span class="lc-bar-mode-badge">💡 CONCEPT THEORY</span>
+              <span class="lc-bar-topic-tag">${escapeHtml(currentConcept ? currentConcept.title : 'SQL')}</span>
+            </div>
 
-    // Hook breadcrumbs root click
-    const crumbRoot = container.querySelector('#lcCrumbRoot');
-    if (crumbRoot) {
-      crumbRoot.addEventListener('click', () => switchStage('topics'));
-    }
+            <div class="lc-studio-bar-right">
+              <span class="lc-counter-pill">Chapter ${(state.activeChapterIdx || 0) + 1} of ${chapters.length}</span>
+              <div class="lc-nav-arrows">
+                <button class="lc-arrow-btn" id="btnTopPrev" title="Previous chapter">◀</button>
+                <button class="lc-arrow-btn" id="btnTopNext" title="Next chapter">▶</button>
+              </div>
+            </div>
+          </header>
 
-    // Hook up Stage navigation
-    container.querySelectorAll('.lc-seg-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const stage = btn.dataset.stage;
-        switchStage(stage);
-      });
-    });
+          <div class="lc-canvas-body" id="lcCanvasBody"></div>
+        </div>
+      `;
 
-    // Hook up Compact Select Filters
-    const filterTopic = container.querySelector('#lcFilterTopic');
-    if (filterTopic) {
-      filterTopic.addEventListener('change', (e) => {
-        state.sidebarPillar = e.target.value;
-        renderSidebarTree();
-      });
-    }
+      const btnBackHub = container.querySelector('#btnStudioBackHub');
+      if (btnBackHub) btnBackHub.addEventListener('click', () => switchStage('topics'));
 
-    const filterDiff = container.querySelector('#lcFilterDiff');
-    if (filterDiff) {
-      filterDiff.addEventListener('change', (e) => {
-        state.sidebarDiff = e.target.value;
-        renderSidebarTree();
-      });
-    }
+      const btnTopPrev = container.querySelector('#btnTopPrev');
+      if (btnTopPrev) btnTopPrev.addEventListener('click', () => stepChapter(-1));
 
-    const filterCompany = container.querySelector('#lcFilterCompany');
-    if (filterCompany) {
-      filterCompany.addEventListener('change', (e) => {
-        state.sidebarCompany = e.target.value;
-        renderSidebarTree();
-      });
-    }
-
-    const filterReset = container.querySelector('#btnSidebarFilterReset');
-    if (filterReset) {
-      filterReset.addEventListener('click', () => {
-        state.sidebarPillar = 'all';
-        state.sidebarDiff = 'all';
-        state.sidebarCompany = 'all';
-        state.sidebarFilter = '';
-        renderShell();
-      });
-    }
-
-    // Hook up Top Prev / Next
-    const btnTopPrev = container.querySelector('#btnTopPrev');
-    if (btnTopPrev) {
-      btnTopPrev.addEventListener('click', () => {
-        if (state.activeStage === 'problems') stepProblem(-1);
-        else if (state.activeStage === 'mcqs') stepMcq(-1);
-        else if (state.activeStage === 'drills') stepDrill(-1);
-        else if (state.activeStage === 'masterclass') stepChapter(-1);
-      });
-    }
-
-    const btnTopNext = container.querySelector('#btnTopNext');
-    if (btnTopNext) {
-      btnTopNext.addEventListener('click', () => {
-        if (state.activeStage === 'problems') stepProblem(1);
-        else if (state.activeStage === 'mcqs') stepMcq(1);
-        else if (state.activeStage === 'drills') stepDrill(1);
-        else if (state.activeStage === 'masterclass') stepChapter(1);
-      });
-    }
-
-    // Hook up search filter
-    const searchInput = container.querySelector('#lcSidebarSearchInput');
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        state.sidebarFilter = e.target.value.toLowerCase().trim();
-        renderSidebarTree();
-      });
-    }
-
-    const searchClear = container.querySelector('#btnSidebarFilterClear');
-    if (searchClear) {
-      searchClear.addEventListener('click', () => {
-        state.sidebarFilter = '';
-        renderShell();
-        renderActiveStage();
-      });
+      const btnTopNext = container.querySelector('#btnTopNext');
+      if (btnTopNext) btnTopNext.addEventListener('click', () => stepChapter(1));
+      return;
     }
   }
 
@@ -741,6 +836,7 @@ window.LEETCODE_ARENA = (() => {
       renderMasterclass();
     }
   }
+
 
   // ---------------------------------------------------------------------------
   // SIDEBAR TREE RENDERER
@@ -856,7 +952,7 @@ window.LEETCODE_ARENA = (() => {
     // Hook hub entry shortcut
     const hubBtn = tree.querySelector('#btnTreeOpenHub');
     if (hubBtn) {
-      hubBtn.addEventListener('click', () => switchStage('topics'));
+      hubBtn.addEventListener('click', () => { toggleCatalogDrawer(false); switchStage('topics'); });
     }
 
     // Hook concept folder toggling
@@ -897,6 +993,7 @@ window.LEETCODE_ARENA = (() => {
         const pId = parseInt(item.dataset.probId, 10);
         const cId = item.dataset.conceptId;
         state.activeConceptId = cId;
+        toggleCatalogDrawer(false);
         selectProblem(pId);
       });
     });
@@ -959,11 +1056,8 @@ window.LEETCODE_ARENA = (() => {
 
   function switchStage(stage) {
     state.activeStage = stage;
-    document.querySelectorAll('.lc-seg-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.stage === stage);
-    });
     updateBreadcrumbs();
-    renderSidebarTree();
+    renderShell();
     renderActiveStage();
   }
 
@@ -1738,8 +1832,8 @@ window.LEETCODE_ARENA = (() => {
 
     state.activeStage = 'problems';
     updateBreadcrumbs();
-    renderSidebarTree();
-    renderProblems();
+    renderShell();
+    renderActiveStage();
   }
 
   function renderClauseWithKeywordLinks(clause) {
