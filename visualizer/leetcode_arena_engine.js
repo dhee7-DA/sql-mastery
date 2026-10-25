@@ -146,6 +146,11 @@ window.LEETCODE_ARENA = (() => {
     activeConceptId: 'concept-1',
     activeStage: 'problems', // Default directly to Problem Solving Studio!
     activeProblemId: 1757,
+    layoutMode: 'split', // 'split' | 'editor' | 'problem'
+    zenMode: false,
+    schemaDockCollapsed: true, // Collapsed by default so editor has room
+    dossierDetailsCollapsed: false,
+    allConceptsCollapsed: false,
     activeDrillId: 1,
     activeMcqIdx: 0,
     activeDrillIdx: 0,
@@ -490,6 +495,14 @@ window.LEETCODE_ARENA = (() => {
             ` : ''}
           </div>
 
+          <!-- Sidebar Collapsible Overview Bar -->
+          <div class="lc-sidebar-action-bar">
+            <span style="font-size: 10px; color: var(--text-muted); font-family: var(--font-mono);">${totalProblems} problems</span>
+            <button class="lc-collapse-all-btn" id="btnToggleAllConcepts" title="Collapse or Expand all topic accordions">
+              ${state.allConceptsCollapsed ? '▸ Expand All' : '▾ Collapse All'}
+            </button>
+          </div>
+
           <!-- Scrollable Tree Nav -->
           <div class="lc-sidebar-tree" id="lcSidebarTree"></div>
 
@@ -543,8 +556,24 @@ window.LEETCODE_ARENA = (() => {
               </button>
             </div>
 
-            <!-- Studio Bar Quick Stepper Arrows -->
-            <div class="lc-studio-bar-right">
+            <!-- Studio Bar Layout Mode & Controls -->
+            <div class="lc-studio-bar-right" style="display: flex; align-items: center; gap: 6px;">
+              <div class="lc-layout-pill-group" id="lcLayoutGroup" title="Workspace Layout (Ctrl+L)">
+                <button class="lc-layout-btn ${state.layoutMode === 'split' ? 'active' : ''}" data-layout="split" title="Split Screen: Problem &amp; Code Editor side-by-side">
+                  <span>◧ Split</span>
+                </button>
+                <button class="lc-layout-btn ${state.layoutMode === 'editor' ? 'active' : ''}" data-layout="editor" title="Full Editor: Expand Code Editor to full width">
+                  <span>◨ Code</span>
+                </button>
+                <button class="lc-layout-btn ${state.layoutMode === 'problem' ? 'active' : ''}" data-layout="problem" title="Full Problem: Expand Problem Spec &amp; Schema">
+                  <span>◩ Spec</span>
+                </button>
+              </div>
+
+              <button class="lc-bar-nav-btn" id="btnToggleZen" title="Zen Focus Mode: Hide headers and sidebar">
+                <span>⛶ Zen</span>
+              </button>
+
               <button class="lc-bar-nav-btn" id="btnTopPrev" title="Previous item (Alt+Left)">←</button>
               <button class="lc-bar-nav-btn" id="btnTopNext" title="Next item (Alt+Right)">→</button>
             </div>
@@ -564,6 +593,38 @@ window.LEETCODE_ARENA = (() => {
 
     const btnExpand = container.querySelector('#btnExpandSidebar');
     if (btnExpand) btnExpand.addEventListener('click', toggleSidebar);
+
+    // Hook up Layout Switcher Buttons
+    container.querySelectorAll('.lc-layout-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.layoutMode = btn.dataset.layout;
+        renderActiveStage();
+        renderShell();
+      });
+    });
+
+    // Hook up Zen Focus Mode Button
+    const btnZen = container.querySelector('#btnToggleZen');
+    if (btnZen) {
+      btnZen.addEventListener('click', () => {
+        toggleZenMode();
+      });
+    }
+
+    // Hook up Collapse All Concepts in Sidebar
+    const btnCollapseAll = container.querySelector('#btnToggleAllConcepts');
+    if (btnCollapseAll) {
+      btnCollapseAll.addEventListener('click', () => {
+        state.allConceptsCollapsed = !state.allConceptsCollapsed;
+        if (state.allConceptsCollapsed) {
+          state.expandedConcepts = {};
+        } else {
+          CONCEPTS_META.forEach(m => { state.expandedConcepts[m.id] = true; });
+        }
+        renderSidebarTree();
+        btnCollapseAll.textContent = state.allConceptsCollapsed ? '▸ Expand All' : '▾ Collapse All';
+      });
+    }
 
     // Hook brand click to open topic directory
     const brand = container.querySelector('#btnSidebarBrand');
@@ -1843,9 +1904,15 @@ window.LEETCODE_ARENA = (() => {
     }
 
     canvas.innerHTML = `
-      <div class="lc-problem-studio-grid">
+      <div class="lc-problem-studio-grid ${state.layoutMode === 'editor' ? 'layout-editor' : (state.layoutMode === 'problem' ? 'layout-problem' : '')}">
         <!-- Left: Problem Dossier -->
         <div class="lc-prob-dossier-col">
+          ${state.layoutMode === 'problem' ? `
+            <div class="lc-layout-banner">
+              <span class="lc-layout-banner-text">◩ Problem Spec Focus Mode (Code Editor Collapsed)</span>
+              <button class="lc-layout-restore-btn" id="btnRestoreSplitFromSpec">◀ Restore Split View</button>
+            </div>
+          ` : ''}
           <!-- Problem Header Card -->
           <div class="lc-card" style="padding: 24px;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
@@ -1881,6 +1948,12 @@ window.LEETCODE_ARENA = (() => {
 
         <!-- Right: SQL Editor & Test Judge Workbench -->
         <div class="lc-prob-editor-col">
+          ${state.layoutMode === 'editor' ? `
+            <div class="lc-layout-banner">
+              <span class="lc-layout-banner-text">◨ Full Code Editor Focus Mode (Problem Spec Collapsed)</span>
+              <button class="lc-layout-restore-btn" id="btnRestoreSplitFromEditor">◀ Restore Split View</button>
+            </div>
+          ` : ''}
           <div class="lc-card" style="padding: 20px; position: sticky; top: 0;">
             <!-- Live Input Schema Table Dock -->
             <div class="lc-schema-dock" id="lcSchemaDock">
@@ -1897,7 +1970,7 @@ window.LEETCODE_ARENA = (() => {
                   <button class="lc-editor-tool-btn" id="btnToggleSchemaDock" title="Collapse / Expand table">▼</button>
                 </div>
               </div>
-              <div class="lc-schema-dock-body" id="lcSchemaDockBody">
+              <div class="lc-schema-dock-body ${state.schemaDockCollapsed ? 'collapsed' : ''}" id="lcSchemaDockBody">
                 <div style="overflow-x: auto; max-height: 140px;">
                   <table class="lc-diff-table" id="lcInputSchemaTable">
                     <thead>
@@ -2003,9 +2076,20 @@ window.LEETCODE_ARENA = (() => {
     const schemaDockBody = canvas.querySelector('#lcSchemaDockBody');
     if (btnToggleSchema && schemaDockBody) {
       btnToggleSchema.addEventListener('click', () => {
-        schemaDockBody.classList.toggle('collapsed');
-        btnToggleSchema.textContent = schemaDockBody.classList.contains('collapsed') ? '▲' : '▼';
+        state.schemaDockCollapsed = !state.schemaDockCollapsed;
+        schemaDockBody.classList.toggle('collapsed', state.schemaDockCollapsed);
+        btnToggleSchema.textContent = state.schemaDockCollapsed ? '▶' : '▼';
       });
+    }
+
+    // Restore split from layout banners
+    const btnResSpec = canvas.querySelector('#btnRestoreSplitFromSpec');
+    if (btnResSpec) {
+      btnResSpec.addEventListener('click', () => setLayout('split'));
+    }
+    const btnResEd = canvas.querySelector('#btnRestoreSplitFromEditor');
+    if (btnResEd) {
+      btnResEd.addEventListener('click', () => setLayout('split'));
     }
 
     // Toggle Expected Result Table
