@@ -2163,31 +2163,32 @@ Object.defineProperty(window, 'currentGymTable', {
 });
 
 const NAV_GROUPS_MAP = {
-  viewGuidedLab: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Guided Lab' },
-  viewPathways: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Pathways' },
-  viewQuests: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Quests' },
+  viewGuidedLab: { triggerId: 'btnGroupExplore', pillId: null, label: 'Guided Lab' },
+  viewPathways: { triggerId: 'btnGroupExplore', pillId: null, label: 'Pathways' },
+  viewQuests: { triggerId: 'btnGroupExplore', pillId: null, label: 'Quests' },
 
-  viewMcqs: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: '2,100 MCQs' },
-  viewSyntaxGym: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Syntax Gym' },
-  viewCases: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Case Studies' },
-  viewProblems: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Problem Bank' },
-  viewCapstones: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Capstones (10)' },
-  viewAmazonStory: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Amazon Analyst (30d)' },
-  viewTrapGym: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'Trap Gym (SRS)' },
-  viewJPMorganStory: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'JPMorgan (30d)' },
+  viewMcqs: { triggerId: 'btnGroupPractice', pillId: null, label: '2,100 MCQs' },
+  viewSyntaxGym: { triggerId: 'btnGroupPractice', pillId: null, label: 'Syntax Gym' },
+  viewCases: { triggerId: 'btnGroupPractice', pillId: null, label: 'Case Studies' },
+  viewProblems: { triggerId: 'btnGroupPractice', pillId: null, label: 'Problem Bank' },
+  viewCapstones: { triggerId: 'btnGroupPractice', pillId: null, label: 'Capstones (10)' },
+  viewAmazonStory: { triggerId: 'btnGroupPractice', pillId: null, label: 'Amazon Analyst (30d)' },
+  viewTrapGym: { triggerId: 'btnGroupPractice', pillId: null, label: 'Trap Gym (SRS)' },
+  viewJPMorganStory: { triggerId: 'btnGroupPractice', pillId: null, label: 'JPMorgan (30d)' },
 
-  viewExplainer: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Study Docs' },
-  viewDeconstructor: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Deconstructor' },
-  viewEnterpriseERD: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'ERD Map' },
-  viewVennMatrix: { triggerId: 'btnGroupReference', pillId: 'currentReferencePill', label: 'Venn Matrix' },
-  viewWindowMatrix: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Window Cockpit' },
+  viewExplainer: { triggerId: 'btnGroupExplore', pillId: null, label: 'Study Docs' },
+  viewDeconstructor: { triggerId: 'btnGroupExplore', pillId: null, label: 'Deconstructor' },
+  viewEnterpriseERD: { triggerId: 'btnGroupExplore', pillId: null, label: 'ERD Map' },
+  viewVennMatrix: { triggerId: 'btnGroupExplore', pillId: null, label: 'Venn Matrix' },
+  viewWindowMatrix: { triggerId: 'btnGroupExplore', pillId: null, label: 'Window Cockpit' },
 
-  viewLearningJourney: { triggerId: 'btnGroupLearn', pillId: 'currentLearnPill', label: 'Learning Journey' },
+  viewLearningJourney: { triggerId: 'btnGroupExplore', pillId: null, label: 'Learning Journey' },
   viewLeetCode50: { triggerId: 'btnNavLeetCode', pillId: null, label: 'LeetCode 323' },
   viewCompanyHub: { triggerId: 'btnNavCompanyHub', pillId: null, label: 'Companies & Domains' },
-  viewSqlTerminal: { triggerId: 'btnGroupPractice', pillId: 'currentPracticePill', label: 'SQL Terminal' },
+  viewSqlTerminal: { triggerId: 'btnGroupPractice', pillId: null, label: 'SQL Terminal' },
   viewMockInterview: { triggerId: 'btnNavMockInterview', pillId: null, label: 'Mock Screen' },
-  viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Studio' }
+  viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Studio' },
+  viewTactileEngine: { triggerId: 'btnGroupExplore', pillId: null, label: 'SQL Machine' }
 };
 
 function switchMainView(targetId) {

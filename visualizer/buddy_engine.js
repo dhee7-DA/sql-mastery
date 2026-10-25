@@ -917,7 +917,7 @@ const SQL_BUDDY = (() => {
 
     const footerBtn = document.getElementById("footerMascotToggle");
     if (footerBtn) {
-      footerBtn.innerHTML = isMinimized ? `🐙 Sir Bloops` : `🐙 Sir Bloops <span style="font-size:9px;color:var(--accent,#c2410c);font-weight:700;">●</span>`;
+      footerBtn.innerHTML = isMinimized ? `🐙 Sir Bloops` : `🐙 Sir Bloops <span style="font-size:9px;color:var(--accent,#c026d3);font-weight:700;">●</span>`;
       footerBtn.classList.toggle("active", !isMinimized);
       footerBtn.title = isMinimized ? "Sir Bloops is parked in dock. Click to summon companion." : "Sir Bloops is active. Click to park companion in dock.";
     }

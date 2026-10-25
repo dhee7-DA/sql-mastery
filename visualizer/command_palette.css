@@ -125,7 +125,7 @@
 .cmd-filter-pill.active {
   background: var(--bg-surface, #ffffff);
   border-color: var(--border-subtle, #e4e4e7);
-  color: var(--accent, #c2410c);
+  color: var(--accent, #c026d3);
   font-weight: 600;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
@@ -187,7 +187,7 @@
 }
 
 .cmd-result-item.selected .cmd-item-title {
-  color: var(--accent, #c2410c);
+  color: var(--accent, #c026d3);
 }
 
 .cmd-item-sub {
@@ -261,7 +261,7 @@
 
 .cmd-result-item.selected .cmd-item-action-hint {
   opacity: 1;
-  color: var(--accent, #c2410c);
+  color: var(--accent, #c026d3);
 }
 
 /* 4. EMPTY STATE */
@@ -331,7 +331,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 280px;
+  max-width: 180px;
   gap: 8px;
   height: 28px;
   padding: 0 10px;
