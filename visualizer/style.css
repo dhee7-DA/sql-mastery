@@ -26683,3 +26683,42 @@ button:active .framer-emoji-icon {
     margin: 0 8px !important;
   }
 }
+
+
+/* ==========================================================================
+   MODULIFY HYBRID (VESPER + BLACK PLUS) HEADER & SURFACE GLASSMORPHISM
+   ========================================================================== */
+.app-header {
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+
+[data-theme="active-builders-dark"] .app-header,
+[data-theme="cursor-dark"] .app-header,
+[data-theme="cyber-olive-dark"] .app-header {
+  background: rgba(14, 14, 18, 0.90) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.nav-group-trigger {
+  border-radius: 6px !important;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.nav-group-trigger:hover {
+  transform: translateY(-1px) !important;
+}
+
+.header-cmd-palette-btn {
+  border-radius: 6px !important;
+  background: var(--bg-card) !important;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.header-cmd-palette-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
