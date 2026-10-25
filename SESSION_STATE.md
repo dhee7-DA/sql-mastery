@@ -6,19 +6,20 @@
 
 ## 📌 Current Snapshot
 
-- **Current Sprint**: **20-Day Master Curriculum 100% Complete + LeetCode 300+ Official Mega Vault (320 Problems) Deployed**
+- **Current Sprint**: **20-Day Master Curriculum 100% Complete + LeetCode 323 Official Mega Vault + FAANG & Wall Street Company Hub Deployed**
 - **Active Module**: [`day-20-grand-enterprise-gauntlet`](./day-20-grand-enterprise-gauntlet) (Multi-Pillar Integration & Graduation)
 - **Current Dialect**: **PostgreSQL 16+ / MySQL 8.0+ / Snowflake / DuckDB / BigQuery (ANSI SQL Standard)**
 - **Major Milestones Achieved**: 
   - 🏆 **FULL 20-DAY SYSTEMATIC CURRICULUM DEPLOYED (Days 01 to 20 Complete with Theory, DDL, Benchmarks & Defense)!**
-  - 🏆 **LEETCODE 300+ MEGA VAULT DEPLOYED (320 Official LeetCode Problems with Schemas, Test Cases & Golden Solutions)!**
-  - 🏆 **COMPANY-WISE INTERVIEW PROBABILITY & TARGET HUB (Amazon, Meta, Google, Apple, Bloomberg, Stripe, Citadel, Uber, Netflix)!**
+  - 🏆 **LEETCODE 300+ MEGA VAULT DEPLOYED (323 Official LeetCode Problems with Schemas, Test Cases & Golden Solutions)!**
+  - 🏆 **IN-BROWSER SQLITE WASM TEST RUNNER ARENA (Client-Side Test Judge & Sir Bloops AI Co-Pilot)!**
+  - 🏆 **FAANG & WALL STREET COMPANY MASTERY HUB (10 Tracks: Amazon, Google, Meta, Apple, Stripe, Citadel, Bloomberg, Netflix, Uber, Snowflake)!**
   - 🏆 **TACTILE 3D RELATIONAL PINBALL & CLOCKWORK MACHINE (Fig. 16 Physical Apparatus)!**
   - 🏆 **IN-APP THEORY & INTERVIEW DEFENSE COMPENDIUM (21 Modules Accessible via 1-Click Reader Modal)!**
   - 🏆 **CORPORATE CASE STUDIES EXPANDED TO 2,540 FULL PRODUCTION SCENARIOS!**
-- **Next Immediate Action**: Practice in LeetCode 300+ Arena, explore the Tactile Pinball Sorter, and review Day 20 Grand Gauntlet.
-- **Total Problems Completed in Intensive**: 120+ Core Curriculum Problems + 320 LeetCode Official Problems + 1,850 Interactive Quests
-- **Last Updated**: 2026-10-23 23:30 IST
+- **Next Immediate Action**: Live practice in the Target Company Mastery Hub and LeetCode SQLite WASM Arena.
+- **Total Problems Completed in Intensive**: 120+ Core Curriculum Problems + 323 LeetCode Official Problems + 1,850 Interactive Quests
+- **Last Updated**: 2026-10-25 13:10 IST
 
 ---
 
@@ -143,6 +144,42 @@
 - **Important Materials Documentation**:
   - Published `docs/IMPORTANT_MATERIALS_RELATIONAL_JOINS.md` and `docs/IMPORTANT_QUESTIONS_RELATIONAL_JOINS.md`.
   - Appended full curriculum to `day-08-basic-joins/INTERVIEW_QUESTIONS.md` and linked in `README.md`.
+
+### 14. 2026-10-04 (112-Day Deliberate Practice Streak Heatmap & Activity Calendar)
+- **Deliberate Practice Heatmap**: Embedded GitHub-style interactive 112-day activity heatmap tracking daily problem solves, accuracy %, and practice intensity.
+- **Daily Streak Engine**: Added daily streak counter with animated milestone badges, freeze safeguards, and localized browser cache persistence.
+- **UI Integration**: Added interactive triggers in `visualizer/app.js` and `visualizer/index.html` with smooth-scrolling modal views.
+
+### 15. 2026-10-18 (Tabulator Relationalis Fig. 16 — Tactile Isometric SQL Engine)
+- **Hand-Inked Mechanical Machine**: Built bespoke Colorfigures Fig. 16 isometric query apparatus ("Tabulator Relationalis") visualizing relational algebra physically.
+- **Physical Query Pipeline**: Data punchcards flow through lexical sorting stations, mechanical caliper filters (`WHERE`), Galton pegboard partitions (`GROUP BY`), and balance-scale evaluators (`HAVING`).
+- **Station Microscope & Telemetry**: Added interactive zoom microscope to inspect card rows at each station, accompanied by a collapsible telemetry drawer and direct navbar access button.
+
+### 16. 2026-10-20 (LeetCode 300+ Official Mega Vault Deployed — 323 Problems)
+- **323 Authentic LeetCode Problems**: Replaced mock benchmarks with 323 official LeetCode Database problems (#175 to #3832) with 0 synthetic placeholders.
+- **Complete Test Harnesses**: Every problem equipped with real DDL schemas, multi-row edge case inputs, expected golden outputs, and step-by-step editorial solutions.
+- **10 Core Concept Classifications**: 100% mapped across Window Analytics, CASE Logic, Temporal Arithmetic, Self/Non-Equi Joins, CTEs, Aggregations, and Gaps & Islands.
+
+### 17. 2026-10-22 (Curriculum Days 16–20 Enterprise Modules & In-App Theory Reader)
+- **Days 16 to 20 Enterprise Modules Deployed**:
+  - `day-16-explain-analyze-indexing`: Query execution plan cost modeling, B+Tree physics, and index tuning.
+  - `day-17-cloud-warehousing-snowflake-bigquery`: Columnar storage, micro-partitions, and `QUALIFY` deduplication.
+  - `day-18-json-semi-structured-arrays`: JSONB storage, `LATERAL` unnesting, and GIN inverted indexes.
+  - `day-19-gaps-islands-financial-streaks`: Temporal gaps & islands, sessionization, and continuous running balances.
+  - `day-20-grand-enterprise-gauntlet`: Multi-pillar capstone boss gauntlet, wash trading audits, and graduation.
+- **In-App Theory Reader Modal**: Integrated direct reader in the visualizer for all 20 curriculum days with tabs for Theory, Interview Defense, Daily Log, and Solutions.
+
+### 18. 2026-10-23 (In-Browser SQLite WASM Test Runner Arena & Sir Bloops AI Co-Pilot)
+- **In-Browser SQLite Engine**: Embedded client-side SQLite compiled to WebAssembly (WASM) for instant, sub-millisecond query evaluation directly in the browser.
+- **Automated Test Judge**: Client executes queries against live test tables, comparing outputs against golden solutions with diff highlighting and pass/fail badges.
+- **Sir Bloops AI Guide**: Added animated, interactive Co-Pilot offering hints, syntax tips, and performance warnings without revealing solutions prematurely.
+
+### 19. 2026-10-25 (FAANG & Wall Street Target Company Mastery Hub)
+- **10 Target Company Tracks**: Deployed dedicated tracks for Amazon/AWS, Google/YouTube, Meta, Apple, Stripe, Citadel, Bloomberg, Netflix, Uber, and Snowflake.
+- **Company Intelligence Profiles**: Documented dialect standards (BigQuery, Trino, Redshift, Snowflake, PostgreSQL), 45-minute technical screen formats, core testing topics, and top syntax patterns.
+- **Empirical Interview Probabilities**: Built dynamic probability distribution bars for each company across the 323 LeetCode problems.
+- **Direct Workspace Bridges**: 1-click launch into the 45-min Timed Mock Interview Screen or In-Browser SQLite WASM Arena.
+- **Glassmorphism Design System**: Delivered high-contrast, modern obsidian theme with company brand accents in `company_mastery_theme.css` and engine in `company_mastery_engine.js`.
 
 
 

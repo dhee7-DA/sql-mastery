@@ -1,12 +1,12 @@
-# 🚀 15-Day SQL Mastery for Data Analysis & Enterprise Engineering
+# 🚀 20-Day SQL Mastery for Data Analysis & Enterprise Engineering
 
-Welcome to the **15-Day SQL Intensive**. This repository is an institutional-grade structured log of daily deliberate practice, solving real-world query problems, mastering edge cases, and building analytical muscle memory from absolute fundamentals to advanced analytical SQL (Window Functions, CTEs, Data Modeling, and Enterprise Reconciliation).
+Welcome to the **20-Day SQL Intensive**. This repository is an institutional-grade structured log of daily deliberate practice, solving real-world query problems, mastering edge cases, and building analytical muscle memory from absolute fundamentals to advanced analytical SQL, query engine internals, and large-scale cloud warehousing.
 
 ---
 
 ## 🎯 The Philosophy: Problem-First Deliberate Practice
 - **Zero Tutorial Hell**: Concepts are learned in tight theory bursts and immediately reinforced with active problem-solving reps.
-- **HackerRank Mapped Progression**: Aligned 1-to-1 with HackerRank Subdomains (Basic Select, Advanced Select, Aggregation, Basic Join, Advanced Join) and progressive difficulty levels (Easy ➡️ Medium ➡️ Hard).
+- **HackerRank & LeetCode Mapped Progression**: Aligned 1-to-1 with industry interview subdomains (Basic Select, Aggregations, Relational Joins, Window Analytics, ACID Concurrency, Cloud Warehousing, Index Physics) and progressive difficulty levels (Easy ➡️ Medium ➡️ Hard ➡️ Principal).
 - **Strict Rep Logging**: Every query is written by hand, tested on live datasets, and reviewed for correctness and performance.
 - **Continuous Documentation**: Every day contains rich visual theory, problem deconstructions, real company interview case studies, Q&A logs, and instructor progress assessments.
 
@@ -15,8 +15,11 @@ Welcome to the **15-Day SQL Intensive**. This repository is an institutional-gra
 ## 🎮 Interactive SQL Query Visualizer & Masterclass Platform
 
 An institutional-grade, in-browser execution studio and visual masterclass located in [`visualizer/`](./visualizer):
-- 🎨 **Poppy Neo-Brutalist Design System**: High-contrast, tactile UI with raw 3px solid black outlines, offset ink drop shadows, and punchy sticker palettes (`#fef08a`, `#38bdf8`, `#f472b6`, `#22c55e`, `#fbbf24`, `#c084fc`).
-- 📖 **15 Visual Masterclass Modules & In-App Theory Reader**: Textbook-grade CS theory, engine storage physics, and custom Neo-Brutalist SVG Explainer Diagrams:
+- 🎨 **Poppy Neo-Brutalist & Obsidian Design System**: High-contrast, tactile UI with raw 3px solid black outlines, offset ink drop shadows, and modern obsidian glassmorphism.
+- 🏢 **FAANG & Wall Street Target Company Mastery Hub**: Dedicated interview intelligence hubs for 10 top firms (**Amazon, Google, Meta, Apple, Stripe, Citadel, Bloomberg, Netflix, Uber, Snowflake**), featuring dialect profiles, empirical interview probability matrices, and 1-click workspace launch bridges.
+- ⚡ **In-Browser SQLite WASM Arena & LeetCode 323 Mega Vault**: Client-side, zero-latency SQL execution powered by SQLite WebAssembly (WASM). Includes all 323 official LeetCode Database problems (#175 to #3832) with live DDL schema setup, multi-row test cases, golden output diffs, and Sir Bloops AI Co-Pilot hints.
+- ⚙️ **Tabulator Relationalis (Fig. 16 Hand-Inked Machine)**: Tactile mechanical query factory visualizing relational algebra physically — raw punchcards, caliper filters (`WHERE`), Galton pegboards (`GROUP BY`), balance scales (`HAVING`), and a station zoom microscope.
+- 📖 **20 Visual Masterclass Modules & In-App Theory Reader**: Direct 4-way subtab access across all 20 curriculum days (Theory, Interview Defense, Daily Log, Solutions Breakdown) with code copy and "▶ Test in Studio" bridges:
   1. *Physical Execution Pipeline & Lexical Sequencing*
   2. *Filtering, Predicates & Three-Valued Logic (3VL)*
   3. *Sorting, Determinism & Keyset Pagination*
@@ -32,17 +35,20 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
   13. *Advanced Business Analytics, Churn Bridges & Retention Cohorts*
   14. *Enterprise Dimensional Modeling, Kimball Star Schema & Data Warehousing*
   15. *Prime Broker Reconciliation Engine & Grand Capstone Verification*
+  16. *EXPLAIN ANALYZE Execution Plans, Cost Models & B+Tree Index Tuning*
+  17. *Cloud Data Warehouses, Columnar Storage & Snowflake/BigQuery QUALIFY*
+  18. *Semi-Structured Data, PostgreSQL JSONB & GIN Indexes*
+  19. *Temporal Gaps & Islands, Sessionization & Continuous Running Balances*
+  20. *Grand Enterprise Gauntlet, Recursive BOMs & Wash Trading Audits*
 - 🌳 **Visual EXPLAIN ANALYZE Execution Plan Tree**: Production query cost visualizer with interactive SVG flow topologies, multi-dialect execution modeling (PostgreSQL 16, MySQL 8.0, DuckDB), and an interactive **What-If B+Tree Index Simulator** with ESR rule diagnostics.
-- 📚 **In-App Curriculum Theory & Defense Reader**: Direct 4-way subtab access across all 15 curriculum days (Theory, Interview Defense, Daily Log, Solutions Breakdown) with code copy and "▶ Test in Studio" bridges.
-- 🧠 **2,100 Master Technical MCQs Vault**: 23 technical categories with 350 dedicated Relational Join questions, 500 dedicated Window Function questions, and 150 Section 10 Subquery/CTE/Set Operations questions, instant answer validation, sound FX, and balanced 25% option distribution.
-- 💼 **2,540 Corporate & Foundations Case Study Master Vault**: Spanning 10 industry verticals (FinTech, Healthcare, Logistics, AdTech, E-Commerce, Gaming, SaaS, HR, Security, Real Estate) plus Syntax Gym micro-drills, token puzzles, and live execution simulation.
-- 🔗 **8-Step Dual-Table Relational Joins Linker**: Interactive step-through simulator in Guided Lab (Track 04) covering Inner, Left, Right, Full Outer, Left Anti, Cross, Self, and Non-Equi joins.
-- 🎮 **30 Gamified Quests**: Live token puzzle solver with sound FX and real-time AST evaluation.
-- 🚀 **Zero Dependencies**: Pure HTML5, Vanilla CSS, and Vanilla JavaScript. Double-click [`visualizer/index.html`](./visualizer/index.html) or run a local server to launch!
+- 🧠 **2,100 Master Technical MCQs Vault**: 23 technical categories with instant answer validation, sound FX, and balanced 25% option distribution.
+- 💼 **2,540 Corporate & Foundations Case Study Master Vault**: Spanning 18 enterprise verticals plus 1,700 Syntax Gym micro-drills and interactive token puzzles.
+- 📅 **112-Day Deliberate Practice Streak Heatmap**: GitHub-style activity matrix tracking daily solves and practice intensity.
+- 🚀 **Zero Dependencies**: Pure HTML5, Vanilla CSS, and Vanilla JavaScript. Open [`visualizer/index.html`](./visualizer/index.html) or run a local server to launch!
 
 ---
 
-## 🗺️ 14-Day Syllabus & Progress Tracker (HackerRank Subdomain Roadmap)
+## 🗺️ 20-Day Syllabus & Progress Tracker (Master Roadmap)
 
 ### 🟢 Phase 1: Basic Select Track (Fundamentals, Patterns & Ordering)
 | Day | Module Directory | HackerRank Subdomain & Focus | Difficulty | Status |
