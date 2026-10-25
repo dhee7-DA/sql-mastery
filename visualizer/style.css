@@ -3490,12 +3490,6 @@ body {
   align-items: center;
   gap: 4px;
   flex-wrap: nowrap;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.nav-groups-container::-webkit-scrollbar {
-  display: none;
 }
 
 .nav-group-dropdown {

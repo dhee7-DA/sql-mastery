@@ -344,8 +344,8 @@ const SQL_BUDDY = (() => {
   let activeShapeId = localStorage.getItem("sql_mascot_shape") || "galet";
   if (!SHAPES[activeShapeId]) activeShapeId = "galet";
 
-  let activeColorId = localStorage.getItem("sql_mascot_color") || "encre";
-  if (!COLORS[activeColorId]) activeColorId = "encre";
+  let activeColorId = localStorage.getItem("sql_mascot_color") || "ambre";
+  if (!COLORS[activeColorId]) activeColorId = "ambre";
 
   let isIdleSnoozeEnabled = localStorage.getItem("sql_mascot_idle_snooze") !== "disabled";
   let isThemeSyncEnabled = localStorage.getItem("sql_mascot_theme_sync") === "true";
@@ -785,12 +785,12 @@ const SQL_BUDDY = (() => {
   function syncThemeColor() {
     if (!isThemeSyncEnabled) return;
     const theme = document.documentElement.getAttribute("data-theme") || "default";
-    let matchedColor = "encre";
+    let matchedColor = "ambre";
 
     if (theme.includes("pomegranate")) matchedColor = "rose";
     else if (theme.includes("jade")) matchedColor = "vert";
-    else if (theme.includes("petrol")) matchedColor = "orange";
-    else matchedColor = "encre";
+    else if (theme.includes("petrol") || theme.includes("active-builders")) matchedColor = "ambre";
+    else matchedColor = "ambre";
 
     if (matchedColor !== activeColorId) {
       setColor(matchedColor);
