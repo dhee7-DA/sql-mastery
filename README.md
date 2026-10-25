@@ -119,18 +119,53 @@ An institutional-grade, in-browser execution studio and visual masterclass locat
 
 ```text
 sql-mastery/
-├── README.md                     # Master syllabus, progress tracker & architecture
-├── PATTERNS.md                   # Reusable SQL patterns, mental models & gotchas
-├── SESSION_STATE.md              # Real-time state ledger (last task, next step, history)
+├── README.md                                    # Master syllabus, platform overview & progress tracker
+├── SESSION_STATE.md                             # Real-time operational continuity ledger & session state
+├── DAILY_JOURNAL.md                             # Comprehensive chronological dev journal (Entries 01-39)
+├── PATTERNS.md                                  # Reusable SQL design patterns, idioms & gotchas
+├── FOUNDATIONS_MASTER_COMPENDIUM.md             # Graded problem bank & theoretical compendium
 │
-├── day-01-basic-select/          # [COMPLETED] Basic SELECT, WHERE, DISTINCT, MOD
-├── day-02-ordering-wildcards/    # [ACTIVE] Station 4 + Vowel Pattern Matching (Station 6-12)
-└── ...
+├── visualizer/                                  # Zero-Dependency In-Browser Platform
+│   ├── index.html                               # Master app shell & navigation hub
+│   ├── app.js                                   # Main controller & view routing engine
+│   ├── company_mastery_engine.js                # 10 FAANG & Wall Street Target Company Tracks
+│   ├── company_mastery_theme.css                # Obsidian glassmorphism theme with brand accents
+│   ├── leetcode_arena.js                        # In-Browser SQLite WASM Test Runner & Judge
+│   ├── leetcode_300_master_vault.js             # 323 Official LeetCode Database Problems
+│   ├── tactile_washer_engine.js                 # Tabulator Relationalis (Fig. 16 Physical Machine)
+│   ├── mock_interview_engine.js                 # 45-Minute Timed Technical Interview Simulator
+│   ├── curriculum_reader_engine.js              # 20-Day In-App Theory & Defense Reader Modal
+│   ├── case_studies_500.js                      # 2,540 Production Corporate Case Studies
+│   ├── quests_section5_data.js                  # Relational JOINs Arena (420 Levels across 7 disciplines)
+│   └── syntax_gym_data.js                       # 1,700 Active-Retrieval Syntax Gym Drills
+│
+├── day-01-basic-select/                         # [COMPLETED] Basic SELECT, WHERE, DISTINCT, MOD
+├── day-02-ordering-wildcards/                   # [COMPLETED] Station 4 + Regex & Vowel Anchors
+├── day-03-sorting-ordering/                     # [COMPLETED] ORDER BY, LIMIT, Keyset Slicing
+├── day-04-advanced-select-case/                 # [COMPLETED] CASE WHEN, Short-Circuit Logic & Triangles
+├── day-05-basic-aggregations/                   # [COMPLETED] Statistical Core, GROUP BY, Top Earners
+├── day-06-station-math-aggregates/              # [COMPLETED] Manhattan L1 & Euclidean L2 Distances, Medians
+├── day-07-subqueries-and-ctes/                  # [COMPLETED] Scalar/Correlated Subqueries & Recursive Trees
+├── day-07b-set-operations-and-grouping/         # [COMPLETED] UNION ALL, INTERSECT, EXCEPT, ROLLUP, CUBE
+├── day-08-basic-joins/                          # [COMPLETED] INNER & LEFT Joins, Foreign Key Linkers
+├── day-09-intermediate-joins/                   # [COMPLETED] Non-Equi Joins, Chains & Ranking Filters
+├── day-10-advanced-joins-scoring/               # [COMPLETED] Leaderboards, Placements, Symmetric Pairs
+├── day-11-window-ranking/                       # [COMPLETED] ROW_NUMBER(), RANK(), DENSE_RANK(), NTILE()
+├── day-12-window-aggregates/                    # [COMPLETED] LAG(), LEAD(), Sliding Frames & Rolling Averages
+├── day-13-business-analytics/                   # [COMPLETED] Churn Bridges, Retention Cohorts, MoM Growth
+├── day-14-dml-atomic-upserts-acid/              # [COMPLETED] DML Mutations, Upserts, ACID Storage Physics
+├── day-15-enterprise-capstone/                  # [COMPLETED] Multi-Asset Trade Recon & Prime Broker Engine
+├── day-16-explain-analyze-indexing/             # [COMPLETED] Cost Models, B+Tree Physics & ESR Index Tuning
+├── day-17-cloud-warehousing-snowflake-bigquery/ # [COMPLETED] Columnar Formats, Micro-Partitions & QUALIFY
+├── day-18-json-semi-structured-arrays/          # [COMPLETED] PostgreSQL JSONB, GIN Indexes & LATERAL Unnesting
+├── day-19-gaps-islands-financial-streaks/       # [COMPLETED] Gaps & Islands, Sessionization & Running Balances
+└── day-20-grand-enterprise-gauntlet/            # [COMPLETED] Grand Gauntlet, Wash Trading & Graduation
 ```
 
 ---
 
 ## 🔄 Daily 6-File Protocol
+Every curriculum module folder (`day-01` through `day-20`) adheres strictly to the standardized 6-file protocol:
 1. **`THEORY.md`**: Visual diagrams, execution lifecycle, syntax rules, and mental models.
 2. **`SOLUTIONS_BREAKDOWN.md`**: For each problem: *What are they testing?* + *Clean SQL* + *Detailed breakdown* + *Interview tips*.
 3. **`INTERVIEW_QUESTIONS.md`**: Real technical interview scenarios from top tech companies testing that day's concepts.
