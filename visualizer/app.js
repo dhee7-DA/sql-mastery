@@ -162,6 +162,7 @@ const DATABASE = {
     { clearing_ref: 'CLR-9904', internal_trade_id: null, security_id: 'GOOGL', cleared_qty: 500, settlement_status: 'UNMATCHED_CUSTODY' }
   ]
 };
+window.DATABASE = DATABASE;
 
 // =============================================================================
 // 2. PRESETS
@@ -238,6 +239,7 @@ FROM internal_trade_blotter b
 FULL OUTER JOIN custodian_clearing_feed c 
   ON b.trade_id = c.internal_trade_id;`
 };
+window.PRESETS = PRESETS;
 
 // =============================================================================
 // 3. ENGINE STATE
@@ -251,6 +253,7 @@ const EngineState = {
   isPlaying: false,
   playTimer: null
 };
+window.EngineState = EngineState;
 
 // =============================================================================
 // 3.5 DYNAMIC TABLE INJECTION & SYNTHESIS ENGINE (STUDIO RELATIONAL EXECUTOR)
@@ -648,6 +651,10 @@ function parseAndBuildPipeline(sql) {
     window.SQL_BUDDY.onQueryRunSuccess(rowCount);
   }
 }
+window.parseAndBuildPipeline = parseAndBuildPipeline;
+window.renderStep = renderStep;
+window.syncBuilderFromTable = syncBuilderFromTable;
+window.formatSQLEditorQuery = formatSQLEditorQuery;
 
 // =============================================================================
 // 5. EVALUATION LOGIC
@@ -1718,7 +1725,11 @@ function generateSqlFromBuilder() {
     livePreview.textContent = query;
   }
 
-  parseAndBuildPipeline(query);
+  if (window.StudioWorkbenchEngine && typeof window.StudioWorkbenchEngine.loadQuery === 'function') {
+    window.StudioWorkbenchEngine.loadQuery(query, activeTbl);
+  } else {
+    parseAndBuildPipeline(query);
+  }
 }
 
 // =============================================================================
@@ -2223,6 +2234,12 @@ function switchMainView(targetId) {
   }
 
   // Lazy render on view switch
+  if (targetId === 'viewStudio') {
+    if (window.StudioWorkbenchEngine && typeof window.StudioWorkbenchEngine.init === 'function') {
+      window.StudioWorkbenchEngine.init();
+    }
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("⚡ Welcome to SQL Query Studio! Interactive AST stepper, multi-dialect transpiler, and custom data scratchpad ready!", 4500, 'celebrate');
+  }
   if (targetId === 'viewMockInterview') {
     if (window.MockInterviewEngine) window.MockInterviewEngine.init();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🎯 Welcome to the FAANG & Wall Street Mock Technical Screen! 45 minutes on the clock.", 5000, 'celebrate');
