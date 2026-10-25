@@ -2182,6 +2182,7 @@ const NAV_GROUPS_MAP = {
   viewVennMatrix: { triggerId: 'btnGroupExplore', pillId: null, label: 'Venn Matrix' },
   viewWindowMatrix: { triggerId: 'btnGroupExplore', pillId: null, label: 'Window Cockpit' },
 
+  viewLandingPage: { triggerId: 'btnNavHome', pillId: null, label: 'Home' },
   viewLearningJourney: { triggerId: 'btnGroupExplore', pillId: null, label: 'Learning Journey' },
   viewLeetCode50: { triggerId: 'btnNavLeetCode', pillId: null, label: 'LeetCode 323' },
   viewCompanyHub: { triggerId: 'btnNavCompanyHub', pillId: null, label: 'Companies & Domains' },

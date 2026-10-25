@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/vqa3wut.css">
   <link rel="stylesheet" href="style.css?v=110">
+  <link rel="stylesheet" href="landing_page.css?v=5">
   <link rel="stylesheet" href="jpmorgan_theme.css?v=3">
   <link rel="stylesheet" href="leetcode_theme.css?v=330">
   <link rel="stylesheet" href="sql_terminal_theme.css?v=105">
@@ -39,7 +40,15 @@
         <!-- Unified Navigation Switcher -->
         <nav class="nav-groups-container">
           <!-- 1. LEETCODE 323 ARENA (Default Active) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab active" id="btnNavLeetCode" data-view="viewLeetCode50" onclick="selectNavView('viewLeetCode50', 'LeetCode 323', null)" title="LeetCode 323 Official SQL Arena">
+          <button class="nav-group-trigger nav-direct-link nav-tab active" id="btnNavHome" data-view="viewLandingPage" onclick="selectNavView('viewLandingPage', 'Home', null)" title="SQL Foundry Product Overview &amp; Feature Showcase">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">🏠</span>
+              <span class="nav-group-title">Home</span>
+            </span>
+          </button>
+
+          <!-- 1. LEETCODE 323 ARENA -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavLeetCode" data-view="viewLeetCode50" onclick="selectNavView('viewLeetCode50', 'LeetCode 323', null)" title="LeetCode 323 Official SQL Arena">
             <span class="nav-group-lead">
               <span class="nav-group-icon">⚡</span>
               <span class="nav-group-title">LeetCode</span>
@@ -365,6 +374,9 @@
         </button>
       </div>
     </header>
+
+    <!-- VIEW: Product Landing Page & Feature Showcase -->
+    <div class="view-panel active" id="viewLandingPage"></div>
 
     <!-- VIEW: 20-Day Learning Journey & Adventure Roadmap Hub -->
     <div class="view-panel" id="viewLearningJourney"></div>
@@ -1556,7 +1568,7 @@
   </div>
 
   <!-- VIEW: LeetCode 50 SQL Arena -->
-  <div class="view-panel active" id="viewLeetCode50">
+  <div class="view-panel" id="viewLeetCode50">
     <!-- Dynamically populated by leetcode_arena_engine.js -->
   </div>
 
@@ -1836,7 +1848,8 @@
 <script src="curriculum_compendium_data.js"></script>
 <script src="curriculum_reader_engine.js"></script>
 <script src="command_palette.js?v=2"></script>
-<script src="app.js?v=100"></script>
+<script src="landing_page_engine.js?v=5"></script>
+  <script src="app.js?v=100"></script>
 <script>
   // Automatic Hash & Default View Router
   (function() {
@@ -1859,11 +1872,11 @@
       } else if (hash === 'cases') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewCases', 'Case Studies', 'navGroupPractice');
       } else {
-        // Default to LeetCode 50 Linear Studio Arena
+        // Default to Product Landing Page & Features Showcase
         if (typeof window.selectNavView === 'function') {
-          window.selectNavView('viewLeetCode50', 'LeetCode 50', null);
+          window.selectNavView('viewLandingPage', 'Home', null);
         } else if (typeof window.switchMainView === 'function') {
-          window.switchMainView('viewLeetCode50');
+          window.switchMainView('viewLandingPage');
         }
       }
     }
