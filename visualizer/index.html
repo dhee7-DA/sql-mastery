@@ -9,10 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/vqa3wut.css">
-  <link rel="stylesheet" href="style.css?v=115">
+  <link rel="stylesheet" href="style.css?v=116">
   <link rel="stylesheet" href="landing_page.css?v=12">
   <link rel="stylesheet" href="jpmorgan_theme.css?v=3">
-  <link rel="stylesheet" href="leetcode_theme.css?v=344">
+  <link rel="stylesheet" href="leetcode_theme.css?v=345">
   <link rel="stylesheet" href="sql_terminal_theme.css?v=105">
   <link rel="stylesheet" href="mock_interview_theme.css?v=106">
   <link rel="stylesheet" href="company_mastery_theme.css?v=13">
@@ -77,24 +77,6 @@
             </span>
           </button>
 
-          <!-- 3. DOMAIN & COMPANY MASTERY HUB (Direct Tab) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavCompanyHub" data-view="viewCompanyHub" onclick="selectNavView('viewCompanyHub', 'Companies &amp; Domains', null)" title="10 Domains &amp; 70+ Premier Target Employers">
-            <span class="nav-group-lead">
-              <span class="nav-group-icon">🏛️</span>
-              <span class="nav-group-title">Companies</span>
-            </span>
-            <span class="nav-item-tag">70+</span>
-          </button>
-
-          <!-- 4. FAANG & WALL STREET MOCK SCREEN (Direct Tab) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavMockInterview" data-view="viewMockInterview" onclick="selectNavView('viewMockInterview', 'Mock Screen', null)" title="45-Minute Timed Technical Interview Screen">
-            <span class="nav-group-lead">
-              <span class="nav-group-icon">🎯</span>
-              <span class="nav-group-title">Mock</span>
-            </span>
-            <span class="nav-item-tag timer">45m</span>
-          </button>
-
           <!-- PRACTICE DROPDOWN -->
           <div class="nav-group-dropdown" id="navGroupPractice">
             <button class="nav-group-trigger" id="btnGroupPractice" onclick="toggleNavGroupDropdown('navGroupPractice', event)">
@@ -106,7 +88,28 @@
               
             </button>
             <div class="nav-dropdown-menu">
-              <div class="nav-dropdown-header">Drill &amp; Test Vaults</div>
+              <div class="nav-dropdown-header">Featured Interview Screens</div>
+              <button class="nav-dropdown-item nav-tab" id="btnNavMockInterview" data-view="viewMockInterview" onclick="selectNavView('viewMockInterview', 'Mock Screen', 'navGroupPractice')">
+                <span class="nav-item-icon">🎯</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">FAANG &amp; Wall St Mock Screen</span>
+                    <span class="nav-item-tag timer">45m Timed</span>
+                  </div>
+                  <span class="nav-item-desc">Timed technical interview screen with real-time scoring</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" id="btnNavCompanyHub" data-view="viewCompanyHub" onclick="selectNavView('viewCompanyHub', 'Companies &amp; Domains', 'navGroupPractice')">
+                <span class="nav-item-icon">🏛️</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Companies &amp; Industry Domains</span>
+                    <span class="nav-item-tag accent">70+ Employers</span>
+                  </div>
+                  <span class="nav-item-desc">10 Domains &amp; 70+ premier target employers</span>
+                </div>
+              </button>
+              <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Drill &amp; Test Vaults</div>
               <button class="nav-dropdown-item nav-tab" data-view="viewSqlTerminal" onclick="selectNavView('viewSqlTerminal', 'SQL Terminal', 'navGroupPractice')">
                 <span class="nav-item-icon">💻</span>
                 <div class="nav-item-text">
