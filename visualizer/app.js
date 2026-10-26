@@ -2194,6 +2194,7 @@ const NAV_GROUPS_MAP = {
   viewWindowMatrix: { triggerId: 'btnGroupExplore', pillId: null, label: 'Window Cockpit' },
 
   viewLandingPage: { triggerId: 'btnNavHome', pillId: null, label: 'Home' },
+  viewMasteryCourse: { triggerId: 'btnNavMasteryCourse', pillId: null, label: 'Course' },
   viewLearningJourney: { triggerId: 'btnGroupExplore', pillId: null, label: 'Learning Journey' },
   viewLeetCode50: { triggerId: 'btnNavLeetCode', pillId: null, label: 'LeetCode 323' },
   viewCompanyHub: { triggerId: 'btnNavCompanyHub', pillId: null, label: 'Companies & Domains' },
@@ -2234,6 +2235,12 @@ function switchMainView(targetId) {
   }
 
   // Lazy render on view switch
+  if (targetId === 'viewMasteryCourse') {
+    if (window.MasteryCourseEngine && typeof window.MasteryCourseEngine.init === 'function') {
+      window.MasteryCourseEngine.init();
+    }
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("📖 Welcome to SQL Mastery Course! 10 execution phases with tactile SVG diagrams and interview prep ready!", 4500, 'celebrate');
+  }
   if (targetId === 'viewStudio') {
     if (window.StudioWorkbenchEngine && typeof window.StudioWorkbenchEngine.init === 'function') {
       window.StudioWorkbenchEngine.init();

@@ -162,8 +162,11 @@
             </p>
 
             <div class="landing-cta-strip">
-              <button class="landing-cta-primary" id="btnHeroLaunchLeetCode" onclick="if(window.selectNavView) window.selectNavView('viewLeetCode50', 'LeetCode 323', null)">
-                <span>⚡ Launch LeetCode 323 Arena</span>
+              <button class="landing-cta-primary" id="btnHeroLaunchCourse" onclick="if(window.selectNavView) window.selectNavView('viewMasteryCourse', 'Course', null)">
+                <span>📖 10-Phase SQL Mastery Course</span>
+              </button>
+              <button class="landing-cta-secondary" id="btnHeroLaunchLeetCode" onclick="if(window.selectNavView) window.selectNavView('viewLeetCode50', 'LeetCode 323', null)">
+                <span>⚡ LeetCode 323 Arena</span>
               </button>
               <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewCompanyHub', 'Companies &amp; Domains', null)">
                 <span>🏛️ 70+ Company Tracks</span>

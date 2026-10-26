@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="mock_interview_theme.css?v=106">
   <link rel="stylesheet" href="company_mastery_theme.css?v=13">
   <link rel="stylesheet" href="studio_workbench_theme.css?v=1">
+  <link rel="stylesheet" href="mastery_course_theme.css?v=1">
   <link rel="stylesheet" href="command_palette.css?v=6">
 </head>
 <body>
@@ -46,6 +47,15 @@
               <span class="nav-group-icon">🏠</span>
               <span class="nav-group-title">Home</span>
             </span>
+          </button>
+
+          <!-- 1b. SQL MASTERY COURSE (ORDER OF EXECUTION) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavMasteryCourse" data-view="viewMasteryCourse" onclick="selectNavView('viewMasteryCourse', 'Course', null)" title="SQL Mastery &amp; Technical Interview Course (Order of Execution)">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">📖</span>
+              <span class="nav-group-title">Course</span>
+            </span>
+            <span class="nav-item-tag accent">Mastery</span>
           </button>
 
           <!-- 1. LEETCODE 323 ARENA -->
@@ -378,6 +388,9 @@
 
     <!-- VIEW: Product Landing Page & Feature Showcase -->
     <div class="view-panel active" id="viewLandingPage"></div>
+
+    <!-- VIEW: SQL Mastery & Interview Prep Course (Order of Execution) -->
+    <div class="view-panel" id="viewMasteryCourse"></div>
 
     <!-- VIEW: 20-Day Learning Journey & Adventure Roadmap Hub -->
     <div class="view-panel" id="viewLearningJourney"></div>
@@ -1851,13 +1864,16 @@
 <script src="command_palette.js?v=2"></script>
 <script src="landing_page_engine.js?v=12"></script>
   <script src="studio_workbench_engine.js?v=1"></script>
+  <script src="mastery_course_engine.js?v=1"></script>
   <script src="app.js?v=101"></script>
 <script>
   // Automatic Hash & Default View Router
   (function() {
     function routeView() {
       const hash = (window.location.hash || '').replace('#', '').toLowerCase();
-      if (hash === 'guidedlab' || hash === 'guided-lab') {
+      if (hash === 'course' || hash === 'mastery' || hash === 'curriculum') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewMasteryCourse', 'Course', null);
+      } else       if (hash === 'guidedlab' || hash === 'guided-lab') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewGuidedLab', 'Guided Lab', 'navGroupLearn');
       } else if (hash === 'interview' || hash === 'mock' || hash === 'mockinterview') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewMockInterview', 'Interview 🎯', null);

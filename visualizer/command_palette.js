@@ -16,6 +16,7 @@
   let filteredItems = [];
 
   const SYSTEM_VIEWS = [
+    { id: 'viewMasteryCourse', title: 'SQL Mastery Course (Order of Execution)', category: 'views', icon: '📖', desc: '10 Execution Phases, tactile SVG diagrams, traps MCQs, FAANG case studies & studio problems' },
     { id: 'viewLeetCode50', title: 'LeetCode 323 SQL Arena', category: 'views', icon: '⚡', desc: 'Solve official curated LeetCode SQL problems with instant judge' },
     { id: 'viewStudio', title: 'Query Execution Studio', category: 'views', icon: '💻', desc: 'Multi-table query workspace with live AST visualization & schema browser' },
     { id: 'viewCompanyHub', title: 'Domain & Company Mastery Hub', category: 'views', icon: '🏛️', desc: '10 industry domains and 70+ premier target employer blueprints' },
