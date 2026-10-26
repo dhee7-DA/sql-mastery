@@ -22,6 +22,10 @@ window.MasteryCourseEngine = (function () {
     activeStep: 'theory', // 'theory', 'mcqs', 'case', 'problem'
     problemInput: {}, // key: phaseId => string (user query code)
     testResults: {}, // key: phaseId => { passed, message, userRows, expRows, userCols, expCols }
+    activeProblemTier: {}, // key: phaseId => tierId (1, 2, or 3)
+    tierCompleted: {}, // key: `${phaseId}_tier_${tierId}` => boolean
+    mockInterview: { active: false, phaseId: null, timeLeft: 45, timer: null, text: '', detectedKeywords: [], score: null, seniority: null, feedback: '' },
+    certificate: { show: false, tab: 'cert', name: 'Senior SQL Candidate', certId: 'SQLF-' + Math.floor(100000 + Math.random() * 900000), date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) },
     visualMode: 'diagram', // 'diagram' | 'sandbox'
     diagramStep: 0, // 0: overview, 1: scan, 2: op, 3: emit
     completedPhases: new Set(),
@@ -47,6 +51,10 @@ window.MasteryCourseEngine = (function () {
       const saved = localStorage.getItem('sql_foundry_learning_order_v1');
       if (saved) {
         JSON.parse(saved).forEach(id => state.completedPhases.add(id));
+      }
+      const savedTiers = localStorage.getItem('sql_foundry_tier_completed_v1');
+      if (savedTiers) {
+        state.tierCompleted = JSON.parse(savedTiers) || {};
       }
     }
   } catch (e) {
@@ -1570,6 +1578,28 @@ FROM Employees;`,
                 <div class="meter-fill" style="width: ${progressPct}%;"></div>
               </div>
             </div>
+
+            <!-- Milestone Badges & Claim Cert CTA -->
+            <div class="course-achievements-bar">
+              <span class="milestone-badge-chip ${completedCount >= 3 ? 'unlocked' : ''}" title="Topics 01-03: Relational Foundations">
+                <span>🔰 Foundations</span>
+              </span>
+              <span class="milestone-badge-chip ${completedCount >= 7 ? 'unlocked' : ''}" title="Topics 04-07: Relational Architect">
+                <span>⚔️ Architect</span>
+              </span>
+              <span class="milestone-badge-chip ${completedCount >= 10 ? 'unlocked' : ''}" title="Topics 08-10: Analytical Wizard">
+                <span>🧙 Wizard</span>
+              </span>
+              <span class="milestone-badge-chip ${completedCount === 10 ? 'unlocked' : ''}" title="All 10 Topics Mastered: SQL Grandmaster">
+                <span>👑 Grandmaster</span>
+              </span>
+
+              <button class="btn-claim-cert" onclick="window.MasteryCourseEngine.openCertificate('cert')">
+                <span>🎓 Claim Certificate &amp; Portfolio</span>
+              </button>
+            </div>
+          </div>
+            </div>
           </div>
         </header>
 
@@ -1640,6 +1670,9 @@ FROM Employees;`,
             <span>Next Topic ▶</span>
           </button>
         </footer>
+
+        ${renderMockInterviewModal()}
+        ${renderCertificateModal()}
       </div>
     `;
   }
@@ -2068,6 +2101,10 @@ FROM Employees;`,
                     </div>
                   </div>
                 ` : ''}
+
+                <button class="case-solve-cta" style="margin-top: 12px; width: 100%; justify-content: center;" onclick="window.MasteryCourseEngine.openMockInterview('${phase.id}')">
+                  <span>🎙️ Practice FAANG Mock Screen (45s Timer)</span>
+                </button>
               </div>
             ` : ''}
 
@@ -2781,12 +2818,16 @@ FROM Employees;`,
   // STAGE 4: QUERY PROBLEM & STUDIO SOLVER
   // ===========================================================================
   function renderProblemStage(phase) {
-    const prob = phase.problem;
-    if (!prob) return '<div style="padding: 24px;">No problem defined for this topic.</div>';
+    const problems = phase.problems || (phase.problem ? [phase.problem] : []);
+    if (!problems.length) return '<div style="padding: 24px;">No problems defined for this topic.</div>';
 
-    const isShowingSol = state.showSolution[phase.id];
-    const userCode = state.problemInput[phase.id] !== undefined ? state.problemInput[phase.id] : prob.starterSql;
-    const testVerdict = state.testResults[phase.id];
+    const activeTierId = state.activeProblemTier[phase.id] || 1;
+    const prob = problems.find(p => p.tierId === activeTierId) || problems[0];
+
+    const isShowingSol = state.showSolution[`${phase.id}_${prob.tierId}`];
+    const userCodeKey = `${phase.id}_${prob.tierId}`;
+    const userCode = state.problemInput[userCodeKey] !== undefined ? state.problemInput[userCodeKey] : prob.starterSql;
+    const testVerdict = state.testResults[userCodeKey];
 
     let verdictHtml = '';
     if (testVerdict) {
@@ -2860,6 +2901,21 @@ FROM Employees;`,
 
     return `
       <div class="stage-problems-container">
+        <!-- 3-Tier Problem Progression Tabs -->
+        <div class="problem-tier-tabs">
+          ${problems.map(p => {
+            const isDone = state.tierCompleted[`${phase.id}_tier_${p.tierId}`];
+            const isActive = p.tierId === activeTierId;
+            return `
+              <button class="tier-tab-btn ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" onclick="window.MasteryCourseEngine.setProblemTier('${phase.id}', ${p.tierId})">
+                <span class="tier-dot ${p.badgeClass || 'easy'}"></span>
+                <span>${escapeHtml(p.tierName || `Tier ${p.tierId}`)}</span>
+                ${isDone ? '<span class="tier-check-badge">✓ Solved</span>' : ''}
+              </button>
+            `;
+          }).join('')}
+        </div>
+
         <div class="problem-challenge-card">
           <div class="problem-header-row">
             <h3 class="problem-title">${prob.title}</h3>
@@ -2879,19 +2935,19 @@ FROM Employees;`,
               <span class="course-pill-tag">In-Memory SQL Engine</span>
             </div>
 
-            <textarea id="courseProblemEditor" class="course-code-editor" spellcheck="false" placeholder="Write your SQL solution here..." oninput="window.MasteryCourseEngine.updateProblemInput('${phase.id}', this.value)">${escapeHtml(userCode)}</textarea>
+            <textarea id="courseProblemEditor" class="course-code-editor" spellcheck="false" placeholder="Write your SQL solution here..." oninput="window.MasteryCourseEngine.updateProblemInput('${userCodeKey}', this.value)">${escapeHtml(userCode)}</textarea>
 
             <div class="problem-action-strip">
-              <button class="btn-verify-query" onclick="window.MasteryCourseEngine.verifyProblemSolution('${phase.id}')">
+              <button class="btn-verify-query" onclick="window.MasteryCourseEngine.verifyProblemSolution('${phase.id}', ${prob.tierId})">
                 <span>▶ Run &amp; Verify Solution</span>
               </button>
               <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.solveInStudio(encodeURIComponent(document.getElementById('courseProblemEditor') ? document.getElementById('courseProblemEditor').value : '${encodeURIComponent(prob.starterSql)}'), '${prob.targetTable}')">
                 <span>⚡ Open in Full Studio</span>
               </button>
-              <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.toggleSolution('${phase.id}')">
+              <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.toggleTierSolution('${phase.id}', ${prob.tierId})">
                 <span>${isShowingSol ? 'Hide Expected Solution' : '👁️ View Solution'}</span>
               </button>
-              <button class="phase-nav-btn" style="margin-left: auto;" onclick="window.MasteryCourseEngine.resetProblemCode('${phase.id}')">
+              <button class="phase-nav-btn" style="margin-left: auto;" onclick="window.MasteryCourseEngine.resetProblemCode('${phase.id}', ${prob.tierId})">
                 <span>🔄 Reset Starter</span>
               </button>
             </div>
@@ -3140,6 +3196,558 @@ FROM Employees;`,
   }
 
 
+  
+  // ===========================================================================
+  // VANILLA JS CONFETTI PARTICLE ENGINE
+  // ===========================================================================
+  function launchConfetti() {
+    if (typeof document === 'undefined') return;
+    let canvas = document.getElementById('courseConfettiCanvas');
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvas.id = 'courseConfettiCanvas';
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100vw';
+      canvas.style.height = '100vh';
+      canvas.style.pointerEvents = 'none';
+      canvas.style.zIndex = '999999';
+      document.body.appendChild(canvas);
+    }
+    if (!canvas || typeof canvas.getContext !== 'function') return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = ['#e11d48', '#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ec4899'];
+    const particles = [];
+    for (let i = 0; i < 75; i++) {
+      particles.push({
+        x: canvas.width * 0.5,
+        y: canvas.height * 0.35,
+        vx: (Math.random() - 0.5) * 16,
+        vy: (Math.random() - 0.7) * 14,
+        size: Math.random() * 6 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * 360,
+        vr: (Math.random() - 0.5) * 10,
+        opacity: 1
+      });
+    }
+
+    let frame = 0;
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.35; // gravity
+        p.rotation += p.vr;
+        if (frame > 35) p.opacity -= 0.02;
+
+        if (p.opacity > 0 && p.y < canvas.height) {
+          alive = true;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.globalAlpha = Math.max(0, p.opacity);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+          ctx.restore();
+        }
+      });
+      frame++;
+      if (alive && frame < 95) {
+        requestAnimationFrame(animate);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+      }
+    }
+    animate();
+  }
+
+  // ===========================================================================
+  // 3-TIER PROBLEM HANDLERS
+  // ===========================================================================
+  function setProblemTier(phaseId, tierId) {
+    state.activeProblemTier[phaseId] = tierId;
+    init();
+  }
+
+  function toggleTierSolution(phaseId, tierId) {
+    const key = `${phaseId}_${tierId}`;
+    state.showSolution[key] = !state.showSolution[key];
+    init();
+  }
+
+  function resetProblemCode(phaseId, tierId) {
+    const phase = getPhase(phaseId);
+    const problems = phase.problems || (phase.problem ? [phase.problem] : []);
+    const prob = problems.find(p => p.tierId === tierId) || problems[0];
+    if (prob) {
+      const key = `${phaseId}_${tierId}`;
+      state.problemInput[key] = prob.starterSql;
+      delete state.testResults[key];
+      init();
+    }
+  }
+
+  function verifyProblemSolution(phaseId, tierId) {
+    const phase = getPhase(phaseId);
+    const problems = phase.problems || (phase.problem ? [phase.problem] : []);
+    const currentTierId = tierId || state.activeProblemTier[phaseId] || 1;
+    const prob = problems.find(p => p.tierId === currentTierId) || problems[0];
+
+    const key = `${phaseId}_${currentTierId}`;
+    const editor = document.getElementById('courseProblemEditor');
+    const userSql = editor ? editor.value.trim() : (state.problemInput[key] || prob.starterSql);
+    state.problemInput[key] = userSql;
+
+    const expectedSql = prob.expectedSolutionSql || prob.starterSql;
+
+    const userRes = executeQuerySafe(userSql, prob.targetTable);
+    const expRes = executeQuerySafe(expectedSql, prob.targetTable);
+
+    if (userRes.error) {
+      state.testResults[key] = {
+        passed: false,
+        error: userRes.error,
+        message: 'SQL Syntax / Execution Error: ' + userRes.error
+      };
+      init();
+      return;
+    }
+
+    const userRows = userRes.rows || [];
+    const expRows = expRes.rows || [];
+    const userCols = userRes.columns || [];
+    const expCols = expRes.columns || [];
+
+    const rowCountMatch = userRows.length === expRows.length;
+    const norm = (arr) => arr.map(r => Object.values(r).join('|')).sort();
+    const contentMatch = JSON.stringify(norm(userRows)) === JSON.stringify(norm(expRows));
+
+    if (rowCountMatch && (contentMatch || userRows.length === 0)) {
+      state.testResults[key] = {
+        passed: true,
+        userRows,
+        expRows,
+        userCols,
+        expCols,
+        message: `Accepted! All ${userRows.length} rows matched expected relational output perfectly.`
+      };
+
+      // Mark this tier completed
+      state.tierCompleted[`${phaseId}_tier_${currentTierId}`] = true;
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('sql_foundry_tier_completed_v1', JSON.stringify(state.tierCompleted));
+        }
+      } catch (e) {}
+
+      // Check if all tiers for this topic are solved
+      const allTiersDone = problems.every(p => state.tierCompleted[`${phaseId}_tier_${p.tierId}`]);
+      if (allTiersDone) {
+        state.completedPhases.add(phaseId);
+        try {
+          if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('sql_foundry_learning_order_v1', JSON.stringify(Array.from(state.completedPhases)));
+          }
+        } catch (e) {}
+        launchConfetti();
+      }
+
+      if (window.soundFX && typeof window.soundFX.playPop === 'function') {
+        window.soundFX.playPop();
+      }
+    } else {
+      let mismatchMsg = `Row count mismatch: Your query returned ${userRows.length} rows, but expected solution returned ${expRows.length} rows.`;
+      if (rowCountMatch && !contentMatch) {
+        mismatchMsg = `Content mismatch: Returned ${userRows.length} rows, but row values or projected columns differ from expected solution.`;
+      }
+      state.testResults[key] = {
+        passed: false,
+        userRows,
+        expRows,
+        userCols,
+        expCols,
+        message: mismatchMsg
+      };
+    }
+
+    init();
+  }
+
+  // ===========================================================================
+  // FAANG MOCK INTERVIEW SIMULATOR CONTROLLERS
+  // ===========================================================================
+  function openMockInterview(phaseId) {
+    const phase = getPhase(phaseId);
+    if (!phase || !phase.interviewDefense) return;
+
+    if (state.mockInterview.timer) {
+      clearInterval(state.mockInterview.timer);
+    }
+
+    state.mockInterview = {
+      active: true,
+      phaseId: phase.id,
+      timeLeft: 45,
+      timer: null,
+      text: '',
+      detectedKeywords: [],
+      score: null,
+      seniority: null,
+      feedback: ''
+    };
+
+    state.mockInterview.timer = setInterval(() => {
+      if (state.mockInterview.timeLeft > 0) {
+        state.mockInterview.timeLeft--;
+        const timerEl = document.getElementById('mockTimerCountdown');
+        if (timerEl) timerEl.textContent = `${state.mockInterview.timeLeft}s`;
+      } else {
+        clearInterval(state.mockInterview.timer);
+        submitMockAnswer();
+      }
+    }, 1000);
+
+    init();
+  }
+
+  function closeMockInterview() {
+    if (state.mockInterview.timer) {
+      clearInterval(state.mockInterview.timer);
+    }
+    state.mockInterview.active = false;
+    init();
+  }
+
+  function updateMockText(text) {
+    state.mockInterview.text = text;
+    const phase = getPhase(state.mockInterview.phaseId);
+    if (!phase || !phase.interviewDefense) return;
+
+    const powerKeywords = phase.interviewDefense.powerKeywords || [];
+    const lower = text.toLowerCase();
+    state.mockInterview.detectedKeywords = powerKeywords.filter(kw => lower.includes(kw.toLowerCase()));
+
+    // Update keyword badges dynamically without re-rendering entire modal
+    powerKeywords.forEach((kw, idx) => {
+      const badge = document.getElementById(`mockKwBadge_${idx}`);
+      if (badge) {
+        if (lower.includes(kw.toLowerCase())) {
+          badge.classList.add('detected');
+          badge.innerHTML = `✓ ${escapeHtml(kw)}`;
+        } else {
+          badge.classList.remove('detected');
+          badge.innerHTML = escapeHtml(kw);
+        }
+      }
+    });
+  }
+
+  function submitMockAnswer() {
+    if (state.mockInterview.timer) {
+      clearInterval(state.mockInterview.timer);
+    }
+
+    const phase = getPhase(state.mockInterview.phaseId);
+    const def = phase.interviewDefense || {};
+    const text = (state.mockInterview.text || '').trim();
+    const powerKeywords = def.powerKeywords || [];
+
+    const lower = text.toLowerCase();
+    const hitKeywords = powerKeywords.filter(kw => lower.includes(kw.toLowerCase()));
+    state.mockInterview.detectedKeywords = hitKeywords;
+
+    const words = text ? text.split(/\s+/).length : 0;
+    const kwRatio = powerKeywords.length ? (hitKeywords.length / powerKeywords.length) : 0;
+
+    let kwScore = Math.round(kwRatio * 50); // up to 50 pts
+    let depthScore = words >= 25 ? 30 : (words >= 15 ? 20 : Math.round(words * 1.2)); // up to 30 pts
+    let speedScore = state.mockInterview.timeLeft >= 5 ? 20 : 10; // up to 20 pts
+
+    const totalScore = Math.min(100, kwScore + depthScore + speedScore);
+    state.mockInterview.score = totalScore;
+
+    if (totalScore >= 80) {
+      state.mockInterview.seniority = '🏆 L6 Staff Data Engineer (Exceeds Bar)';
+      state.mockInterview.feedback = 'Outstanding technical clarity! You hit core architecture keywords and delivered a structured spoken defense.';
+      launchConfetti();
+    } else if (totalScore >= 60) {
+      state.mockInterview.seniority = '⚡ L5 Senior Data Engineer (Strong Hire)';
+      state.mockInterview.feedback = 'Solid spoken technical delivery. Consider articulating under-the-hood optimizer implications more explicitly.';
+    } else {
+      state.mockInterview.seniority = '🌱 L4 Data Engineer (Developing)';
+      state.mockInterview.feedback = 'Keep practicing the 30-second model answer. Make sure to weave in the power keywords naturally.';
+    }
+
+    init();
+  }
+
+  function renderMockInterviewModal() {
+    if (!state.mockInterview.active) return '';
+    const phase = getPhase(state.mockInterview.phaseId);
+    if (!phase) return '';
+    const def = phase.interviewDefense || {};
+    const keywords = def.powerKeywords || [];
+    const isEvaluated = state.mockInterview.score !== null;
+
+    return `
+      <div class="course-modal-backdrop" onclick="if(event.target === this) window.MasteryCourseEngine.closeMockInterview()">
+        <div class="mock-modal-card">
+          <div class="mock-modal-header">
+            <div>
+              <span class="course-pill-tag">FAANG Technical Screening Room</span>
+              <h3 style="margin: 4px 0 0 0; font-size: 15px;">Topic ${phase.seq}: ${phase.title}</h3>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span class="mock-timer-chip">
+                <span>⏱️</span>
+                <span id="mockTimerCountdown">${state.mockInterview.timeLeft}s</span>
+              </span>
+              <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.closeMockInterview()">✕</button>
+            </div>
+          </div>
+
+          <div class="mock-modal-body">
+            <div style="background: var(--bg-card-subtle); padding: 12px 14px; border-radius: 8px; border-left: 4px solid var(--accent); margin-bottom: 12px;">
+              <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--accent); margin-bottom: 4px;">
+                💼 Senior FAANG Interviewer Prompt:
+              </div>
+              <div style="font-size: 13.5px; font-weight: 600; color: var(--text-primary); line-height: 1.5;">
+                "${escapeHtml(def.exactQuestion || 'How would you defend this SQL design decision in production?')}"
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">
+                Real-Time Power Keyword Detector (Speak or type these into your answer):
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;">
+                ${keywords.map((kw, idx) => {
+                  const detected = state.mockInterview.detectedKeywords.includes(kw);
+                  return `<span id="mockKwBadge_${idx}" class="keyword-detect-badge ${detected ? 'detected' : ''}">${detected ? '✓ ' : ''}${escapeHtml(kw)}</span>`;
+                }).join('')}
+              </div>
+            </div>
+
+            <label style="font-size: 11.5px; font-weight: 700; color: var(--text-secondary);">
+              Your Verbal Defense Answer (Type or Dictate):
+            </label>
+            <textarea id="mockAnswerInput" class="mock-answer-textarea" placeholder="Speak your defense aloud or type it here... Drop the power keywords naturally..." oninput="window.MasteryCourseEngine.updateMockText(this.value)">${escapeHtml(state.mockInterview.text)}</textarea>
+
+            ${!isEvaluated ? `
+              <button class="case-solve-cta" style="margin-top: 14px; width: 100%; justify-content: center;" onclick="window.MasteryCourseEngine.submitMockAnswer()">
+                <span>🚀 Submit for FAANG Evaluation</span>
+              </button>
+            ` : `
+              <div class="mock-score-banner">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 16px; font-weight: 800; color: var(--text-primary);">Interview Rating: ${state.mockInterview.score}/100</span>
+                  <span class="course-pill-tag">${state.mockInterview.seniority}</span>
+                </div>
+                <p style="margin: 0 0 10px 0; font-size: 12.5px; color: var(--text-secondary); line-height: 1.5;">
+                  ${escapeHtml(state.mockInterview.feedback)}
+                </p>
+
+                <div style="padding: 10px; background: var(--bg-surface); border-radius: 6px; border: 1px solid var(--border-default); font-size: 12px;">
+                  <strong style="color: var(--accent);">Ideal 30-Second Model Answer:</strong>
+                  <p style="margin: 4px 0 0 0; color: var(--text-primary); font-style: italic;">
+                    "${escapeHtml(def.spokenAnswer)}"
+                  </p>
+                </div>
+              </div>
+
+              <button class="phase-nav-btn" style="margin-top: 12px; width: 100%;" onclick="window.MasteryCourseEngine.closeMockInterview()">
+                <span>Done Practicing</span>
+              </button>
+            `}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ===========================================================================
+  // CERTIFICATE & PORTFOLIO GENERATOR CONTROLLERS
+  // ===========================================================================
+  function openCertificate(tab) {
+    state.certificate.show = true;
+    state.certificate.tab = tab || 'cert';
+    init();
+  }
+
+  function closeCertificate() {
+    state.certificate.show = false;
+    init();
+  }
+
+  function setCertTab(tab) {
+    state.certificate.tab = tab;
+    init();
+  }
+
+  function updateCertName(name) {
+    state.certificate.name = name;
+  }
+
+  function copyPortfolioMarkdown(btn) {
+    const md = generatePortfolioMarkdownContent();
+    copyCode(btn, encodeURIComponent(md));
+  }
+
+  function generatePortfolioMarkdownContent() {
+    const name = state.certificate.name || 'Senior SQL Candidate';
+    const certId = state.certificate.certId;
+    const date = state.certificate.date;
+
+    return `# 🚀 SQL Relational Engineering & Production Case Study Portfolio
+**Candidate:** ${name}
+**Credential Verification ID:** ${certId}
+**Issue Date:** ${date}
+**Curriculum Progression:** 10/10 Core Topics Mastered (Beginner to Advanced)
+
+---
+
+## 🏛️ Verified Corporate Case Studies & Business Problem Solving
+${PHASES.map((p, idx) => {
+  const cs = p.caseStudy || {};
+  return `### ${p.seq}. ${p.title} (${cs.company || 'Enterprise'} • ${cs.role || 'Data Engineer'})
+- **Business Challenge:** ${cs.title || p.title}
+- **Production Schema:** \`${cs.targetTable || 'Production Table'}\`
+- **Architectural Solution:**
+\`\`\`sql
+${cs.recommendedQuery || p.problem.expectedSolutionSql}
+\`\`\`
+`;
+}).join('\n')}
+
+---
+
+## 🎙️ FAANG Technical Screening Readiness
+Certified in high-speed verbal architecture defense across:
+- Sargable B-Tree index traversal vs Full Table Scans
+- Three-Valued Logic (3VL) null safety and anti-join isolation
+- Columnar warehouse billing optimization (Snowflake/BigQuery byte pruning)
+- Deterministic keyset pagination & tiebreaker order specification
+- CTE inlining & Window frame partition optimization
+
+*Verified by SQL Foundry Relational Engine & Mastery Framework.*
+`;
+  }
+
+  function renderCertificateModal() {
+    if (!state.certificate.show) return '';
+    const completedCount = state.completedPhases.size;
+    const activeTab = state.certificate.tab || 'cert';
+
+    return `
+      <div class="course-modal-backdrop no-print" onclick="if(event.target === this) window.MasteryCourseEngine.closeCertificate()">
+        <div class="cert-modal-card">
+          <!-- Modal Tab Strip -->
+          <div class="mock-modal-header">
+            <div style="display: flex; gap: 8px;">
+              <button class="tier-tab-btn ${activeTab === 'cert' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setCertTab('cert')">
+                <span>📜 Verified Certificate</span>
+              </button>
+              <button class="tier-tab-btn ${activeTab === 'portfolio' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setCertTab('portfolio')">
+                <span>📁 GitHub Portfolio (README.md)</span>
+              </button>
+            </div>
+            <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.closeCertificate()">✕</button>
+          </div>
+
+          <div class="mock-modal-body" style="padding: 20px;">
+            ${activeTab === 'cert' ? `
+              <div class="cert-print-sheet">
+                <div class="cert-seal-badge">👑</div>
+                <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #b45309;">
+                  SQL Foundry Verified Relational Credential
+                </div>
+                <h1 style="font-family: 'Georgia', serif; font-size: 26px; color: #0f172a; margin: 10px 0 6px 0;">
+                  Certificate of Relational Engineering Mastery
+                </h1>
+                <p style="font-size: 13px; color: #64748b; margin: 0 0 16px 0;">
+                  This credential certifies full technical proficiency and architectural interview defense readiness across 10 progressive relational milestones.
+                </p>
+
+                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8;">Awarded to:</div>
+                <input type="text" class="cert-candidate-name-input" value="${escapeHtml(state.certificate.name)}" oninput="window.MasteryCourseEngine.updateCertName(this.value)" placeholder="Enter Candidate Full Name" />
+
+                <!-- 10 Competencies Pillars -->
+                <div class="cert-pillars-grid">
+                  <div class="cert-pillar-box">
+                    <strong>1. Column Projection</strong><br><span style="color: #64748b;">Explicit schemas &amp; math aliases</span>
+                  </div>
+                  <div class="cert-pillar-box">
+                    <strong>2. Predicate Filtering</strong><br><span style="color: #64748b;">Sargable 3VL index seek</span>
+                  </div>
+                  <div class="cert-pillar-box">
+                    <strong>3. Deterministic Sorting</strong><br><span style="color: #64748b;">Keyset pagination &amp; limits</span>
+                  </div>
+                  <div class="cert-pillar-box">
+                    <strong>4. Set Aggregation</strong><br><span style="color: #64748b;">Null-safe rollups &amp; counts</span>
+                  </div>
+                  <div class="cert-pillar-box">
+                    <strong>5. Group By &amp; Having</strong><br><span style="color: #64748b;">Single-value rule &amp; groups</span>
+                  </div>
+                  <div class="cert-pillar-box">
+                    <strong>6. Inner &amp; Left Joins</strong><br><span style="color: #64748b;">Anti-joins &amp; Cartesian safety</span>
+                  </div>
+                  <div class="cert-pillar-box">
+                    <strong>7. Sets &amp; Union All</strong><br><span style="color: #64748b;">Full outer emulation</span>
+                  </div>
+                  <div class="cert-pillar-box">
+                    <strong>8. Conditional Logic</strong><br><span style="color: #64748b;">Single-pass pivoting (CASE)</span>
+                  </div>
+                  <div class="cert-pillar-box">
+                    <strong>9. CTE Pipelines</strong><br><span style="color: #64748b;">Multi-step modular pipelines</span>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 24px; padding-top: 14px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #64748b;">
+                  <div>
+                    <strong>Verification ID:</strong> ${state.certificate.certId}<br>
+                    <strong>Issued:</strong> ${state.certificate.date}
+                  </div>
+                  <div style="text-align: right;">
+                    <strong>Verification Authority:</strong><br>
+                    <span>SQL Foundry Academic &amp; Relational Engine</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end;" class="no-print">
+                <button class="case-solve-cta" onclick="window.print()">
+                  <span>🖨️ Print / Save as PDF</span>
+                </button>
+              </div>
+            ` : `
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <div>
+                    <h4 style="margin: 0; font-size: 14px;">GitHub-Ready Markdown Portfolio Readme</h4>
+                    <span style="font-size: 12px; color: var(--text-secondary);">Copy this complete dossier directly into your GitHub repository or resume portfolio!</span>
+                  </div>
+                  <button class="case-solve-cta" onclick="window.MasteryCourseEngine.copyPortfolioMarkdown(this)">
+                    <span>📋 Copy Markdown Portfolio</span>
+                  </button>
+                </div>
+                <pre class="problem-starter-code" style="max-height: 420px; overflow-y: auto; background: var(--bg-card-subtle); padding: 14px;">${escapeHtml(generatePortfolioMarkdownContent())}</pre>
+              </div>
+            `}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   function updateProblemInput(phaseId, value) {
     state.problemInput[phaseId] = value;
   }
@@ -3258,7 +3866,19 @@ FROM Employees;`,
     solveInStudio,
     updateProblemInput,
     resetProblemCode,
-    verifyProblemSolution
+    verifyProblemSolution,
+    setProblemTier,
+    toggleTierSolution,
+    openMockInterview,
+    closeMockInterview,
+    updateMockText,
+    submitMockAnswer,
+    openCertificate,
+    closeCertificate,
+    setCertTab,
+    updateCertName,
+    copyPortfolioMarkdown,
+    launchConfetti
   };
 
 })();

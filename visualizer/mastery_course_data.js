@@ -273,11 +273,14 @@ window.MASTERY_COURSE_DATA = [
       "expectedSql": "SELECT DISTINCT \n  customer_id, \n  shipping_country, \n  order_amount\nFROM customer_orders\nWHERE shipping_country IN ('US', 'CA')\n  AND order_amount > 250.00\n  AND order_status = 'COMPLETED';"
     },
     "problem": {
-      "title": "HackerRank Problem 01: Revising the Select Query I",
+      "tierId": 1,
+      "tierName": "Tier 1: Warm-up",
       "difficulty": "easy",
-      "spec": "Query all columns for all American cities in the **CITY** table with populations larger than `100,000`. The CountryCode for America is `USA`.",
-      "starterSql": "-- Problem: Select all columns for American cities with Population > 100,000\nSELECT *\nFROM CITY\nWHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;",
+      "badgeClass": "easy",
+      "title": "Warm-up: Revising the Select Query I",
       "targetTable": "CITY",
+      "spec": "Query all columns for all American cities in the **CITY** table with populations larger than `100,000`. The CountryCode for America is `USA`.",
+      "starterSql": "-- Tier 1 Warm-up: Select all columns for American cities with Population > 100,000\nSELECT *\nFROM CITY\nWHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;",
       "expectedSolutionSql": "SELECT * FROM CITY WHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;",
       "expectedRowCount": 5
     },
@@ -294,7 +297,45 @@ window.MASTERY_COURSE_DATA = [
         "Step 02 WHERE vs Step 05 SELECT",
         "CTE Encapsulation"
       ]
-    }
+    },
+    "problems": [
+      {
+        "tierId": 1,
+        "tierName": "Tier 1: Warm-up",
+        "difficulty": "easy",
+        "badgeClass": "easy",
+        "title": "Warm-up: Revising the Select Query I",
+        "targetTable": "CITY",
+        "spec": "Query all columns for all American cities in the **CITY** table with populations larger than `100,000`. The CountryCode for America is `USA`.",
+        "starterSql": "-- Tier 1 Warm-up: Select all columns for American cities with Population > 100,000\nSELECT *\nFROM CITY\nWHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;",
+        "expectedSolutionSql": "SELECT * FROM CITY WHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;",
+        "expectedRowCount": 5
+      },
+      {
+        "tierId": 2,
+        "tierName": "Tier 2: Interview Standard",
+        "difficulty": "medium",
+        "badgeClass": "medium",
+        "title": "Interview Standard: Specific Column Projection & Math Expression",
+        "targetTable": "Employees",
+        "spec": "Query `first_name`, `department`, `salary`, and compute an annual estimated bonus column named `annual_bonus` as `salary * 0.15` for all employees in the 'Analytics' department.",
+        "starterSql": "-- Tier 2: Select first_name, department, salary, and calculate annual_bonus (salary * 0.15)\nSELECT first_name, department, salary, salary * 0.15 AS annual_bonus\nFROM Employees\nWHERE department = 'Analytics';",
+        "expectedSolutionSql": "SELECT first_name, department, salary, salary * 0.15 AS annual_bonus FROM Employees WHERE department = 'Analytics';",
+        "expectedRowCount": 2
+      },
+      {
+        "tierId": 3,
+        "tierName": "Tier 3: Senior Edge Case",
+        "difficulty": "hard",
+        "badgeClass": "hard",
+        "title": "Senior Edge Case: Multi-Column Distinct Projection with Monthly Pay",
+        "targetTable": "Employees",
+        "spec": "Query unique combinations of `department` and rounded monthly pay named `monthly_pay` (`salary / 12` rounded) from **Employees**, ordered alphabetically by department.",
+        "starterSql": "-- Tier 3: Deduplicate department and monthly_pay (salary / 12)\nSELECT DISTINCT department, ROUND(salary / 12, 0) AS monthly_pay\nFROM Employees\nORDER BY department ASC;",
+        "expectedSolutionSql": "SELECT DISTINCT department, ROUND(salary / 12, 0) AS monthly_pay FROM Employees ORDER BY department ASC;",
+        "expectedRowCount": 4
+      }
+    ]
   },
   {
     "id": "topic_02_where",
@@ -525,13 +566,16 @@ window.MASTERY_COURSE_DATA = [
       "expectedSql": "SELECT DISTINCT user_id, email\nFROM users\nWHERE MOD(user_id, 2) = 1\n  AND is_verified = TRUE;"
     },
     "problem": {
-      "title": "HackerRank Problem 02: Revising the Select Query II",
+      "tierId": 1,
+      "tierName": "Tier 1: Warm-up",
       "difficulty": "easy",
-      "spec": "Query the **NAME** field for all American cities in the **CITY** table with populations larger than `120,000`. The CountryCode for America is `USA`.",
-      "starterSql": "-- Problem: Select only the NAME column for American cities with Population > 120,000\nSELECT NAME\nFROM CITY\nWHERE COUNTRYCODE = 'USA' AND POPULATION > 120000;",
-      "targetTable": "CITY",
-      "expectedSolutionSql": "SELECT NAME FROM CITY WHERE COUNTRYCODE = 'USA' AND POPULATION > 120000;",
-      "expectedRowCount": 4
+      "badgeClass": "easy",
+      "title": "Warm-up: High-Comp Engineering Search",
+      "targetTable": "Employees",
+      "spec": "Find the `first_name` and `salary` of all staff in the 'Engineering' department earning greater than or equal to `120,000`.",
+      "starterSql": "-- Tier 1 Warm-up: Filter Engineering staff with salary >= 120,000\nSELECT first_name, salary\nFROM Employees\nWHERE department = 'Engineering' AND salary >= 120000;",
+      "expectedSolutionSql": "SELECT first_name, salary FROM Employees WHERE department = 'Engineering' AND salary >= 120000;",
+      "expectedRowCount": 1
     },
     "interviewDefense": {
       "question": "What is SARGability, and why does wrapping an indexed column in YEAR(created_at) = 2024 degrade query performance?",
@@ -546,7 +590,45 @@ window.MASTERY_COURSE_DATA = [
         "Full Table Scan (FTS)",
         "Boundary Range Isolation"
       ]
-    }
+    },
+    "problems": [
+      {
+        "tierId": 1,
+        "tierName": "Tier 1: Warm-up",
+        "difficulty": "easy",
+        "badgeClass": "easy",
+        "title": "Warm-up: High-Comp Engineering Search",
+        "targetTable": "Employees",
+        "spec": "Find the `first_name` and `salary` of all staff in the 'Engineering' department earning greater than or equal to `120,000`.",
+        "starterSql": "-- Tier 1 Warm-up: Filter Engineering staff with salary >= 120,000\nSELECT first_name, salary\nFROM Employees\nWHERE department = 'Engineering' AND salary >= 120000;",
+        "expectedSolutionSql": "SELECT first_name, salary FROM Employees WHERE department = 'Engineering' AND salary >= 120000;",
+        "expectedRowCount": 1
+      },
+      {
+        "tierId": 2,
+        "tierName": "Tier 2: Interview Standard",
+        "difficulty": "medium",
+        "badgeClass": "medium",
+        "title": "Interview Standard: Revising the Select Query II",
+        "targetTable": "CITY",
+        "spec": "Query only the **NAME** column for all American cities in the **CITY** table with populations larger than `120,000`. The CountryCode for America is `USA`.",
+        "starterSql": "-- Tier 2: Select NAME for American cities with Population > 120,000\nSELECT NAME\nFROM CITY\nWHERE COUNTRYCODE = 'USA' AND POPULATION > 120000;",
+        "expectedSolutionSql": "SELECT NAME FROM CITY WHERE COUNTRYCODE = 'USA' AND POPULATION > 120000;",
+        "expectedRowCount": 4
+      },
+      {
+        "tierId": 3,
+        "tierName": "Tier 3: Senior Edge Case",
+        "difficulty": "hard",
+        "badgeClass": "hard",
+        "title": "Senior Edge Case: Null-Safe Bonus & Salary Filter",
+        "targetTable": "Employees",
+        "spec": "Return all employees who either have an active bonus greater than `4000` OR have a base salary greater than `110,000`. Ensure employees with NULL bonuses are not accidentally dropped by the salary condition.",
+        "starterSql": "-- Tier 3: Null-safe boolean logic with parentheses\nSELECT first_name, department, salary, bonus\nFROM Employees\nWHERE (bonus IS NOT NULL AND bonus > 4000) OR salary > 110000;",
+        "expectedSolutionSql": "SELECT first_name, department, salary, bonus FROM Employees WHERE (bonus IS NOT NULL AND bonus > 4000) OR salary > 110000;",
+        "expectedRowCount": 3
+      }
+    ]
   },
   {
     "id": "topic_03_order_limit",
@@ -765,13 +847,16 @@ window.MASTERY_COURSE_DATA = [
       "expectedSql": "SELECT track_name, artist_name, stream_count\nFROM tracks\nWHERE release_year = 2024\nORDER BY stream_count DESC, track_name ASC\nLIMIT 5;"
     },
     "problem": {
-      "title": "HackerRank Problem 08: Weather Observation Station 5",
+      "tierId": 1,
+      "tierName": "Tier 1: Warm-up",
       "difficulty": "easy",
-      "spec": "Query the two cities in **STATION** with the shortest and longest **CITY** names, as well as their respective lengths (i.e.: number of characters in the name). If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically.",
-      "starterSql": "-- Problem: Find the shortest and longest CITY names and their lengths\n(SELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) ASC, CITY ASC LIMIT 1)\nUNION ALL\n(SELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) DESC, CITY ASC LIMIT 1);",
-      "targetTable": "STATION",
-      "expectedSolutionSql": "SELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) ASC, CITY ASC LIMIT 1;",
-      "expectedRowCount": 1
+      "badgeClass": "easy",
+      "title": "Warm-up: Top 3 Highest Earners",
+      "targetTable": "Employees",
+      "spec": "Select the top 3 highest earning employees (`first_name`, `department`, `salary`) ordered by salary descending.",
+      "starterSql": "-- Tier 1 Warm-up: Top 3 highest salaries\nSELECT first_name, department, salary\nFROM Employees\nORDER BY salary DESC\nLIMIT 3;",
+      "expectedSolutionSql": "SELECT first_name, department, salary FROM Employees ORDER BY salary DESC LIMIT 3;",
+      "expectedRowCount": 3
     },
     "interviewDefense": {
       "question": "Why does paginating a million-row table using LIMIT 20 OFFSET 500000 become progressively slower, and how do senior engineers fix it?",
@@ -786,7 +871,45 @@ window.MASTERY_COURSE_DATA = [
         "Deterministic B-Tree Seek",
         "O(log N) Cursor"
       ]
-    }
+    },
+    "problems": [
+      {
+        "tierId": 1,
+        "tierName": "Tier 1: Warm-up",
+        "difficulty": "easy",
+        "badgeClass": "easy",
+        "title": "Warm-up: Top 3 Highest Earners",
+        "targetTable": "Employees",
+        "spec": "Select the top 3 highest earning employees (`first_name`, `department`, `salary`) ordered by salary descending.",
+        "starterSql": "-- Tier 1 Warm-up: Top 3 highest salaries\nSELECT first_name, department, salary\nFROM Employees\nORDER BY salary DESC\nLIMIT 3;",
+        "expectedSolutionSql": "SELECT first_name, department, salary FROM Employees ORDER BY salary DESC LIMIT 3;",
+        "expectedRowCount": 3
+      },
+      {
+        "tierId": 2,
+        "tierName": "Tier 2: Interview Standard",
+        "difficulty": "medium",
+        "badgeClass": "medium",
+        "title": "Interview Standard: Weather Observation Station 5",
+        "targetTable": "STATION",
+        "spec": "Query the shortest **CITY** name and its length from the **STATION** table. If there are ties, choose the one that comes first alphabetically.",
+        "starterSql": "-- Tier 2: Shortest city name and its length with alphabetical tiebreaker\nSELECT CITY, LENGTH(CITY)\nFROM STATION\nORDER BY LENGTH(CITY) ASC, CITY ASC\nLIMIT 1;",
+        "expectedSolutionSql": "SELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) ASC, CITY ASC LIMIT 1;",
+        "expectedRowCount": 1
+      },
+      {
+        "tierId": 3,
+        "tierName": "Tier 3: Senior Edge Case",
+        "difficulty": "hard",
+        "badgeClass": "hard",
+        "title": "Senior Edge Case: Deterministic Pagination Keyset",
+        "targetTable": "Employees",
+        "spec": "Select 2 employees earning `115,000` or less using a deterministic sort order (`salary DESC, id ASC`) to prevent pagination drift.",
+        "starterSql": "-- Tier 3: Deterministic pagination query\nSELECT id, first_name, salary\nFROM Employees\nWHERE salary <= 115000\nORDER BY salary DESC, id ASC\nLIMIT 2;",
+        "expectedSolutionSql": "SELECT id, first_name, salary FROM Employees WHERE salary <= 115000 ORDER BY salary DESC, id ASC LIMIT 2;",
+        "expectedRowCount": 2
+      }
+    ]
   },
   {
     "id": "topic_04_aggregates",
@@ -993,12 +1116,15 @@ window.MASTERY_COURSE_DATA = [
       "expectedSql": "SELECT \n  COUNT(*)                              AS total_listings,\n  COUNT(DISTINCT host_id)               AS unique_hosts,\n  ROUND(AVG(price_per_night), 2)        AS avg_price,\n  MAX(price_per_night) - MIN(price_per_night) AS price_spread\nFROM listings\nWHERE state = 'CA' AND is_active = TRUE;"
     },
     "problem": {
-      "title": "HackerRank Problem 15: Weather Observation Station 4",
+      "tierId": 1,
+      "tierName": "Tier 1: Warm-up",
       "difficulty": "easy",
-      "spec": "Find the difference between the total number of **CITY** entries in the table and the number of distinct **CITY** entries in the table.",
-      "starterSql": "-- Problem: Find difference between total CITY count and distinct CITY count\nSELECT COUNT(CITY) - COUNT(DISTINCT CITY) AS duplicate_count\nFROM STATION;",
-      "targetTable": "STATION",
-      "expectedSolutionSql": "SELECT COUNT(CITY) - COUNT(DISTINCT CITY) AS duplicate_count FROM STATION;",
+      "badgeClass": "easy",
+      "title": "Warm-up: Executive Payroll Summary",
+      "targetTable": "Employees",
+      "spec": "Calculate `total_staff` (count of rows), `total_payroll` (sum of salary), and `avg_salary` across the entire company.",
+      "starterSql": "-- Tier 1 Warm-up: Company-wide aggregate metrics\nSELECT COUNT(*) AS total_staff, SUM(salary) AS total_payroll, AVG(salary) AS avg_salary\nFROM Employees;",
+      "expectedSolutionSql": "SELECT COUNT(*) AS total_staff, SUM(salary) AS total_payroll, AVG(salary) AS avg_salary FROM Employees;",
       "expectedRowCount": 1
     },
     "interviewDefense": {
@@ -1014,7 +1140,45 @@ window.MASTERY_COURSE_DATA = [
         "Empty-Set Nullity",
         "Zero-Safe COALESCE Wrap"
       ]
-    }
+    },
+    "problems": [
+      {
+        "tierId": 1,
+        "tierName": "Tier 1: Warm-up",
+        "difficulty": "easy",
+        "badgeClass": "easy",
+        "title": "Warm-up: Executive Payroll Summary",
+        "targetTable": "Employees",
+        "spec": "Calculate `total_staff` (count of rows), `total_payroll` (sum of salary), and `avg_salary` across the entire company.",
+        "starterSql": "-- Tier 1 Warm-up: Company-wide aggregate metrics\nSELECT COUNT(*) AS total_staff, SUM(salary) AS total_payroll, AVG(salary) AS avg_salary\nFROM Employees;",
+        "expectedSolutionSql": "SELECT COUNT(*) AS total_staff, SUM(salary) AS total_payroll, AVG(salary) AS avg_salary FROM Employees;",
+        "expectedRowCount": 1
+      },
+      {
+        "tierId": 2,
+        "tierName": "Tier 2: Interview Standard",
+        "difficulty": "medium",
+        "badgeClass": "medium",
+        "title": "Interview Standard: Weather Observation Station 4",
+        "targetTable": "STATION",
+        "spec": "Find the difference between the total number of **CITY** entries in the table and the number of distinct **CITY** entries.",
+        "starterSql": "-- Tier 2: Difference between total count and distinct count\nSELECT COUNT(CITY) - COUNT(DISTINCT CITY) AS duplicate_count\nFROM STATION;",
+        "expectedSolutionSql": "SELECT COUNT(CITY) - COUNT(DISTINCT CITY) AS duplicate_count FROM STATION;",
+        "expectedRowCount": 1
+      },
+      {
+        "tierId": 3,
+        "tierName": "Tier 3: Senior Edge Case",
+        "difficulty": "hard",
+        "badgeClass": "hard",
+        "title": "Senior Edge Case: Null-Safe Empty-Set Financial Sum",
+        "targetTable": "Orders",
+        "spec": "Sum `total_amount` as `settled_volume` for all orders with status 'COMPLETED' and amount > 500,000. Wrap in `COALESCE` to guarantee a 0 response if no orders qualify.",
+        "starterSql": "-- Tier 3: Null-safe aggregate return value\nSELECT COALESCE(SUM(amount), 0) AS settled_volume\nFROM Orders\nWHERE status = 'COMPLETED';",
+        "expectedSolutionSql": "SELECT COALESCE(SUM(amount), 0) AS settled_volume FROM Orders WHERE status = 'COMPLETED';",
+        "expectedRowCount": 1
+      }
+    ]
   },
   {
     "id": "topic_05_groupby_having",
@@ -1214,13 +1378,16 @@ window.MASTERY_COURSE_DATA = [
       "expectedSql": "SELECT \n  city_id,\n  COUNT(*)                       AS active_drivers,\n  SUM(completed_trips)           AS total_city_trips,\n  ROUND(AVG(rating), 2)          AS avg_city_rating\nFROM drivers\nGROUP BY city_id\nHAVING SUM(completed_trips) >= 500\n   AND AVG(rating) >= 4.75;"
     },
     "problem": {
-      "title": "HackerRank Problem 25: Top Earners",
+      "tierId": 1,
+      "tierName": "Tier 1: Warm-up",
       "difficulty": "easy",
-      "spec": "We define an employee's total earnings to be their monthly `salary * months` worked. Write a query to find the maximum total earnings for all employees in the **Employee** table, as well as the total number of employees who have maximum total earnings.",
-      "starterSql": "-- Problem: Find maximum total earnings (months * salary) and how many employees share it\nSELECT (months * salary) AS total_earnings, COUNT(*)\nFROM Employee\nGROUP BY total_earnings\nORDER BY total_earnings DESC\nLIMIT 1;",
-      "targetTable": "Employee",
-      "expectedSolutionSql": "SELECT (months * salary) AS total_earnings, COUNT(*) FROM Employee GROUP BY total_earnings ORDER BY total_earnings DESC LIMIT 1;",
-      "expectedRowCount": 1
+      "badgeClass": "easy",
+      "title": "Warm-up: Department Headcount & Average Pay",
+      "targetTable": "Employees",
+      "spec": "Group by `department` and calculate `staff_count` and rounded `avg_salary` for each department.",
+      "starterSql": "-- Tier 1 Warm-up: Basic department grouping\nSELECT department, COUNT(*) AS staff_count, ROUND(AVG(salary), 0) AS avg_salary\nFROM Employees\nGROUP BY department;",
+      "expectedSolutionSql": "SELECT department, COUNT(*) AS staff_count, ROUND(AVG(salary), 0) AS avg_salary FROM Employees GROUP BY department;",
+      "expectedRowCount": 3
     },
     "interviewDefense": {
       "question": "When should you filter in WHERE versus HAVING, and what is the physical performance impact of filtering non-aggregated columns in HAVING?",
@@ -1235,7 +1402,45 @@ window.MASTERY_COURSE_DATA = [
         "Memory Buffer Allocation",
         "Disk Spill Prevention"
       ]
-    }
+    },
+    "problems": [
+      {
+        "tierId": 1,
+        "tierName": "Tier 1: Warm-up",
+        "difficulty": "easy",
+        "badgeClass": "easy",
+        "title": "Warm-up: Department Headcount & Average Pay",
+        "targetTable": "Employees",
+        "spec": "Group by `department` and calculate `staff_count` and rounded `avg_salary` for each department.",
+        "starterSql": "-- Tier 1 Warm-up: Basic department grouping\nSELECT department, COUNT(*) AS staff_count, ROUND(AVG(salary), 0) AS avg_salary\nFROM Employees\nGROUP BY department;",
+        "expectedSolutionSql": "SELECT department, COUNT(*) AS staff_count, ROUND(AVG(salary), 0) AS avg_salary FROM Employees GROUP BY department;",
+        "expectedRowCount": 3
+      },
+      {
+        "tierId": 2,
+        "tierName": "Tier 2: Interview Standard",
+        "difficulty": "medium",
+        "badgeClass": "medium",
+        "title": "Interview Standard: Top Earners",
+        "targetTable": "Employee",
+        "spec": "Find the maximum total earnings for all employees (`months * salary`) and the number of employees who have that maximum earnings.",
+        "starterSql": "-- Tier 2: Max product earnings group and count\nSELECT (months * salary) AS total_earnings, COUNT(*)\nFROM Employee\nGROUP BY total_earnings\nORDER BY total_earnings DESC\nLIMIT 1;",
+        "expectedSolutionSql": "SELECT (months * salary) AS total_earnings, COUNT(*) FROM Employee GROUP BY total_earnings ORDER BY total_earnings DESC LIMIT 1;",
+        "expectedRowCount": 1
+      },
+      {
+        "tierId": 3,
+        "tierName": "Tier 3: Senior Edge Case",
+        "difficulty": "hard",
+        "badgeClass": "hard",
+        "title": "Senior Edge Case: Combining WHERE and HAVING Filters",
+        "targetTable": "Employees",
+        "spec": "Filter employees with salary >= 90,000 in WHERE, group by `department`, and only include departments having 2 or more qualifying employees in HAVING.",
+        "starterSql": "-- Tier 3: WHERE row filter combined with HAVING group filter\nSELECT department, COUNT(*) AS qualifying_staff, AVG(salary) AS avg_sal\nFROM Employees\nWHERE salary >= 90000\nGROUP BY department\nHAVING COUNT(*) >= 2;",
+        "expectedSolutionSql": "SELECT department, COUNT(*) AS qualifying_staff, AVG(salary) AS avg_sal FROM Employees WHERE salary >= 90000 GROUP BY department HAVING COUNT(*) >= 2;",
+        "expectedRowCount": 1
+      }
+    ]
   },
   {
     "id": "topic_06_joins",
@@ -1481,11 +1686,14 @@ window.MASTERY_COURSE_DATA = [
       "expectedSql": "SELECT \n  s.sub_id,\n  s.email,\n  s.tier\nFROM subscribers s\nLEFT JOIN watch_history w \n  ON s.sub_id = w.sub_id \n AND w.watch_date >= '2025-10-01'\nWHERE s.is_active = TRUE\n  AND w.sub_id IS NULL;"
     },
     "problem": {
-      "title": "HackerRank Problem 35: Asian Population",
+      "tierId": 1,
+      "tierName": "Tier 1: Warm-up",
       "difficulty": "easy",
-      "spec": "Given the **CITY** and **COUNTRY** tables, query the sum of the populations of all cities where the **CONTINENT** is `'Asia'`. Note: `CITY.CountryCode` and `COUNTRY.Code` are matching key columns.",
-      "starterSql": "-- Problem: Query the sum of populations of all cities where Continent is 'Asia'\nSELECT SUM(CITY.POPULATION)\nFROM CITY\nINNER JOIN COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE\nWHERE COUNTRY.CONTINENT = 'Asia';",
+      "badgeClass": "easy",
+      "title": "Warm-up: Asian Population Summation",
       "targetTable": "CITY",
+      "spec": "Query the sum of the populations of all cities where the **CONTINENT** is 'Asia' using an INNER JOIN between CITY and COUNTRY.",
+      "starterSql": "-- Tier 1 Warm-up: Inner join continent filter\nSELECT SUM(CITY.POPULATION)\nFROM CITY\nINNER JOIN COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE\nWHERE COUNTRY.CONTINENT = 'Asia';",
       "expectedSolutionSql": "SELECT SUM(CITY.POPULATION) FROM CITY INNER JOIN COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE WHERE COUNTRY.CONTINENT = 'Asia';",
       "expectedRowCount": 1
     },
@@ -1502,7 +1710,45 @@ window.MASTERY_COURSE_DATA = [
         "NULL Padding",
         "Three-Valued Logic UNKNOWN"
       ]
-    }
+    },
+    "problems": [
+      {
+        "tierId": 1,
+        "tierName": "Tier 1: Warm-up",
+        "difficulty": "easy",
+        "badgeClass": "easy",
+        "title": "Warm-up: Asian Population Summation",
+        "targetTable": "CITY",
+        "spec": "Query the sum of the populations of all cities where the **CONTINENT** is 'Asia' using an INNER JOIN between CITY and COUNTRY.",
+        "starterSql": "-- Tier 1 Warm-up: Inner join continent filter\nSELECT SUM(CITY.POPULATION)\nFROM CITY\nINNER JOIN COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE\nWHERE COUNTRY.CONTINENT = 'Asia';",
+        "expectedSolutionSql": "SELECT SUM(CITY.POPULATION) FROM CITY INNER JOIN COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE WHERE COUNTRY.CONTINENT = 'Asia';",
+        "expectedRowCount": 1
+      },
+      {
+        "tierId": 2,
+        "tierName": "Tier 2: Interview Standard",
+        "difficulty": "medium",
+        "badgeClass": "medium",
+        "title": "Interview Standard: Customer Order Rollup (Preserving Inactive Accounts)",
+        "targetTable": "Customers",
+        "spec": "Perform a LEFT JOIN between **Customers** and **Orders** to return each customer's name, total order count, and total spent. Inactive customers should show 0 spent.",
+        "starterSql": "-- Tier 2: Left join with COALESCE aggregation\nSELECT c.name, COUNT(o.id) AS order_count, COALESCE(SUM(o.amount), 0) AS total_spent\nFROM Customers c\nLEFT JOIN Orders o ON c.id = o.customer_id\nGROUP BY c.name;",
+        "expectedSolutionSql": "SELECT c.name, COUNT(o.id) AS order_count, COALESCE(SUM(o.amount), 0) AS total_spent FROM Customers c LEFT JOIN Orders o ON c.id = o.customer_id GROUP BY c.name;",
+        "expectedRowCount": 4
+      },
+      {
+        "tierId": 3,
+        "tierName": "Tier 3: Senior Edge Case",
+        "difficulty": "hard",
+        "badgeClass": "hard",
+        "title": "Senior Edge Case: High-Speed Anti-Join",
+        "targetTable": "Customers",
+        "spec": "Find all customers who have NEVER placed an order using the canonical LEFT JOIN + IS NULL anti-join pattern.",
+        "starterSql": "-- Tier 3: Relational anti-join pattern\nSELECT c.id, c.name, c.email\nFROM Customers c\nLEFT JOIN Orders o ON c.id = o.customer_id\nWHERE o.id IS NULL;",
+        "expectedSolutionSql": "SELECT c.id, c.name, c.email FROM Customers c LEFT JOIN Orders o ON c.id = o.customer_id WHERE o.id IS NULL;",
+        "expectedRowCount": 1
+      }
+    ]
   },
   {
     "id": "topic_07_adv_joins_union",
@@ -1720,13 +1966,16 @@ window.MASTERY_COURSE_DATA = [
       "expectedSql": "SELECT 'RETAIL' AS sales_channel, order_id, cust_id, total_usd, order_date\nFROM retail_orders\nUNION ALL\nSELECT 'ONLINE' AS sales_channel, order_id, cust_id, total_usd, order_date\nFROM online_orders\nORDER BY order_date DESC;"
     },
     "problem": {
-      "title": "HackerRank Problem 40: Symmetric Pairs",
-      "difficulty": "medium",
-      "spec": "Two pairs (X1, Y1) and (X2, Y2) are said to be symmetric pairs if X1 = Y2 and X2 = Y1. Write a query to output all such symmetric pairs in ascending order by the value of X. List the rows such that X1 <= Y1.",
-      "starterSql": "-- Problem: Find all symmetric pairs (X1 = Y2 AND Y1 = X2) ordered by X\nSELECT f1.X, f1.Y\nFROM Functions f1\nINNER JOIN Functions f2 ON f1.X = f2.Y AND f1.Y = f2.X\nGROUP BY f1.X, f1.Y\nHAVING COUNT(*) > 1 OR f1.X < f1.Y\nORDER BY f1.X ASC;",
-      "targetTable": "Functions",
-      "expectedSolutionSql": "SELECT f1.X, f1.Y FROM Functions f1 INNER JOIN Functions f2 ON f1.X = f2.Y AND f1.Y = f2.X GROUP BY f1.X, f1.Y HAVING COUNT(*) > 1 OR f1.X < f1.Y ORDER BY f1.X ASC;",
-      "expectedRowCount": 2
+      "tierId": 1,
+      "tierName": "Tier 1: Warm-up",
+      "difficulty": "easy",
+      "badgeClass": "easy",
+      "title": "Warm-up: Contact Stream Concatenation via UNION ALL",
+      "targetTable": "Customers",
+      "spec": "Stack customer emails and executive emails into a unified contact stream using UNION ALL.",
+      "starterSql": "-- Tier 1 Warm-up: High-performance UNION ALL stack\nSELECT email, 'Customer' AS role FROM Customers\nUNION ALL\nSELECT email, 'Executive' AS role FROM ExecutiveReview;",
+      "expectedSolutionSql": "SELECT email, 'Customer' AS role FROM Customers UNION ALL SELECT email, 'Executive' AS role FROM ExecutiveReview;",
+      "expectedRowCount": 6
     },
     "interviewDefense": {
       "question": "Under what circumstances would you choose UNION ALL over UNION, and why do top engineering teams ban RIGHT JOIN in production style guides?",
@@ -1741,7 +1990,45 @@ window.MASTERY_COURSE_DATA = [
         "Disjoint Partitioning",
         "Left-to-Right Mental Model"
       ]
-    }
+    },
+    "problems": [
+      {
+        "tierId": 1,
+        "tierName": "Tier 1: Warm-up",
+        "difficulty": "easy",
+        "badgeClass": "easy",
+        "title": "Warm-up: Contact Stream Concatenation via UNION ALL",
+        "targetTable": "Customers",
+        "spec": "Stack customer emails and executive emails into a unified contact stream using UNION ALL.",
+        "starterSql": "-- Tier 1 Warm-up: High-performance UNION ALL stack\nSELECT email, 'Customer' AS role FROM Customers\nUNION ALL\nSELECT email, 'Executive' AS role FROM ExecutiveReview;",
+        "expectedSolutionSql": "SELECT email, 'Customer' AS role FROM Customers UNION ALL SELECT email, 'Executive' AS role FROM ExecutiveReview;",
+        "expectedRowCount": 6
+      },
+      {
+        "tierId": 2,
+        "tierName": "Tier 2: Interview Standard",
+        "difficulty": "medium",
+        "badgeClass": "medium",
+        "title": "Interview Standard: Symmetric Pairs",
+        "targetTable": "Functions",
+        "spec": "Find all symmetric pairs (X1 = Y2 AND Y1 = X2) where X1 <= Y1, ordered by X1 ascending.",
+        "starterSql": "-- Tier 2: Self-join symmetric pairs query\nSELECT f1.X, f1.Y\nFROM Functions f1\nINNER JOIN Functions f2 ON f1.X = f2.Y AND f1.Y = f2.X\nGROUP BY f1.X, f1.Y\nHAVING COUNT(*) > 1 OR f1.X < f1.Y\nORDER BY f1.X ASC;",
+        "expectedSolutionSql": "SELECT f1.X, f1.Y FROM Functions f1 INNER JOIN Functions f2 ON f1.X = f2.Y AND f1.Y = f2.X GROUP BY f1.X, f1.Y HAVING COUNT(*) > 1 OR f1.X < f1.Y ORDER BY f1.X ASC;",
+        "expectedRowCount": 2
+      },
+      {
+        "tierId": 3,
+        "tierName": "Tier 3: Senior Edge Case",
+        "difficulty": "hard",
+        "badgeClass": "hard",
+        "title": "Senior Edge Case: Emulating FULL OUTER JOIN in MySQL/SQLite",
+        "targetTable": "Customers",
+        "spec": "Simulate a FULL OUTER JOIN between Customers and Orders by uniting a LEFT JOIN with unmatched rows from the right table.",
+        "starterSql": "-- Tier 3: Emulated Full Outer Join\nSELECT c.id AS customer_id, o.id AS order_id FROM Customers c LEFT JOIN Orders o ON c.id = o.customer_id\nUNION\nSELECT c.id AS customer_id, o.id AS order_id FROM Orders o LEFT JOIN Customers c ON o.customer_id = c.id WHERE c.id IS NULL;",
+        "expectedSolutionSql": "SELECT c.id AS customer_id, o.id AS order_id FROM Customers c LEFT JOIN Orders o ON c.id = o.customer_id UNION SELECT c.id AS customer_id, o.id AS order_id FROM Orders o LEFT JOIN Customers c ON o.customer_id = c.id WHERE c.id IS NULL;",
+        "expectedRowCount": 5
+      }
+    ]
   },
   {
     "id": "topic_08_case_when",
@@ -1950,12 +2237,15 @@ window.MASTERY_COURSE_DATA = [
       "expectedSql": "SELECT \n  merchant_id,\n  COUNT(*) AS total_disputes,\n  SUM(CASE WHEN amount_usd >= 1000 THEN amount_usd ELSE 0 END) AS high_risk_disputed_usd,\n  SUM(CASE WHEN amount_usd < 1000 AND amount_usd >= 250 THEN amount_usd ELSE 0 END) AS med_risk_disputed_usd,\n  SUM(CASE WHEN amount_usd < 250 THEN amount_usd ELSE 0 END) AS low_risk_disputed_usd\nFROM chargebacks\nGROUP BY merchant_id;"
     },
     "problem": {
-      "title": "HackerRank Problem 45: Type of Triangle",
+      "tierId": 1,
+      "tierName": "Tier 1: Warm-up",
       "difficulty": "easy",
-      "spec": "Write a query identifying the type of each record in the **TRIANGLES** table using its three side lengths: Equilateral, Isosceles, Scalene, or Not A Triangle.",
-      "starterSql": "-- Problem: Classify triangle records as Equilateral, Isosceles, Scalene, or Not A Triangle\nSELECT CASE\n  WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'\n  WHEN A = B AND B = C THEN 'Equilateral'\n  WHEN A = B OR B = C OR A = C THEN 'Isosceles'\n  ELSE 'Scalene'\nEND AS triangle_type\nFROM TRIANGLES;",
-      "targetTable": "TRIANGLES",
-      "expectedSolutionSql": "SELECT CASE WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle' WHEN A = B AND B = C THEN 'Equilateral' WHEN A = B OR B = C OR A = C THEN 'Isosceles' ELSE 'Scalene' END AS triangle_type FROM TRIANGLES;",
+      "badgeClass": "easy",
+      "title": "Warm-up: Salary Tier Labeling",
+      "targetTable": "Employees",
+      "spec": "Classify employees into 'Executive Tier' (salary >= 115k), 'Senior Tier' (salary >= 100k), and 'Core Tier' using a CASE WHEN expression.",
+      "starterSql": "-- Tier 1 Warm-up: Categorical classification with explicit ELSE\nSELECT first_name, salary, CASE\n  WHEN salary >= 115000 THEN 'Executive Tier'\n  WHEN salary >= 100000 THEN 'Senior Tier'\n  ELSE 'Core Tier'\nEND AS tier_label\nFROM Employees;",
+      "expectedSolutionSql": "SELECT first_name, salary, CASE WHEN salary >= 115000 THEN 'Executive Tier' WHEN salary >= 100000 THEN 'Senior Tier' ELSE 'Core Tier' END AS tier_label FROM Employees;",
       "expectedRowCount": 4
     },
     "interviewDefense": {
@@ -1971,7 +2261,45 @@ window.MASTERY_COURSE_DATA = [
         "Zero-Join Overhead",
         "Linear I/O Complexity"
       ]
-    }
+    },
+    "problems": [
+      {
+        "tierId": 1,
+        "tierName": "Tier 1: Warm-up",
+        "difficulty": "easy",
+        "badgeClass": "easy",
+        "title": "Warm-up: Salary Tier Labeling",
+        "targetTable": "Employees",
+        "spec": "Classify employees into 'Executive Tier' (salary >= 115k), 'Senior Tier' (salary >= 100k), and 'Core Tier' using a CASE WHEN expression.",
+        "starterSql": "-- Tier 1 Warm-up: Categorical classification with explicit ELSE\nSELECT first_name, salary, CASE\n  WHEN salary >= 115000 THEN 'Executive Tier'\n  WHEN salary >= 100000 THEN 'Senior Tier'\n  ELSE 'Core Tier'\nEND AS tier_label\nFROM Employees;",
+        "expectedSolutionSql": "SELECT first_name, salary, CASE WHEN salary >= 115000 THEN 'Executive Tier' WHEN salary >= 100000 THEN 'Senior Tier' ELSE 'Core Tier' END AS tier_label FROM Employees;",
+        "expectedRowCount": 4
+      },
+      {
+        "tierId": 2,
+        "tierName": "Tier 2: Interview Standard",
+        "difficulty": "medium",
+        "badgeClass": "medium",
+        "title": "Interview Standard: Type of Triangle",
+        "targetTable": "TRIANGLES",
+        "spec": "Classify each record in the **TRIANGLES** table as 'Equilateral', 'Isosceles', 'Scalene', or 'Not A Triangle'.",
+        "starterSql": "-- Tier 2: Triangle geometric classification\nSELECT CASE\n  WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'\n  WHEN A = B AND B = C THEN 'Equilateral'\n  WHEN A = B OR B = C OR A = C THEN 'Isosceles'\n  ELSE 'Scalene'\nEND AS triangle_type\nFROM TRIANGLES;",
+        "expectedSolutionSql": "SELECT CASE WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle' WHEN A = B AND B = C THEN 'Equilateral' WHEN A = B OR B = C OR A = C THEN 'Isosceles' ELSE 'Scalene' END AS triangle_type FROM TRIANGLES;",
+        "expectedRowCount": 4
+      },
+      {
+        "tierId": 3,
+        "tierName": "Tier 3: Senior Edge Case",
+        "difficulty": "hard",
+        "badgeClass": "hard",
+        "title": "Senior Edge Case: Single-Pass Conditional Pivot Table",
+        "targetTable": "Employees",
+        "spec": "Using conditional aggregation (`SUM(CASE ...)`), count how many staff earn >= 100k vs < 100k per department in a single pass.",
+        "starterSql": "-- Tier 3: Conditional aggregation pivot\nSELECT department,\n  SUM(CASE WHEN salary >= 100000 THEN 1 ELSE 0 END) AS high_earners,\n  SUM(CASE WHEN salary < 100000 THEN 1 ELSE 0 END) AS standard_earners\nFROM Employees\nGROUP BY department;",
+        "expectedSolutionSql": "SELECT department, SUM(CASE WHEN salary >= 100000 THEN 1 ELSE 0 END) AS high_earners, SUM(CASE WHEN salary < 100000 THEN 1 ELSE 0 END) AS standard_earners FROM Employees GROUP BY department;",
+        "expectedRowCount": 3
+      }
+    ]
   },
   {
     "id": "topic_09_ctes",
@@ -2172,13 +2500,16 @@ window.MASTERY_COURSE_DATA = [
       "expectedSql": "WITH PortfolioVolumes AS (\n  SELECT portfolio_id, SUM(trade_amount) AS total_volume\n  FROM trades\n  WHERE trade_date >= '2026-01-01'\n  GROUP BY portfolio_id\n),\nFirmBenchmark AS (\n  SELECT AVG(total_volume) AS avg_firm_volume\n  FROM PortfolioVolumes\n)\nSELECT \n  pv.portfolio_id,\n  pv.total_volume,\n  ROUND(fb.avg_firm_volume, 2) AS firm_avg_volume\nFROM PortfolioVolumes pv\nCROSS JOIN FirmBenchmark fb\nWHERE pv.total_volume > (fb.avg_firm_volume * 2)\nORDER BY pv.total_volume DESC;"
     },
     "problem": {
-      "title": "HackerRank Problem 50: Challenges",
-      "difficulty": "medium",
-      "spec": "Julia asked her students to create some coding challenges. Write a query to print the hacker_id, name, and total number of challenges created by each student, ordered by total challenges descending. If more than one student created the same number of challenges and the count is less than the maximum created, exclude those students.",
-      "starterSql": "-- Problem: Challenges completed per hacker with ties handling\nWITH ChallengeCounts AS (\n  SELECT hacker_id, COUNT(challenge_id) AS total_challenges\n  FROM Challenges\n  GROUP BY hacker_id\n)\nSELECT h.hacker_id, h.name, c.total_challenges\nFROM Hackers h\nJOIN ChallengeCounts c ON h.hacker_id = c.hacker_id\nORDER BY c.total_challenges DESC, h.hacker_id ASC;",
-      "targetTable": "Hackers",
-      "expectedSolutionSql": "WITH ChallengeCounts AS (SELECT hacker_id, COUNT(challenge_id) AS total_challenges FROM Challenges GROUP BY hacker_id) SELECT h.hacker_id, h.name, c.total_challenges FROM Hackers h JOIN ChallengeCounts c ON h.hacker_id = c.hacker_id ORDER BY c.total_challenges DESC, h.hacker_id ASC;",
-      "expectedRowCount": 3
+      "tierId": 1,
+      "tierName": "Tier 1: Warm-up",
+      "difficulty": "easy",
+      "badgeClass": "easy",
+      "title": "Warm-up: Filter Above Company Benchmark via CTE",
+      "targetTable": "Employees",
+      "spec": "Write a Common Table Expression named `CompanyBenchmark` calculating average salary, then query all employees earning above this benchmark.",
+      "starterSql": "-- Tier 1 Warm-up: Simple single-step CTE\nWITH CompanyBenchmark AS (\n  SELECT AVG(salary) AS avg_sal FROM Employees\n)\nSELECT e.first_name, e.salary\nFROM Employees e, CompanyBenchmark b\nWHERE e.salary > b.avg_sal;",
+      "expectedSolutionSql": "WITH CompanyBenchmark AS (SELECT AVG(salary) AS avg_sal FROM Employees) SELECT e.first_name, e.salary FROM Employees e, CompanyBenchmark b WHERE e.salary > b.avg_sal;",
+      "expectedRowCount": 2
     },
     "interviewDefense": {
       "question": "Why can a WHERE col NOT IN (SELECT ...) query catastrophically return zero rows when the subquery contains a single NULL value, and how do you prevent it?",
@@ -2193,7 +2524,45 @@ window.MASTERY_COURSE_DATA = [
         "NOT EXISTS Equivalence",
         "Hash Anti-Join"
       ]
-    }
+    },
+    "problems": [
+      {
+        "tierId": 1,
+        "tierName": "Tier 1: Warm-up",
+        "difficulty": "easy",
+        "badgeClass": "easy",
+        "title": "Warm-up: Filter Above Company Benchmark via CTE",
+        "targetTable": "Employees",
+        "spec": "Write a Common Table Expression named `CompanyBenchmark` calculating average salary, then query all employees earning above this benchmark.",
+        "starterSql": "-- Tier 1 Warm-up: Simple single-step CTE\nWITH CompanyBenchmark AS (\n  SELECT AVG(salary) AS avg_sal FROM Employees\n)\nSELECT e.first_name, e.salary\nFROM Employees e, CompanyBenchmark b\nWHERE e.salary > b.avg_sal;",
+        "expectedSolutionSql": "WITH CompanyBenchmark AS (SELECT AVG(salary) AS avg_sal FROM Employees) SELECT e.first_name, e.salary FROM Employees e, CompanyBenchmark b WHERE e.salary > b.avg_sal;",
+        "expectedRowCount": 2
+      },
+      {
+        "tierId": 2,
+        "tierName": "Tier 2: Interview Standard",
+        "difficulty": "medium",
+        "badgeClass": "medium",
+        "title": "Interview Standard: Challenges Solved per Hacker",
+        "targetTable": "Hackers",
+        "spec": "Query hacker_id, name, and total challenges created, ordered by total challenges descending and hacker_id ascending.",
+        "starterSql": "-- Tier 2: Hacker challenges pipeline\nWITH ChallengeCounts AS (\n  SELECT hacker_id, COUNT(challenge_id) AS total_challenges\n  FROM Challenges\n  GROUP BY hacker_id\n)\nSELECT h.hacker_id, h.name, c.total_challenges\nFROM Hackers h\nJOIN ChallengeCounts c ON h.hacker_id = c.hacker_id\nORDER BY c.total_challenges DESC, h.hacker_id ASC;",
+        "expectedSolutionSql": "WITH ChallengeCounts AS (SELECT hacker_id, COUNT(challenge_id) AS total_challenges FROM Challenges GROUP BY hacker_id) SELECT h.hacker_id, h.name, c.total_challenges FROM Hackers h JOIN ChallengeCounts c ON h.hacker_id = c.hacker_id ORDER BY c.total_challenges DESC, h.hacker_id ASC;",
+        "expectedRowCount": 3
+      },
+      {
+        "tierId": 3,
+        "tierName": "Tier 3: Senior Edge Case",
+        "difficulty": "hard",
+        "badgeClass": "hard",
+        "title": "Senior Edge Case: Chained Multi-Step Department Normalizer",
+        "targetTable": "Employees",
+        "spec": "Chain two CTEs: Step 1 computes department average salary, Step 2 filters employees exceeding their department average.",
+        "starterSql": "-- Tier 3: Chained multi-stage CTE\nWITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n),\nAboveDept AS (\n  SELECT e.first_name, e.department, e.salary, d.avg_sal\n  FROM Employees e\n  JOIN DeptAvg d ON e.department = d.department\n  WHERE e.salary > d.avg_sal\n)\nSELECT first_name, department, salary FROM AboveDept;",
+        "expectedSolutionSql": "WITH DeptAvg AS (SELECT department, AVG(salary) AS avg_sal FROM Employees GROUP BY department), AboveDept AS (SELECT e.first_name, e.department, e.salary, d.avg_sal FROM Employees e JOIN DeptAvg d ON e.department = d.department WHERE e.salary > d.avg_sal) SELECT first_name, department, salary FROM AboveDept;",
+        "expectedRowCount": 1
+      }
+    ]
   },
   {
     "id": "topic_10_window_functions",
@@ -2414,13 +2783,16 @@ window.MASTERY_COURSE_DATA = [
       "expectedSql": "SELECT \n  first_name,\n  department,\n  salary,\n  DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_rank,\n  SUM(salary) OVER (\n    PARTITION BY department \n    ORDER BY salary DESC \n    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n  ) AS running_dept_payroll\nFROM Employees;"
     },
     "problem": {
-      "title": "LeetCode 185: Department Top Three Salaries",
-      "difficulty": "hard",
-      "spec": "A company's executives are interested in seeing who earns the most money in each of the company's departments. A high earner in a department is an employee who has a salary in the top three unique salaries for that department. Write a solution to find the employees who are high earners in each of the departments.",
-      "starterSql": "-- Problem: Department Top Three High Earners using DENSE_RANK()\nWITH RankedSalaries AS (\n  SELECT department, first_name, salary,\n    DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rnk\n  FROM Employees\n)\nSELECT department, first_name, salary\nFROM RankedSalaries\nWHERE rnk <= 3;",
-      "targetTable": "Employee",
-      "expectedSolutionSql": "WITH RankedSalaries AS (SELECT department, first_name, salary, DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rnk FROM Employees) SELECT department, first_name, salary FROM RankedSalaries WHERE rnk <= 3;",
-      "expectedRowCount": 6
+      "tierId": 1,
+      "tierName": "Tier 1: Warm-up",
+      "difficulty": "easy",
+      "badgeClass": "easy",
+      "title": "Warm-up: Running Payroll Accumulator",
+      "targetTable": "Employees",
+      "spec": "Compute a running total of salary partitioned by department and ordered by tenure using an explicit ROWS frame.",
+      "starterSql": "-- Tier 1 Warm-up: Running total with explicit frame\nSELECT first_name, department, salary, tenure,\n  SUM(salary) OVER (\n    PARTITION BY department\n    ORDER BY tenure ASC\n    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n  ) AS running_dept_payroll\nFROM Employees;",
+      "expectedSolutionSql": "SELECT first_name, department, salary, tenure, SUM(salary) OVER (PARTITION BY department ORDER BY tenure ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_dept_payroll FROM Employees;",
+      "expectedRowCount": 4
     },
     "interviewDefense": {
       "question": "Explain the difference between ROW_NUMBER(), RANK(), and DENSE_RANK(). Why are window functions banned from the WHERE clause, and how do you filter by them?",
@@ -2435,6 +2807,44 @@ window.MASTERY_COURSE_DATA = [
         "Step 02 WHERE vs Step 05 SELECT",
         "CTE Window Filtering"
       ]
-    }
+    },
+    "problems": [
+      {
+        "tierId": 1,
+        "tierName": "Tier 1: Warm-up",
+        "difficulty": "easy",
+        "badgeClass": "easy",
+        "title": "Warm-up: Running Payroll Accumulator",
+        "targetTable": "Employees",
+        "spec": "Compute a running total of salary partitioned by department and ordered by tenure using an explicit ROWS frame.",
+        "starterSql": "-- Tier 1 Warm-up: Running total with explicit frame\nSELECT first_name, department, salary, tenure,\n  SUM(salary) OVER (\n    PARTITION BY department\n    ORDER BY tenure ASC\n    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n  ) AS running_dept_payroll\nFROM Employees;",
+        "expectedSolutionSql": "SELECT first_name, department, salary, tenure, SUM(salary) OVER (PARTITION BY department ORDER BY tenure ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_dept_payroll FROM Employees;",
+        "expectedRowCount": 4
+      },
+      {
+        "tierId": 2,
+        "tierName": "Tier 2: Interview Standard",
+        "difficulty": "medium",
+        "badgeClass": "medium",
+        "title": "Interview Standard: Department Top Three Salaries (LeetCode 185)",
+        "targetTable": "Employees",
+        "spec": "Find all employees who earn a salary in the top 3 distinct salaries of their department using `DENSE_RANK()` inside a CTE.",
+        "starterSql": "-- Tier 2: Top 3 distinct salary tiers via DENSE_RANK\nWITH RankedSalaries AS (\n  SELECT department, first_name, salary,\n    DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rnk\n  FROM Employees\n)\nSELECT department, first_name, salary\nFROM RankedSalaries\nWHERE rnk <= 3;",
+        "expectedSolutionSql": "WITH RankedSalaries AS (SELECT department, first_name, salary, DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rnk FROM Employees) SELECT department, first_name, salary FROM RankedSalaries WHERE rnk <= 3;",
+        "expectedRowCount": 4
+      },
+      {
+        "tierId": 3,
+        "tierName": "Tier 3: Senior Edge Case",
+        "difficulty": "hard",
+        "badgeClass": "hard",
+        "title": "Senior Edge Case: Lag Offset Delta with Null Protection",
+        "targetTable": "Employees",
+        "spec": "Compute the difference in salary between each employee and the immediately preceding employee by tenure in their department using LAG(). Replace initial NULLs with 0.",
+        "starterSql": "-- Tier 3: Period-over-period delta using LAG with default fallback\nSELECT first_name, department, salary, tenure,\n  salary - LAG(salary, 1, salary) OVER (\n    PARTITION BY department\n    ORDER BY tenure ASC\n  ) AS salary_diff_from_prev\nFROM Employees;",
+        "expectedSolutionSql": "SELECT first_name, department, salary, tenure, salary - LAG(salary, 1, salary) OVER (PARTITION BY department ORDER BY tenure ASC) AS salary_diff_from_prev FROM Employees;",
+        "expectedRowCount": 4
+      }
+    ]
   }
 ];

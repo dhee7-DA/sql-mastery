@@ -2025,3 +2025,355 @@
   color: #ef4444;
   text-decoration: line-through;
 }
+
+
+/* =============================================================================
+   ELEVATION 8: 3-TIER PROBLEM PROGRESSION TABS
+   ============================================================================= */
+.problem-tier-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 16px 0;
+  flex-wrap: wrap;
+}
+
+.tier-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tier-tab-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.tier-tab-btn.active {
+  background: var(--bg-card-subtle);
+  border-color: var(--accent);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.tier-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.tier-dot.easy { background: #10b981; }
+.tier-dot.medium { background: #f59e0b; }
+.tier-dot.hard { background: #ef4444; }
+
+.tier-check-badge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+/* =============================================================================
+   ELEVATION 9: MILESTONE BADGES & HEADER ACHIEVEMENTS
+   ============================================================================= */
+.course-achievements-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.milestone-badge-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  opacity: 0.55;
+  transition: all 0.2s ease;
+}
+
+.milestone-badge-chip.unlocked {
+  opacity: 1;
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: #4f46e5;
+  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.15);
+}
+
+.btn-claim-cert {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+  margin-left: auto;
+  transition: transform 0.15s ease;
+}
+
+.btn-claim-cert:hover {
+  transform: translateY(-1px);
+}
+
+/* =============================================================================
+   ELEVATION 10: FAANG MOCK INTERVIEW SCREENING MODAL
+   ============================================================================= */
+.course-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.mock-modal-card {
+  width: 100%;
+  max-width: 680px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.mock-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--bg-card-subtle);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.mock-modal-body {
+  padding: 18px;
+  max-height: calc(85vh - 80px);
+  overflow-y: auto;
+}
+
+.mock-timer-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 800;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.mock-answer-textarea {
+  width: 100%;
+  height: 120px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-default);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+  box-sizing: border-box;
+  outline: none;
+  margin-top: 10px;
+}
+
+.mock-answer-textarea:focus {
+  border-color: var(--accent);
+}
+
+.keyword-detect-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-default);
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.keyword-detect-badge.detected {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #059669;
+}
+
+.mock-score-banner {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 8px;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+/* =============================================================================
+   ELEVATION 11: CERTIFICATE & PORTFOLIO MODAL
+   ============================================================================= */
+.cert-modal-card {
+  width: 100%;
+  max-width: 820px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+}
+
+.cert-print-sheet {
+  padding: 36px 40px;
+  background: #ffffff;
+  color: #18181b;
+  border: 12px double #d4af37;
+  border-radius: 4px;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.cert-seal-badge {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4af37, #aa820a);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 16px rgba(170, 130, 10, 0.4);
+}
+
+.cert-candidate-name-input {
+  font-family: "Georgia", serif;
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  color: #0f172a;
+  border: none;
+  border-bottom: 2px dashed #cbd5e1;
+  background: transparent;
+  outline: none;
+  width: 80%;
+  margin: 12px auto;
+  padding: 4px;
+}
+
+.cert-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.cert-pillar-box {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  font-size: 11px;
+}
+
+/* Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .cert-print-sheet, .cert-print-sheet * {
+    visibility: visible;
+  }
+  .cert-print-sheet {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    border: 8px double #d4af37;
+    padding: 30px;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* =============================================================================
+   ELEVATION 12: DARK MODE POLISH FOR 15 THEMES
+   ============================================================================= */
+[data-theme*="dark"] .course-code-editor,
+[data-theme="tokyo-midnight"] .course-code-editor,
+[data-theme="cursor-dark"] .course-code-editor,
+[data-theme="warm-obsidian"] .course-code-editor,
+[data-theme="nordic-carbon"] .course-code-editor {
+  background: #09090b !important;
+  color: #e4e4e7 !important;
+}
+
+[data-theme*="dark"] .diff-table-card,
+[data-theme="tokyo-midnight"] .diff-table-card,
+[data-theme="cursor-dark"] .diff-table-card {
+  background: #121216 !important;
+  border-color: #27272a !important;
+}
+
+[data-theme*="dark"] .mock-modal-card,
+[data-theme*="dark"] .cert-modal-card {
+  background: #18181b !important;
+  border-color: #27272a !important;
+}
+
+[data-theme*="dark"] .mock-answer-textarea {
+  background: #09090b !important;
+  color: #f4f4f5 !important;
+  border-color: #27272a !important;
+}
