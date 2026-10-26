@@ -26,8 +26,8 @@
 .header-left {
   display: flex !important;
   align-items: center !important;
-  gap: 10px !important;
-  flex: 1 !important;
+  gap: 8px !important;
+  flex: 0 1 auto !important;
   min-width: 0 !important;
 }
 
@@ -268,8 +268,35 @@
 .header-right {
   display: flex !important;
   align-items: center !important;
-  gap: 6px !important;
+  gap: 8px !important;
   flex-shrink: 0 !important;
+  margin-left: auto !important;
+}
+
+/* Command Palette Trigger in Header Right */
+.header-right .header-cmd-palette-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+  height: 26px !important;
+  padding: 0 8px !important;
+  background: var(--bg-hover, #f4f4f5) !important;
+  border: 1px solid var(--border-subtle, #e4e4e7) !important;
+  border-radius: var(--radius-xs, 4px) !important;
+  color: var(--text-muted, #71717a) !important;
+  font-family: var(--font-sans, inherit) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  white-space: nowrap !important;
+}
+
+.header-right .header-cmd-palette-btn:hover {
+  background: var(--bg-surface, #ffffff) !important;
+  border-color: var(--border-default, #d4d4d8) !important;
+  color: var(--text-primary, #18181b) !important;
 }
 
 .header-stats-strip {
@@ -3955,4 +3982,39 @@ body.lc-zen-mode .lc-arena-shell {
   background: var(--accent-primary, #e11d48);
   border-radius: 2px;
   transition: width 0.3s ease;
+}
+
+
+/* =============================================================================
+   RESPONSIVE NAVBAR ANTI-COLLISION & CLEAN ALIGNMENT
+   ============================================================================= */
+@media (max-width: 1420px) {
+  .app-header .nav-groups-container .nav-item-tag {
+    display: none !important;
+  }
+  .app-header .nav-group-trigger {
+    padding: 0 7px !important;
+    gap: 4px !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .brand-badge {
+    display: none !important;
+  }
+  .header-right .header-cmd-palette-btn .cmd-palette-label {
+    display: none !important;
+  }
+  .header-right .header-cmd-palette-btn {
+    padding: 0 6px !important;
+  }
+}
+
+@media (max-width: 1150px) {
+  .header-stats-strip .flashcard-chip {
+    display: none !important;
+  }
+  .app-header .nav-group-title {
+    font-size: 11px !important;
+  }
 }

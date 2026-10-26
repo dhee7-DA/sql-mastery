@@ -1,8 +1,3 @@
-// =============================================================================
-// SQL MASTERY & TECHNICAL INTERVIEW COURSE COMPENDIUM DATA
-// 10 Comprehensive Progressive Modules: Theory, Analogies, Traps, Tricks, Patterns & Cases
-// =============================================================================
-
 window.MASTERY_COURSE_DATA = [
   {
     "id": "topic_01_select_from",
@@ -99,15 +94,15 @@ window.MASTERY_COURSE_DATA = [
     "deepTheory": [
       {
         "title": "1. Relational Table Anatomy: Relations, Tuples, and Attributes",
-        "body": "In relational database systems (RDBMS) like MySQL, PostgreSQL, and Snowflake, data is stored in **Relations (Tables)**.\n\n- **Table (Relation)**: A structured two-dimensional matrix containing rows and columns.\n- **Row (Tuple / Record)**: Represents a single instance of an entity (e.g., one employee, one transaction, one sensor ping).\n- **Column (Attribute / Field)**: Represents a specific property belonging to the entity (e.g., `first_name`, `salary`, `created_at`).\n\n```sql\n-- Every query requires at minimum: WHAT to see, and WHERE it lives\nSELECT column_1, column_2\nFROM table_name;\n```\n\nEvery SQL statement ends with a semicolon (`;`). While some command lines permit omission, in production enterprise scripting, multi-statement transactions, and stored procedures, the semicolon is mandatory."
+        "body": "In relational database systems (RDBMS) like MySQL, PostgreSQL, and Snowflake, data is stored in **Relations (Tables)**.\n\n- **Table (Relation)**: A structured two-dimensional matrix containing rows and columns.\n- **Row (Tuple / Record)**: Represents a single instance of an entity (e.g., one employee, one transaction, one sensor ping).\n- **Column (Attribute / Field)**: Represents a specific property belonging to the entity (e.g., `first_name`, `salary`, `created_at`).\n\n```sql\n-- Every query requires at minimum: WHAT to see, and WHERE it lives\nSELECT column_1, column_2\nFROM table_name;\n```\n\nEvery SQL statement ends with a semicolon (`;`). While some command lines permit omission, in production enterprise scripting, multi-statement transactions, and stored procedures, the semicolon is mandatory.\\n\\n> [!TIP] Column Projection Discipline\n> In production microservices, never issue `SELECT *`. If a DBA adds an uncompressed `JSON` audit log or binary `BLOB` column to the table schema tomorrow, every single query in your service will instantly pull megabytes of unneeded network payload, tripling CPU serialization overhead."
       },
       {
         "title": "2. The Projection Engine: Why SELECT * is an Anti-Pattern",
-        "body": "The asterisk (`*`) is wildcard shorthand instructing the database engine to retrieve **all columns** defined on the table schema.\n\n```sql\n-- Fetches every column\nSELECT * \nFROM Employees;\n```\n\n### Why Senior Engineers Ban `SELECT *` in Production:\n1. **Network & Buffer Bandwidth**: If a table has 45 columns including large `TEXT` or `JSON` blobs, `SELECT *` forces the database engine to stream gigabytes of unneeded bytes over the network socket.\n2. **Breaks Application Contracts**: If a DBA adds or removes a column in production, an application expecting a fixed array order will crash.\n3. **Columnar Warehouse Billing Multiplier**: In modern columnar databases (Snowflake, BigQuery, Redshift), storage is physically organized by columns. Pricing is billed per Terabyte scanned. Querying `SELECT *` reads all 50 column files off S3, multiplying cloud costs by 50x compared to `SELECT user_id, email`.\n\n```sql\n-- ✅ Production Best Practice: Always explicitly list the exact columns required\nSELECT first_name, department, salary\nFROM Employees;\n```"
+        "body": "The asterisk (`*`) is wildcard shorthand instructing the database engine to retrieve **all columns** defined on the table schema.\n\n```sql\n-- Fetches every column\nSELECT * \nFROM Employees;\n```\n\n### Why Senior Engineers Ban `SELECT *` in Production:\n1. **Network & Buffer Bandwidth**: If a table has 45 columns including large `TEXT` or `JSON` blobs, `SELECT *` forces the database engine to stream gigabytes of unneeded bytes over the network socket.\n2. **Breaks Application Contracts**: If a DBA adds or removes a column in production, an application expecting a fixed array order will crash.\n3. **Columnar Warehouse Billing Multiplier**: In modern columnar databases (Snowflake, BigQuery, Redshift), storage is physically organized by columns. Pricing is billed per Terabyte scanned. Querying `SELECT *` reads all 50 column files off S3, multiplying cloud costs by 50x compared to `SELECT user_id, email`.\n\n```sql\n-- ✅ Production Best Practice: Always explicitly list the exact columns required\nSELECT first_name, department, salary\nFROM Employees;\n```\\n\\n> [!WARNING] The Alias in WHERE Trap\n> Never attempt to filter on a column alias in the `WHERE` clause (e.g. `WHERE monthly_pay > 5000`). Relational engines parse and execute `WHERE` in Step 02, long before `SELECT` creates the alias in Step 05."
       },
       {
         "title": "3. Column Aliasing with AS: Semantic Naming & Header Cleanliness",
-        "body": "Raw database column names are often abbreviated or cryptic (e.g., `fn`, `dept_cd`, `sal_usd_m`). You can rename any projected column in your output set using the `AS` keyword:\n\n```sql\nSELECT \n  first_name AS employee_name,\n  department AS operational_division,\n  salary     AS base_annual_compensation\nFROM Employees;\n```\n\n- The `AS` keyword is technically optional in ANSI SQL (`SELECT first_name employee_name`), but omitting it is dangerous: if you accidentally forget a comma between two column names (`SELECT first_name department FROM ...`), SQL will treat `department` as an alias for `first_name` without throwing an error!\n- **Rule**: Always write `AS` explicitly for clarity and maintainability."
+        "body": "Raw database column names are often abbreviated or cryptic (e.g., `fn`, `dept_cd`, `sal_usd_m`). You can rename any projected column in your output set using the `AS` keyword:\n\n```sql\nSELECT \n  first_name AS employee_name,\n  department AS operational_division,\n  salary     AS base_annual_compensation\nFROM Employees;\n```\n\n- The `AS` keyword is technically optional in ANSI SQL (`SELECT first_name employee_name`), but omitting it is dangerous: if you accidentally forget a comma between two column names (`SELECT first_name department FROM ...`), SQL will treat `department` as an alias for `first_name` without throwing an error!\n- **Rule**: Always write `AS` explicitly for clarity and maintainability.\\n\\n> [!IMPORTANT] Columnar Warehouse Billing\n> In modern cloud warehouses like Snowflake, BigQuery, and Databricks, storage is stored in columnar blocks (Parquet/ORC). Query billing is directly calculated on total bytes scanned off disk. Limiting your query to only the 3 columns needed reduces cloud infrastructure bills by 80-95%."
       },
       {
         "title": "4. Dynamic Expressions, String Concatenation & In-Flight Math",
@@ -192,49 +187,73 @@ window.MASTERY_COURSE_DATA = [
         "id": "mcq_t1_1",
         "question": "What does the asterisk (*) represent in the query `SELECT * FROM Employees;`?",
         "options": [
-          "Multiply all numeric values in the table by 1",
+          "Multiply all numeric columns by 1",
           "Select and display every column defined in the table schema",
-          "Filter rows that have received a star employee rating",
-          "Execute a full table backup to disk"
+          "Filter only rows with non-null primary keys",
+          "Perform a full table backup to disk storage"
         ],
         "correct": 1,
-        "explanation": "The asterisk (*) is wildcard shorthand meaning 'project every single attribute/column belonging to the table'."
+        "explanation": "The asterisk (*) is wildcard shorthand meaning 'project every single attribute/column belonging to the table schema'.",
+        "distractorExplanations": [
+          "The asterisk is only used for mathematical multiplication inside expressions like `salary * 1.1`, never as an isolated projection clause.",
+          "Correct! It instructs the projection engine to retrieve all columns present in the table.",
+          "Row filtering is exclusively handled by the WHERE clause in Step 02, not by the SELECT asterisk in Step 05.",
+          "Data backups require administrative DDL/utility commands like mysqldump or pg_dump, not a DQL SELECT query."
+        ]
       },
       {
         "id": "mcq_t1_2",
-        "question": "Why does the query `SELECT first_name, salary * 0.1 AS bonus FROM Employees WHERE bonus > 5000;` fail with an error?",
+        "question": "Why does `SELECT first_name, salary * 0.1 AS bonus FROM Employees WHERE bonus > 5000;` fail?",
         "options": [
-          "You cannot multiply numbers inside a SELECT statement",
-          "The WHERE clause executes in Step 02, before the SELECT clause creates the alias 'bonus' in Step 05",
-          "The keyword AS is reserved strictly for table names",
-          "SQL does not allow filtering on bonuses"
+          "You cannot perform arithmetic multiplication inside SELECT",
+          "WHERE executes in Step 02 before SELECT defines the alias 'bonus' in Step 05",
+          "The AS keyword is reserved strictly for table aliases",
+          "SQL does not permit numeric comparisons in WHERE"
         ],
         "correct": 1,
-        "explanation": "Physical execution order! The database runs FROM (1) and WHERE (2) before SELECT (5). At the moment WHERE evaluates rows, the projection alias 'bonus' does not yet exist."
+        "explanation": "Physical execution order! The engine executes FROM (1) and WHERE (2) before SELECT (5). When WHERE filters rows, the alias 'bonus' does not exist yet.",
+        "distractorExplanations": [
+          "Arithmetic operations (+, -, *, /) are fully supported inside SELECT statements for scalar expressions.",
+          "Correct! At the time WHERE evaluates predicates, aliases created in SELECT have not been evaluated.",
+          "AS is standard ANSI SQL for both column aliases and table aliases (e.g., `FROM Employees AS e`).",
+          "Numeric comparisons (> , <, =, !=) are standard relational predicates in WHERE."
+        ]
       },
       {
         "id": "mcq_t1_3",
-        "question": "What is the result of `SELECT DISTINCT country, city FROM Stores;` if the table contains two stores in 'USA, Austin' and one store in 'USA, Dallas'?",
+        "question": "What is the output of `SELECT DISTINCT country, city FROM Stores;` if the table has two 'USA, Austin' rows and one 'USA, Dallas' row?",
         "options": [
-          "1 row: USA, Austin",
-          "2 rows: (USA, Austin) and (USA, Dallas)",
-          "3 rows: (USA, Austin), (USA, Austin), (USA, Dallas)",
-          "Syntax error because DISTINCT can only be applied to one column"
+          "1 row: 'USA, Austin'",
+          "2 rows: ('USA, Austin') and ('USA, Dallas')",
+          "3 rows: ('USA, Austin'), ('USA, Austin'), ('USA, Dallas')",
+          "Syntax Error: DISTINCT only accepts a single column name"
         ],
         "correct": 1,
-        "explanation": "DISTINCT evaluates the entire composite pair (country, city). Since (USA, Austin) and (USA, Dallas) are distinct pairs, both are returned, while the second (USA, Austin) is deduplicated."
+        "explanation": "DISTINCT applies to the entire projected row tuple (country, city). Since ('USA', 'Austin') and ('USA', 'Dallas') are unique pairs, both are preserved while the duplicate is removed.",
+        "distractorExplanations": [
+          "Deduplication does not drop distinct cities; 'USA, Dallas' is unique and must appear in the result.",
+          "Correct! DISTINCT evaluates uniqueness across all specified columns combined as a tuple.",
+          "DISTINCT actively strips duplicate rows from the output stream; it will never return both identical 'USA, Austin' rows.",
+          "DISTINCT is not a function; it is a clause modifier that applies across all columns in the projection list."
+        ]
       },
       {
         "id": "mcq_t1_4",
-        "question": "In modern cloud data warehouses like Snowflake and BigQuery, why is `SELECT *` considered a dangerous anti-pattern?",
+        "question": "In cloud data warehouses like Snowflake, BigQuery, and Redshift, why is `SELECT *` an expensive anti-pattern?",
         "options": [
-          "Because SELECT * deletes data from storage",
-          "Because columnar warehouses store data by column and bill users based on total bytes scanned off disk",
-          "Because SELECT * only works in MySQL and is not valid ANSI SQL",
-          "Because the asterisk operator locks all tables for exclusive writes"
+          "It acquires an exclusive table lock that blocks other queries",
+          "Columnar warehouses store data by column and bill users based on total bytes scanned off disk",
+          "SELECT * is not part of the ANSI SQL standard",
+          "It automatically indexes every column, consuming cluster CPU"
         ],
         "correct": 1,
-        "explanation": "Columnar databases charge for every byte read from storage. SELECT * forces the engine to scan all 50-100 columns off disk, inflating query costs by up to 50x compared to selecting only required columns."
+        "explanation": "Columnar databases charge for every byte scanned. `SELECT *` forces the storage engine to read all 50-100 columns off remote disk, multiplying cost and latency by up to 50x.",
+        "distractorExplanations": [
+          "SELECT queries in cloud warehouses are read-only and MVCC-compliant; they never lock tables against concurrent reads.",
+          "Correct! In columnar formats (Parquet, ORC, Pax), only requested columns are scanned off storage.",
+          "SELECT * has been part of the ANSI SQL standard since ANSI SQL-86.",
+          "SELECT queries never generate or alter index structures; they only read data."
+        ]
       }
     ],
     "caseStudy": {
@@ -257,8 +276,10 @@ window.MASTERY_COURSE_DATA = [
       "title": "HackerRank Problem 01: Revising the Select Query I",
       "difficulty": "easy",
       "spec": "Query all columns for all American cities in the **CITY** table with populations larger than `100,000`. The CountryCode for America is `USA`.",
-      "starterSql": "SELECT *\nFROM CITY\nWHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;",
-      "targetTable": "CITY"
+      "starterSql": "-- Problem: Select all columns for American cities with Population > 100,000\nSELECT *\nFROM CITY\nWHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;",
+      "targetTable": "CITY",
+      "expectedSolutionSql": "SELECT * FROM CITY WHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;",
+      "expectedRowCount": 5
     },
     "interviewDefense": {
       "question": "Why does referencing a column alias created in the SELECT clause fail when used inside the WHERE clause? How does the database engine process this?",
@@ -355,15 +376,15 @@ window.MASTERY_COURSE_DATA = [
     "deepTheory": [
       {
         "title": "1. Boolean Predicates & The Filtering Gate",
-        "body": "The `WHERE` clause accepts boolean conditions that evaluate to `TRUE`, `FALSE`, or `UNKNOWN` for every individual row:\n\n```sql\nSELECT first_name, department, salary\nFROM Employees\nWHERE salary >= 100000;\n```\n\nOnly rows where the predicate evaluates strictly to `TRUE` are passed to downstream operations. Rows that evaluate to `FALSE` or `UNKNOWN` are silently dropped."
+        "body": "The `WHERE` clause accepts boolean conditions that evaluate to `TRUE`, `FALSE`, or `UNKNOWN` for every individual row:\n\n```sql\nSELECT first_name, department, salary\nFROM Employees\nWHERE salary >= 100000;\n```\n\nOnly rows where the predicate evaluates strictly to `TRUE` are passed to downstream operations. Rows that evaluate to `FALSE` or `UNKNOWN` are silently dropped.\\n\\n> [!WARNING] Three-Valued Logic & NULL\n> Any boolean comparison against `NULL` evaluates to `UNKNOWN`, not `TRUE` or `FALSE`. If a column can contain NULLs, writing `WHERE status != 'ACTIVE'` will silently discard all NULL records! Always write `WHERE status != 'ACTIVE' OR status IS NULL`."
       },
       {
         "title": "2. SARGability: The #1 Performance Rule for Database Indexes",
-        "body": "**SARGable** stands for *Search Argument Able*. A query predicate is SARGable if the database engine can utilize an existing B-Tree Index Seek to pinpoint rows directly, instead of performing a slow Full Table Scan (FTS).\n\n```sql\n-- ❌ NON-SARGABLE: Wrapping the indexed column in a function prevents index usage!\nWHERE YEAR(created_at) = 2024;\n\n-- ✅ SARGABLE: Keeps the indexed column isolated; scans the index leaf pages in O(log N)\nWHERE created_at >= '2024-01-01 00:00:00'\n  AND created_at <  '2025-01-01 00:00:00';\n```"
+        "body": "**SARGable** stands for *Search Argument Able*. A query predicate is SARGable if the database engine can utilize an existing B-Tree Index Seek to pinpoint rows directly, instead of performing a slow Full Table Scan (FTS).\n\n```sql\n-- ❌ NON-SARGABLE: Wrapping the indexed column in a function prevents index usage!\nWHERE YEAR(created_at) = 2024;\n\n-- ✅ SARGABLE: Keeps the indexed column isolated; scans the index leaf pages in O(log N)\nWHERE created_at >= '2024-01-01 00:00:00'\n  AND created_at <  '2025-01-01 00:00:00';\n```\\n\\n> [!TIP] Sargable Predicates for Index Seeks\n> Never wrap indexed columns in functions like `WHERE YEAR(created_at) = 2024`. Doing so destroys sargability, forcing a 100% full table scan. Rewrite as `WHERE created_at >= '2024-01-01' AND created_at < '2025-01-01'` to trigger high-speed B-Tree index range seeks."
       },
       {
         "title": "3. Compound Filtering & Operator Precedence (AND vs OR)",
-        "body": "In SQL, `AND` has higher operator precedence than `OR` (similar to multiplication before addition in arithmetic).\n\n```sql\n-- ⚠️ DANGEROUS: Evaluates (country = 'CA' AND spend > 500) first!\nWHERE country = 'US' OR country = 'CA' AND spend > 500;\n-- BUG: Returns ALL US customers regardless of how much they spent!\n\n-- ✅ CORRECT: Use explicit parentheses to enforce intended evaluation order\nWHERE (country = 'US' OR country = 'CA') AND spend > 500;\n```"
+        "body": "In SQL, `AND` has higher operator precedence than `OR` (similar to multiplication before addition in arithmetic).\n\n```sql\n-- ⚠️ DANGEROUS: Evaluates (country = 'CA' AND spend > 500) first!\nWHERE country = 'US' OR country = 'CA' AND spend > 500;\n-- BUG: Returns ALL US customers regardless of how much they spent!\n\n-- ✅ CORRECT: Use explicit parentheses to enforce intended evaluation order\nWHERE (country = 'US' OR country = 'CA') AND spend > 500;\n```\\n\\n> [!RULE] Safe Production Filtering Rule\n> When mixing `AND` and `OR` operators, always wrap clauses in explicit parentheses: `WHERE (is_active = 1 OR is_admin = 1) AND organization_id = 42`. In SQL, `AND` takes precedence over `OR`, which leads to catastrophic security leaks if unparenthesized."
       },
       {
         "title": "4. Set Inclusion (IN) and Continuous Range Filtering (BETWEEN)",
@@ -417,27 +438,75 @@ window.MASTERY_COURSE_DATA = [
     "mcqs": [
       {
         "id": "mcq_t2_1",
-        "question": "What does the expression `WHERE kyc_status != 'APPROVED'` return for a row where `kyc_status` is `NULL`?",
+        "question": "What does `WHERE kyc_status != 'APPROVED'` return if a user's kyc_status is NULL?",
         "options": [
-          "TRUE (the row is included in the output)",
-          "FALSE (the row is excluded)",
-          "UNKNOWN (the row is excluded because WHERE requires TRUE)",
-          "Syntax Error"
+          "The row is included because NULL is not equal to 'APPROVED'",
+          "The row is included because NULL defaults to empty string",
+          "The row is excluded because NULL comparisons evaluate to UNKNOWN (Three-Valued Logic)",
+          "The query crashes with an unhandled NullPointerException"
         ],
         "correct": 2,
-        "explanation": "Under SQL 3-Valued Logic, any equality or inequality comparison with NULL evaluates to UNKNOWN. The WHERE clause only accepts TRUE, so the row is silently excluded."
+        "explanation": "SQL uses Three-Valued Logic (TRUE, FALSE, UNKNOWN). Any comparison with NULL (=, !=, <, >) yields UNKNOWN. WHERE only lets rows pass if the predicate evaluates to strictly TRUE.",
+        "distractorExplanations": [
+          "Classic trap! In SQL, `NULL != 'APPROVED'` evaluates to UNKNOWN, not TRUE. UNKNOWN rows are discarded by WHERE.",
+          "SQL never coerces NULL to an empty string `''`. NULL represents the absence of any value.",
+          "Correct! Because the predicate is UNKNOWN, the WHERE clause discards the row. You must use `IS NULL` or `COALESCE`.",
+          "Relational databases handle NULL gracefully without crashing; they simply evaluate the row to UNKNOWN."
+        ]
       },
       {
         "id": "mcq_t2_2",
-        "question": "Why is `WHERE created_at >= '2024-01-01' AND created_at < '2025-01-01'` preferred over `WHERE YEAR(created_at) = 2024`?",
+        "question": "Why is `WHERE created_at >= '2024-01-01' AND created_at < '2024-01-02'` preferred over `WHERE DATE(created_at) = '2024-01-01'`?",
         "options": [
-          "YEAR() is only supported in MySQL, not PostgreSQL",
-          "YEAR() prevents the database engine from using a B-Tree index seek (violates SARGability)",
-          "The first syntax automatically deletes old data",
-          "There is no difference; both execute at identical speeds"
+          "Because the DATE() function does not exist in standard SQL",
+          "Wrapping the column in a function makes the predicate non-sargable, preventing the optimizer from using an B-tree index",
+          "Because BETWEEN and AND are faster than mathematical equality",
+          "Because the DATE() function alters timezone offsets"
         ],
         "correct": 1,
-        "explanation": "Wrapping an indexed column in a function prevents B-Tree index seeks, forcing an expensive Full Table Scan across millions of rows."
+        "explanation": "Sargability! Wrapping an indexed column in a function (`DATE(created_at)`) forces the database to evaluate the function row-by-row on every single row (Full Table Scan). Range comparisons allow direct index seeks.",
+        "distractorExplanations": [
+          "The DATE() function is widely supported in MySQL, PostgreSQL, BigQuery, and SQLite.",
+          "Correct! A function on a column prevents index seek and forces an expensive full table scan.",
+          "Direct range conditions use index tree traversal (O(log N)), which is orders of magnitude faster than evaluating functions row-by-row.",
+          "The DATE() function extracts the date part; the performance bottleneck is purely caused by loss of sargability."
+        ]
+      },
+      {
+        "id": "mcq_t2_3",
+        "question": "Which of the following expressions will properly match an email address containing an underscore `user_name@domain.com`?",
+        "options": [
+          "WHERE email LIKE '%_%'",
+          "WHERE email LIKE '%\\_%' ESCAPE '\\'",
+          "WHERE email = '%_%'",
+          "WHERE email IN ('_')"
+        ],
+        "correct": 1,
+        "explanation": "In SQL LIKE patterns, `_` is a wildcard representing any single character. To search for a literal underscore, you must escape it with an escape character.",
+        "distractorExplanations": [
+          "`%_%` matches any string with at least one character because `_` acts as a wildcard!",
+          "Correct! Escaping the underscore tells the pattern matcher to treat it as a literal character.",
+          "Using `=` looks for the exact literal string `'%_%'` without treating `%` as wildcards.",
+          "`IN ('_')` only checks if the exact full email string is a single underscore."
+        ]
+      },
+      {
+        "id": "mcq_t2_4",
+        "question": "What is the logical evaluation order of AND and OR in `WHERE dept = 'Sales' OR dept = 'Eng' AND salary > 100000`?",
+        "options": [
+          "Strictly left-to-right: (dept = 'Sales' OR dept = 'Eng') AND salary > 100000",
+          "AND has higher precedence than OR: dept = 'Sales' OR (dept = 'Eng' AND salary > 100000)",
+          "OR has higher precedence than AND: (dept = 'Sales' OR dept = 'Eng') AND salary > 100000",
+          "Syntax error: You cannot combine AND and OR without parentheses"
+        ],
+        "correct": 1,
+        "explanation": "Operator Precedence! In boolean logic and SQL, `AND` takes precedence over `OR`. A low-salary Sales rep will pass this query because the OR condition evaluates independently.",
+        "distractorExplanations": [
+          "SQL does not evaluate conditions left-to-right; operator precedence dictates that AND binds tighter than OR.",
+          "Correct! AND binds before OR. Always use explicit parentheses `(dept = 'Sales' OR dept = 'Eng') AND salary > 100000` to prevent logic bugs.",
+          "OR does not take precedence over AND in SQL or boolean algebra.",
+          "SQL allows mixing AND and OR without parentheses, but it is dangerous and prone to misinterpretation."
+        ]
       }
     ],
     "caseStudy": {
@@ -459,8 +528,10 @@ window.MASTERY_COURSE_DATA = [
       "title": "HackerRank Problem 02: Revising the Select Query II",
       "difficulty": "easy",
       "spec": "Query the **NAME** field for all American cities in the **CITY** table with populations larger than `120,000`. The CountryCode for America is `USA`.",
-      "starterSql": "SELECT NAME\nFROM CITY\nWHERE COUNTRYCODE = 'USA' AND POPULATION > 120000;",
-      "targetTable": "CITY"
+      "starterSql": "-- Problem: Select only the NAME column for American cities with Population > 120,000\nSELECT NAME\nFROM CITY\nWHERE COUNTRYCODE = 'USA' AND POPULATION > 120000;",
+      "targetTable": "CITY",
+      "expectedSolutionSql": "SELECT NAME FROM CITY WHERE COUNTRYCODE = 'USA' AND POPULATION > 120000;",
+      "expectedRowCount": 4
     },
     "interviewDefense": {
       "question": "What is SARGability, and why does wrapping an indexed column in YEAR(created_at) = 2024 degrade query performance?",
@@ -561,15 +632,15 @@ window.MASTERY_COURSE_DATA = [
     "deepTheory": [
       {
         "title": "1. The Physics of Sorting: In-Memory Quicksort vs Disk Spills",
-        "body": "Relational tables have no inherent order. Without an `ORDER BY` clause, the database engine returns rows in arbitrary physical storage order. When `ORDER BY` is requested, the engine allocates a temporary Sort Buffer in RAM. If the dataset exceeds buffer memory, the engine spills temporary chunks to disk and merges them, increasing execution time by 10x."
+        "body": "Relational tables have no inherent order. Without an `ORDER BY` clause, the database engine returns rows in arbitrary physical storage order. When `ORDER BY` is requested, the engine allocates a temporary Sort Buffer in RAM. If the dataset exceeds buffer memory, the engine spills temporary chunks to disk and merges them, increasing execution time by 10x.\\n\\n> [!WARNING] The Deep OFFSET Performance Cliff\n> Using `LIMIT 10 OFFSET 500000` forces the database to read, sort, and discard 500,010 rows off disk before returning 10. For high-scale pagination, use Keyset/Seek pagination: `WHERE id > last_seen_id ORDER BY id ASC LIMIT 10`."
       },
       {
         "title": "2. Multi-Column Sorting & Deterministic Tie-Breaking",
-        "body": "When multiple rows possess identical values in the primary sort column, their relative order is completely random unless a secondary tie-breaker is provided:\n\n```sql\n-- ✅ Deterministic: Sorts by department, then breaks ties by salary descending\nSELECT first_name, department, salary\nFROM Employees\nORDER BY department ASC, salary DESC, id ASC;\n```"
+        "body": "When multiple rows possess identical values in the primary sort column, their relative order is completely random unless a secondary tie-breaker is provided:\n\n```sql\n-- ✅ Deterministic: Sorts by department, then breaks ties by salary descending\nSELECT first_name, department, salary\nFROM Employees\nORDER BY department ASC, salary DESC, id ASC;\n```\\n\\n> [!TIP] Deterministic Pagination Guarantee\n> Always append a unique key (such as `id`) as the final column in your `ORDER BY` clause. If records share the same sort value (like identical salaries), the database returns them in arbitrary disk order, causing rows to disappear or duplicate across pagination pages."
       },
       {
         "title": "3. Slicing with LIMIT and OFFSET (Pagination)",
-        "body": "- `LIMIT N`: Restricts output to at most $N$ rows.\n- `OFFSET M`: Skips the first $M$ rows before emitting results.\n\n```sql\n-- Page 2 of a 20-item leaderboard:\nSELECT user_id, score\nFROM Leaderboard\nORDER BY score DESC, user_id ASC\nLIMIT 20 OFFSET 20;\n```"
+        "body": "- `LIMIT N`: Restricts output to at most $N$ rows.\n- `OFFSET M`: Skips the first $M$ rows before emitting results.\n\n```sql\n-- Page 2 of a 20-item leaderboard:\nSELECT user_id, score\nFROM Leaderboard\nORDER BY score DESC, user_id ASC\nLIMIT 20 OFFSET 20;\n```\\n\\n> [!IMPORTANT] Dialect NULL Placement\n> PostgreSQL sorts NULLs last in ASC by default, while MySQL and SQLite sort NULLs first in ASC. In production, always be explicit by writing `ORDER BY priority ASC NULLS LAST` (or `ORDER BY CASE WHEN priority IS NULL THEN 1 ELSE 0 END, priority ASC`)."
       }
     ],
     "traps": [
@@ -606,15 +677,75 @@ window.MASTERY_COURSE_DATA = [
     "mcqs": [
       {
         "id": "mcq_t3_1",
-        "question": "What happens if you run a paginated query with `OFFSET 50000 LIMIT 20`?",
+        "question": "What happens when you run `SELECT * FROM Transactions ORDER BY created_at LIMIT 10 OFFSET 1000000;`?",
         "options": [
-          "The database instantly jumps to row 50000 in zero milliseconds",
-          "The database reads 50,020 rows off disk, discards the first 50,000, and returns only 20 rows",
-          "The database throws a syntax error because OFFSET cannot exceed 1000",
-          "The database creates a temporary table with 20 rows"
+          "The database instantly jumps to the 1,000,000th row using index pointer arithmetic",
+          "The database must scan and sort 1,000,010 rows off disk into memory before discarding the first 1,000,000",
+          "The query fails because OFFSET cannot exceed 100,000 in SQL",
+          "The database creates a permanent view to cache offset pages"
         ],
         "correct": 1,
-        "explanation": "Standard OFFSET pagination forces the storage engine to scan and discard all preceding rows, causing severe performance degradation on large offsets."
+        "explanation": "Deep Offset problem! The database does not know which rows qualify without scanning and ordering all 1,000,010 rows, discarding the first million. For high-volume pagination, use Keyset/Seek pagination (`WHERE id > last_seen_id`).",
+        "distractorExplanations": [
+          "Standard B-trees do not store row offsets, so the engine cannot jump directly to an arbitrary offset without scanning.",
+          "Correct! Large offsets cause massive disk I/O and latency spikes because all preceding rows must be processed and discarded.",
+          "ANSI SQL has no hard upper limit on OFFSET values; the limitation is query execution time.",
+          "OFFSET never creates views or caches rows automatically."
+        ]
+      },
+      {
+        "id": "mcq_t3_2",
+        "question": "If an ORDER BY column contains NULL values, where are they placed by default in PostgreSQL vs MySQL?",
+        "options": [
+          "Both place NULLs first in ASC order",
+          "PostgreSQL places NULLs LAST in ASC; MySQL places NULLs FIRST in ASC",
+          "PostgreSQL places NULLs FIRST in ASC; MySQL places NULLs LAST in ASC",
+          "Both automatically delete NULL rows before sorting"
+        ],
+        "correct": 1,
+        "explanation": "Dialect divergence! PostgreSQL treats NULL as larger than any value (NULLS LAST in ASC), while MySQL treats NULL as smaller than any value (NULLS FIRST in ASC). Use `NULLS LAST` explicitly in production.",
+        "distractorExplanations": [
+          "PostgreSQL and MySQL differ in default NULL sorting behavior.",
+          "Correct! PostgreSQL considers NULL greater than non-NULL (placed last in ASC), whereas MySQL considers NULL lowest (placed first in ASC).",
+          "This reverses the real default behaviors of Postgres and MySQL.",
+          "ORDER BY never deletes or filters rows; it only reorganizes them."
+        ]
+      },
+      {
+        "id": "mcq_t3_3",
+        "question": "Why can `SELECT * FROM Employees ORDER BY salary DESC LIMIT 5;` return different employees on consecutive runs if multiple employees share the same salary?",
+        "options": [
+          "Because SQL randomizes results to prevent caching bias",
+          "Because without a unique tiebreaker column, the sort order for identical values is non-deterministic",
+          "Because LIMIT introduces a random sampling algorithm",
+          "Because salary is stored as a floating point number"
+        ],
+        "correct": 1,
+        "explanation": "Deterministic Sorting! If values in the ORDER BY clause are not unique, the storage engine returns ties based on physical disk page ordering, which can change after vacuuming, updates, or index maintenance. Always add a tiebreaker: `ORDER BY salary DESC, id ASC`.",
+        "distractorExplanations": [
+          "SQL engines never inject randomness unless `ORDER BY RANDOM()` or `RAND()` is explicitly specified.",
+          "Correct! Always include a primary key or unique column as the final tiebreaker in ORDER BY for deterministic pagination.",
+          "LIMIT simply truncates the rowstream; it does not perform random sampling.",
+          "Data types do not cause non-deterministic row order when values are strictly identical."
+        ]
+      },
+      {
+        "id": "mcq_t3_4",
+        "question": "In what phase of query execution does `ORDER BY` run relative to `SELECT` and `LIMIT`?",
+        "options": [
+          "Before SELECT, but after WHERE",
+          "After SELECT, but before LIMIT",
+          "After LIMIT",
+          "Before WHERE"
+        ],
+        "correct": 1,
+        "explanation": "Physical Execution Order: FROM (1) &rarr; WHERE (2) &rarr; GROUP BY (3) &rarr; HAVING (4) &rarr; SELECT (5) &rarr; ORDER BY (6) &rarr; LIMIT (7). Because ORDER BY runs after SELECT, it can use aliases created in SELECT!",
+        "distractorExplanations": [
+          "ORDER BY runs after SELECT, which is why column aliases defined in SELECT are valid in ORDER BY.",
+          "Correct! ORDER BY sorts the projected result stream (Step 6) before LIMIT truncates it (Step 7).",
+          "LIMIT runs strictly last to truncate the sorted stream; ORDER BY must complete before LIMIT can slice.",
+          "WHERE filters rows early in Step 2; ORDER BY runs near the very end in Step 6."
+        ]
       }
     ],
     "caseStudy": {
@@ -637,8 +768,10 @@ window.MASTERY_COURSE_DATA = [
       "title": "HackerRank Problem 08: Weather Observation Station 5",
       "difficulty": "easy",
       "spec": "Query the two cities in **STATION** with the shortest and longest **CITY** names, as well as their respective lengths (i.e.: number of characters in the name). If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically.",
-      "starterSql": "-- Shortest:\nSELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) ASC, CITY ASC LIMIT 1;\n-- Longest:\nSELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) DESC, CITY ASC LIMIT 1;",
-      "targetTable": "STATION"
+      "starterSql": "-- Problem: Find the shortest and longest CITY names and their lengths\n(SELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) ASC, CITY ASC LIMIT 1)\nUNION ALL\n(SELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) DESC, CITY ASC LIMIT 1);",
+      "targetTable": "STATION",
+      "expectedSolutionSql": "SELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) ASC, CITY ASC LIMIT 1;",
+      "expectedRowCount": 1
     },
     "interviewDefense": {
       "question": "Why does paginating a million-row table using LIMIT 20 OFFSET 500000 become progressively slower, and how do senior engineers fix it?",
@@ -727,15 +860,15 @@ window.MASTERY_COURSE_DATA = [
     "deepTheory": [
       {
         "title": "1. The Scalar Collapse: How Aggregates Transform Row Sets",
-        "body": "Aggregate functions take a collection of values and return a single scalar summary value. In SQL, aggregates ignore `NULL` values automatically, except for `COUNT(*)` which counts all rows regardless of content."
+        "body": "Aggregate functions take a collection of values and return a single scalar summary value. In SQL, aggregates ignore `NULL` values automatically, except for `COUNT(*)` which counts all rows regardless of content.\\n\\n> [!WARNING] COUNT(*) vs COUNT(column)\n> `COUNT(*)` counts total rows emitted, including rows with NULLs. `COUNT(column_name)` silently skips every row where that specific column is NULL. Using `COUNT(email)` to count total users will undercount any users without an email on file."
       },
       {
         "title": "2. COUNT(*) vs COUNT(column_name): The Critical Difference",
-        "body": "- `COUNT(*)`: Measures the cardinality of the table. Counts every row, including rows with NULL attributes.\n- `COUNT(column_name)`: Counts only rows where `column_name` is NOT NULL.\n- `COUNT(DISTINCT column_name)`: Counts unique non-null values."
+        "body": "- `COUNT(*)`: Measures the cardinality of the table. Counts every row, including rows with NULL attributes.\n- `COUNT(column_name)`: Counts only rows where `column_name` is NOT NULL.\n- `COUNT(DISTINCT column_name)`: Counts unique non-null values.\\n\\n> [!TIP] Empty Set Aggregate Return Values\n> Except for `COUNT` (which returns 0), all standard SQL aggregate functions (`SUM`, `AVG`, `MIN`, `MAX`) evaluate to `NULL` when run on an empty set. Always wrap financial aggregates in `COALESCE(SUM(amount), 0)` to guarantee safe numeric responses."
       },
       {
         "title": "3. The Empty-Set NULL Behavior",
-        "body": "When an aggregate query matches zero rows:\n- `COUNT(*)` returns `0`.\n- `SUM()`, `AVG()`, `MIN()`, and `MAX()` return `NULL`!\n- **Defense**: Wrap financial aggregates in `COALESCE(SUM(amount), 0.00)` to prevent breaking arithmetic."
+        "body": "When an aggregate query matches zero rows:\n- `COUNT(*)` returns `0`.\n- `SUM()`, `AVG()`, `MIN()`, and `MAX()` return `NULL`!\n- **Defense**: Wrap financial aggregates in `COALESCE(SUM(amount), 0.00)` to prevent breaking arithmetic.\\n\\n> [!IMPORTANT] Memory Costs of COUNT(DISTINCT)\n> `COUNT(*)` is an O(1) memory counter. `COUNT(DISTINCT user_id)` requires allocating an in-memory hash table of every distinct ID, which spills to disk on large datasets. In big data analytics (Presto/Spark/BigQuery), use `APPROX_DISTINCT(user_id)` for 99% accuracy at 1% of the memory cost."
       }
     ],
     "traps": [
@@ -772,15 +905,75 @@ window.MASTERY_COURSE_DATA = [
     "mcqs": [
       {
         "id": "mcq_t4_1",
-        "question": "What is the result of `SELECT SUM(amount) FROM Orders WHERE order_date = '1900-01-01';` if zero orders match?",
+        "question": "What is the difference between `COUNT(*)` and `COUNT(bonus)` if 2 out of 10 employees have a NULL bonus?",
+        "options": [
+          "Both return 10",
+          "COUNT(*) returns 10; COUNT(bonus) returns 8",
+          "COUNT(*) returns 8; COUNT(bonus) returns 10",
+          "COUNT(bonus) returns a syntax error because bonus contains NULLs"
+        ],
+        "correct": 1,
+        "explanation": "`COUNT(*)` counts the total number of physical rows emitted. `COUNT(column)` only counts non-NULL values, silently ignoring all NULL entries.",
+        "distractorExplanations": [
+          "`COUNT(column)` explicitly skips NULLs, so it cannot return 10 when 2 rows are NULL.",
+          "Correct! COUNT(*) counts every row in the stream; COUNT(column) ignores NULLs and returns 8.",
+          "COUNT(*) never skips rows; COUNT(bonus) is the one that skips NULLs.",
+          "Aggregate functions in SQL are designed to ignore NULLs without throwing syntax errors."
+        ]
+      },
+      {
+        "id": "mcq_t4_2",
+        "question": "What does `SELECT AVG(score) FROM ExamResults;` return if scores are [100, 50, NULL]?",
+        "options": [
+          "50 (150 divided by 3, treating NULL as 0)",
+          "75 (150 divided by 2, completely ignoring the NULL row)",
+          "NULL (because NULL poisons all calculations)",
+          "0"
+        ],
+        "correct": 1,
+        "explanation": "Aggregate functions ignore NULLs entirely! `AVG` computes SUM(non-null) / COUNT(non-null) = (100 + 50) / 2 = 75. If you want NULL treated as 0, you must write `AVG(COALESCE(score, 0))`.",
+        "distractorExplanations": [
+          "SQL aggregates never treat NULL as 0 automatically; they completely exclude the row from both numerator and denominator.",
+          "Correct! The denominator is 2, not 3, resulting in (100 + 50) / 2 = 75.",
+          "Scalar arithmetic (e.g., `100 + NULL`) yields NULL, but SQL set aggregate functions (SUM, AVG) deliberately skip NULLs.",
+          "The average of 100 and 50 is 75, not 0."
+        ]
+      },
+      {
+        "id": "mcq_t4_3",
+        "question": "What does `SELECT SUM(amount) FROM Orders WHERE 1 = 0;` return on an empty filtered dataset?",
         "options": [
           "0",
           "NULL",
-          "Syntax Error",
-          "-1"
+          "An empty row (0 rows returned)",
+          "A runtime execution error"
         ],
         "correct": 1,
-        "explanation": "In ANSI SQL, SUM, AVG, MIN, and MAX return NULL when matching zero rows. Only COUNT(*) returns 0."
+        "explanation": "ANSI standard aggregate behavior! Except for `COUNT` (which returns 0), all SQL aggregate functions (`SUM`, `AVG`, `MIN`, `MAX`) return `NULL` when applied to an empty set of rows.",
+        "distractorExplanations": [
+          "Only `COUNT(*)` returns 0 on an empty set. `SUM`, `AVG`, `MIN`, and `MAX` return NULL. Use `COALESCE(SUM(amount), 0)` to guarantee 0.",
+          "Correct! SUM over an empty set evaluates to NULL per ANSI SQL standards.",
+          "A scalar aggregate query without GROUP BY always returns exactly 1 row, never 0 rows.",
+          "Filtering out all rows is completely valid SQL and does not raise runtime errors."
+        ]
+      },
+      {
+        "id": "mcq_t4_4",
+        "question": "Why is `SELECT COUNT(DISTINCT user_id) FROM EventLogs;` significantly slower on 100M rows than `COUNT(user_id)`?",
+        "options": [
+          "Because DISTINCT requires a hash table or sorting to identify unique IDs in memory, spilling to disk",
+          "Because DISTINCT forces a table lock",
+          "Because COUNT(DISTINCT) is not parallelizable in modern engines",
+          "Because DISTINCT disables all database compression"
+        ],
+        "correct": 0,
+        "explanation": "Memory state cost! `COUNT(user_id)` is a stream accumulator (simply increments a 64-bit integer counter). `COUNT(DISTINCT user_id)` must maintain a stateful hash set or B-tree of every unique ID, consuming gigabytes of RAM and spilling to temp disk.",
+        "distractorExplanations": [
+          "Correct! State tracking for uniqueness requires heavy hashing or sorting, creating significant memory and disk overhead.",
+          "SELECT queries do not take table locks in modern MVCC databases.",
+          "Modern engines can parallelize COUNT(DISTINCT) using partial hash aggregation and merge phases, but the memory footprint remains massive.",
+          "DISTINCT operates in engine memory after disk decompression; it does not change on-disk storage compression."
+        ]
       }
     ],
     "caseStudy": {
@@ -803,8 +996,10 @@ window.MASTERY_COURSE_DATA = [
       "title": "HackerRank Problem 15: Weather Observation Station 4",
       "difficulty": "easy",
       "spec": "Find the difference between the total number of **CITY** entries in the table and the number of distinct **CITY** entries in the table.",
-      "starterSql": "SELECT COUNT(CITY) - COUNT(DISTINCT CITY)\nFROM STATION;",
-      "targetTable": "STATION"
+      "starterSql": "-- Problem: Find difference between total CITY count and distinct CITY count\nSELECT COUNT(CITY) - COUNT(DISTINCT CITY) AS duplicate_count\nFROM STATION;",
+      "targetTable": "STATION",
+      "expectedSolutionSql": "SELECT COUNT(CITY) - COUNT(DISTINCT CITY) AS duplicate_count FROM STATION;",
+      "expectedRowCount": 1
     },
     "interviewDefense": {
       "question": "What is the difference between COUNT(*), COUNT(col), and COUNT(DISTINCT col), and what does SUM() return when matching zero rows?",
@@ -891,11 +1086,11 @@ window.MASTERY_COURSE_DATA = [
     "deepTheory": [
       {
         "title": "1. The Aggregation Barrier",
-        "body": "When you use `GROUP BY`, every column in your `SELECT` list must either be:\n1. Explicitly named in the `GROUP BY` clause, OR\n2. Wrapped inside an aggregate function (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`).\nListing an unaggregated column not in `GROUP BY` violates ANSI SQL standards (`only_full_group_by`)."
+        "body": "When you use `GROUP BY`, every column in your `SELECT` list must either be:\n1. Explicitly named in the `GROUP BY` clause, OR\n2. Wrapped inside an aggregate function (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`).\nListing an unaggregated column not in `GROUP BY` violates ANSI SQL standards (`only_full_group_by`).\\n\\n> [!RULE] Row Filtering vs Group Filtering\n> Filter before grouping whenever possible! `WHERE` filters individual rows before grouping (Step 02), reducing the number of rows that must be hashed in memory. `HAVING` filters aggregated groups after grouping (Step 04). Never put a row-level filter in HAVING.\\n\\n> [!IMPORTANT] Grouping on NULL Values\n> Relational databases treat all NULL values as equal for grouping purposes. All records with a NULL group key collapse into a single summary row in the result set."
       },
       {
         "title": "2. The Architectural Divide: WHERE vs HAVING",
-        "body": "- **WHERE (Step 02)**: Evaluates before grouping. Filters raw individual records. Cannot contain aggregate functions like `SUM()`.\n- **HAVING (Step 04)**: Evaluates after grouping. Filters aggregated bucket metrics. Operates on summary rows."
+        "body": "- **WHERE (Step 02)**: Evaluates before grouping. Filters raw individual records. Cannot contain aggregate functions like `SUM()`.\n- **HAVING (Step 04)**: Evaluates after grouping. Filters aggregated bucket metrics. Operates on summary rows.\\n\\n> [!WARNING] The Single-Value Rule\n> In ANSI SQL, every column in the `SELECT` list must either be inside an aggregate function or explicitly listed in the `GROUP BY` clause. Selecting an unaggregated column that is not grouped creates an ambiguous query that crashes in Postgres and MySQL 8.0."
       }
     ],
     "traps": [
@@ -932,15 +1127,75 @@ window.MASTERY_COURSE_DATA = [
     "mcqs": [
       {
         "id": "mcq_t5_1",
-        "question": "Can a single SQL query contain both a WHERE clause and a HAVING clause?",
+        "question": "Why does `SELECT dept, AVG(salary) FROM Employees WHERE AVG(salary) > 80000 GROUP BY dept;` fail?",
         "options": [
-          "No, they are mutually exclusive",
-          "Yes: WHERE filters raw rows before grouping, and HAVING filters aggregated buckets after grouping",
-          "Yes, but only if they check the exact same column",
-          "Only in PostgreSQL, not in MySQL"
+          "Because AVG() cannot be calculated for departments",
+          "WHERE runs in Step 02 before GROUP BY collapses rows into groups in Step 03; you must filter aggregates in HAVING",
+          "Because you cannot select columns that are in the GROUP BY clause",
+          "Because HAVING is only used for COUNT, not AVG"
         ],
         "correct": 1,
-        "explanation": "WHERE and HAVING serve distinct architectural roles: WHERE filters individual rows before grouping, and HAVING filters the aggregated results."
+        "explanation": "Physical execution order! WHERE filters individual base table rows before any groups exist. To filter aggregated group statistics, you must use HAVING (Step 04), which runs after GROUP BY.",
+        "distractorExplanations": [
+          "AVG(salary) is perfectly valid when grouped by department.",
+          "Correct! WHERE filters individual rows before grouping; HAVING filters aggregated groups after grouping.",
+          "Any column listed in GROUP BY is valid and encouraged in the SELECT list.",
+          "HAVING works with all aggregate functions: AVG, SUM, COUNT, MIN, MAX."
+        ]
+      },
+      {
+        "id": "mcq_t5_2",
+        "question": "If a query has both WHERE and HAVING, which condition runs first?",
+        "options": [
+          "HAVING runs first to filter groups, then WHERE filters rows within those groups",
+          "WHERE runs first to filter rows, then GROUP BY creates groups, then HAVING filters groups",
+          "They execute simultaneously in parallel",
+          "The query optimizer picks randomly based on table size"
+        ],
+        "correct": 1,
+        "explanation": "SQL Execution Order: FROM (1) &rarr; WHERE (2) &rarr; GROUP BY (3) &rarr; HAVING (4). Always put row-level filters in WHERE so the database processes fewer rows before grouping!",
+        "distractorExplanations": [
+          "HAVING cannot run first because groups do not exist until rows are filtered and grouped.",
+          "Correct! WHERE filters rows first, drastically reducing the volume of data that GROUP BY must hash or sort.",
+          "Relational algebra requires row filtering before set partitioning; they cannot execute simultaneously on raw rows.",
+          "Execution order is strictly defined by the relational model, not random optimizer heuristics."
+        ]
+      },
+      {
+        "id": "mcq_t5_3",
+        "question": "What happens if a column in the `GROUP BY` list contains NULL values across multiple rows?",
+        "options": [
+          "All rows with NULL are completely discarded from the query output",
+          "All NULL values are grouped together into a single summary group row",
+          "Each NULL row becomes its own individual group row",
+          "The query crashes with an unhandled NullPointerException"
+        ],
+        "correct": 1,
+        "explanation": "Group By NULL handling! In standard SQL, all NULL values are considered equal for the purposes of grouping and collapse into one single group row with a `NULL` group key.",
+        "distractorExplanations": [
+          "GROUP BY does not discard NULL rows; you must explicitly filter them with `WHERE col IS NOT NULL` if you want them excluded.",
+          "Correct! All NULL rows form a single group in the result set.",
+          "NULLs do not form separate individual groups; they are unified into one aggregate group.",
+          "Relational databases are built to handle NULL grouping gracefully without crashing."
+        ]
+      },
+      {
+        "id": "mcq_t5_4",
+        "question": "What is the Single-Value Rule in standard ANSI SQL regarding `GROUP BY`?",
+        "options": [
+          "Every table in the FROM clause can only have one group",
+          "Any column in the SELECT list that is not inside an aggregate function MUST be present in the GROUP BY clause",
+          "GROUP BY can only group by integer columns",
+          "HAVING can only evaluate single-value integers"
+        ],
+        "correct": 1,
+        "explanation": "Single-Value Rule! If you group by `department`, returning `first_name` without an aggregate is ambiguous because a department has dozens of different employee names. Every non-aggregated column in SELECT must be in GROUP BY.",
+        "distractorExplanations": [
+          "GROUP BY can produce millions of distinct groups from a single table.",
+          "Correct! Without this rule, the engine cannot know which employee's name to display for a multi-employee group.",
+          "GROUP BY can group by any data type: VARCHAR, DATE, TIMESTAMP, UUID, or NUMERIC.",
+          "HAVING can evaluate any scalar boolean predicate over aggregates."
+        ]
       }
     ],
     "caseStudy": {
@@ -962,8 +1217,10 @@ window.MASTERY_COURSE_DATA = [
       "title": "HackerRank Problem 25: Top Earners",
       "difficulty": "easy",
       "spec": "We define an employee's total earnings to be their monthly `salary * months` worked. Write a query to find the maximum total earnings for all employees in the **Employee** table, as well as the total number of employees who have maximum total earnings.",
-      "starterSql": "SELECT (salary * months) AS earnings, COUNT(*)\nFROM Employee\nGROUP BY earnings\nORDER BY earnings DESC\nLIMIT 1;",
-      "targetTable": "Employee"
+      "starterSql": "-- Problem: Find maximum total earnings (months * salary) and how many employees share it\nSELECT (months * salary) AS total_earnings, COUNT(*)\nFROM Employee\nGROUP BY total_earnings\nORDER BY total_earnings DESC\nLIMIT 1;",
+      "targetTable": "Employee",
+      "expectedSolutionSql": "SELECT (months * salary) AS total_earnings, COUNT(*) FROM Employee GROUP BY total_earnings ORDER BY total_earnings DESC LIMIT 1;",
+      "expectedRowCount": 1
     },
     "interviewDefense": {
       "question": "When should you filter in WHERE versus HAVING, and what is the physical performance impact of filtering non-aggregated columns in HAVING?",
@@ -1075,15 +1332,15 @@ window.MASTERY_COURSE_DATA = [
     "deepTheory": [
       {
         "title": "1. Relational Keys: Primary Key (PK) vs Foreign Key (FK)",
-        "body": "In relational databases, tables are connected through keys:\n- **Primary Key (PK)**: Uniquely identifies a single row in the parent table (e.g., `Customers.customer_id`).\n- **Foreign Key (FK)**: A reference in the child table pointing back to the parent PK (e.g., `Orders.customer_id`)."
+        "body": "In relational databases, tables are connected through keys:\n- **Primary Key (PK)**: Uniquely identifies a single row in the parent table (e.g., `Customers.customer_id`).\n- **Foreign Key (FK)**: A reference in the child table pointing back to the parent PK (e.g., `Orders.customer_id`).\\n\\n> [!WARNING] The Accidental Inner Join Bug\n> If you perform a `LEFT JOIN Orders o ON ...` and then add `WHERE o.status = 'COMPLETED'`, you have converted the LEFT JOIN into an INNER JOIN! Any customer with no orders has `o.status = NULL`, which fails the WHERE test. Move the condition into the `ON` clause: `LEFT JOIN Orders o ON ... AND o.status = 'COMPLETED'`."
       },
       {
         "title": "2. INNER JOIN vs LEFT JOIN Mechanics",
-        "body": "- **INNER JOIN**: Keeps only rows that find a matching key on both sides.\n- **LEFT JOIN**: Keeps ALL rows from the left table. If the right table has no match, all right columns evaluate to `NULL`."
+        "body": "- **INNER JOIN**: Keeps only rows that find a matching key on both sides.\n- **LEFT JOIN**: Keeps ALL rows from the left table. If the right table has no match, all right columns evaluate to `NULL`.\\n\\n> [!TIP] Cartesian Product Explosions\n> If Table A has 10 duplicate rows for key 1, and Table B has 10 duplicate rows for key 1, an INNER JOIN emits 10 * 10 = 100 rows. In production joins, always ensure the join key on at least one side is unique or pre-aggregated."
       },
       {
         "title": "3. The Critical ON vs WHERE Filter Boundary in Outer Joins",
-        "body": "In a `LEFT JOIN`:\n- Conditions in the `ON` clause determine how rows are matched before NULL padding.\n- Conditions in the `WHERE` clause filter rows AFTER the join has completed. Putting a right-table filter in `WHERE` will drop all NULL-padded rows, silently converting your `LEFT JOIN` into an `INNER JOIN`!"
+        "body": "In a `LEFT JOIN`:\n- Conditions in the `ON` clause determine how rows are matched before NULL padding.\n- Conditions in the `WHERE` clause filter rows AFTER the join has completed. Putting a right-table filter in `WHERE` will drop all NULL-padded rows, silently converting your `LEFT JOIN` into an `INNER JOIN`!\\n\\n> [!IMPORTANT] Hash Join vs Merge Join Internals\n> When joining a large fact table (100M rows) to a small dimension table (1,000 rows), the optimizer builds an in-memory hash table of the small dimension in O(N) and probes it in O(1) per fact row. Ensuring dimension tables stay compact keeps the hash table entirely inside L3 CPU cache."
       }
     ],
     "traps": [
@@ -1137,15 +1394,75 @@ window.MASTERY_COURSE_DATA = [
     "mcqs": [
       {
         "id": "mcq_t6_1",
-        "question": "What happens if you write a LEFT JOIN with a condition on the right table placed in the WHERE clause instead of the ON clause?",
+        "question": "What happens if you write a `LEFT JOIN` on Orders, but add `WHERE orders.created_at >= '2024-01-01'` in the WHERE clause?",
         "options": [
-          "The query throws a syntax error",
-          "The LEFT JOIN is silently converted into an INNER JOIN, discarding non-matching rows",
-          "The query runs 10x faster",
-          "The database duplicates the right table"
+          "The query returns all customers and only shows orders from 2024",
+          "The query silently converts into an INNER JOIN, excluding all customers who have no orders in 2024",
+          "The query throws a syntax error because LEFT JOIN cannot be followed by WHERE",
+          "The query replaces missing order dates with '2024-01-01'"
         ],
         "correct": 1,
-        "explanation": "Because WHERE executes after the join, checking that a right-table column equals a value evaluates to UNKNOWN for NULL-padded rows, dropping them and behaving like an INNER JOIN."
+        "explanation": "Accidental Inner Join! For customers with no orders, `orders.created_at` is NULL. The WHERE clause evaluates `NULL >= '2024-01-01'` to UNKNOWN and discards those customers! To preserve outer rows, place the condition in the `ON` clause: `LEFT JOIN Orders ON ... AND orders.created_at >= '2024-01-01'`.",
+        "distractorExplanations": [
+          "Common FAANG trap! Because WHERE executes AFTER the join, rows where orders columns are NULL are discarded by the >= comparison.",
+          "Correct! Filtering an outer table column in WHERE turns a LEFT JOIN into an INNER JOIN. Move the condition into the ON clause.",
+          "LEFT JOIN can freely be followed by WHERE, but conditions on the right table will eliminate preserved outer rows.",
+          "SQL never auto-populates NULL columns with filter predicate values."
+        ]
+      },
+      {
+        "id": "mcq_t6_2",
+        "question": "If Table A has 5 rows where `id = 1` and Table B has 4 rows where `id = 1`, how many rows are produced by `SELECT * FROM A INNER JOIN B ON A.id = B.id`?",
+        "options": [
+          "5 rows (maximum of either table)",
+          "9 rows (sum of both tables)",
+          "20 rows (Cartesian product: 5 * 4)",
+          "4 rows (minimum of either table)"
+        ],
+        "correct": 2,
+        "explanation": "Cartesian Join Explosion! In relational joins, every matching row in Table A joins with every matching row in Table B. 5 duplicate rows in A matching 4 duplicate rows in B produces 5 * 4 = 20 rows!",
+        "distractorExplanations": [
+          "Relational joins do not take the maximum; duplicate join keys multiply.",
+          "Joins multiply matching pairs; they do not add row counts.",
+          "Correct! 5 rows * 4 rows = 20 rows. Non-unique join keys cause explosive row multiplication and out-of-memory errors.",
+          "Relational joins do not take the minimum; each row in A pairs with each row in B."
+        ]
+      },
+      {
+        "id": "mcq_t6_3",
+        "question": "How do you write an Anti-Join to find all Customers who have NEVER placed an Order?",
+        "options": [
+          "SELECT * FROM Customers c INNER JOIN Orders o ON c.id != o.customer_id;",
+          "SELECT * FROM Customers c LEFT JOIN Orders o ON c.id = o.customer_id WHERE o.id IS NULL;",
+          "SELECT * FROM Customers c WHERE c.orders_count = 0;",
+          "SELECT * FROM Customers c RIGHT JOIN Orders o ON c.id = o.customer_id;"
+        ],
+        "correct": 1,
+        "explanation": "Anti-Join Pattern! A `LEFT JOIN` preserves all customers, filling order columns with NULL for customers who never bought. The filter `WHERE o.id IS NULL` keeps strictly the customers without orders.",
+        "distractorExplanations": [
+          "`c.id != o.customer_id` produces a massive cross product of every customer with every unrelated order.",
+          "Correct! LEFT JOIN + WHERE right_table.pk IS NULL is the canonical, highly-optimized SQL anti-join pattern.",
+          "Tables rarely maintain an automatic `orders_count` column unless explicitly modeled as a counter cache.",
+          "A RIGHT JOIN on Orders preserves all orders, which cannot find customers who never placed an order."
+        ]
+      },
+      {
+        "id": "mcq_t6_4",
+        "question": "Which join algorithm does the query optimizer choose when joining a large 100M-row table against a tiny 500-row lookup table?",
+        "options": [
+          "Merge Join",
+          "Hash Join (building an in-memory hash table of the small 500-row table)",
+          "Nested Loop with Full Table Scan on both tables",
+          "Cartesian Cross Join"
+        ],
+        "correct": 1,
+        "explanation": "Hash Join! The optimizer reads the small table into RAM, constructs an in-memory hash table in O(N), then streams the large table through memory, probing the hash table in O(1) per row.",
+        "distractorExplanations": [
+          "Merge Join requires both tables to be pre-sorted on the join key; sorting 100M rows is too expensive.",
+          "Correct! Building an in-memory hash table of the tiny table allows lightning-fast O(1) lookups as the large table streams past.",
+          "Nested loops with dual full scans would require 100M * 500 = 50 billion comparisons and is rejected by modern optimizers.",
+          "Cross joins compute unfiltered Cartesian products and are only used when no join predicate exists."
+        ]
       }
     ],
     "caseStudy": {
@@ -1167,8 +1484,10 @@ window.MASTERY_COURSE_DATA = [
       "title": "HackerRank Problem 35: Asian Population",
       "difficulty": "easy",
       "spec": "Given the **CITY** and **COUNTRY** tables, query the sum of the populations of all cities where the **CONTINENT** is `'Asia'`. Note: `CITY.CountryCode` and `COUNTRY.Code` are matching key columns.",
-      "starterSql": "SELECT SUM(ci.POPULATION)\nFROM CITY ci\nJOIN COUNTRY co ON ci.CountryCode = co.Code\nWHERE co.CONTINENT = 'Asia';",
-      "targetTable": "CITY"
+      "starterSql": "-- Problem: Query the sum of populations of all cities where Continent is 'Asia'\nSELECT SUM(CITY.POPULATION)\nFROM CITY\nINNER JOIN COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE\nWHERE COUNTRY.CONTINENT = 'Asia';",
+      "targetTable": "CITY",
+      "expectedSolutionSql": "SELECT SUM(CITY.POPULATION) FROM CITY INNER JOIN COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE WHERE COUNTRY.CONTINENT = 'Asia';",
+      "expectedRowCount": 1
     },
     "interviewDefense": {
       "question": "What causes the outer join WHERE collapse bug, and how do you prevent an intentional LEFT JOIN from silently acting like an INNER JOIN?",
@@ -1269,15 +1588,15 @@ window.MASTERY_COURSE_DATA = [
     "deepTheory": [
       {
         "title": "1. Joins (Horizontal) vs Set Operations (Vertical)",
-        "body": "- **JOINs**: Combine columns side-by-side based on a key condition.\n- **UNION / UNION ALL**: Stack rows on top of each other vertically. Both queries must project the same number of columns with compatible data types."
+        "body": "- **JOINs**: Combine columns side-by-side based on a key condition.\n- **UNION / UNION ALL**: Stack rows on top of each other vertically. Both queries must project the same number of columns with compatible data types.\\n\\n> [!TIP] Always Default to UNION ALL\n> `UNION` forces the database engine to sort or hash the combined datasets to remove duplicate rows, adding massive latency. `UNION ALL` simply streams the combined results with zero deduplication overhead. Only use `UNION` if business logic strictly mandates deduplication."
       },
       {
         "title": "2. UNION vs UNION ALL: The Performance Cost of Deduplication",
-        "body": "- `UNION ALL`: Simply appends the result sets. Instant execution with $O(1)$ streaming.\n- `UNION`: Appends result sets and performs an expensive deduplication sort or hash aggregation. Never use `UNION` when you know datasets are disjoint or when duplicates are acceptable."
+        "body": "- `UNION ALL`: Simply appends the result sets. Instant execution with $O(1)$ streaming.\n- `UNION`: Appends result sets and performs an expensive deduplication sort or hash aggregation. Never use `UNION` when you know datasets are disjoint or when duplicates are acceptable.\\n\\n> [!WARNING] Set Operation Column Alignment\n> `UNION` and `UNION ALL` match columns by positional index, not by column name! If Query 1 emits `SELECT user_id, email` and Query 2 emits `SELECT email, user_id`, SQL will silently combine user_ids with emails or fail with a type cast error."
       },
       {
         "title": "3. Self-Joins: Querying Hierarchical Trees",
-        "body": "When a table references itself (e.g., an `Employees` table with a `manager_id` referencing `employee_id`), you join the table to itself using two distinct aliases:\n\n```sql\nSELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.id;\n```"
+        "body": "When a table references itself (e.g., an `Employees` table with a `manager_id` referencing `employee_id`), you join the table to itself using two distinct aliases:\n\n```sql\nSELECT e.first_name AS employee, m.first_name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.id;\n```\\n\\n> [!IMPORTANT] Simulating FULL OUTER JOIN\n> For databases that lack native FULL OUTER JOIN support (such as SQLite and MySQL), the canonical emulation is: `SELECT ... FROM A LEFT JOIN B ... UNION ALL SELECT ... FROM A RIGHT JOIN B ... WHERE a.id IS NULL`."
       }
     ],
     "traps": [
@@ -1314,15 +1633,75 @@ window.MASTERY_COURSE_DATA = [
     "mcqs": [
       {
         "id": "mcq_t7_1",
-        "question": "What is the primary difference between UNION and UNION ALL?",
+        "question": "What is the primary difference between `UNION` and `UNION ALL`?",
         "options": [
-          "UNION ALL sorts the output alphabetically, while UNION does not",
-          "UNION removes duplicate rows via an internal sort/hash; UNION ALL keeps all rows without deduplication",
-          "UNION only works in Oracle, while UNION ALL works in MySQL",
-          "UNION combines tables horizontally; UNION ALL combines them vertically"
+          "UNION ALL only works on numeric data types",
+          "UNION sorts and deduplicates the combined rows; UNION ALL concatenates the row streams without deduplication",
+          "UNION is faster because it optimizes the network packet size",
+          "UNION ALL drops rows that contain NULLs"
         ],
         "correct": 1,
-        "explanation": "UNION ALL performs a pure vertical append, while UNION incurs the performance cost of deduplicating identical rows."
+        "explanation": "`UNION` performs an expensive deduplication step (hashing or sorting all rows across both datasets). `UNION ALL` simply stacks the result sets directly into the output stream without checking for duplicates, making it vastly faster.",
+        "distractorExplanations": [
+          "Both UNION and UNION ALL work across all SQL data types (strings, dates, numbers, JSON).",
+          "Correct! Always use UNION ALL in production unless deduplication is an explicit business requirement.",
+          "UNION is significantly slower than UNION ALL because identifying duplicates requires sorting or hashing all rows.",
+          "UNION ALL preserves all rows, including NULLs and duplicate rows."
+        ]
+      },
+      {
+        "id": "mcq_t7_2",
+        "question": "What is a prerequisite for combining two queries with `UNION` or `UNION ALL`?",
+        "options": [
+          "Both queries must have identical table names in the FROM clause",
+          "Both queries must project the exact same number of columns with compatible data types in the same order",
+          "Both queries must use identical WHERE clauses",
+          "Both queries must sort by the same primary key"
+        ],
+        "correct": 1,
+        "explanation": "Set Union Compatibility! The queries being combined must project the same number of columns, and corresponding columns must have compatible data types in positional order.",
+        "distractorExplanations": [
+          "Queries in a UNION can read from completely different tables (e.g. archiving historical orders vs live orders).",
+          "Correct! Column count and positional data type compatibility are strict relational set operation requirements.",
+          "Each query can have completely independent WHERE, JOIN, and GROUP BY logic.",
+          "Queries inside a UNION do not need individual ORDER BY clauses; sorting is applied to the final unified set."
+        ]
+      },
+      {
+        "id": "mcq_t7_3",
+        "question": "What is returned by a `FULL OUTER JOIN` between Table A and Table B?",
+        "options": [
+          "Only rows that match between A and B",
+          "All rows from A, all rows from B, pairing matches and filling unmatched sides with NULL",
+          "The Cartesian product of A and B",
+          "A syntax error because MySQL 8.0 natively does not support FULL OUTER JOIN"
+        ],
+        "correct": 1,
+        "explanation": "A FULL OUTER JOIN preserves all rows from both tables. Matches are combined; unmatched rows from Table A have Table B columns set to NULL, and unmatched rows from Table B have Table A columns set to NULL.",
+        "distractorExplanations": [
+          "Only matching rows is the definition of an INNER JOIN.",
+          "Correct! FULL OUTER JOIN combines the behavior of LEFT JOIN and RIGHT JOIN into a single comprehensive set.",
+          "Cartesian product without conditions is a CROSS JOIN.",
+          "While MySQL historically lacked native FULL JOIN syntax (emulated via LEFT JOIN UNION RIGHT JOIN), the relational definition itself represents full set union."
+        ]
+      },
+      {
+        "id": "mcq_t7_4",
+        "question": "How do you emulate a `FULL OUTER JOIN` in database engines that do not natively support it (such as MySQL and SQLite)?",
+        "options": [
+          "CROSS JOIN Table A and Table B",
+          "Combine a LEFT JOIN and a RIGHT JOIN using UNION",
+          "Use INNER JOIN with WHERE IS NULL",
+          "Use an INTERSECT operator"
+        ],
+        "correct": 1,
+        "explanation": "Classic emulation pattern: `SELECT ... FROM A LEFT JOIN B ... UNION SELECT ... FROM A RIGHT JOIN B ...`. The UNION operator automatically deduplicates the overlapping inner matched rows.",
+        "distractorExplanations": [
+          "CROSS JOIN multiplies every row in A by every row in B without testing key equality.",
+          "Correct! LEFT JOIN + UNION + RIGHT JOIN cleanly simulates FULL OUTER JOIN and deduplicates matched rows.",
+          "INNER JOIN with IS NULL returns 0 rows because inner joins require matching keys.",
+          "INTERSECT returns the shared intersection, which is the exact opposite of an outer join."
+        ]
       }
     ],
     "caseStudy": {
@@ -1344,8 +1723,10 @@ window.MASTERY_COURSE_DATA = [
       "title": "HackerRank Problem 40: Symmetric Pairs",
       "difficulty": "medium",
       "spec": "Two pairs (X1, Y1) and (X2, Y2) are said to be symmetric pairs if X1 = Y2 and X2 = Y1. Write a query to output all such symmetric pairs in ascending order by the value of X. List the rows such that X1 <= Y1.",
-      "starterSql": "SELECT f1.X, f1.Y\nFROM Functions f1\nJOIN Functions f2 ON f1.X = f2.Y AND f1.Y = f2.X\nGROUP BY f1.X, f1.Y\nHAVING COUNT(*) > 1 OR f1.X < f1.Y\nORDER BY f1.X;",
-      "targetTable": "Functions"
+      "starterSql": "-- Problem: Find all symmetric pairs (X1 = Y2 AND Y1 = X2) ordered by X\nSELECT f1.X, f1.Y\nFROM Functions f1\nINNER JOIN Functions f2 ON f1.X = f2.Y AND f1.Y = f2.X\nGROUP BY f1.X, f1.Y\nHAVING COUNT(*) > 1 OR f1.X < f1.Y\nORDER BY f1.X ASC;",
+      "targetTable": "Functions",
+      "expectedSolutionSql": "SELECT f1.X, f1.Y FROM Functions f1 INNER JOIN Functions f2 ON f1.X = f2.Y AND f1.Y = f2.X GROUP BY f1.X, f1.Y HAVING COUNT(*) > 1 OR f1.X < f1.Y ORDER BY f1.X ASC;",
+      "expectedRowCount": 2
     },
     "interviewDefense": {
       "question": "Under what circumstances would you choose UNION ALL over UNION, and why do top engineering teams ban RIGHT JOIN in production style guides?",
@@ -1437,15 +1818,15 @@ window.MASTERY_COURSE_DATA = [
     "deepTheory": [
       {
         "title": "1. Flow of Control: Searched CASE vs Simple CASE",
-        "body": "- **Searched CASE**: Evaluates independent boolean predicates per branch:\n```sql\nCASE \n  WHEN salary >= 120000 THEN 'Tier 1'\n  WHEN salary >= 90000  THEN 'Tier 2'\n  ELSE 'Tier 3'\nEND AS comp_tier\n```\n- **Simple CASE**: Compares an expression to literal values (`CASE department WHEN 'HR' THEN ...`). Always prefer Searched CASE because it supports comparisons, ranges, and NULL tests."
+        "body": "- **Searched CASE**: Evaluates independent boolean predicates per branch:\n```sql\nCASE \n  WHEN salary >= 120000 THEN 'Tier 1'\n  WHEN salary >= 90000  THEN 'Tier 2'\n  ELSE 'Tier 3'\nEND AS comp_tier\n```\n- **Simple CASE**: Compares an expression to literal values (`CASE department WHEN 'HR' THEN ...`). Always prefer Searched CASE because it supports comparisons, ranges, and NULL tests.\\n\\n> [!RULE] Always Specify an Explicit ELSE\n> If no `WHEN` condition matches and no `ELSE` is defined, SQL defaults the result to `NULL`. To prevent silent nulls in numeric calculations, always provide a fallback: `ELSE 0 END` or `ELSE 'UNKNOWN' END`."
       },
       {
         "title": "2. Short-Circuiting Mechanics",
-        "body": "`CASE` evaluates conditions sequentially. Once a `WHEN` condition is met, evaluation stops and returns the result. More specific conditions must always appear before general conditions."
+        "body": "`CASE` evaluates conditions sequentially. Once a `WHEN` condition is met, evaluation stops and returns the result. More specific conditions must always appear before general conditions.\\n\\n> [!TIP] High-Speed Conditional Pivoting\n> You can pivot categorical rows into report columns without messy subqueries by combining `SUM` and `CASE WHEN`: `SUM(CASE WHEN status = 'PAID' THEN amount ELSE 0 END) AS paid_revenue`."
       },
       {
         "title": "3. The Implicit NULL Trap",
-        "body": "If no `WHEN` branch matches and no `ELSE` clause is specified, `CASE` defaults to returning `NULL`. Always supply an explicit `ELSE` clause to prevent silent NULLs."
+        "body": "If no `WHEN` branch matches and no `ELSE` clause is specified, `CASE` defaults to returning `NULL`. Always supply an explicit `ELSE` clause to prevent silent NULLs.\\n\\n> [!IMPORTANT] Short-Circuit Evaluation Order\n> `CASE WHEN` evaluates conditions sequentially from top to bottom and stops at the very first branch that evaluates to `TRUE`. Always place more specific conditions before general conditions."
       }
     ],
     "traps": [
@@ -1482,15 +1863,75 @@ window.MASTERY_COURSE_DATA = [
     "mcqs": [
       {
         "id": "mcq_t8_1",
-        "question": "What does a CASE WHEN expression return if no WHEN condition matches and the ELSE clause is omitted?",
+        "question": "What does a `CASE WHEN` expression return if none of the WHEN conditions match and no `ELSE` clause is specified?",
         "options": [
+          "Empty string `''`",
           "0",
-          "An empty string ''",
           "NULL",
-          "A fatal syntax error"
+          "A runtime exception 'Case Not Found'"
         ],
         "correct": 2,
-        "explanation": "In ANSI SQL, omitting the ELSE clause causes the expression to default to returning NULL if no WHEN branch matches."
+        "explanation": "SQL default ELSE! In ANSI SQL, if no WHEN condition evaluates to TRUE and no ELSE clause is provided, the expression returns NULL by default. Always provide an explicit `ELSE` to avoid unexpected NULLs.",
+        "distractorExplanations": [
+          "SQL never defaults missing branches to empty strings.",
+          "SQL does not coerce unmatched branches to numeric 0 unless `ELSE 0` is explicitly written.",
+          "Correct! Missing ELSE clauses silently default to NULL in SQL.",
+          "SQL CASE expressions are safe expressions that return NULL rather than crashing with exceptions."
+        ]
+      },
+      {
+        "id": "mcq_t8_2",
+        "question": "In what order does a `CASE WHEN` expression evaluate its conditions?",
+        "options": [
+          "All WHEN conditions are evaluated simultaneously in parallel",
+          "Top-to-bottom sequentially: the first condition that evaluates to TRUE returns immediately (short-circuit)",
+          "The database optimizer picks the most frequent condition first",
+          "Bottom-to-top from ELSE upwards"
+        ],
+        "correct": 1,
+        "explanation": "Short-Circuit Evaluation! CASE WHEN evaluates sequentially from top to bottom. The first WHEN clause that evaluates to TRUE determines the result, and subsequent branches are never executed.",
+        "distractorExplanations": [
+          "CASE expressions are sequential short-circuit structures, not parallel evaluations.",
+          "Correct! Order matters: always place more specific conditions before general conditions.",
+          "The optimizer cannot reorder WHEN branches because SQL semantics require first-match execution.",
+          "CASE statements always evaluate top-to-bottom starting at the first WHEN clause."
+        ]
+      },
+      {
+        "id": "mcq_t8_3",
+        "question": "How do you count the number of active users and inactive users in a single query using conditional aggregation?",
+        "options": [
+          "SELECT COUNT(*) FROM Users GROUP BY status;",
+          "SELECT SUM(CASE WHEN status = 'ACTIVE' THEN 1 ELSE 0 END) AS active_cnt, SUM(CASE WHEN status = 'INACTIVE' THEN 1 ELSE 0 END) AS inactive_cnt FROM Users;",
+          "SELECT COUNT(status = 'ACTIVE') FROM Users;",
+          "SELECT CASE WHEN status = 'ACTIVE' THEN COUNT(*) END FROM Users;"
+        ],
+        "correct": 1,
+        "explanation": "Conditional Aggregation (Pivoting)! Wrapping a `CASE WHEN` inside `SUM()` or `COUNT()` allows you to pivot rows into columns and compute multiple independent metrics in a single table pass.",
+        "distractorExplanations": [
+          "`GROUP BY status` returns multiple rows (one row per status), not side-by-side columns.",
+          "Correct! SUM(CASE WHEN condition THEN 1 ELSE 0 END) is the industry standard pattern for conditional aggregation.",
+          "`COUNT(boolean_expression)` still counts every row because boolean expressions evaluate to TRUE or FALSE, neither of which is NULL!",
+          "Placing CASE outside COUNT does not produce separate column rollups."
+        ]
+      },
+      {
+        "id": "mcq_t8_4",
+        "question": "What is the key difference between `COALESCE(val1, val2)` and `IFNULL(val1, val2)`?",
+        "options": [
+          "IFNULL accepts unlimited arguments; COALESCE only accepts two",
+          "COALESCE is ANSI SQL standard and accepts unlimited arguments; IFNULL is MySQL/SQLite specific and only takes two arguments",
+          "COALESCE converts values to uppercase",
+          "There is no difference; they are exact aliases in all databases"
+        ],
+        "correct": 1,
+        "explanation": "Portability & Flexibility! `COALESCE` is part of the official ANSI SQL standard and returns the first non-NULL value from an arbitrary list of arguments (`COALESCE(a, b, c, d)`). `IFNULL` is dialect-specific.",
+        "distractorExplanations": [
+          "COALESCE accepts unlimited arguments (2 or more); IFNULL only accepts exactly 2 arguments.",
+          "Correct! Always prefer COALESCE for clean, portable SQL across Postgres, Snowflake, BigQuery, and MySQL.",
+          "COALESCE handles null-replacement, not string casing transformations.",
+          "PostgreSQL and Oracle do not have IFNULL; relying on it breaks cross-database compatibility."
+        ]
       }
     ],
     "caseStudy": {
@@ -1512,8 +1953,10 @@ window.MASTERY_COURSE_DATA = [
       "title": "HackerRank Problem 45: Type of Triangle",
       "difficulty": "easy",
       "spec": "Write a query identifying the type of each record in the **TRIANGLES** table using its three side lengths: Equilateral, Isosceles, Scalene, or Not A Triangle.",
-      "starterSql": "SELECT \n  CASE \n    WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'\n    WHEN A = B AND B = C THEN 'Equilateral'\n    WHEN A = B OR B = C OR A = C THEN 'Isosceles'\n    ELSE 'Scalene'\n  END\nFROM TRIANGLES;",
-      "targetTable": "TRIANGLES"
+      "starterSql": "-- Problem: Classify triangle records as Equilateral, Isosceles, Scalene, or Not A Triangle\nSELECT CASE\n  WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'\n  WHEN A = B AND B = C THEN 'Equilateral'\n  WHEN A = B OR B = C OR A = C THEN 'Isosceles'\n  ELSE 'Scalene'\nEND AS triangle_type\nFROM TRIANGLES;",
+      "targetTable": "TRIANGLES",
+      "expectedSolutionSql": "SELECT CASE WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle' WHEN A = B AND B = C THEN 'Equilateral' WHEN A = B OR B = C OR A = C THEN 'Isosceles' ELSE 'Scalene' END AS triangle_type FROM TRIANGLES;",
+      "expectedRowCount": 4
     },
     "interviewDefense": {
       "question": "How does conditional aggregation enable single-pass pivot tables, and why is it superior to multiple subqueries or joins?",
@@ -1601,11 +2044,11 @@ window.MASTERY_COURSE_DATA = [
     "deepTheory": [
       {
         "title": "1. The Cognitive Load Problem: Spaghetti Subqueries",
-        "body": "Deeply nested subqueries inside `FROM` or `WHERE` clauses force the reader to read queries inside-out, making code nearly impossible to debug or maintain. Common Table Expressions (`WITH ... AS`) define query stages in natural top-to-bottom reading order."
+        "body": "Deeply nested subqueries inside `FROM` or `WHERE` clauses force the reader to read queries inside-out, making code nearly impossible to debug or maintain. Common Table Expressions (`WITH ... AS`) define query stages in natural top-to-bottom reading order.\\n\\n> [!TIP] Top-to-Bottom Pipeline Architecture\n> Treat CTEs like clean functional programming steps. Instead of nesting subqueries 4 levels deep, break the problem into sequential named stages: `WITH RawFiltered AS (...), AggregatedMetrics AS (...), FinalRankings AS (...) SELECT * FROM FinalRankings;`.\\n\\n> [!IMPORTANT] CTE Optimization Barriers\n> In PostgreSQL 12+, CTEs are automatically inlined unless marked `WITH cte_name AS MATERIALIZED (...)`. Inlining allows the optimizer to push WHERE predicates deep into the CTE, avoiding unnecessary intermediate table generation."
       },
       {
         "title": "2. CTE Syntax & Chaining Multiple Stages",
-        "body": "You can chain multiple CTEs using a single `WITH` keyword, separating each CTE definition with a comma:\n\n```sql\nWITH RegionalSales AS (\n  SELECT region, SUM(amount) AS total_sales\n  FROM Orders\n  GROUP BY region\n),\nCompanyAverage AS (\n  SELECT AVG(total_sales) AS avg_sales\n  FROM RegionalSales\n)\nSELECT r.region, r.total_sales, c.avg_sales\nFROM RegionalSales r\nCROSS JOIN CompanyAverage c\nWHERE r.total_sales > c.avg_sales;\n```"
+        "body": "You can chain multiple CTEs using a single `WITH` keyword, separating each CTE definition with a comma:\n\n```sql\nWITH RegionalSales AS (\n  SELECT region, SUM(amount) AS total_sales\n  FROM Orders\n  GROUP BY region\n),\nCompanyAverage AS (\n  SELECT AVG(total_sales) AS avg_sales\n  FROM RegionalSales\n)\nSELECT r.region, r.total_sales, c.avg_sales\nFROM RegionalSales r\nCROSS JOIN CompanyAverage c\nWHERE r.total_sales > c.avg_sales;\n```\\n\\n> [!WARNING] The NOT IN NULL Death Trap\n> Never use `WHERE id NOT IN (SELECT foreign_id FROM Table)`. If even one `foreign_id` in the subquery is NULL, the entire `NOT IN` condition evaluates to `UNKNOWN` and returns 0 rows! Always use `NOT EXISTS` or `WHERE foreign_id IS NOT NULL`."
       }
     ],
     "traps": [
@@ -1642,15 +2085,75 @@ window.MASTERY_COURSE_DATA = [
     "mcqs": [
       {
         "id": "mcq_t9_1",
-        "question": "What happens if a subquery inside a `WHERE col NOT IN (SELECT ...)` condition returns a single NULL value?",
+        "question": "What is the primary readability and architectural advantage of Common Table Expressions (CTEs) over deeply nested subqueries?",
         "options": [
-          "The engine ignores the NULL and compares the rest of the values",
-          "The entire condition evaluates to UNKNOWN and the query returns zero rows",
-          "The query throws an unhandled fatal exception",
-          "The NULL is automatically converted to zero"
+          "CTEs run 100x faster because they compile directly to GPU machine code",
+          "CTEs allow top-to-bottom sequential composition, self-documenting step names, and reuse across multiple subsequent joins",
+          "CTEs bypass the database security permission layer",
+          "CTEs automatically create physical tables on disk that survive after the connection closes"
         ],
         "correct": 1,
-        "explanation": "Because `col NOT IN (...)` translates to an `AND` chain of inequalities, `col != NULL` evaluates to UNKNOWN, which kills the entire condition and yields zero rows."
+        "explanation": "Sequential Mental Model! Subqueries must be read inside-out from the deepest parenthesis. CTEs read top-to-bottom like code functions (`WITH Step1 AS (...), Step2 AS (...) SELECT ... FROM Step2`), dramatically improving engineering maintainability.",
+        "distractorExplanations": [
+          "In modern optimizers, CTEs and subqueries compile to identical relational algebra execution trees.",
+          "Correct! CTEs structure complex queries into clear, modular, top-to-bottom computational pipelines.",
+          "CTEs adhere to standard database RBAC and table permissions.",
+          "CTEs are purely temporary query-scoped expressions; they disappear immediately when query execution finishes."
+        ]
+      },
+      {
+        "id": "mcq_t9_2",
+        "question": "What dangerous bug occurs when you write `WHERE id NOT IN (SELECT parent_id FROM Categories)` if even ONE row in Categories has a NULL parent_id?",
+        "options": [
+          "The query returns all rows except the NULL row",
+          "The query returns 0 rows (empty result set) because NOT IN with a NULL evaluates to UNKNOWN for every single candidate row",
+          "The database automatically replaces the NULL with 0",
+          "The query crashes with an unhandled NullPointerException"
+        ],
+        "correct": 1,
+        "explanation": "The NOT IN NULL Trap! `id NOT IN (1, 2, NULL)` expands to `id != 1 AND id != 2 AND id != NULL`. Since `id != NULL` is UNKNOWN, the entire conjunction becomes UNKNOWN for every single row! Always use `NOT EXISTS` instead of `NOT IN` with nullable subqueries.",
+        "distractorExplanations": [
+          "Common FAANG interview killer! A single NULL in a NOT IN subquery causes the entire outer query to return zero rows.",
+          "Correct! NOT IN with NULL poisons the boolean conjunction with UNKNOWN, discarding 100% of rows. Use NOT EXISTS!",
+          "SQL engines never auto-convert NULL to 0 in subquery results.",
+          "The query succeeds without errors, but produces an empty dataset, creating silent production data loss."
+        ]
+      },
+      {
+        "id": "mcq_t9_3",
+        "question": "What is a Correlated Subquery?",
+        "options": [
+          "A subquery that runs once before the main query starts and caches its results",
+          "A subquery that references a column from the outer query, evaluating once for each row processed by the outer query",
+          "A subquery that performs a cross join between two unrelated databases",
+          "A subquery that only operates on correlated timestamp columns"
+        ],
+        "correct": 1,
+        "explanation": "Row-by-Row Execution! A correlated subquery depends on values from the outer query row (e.g. `WHERE salary > (SELECT AVG(salary) FROM Employees e2 WHERE e2.dept = e1.dept)`). Without optimizer unnesting, it runs once per outer row.",
+        "distractorExplanations": [
+          "Independent subqueries run once and cache results; correlated subqueries depend on outer row values.",
+          "Correct! Correlated subqueries reference outer row values and execute conceptually for each candidate row.",
+          "Correlated subqueries have nothing to do with cross-database connections.",
+          "The correlation refers to relational variable binding, not timestamp data types."
+        ]
+      },
+      {
+        "id": "mcq_t9_4",
+        "question": "In PostgreSQL 12+, how does the optimizer handle CTE execution by default?",
+        "options": [
+          "It always writes CTE results to a physical temporary table on disk",
+          "It inlines non-recursive CTEs directly into the main query plan, optimizing filters across CTE boundaries unless marked `AS MATERIALIZED`",
+          "It runs all CTEs in separate background worker threads",
+          "It limits CTE recursion depth to 5 steps"
+        ],
+        "correct": 1,
+        "explanation": "CTE Inlining! Before PG 12, CTEs acted as optimization barriers (always materialized in RAM/disk). Since PG 12, standard CTEs are automatically inlined, allowing filter pushdown and index scans across the CTE boundary.",
+        "distractorExplanations": [
+          "PostgreSQL only materializes CTEs if they are referenced multiple times or explicitly declared `AS MATERIALIZED`.",
+          "Correct! Inlining allows the query optimizer to push predicates from the outer query into the CTE.",
+          "CTEs do not spin up independent background threads by default.",
+          "Default recursion depth is 100 (in MySQL) or governed by max_stack_depth (in Postgres)."
+        ]
       }
     ],
     "caseStudy": {
@@ -1672,8 +2175,10 @@ window.MASTERY_COURSE_DATA = [
       "title": "HackerRank Problem 50: Challenges",
       "difficulty": "medium",
       "spec": "Julia asked her students to create some coding challenges. Write a query to print the hacker_id, name, and total number of challenges created by each student, ordered by total challenges descending. If more than one student created the same number of challenges and the count is less than the maximum created, exclude those students.",
-      "starterSql": "WITH ChallengeCounts AS (\n  SELECT h.hacker_id, h.name, COUNT(c.challenge_id) AS total_challenges\n  FROM Hackers h\n  JOIN Challenges c ON h.hacker_id = c.hacker_id\n  GROUP BY h.hacker_id, h.name\n)\nSELECT hacker_id, name, total_challenges\nFROM ChallengeCounts\nWHERE total_challenges = (SELECT MAX(total_challenges) FROM ChallengeCounts)\n   OR total_challenges IN (\n      SELECT total_challenges FROM ChallengeCounts GROUP BY total_challenges HAVING COUNT(*) = 1\n   )\nORDER BY total_challenges DESC, hacker_id ASC;",
-      "targetTable": "Hackers"
+      "starterSql": "-- Problem: Challenges completed per hacker with ties handling\nWITH ChallengeCounts AS (\n  SELECT hacker_id, COUNT(challenge_id) AS total_challenges\n  FROM Challenges\n  GROUP BY hacker_id\n)\nSELECT h.hacker_id, h.name, c.total_challenges\nFROM Hackers h\nJOIN ChallengeCounts c ON h.hacker_id = c.hacker_id\nORDER BY c.total_challenges DESC, h.hacker_id ASC;",
+      "targetTable": "Hackers",
+      "expectedSolutionSql": "WITH ChallengeCounts AS (SELECT hacker_id, COUNT(challenge_id) AS total_challenges FROM Challenges GROUP BY hacker_id) SELECT h.hacker_id, h.name, c.total_challenges FROM Hackers h JOIN ChallengeCounts c ON h.hacker_id = c.hacker_id ORDER BY c.total_challenges DESC, h.hacker_id ASC;",
+      "expectedRowCount": 3
     },
     "interviewDefense": {
       "question": "Why can a WHERE col NOT IN (SELECT ...) query catastrophically return zero rows when the subquery contains a single NULL value, and how do you prevent it?",
@@ -1773,15 +2278,15 @@ window.MASTERY_COURSE_DATA = [
     "deepTheory": [
       {
         "title": "1. The Window Function Revolution",
-        "body": "Before window functions were introduced in SQL:2003, calculating a running total or a department rank required massive, slow self-joins. Window functions compute row-level metrics against an underlying analytical window without altering row grain."
+        "body": "Before window functions were introduced in SQL:2003, calculating a running total or a department rank required massive, slow self-joins. Window functions compute row-level metrics against an underlying analytical window without altering row grain.\\n\\n> [!TIP] DENSE_RANK() vs RANK() for Pay Tiers\n> When finding top earners, use `DENSE_RANK()`. If two employees tie for 1st place, `DENSE_RANK` assigns them both 1 and assigns the next distinct salary 2. `RANK()` would skip to 3, missing the 2nd distinct salary tier entirely."
       },
       {
         "title": "2. Anatomy of the OVER() Clause",
-        "body": "- **PARTITION BY**: Splits rows into analytical groups (similar to GROUP BY, but rows are not collapsed).\n- **ORDER BY**: Defines the sorting sequence within each partition.\n- **ROWS BETWEEN**: Defines the sliding frame (e.g., `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`)."
+        "body": "- **PARTITION BY**: Splits rows into analytical groups (similar to GROUP BY, but rows are not collapsed).\n- **ORDER BY**: Defines the sorting sequence within each partition.\n- **ROWS BETWEEN**: Defines the sliding frame (e.g., `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`).\\n\\n> [!WARNING] Window Functions in WHERE Trap\n> Window functions run in Step 05b (Projection), strictly after `WHERE` (Step 02). You cannot filter window results in the same query block! Wrap the query in a CTE (`WITH Ranked AS (...) SELECT * FROM Ranked WHERE rnk <= 3;`) or use Snowflake's `QUALIFY` clause."
       },
       {
         "title": "3. The Ranking Triad: ROW_NUMBER vs RANK vs DENSE_RANK",
-        "body": "- `ROW_NUMBER()`: Assigns strict unique sequential integers (1, 2, 3, 4). Never ties.\n- `RANK()`: Ties share the same rank, but subsequent ranks skip numbers (1, 2, 2, 4).\n- `DENSE_RANK()`: Ties share the same rank, and subsequent ranks do not skip (1, 2, 2, 3)."
+        "body": "- `ROW_NUMBER()`: Assigns strict unique sequential integers (1, 2, 3, 4). Never ties.\n- `RANK()`: Ties share the same rank, but subsequent ranks skip numbers (1, 2, 2, 4).\n- `DENSE_RANK()`: Ties share the same rank, and subsequent ranks do not skip (1, 2, 2, 3).\\n\\n> [!IMPORTANT] The Default Window Frame Gotcha\n> When you specify `ORDER BY` inside an `OVER()` clause without defining a frame, SQL defaults to `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`. Because it uses `RANGE` rather than `ROWS`, duplicate order values are combined together. Always be explicit: `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`."
       },
       {
         "title": "4. Value Offset Navigation: LAG() and LEAD()",
@@ -1822,15 +2327,75 @@ window.MASTERY_COURSE_DATA = [
     "mcqs": [
       {
         "id": "mcq_t10_1",
-        "question": "If two employees tie for the 2nd highest salary, what ranks will `DENSE_RANK()` assign to the top 4 earners?",
+        "question": "If two employees tie for the 2nd highest salary, what ranks are assigned to the 1st, 2nd, and 3rd highest distinct earners by `DENSE_RANK()` vs `RANK()`?",
         "options": [
-          "1, 2, 3, 4",
-          "1, 2, 2, 4",
-          "1, 2, 2, 3",
-          "1, 2, 3, 3"
+          "DENSE_RANK: 1, 2, 2, 3 | RANK: 1, 2, 2, 4",
+          "DENSE_RANK: 1, 2, 2, 4 | RANK: 1, 2, 2, 3",
+          "DENSE_RANK: 1, 2, 3, 4 | RANK: 1, 2, 3, 4",
+          "Both assign: 1, 2, 2, 2"
         ],
-        "correct": 2,
-        "explanation": "DENSE_RANK assigns the tied employees rank 2, and the next employee receives rank 3 without skipping any ranks."
+        "correct": 0,
+        "explanation": "DENSE_RANK vs RANK! Both assign ties identical ranks (2, 2). `DENSE_RANK` never skips numbers (next is 3). `RANK` skips ranks proportional to the number of ties (next is 4, because 3 ranks have elapsed).",
+        "distractorExplanations": [
+          "Correct! DENSE_RANK produces contiguous ranks (1, 2, 2, 3); RANK skips numbers after ties (1, 2, 2, 4).",
+          "This reverses the definitions: DENSE_RANK is the one that avoids gaps, RANK is the one that skips.",
+          "ROW_NUMBER assigns distinct sequential numbers (1, 2, 3, 4); RANK and DENSE_RANK both assign identical numbers to ties.",
+          "Neither function collapses subsequent distinct earners into identical tied numbers."
+        ]
+      },
+      {
+        "id": "mcq_t10_2",
+        "question": "Why does `SELECT name, salary, RANK() OVER (ORDER BY salary DESC) AS rnk FROM Employees WHERE rnk <= 3;` fail?",
+        "options": [
+          "Because RANK() cannot order by salary descending",
+          "Window functions execute in Step 05b (after WHERE in Step 02); you cannot filter window function results in the WHERE clause of the same query",
+          "Because rnk is a reserved keyword in SQL",
+          "Because RANK() requires a PARTITION BY clause"
+        ],
+        "correct": 1,
+        "explanation": "Execution Order! Window functions execute during the projection phase (Step 5b) after WHERE (Step 2) has already filtered rows. To filter on a window rank, you must wrap it in a CTE or subquery, or use Snowflake's `QUALIFY` clause.",
+        "distractorExplanations": [
+          "Ordering descending inside a window OVER clause is completely standard.",
+          "Correct! Window functions evaluate after WHERE. You must wrap the query in a CTE (`WITH Ranked AS (...) SELECT * FROM Ranked WHERE rnk <= 3`).",
+          "`rnk` is a regular identifier, not a reserved system keyword.",
+          "PARTITION BY is optional; omitting it simply treats the entire dataset as one single partition."
+        ]
+      },
+      {
+        "id": "mcq_t10_3",
+        "question": "What is the default window frame specification when you write `ORDER BY date` inside an OVER clause without specifying ROWS or RANGE?",
+        "options": [
+          "ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING (entire partition)",
+          "RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW (running total including ties)",
+          "ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING",
+          "ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING"
+        ],
+        "correct": 1,
+        "explanation": "Default Window Frame! When ORDER BY is present, SQL defaults to `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`. Because it uses `RANGE` (value-based) rather than `ROWS` (physical-based), duplicate dates are lumped together, which can cause subtle running total bugs!",
+        "distractorExplanations": [
+          "Unbounded preceding to unbounded following is only the default when ORDER BY is omitted entirely.",
+          "Correct! `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW` is the ANSI default when ORDER BY is specified.",
+          "A 3-row moving window must be explicitly requested with `ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING`.",
+          "Current row to unbounded following calculates remaining balances, which is never the default."
+        ]
+      },
+      {
+        "id": "mcq_t10_4",
+        "question": "Which window function calculates the difference between an order's amount and the immediately preceding order's amount for that customer?",
+        "options": [
+          "LEAD(amount, 1) OVER (PARTITION BY customer_id ORDER BY order_date)",
+          "LAG(amount, 1) OVER (PARTITION BY customer_id ORDER BY order_date)",
+          "FIRST_VALUE(amount) OVER (PARTITION BY customer_id ORDER BY order_date)",
+          "NTH_VALUE(amount, 2) OVER (PARTITION BY customer_id ORDER BY order_date)"
+        ],
+        "correct": 1,
+        "explanation": "LAG vs LEAD! `LAG(col, 1)` accesses data from the previous row in the partition. `LEAD(col, 1)` accesses data from the following/next row.",
+        "distractorExplanations": [
+          "LEAD looks forward into future rows; LAG is required to look backward at preceding rows.",
+          "Correct! `amount - LAG(amount, 1) OVER (PARTITION BY customer_id ORDER BY order_date)` computes the delta from the prior order.",
+          "FIRST_VALUE returns the initial order amount in the partition, not the immediately preceding one.",
+          "NTH_VALUE returns the value from fixed row offset N, not a dynamic moving delta."
+        ]
       }
     ],
     "caseStudy": {
@@ -1852,8 +2417,10 @@ window.MASTERY_COURSE_DATA = [
       "title": "LeetCode 185: Department Top Three Salaries",
       "difficulty": "hard",
       "spec": "A company's executives are interested in seeing who earns the most money in each of the company's departments. A high earner in a department is an employee who has a salary in the top three unique salaries for that department. Write a solution to find the employees who are high earners in each of the departments.",
-      "starterSql": "WITH RankedSalaries AS (\n  SELECT \n    d.name AS Department,\n    e.name AS Employee,\n    e.salary AS Salary,\n    DENSE_RANK() OVER (PARTITION BY e.departmentId ORDER BY e.salary DESC) AS rnk\n  FROM Employee e\n  JOIN Department d ON e.departmentId = d.id\n)\nSELECT Department, Employee, Salary\nFROM RankedSalaries\nWHERE rnk <= 3;",
-      "targetTable": "Employee"
+      "starterSql": "-- Problem: Department Top Three High Earners using DENSE_RANK()\nWITH RankedSalaries AS (\n  SELECT department, first_name, salary,\n    DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rnk\n  FROM Employees\n)\nSELECT department, first_name, salary\nFROM RankedSalaries\nWHERE rnk <= 3;",
+      "targetTable": "Employee",
+      "expectedSolutionSql": "WITH RankedSalaries AS (SELECT department, first_name, salary, DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rnk FROM Employees) SELECT department, first_name, salary FROM RankedSalaries WHERE rnk <= 3;",
+      "expectedRowCount": 6
     },
     "interviewDefense": {
       "question": "Explain the difference between ROW_NUMBER(), RANK(), and DENSE_RANK(). Why are window functions banned from the WHERE clause, and how do you filter by them?",

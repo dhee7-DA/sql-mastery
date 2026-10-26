@@ -1705,3 +1705,323 @@
 }
 
 
+
+
+/* =============================================================================
+   ELEVATION 4: RICH THEORY CALLOUT CARDS (TIPS, GOTCHAS, OPTIMIZER, RULES)
+   ============================================================================= */
+.theory-callout {
+  margin: 14px 0;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border-left: 4px solid;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.theory-callout .callout-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.theory-callout p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.theory-callout.tip {
+  background: rgba(16, 185, 129, 0.08);
+  border-left-color: #10b981;
+}
+.theory-callout.tip .callout-header { color: #059669; }
+
+.theory-callout.warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-left-color: #f59e0b;
+}
+.theory-callout.warning .callout-header { color: #d97706; }
+
+.theory-callout.note {
+  background: rgba(59, 130, 246, 0.08);
+  border-left-color: #3b82f6;
+}
+.theory-callout.note .callout-header { color: #2563eb; }
+
+.theory-callout.important {
+  background: rgba(239, 68, 68, 0.08);
+  border-left-color: #ef4444;
+}
+.theory-callout.important .callout-header { color: #dc2626; }
+
+.theory-callout.rule {
+  background: rgba(99, 102, 241, 0.08);
+  border-left-color: #6366f1;
+}
+.theory-callout.rule .callout-header { color: #4f46e5; }
+
+/* =============================================================================
+   ELEVATION 5: IN-PLACE LEETCODE-GRADE TEST RUNNER & VERIFICATION
+   ============================================================================= */
+.problem-runner-wrap {
+  margin-top: 16px;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  background: var(--bg-card);
+  overflow: hidden;
+}
+
+.problem-runner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: var(--bg-card-subtle);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.problem-runner-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.course-code-editor {
+  width: 100%;
+  min-height: 120px;
+  max-height: 320px;
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: none;
+  resize: vertical;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.course-code-editor:focus {
+  background: var(--bg-card);
+}
+
+.problem-action-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg-card-subtle);
+  border-top: 1px solid var(--border-default);
+  flex-wrap: wrap;
+}
+
+.btn-verify-query {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #10b981;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+}
+
+.btn-verify-query:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.test-verdict-card {
+  margin: 14px 0 0 0;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-default);
+}
+
+.test-verdict-card.passed {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.test-verdict-card.failed {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.verdict-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.test-verdict-card.passed .verdict-status-row { color: #059669; }
+.test-verdict-card.failed .verdict-status-row { color: #dc2626; }
+
+.verdict-details {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.test-diff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .test-diff-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.diff-table-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.diff-table-title {
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  background: var(--bg-card-subtle);
+  border-bottom: 1px solid var(--border-default);
+}
+
+/* =============================================================================
+   ELEVATION 6: MCQ DISTRACTOR ANALYSIS FEEDBACK BANNERS
+   ============================================================================= */
+.mcq-feedback-banner {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  display: none;
+}
+
+.mcq-feedback-banner.show {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.mcq-feedback-banner.correct {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.mcq-feedback-banner.incorrect {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.feedback-headline {
+  font-weight: 800;
+  font-size: 12.5px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mcq-feedback-banner.correct .feedback-headline { color: #059669; }
+.mcq-feedback-banner.incorrect .feedback-headline { color: #dc2626; }
+
+.distractor-why {
+  margin: 6px 0;
+  padding: 8px 10px;
+  background: rgba(239, 68, 68, 0.06);
+  border-left: 3px solid #ef4444;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+.correct-answer-reveal {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(16, 185, 129, 0.3);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* =============================================================================
+   ELEVATION 7: ENHANCED DUAL-TABLE LIVE SANDBOX FLOW
+   ============================================================================= */
+.sim-dual-table-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .sim-dual-table-flow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sim-source-panel, .sim-result-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.sim-bridge-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.row-status-pill {
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 4px;
+}
+
+.row-status-pill.pass {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.row-status-pill.drop {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  text-decoration: line-through;
+}

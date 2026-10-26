@@ -20,6 +20,8 @@ window.MasteryCourseEngine = (function () {
   const state = {
     activePhaseId: 'topic_01_select_from',
     activeStep: 'theory', // 'theory', 'mcqs', 'case', 'problem'
+    problemInput: {}, // key: phaseId => string (user query code)
+    testResults: {}, // key: phaseId => { passed, message, userRows, expRows, userCols, expCols }
     visualMode: 'diagram', // 'diagram' | 'sandbox'
     diagramStep: 0, // 0: overview, 1: scan, 2: op, 3: emit
     completedPhases: new Set(),
@@ -2704,8 +2706,24 @@ FROM Employees;`,
                   }).join('')}
                 </div>
 
-                <div class="mcq-explanation-box ${hasAnswered ? 'show' : ''}">
-                  <strong>Explanation:</strong> ${q.explanation}
+                <div class="mcq-feedback-banner ${hasAnswered ? 'show' : ''} ${selectedOpt === q.correct ? 'correct' : 'incorrect'}">
+                  <div class="feedback-headline">
+                    <span>${selectedOpt === q.correct ? '✅ Correct! Brilliant understanding.' : `❌ Option ${selectedOpt + 1} is a Common Trap!`}</span>
+                  </div>
+                  ${selectedOpt !== q.correct ? `
+                    <div class="distractor-why">
+                      <strong>⚠️ Why this answer catches candidates:</strong>
+                      <p style="margin: 4px 0 0 0;">${(q.distractorExplanations && q.distractorExplanations[selectedOpt]) || 'This choice violates relational execution order.'}</p>
+                    </div>
+                    <div class="correct-answer-reveal">
+                      <strong>💡 Correct Solution (Option ${q.correct + 1}):</strong>
+                      <p style="margin: 4px 0 0 0;">${q.explanation}</p>
+                    </div>
+                  ` : `
+                    <div class="verdict-details" style="margin: 0;">
+                      ${q.explanation}
+                    </div>
+                  `}
                 </div>
               </div>
             `;
@@ -2767,6 +2785,78 @@ FROM Employees;`,
     if (!prob) return '<div style="padding: 24px;">No problem defined for this topic.</div>';
 
     const isShowingSol = state.showSolution[phase.id];
+    const userCode = state.problemInput[phase.id] !== undefined ? state.problemInput[phase.id] : prob.starterSql;
+    const testVerdict = state.testResults[phase.id];
+
+    let verdictHtml = '';
+    if (testVerdict) {
+      if (testVerdict.passed) {
+        const rows = testVerdict.userRows || [];
+        const cols = testVerdict.userCols || Object.keys(rows[0] || {});
+        verdictHtml = `
+          <div class="test-verdict-card passed">
+            <div class="verdict-status-row">
+              <span>🎉 Accepted! (All ${rows.length} rows matched expected output)</span>
+            </div>
+            <div class="verdict-details">${escapeHtml(testVerdict.message)}</div>
+            <div class="course-sim-table-wrap" style="max-height: 220px; overflow-y: auto;">
+              <table class="course-sim-data-table">
+                <thead><tr>${cols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
+                <tbody>
+                  ${rows.map(r => `
+                    <tr class="highlight-match">
+                      ${cols.map(c => `<td>${escapeHtml(String(r[c] !== undefined ? r[c] : ''))}</td>`).join('')}
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      } else {
+        const uRows = testVerdict.userRows || [];
+        const eRows = testVerdict.expRows || [];
+        const uCols = testVerdict.userCols || Object.keys(uRows[0] || {});
+        const eCols = testVerdict.expCols || Object.keys(eRows[0] || {});
+
+        verdictHtml = `
+          <div class="test-verdict-card failed">
+            <div class="verdict-status-row">
+              <span>❌ Output Mismatch</span>
+            </div>
+            <div class="verdict-details">${escapeHtml(testVerdict.message)}</div>
+            <div class="test-diff-grid">
+              <div class="diff-table-card">
+                <div class="diff-table-title">Your Query Output (${uRows.length} rows)</div>
+                <div class="course-sim-table-wrap" style="max-height: 180px; overflow-y: auto;">
+                  <table class="course-sim-data-table">
+                    <thead><tr>${uCols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
+                    <tbody>
+                      ${uRows.slice(0, 5).map(r => `
+                        <tr>${uCols.map(c => `<td>${escapeHtml(String(r[c] !== undefined ? r[c] : ''))}</td>`).join('')}</tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="diff-table-card">
+                <div class="diff-table-title">Expected Solution Output (${eRows.length} rows)</div>
+                <div class="course-sim-table-wrap" style="max-height: 180px; overflow-y: auto;">
+                  <table class="course-sim-data-table">
+                    <thead><tr>${eCols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
+                    <tbody>
+                      ${eRows.slice(0, 5).map(r => `
+                        <tr class="highlight-match">${eCols.map(c => `<td>${escapeHtml(String(r[c] !== undefined ? r[c] : ''))}</td>`).join('')}</tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
 
     return `
       <div class="stage-problems-container">
@@ -2780,26 +2870,44 @@ FROM Employees;`,
             ${formatTheoryMarkdown(prob.spec)}
           </div>
 
-          <div>
-            <div style="font-size: 11px; font-weight: 800; font-family: monospace; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">
-              Starter Query Template (Editable in Studio):
+          <!-- In-Place Interactive Query Verifier Engine -->
+          <div class="problem-runner-wrap">
+            <div class="problem-runner-header">
+              <div class="problem-runner-title">
+                <span>⚡ Interactive Query Verifier (Target Table: <code>${prob.targetTable}</code>)</span>
+              </div>
+              <span class="course-pill-tag">In-Memory SQL Engine</span>
             </div>
-            <pre class="problem-starter-code">${escapeHtml(prob.starterSql)}</pre>
-          </div>
 
-          <div class="problem-actions-row">
-            <button class="case-solve-cta" id="btnSolveStudio" onclick="window.MasteryCourseEngine.solveInStudio('${encodeURIComponent(prob.starterSql)}', '${prob.targetTable || 'TRIANGLES'}')">
-              <span>⚡ Solve in Query Studio</span>
-            </button>
-            <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.toggleSolution('${phase.id}')">
-              <span>${isShowingSol ? 'Hide Expected Solution' : '👁️ View Solution'}</span>
-            </button>
+            <textarea id="courseProblemEditor" class="course-code-editor" spellcheck="false" placeholder="Write your SQL solution here..." oninput="window.MasteryCourseEngine.updateProblemInput('${phase.id}', this.value)">${escapeHtml(userCode)}</textarea>
+
+            <div class="problem-action-strip">
+              <button class="btn-verify-query" onclick="window.MasteryCourseEngine.verifyProblemSolution('${phase.id}')">
+                <span>▶ Run &amp; Verify Solution</span>
+              </button>
+              <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.solveInStudio(encodeURIComponent(document.getElementById('courseProblemEditor') ? document.getElementById('courseProblemEditor').value : '${encodeURIComponent(prob.starterSql)}'), '${prob.targetTable}')">
+                <span>⚡ Open in Full Studio</span>
+              </button>
+              <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.toggleSolution('${phase.id}')">
+                <span>${isShowingSol ? 'Hide Expected Solution' : '👁️ View Solution'}</span>
+              </button>
+              <button class="phase-nav-btn" style="margin-left: auto;" onclick="window.MasteryCourseEngine.resetProblemCode('${phase.id}')">
+                <span>🔄 Reset Starter</span>
+              </button>
+            </div>
+
+            ${verdictHtml}
           </div>
 
           ${isShowingSol ? `
-            <div style="margin-top: 12px; padding: 14px; background: var(--bg-card-subtle); border-radius: 6px; border: 1px solid var(--border-default);">
-              <div style="font-size: 12px; font-weight: 800; color: var(--accent); margin-bottom: 6px;">Expected Solution:</div>
-              <pre class="problem-starter-code" style="background: var(--bg-surface);">${escapeHtml(prob.starterSql)}</pre>
+            <div style="margin-top: 14px; padding: 14px; background: var(--bg-card-subtle); border-radius: 8px; border: 1px solid var(--border-default);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 12px; font-weight: 800; color: var(--accent);">Expected Solution SQL:</span>
+                <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encodeURIComponent(prob.expectedSolutionSql || prob.starterSql)}')">
+                  <span>📋 Copy Solution</span>
+                </button>
+              </div>
+              <pre class="problem-starter-code" style="background: var(--bg-surface);">${escapeHtml(prob.expectedSolutionSql || prob.starterSql)}</pre>
             </div>
           ` : ''}
         </div>
@@ -2890,9 +2998,11 @@ FROM Employees;`,
       }
     };
 
-    window.removeEventListener('keydown', window.__courseKeydownHandler);
-    window.__courseKeydownHandler = handleKeydown;
-    window.addEventListener('keydown', handleKeydown);
+    if (typeof window !== 'undefined' && typeof window.removeEventListener === 'function') {
+      window.removeEventListener('keydown', window.__courseKeydownHandler);
+      window.__courseKeydownHandler = handleKeydown;
+      window.addEventListener('keydown', handleKeydown);
+    }
   }
 
   // ===========================================================================
@@ -2993,13 +3103,145 @@ FROM Employees;`,
       .replace(/>/g, '&gt;');
   }
 
-  function formatTheoryMarkdown(text) {
-    return (text || '')
+    function formatTheoryMarkdown(text) {
+    if (!text) return '';
+    let html = text;
+
+    // Callout blocks
+    html = html.replace(/>\s*\[!TIP\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
+      const cleanBody = body.replace(/^>\s*/gm, '').trim();
+      return `<div class="theory-callout tip"><div class="callout-header"><span>💡</span> <span>${escapeHtml(title || 'Pro Tip')}</span></div><p>${cleanBody}</p></div>`;
+    });
+    html = html.replace(/>\s*\[!WARNING\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
+      const cleanBody = body.replace(/^>\s*/gm, '').trim();
+      return `<div class="theory-callout warning"><div class="callout-header"><span>⚠️</span> <span>${escapeHtml(title || 'Common Trap')}</span></div><p>${cleanBody}</p></div>`;
+    });
+    html = html.replace(/>\s*\[!NOTE\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
+      const cleanBody = body.replace(/^>\s*/gm, '').trim();
+      return `<div class="theory-callout note"><div class="callout-header"><span>📌</span> <span>${escapeHtml(title || 'Mental Model')}</span></div><p>${cleanBody}</p></div>`;
+    });
+    html = html.replace(/>\s*\[!IMPORTANT\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
+      const cleanBody = body.replace(/^>\s*/gm, '').trim();
+      return `<div class="theory-callout important"><div class="callout-header"><span>⚡</span> <span>${escapeHtml(title || 'Optimizer Note')}</span></div><p>${cleanBody}</p></div>`;
+    });
+    html = html.replace(/>\s*\[!RULE\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
+      const cleanBody = body.replace(/^>\s*/gm, '').trim();
+      return `<div class="theory-callout rule"><div class="callout-header"><span>💼</span> <span>${escapeHtml(title || 'Production Rule of Thumb')}</span></div><p>${cleanBody}</p></div>`;
+    });
+
+    html = html
       .replace(/```sql([\s\S]*?)```/g, '<pre class="theory-code-snippet">$1</pre>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/`([^\`]+)`/g, '<code>$1</code>')
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
       .replace(/\n\n/g, '</p><p>')
       .replace(/\n- /g, '<br>&bull; ');
+
+    return html;
+  }
+
+
+  function updateProblemInput(phaseId, value) {
+    state.problemInput[phaseId] = value;
+  }
+
+  function resetProblemCode(phaseId) {
+    const phase = getPhase(phaseId);
+    if (phase && phase.problem) {
+      state.problemInput[phaseId] = phase.problem.starterSql;
+      delete state.testResults[phaseId];
+      init();
+    }
+  }
+
+  function executeQuerySafe(sql, targetTable) {
+    try {
+      if (typeof window.parseAndBuildPipeline === 'function') {
+        window.parseAndBuildPipeline(sql);
+        const steps = window.EngineState && (window.EngineState.steps || window.EngineState.pipelineSteps);
+        if (steps && steps.length > 0) {
+          const lastStep = steps[steps.length - 1];
+          return {
+            columns: lastStep.columns || Object.keys((lastStep.rows && lastStep.rows[0]) || {}),
+            rows: (lastStep.rows || []).map(r => {
+              const cleanRow = { ...r };
+              delete cleanRow._passed;
+              delete cleanRow._reason;
+              return cleanRow;
+            })
+          };
+        }
+      }
+      return { columns: ['result'], rows: [{ result: 'Executed' }] };
+    } catch (err) {
+      return { error: err.message || 'Execution error' };
+    }
+  }
+
+  function verifyProblemSolution(phaseId) {
+    const phase = getPhase(phaseId);
+    const prob = phase.problem;
+    const editor = document.getElementById('courseProblemEditor');
+    const userSql = editor ? editor.value.trim() : (state.problemInput[phaseId] || prob.starterSql);
+    state.problemInput[phaseId] = userSql;
+
+    const expectedSql = prob.expectedSolutionSql || prob.starterSql;
+
+    const userRes = executeQuerySafe(userSql, prob.targetTable);
+    const expRes = executeQuerySafe(expectedSql, prob.targetTable);
+
+    if (userRes.error) {
+      state.testResults[phaseId] = {
+        passed: false,
+        error: userRes.error,
+        message: 'SQL Syntax / Execution Error: ' + userRes.error
+      };
+      init();
+      return;
+    }
+
+    const userRows = userRes.rows || [];
+    const expRows = expRes.rows || [];
+    const userCols = userRes.columns || [];
+    const expCols = expRes.columns || [];
+
+    const rowCountMatch = userRows.length === expRows.length;
+    const norm = (arr) => arr.map(r => Object.values(r).join('|')).sort();
+    const contentMatch = JSON.stringify(norm(userRows)) === JSON.stringify(norm(expRows));
+
+    if (rowCountMatch && (contentMatch || userRows.length === 0)) {
+      state.testResults[phaseId] = {
+        passed: true,
+        userRows,
+        expRows,
+        userCols,
+        expCols,
+        message: `Accepted! All ${userRows.length} rows matched expected relational output perfectly.`
+      };
+      state.completedPhases.add(phaseId);
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('sql_foundry_learning_order_v1', JSON.stringify(Array.from(state.completedPhases)));
+        }
+      } catch (e) {}
+      if (window.soundFX && typeof window.soundFX.playPop === 'function') {
+        window.soundFX.playPop();
+      }
+    } else {
+      let mismatchMsg = `Row count mismatch: Your query returned ${userRows.length} rows, but expected solution returned ${expRows.length} rows.`;
+      if (rowCountMatch && !contentMatch) {
+        mismatchMsg = `Content mismatch: Returned ${userRows.length} rows, but row values or projected columns differ from expected solution.`;
+      }
+      state.testResults[phaseId] = {
+        passed: false,
+        userRows,
+        expRows,
+        userCols,
+        expCols,
+        message: mismatchMsg
+      };
+    }
+
+    init();
   }
 
   return {
@@ -3013,7 +3255,10 @@ FROM Employees;`,
     switchStep,
     handleOptionClick,
     toggleSolution,
-    solveInStudio
+    solveInStudio,
+    updateProblemInput,
+    resetProblemCode,
+    verifyProblemSolution
   };
 
 })();
