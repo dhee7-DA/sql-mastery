@@ -1446,3 +1446,262 @@
   border-radius: 4px;
 }
 
+/* =============================================================================
+   11. INTERACTIVE SVG STEPPER & SPORLIGHT, CODE ACTIONS & STICKY SIDEBAR
+   ============================================================================= */
+
+/* Diagram Stepper Bar */
+.diagram-stepper-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-card-subtle, #f4f4f5);
+  border-top: 1px solid var(--border-subtle, #e4e4e7);
+  border-radius: 0 0 8px 8px;
+  flex-wrap: wrap;
+}
+
+.diagram-step-btn {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+  border: 1px solid var(--border-default, #d4d4d8);
+  background: var(--bg-surface, #ffffff);
+  color: var(--text-secondary, #52525b);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.diagram-step-btn:hover {
+  border-color: var(--text-primary, #18181b);
+  color: var(--text-primary, #18181b);
+}
+
+.diagram-step-btn.active {
+  background: var(--text-primary, #18181b);
+  color: #ffffff;
+  border-color: var(--text-primary, #18181b);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Code Action Strip */
+.code-action-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: var(--bg-card-subtle, #f4f4f5);
+  border: 1px solid var(--border-default, #d4d4d8);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  margin-top: 10px;
+}
+
+.code-lang-tag {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-muted, #71717a);
+  letter-spacing: 0.5px;
+}
+
+.code-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.code-btn-copy,
+.code-btn-studio {
+  height: 24px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle, #d4d4d8);
+  background: var(--bg-surface, #ffffff);
+  color: var(--text-secondary, #3f3f46);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.code-btn-copy:hover {
+  background: var(--bg-card-subtle, #f4f4f5);
+  color: var(--text-primary, #18181b);
+}
+
+.code-btn-copy.copied {
+  background: #16a34a !important;
+  color: #ffffff !important;
+  border-color: #16a34a !important;
+}
+
+.code-btn-studio {
+  color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.3);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.code-btn-studio:hover {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+/* Attached pre-code blocks */
+.code-action-strip + pre {
+  margin-top: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+/* Sticky Sidebar & Course TOC */
+.theory-sidebar-column {
+  position: sticky;
+  top: 16px;
+  align-self: start;
+}
+
+.course-toc-card {
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #d4d4d8);
+  border-radius: 8px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-card, 0 1px 3px rgba(0, 0, 0, 0.04));
+}
+
+.course-toc-title {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-muted, #71717a);
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.course-toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.course-toc-item {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary, #52525b);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.course-toc-item:hover {
+  background: var(--bg-card-subtle, #f4f4f5);
+  color: var(--accent, #e11d48);
+}
+
+/* Spoken Interview Defense Card */
+.spoken-defense-card {
+  background: linear-gradient(135deg, rgba(225, 29, 72, 0.03) 0%, rgba(99, 102, 241, 0.03) 100%);
+  border: 1px solid rgba(225, 29, 72, 0.2);
+  border-radius: 8px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow-card, 0 1px 3px rgba(0, 0, 0, 0.04));
+}
+
+.defense-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.defense-badge {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(225, 29, 72, 0.1);
+  color: var(--accent, #e11d48);
+  border: 1px solid rgba(225, 29, 72, 0.25);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.defense-question {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text-primary, #18181b);
+  line-height: 1.45;
+  margin: 0 0 10px 0;
+}
+
+.defense-intent-box {
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: var(--bg-card-subtle, #f8f8f9);
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  font-size: 11.5px;
+  color: var(--text-secondary, #52525b);
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.spoken-script-box {
+  padding: 14px 16px;
+  border-radius: 6px;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-primary, #18181b);
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(99, 102, 241, 0.06);
+}
+
+.spoken-script-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #4338ca;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.keywords-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.keyword-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  background: rgba(99, 102, 241, 0.08);
+  color: #4338ca;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+

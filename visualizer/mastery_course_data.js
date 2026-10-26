@@ -259,6 +259,20 @@ window.MASTERY_COURSE_DATA = [
       "spec": "Query all columns for all American cities in the **CITY** table with populations larger than `100,000`. The CountryCode for America is `USA`.",
       "starterSql": "SELECT *\nFROM CITY\nWHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;",
       "targetTable": "CITY"
+    },
+    "interviewDefense": {
+      "question": "Why does referencing a column alias created in the SELECT clause fail when used inside the WHERE clause? How does the database engine process this?",
+      "difficulty": "L4 Data Analyst",
+      "testedConcept": "Physical Execution Order vs Written Lexical Order",
+      "interviewerIntent": "Checking if the candidate understands the internal query engine pipeline and tuple memory allocation, or merely writes syntax blindly.",
+      "spokenAnswer": "In ANSI SQL, written syntax begins with SELECT, but physical execution begins with FROM in Step 1 to identify the relation, followed immediately by WHERE in Step 2 to filter rows. The SELECT clause does not execute until Step 5. Because aliases created in SELECT are only allocated in memory during Step 5, they do not exist when WHERE evaluates rows in Step 2. To filter on that expression, we must either repeat the underlying formula or encapsulate the query inside a CTE.",
+      "codeSnippet": "WITH ComputedComp AS (\n  SELECT first_name, salary, (salary * 0.15) AS bonus\n  FROM Employees\n)\nSELECT * FROM ComputedComp WHERE bonus > 15000;",
+      "powerKeywords": [
+        "Physical Execution Order",
+        "Tuple Memory Allocation",
+        "Step 02 WHERE vs Step 05 SELECT",
+        "CTE Encapsulation"
+      ]
     }
   },
   {
@@ -447,6 +461,20 @@ window.MASTERY_COURSE_DATA = [
       "spec": "Query the **NAME** field for all American cities in the **CITY** table with populations larger than `120,000`. The CountryCode for America is `USA`.",
       "starterSql": "SELECT NAME\nFROM CITY\nWHERE COUNTRYCODE = 'USA' AND POPULATION > 120000;",
       "targetTable": "CITY"
+    },
+    "interviewDefense": {
+      "question": "What is SARGability, and why does wrapping an indexed column in YEAR(created_at) = 2024 degrade query performance?",
+      "difficulty": "L4 / L5 Analytics Engineer",
+      "testedConcept": "SARGable Predicates & B-Tree Index Traversal",
+      "interviewerIntent": "Evaluating if the candidate understands how database query planners utilize B-Tree index seeks versus full table scans.",
+      "spokenAnswer": "SARGable stands for Search Argument Able. B-Tree indexes store raw values in sorted leaf pages. When you wrap a column in a scalar function like YEAR(created_at), the query optimizer cannot perform an Index Seek to traverse the B-Tree root-to-leaf in O(log N) time. It is forced to evaluate YEAR() on every single row via an expensive Full Table Scan. The SARGable fix is to isolate the raw column using boundary ranges: created_at >= '2024-01-01' AND created_at < '2025-01-01'.",
+      "codeSnippet": "-- ✅ SARGABLE: Traverses B-Tree in O(log N) seeks:\nSELECT user_id, amount\nFROM Transactions\nWHERE created_at >= '2024-01-01 00:00:00'\n  AND created_at <  '2025-01-01 00:00:00';",
+      "powerKeywords": [
+        "SARGable Predicate",
+        "B-Tree Index Seek",
+        "Full Table Scan (FTS)",
+        "Boundary Range Isolation"
+      ]
     }
   },
   {
@@ -611,6 +639,20 @@ window.MASTERY_COURSE_DATA = [
       "spec": "Query the two cities in **STATION** with the shortest and longest **CITY** names, as well as their respective lengths (i.e.: number of characters in the name). If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically.",
       "starterSql": "-- Shortest:\nSELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) ASC, CITY ASC LIMIT 1;\n-- Longest:\nSELECT CITY, LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) DESC, CITY ASC LIMIT 1;",
       "targetTable": "STATION"
+    },
+    "interviewDefense": {
+      "question": "Why does paginating a million-row table using LIMIT 20 OFFSET 500000 become progressively slower, and how do senior engineers fix it?",
+      "difficulty": "L5 Senior Data / Backend Engineer",
+      "testedConcept": "Offset Thrashing vs Keyset (Seek) Pagination",
+      "interviewerIntent": "Testing knowledge of database buffer memory, disk I/O on large offsets, and deterministic cursor pagination.",
+      "spokenAnswer": "Standard OFFSET pagination requires the storage engine to read and sort all 500,020 rows off disk, discard the first 500,000 in memory, and deliver only the final 20. As the offset increases, I/O cost scales linearly. The senior solution is Keyset or Seek Pagination: instead of OFFSET, we filter using the primary key of the last seen record, such as WHERE id > last_seen_id ORDER BY id ASC LIMIT 20. This converts an O(N) scan into an instantaneous O(log N) B-Tree seek.",
+      "codeSnippet": "-- ⚡ FAST: Index Seek directly to next batch:\nSELECT id, title, created_at\nFROM Articles\nWHERE id > 500000\nORDER BY id ASC\nLIMIT 20;",
+      "powerKeywords": [
+        "Keyset / Seek Pagination",
+        "Offset Thrashing",
+        "Deterministic B-Tree Seek",
+        "O(log N) Cursor"
+      ]
     }
   },
   {
@@ -763,6 +805,20 @@ window.MASTERY_COURSE_DATA = [
       "spec": "Find the difference between the total number of **CITY** entries in the table and the number of distinct **CITY** entries in the table.",
       "starterSql": "SELECT COUNT(CITY) - COUNT(DISTINCT CITY)\nFROM STATION;",
       "targetTable": "STATION"
+    },
+    "interviewDefense": {
+      "question": "What is the difference between COUNT(*), COUNT(col), and COUNT(DISTINCT col), and what does SUM() return when matching zero rows?",
+      "difficulty": "L4 Financial / Business Analyst",
+      "testedConcept": "Set Cardinality, NULL Omission & Empty-Set Nullity",
+      "interviewerIntent": "Verifying cardinality calculations, NULL tolerance in aggregates, and defensive zero-safe handling in financial queries.",
+      "spokenAnswer": "COUNT(*) measures the cardinality of the row set regardless of NULL values. COUNT(column) strictly tallies rows where that column is NOT NULL, while COUNT(DISTINCT column) returns unique non-null values. Crucially, on an empty match set, COUNT(*) returns 0, but all other aggregates—SUM, AVG, MIN, MAX—return NULL. Therefore, in financial reporting, we always wrap numeric sums in COALESCE(SUM(amount), 0.00) to prevent NULL propagation in downstream additions.",
+      "codeSnippet": "-- Zero-Safe Financial Aggregation:\nSELECT \n  department,\n  COUNT(*) AS total_headcount,\n  COALESCE(SUM(bonus), 0.00) AS total_bonus_payout\nFROM SalesReps\nGROUP BY department;",
+      "powerKeywords": [
+        "Set Cardinality",
+        "NULL Omission",
+        "Empty-Set Nullity",
+        "Zero-Safe COALESCE Wrap"
+      ]
     }
   },
   {
@@ -908,6 +964,20 @@ window.MASTERY_COURSE_DATA = [
       "spec": "We define an employee's total earnings to be their monthly `salary * months` worked. Write a query to find the maximum total earnings for all employees in the **Employee** table, as well as the total number of employees who have maximum total earnings.",
       "starterSql": "SELECT (salary * months) AS earnings, COUNT(*)\nFROM Employee\nGROUP BY earnings\nORDER BY earnings DESC\nLIMIT 1;",
       "targetTable": "Employee"
+    },
+    "interviewDefense": {
+      "question": "When should you filter in WHERE versus HAVING, and what is the physical performance impact of filtering non-aggregated columns in HAVING?",
+      "difficulty": "L4 / L5 Business Intelligence Engineer",
+      "testedConcept": "Pre-Aggregation Filter vs Post-Aggregation Filter",
+      "interviewerIntent": "Testing understanding of memory allocation during hash aggregation versus pre-filtering raw tuples.",
+      "spokenAnswer": "The rule of thumb is 'Filter as early as physically possible'. The WHERE clause runs before grouping in Step 2, stripping non-qualifying rows before memory is allocated. HAVING runs in Step 4, filtering aggregated buckets after grouping. If you filter a raw attribute like is_active = 1 inside HAVING, the database engine is forced to hash and aggregate inactive rows unnecessarily, consuming 5x more RAM and risking disk spills. We only use HAVING for conditions that depend on aggregate functions like SUM(sales) > 100k.",
+      "codeSnippet": "SELECT store_id, SUM(order_total) AS gross_sales\nFROM Orders\nWHERE is_active = 1          -- Step 02: Row filter (Shrinks hash table)\nGROUP BY store_id             -- Step 03: Grouping\nHAVING SUM(order_total) > 100000; -- Step 04: Aggregate filter",
+      "powerKeywords": [
+        "Pre-Filter vs Post-Filter",
+        "Hash Aggregation Table",
+        "Memory Buffer Allocation",
+        "Disk Spill Prevention"
+      ]
     }
   },
   {
@@ -1099,6 +1169,20 @@ window.MASTERY_COURSE_DATA = [
       "spec": "Given the **CITY** and **COUNTRY** tables, query the sum of the populations of all cities where the **CONTINENT** is `'Asia'`. Note: `CITY.CountryCode` and `COUNTRY.Code` are matching key columns.",
       "starterSql": "SELECT SUM(ci.POPULATION)\nFROM CITY ci\nJOIN COUNTRY co ON ci.CountryCode = co.Code\nWHERE co.CONTINENT = 'Asia';",
       "targetTable": "CITY"
+    },
+    "interviewDefense": {
+      "question": "What causes the outer join WHERE collapse bug, and how do you prevent an intentional LEFT JOIN from silently acting like an INNER JOIN?",
+      "difficulty": "L5 Senior Analytics Engineer",
+      "testedConcept": "Outer Join Predicate Placement (ON vs WHERE)",
+      "interviewerIntent": "Checking relational algebra knowledge and understanding outer-join NULL padding under Three-Valued Logic.",
+      "spokenAnswer": "In a LEFT JOIN, the ON clause dictates how rows are matched before outer NULL-padding occurs. The WHERE clause executes after the join is complete. If you place a filter on the right table in WHERE—such as WHERE orders.status = 'ACTIVE'—any customer with zero orders has orders.status as NULL. In SQL's three-valued logic, NULL = 'ACTIVE' evaluates to UNKNOWN, which WHERE discards. This silently eliminates all zero-order customers, turning the LEFT JOIN into an INNER JOIN. The fix is to place the right-table filter directly in the ON clause.",
+      "codeSnippet": "SELECT c.customer_id, c.name, o.order_id\nFROM Customers c\nLEFT JOIN Orders o \n  ON c.customer_id = o.customer_id \n AND o.order_status = 'ACTIVE'; -- Preserves all customers!",
+      "powerKeywords": [
+        "Outer Join WHERE Collapse",
+        "ON vs WHERE Placement",
+        "NULL Padding",
+        "Three-Valued Logic UNKNOWN"
+      ]
     }
   },
   {
@@ -1262,6 +1346,20 @@ window.MASTERY_COURSE_DATA = [
       "spec": "Two pairs (X1, Y1) and (X2, Y2) are said to be symmetric pairs if X1 = Y2 and X2 = Y1. Write a query to output all such symmetric pairs in ascending order by the value of X. List the rows such that X1 <= Y1.",
       "starterSql": "SELECT f1.X, f1.Y\nFROM Functions f1\nJOIN Functions f2 ON f1.X = f2.Y AND f1.Y = f2.X\nGROUP BY f1.X, f1.Y\nHAVING COUNT(*) > 1 OR f1.X < f1.Y\nORDER BY f1.X;",
       "targetTable": "Functions"
+    },
+    "interviewDefense": {
+      "question": "Under what circumstances would you choose UNION ALL over UNION, and why do top engineering teams ban RIGHT JOIN in production style guides?",
+      "difficulty": "L4 / L5 Data Engineer",
+      "testedConcept": "Set Concatenation Complexity & Clean Mental Models",
+      "interviewerIntent": "Evaluating performance awareness of set deduplication and cognitive code readability standards across large data engineering teams.",
+      "spokenAnswer": "UNION ALL performs a direct vertical concatenation in O(1) streaming time with zero sorting overhead. UNION forces the database to allocate an in-memory hash table or run an external sort to remove duplicates. If datasets are naturally disjoint—such as monthly partitions—UNION wastes substantial CPU and memory. Regarding RIGHT JOIN: humans read left-to-right. Mixing LEFT and RIGHT joins in complex pipelines forces engineers to mentally reverse query direction back and forth. Standardizing on LEFT JOIN guarantees consistent flow.",
+      "codeSnippet": "-- Fast, non-blocking disjoint union:\nSELECT 'Jan' AS month, order_id, amount FROM Orders_Jan2026\nUNION ALL\nSELECT 'Feb' AS month, order_id, amount FROM Orders_Feb2026;",
+      "powerKeywords": [
+        "O(1) Streaming Append",
+        "Hash Deduplication Cost",
+        "Disjoint Partitioning",
+        "Left-to-Right Mental Model"
+      ]
     }
   },
   {
@@ -1416,6 +1514,20 @@ window.MASTERY_COURSE_DATA = [
       "spec": "Write a query identifying the type of each record in the **TRIANGLES** table using its three side lengths: Equilateral, Isosceles, Scalene, or Not A Triangle.",
       "starterSql": "SELECT \n  CASE \n    WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'\n    WHEN A = B AND B = C THEN 'Equilateral'\n    WHEN A = B OR B = C OR A = C THEN 'Isosceles'\n    ELSE 'Scalene'\n  END\nFROM TRIANGLES;",
       "targetTable": "TRIANGLES"
+    },
+    "interviewDefense": {
+      "question": "How does conditional aggregation enable single-pass pivot tables, and why is it superior to multiple subqueries or joins?",
+      "difficulty": "L4 / L5 Financial Risk & Product Analyst",
+      "testedConcept": "Single-Pass Pivot Transformation via CASE WHEN",
+      "interviewerIntent": "Testing proficiency with advanced data transformation, matrix reporting, and single-pass analytical efficiency.",
+      "spokenAnswer": "Instead of running multiple queries or expensive joins to break down metrics by category, we embed CASE WHEN directly inside aggregate functions—for example, SUM(CASE WHEN department = 'Sales' THEN amount ELSE 0 END) AS sales_total. The database engine scans the base table once in a single linear pass, incrementing the appropriate accumulator per row. This reduces I/O by N-fold compared to joining multiple pre-aggregated subqueries, making it the industry standard for financial P&L matrices.",
+      "codeSnippet": "SELECT \n  fiscal_year,\n  SUM(CASE WHEN dept = 'Engineering' THEN spend ELSE 0 END) AS eng_spend,\n  SUM(CASE WHEN dept = 'Sales'       THEN spend ELSE 0 END) AS sales_spend\nFROM DepartmentBudgets\nGROUP BY fiscal_year;",
+      "powerKeywords": [
+        "Single-Pass Table Scan",
+        "Conditional Aggregation Matrix",
+        "Zero-Join Overhead",
+        "Linear I/O Complexity"
+      ]
     }
   },
   {
@@ -1562,6 +1674,20 @@ window.MASTERY_COURSE_DATA = [
       "spec": "Julia asked her students to create some coding challenges. Write a query to print the hacker_id, name, and total number of challenges created by each student, ordered by total challenges descending. If more than one student created the same number of challenges and the count is less than the maximum created, exclude those students.",
       "starterSql": "WITH ChallengeCounts AS (\n  SELECT h.hacker_id, h.name, COUNT(c.challenge_id) AS total_challenges\n  FROM Hackers h\n  JOIN Challenges c ON h.hacker_id = c.hacker_id\n  GROUP BY h.hacker_id, h.name\n)\nSELECT hacker_id, name, total_challenges\nFROM ChallengeCounts\nWHERE total_challenges = (SELECT MAX(total_challenges) FROM ChallengeCounts)\n   OR total_challenges IN (\n      SELECT total_challenges FROM ChallengeCounts GROUP BY total_challenges HAVING COUNT(*) = 1\n   )\nORDER BY total_challenges DESC, hacker_id ASC;",
       "targetTable": "Hackers"
+    },
+    "interviewDefense": {
+      "question": "Why can a WHERE col NOT IN (SELECT ...) query catastrophically return zero rows when the subquery contains a single NULL value, and how do you prevent it?",
+      "difficulty": "L5 Quantitative / Senior Data Analyst",
+      "testedConcept": "Three-Valued Logic Predicate Collapse in NOT IN",
+      "interviewerIntent": "High-level test on ANSI SQL Three-Valued Logic and subquery evaluation pitfalls in production systems.",
+      "spokenAnswer": "Under ANSI SQL, val NOT IN (1, 2, NULL) expands logically into val != 1 AND val != 2 AND val != NULL. Any inequality comparison with NULL evaluates to UNKNOWN. In an AND chain, if even one condition is UNKNOWN, the entire predicate can never evaluate to TRUE. As a result, if the subquery returns even one NULL—such as an unassigned manager ID—the entire query silently emits zero rows. The safe enterprise alternative is to use NOT EXISTS or an Anti-Join, which safely bypasses NULL values.",
+      "codeSnippet": "-- ✅ SAFE: Null-Aware Anti-Join:\nSELECT e.employee_id, e.first_name\nFROM Employees e\nWHERE NOT EXISTS (\n  SELECT 1 FROM Employees m WHERE m.manager_id = e.employee_id\n);",
+      "powerKeywords": [
+        "NOT IN NULL Black Hole",
+        "Predicate Short-Circuit",
+        "NOT EXISTS Equivalence",
+        "Hash Anti-Join"
+      ]
     }
   },
   {
@@ -1728,6 +1854,20 @@ window.MASTERY_COURSE_DATA = [
       "spec": "A company's executives are interested in seeing who earns the most money in each of the company's departments. A high earner in a department is an employee who has a salary in the top three unique salaries for that department. Write a solution to find the employees who are high earners in each of the departments.",
       "starterSql": "WITH RankedSalaries AS (\n  SELECT \n    d.name AS Department,\n    e.name AS Employee,\n    e.salary AS Salary,\n    DENSE_RANK() OVER (PARTITION BY e.departmentId ORDER BY e.salary DESC) AS rnk\n  FROM Employee e\n  JOIN Department d ON e.departmentId = d.id\n)\nSELECT Department, Employee, Salary\nFROM RankedSalaries\nWHERE rnk <= 3;",
       "targetTable": "Employee"
+    },
+    "interviewDefense": {
+      "question": "Explain the difference between ROW_NUMBER(), RANK(), and DENSE_RANK(). Why are window functions banned from the WHERE clause, and how do you filter by them?",
+      "difficulty": "L5 Senior People / Product Analytics",
+      "testedConcept": "Window Framing, Non-Collapsing Partitioning & Execution Order",
+      "interviewerIntent": "Canonical FAANG interview question testing analytic window scopes and execution boundaries.",
+      "spokenAnswer": "ROW_NUMBER() assigns strict unique sequential integers (1, 2, 3, 4) regardless of ties. RANK() gives tied values the same rank, but skips subsequent numbers—for example, two tied for 2nd produces 1, 2, 2, 4. DENSE_RANK() assigns tied values the same rank without skipping, producing 1, 2, 2, 3. Window functions cannot be used in WHERE because WHERE evaluates in Step 2 to determine which rows survive, whereas window functions execute in Step 5 during projection. To filter by rank, we wrap the window calculation inside a CTE and filter on the resulting alias in the outer query.",
+      "codeSnippet": "WITH RankedSalaries AS (\n  SELECT \n    first_name, department, salary,\n    DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_rank\n  FROM Employees\n)\nSELECT * FROM RankedSalaries WHERE dept_rank <= 3;",
+      "powerKeywords": [
+        "DENSE_RANK Non-Skipping Ties",
+        "Analytical Partitioning",
+        "Step 02 WHERE vs Step 05 SELECT",
+        "CTE Window Filtering"
+      ]
     }
   }
 ];

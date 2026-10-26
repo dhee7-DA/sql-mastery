@@ -21,6 +21,7 @@ window.MasteryCourseEngine = (function () {
     activePhaseId: 'topic_01_select_from',
     activeStep: 'theory', // 'theory', 'mcqs', 'case', 'problem'
     visualMode: 'diagram', // 'diagram' | 'sandbox'
+    diagramStep: 0, // 0: overview, 1: scan, 2: op, 3: emit
     completedPhases: new Set(),
     mcqAnswers: {}, // key: `${phaseId}_${qIdx}` => selectedOptionIndex
     showSolution: {}, // key: phaseId => boolean
@@ -1661,7 +1662,7 @@ FROM Employees;`,
   }
 
   // ===========================================================================
-  // SVG EXPLAINER DIAGRAM GENERATOR
+  // SVG EXPLAINER DIAGRAM GENERATOR (WITH INTERACTIVE STEPPER & SPOTLIGHT)
   // ===========================================================================
   function escapeXml(str) {
     return (str || '')
@@ -1679,6 +1680,8 @@ FROM Employees;`,
     const op = diag.operation || 'SQL Transformation';
     const callout = diag.callout || { badge: 'Operation', text: '' };
 
+    const step = state.diagramStep || 0; // 0: all, 1: src, 2: op, 3: res
+
     const cardW = 300;
     const cardH = 260;
     const srcX = 20;
@@ -1687,6 +1690,16 @@ FROM Employees;`,
     const midW = 280;
     const resX = 640;
     const resY = 20;
+
+    // Opacity and highlights based on step
+    const srcOpacity = (step === 0 || step === 1) ? '1.0' : '0.35';
+    const opOpacity = (step === 0 || step === 2) ? '1.0' : '0.35';
+    const resOpacity = (step === 0 || step === 3) ? '1.0' : '0.35';
+
+    const srcStroke = step === 1 ? '#2563eb' : '#d4d4d8';
+    const srcStrokeW = step === 1 ? '2.5' : '1';
+    const resStroke = step === 3 ? '#10b981' : '#10b981';
+    const resStrokeW = step === 3 ? '2.5' : '1.5';
 
     const srcCols = (src.cols || []).slice(0, 4);
     const colW = Math.floor((cardW - 16) / Math.max(srcCols.length, 1));
@@ -1748,31 +1761,37 @@ FROM Employees;`,
             </marker>
           </defs>
           <rect x="0" y="0" width="960" height="300" rx="12" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
-          <g id="sourceTableGroup">
-            <rect x="${srcX}" y="${srcY}" width="${cardW}" height="${cardH}" rx="8" fill="#ffffff" stroke="#d4d4d8" stroke-width="1" filter="url(#shadowCard)"/>
-            <path d="M ${srcX} ${srcY + 8} Q ${srcX} ${srcY} ${srcX + 8} ${srcY} L ${srcX + cardW - 8} ${srcY} Q ${srcX + cardW} ${srcY} ${srcX + cardW} ${srcY + 8} L ${srcX + cardW} ${srcY + 36} L ${srcX} ${srcY + 36} Z" fill="#f4f4f5"/>
-            <text x="${srcX + 14}" y="${srcY + 23}" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#27272a">📁 ${escapeXml(src.name)}</text>
+          
+          <!-- 1. Source Table Group -->
+          <g id="sourceTableGroup" opacity="${srcOpacity}" style="transition: opacity 0.3s ease;">
+            <rect x="${srcX}" y="${srcY}" width="${cardW}" height="${cardH}" rx="8" fill="#ffffff" stroke="${srcStroke}" stroke-width="${srcStrokeW}" filter="url(#shadowCard)"/>
+            <path d="M ${srcX} ${srcY + 8} Q ${srcX} ${srcY} ${srcX + 8} ${srcY} L ${srcX + cardW - 8} ${srcY} Q ${srcX + cardW} ${srcY} ${srcX + cardW} ${srcY + 8} L ${srcX + cardW} ${srcY + 36} L ${srcX} ${srcY + 36} Z" fill="${step === 1 ? '#dbeafe' : '#f4f4f5'}"/>
+            <text x="${srcX + 14}" y="${srcY + 23}" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="${step === 1 ? '#1d4ed8' : '#27272a'}">📁 ${escapeXml(src.name)} ${step === 1 ? '• SCANNING' : ''}</text>
             ${srcCols.map((col, idx) => `
               <text x="${srcX + 16 + (idx * colW)}" y="${srcY + 54}" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#71717a">${escapeXml(col)}</text>
             `).join('')}
             <line x1="${srcX + 8}" y1="${srcY + 62}" x2="${srcX + cardW - 8}" y2="${srcY + 62}" stroke="#e4e4e7" stroke-width="1"/>
             ${srcRowsSvg}
           </g>
-          <g id="operationBridgeGroup">
+
+          <!-- 2. Operations & Callout Bridge -->
+          <g id="operationBridgeGroup" opacity="${opOpacity}" style="transition: opacity 0.3s ease;">
             <rect x="${midX}" y="${srcY + 6}" width="${midW}" height="32" rx="16" fill="url(#gBluePill)" filter="url(#shadowCard)"/>
             <text x="${midX + (midW / 2)}" y="${srcY + 26}" text-anchor="middle" font-family="monospace" font-size="11" font-weight="700" fill="#ffffff">⚡ ${escapeXml(op)}</text>
             <path d="M ${srcX + cardW + 8} 80 L ${resX - 12} 80" stroke="#2563eb" stroke-width="2.5" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowHead)"/>
-            <rect x="${midX}" y="${srcY + 80}" width="${midW}" height="150" rx="8" fill="url(#gCalloutBg)" stroke="#bfdbfe" stroke-width="1.5" filter="url(#shadowCard)"/>
+            <rect x="${midX}" y="${srcY + 80}" width="${midW}" height="150" rx="8" fill="url(#gCalloutBg)" stroke="${step === 2 ? '#2563eb' : '#bfdbfe'}" stroke-width="${step === 2 ? '2' : '1.5'}" filter="url(#shadowCard)"/>
             <rect x="${midX + 12}" y="${srcY + 92}" width="140" height="20" rx="4" fill="#dbeafe"/>
             <text x="${midX + 18}" y="${srcY + 106}" font-family="system-ui, sans-serif" font-size="10" font-weight="800" fill="#1d4ed8">💡 ${escapeXml(callout.badge)}</text>
             ${lines.map((l, lIdx) => `
               <text x="${midX + 14}" y="${srcY + 130 + (lIdx * 18)}" font-family="system-ui, sans-serif" font-size="11.5" fill="#334155">${escapeXml(l)}</text>
             `).join('')}
           </g>
-          <g id="resultTableGroup">
-            <rect x="${resX}" y="${resY}" width="${cardW}" height="${cardH}" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="1.5" filter="url(#shadowCard)"/>
-            <path d="M ${resX} ${resY + 8} Q ${resX} ${resY} ${resX + 8} ${resY} L ${resX + cardW - 8} ${resY} Q ${resX + cardW} ${resY} ${resX + cardW} ${resY + 8} L ${resX + cardW} ${resY + 36} L ${resX} ${resY + 36} Z" fill="#ecfdf5"/>
-            <text x="${resX + 14}" y="${resY + 23}" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#065f46">✨ ${escapeXml(res.name)}</text>
+
+          <!-- 3. Result Table Group -->
+          <g id="resultTableGroup" opacity="${resOpacity}" style="transition: opacity 0.3s ease;">
+            <rect x="${resX}" y="${resY}" width="${cardW}" height="${cardH}" rx="8" fill="#ffffff" stroke="${resStroke}" stroke-width="${resStrokeW}" filter="url(#shadowCard)"/>
+            <path d="M ${resX} ${resY + 8} Q ${resX} ${resY} ${resX + 8} ${resY} L ${resX + cardW - 8} ${resY} Q ${resX + cardW} ${resY} ${resX + cardW} ${resY + 8} L ${resX + cardW} ${resY + 36} L ${resX} ${resY + 36} Z" fill="${step === 3 ? '#d1fae5' : '#ecfdf5'}"/>
+            <text x="${resX + 14}" y="${resY + 23}" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#065f46">✨ ${escapeXml(res.name)} ${step === 3 ? '• EMITTED' : ''}</text>
             ${resCols.map((col, idx) => `
               <text x="${resX + 16 + (idx * resColW)}" y="${resY + 54}" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">${escapeXml(col)}</text>
             `).join('')}
@@ -1780,6 +1799,22 @@ FROM Employees;`,
             ${resRowsSvg}
           </g>
         </svg>
+
+        <!-- Interactive Diagram Stepper Bar -->
+        <div class="diagram-stepper-bar">
+          <button class="diagram-step-btn ${step === 0 ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiagramStep(0)">
+            <span>👁️ Overview</span>
+          </button>
+          <button class="diagram-step-btn ${step === 1 ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiagramStep(1)">
+            <span>1️⃣ Step 1: Scan Table</span>
+          </button>
+          <button class="diagram-step-btn ${step === 2 ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiagramStep(2)">
+            <span>2️⃣ Step 2: Transform / Filter</span>
+          </button>
+          <button class="diagram-step-btn ${step === 3 ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiagramStep(3)">
+            <span>3️⃣ Step 3: Emit Result</span>
+          </button>
+        </div>
       </div>
     `;
   }
@@ -1796,6 +1831,7 @@ FROM Employees;`,
     const traps = phase.traps || [];
     const tricks = phase.tricks || [];
     const patterns = phase.patterns || [];
+    const interview = phase.interviewDefense || null;
     const visualMode = state.visualMode || 'diagram';
 
     return `
@@ -1821,7 +1857,7 @@ FROM Employees;`,
         </div>
 
         <!-- Everyday Analogy Hero Card -->
-        <div class="analogy-hero-card">
+        <div class="analogy-hero-card" id="section-analogy">
           <div class="analogy-hero-header">
             <span style="font-size: 24px;">🎯</span>
             <h3 class="analogy-hero-title">Everyday Analogy: ${escapeHtml(analogy.metaphor)}</h3>
@@ -1841,86 +1877,201 @@ FROM Employees;`,
           <!-- Left Column: Step-by-Step Lessons & Code Examples -->
           <div class="theory-main-column">
             <!-- Comprehensive Step-by-Step Chapters -->
-            ${deepTheory.map((chapter) => `
-              <div class="theory-text-card">
-                <h3 class="theory-card-heading">
-                  <span>${escapeHtml(chapter.title)}</span>
-                </h3>
-                <div class="theory-card-body">
-                  ${formatTheoryMarkdown(chapter.body)}
+            <div id="section-theory">
+              ${deepTheory.map((chapter) => `
+                <div class="theory-text-card">
+                  <h3 class="theory-card-heading">
+                    <span>${escapeHtml(chapter.title)}</span>
+                  </h3>
+                  <div class="theory-card-body">
+                    ${formatTheoryMarkdown(chapter.body)}
+                  </div>
                 </div>
-              </div>
-            `).join('')}
+              `).join('')}
+            </div>
 
             <!-- Traps, Gotchas & Corporate Impact Section -->
             ${traps.length > 0 ? `
-              <div class="traps-compendium-section">
+              <div class="traps-compendium-section" id="section-traps">
                 <div class="theory-card-heading" style="margin-top: 10px;">
                   <span>⚠️ High-Yield Traps &amp; Corporate Gotchas</span>
                 </div>
-                ${traps.map(trap => `
-                  <div class="trap-card">
-                    <div class="trap-header">
-                      <div class="trap-title-group">
-                        <span class="trap-severity-badge severity-${trap.severity.toLowerCase()}">${trap.severity}</span>
-                        <span class="trap-title">${escapeHtml(trap.title)}</span>
-                      </div>
-                    </div>
-
-                    <div class="trap-diff-grid">
-                      <div class="diff-col bad">
-                        <div class="diff-col-header">
-                          <span>❌ Common Mistake</span>
+                ${traps.map(trap => {
+                  const encodedGood = encodeURIComponent(trap.goodSql || '');
+                  return `
+                    <div class="trap-card">
+                      <div class="trap-header">
+                        <div class="trap-title-group">
+                          <span class="trap-severity-badge severity-${trap.severity.toLowerCase()}">${trap.severity}</span>
+                          <span class="trap-title">${escapeHtml(trap.title)}</span>
                         </div>
-                        <pre class="diff-code">${escapeHtml(trap.badSql)}</pre>
                       </div>
-                      <div class="diff-col good">
-                        <div class="diff-col-header">
-                          <span>✅ Production Standard</span>
-                        </div>
-                        <pre class="diff-code">${escapeHtml(trap.goodSql)}</pre>
-                      </div>
-                    </div>
 
-                    <div class="trap-callout-why">
-                      <strong>🔍 Why It Breaks Under the Hood:</strong> ${escapeHtml(trap.whyItBreaks)}
+                      <div class="trap-diff-grid">
+                        <div class="diff-col bad">
+                          <div class="diff-col-header">
+                            <span>❌ Common Mistake</span>
+                          </div>
+                          <pre class="diff-code">${escapeHtml(trap.badSql)}</pre>
+                        </div>
+                        <div class="diff-col good">
+                          <div class="diff-col-header">
+                            <span>✅ Production Standard</span>
+                          </div>
+                          <div class="code-action-strip">
+                            <span class="code-lang-tag">SQL SOLUTION</span>
+                            <div class="code-action-btns">
+                              <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encodedGood}')">
+                                <span>📋 Copy</span>
+                              </button>
+                              <button class="code-btn-studio" onclick="window.MasteryCourseEngine.solveInStudio('${encodedGood}', 'Employees')">
+                                <span>⚡ Test in Studio</span>
+                              </button>
+                            </div>
+                          </div>
+                          <pre class="diff-code">${escapeHtml(trap.goodSql)}</pre>
+                        </div>
+                      </div>
+
+                      <div class="trap-callout-why">
+                        <strong>🔍 Why It Breaks Under the Hood:</strong> ${escapeHtml(trap.whyItBreaks)}
+                      </div>
+                      <div class="trap-callout-impact">
+                        <strong>🚨 Corporate Impact:</strong> ${escapeHtml(trap.corporateImpact)}
+                      </div>
                     </div>
-                    <div class="trap-callout-impact">
-                      <strong>🚨 Corporate Impact:</strong> ${escapeHtml(trap.corporateImpact)}
-                    </div>
-                  </div>
-                `).join('')}
+                  `;
+                }).join('')}
               </div>
             ` : ''}
 
             <!-- Patterns to Remember & Practice Section -->
             ${patterns.length > 0 ? `
-              <div class="patterns-compendium-section">
+              <div class="patterns-compendium-section" id="section-patterns">
                 <div class="theory-card-heading" style="margin-top: 10px;">
                   <span>📐 Patterns to Remember &amp; Practice</span>
                 </div>
-                ${patterns.map(pat => `
-                  <div class="pattern-card">
-                    <div class="pattern-header">
-                      <span class="pattern-title">${escapeHtml(pat.title)}</span>
-                      <span class="pattern-formula-tag">${escapeHtml(pat.formula)}</span>
+                ${patterns.map(pat => {
+                  const encodedTemplate = encodeURIComponent(pat.sqlTemplate || '');
+                  return `
+                    <div class="pattern-card">
+                      <div class="pattern-header">
+                        <span class="pattern-title">${escapeHtml(pat.title)}</span>
+                        <span class="pattern-formula-tag">${escapeHtml(pat.formula)}</span>
+                      </div>
+                      <div class="pattern-when">
+                        <strong>📌 When to Use:</strong> ${escapeHtml(pat.whenToUse)}
+                      </div>
+                      <div class="code-action-strip">
+                        <span class="code-lang-tag">REUSABLE PATTERN</span>
+                        <div class="code-action-btns">
+                          <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encodedTemplate}')">
+                            <span>📋 Copy</span>
+                          </button>
+                          <button class="code-btn-studio" onclick="window.MasteryCourseEngine.solveInStudio('${encodedTemplate}', 'Employees')">
+                            <span>⚡ Test in Studio</span>
+                          </button>
+                        </div>
+                      </div>
+                      <pre class="pattern-code">${escapeHtml(pat.sqlTemplate)}</pre>
+                      <div class="pattern-explanation">${escapeHtml(pat.explanation)}</div>
                     </div>
-                    <div class="pattern-when">
-                      <strong>📌 When to Use:</strong> ${escapeHtml(pat.whenToUse)}
-                    </div>
-                    <pre class="pattern-code">${escapeHtml(pat.sqlTemplate)}</pre>
-                    <div class="pattern-explanation">${escapeHtml(pat.explanation)}</div>
-                  </div>
-                `).join('')}
+                  `;
+                }).join('')}
               </div>
             ` : ''}
           </div>
 
-          <!-- Right Column: Senior Tricks, Execution Order & Next Step Button -->
+          <!-- Right Column: Sticky Navigation, Interview Defense & Senior Tricks -->
           <div class="theory-sidebar-column">
-            <!-- Senior Tricks & FAANG Interview Secrets -->
+            <!-- 1. Quick Navigation Outline (TOC) -->
+            <div class="course-toc-card">
+              <div class="course-toc-title">
+                <span>🧭</span>
+                <span>Module Outline</span>
+              </div>
+              <div class="course-toc-list">
+                <a href="#section-analogy" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-analogy').scrollIntoView({ behavior: 'smooth' });">
+                  <span>🎯 Everyday Analogy</span>
+                </a>
+                <a href="#section-theory" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-theory').scrollIntoView({ behavior: 'smooth' });">
+                  <span>📖 Core Theory Chapters</span>
+                </a>
+                ${traps.length > 0 ? `
+                  <a href="#section-traps" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-traps').scrollIntoView({ behavior: 'smooth' });">
+                    <span>⚠️ Traps &amp; Gotchas</span>
+                  </a>
+                ` : ''}
+                ${patterns.length > 0 ? `
+                  <a href="#section-patterns" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-patterns').scrollIntoView({ behavior: 'smooth' });">
+                    <span>📐 Reusable Patterns</span>
+                  </a>
+                ` : ''}
+                ${interview ? `
+                  <a href="#section-interview" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-interview').scrollIntoView({ behavior: 'smooth' });">
+                    <span>🎙️ Spoken Interview Script</span>
+                  </a>
+                ` : ''}
+                ${tricks.length > 0 ? `
+                  <a href="#section-tricks" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-tricks').scrollIntoView({ behavior: 'smooth' });">
+                    <span>💡 Senior FAANG Secrets</span>
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+
+            <!-- 2. Spoken Interview Defense Script -->
+            ${interview ? `
+              <div class="spoken-defense-card" id="section-interview">
+                <div class="defense-header">
+                  <span class="defense-badge">🎙️ FAANG Screening Script</span>
+                  <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">${escapeHtml(interview.difficulty)}</span>
+                </div>
+                <h4 class="defense-question">${escapeHtml(interview.question)}</h4>
+
+                <div class="defense-intent-box">
+                  <strong>🕵️ Interviewer Intent:</strong> ${escapeHtml(interview.interviewerIntent)}
+                </div>
+
+                <div class="spoken-script-box">
+                  <div class="spoken-script-label">
+                    <span>💬</span>
+                    <span>What to Say Out Loud (30-Sec Script):</span>
+                  </div>
+                  "${escapeHtml(interview.spokenAnswer)}"
+                </div>
+
+                ${interview.codeSnippet ? `
+                  <div class="code-action-strip">
+                    <span class="code-lang-tag">INTERVIEW PROOF</span>
+                    <div class="code-action-btns">
+                      <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encodeURIComponent(interview.codeSnippet)}')">
+                        <span>📋 Copy</span>
+                      </button>
+                      <button class="code-btn-studio" onclick="window.MasteryCourseEngine.solveInStudio('${encodeURIComponent(interview.codeSnippet)}', 'Employees')">
+                        <span>⚡ Test in Studio</span>
+                      </button>
+                    </div>
+                  </div>
+                  <pre class="diff-code" style="margin-top: 0; border-top-left-radius: 0; border-top-right-radius: 0;">${escapeHtml(interview.codeSnippet)}</pre>
+                ` : ''}
+
+                ${interview.powerKeywords && interview.powerKeywords.length > 0 ? `
+                  <div>
+                    <div style="font-size: 10.5px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">
+                      Power Keywords to Drop:
+                    </div>
+                    <div class="keywords-cloud">
+                      ${interview.powerKeywords.map(kw => `<span class="keyword-badge">${escapeHtml(kw)}</span>`).join('')}
+                    </div>
+                  </div>
+                ` : ''}
+              </div>
+            ` : ''}
+
+            <!-- 3. Senior Tricks & FAANG Interview Secrets -->
             ${tricks.length > 0 ? `
-              <div class="senior-tricks-section">
+              <div class="senior-tricks-section" id="section-tricks">
                 <div class="theory-card-heading">
                   <span>💡 Senior Tricks &amp; FAANG Secrets</span>
                 </div>
@@ -1928,6 +2079,17 @@ FROM Employees;`,
                   <div class="trick-card">
                     <div class="trick-concept">${escapeHtml(trick.concept)}</div>
                     <div class="trick-title">${escapeHtml(trick.title)}</div>
+                    <div class="code-action-strip">
+                      <span class="code-lang-tag">SQL TRICK</span>
+                      <div class="code-action-btns">
+                        <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encodeURIComponent(trick.codeSnippet || '')}')">
+                          <span>📋 Copy</span>
+                        </button>
+                        <button class="code-btn-studio" onclick="window.MasteryCourseEngine.solveInStudio('${encodeURIComponent(trick.codeSnippet || '')}', 'Employees')">
+                          <span>⚡ Test in Studio</span>
+                        </button>
+                      </div>
+                    </div>
                     <pre class="trick-code">${escapeHtml(trick.codeSnippet)}</pre>
                     <div class="trick-explanation">${escapeHtml(trick.explanation)}</div>
                     <div class="trick-analyst-value">
@@ -1938,7 +2100,7 @@ FROM Employees;`,
               </div>
             ` : ''}
 
-            <!-- Learning Level Card -->
+            <!-- 4. Learning Level Progression Card -->
             <div class="theory-text-card" style="background: var(--bg-card-subtle);">
               <h4 style="margin: 0 0 6px 0; font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--accent);">
                 Curriculum Progression
@@ -1948,7 +2110,7 @@ FROM Employees;`,
               </p>
             </div>
 
-            <!-- Next Step CTA -->
+            <!-- 5. Next Step CTA -->
             <button class="case-solve-cta" onclick="window.MasteryCourseEngine.switchStep('mcqs')">
               <span>Next: Quick Quiz (Step 2) ➔</span>
             </button>
@@ -2775,6 +2937,55 @@ FROM Employees;`,
     }
   }
 
+  function setDiagramStep(step) {
+    state.diagramStep = step;
+    init();
+  }
+
+  function copyCode(btn, encodedText) {
+    const text = decodeURIComponent(encodedText);
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        showCopied(btn);
+      }).catch(() => {
+        fallbackCopy(btn, text);
+      });
+    } else {
+      fallbackCopy(btn, text);
+    }
+  }
+
+  function fallbackCopy(btn, text) {
+    if (typeof document === 'undefined' || !document.body) {
+      showCopied(btn);
+      return;
+    }
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      showCopied(btn);
+    } catch (e) {
+      console.warn('Copy failed', e);
+    }
+    document.body.removeChild(ta);
+  }
+
+  function showCopied(btn) {
+    if (!btn) return;
+    const origHtml = btn.innerHTML;
+    btn.innerHTML = '<span>✓ Copied!</span>';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = origHtml;
+      btn.classList.remove('copied');
+    }, 2000);
+  }
+
   function escapeHtml(str) {
     return (str || '')
       .replace(/&/g, '&amp;')
@@ -2796,6 +3007,8 @@ FROM Employees;`,
     getPhases: () => PHASES,
     selectPhase: (phaseId) => { state.activePhaseId = phaseId; init(); },
     setVisualMode: (mode) => { state.visualMode = mode; init(); },
+    setDiagramStep,
+    copyCode,
     setSimState,
     switchStep,
     handleOptionClick,
