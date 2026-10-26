@@ -7,12 +7,14 @@
    ============================================================================= */
 
 #viewMasteryCourse {
-  background: var(--bg-canvas, #fafafa);
+  background: var(--bg-canvas, #fafafa) !important;
   color: var(--text-primary, #18181b);
   font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
+  position: relative;
+  z-index: 1;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -24,6 +26,10 @@
   max-width: 1440px;
   margin: 0 auto;
   min-height: 100%;
+}
+
+.mastery-course-wrapper > * {
+  flex-shrink: 0;
 }
 
 /* =============================================================================
@@ -127,18 +133,19 @@
   transition: width 0.3s ease;
 }
 
-/* 10-Topic Horizontal Rail */
+/* 10-Topic Stepper Track */
 .phase-execution-rail {
   display: flex;
   align-items: center;
-  gap: 6px;
-  overflow-x: auto;
-  padding: 6px 4px;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 12px;
   background: var(--bg-surface, #ffffff);
   border: 1px solid var(--border-default, #d4d4d8);
   border-radius: 8px;
   box-shadow: var(--shadow-card, 0 1px 3px rgba(0, 0, 0, 0.04));
-  scrollbar-width: thin;
+  min-height: 48px;
+  flex-shrink: 0;
 }
 
 .phase-node-btn {
@@ -146,6 +153,7 @@
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
+  height: 32px;
   border-radius: 6px;
   border: 1px solid var(--border-subtle, #e4e4e7);
   background: var(--bg-surface, #ffffff);
@@ -407,49 +415,60 @@
   justify-content: space-between;
 }
 
+.course-sim-table-wrap,
 .sim-table-wrap {
   width: 100%;
   overflow-x: auto;
+  background: var(--bg-surface, #ffffff) !important;
+  border: 1px solid var(--border-subtle, #e4e4e7) !important;
+  border-radius: 6px;
 }
 
+.course-sim-data-table,
 .sim-data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 11.5px;
+  font-size: 12px;
   font-family: var(--font-mono, monospace);
+  background: var(--bg-surface, #ffffff) !important;
 }
 
+.course-sim-data-table th,
 .sim-data-table th {
-  padding: 6px 10px;
+  padding: 8px 12px;
   text-align: left;
-  background: var(--bg-card-subtle, #fafafa);
-  color: var(--text-muted, #71717a);
+  background: var(--bg-card-subtle, #f4f4f5) !important;
+  color: var(--text-secondary, #3f3f46) !important;
   font-weight: 700;
-  border-bottom: 1px solid var(--border-subtle, #e4e4e7);
+  border-bottom: 1px solid var(--border-default, #d4d4d8) !important;
 }
 
+.course-sim-data-table td,
 .sim-data-table td {
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--border-subtle, #f4f4f5);
-  color: var(--text-secondary, #3f3f46);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle, #f4f4f5) !important;
+  color: var(--text-primary, #18181b) !important;
+  background: var(--bg-surface, #ffffff) !important;
 }
 
-.sim-data-table tr.highlight-match {
-  background: rgba(22, 163, 74, 0.08);
-}
-
+.course-sim-data-table tr.highlight-match td,
 .sim-data-table tr.highlight-match td {
-  color: #15803d;
+  background: rgba(22, 163, 74, 0.08) !important;
+  color: #15803d !important;
   font-weight: 600;
 }
 
-.sim-data-table tr.highlight-drop {
+.course-sim-data-table tr.highlight-drop td,
+.sim-data-table tr.highlight-drop td {
   opacity: 0.45;
-  background: rgba(220, 38, 38, 0.04);
+  background: rgba(220, 38, 38, 0.04) !important;
+  color: var(--text-muted, #71717a) !important;
 }
 
-.sim-data-table tr.highlight-null {
-  background: rgba(217, 119, 6, 0.06);
+.course-sim-data-table tr.highlight-null td,
+.sim-data-table tr.highlight-null td {
+  background: rgba(217, 119, 6, 0.08) !important;
+  color: #b45309 !important;
 }
 
 .sim-badge {

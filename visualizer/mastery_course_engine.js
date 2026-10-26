@@ -1827,8 +1827,8 @@ FROM Employees;`,
             <span>Executed Query: <code>${queryText}</code></span>
             <span class="course-pill-tag">${headers.length} Columns &bull; 4 of ${SIM_DATA.employees.length} Rows Shown</span>
           </div>
-          <div class="sim-table-wrap">
-            <table class="sim-data-table">
+          <div class="course-sim-table-wrap">
+            <table class="course-sim-data-table">
               <thead>
                 <tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr>
               </thead>
@@ -1893,8 +1893,8 @@ FROM Employees;`,
             <span>Evaluating Rule: <code>WHERE ${conditionLabel}</code></span>
             <span class="course-pill-tag">${passedRows.length} of ${rows.length} Passed</span>
           </div>
-          <div class="sim-table-wrap">
-            <table class="sim-data-table">
+          <div class="course-sim-table-wrap">
+            <table class="course-sim-data-table">
               <thead>
                 <tr><th>first_name</th><th>department</th><th>salary</th><th>tenure</th><th>Filter Result</th></tr>
               </thead>
@@ -1972,8 +1972,8 @@ FROM Employees;`,
             <span>Query: <code>SELECT first_name, department, salary FROM Employees ${queryCode}</code></span>
             <span class="course-pill-tag">${list.length} Rows</span>
           </div>
-          <div class="sim-table-wrap">
-            <table class="sim-data-table">
+          <div class="course-sim-table-wrap">
+            <table class="course-sim-data-table">
               <thead>
                 <tr><th>#</th><th>first_name</th><th>department</th><th>salary</th></tr>
               </thead>
@@ -2141,8 +2141,8 @@ FROM Employees;`,
             <span>Result Rows</span>
             <span class="course-pill-tag">${results.length} Rows</span>
           </div>
-          <div class="sim-table-wrap">
-            <table class="sim-data-table">
+          <div class="course-sim-table-wrap">
+            <table class="course-sim-data-table">
               <thead>
                 <tr><th>order_id</th><th>amount</th><th>customer_name</th><th>city</th><th>Status</th></tr>
               </thead>
@@ -2214,8 +2214,8 @@ FROM Employees;`,
           <div class="sim-result-header">
             <span>Evaluating Salary Tiers: <code>CASE WHEN salary >= 120k THEN 'Executive' ... END</code></span>
           </div>
-          <div class="sim-table-wrap">
-            <table class="sim-data-table">
+          <div class="course-sim-table-wrap">
+            <table class="course-sim-data-table">
               <thead><tr><th>first_name</th><th>salary</th><th>tenure</th><th>Assigned Tier</th></tr></thead>
               <tbody>
                 <tr class="highlight-match"><td>David</td><td>$125,000</td><td>36 mos</td><td><span class="sim-badge match">Executive</span></td></tr>
@@ -2287,8 +2287,8 @@ FROM Employees;`,
           <div class="sim-result-header">
             <span>Ranking Calculation: <code>${fn.toUpperCase()} OVER (PARTITION BY department ORDER BY salary DESC)</code></span>
           </div>
-          <div class="sim-table-wrap">
-            <table class="sim-data-table">
+          <div class="course-sim-table-wrap">
+            <table class="course-sim-data-table">
               <thead><tr><th>first_name</th><th>department</th><th>salary</th><th>Calculated Rank</th></tr></thead>
               <tbody>
                 <tr class="highlight-match"><td>Samantha</td><td>Engineering</td><td>$145,000</td><td><strong>1</strong></td></tr>
@@ -2600,6 +2600,7 @@ FROM Employees;`,
   return {
     init,
     getPhases: () => PHASES,
+    selectPhase: (phaseId) => { state.activePhaseId = phaseId; init(); },
     setSimState,
     switchStep,
     handleOptionClick,
