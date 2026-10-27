@@ -1,0 +1,1134 @@
+/* =============================================================================
+   SQL FOUNDRY - 2026 NEW-AGE AI-SAAS FLAGSHIP DESIGN SYSTEM (saas-midnight)
+   Inspiration: slite.com, getcluster.ai, kobbe.io, bugster.dev, lev8.com
+   - Deep Obsidian Midnight Canvas (#06080d) with Multi-layer Radial Mesh Glows
+   - Hairline Specular Borders (1px solid rgba(255, 255, 255, 0.08) with luminous hover)
+   - Slite-Inspired Sliding Magnetic Pill Tabs with Spring Physics (cubic-bezier(0.16, 1, 0.3, 1))
+   - Lev8 Asymmetric Bento Grid Architecture for Curriculum, Theory, & Studio
+   - Bugster Monospace High-Contrast Telemetry Badges & Pulsing Status Indicators
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   1. CORE TOKENS & SYSTEM VARIABLES (data-theme="saas-midnight")
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] {
+  /* Obsidian Canvas & Surface Scale */
+  --bg-canvas: #06080d;
+  --bg-surface: #0b0f17;
+  --bg-surface-elevated: #111726;
+  --bg-card: #0d121f;
+  --bg-card-subtle: #131b2e;
+  --bg-hover: rgba(255, 255, 255, 0.05);
+  --bg-active: rgba(99, 102, 241, 0.16);
+
+  /* Hairline Specular Borders */
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-default: rgba(255, 255, 255, 0.12);
+  --border-muted: rgba(255, 255, 255, 0.05);
+  --border-hover: rgba(99, 102, 241, 0.45);
+  --border-focus: #6366f1;
+
+  /* Typography Scale */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Signature 2026 AI-SaaS Indigo / Cyan Spectrum */
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --accent-soft: rgba(99, 102, 241, 0.14);
+  --accent-border: rgba(99, 102, 241, 0.38);
+  --accent-glow: 0 0 24px -2px rgba(99, 102, 241, 0.35);
+
+  /* Semantic Status Indicators */
+  --status-success: #10b981;
+  --status-success-bg: rgba(16, 185, 129, 0.12);
+  --status-success-border: rgba(16, 185, 129, 0.3);
+
+  --status-fail: #f43f5e;
+  --status-fail-bg: rgba(244, 63, 94, 0.12);
+  --status-fail-border: rgba(244, 63, 94, 0.3);
+
+  --status-warning: #f59e0b;
+  --status-warning-bg: rgba(245, 158, 11, 0.12);
+  --status-warning-border: rgba(245, 158, 11, 0.3);
+
+  --status-info: #06b6d4;
+  --status-info-bg: rgba(6, 182, 212, 0.12);
+  --status-info-border: rgba(6, 182, 212, 0.3);
+
+  --status-neutral: rgba(255, 255, 255, 0.08);
+
+  /* Specular Highlights & Ambient Shadows */
+  --shadow-specular: inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+  --shadow-specular-bright: inset 0 1px 0 0 rgba(255, 255, 255, 0.24);
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  --shadow-card-hover: 0 12px 36px -4px rgba(0, 0, 0, 0.8), 0 0 24px -4px rgba(99, 102, 241, 0.28), inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+
+  /* Font Families */
+  --font-sans: "Geist", "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Concentric Geometry */
+  --radius-outer: 18px;
+  --radius-card: 14px;
+  --radius-inner: 10px;
+  --radius-pill: 9999px;
+
+  color-scheme: dark;
+}
+
+/* -----------------------------------------------------------------------------
+   2. APP BACKGROUND & AMBIENT RADIAL MESH (Kobbe / Cluster Style)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] body,
+[data-theme="saas-midnight"] .app-layout {
+  background-color: #06080d !important;
+  background-image: 
+    radial-gradient(ellipse 90% 60% at 50% -20%, rgba(99, 102, 241, 0.16), transparent 70%),
+    radial-gradient(circle at 12% 25%, rgba(14, 165, 233, 0.07), transparent 45%),
+    radial-gradient(circle at 88% 75%, rgba(168, 85, 247, 0.06), transparent 45%) !important;
+  background-attachment: fixed !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-sans) !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* -----------------------------------------------------------------------------
+   3. FLOATING GLASSMORPHIC HEADER & NAVIGATION DOCK (Slite Style)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] .app-header {
+  background: rgba(11, 15, 23, 0.75) !important;
+  backdrop-filter: blur(20px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(190%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="saas-midnight"] .brand-icon {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.45) !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="saas-midnight"] .brand-name {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+}
+
+[data-theme="saas-midnight"] .brand-badge {
+  background: rgba(99, 102, 241, 0.15) !important;
+  color: #818cf8 !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* Header Nav Switcher - Sliding Pill Track */
+[data-theme="saas-midnight"] .nav-groups-container {
+  background: rgba(13, 18, 31, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-pill) !important;
+  padding: 3px 5px !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="saas-midnight"] .app-header .nav-group-trigger {
+  border-radius: var(--radius-pill) !important;
+  color: var(--text-secondary) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="saas-midnight"] .app-header .nav-group-trigger:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #ffffff !important;
+  transform: translateY(-0.5px) !important;
+}
+
+[data-theme="saas-midnight"] .app-header .nav-group-trigger.active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+[data-theme="saas-midnight"] .header-icon-btn {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 9px !important;
+  transition: all 140ms ease !important;
+}
+
+[data-theme="saas-midnight"] .header-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  color: #ffffff !important;
+}
+
+/* -----------------------------------------------------------------------------
+   4. MASTERY COURSE VIEW (#viewMasteryCourse)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] #viewMasteryCourse {
+  background: transparent !important;
+}
+
+/* Mastery Course Header Bar */
+[data-theme="saas-midnight"] .course-header-bar {
+  background: rgba(13, 18, 31, 0.7) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .course-headline {
+  color: #ffffff !important;
+  letter-spacing: -0.02em !important;
+}
+
+[data-theme="saas-midnight"] .course-pill-tag {
+  background: rgba(99, 102, 241, 0.15) !important;
+  color: #a5b4fc !important;
+  border: 1px solid rgba(99, 102, 241, 0.35) !important;
+  border-radius: 6px !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="saas-midnight"] .course-mastery-meter {
+  background: rgba(19, 27, 46, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="saas-midnight"] .meter-label {
+  color: var(--text-secondary) !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="saas-midnight"] .meter-track {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="saas-midnight"] .meter-fill {
+  background: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%) !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.5) !important;
+}
+
+/* Shortcuts & Analytics Pills in Header */
+[data-theme="saas-midnight"] .header-speedrun-btn,
+[data-theme="saas-midnight"] .header-analytics-btn {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 8px !important;
+  font-family: var(--font-mono) !important;
+  transition: all 140ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="saas-midnight"] .header-speedrun-btn:hover,
+[data-theme="saas-midnight"] .header-analytics-btn:hover {
+  background: rgba(99, 102, 241, 0.12) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 14px rgba(99, 102, 241, 0.25) !important;
+}
+
+/* -----------------------------------------------------------------------------
+   5. 10-TOPIC STEPPER RAIL (Slite Pill Carousel)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] .phase-execution-rail {
+  background: rgba(13, 18, 31, 0.7) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .phase-node-btn {
+  background: rgba(19, 27, 46, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-secondary) !important;
+  border-radius: var(--radius-pill) !important;
+  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="saas-midnight"] .phase-node-btn:hover {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(99, 102, 241, 0.35) !important;
+  color: #ffffff !important;
+  transform: translateY(-1.5px) !important;
+}
+
+[data-theme="saas-midnight"] .phase-node-btn.active {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 16px -2px rgba(99, 102, 241, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(-0.5px) !important;
+}
+
+[data-theme="saas-midnight"] .phase-node-btn.completed {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  color: #34d399 !important;
+}
+
+[data-theme="saas-midnight"] .phase-node-btn.completed.active {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+/* -----------------------------------------------------------------------------
+   6. ACTIVE TOPIC HERO & 4-STEP LEARNING TABS
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] .course-hero-banner {
+  background: rgba(13, 18, 31, 0.8) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="saas-midnight"] .course-hero-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.6) 50%, transparent 100%);
+  pointer-events: none;
+}
+
+[data-theme="saas-midnight"] .topic-hero-title {
+  color: #ffffff !important;
+  letter-spacing: -0.025em !important;
+}
+
+/* 4-Step Order Tabs Track (Slite Sliding Pill Geometry) */
+[data-theme="saas-midnight"] .step-order-tabs {
+  background: rgba(6, 8, 13, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-inner) !important;
+  padding: 4px !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="saas-midnight"] .step-tab-btn {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid transparent !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="saas-midnight"] .step-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
+  transform: translateY(-0.5px) !important;
+}
+
+[data-theme="saas-midnight"] .step-tab-btn.active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0 14px rgba(99, 102, 241, 0.3) !important;
+  transform: translateY(-0.5px) !important;
+}
+
+[data-theme="saas-midnight"] .step-tab-btn .step-count-pill {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--text-secondary) !important;
+  font-family: var(--font-mono) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="saas-midnight"] .step-tab-btn.active .step-count-pill {
+  background: rgba(99, 102, 241, 0.25) !important;
+  color: #c7d2fe !important;
+  border-color: rgba(99, 102, 241, 0.45) !important;
+}
+
+/* -----------------------------------------------------------------------------
+   7. STAGE 1: BENTO GRID THEORY & INTERACTIVE STUDIO (Lev8 Style)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] .stage-theory-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Visual Architecture & Live Sandbox Card */
+[data-theme="saas-midnight"] .interactive-simulator-card {
+  background: rgba(13, 18, 31, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+  transition: border-color 200ms ease, box-shadow 200ms ease !important;
+}
+
+[data-theme="saas-midnight"] .interactive-simulator-card:hover {
+  border-color: rgba(99, 102, 241, 0.3) !important;
+  box-shadow: var(--shadow-card-hover) !important;
+}
+
+[data-theme="saas-midnight"] .visual-mode-toggle-bar {
+  background: rgba(6, 8, 13, 0.5) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+
+[data-theme="saas-midnight"] .visual-toggle-btn {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 7px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  transition: all 140ms ease !important;
+}
+
+[data-theme="saas-midnight"] .visual-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="saas-midnight"] .visual-toggle-btn.active {
+  background: rgba(99, 102, 241, 0.2) !important;
+  border-color: rgba(99, 102, 241, 0.45) !important;
+  color: #a5b4fc !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+/* Everyday Analogy Bento Card */
+[data-theme="saas-midnight"] .analogy-hero-card {
+  background: linear-gradient(135deg, rgba(13, 18, 31, 0.85) 0%, rgba(19, 27, 46, 0.75) 100%) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-left: 3px solid #6366f1 !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .analogy-hero-title {
+  color: #ffffff !important;
+  letter-spacing: -0.015em !important;
+}
+
+[data-theme="saas-midnight"] .analogy-hero-story {
+  color: #cbd5e1 !important;
+  line-height: 1.6 !important;
+}
+
+[data-theme="saas-midnight"] .analogy-hero-takeaway {
+  background: rgba(99, 102, 241, 0.1) !important;
+  border: 1px solid rgba(99, 102, 241, 0.25) !important;
+  color: #c7d2fe !important;
+  border-radius: 8px !important;
+}
+
+/* Execution Order Sequencer Card (Option 3 Elevation) */
+[data-theme="saas-midnight"] .execution-order-card {
+  background: rgba(13, 18, 31, 0.8) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .order-mode-toggle {
+  background: rgba(6, 8, 13, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="saas-midnight"] .order-mode-btn {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  border-radius: 6px !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="saas-midnight"] .order-mode-btn.active {
+  background: rgba(99, 102, 241, 0.25) !important;
+  border: 1px solid rgba(99, 102, 241, 0.45) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+[data-theme="saas-midnight"] .clause-pill {
+  background: rgba(19, 27, 46, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #e2e8f0 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4) !important;
+  transition: all 140ms ease !important;
+}
+
+[data-theme="saas-midnight"] .clause-pill:hover {
+  border-color: rgba(99, 102, 241, 0.45) !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+[data-theme="saas-midnight"] .clause-step-num {
+  background: rgba(99, 102, 241, 0.2) !important;
+  color: #818cf8 !important;
+  font-family: var(--font-mono) !important;
+  border-radius: 4px !important;
+}
+
+[data-theme="saas-midnight"] .clause-name {
+  color: #ffffff !important;
+  font-family: var(--font-mono) !important;
+  font-weight: 700 !important;
+}
+
+/* Step Lessons & Theory Cards */
+[data-theme="saas-midnight"] .theory-text-card {
+  background: rgba(13, 18, 31, 0.7) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .theory-card-heading {
+  color: #ffffff !important;
+  letter-spacing: -0.015em !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme="saas-midnight"] .theory-card-body {
+  color: #cbd5e1 !important;
+  line-height: 1.65 !important;
+}
+
+[data-theme="saas-midnight"] .theory-card-body code {
+  background: rgba(99, 102, 241, 0.12) !important;
+  color: #a5b4fc !important;
+  border: 1px solid rgba(99, 102, 241, 0.25) !important;
+  font-family: var(--font-mono) !important;
+  border-radius: 4px !important;
+  padding: 1px 5px !important;
+}
+
+/* Traps, Gotchas & Diff Grid (Bugster Live Diff Style) */
+[data-theme="saas-midnight"] .trap-card {
+  background: rgba(13, 18, 31, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .trap-severity-badge.severity-critical {
+  background: rgba(244, 63, 94, 0.15) !important;
+  color: #fb7185 !important;
+  border: 1px solid rgba(244, 63, 94, 0.35) !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="saas-midnight"] .trap-severity-badge.severity-high {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="saas-midnight"] .trap-title {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="saas-midnight"] .diff-col.bad {
+  background: rgba(244, 63, 94, 0.05) !important;
+  border: 1px solid rgba(244, 63, 94, 0.2) !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="saas-midnight"] .diff-col.good {
+  background: rgba(16, 185, 129, 0.05) !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="saas-midnight"] .diff-code {
+  background: #06080d !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 6px !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="saas-midnight"] .code-btn-copy,
+[data-theme="saas-midnight"] .code-btn-studio {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border-radius: 6px !important;
+  font-family: var(--font-mono) !important;
+  transition: all 140ms ease !important;
+}
+
+[data-theme="saas-midnight"] .code-btn-studio {
+  background: rgba(99, 102, 241, 0.2) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  color: #c7d2fe !important;
+}
+
+[data-theme="saas-midnight"] .code-btn-studio:hover {
+  background: rgba(99, 102, 241, 0.35) !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.3) !important;
+}
+
+[data-theme="saas-midnight"] .trap-callout-why {
+  background: rgba(99, 102, 241, 0.08) !important;
+  border-left: 3px solid #6366f1 !important;
+  color: #cbd5e1 !important;
+  border-radius: 6px !important;
+}
+
+[data-theme="saas-midnight"] .trap-callout-impact {
+  background: rgba(244, 63, 94, 0.08) !important;
+  border-left: 3px solid #f43f5e !important;
+  color: #cbd5e1 !important;
+  border-radius: 6px !important;
+}
+
+/* -----------------------------------------------------------------------------
+   8. STAGE 2: QUICK RETRIEVAL QUIZ (Sleek High-Feedback Cards)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] .quiz-card {
+  background: rgba(13, 18, 31, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .quiz-q-num {
+  background: rgba(99, 102, 241, 0.15) !important;
+  color: #818cf8 !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="saas-midnight"] .quiz-q-text {
+  color: #ffffff !important;
+  letter-spacing: -0.015em !important;
+}
+
+[data-theme="saas-midnight"] .quiz-opt-btn {
+  background: rgba(19, 27, 46, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #cbd5e1 !important;
+  border-radius: 10px !important;
+  transition: all 140ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="saas-midnight"] .quiz-opt-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(99, 102, 241, 0.35) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+[data-theme="saas-midnight"] .quiz-opt-btn.correct {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.25) !important;
+}
+
+[data-theme="saas-midnight"] .quiz-opt-btn.incorrect {
+  background: rgba(244, 63, 94, 0.15) !important;
+  border-color: #f43f5e !important;
+  color: #fb7185 !important;
+}
+
+[data-theme="saas-midnight"] .quiz-explanation-box {
+  background: rgba(19, 27, 46, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-left: 3px solid #6366f1 !important;
+  color: #cbd5e1 !important;
+  border-radius: 8px !important;
+}
+
+/* -----------------------------------------------------------------------------
+   9. STAGE 3: REAL-WORLD INCIDENT CASE STUDY
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] .case-brief-card {
+  background: rgba(13, 18, 31, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .case-company-badge {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="saas-midnight"] .case-schema-box {
+  background: #06080d !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  color: #94a3b8 !important;
+  font-family: var(--font-mono) !important;
+}
+
+/* -----------------------------------------------------------------------------
+   10. STAGE 4: QUERY STUDIO & 3-WAY VISUAL RELATIONAL DIFF (Option 1 Elevation)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] .studio-workbench-card {
+  background: rgba(13, 18, 31, 0.8) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .studio-tier-btn {
+  background: rgba(19, 27, 46, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 8px !important;
+  font-family: var(--font-mono) !important;
+  transition: all 140ms ease !important;
+}
+
+[data-theme="saas-midnight"] .studio-tier-btn:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="saas-midnight"] .studio-tier-btn.active {
+  background: rgba(99, 102, 241, 0.2) !important;
+  border-color: rgba(99, 102, 241, 0.45) !important;
+  color: #a5b4fc !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+[data-theme="saas-midnight"] .inline-query-editor {
+  background: #06080d !important;
+  color: #f1f5f9 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  font-family: var(--font-mono) !important;
+  line-height: 1.5 !important;
+}
+
+[data-theme="saas-midnight"] .inline-query-editor:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.3) !important;
+}
+
+[data-theme="saas-midnight"] .btn-studio-run {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4) !important;
+  transition: all 140ms ease !important;
+}
+
+[data-theme="saas-midnight"] .btn-studio-run:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.5) !important;
+}
+
+[data-theme="saas-midnight"] .btn-studio-run:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+/* 3-Way Relational Diff Columns */
+[data-theme="saas-midnight"] .diff-grid-col {
+  background: #06080d !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="saas-midnight"] .diff-col-title {
+  background: rgba(19, 27, 46, 0.7) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: #cbd5e1 !important;
+  font-family: var(--font-mono) !important;
+}
+
+[data-theme="saas-midnight"] .relational-table-grid {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme="saas-midnight"] .relational-table-grid th {
+  background: rgba(19, 27, 46, 0.9) !important;
+  color: #94a3b8 !important;
+  font-family: var(--font-mono) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="saas-midnight"] .relational-table-grid td {
+  color: #e2e8f0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+[data-theme="saas-midnight"] .diff-row-match {
+  background: rgba(16, 185, 129, 0.08) !important;
+}
+
+[data-theme="saas-midnight"] .diff-row-mismatch {
+  background: rgba(244, 63, 94, 0.1) !important;
+}
+
+/* Schema Peek Drawer */
+[data-theme="saas-midnight"] .schema-drawer-panel {
+  background: rgba(11, 15, 23, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* -----------------------------------------------------------------------------
+   11. LEETCODE 323 ARENA (#viewLeetCodeArena)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] #viewLeetCodeArena {
+  background: transparent !important;
+}
+
+[data-theme="saas-midnight"] .arena-header-bar,
+[data-theme="saas-midnight"] .arena-left-card,
+[data-theme="saas-midnight"] .arena-right-card,
+[data-theme="saas-midnight"] .arena-editor-card {
+  background: rgba(13, 18, 31, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .arena-filter-chip {
+  background: rgba(19, 27, 46, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-secondary) !important;
+  border-radius: var(--radius-pill) !important;
+  transition: all 140ms ease !important;
+}
+
+[data-theme="saas-midnight"] .arena-filter-chip:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="saas-midnight"] .arena-filter-chip.active {
+  background: rgba(99, 102, 241, 0.25) !important;
+  border-color: rgba(99, 102, 241, 0.45) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+[data-theme="saas-midnight"] .problem-list-item {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  color: var(--text-secondary) !important;
+  transition: all 140ms ease !important;
+}
+
+[data-theme="saas-midnight"] .problem-list-item:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #ffffff !important;
+}
+
+[data-theme="saas-midnight"] .problem-list-item.active {
+  background: rgba(99, 102, 241, 0.15) !important;
+  border-left: 3px solid #6366f1 !important;
+  color: #ffffff !important;
+}
+
+/* -----------------------------------------------------------------------------
+   12. COMPANY MASTERY & FAANG DIRECTORY (#viewCompanyMastery)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] #viewCompanyMastery {
+  background: transparent !important;
+}
+
+[data-theme="saas-midnight"] .company-card,
+[data-theme="saas-midnight"] .company-detail-panel {
+  background: rgba(13, 18, 31, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="saas-midnight"] .company-card:hover {
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-card-hover) !important;
+}
+
+[data-theme="saas-midnight"] .company-name {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* -----------------------------------------------------------------------------
+   13. STUDIO SQL WORKBENCH (#viewStudio)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] #viewStudio {
+  background: transparent !important;
+}
+
+[data-theme="saas-midnight"] .studio-panel-left,
+[data-theme="saas-midnight"] .studio-panel-right {
+  background: rgba(13, 18, 31, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .dialect-pill {
+  background: rgba(19, 27, 46, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-secondary) !important;
+  border-radius: var(--radius-pill) !important;
+}
+
+[data-theme="saas-midnight"] .dialect-pill.active {
+  background: rgba(99, 102, 241, 0.25) !important;
+  border-color: rgba(99, 102, 241, 0.45) !important;
+  color: #ffffff !important;
+}
+
+/* -----------------------------------------------------------------------------
+   14. SPEEDRUN HUD & ANALYTICS MODALS (Glassmorphic Dialogs)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] .shortcuts-hud-modal,
+[data-theme="saas-midnight"] .progress-analytics-drawer,
+[data-theme="saas-midnight"] .command-palette-modal {
+  background: rgba(11, 15, 23, 0.9) !important;
+  backdrop-filter: blur(24px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: var(--radius-outer) !important;
+  box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.8), 0 0 32px rgba(99, 102, 241, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="saas-midnight"] .hotkey-chip {
+  background: rgba(19, 27, 46, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #a5b4fc !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+  border-radius: 6px !important;
+  font-family: var(--font-mono) !important;
+}
+
+/* -----------------------------------------------------------------------------
+   15. MICRO-INTERACTIONS & PULSE ANIMATIONS (Bugster / Slite Easing)
+   ----------------------------------------------------------------------------- */
+@keyframes saasPillPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.92); opacity: 0.6; }
+}
+
+[data-theme="saas-midnight"] .pulse-indicator {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: saasPillPulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* Scrollbar Refinement */
+[data-theme="saas-midnight"] ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+[data-theme="saas-midnight"] ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-theme="saas-midnight"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+
+[data-theme="saas-midnight"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.4);
+}
+
+
+/* -----------------------------------------------------------------------------
+   16. PRODUCT LANDING & BENTO SHOWCASE (#viewLandingPage)
+   ----------------------------------------------------------------------------- */
+[data-theme="saas-midnight"] .landing-container {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="saas-midnight"] .landing-badge-pill {
+  background: rgba(99, 102, 241, 0.14) !important;
+  border: 1px solid rgba(99, 102, 241, 0.35) !important;
+  color: #a5b4fc !important;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.25) !important;
+}
+
+[data-theme="saas-midnight"] .landing-pulse-dot {
+  background: #6366f1 !important;
+  box-shadow: 0 0 10px #6366f1 !important;
+}
+
+[data-theme="saas-midnight"] .landing-hero-title {
+  color: #ffffff !important;
+  letter-spacing: -0.035em !important;
+}
+
+[data-theme="saas-midnight"] .landing-hero-highlight {
+  background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+[data-theme="saas-midnight"] .landing-hero-subtitle {
+  color: #94a3b8 !important;
+}
+
+[data-theme="saas-midnight"] .landing-cta-primary {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+[data-theme="saas-midnight"] .landing-cta-primary:hover {
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
+  box-shadow: 0 6px 28px rgba(99, 102, 241, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+[data-theme="saas-midnight"] .landing-cta-secondary {
+  background: rgba(13, 18, 31, 0.8) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+[data-theme="saas-midnight"] .landing-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important;
+}
+
+[data-theme="saas-midnight"] .landing-hero-widget-card {
+  background: rgba(13, 18, 31, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.8), 0 0 32px -4px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="saas-midnight"] .landing-widget-topbar {
+  background: rgba(6, 8, 13, 0.7) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="saas-midnight"] .landing-scenario-tabs {
+  background: rgba(6, 8, 13, 0.8) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="saas-midnight"] .landing-scenario-btn {
+  color: #94a3b8 !important;
+}
+
+[data-theme="saas-midnight"] .landing-scenario-btn:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme="saas-midnight"] .landing-scenario-btn.active {
+  color: #ffffff !important;
+  background: rgba(99, 102, 241, 0.25) !important;
+  border: 1px solid rgba(99, 102, 241, 0.45) !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+[data-theme="saas-midnight"] .landing-code-preview {
+  color: #f1f5f9 !important;
+}
+
+[data-theme="saas-midnight"] .landing-kw { color: #818cf8 !important; }
+[data-theme="saas-midnight"] .landing-fn { color: #38bdf8 !important; }
+[data-theme="saas-midnight"] .landing-str { color: #34d399 !important; }
+[data-theme="saas-midnight"] .landing-num { color: #fbbf24 !important; }
+[data-theme="saas-midnight"] .landing-cm { color: #64748b !important; }
+
+[data-theme="saas-midnight"] .landing-widget-action-row {
+  background: rgba(6, 8, 13, 0.7) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="saas-midnight"] .landing-run-btn {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4) !important;
+}
+
+[data-theme="saas-midnight"] .landing-run-btn:hover {
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.55) !important;
+}
+
+[data-theme="saas-midnight"] .landing-widget-result-box {
+  background: #06080d !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="saas-midnight"] .landing-metric-card {
+  background: rgba(13, 18, 31, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .landing-metric-card:hover {
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  box-shadow: var(--shadow-card-hover) !important;
+}
+
+[data-theme="saas-midnight"] .landing-metric-val {
+  background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+[data-theme="saas-midnight"] .landing-feature-card,
+[data-theme="saas-midnight"] .landing-bento-card {
+  background: rgba(13, 18, 31, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+[data-theme="saas-midnight"] .landing-feature-card:hover,
+[data-theme="saas-midnight"] .landing-bento-card:hover {
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  box-shadow: var(--shadow-card-hover) !important;
+}
