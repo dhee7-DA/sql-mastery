@@ -137,50 +137,69 @@
 .phase-execution-rail {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
-  padding: 8px 12px;
+  padding: 10px 16px;
   background: var(--bg-surface, #ffffff);
-  border: 1px solid var(--border-default, #d4d4d8);
-  border-radius: 8px;
+  border: 1px solid var(--border-default, #e4e4e7);
+  border-radius: var(--course-radius-card, 14px);
   box-shadow: var(--shadow-card, 0 1px 3px rgba(0, 0, 0, 0.04));
   min-height: 48px;
   flex-shrink: 0;
 }
 
 .phase-node-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  height: 32px;
-  border-radius: 6px;
-  border: 1px solid var(--border-subtle, #e4e4e7);
+  padding: 6px 14px;
+  height: 34px;
+  border-radius: var(--course-radius-pill, 9999px);
+  border: 1px solid var(--border-default, #e4e4e7);
   background: var(--bg-surface, #ffffff);
   color: var(--text-secondary, #52525b);
   cursor: pointer;
-  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 140ms ease,
+              border-color 140ms ease,
+              background-color 140ms ease,
+              color 140ms ease;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .phase-node-btn:hover {
+  transform: translateY(-1.5px);
   border-color: var(--accent, #e11d48);
   background: var(--bg-hover, #f4f4f5);
   color: var(--text-primary, #18181b);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+}
+
+.phase-node-btn:active {
+  transform: translateY(1px) scale(0.985);
 }
 
 .phase-node-btn.active {
   background: var(--accent, #e11d48);
   border-color: var(--accent, #e11d48);
   color: #ffffff;
-  box-shadow: 0 2px 6px rgba(225, 29, 72, 0.25);
+  font-weight: 700;
+  box-shadow: 0 3px 12px -2px rgba(225, 29, 72, 0.35);
+  transform: translateY(-0.5px);
 }
 
 .phase-node-btn.completed {
-  border-color: var(--status-success, #16a34a);
-  background: var(--status-success-bg, rgba(22, 163, 74, 0.08));
-  color: var(--status-success, #16a34a);
+  border-color: rgba(22, 163, 74, 0.35);
+  background: rgba(22, 163, 74, 0.08);
+  color: #16a34a;
+}
+
+.phase-node-btn.completed.active {
+  background: var(--accent, #e11d48);
+  border-color: var(--accent, #e11d48);
+  color: #ffffff;
 }
 
 .phase-seq-tag {
@@ -202,8 +221,11 @@
 
 .phase-rail-sep {
   color: var(--border-hover, #a1a1aa);
-  font-size: 11px;
+  font-size: 15px;
+  line-height: 1;
   user-select: none;
+  opacity: 0.55;
+  margin: 0 2px;
 }
 
 /* =============================================================================
@@ -211,8 +233,8 @@
    ============================================================================= */
 .active-phase-card {
   background: var(--bg-surface, #ffffff);
-  border: 1px solid var(--border-default, #d4d4d8);
-  border-radius: 8px;
+  border: 1px solid var(--border-default, #e4e4e7);
+  border-radius: var(--course-radius-card, 14px);
   padding: 16px 20px;
   box-shadow: var(--shadow-card, 0 1px 3px rgba(0, 0, 0, 0.04));
   display: flex;
@@ -259,55 +281,67 @@
 .step-order-tabs {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   background: var(--bg-card-subtle, #f4f4f5);
   padding: 4px;
-  border-radius: 6px;
+  border-radius: var(--course-radius-inner, 12px);
   border: 1px solid var(--border-subtle, #e4e4e7);
 }
 
 .step-tab-btn {
-  height: 34px;
+  height: 36px;
   padding: 0 14px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   font-size: 12px;
-  font-weight: 700;
-  border-radius: 4px;
+  font-weight: 600;
+  border-radius: var(--course-radius-btn, 9px);
   border: 1px solid transparent;
   background: transparent;
   color: var(--text-secondary, #52525b);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 140ms ease,
+              background-color 140ms ease,
+              color 140ms ease,
+              border-color 140ms ease;
   white-space: nowrap;
 }
 
 .step-tab-btn:hover {
+  transform: translateY(-1px);
   color: var(--text-primary, #18181b);
   background: rgba(0, 0, 0, 0.04);
+}
+
+.step-tab-btn:active {
+  transform: translateY(1px) scale(0.985);
 }
 
 .step-tab-btn.active {
   background: var(--bg-surface, #ffffff);
   color: var(--accent, #e11d48);
-  font-weight: 800;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border-color: var(--accent-border, rgba(225, 29, 72, 0.3));
+  font-weight: 700;
+  box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--accent-border, rgba(225, 29, 72, 0.3));
+  transform: translateY(-0.5px);
 }
 
 .step-tab-btn .step-count-pill {
   font-size: 10px;
   font-family: var(--font-mono, monospace);
-  padding: 1px 6px;
-  border-radius: 3px;
-  background: var(--bg-card-subtle, #f4f4f5);
+  padding: 2px 7px;
+  border-radius: var(--course-radius-pill, 9999px);
+  background: var(--bg-card-subtle, #e4e4e7);
   color: var(--text-secondary, #52525b);
+  font-weight: 700;
 }
 
 .step-tab-btn.active .step-count-pill {
-  background: var(--accent-soft, rgba(225, 29, 72, 0.1));
+  background: var(--accent-soft, rgba(225, 29, 72, 0.12));
   color: var(--accent, #e11d48);
+  border: 1px solid var(--accent-border, rgba(225, 29, 72, 0.25));
 }
 
 /* =============================================================================
@@ -1129,37 +1163,47 @@
 }
 
 .visual-mode-toggle-group {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #e4e4e7);
+  border-radius: var(--course-radius-pill, 9999px);
+  padding: 3px;
 }
 
 .visual-toggle-btn {
   height: 30px;
   padding: 0 14px;
   font-size: 11.5px;
-  font-weight: 700;
-  border-radius: 4px;
-  border: 1px solid var(--border-default, #d4d4d8);
-  background: var(--bg-surface, #ffffff);
+  font-weight: 600;
+  border-radius: var(--course-radius-pill, 9999px);
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--text-secondary, #52525b);
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.15s ease;
+  transition: transform 140ms ease, background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
 }
 
 .visual-toggle-btn:hover {
-  border-color: var(--accent, #e11d48);
-  color: var(--accent, #e11d48);
+  transform: translateY(-1px);
+  color: var(--text-primary, #18181b);
+}
+
+.visual-toggle-btn:active {
+  transform: translateY(1px) scale(0.985);
 }
 
 .visual-toggle-btn.active {
   background: var(--accent, #e11d48);
   color: #ffffff;
   border-color: var(--accent, #e11d48);
-  box-shadow: 0 1px 3px rgba(225, 29, 72, 0.25);
+  font-weight: 700;
+  box-shadow: 0 2px 8px -1px rgba(225, 29, 72, 0.35);
+  transform: translateY(-0.5px);
 }
 
 /* SVG Explainer Diagram Card */
@@ -1167,8 +1211,8 @@
   width: 100%;
   overflow-x: auto;
   background: var(--bg-surface, #ffffff);
-  border: 1px solid var(--border-default, #d4d4d8);
-  border-radius: 0 0 8px 8px;
+  border: 1px solid var(--border-default, #e4e4e7);
+  border-radius: 0 0 var(--course-radius-card, 14px) var(--course-radius-card, 14px);
   padding: 14px;
   box-shadow: var(--shadow-card, 0 1px 3px rgba(0, 0, 0, 0.04));
 }
@@ -1456,39 +1500,48 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 14px;
+  padding: 12px 16px;
   background: var(--bg-card-subtle, #f4f4f5);
   border-top: 1px solid var(--border-subtle, #e4e4e7);
-  border-radius: 0 0 8px 8px;
+  border-radius: 0 0 var(--course-radius-card, 14px) var(--course-radius-card, 14px);
   flex-wrap: wrap;
 }
 
 .diagram-step-btn {
-  height: 28px;
-  padding: 0 12px;
-  font-size: 11px;
-  font-weight: 700;
-  border-radius: 4px;
-  border: 1px solid var(--border-default, #d4d4d8);
+  height: 30px;
+  padding: 0 14px;
+  font-size: 11.5px;
+  font-weight: 600;
+  border-radius: var(--course-radius-pill, 9999px);
+  border: 1px solid var(--border-default, #e4e4e7);
   background: var(--bg-surface, #ffffff);
   color: var(--text-secondary, #52525b);
   cursor: pointer;
-  transition: all 0.15s ease;
-  display: flex;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: transform 140ms ease, border-color 140ms ease, background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
 }
 
 .diagram-step-btn:hover {
-  border-color: var(--text-primary, #18181b);
+  transform: translateY(-1px);
+  border-color: var(--accent, #e11d48);
   color: var(--text-primary, #18181b);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+}
+
+.diagram-step-btn:active {
+  transform: translateY(1px) scale(0.985);
 }
 
 .diagram-step-btn.active {
-  background: var(--text-primary, #18181b);
+  background: var(--accent, #e11d48);
   color: #ffffff;
-  border-color: var(--text-primary, #18181b);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  border-color: var(--accent, #e11d48);
+  font-weight: 700;
+  box-shadow: 0 3px 10px -2px rgba(225, 29, 72, 0.35);
+  transform: translateY(-0.5px);
 }
 
 /* Code Action Strip */

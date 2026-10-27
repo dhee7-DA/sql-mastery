@@ -26,42 +26,42 @@ window.MasterySvgEngine = (function() {
     return `
       <!-- Layer 1: Source Table Scan -->
       <g opacity="${srcOpacity}" class="svg-anim-layer">
-        <rect x="24" y="24" width="310" height="280" rx="14" class="svg-panel-bg" stroke="${step === 1 ? 'var(--accent)' : 'var(--border-default)'}" stroke-width="${step === 1 ? '2.5' : '1.2'}"/>
-        <path d="M 24 38 Q 24 24 38 24 L 320 24 Q 334 24 334 38 L 334 66 L 24 66 Z" class="svg-panel-header"/>
-        <text x="42" y="50" class="svg-text-title">📁 ${escapeXml(src.name || 'FROM Employees')}</text>
+        <rect x="22" y="24" width="316" height="280" rx="14" class="svg-panel-bg" stroke="${step === 1 ? 'var(--accent)' : 'var(--border-default)'}" stroke-width="${step === 1 ? '2.5' : '1.2'}"/>
+        <path d="M 22 38 Q 22 24 36 24 L 324 24 Q 338 24 338 38 L 338 66 L 22 66 Z" class="svg-panel-header"/>
+        <text x="38" y="50" class="svg-text-title">📁 ${escapeXml(src.name || 'FROM Employees')}</text>
 
-        <text x="36" y="86" class="svg-text-col" fill="#71717a">id</text>
-        <text x="68" y="86" class="svg-text-col" fill="var(--accent)" font-weight="800">first_name ★</text>
-        <text x="144" y="86" class="svg-text-col" fill="#71717a">dept</text>
-        <text x="246" y="86" class="svg-text-col" fill="var(--accent)" font-weight="800">salary ★</text>
-        <line x1="30" y1="94" x2="328" y2="94" stroke="var(--border-default)" stroke-width="1"/>
+        <text x="34" y="86" class="svg-text-col" fill="#71717a">id</text>
+        <text x="58" y="86" class="svg-text-col" fill="var(--accent)" font-weight="800">first_name ★</text>
+        <text x="160" y="86" class="svg-text-col" fill="#71717a">dept</text>
+        <text x="250" y="86" class="svg-text-col" fill="var(--accent)" font-weight="800">salary ★</text>
+        <line x1="26" y1="94" x2="334" y2="94" stroke="var(--border-default)" stroke-width="1"/>
 
-        <rect x="30" y="104" width="298" height="34" rx="6" class="svg-row-even"/>
-        <text x="36" y="126" class="svg-text-cell svg-mono" fill="#a1a1aa">101</text>
-        <text x="68" y="126" class="svg-text-cell" font-weight="700" fill="var(--accent)">Ashley</text>
-        <text x="144" y="126" class="svg-text-cell" fill="#a1a1aa">Analytics</text>
-        <text x="246" y="126" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$115,000</text>
+        <rect x="26" y="104" width="308" height="34" rx="6" class="svg-row-even"/>
+        <text x="34" y="126" class="svg-text-cell svg-mono" fill="#a1a1aa">101</text>
+        <text x="58" y="126" class="svg-text-cell" font-weight="700" fill="var(--accent)">Ashley</text>
+        <text x="160" y="126" class="svg-text-cell" fill="#a1a1aa">Analytics</text>
+        <text x="250" y="126" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$115,000</text>
 
-        <rect x="30" y="144" width="298" height="34" rx="6" class="svg-row-odd"/>
-        <text x="36" y="166" class="svg-text-cell svg-mono" fill="#a1a1aa">102</text>
-        <text x="68" y="166" class="svg-text-cell" font-weight="700" fill="var(--accent)">David</text>
-        <text x="144" y="166" class="svg-text-cell" fill="#a1a1aa">Eng</text>
-        <text x="246" y="166" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$125,000</text>
+        <rect x="26" y="144" width="308" height="34" rx="6" class="svg-row-odd"/>
+        <text x="34" y="166" class="svg-text-cell svg-mono" fill="#a1a1aa">102</text>
+        <text x="58" y="166" class="svg-text-cell" font-weight="700" fill="var(--accent)">David</text>
+        <text x="160" y="166" class="svg-text-cell" fill="#a1a1aa">Eng</text>
+        <text x="250" y="166" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$125,000</text>
 
-        <rect x="30" y="184" width="298" height="34" rx="6" class="svg-row-even"/>
-        <text x="36" y="206" class="svg-text-cell svg-mono" fill="#a1a1aa">103</text>
-        <text x="68" y="206" class="svg-text-cell" font-weight="700" fill="var(--accent)">Julia</text>
-        <text x="144" y="206" class="svg-text-cell" fill="#a1a1aa">Analytics</text>
-        <text x="246" y="206" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$95,000</text>
+        <rect x="26" y="184" width="308" height="34" rx="6" class="svg-row-even"/>
+        <text x="34" y="206" class="svg-text-cell svg-mono" fill="#a1a1aa">103</text>
+        <text x="58" y="206" class="svg-text-cell" font-weight="700" fill="var(--accent)">Julia</text>
+        <text x="160" y="206" class="svg-text-cell" fill="#a1a1aa">Analytics</text>
+        <text x="250" y="206" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$95,000</text>
 
-        <rect x="30" y="224" width="298" height="34" rx="6" class="svg-row-odd"/>
-        <text x="36" y="246" class="svg-text-cell svg-mono" fill="#a1a1aa">104</text>
-        <text x="68" y="246" class="svg-text-cell" font-weight="700" fill="var(--accent)">Carlos</text>
-        <text x="144" y="246" class="svg-text-cell" fill="#a1a1aa">Eng</text>
-        <text x="246" y="246" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$72,000</text>
+        <rect x="26" y="224" width="308" height="34" rx="6" class="svg-row-odd"/>
+        <text x="34" y="246" class="svg-text-cell svg-mono" fill="#a1a1aa">104</text>
+        <text x="58" y="246" class="svg-text-cell" font-weight="700" fill="var(--accent)">Carlos</text>
+        <text x="160" y="246" class="svg-text-cell" fill="#a1a1aa">Eng</text>
+        <text x="250" y="246" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$72,000</text>
 
-        <rect x="34" y="266" width="290" height="24" rx="6" fill="rgba(161, 161, 170, 0.1)"/>
-        <text x="179" y="282" text-anchor="middle" font-size="10.5" fill="var(--text-muted)">Unselected Columns [id, dept, tenure] Pruned</text>
+        <rect x="26" y="266" width="308" height="24" rx="6" fill="rgba(161, 161, 170, 0.1)"/>
+        <text x="180" y="282" text-anchor="middle" font-size="10.5" fill="var(--text-muted)">Unselected Columns [id, dept, tenure] Pruned</text>
       </g>
 
       <!-- Layer 2: Projection & Arithmetic Conduit -->
@@ -69,9 +69,9 @@ window.MasterySvgEngine = (function() {
         <rect x="354" y="30" width="260" height="38" rx="19" fill="url(#gAccentGrad)" filter="url(#svgSoftShadow)"/>
         <text x="484" y="54" text-anchor="middle" fill="#ffffff" font-weight="800" font-size="12">⚡ SELECT first_name, salary * 1.10</text>
 
-        <path d="M 334 126 C 410 126, 430 140, 630 126" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowAccent)"/>
-        <path d="M 334 166 C 410 166, 430 166, 630 166" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowAccent)"/>
-        <path d="M 334 206 C 410 206, 430 190, 630 206" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowAccent)"/>
+        <path d="M 338 126 C 410 126, 430 140, 630 126" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowAccent)"/>
+        <path d="M 338 166 C 410 166, 430 166, 630 166" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowAccent)"/>
+        <path d="M 338 206 C 410 206, 430 190, 630 206" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowAccent)"/>
 
         <rect x="354" y="94" width="260" height="190" rx="12" class="svg-panel-bg" stroke="${step === 2 ? 'var(--accent)' : 'var(--border-default)'}" stroke-width="${step === 2 ? '2' : '1'}" filter="url(#svgSoftShadow)"/>
         <rect x="366" y="106" width="140" height="22" rx="6" fill="var(--accent-soft)"/>

@@ -1599,8 +1599,6 @@ FROM Employees;`,
               </button>
             </div>
           </div>
-            </div>
-          </div>
         </header>
 
         <!-- 2. The 10-Topic Progressive Navigation Rail -->
@@ -1608,7 +1606,7 @@ FROM Employees;`,
           ${PHASES.map((p, idx) => {
             const isActive = p.id === state.activePhaseId;
             const isDone = state.completedPhases.has(p.id);
-            const sep = idx < PHASES.length - 1 ? '<span class="phase-rail-sep">➔</span>' : '';
+            const sep = idx < PHASES.length - 1 ? '<span class="phase-rail-sep">›</span>' : '';
             return `
               <button class="phase-node-btn ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" data-phase="${p.id}">
                 <span class="phase-seq-tag">${p.seq}</span>
