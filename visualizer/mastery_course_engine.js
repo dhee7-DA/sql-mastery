@@ -1708,150 +1708,12 @@ FROM Employees;`,
   }
 
   function renderSvgDiagram(phase) {
+    if (typeof window !== 'undefined' && window.MasterySvgEngine && typeof window.MasterySvgEngine.render === 'function') {
+      return window.MasterySvgEngine.render(phase, state.diagramStep);
+    }
     const diag = phase.svgDiagram;
     if (!diag) return '<div style="padding: 24px; text-align: center; color: var(--text-muted);">Architectural diagram loading...</div>';
-    const src = diag.sourceTable || {};
-    const res = diag.resultTable || {};
-    const op = diag.operation || 'SQL Transformation';
-    const callout = diag.callout || { badge: 'Operation', text: '' };
-
-    const step = state.diagramStep || 0; // 0: all, 1: src, 2: op, 3: res
-
-    const cardW = 300;
-    const cardH = 260;
-    const srcX = 20;
-    const srcY = 20;
-    const midX = 340;
-    const midW = 280;
-    const resX = 640;
-    const resY = 20;
-
-    // Opacity and highlights based on step
-    const srcOpacity = (step === 0 || step === 1) ? '1.0' : '0.35';
-    const opOpacity = (step === 0 || step === 2) ? '1.0' : '0.35';
-    const resOpacity = (step === 0 || step === 3) ? '1.0' : '0.35';
-
-    const srcStroke = step === 1 ? '#2563eb' : '#d4d4d8';
-    const srcStrokeW = step === 1 ? '2.5' : '1';
-    const resStroke = step === 3 ? '#10b981' : '#10b981';
-    const resStrokeW = step === 3 ? '2.5' : '1.5';
-
-    const srcCols = (src.cols || []).slice(0, 4);
-    const colW = Math.floor((cardW - 16) / Math.max(srcCols.length, 1));
-    let srcRowsSvg = '';
-    (src.rows || []).slice(0, 4).forEach((r, rIdx) => {
-      const y = srcY + 80 + (rIdx * 34);
-      const isEven = rIdx % 2 === 0;
-      srcRowsSvg += `
-        <rect x="${srcX + 8}" y="${y - 18}" width="${cardW - 16}" height="30" rx="4" fill="${isEven ? '#ffffff' : '#fcfcfd'}" stroke="#f4f4f5" stroke-width="1"/>
-        ${r.slice(0, 4).map((cell, cIdx) => `
-          <text x="${srcX + 16 + (cIdx * colW)}" y="${y}" font-family="monospace" font-size="11" fill="#27272a">${escapeXml(String(cell))}</text>
-        `).join('')}
-      `;
-    });
-
-    const resCols = (res.cols || []).slice(0, 4);
-    const resColW = Math.floor((cardW - 16) / Math.max(resCols.length, 1));
-    let resRowsSvg = '';
-    (res.rows || []).slice(0, 4).forEach((r, rIdx) => {
-      const y = resY + 80 + (rIdx * 34);
-      resRowsSvg += `
-        <rect x="${resX + 8}" y="${y - 18}" width="${cardW - 16}" height="30" rx="4" fill="rgba(16, 185, 129, 0.08)" stroke="rgba(16, 185, 129, 0.25)" stroke-width="1"/>
-        ${r.slice(0, 4).map((cell, cIdx) => `
-          <text x="${resX + 16 + (cIdx * resColW)}" y="${y}" font-family="monospace" font-size="11" font-weight="600" fill="#065f46">${escapeXml(String(cell))}</text>
-        `).join('')}
-      `;
-    });
-
-    const words = (callout.text || '').split(' ');
-    const lines = [];
-    let currLine = '';
-    words.forEach(w => {
-      if ((currLine + ' ' + w).length > 36) {
-        lines.push(currLine.trim());
-        currLine = w;
-      } else {
-        currLine += (currLine ? ' ' : '') + w;
-      }
-    });
-    if (currLine) lines.push(currLine.trim());
-
-    return `
-      <div class="course-svg-diagram-card">
-        <svg viewBox="0 0 960 300" class="course-explainer-svg" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="gBluePill" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#2563eb"/>
-              <stop offset="100%" stop-color="#1d4ed8"/>
-            </linearGradient>
-            <linearGradient id="gCalloutBg" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="100%" stop-color="#f8fafc"/>
-            </linearGradient>
-            <filter id="shadowCard" x="-5%" y="-5%" width="110%" height="115%">
-              <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/>
-            </filter>
-            <marker id="arrowHead" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb"/>
-            </marker>
-          </defs>
-          <rect x="0" y="0" width="960" height="300" rx="12" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
-          
-          <!-- 1. Source Table Group -->
-          <g id="sourceTableGroup" opacity="${srcOpacity}" style="transition: opacity 0.3s ease;">
-            <rect x="${srcX}" y="${srcY}" width="${cardW}" height="${cardH}" rx="8" fill="#ffffff" stroke="${srcStroke}" stroke-width="${srcStrokeW}" filter="url(#shadowCard)"/>
-            <path d="M ${srcX} ${srcY + 8} Q ${srcX} ${srcY} ${srcX + 8} ${srcY} L ${srcX + cardW - 8} ${srcY} Q ${srcX + cardW} ${srcY} ${srcX + cardW} ${srcY + 8} L ${srcX + cardW} ${srcY + 36} L ${srcX} ${srcY + 36} Z" fill="${step === 1 ? '#dbeafe' : '#f4f4f5'}"/>
-            <text x="${srcX + 14}" y="${srcY + 23}" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="${step === 1 ? '#1d4ed8' : '#27272a'}">📁 ${escapeXml(src.name)} ${step === 1 ? '• SCANNING' : ''}</text>
-            ${srcCols.map((col, idx) => `
-              <text x="${srcX + 16 + (idx * colW)}" y="${srcY + 54}" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#71717a">${escapeXml(col)}</text>
-            `).join('')}
-            <line x1="${srcX + 8}" y1="${srcY + 62}" x2="${srcX + cardW - 8}" y2="${srcY + 62}" stroke="#e4e4e7" stroke-width="1"/>
-            ${srcRowsSvg}
-          </g>
-
-          <!-- 2. Operations & Callout Bridge -->
-          <g id="operationBridgeGroup" opacity="${opOpacity}" style="transition: opacity 0.3s ease;">
-            <rect x="${midX}" y="${srcY + 6}" width="${midW}" height="32" rx="16" fill="url(#gBluePill)" filter="url(#shadowCard)"/>
-            <text x="${midX + (midW / 2)}" y="${srcY + 26}" text-anchor="middle" font-family="monospace" font-size="11" font-weight="700" fill="#ffffff">⚡ ${escapeXml(op)}</text>
-            <path d="M ${srcX + cardW + 8} 80 L ${resX - 12} 80" stroke="#2563eb" stroke-width="2.5" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowHead)"/>
-            <rect x="${midX}" y="${srcY + 80}" width="${midW}" height="150" rx="8" fill="url(#gCalloutBg)" stroke="${step === 2 ? '#2563eb' : '#bfdbfe'}" stroke-width="${step === 2 ? '2' : '1.5'}" filter="url(#shadowCard)"/>
-            <rect x="${midX + 12}" y="${srcY + 92}" width="140" height="20" rx="4" fill="#dbeafe"/>
-            <text x="${midX + 18}" y="${srcY + 106}" font-family="system-ui, sans-serif" font-size="10" font-weight="800" fill="#1d4ed8">💡 ${escapeXml(callout.badge)}</text>
-            ${lines.map((l, lIdx) => `
-              <text x="${midX + 14}" y="${srcY + 130 + (lIdx * 18)}" font-family="system-ui, sans-serif" font-size="11.5" fill="#334155">${escapeXml(l)}</text>
-            `).join('')}
-          </g>
-
-          <!-- 3. Result Table Group -->
-          <g id="resultTableGroup" opacity="${resOpacity}" style="transition: opacity 0.3s ease;">
-            <rect x="${resX}" y="${resY}" width="${cardW}" height="${cardH}" rx="8" fill="#ffffff" stroke="${resStroke}" stroke-width="${resStrokeW}" filter="url(#shadowCard)"/>
-            <path d="M ${resX} ${resY + 8} Q ${resX} ${resY} ${resX + 8} ${resY} L ${resX + cardW - 8} ${resY} Q ${resX + cardW} ${resY} ${resX + cardW} ${resY + 8} L ${resX + cardW} ${resY + 36} L ${resX} ${resY + 36} Z" fill="${step === 3 ? '#d1fae5' : '#ecfdf5'}"/>
-            <text x="${resX + 14}" y="${resY + 23}" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#065f46">✨ ${escapeXml(res.name)} ${step === 3 ? '• EMITTED' : ''}</text>
-            ${resCols.map((col, idx) => `
-              <text x="${resX + 16 + (idx * resColW)}" y="${resY + 54}" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">${escapeXml(col)}</text>
-            `).join('')}
-            <line x1="${resX + 8}" y1="${resY + 62}" x2="${resX + cardW - 8}" y2="${resY + 62}" stroke="#a7f3d0" stroke-width="1"/>
-            ${resRowsSvg}
-          </g>
-        </svg>
-
-        <!-- Interactive Diagram Stepper Bar -->
-        <div class="diagram-stepper-bar">
-          <button class="diagram-step-btn ${step === 0 ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiagramStep(0)">
-            <span>👁️ Overview</span>
-          </button>
-          <button class="diagram-step-btn ${step === 1 ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiagramStep(1)">
-            <span>1️⃣ Step 1: Scan Table</span>
-          </button>
-          <button class="diagram-step-btn ${step === 2 ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiagramStep(2)">
-            <span>2️⃣ Step 2: Transform / Filter</span>
-          </button>
-          <button class="diagram-step-btn ${step === 3 ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiagramStep(3)">
-            <span>3️⃣ Step 3: Emit Result</span>
-          </button>
-        </div>
-      </div>
-    `;
+    return '<div class="course-svg-diagram-card" style="padding: 24px;">Architecture diagram ready.</div>';
   }
 
   // ===========================================================================
@@ -3161,36 +3023,100 @@ FROM Employees;`,
 
     function formatTheoryMarkdown(text) {
     if (!text) return '';
-    let html = text;
+    let html = text.replace(/\\n/g, '\n');
 
-    // Callout blocks
+    // 1. Callout blocks
     html = html.replace(/>\s*\[!TIP\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
       const cleanBody = body.replace(/^>\s*/gm, '').trim();
-      return `<div class="theory-callout tip"><div class="callout-header"><span>💡</span> <span>${escapeHtml(title || 'Pro Tip')}</span></div><p>${cleanBody}</p></div>`;
+      return `<div class="theory-callout tip"><div class="callout-header"><span class="callout-icon">💡</span> <span class="callout-title">${escapeHtml(title || 'Pro Tip')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
     });
     html = html.replace(/>\s*\[!WARNING\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
       const cleanBody = body.replace(/^>\s*/gm, '').trim();
-      return `<div class="theory-callout warning"><div class="callout-header"><span>⚠️</span> <span>${escapeHtml(title || 'Common Trap')}</span></div><p>${cleanBody}</p></div>`;
+      return `<div class="theory-callout warning"><div class="callout-header"><span class="callout-icon">⚠️</span> <span class="callout-title">${escapeHtml(title || 'Common Trap')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
     });
     html = html.replace(/>\s*\[!NOTE\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
       const cleanBody = body.replace(/^>\s*/gm, '').trim();
-      return `<div class="theory-callout note"><div class="callout-header"><span>📌</span> <span>${escapeHtml(title || 'Mental Model')}</span></div><p>${cleanBody}</p></div>`;
+      return `<div class="theory-callout note"><div class="callout-header"><span class="callout-icon">📌</span> <span class="callout-title">${escapeHtml(title || 'Mental Model')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
     });
     html = html.replace(/>\s*\[!IMPORTANT\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
       const cleanBody = body.replace(/^>\s*/gm, '').trim();
-      return `<div class="theory-callout important"><div class="callout-header"><span>⚡</span> <span>${escapeHtml(title || 'Optimizer Note')}</span></div><p>${cleanBody}</p></div>`;
+      return `<div class="theory-callout important"><div class="callout-header"><span class="callout-icon">⚡</span> <span class="callout-title">${escapeHtml(title || 'Optimizer Note')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
     });
     html = html.replace(/>\s*\[!RULE\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
       const cleanBody = body.replace(/^>\s*/gm, '').trim();
-      return `<div class="theory-callout rule"><div class="callout-header"><span>💼</span> <span>${escapeHtml(title || 'Production Rule of Thumb')}</span></div><p>${cleanBody}</p></div>`;
+      return `<div class="theory-callout rule"><div class="callout-header"><span class="callout-icon">💼</span> <span class="callout-title">${escapeHtml(title || 'Production Rule of Thumb')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
     });
 
+    // 2. Markdown tables
+    html = html.replace(/(?:^|\n)(\|[^\n]+\|\r?\n\|[-: |]+\|\r?\n(?:\|[^\n]+\|\r?\n?)+)/g, (match, tableBlock) => {
+      const lines = tableBlock.trim().split(/\r?\n/);
+      if (lines.length < 2) return match;
+      const headerCells = lines[0].split('|').map(c => c.trim()).filter((c, i, a) => i > 0 && i < a.length - 1);
+      const rowLines = lines.slice(2);
+      let tableHtml = '<div class="theory-table-wrap"><table class="theory-markdown-table"><thead><tr>';
+      headerCells.forEach(hc => {
+        tableHtml += `<th>${escapeHtml(hc)}</th>`;
+      });
+      tableHtml += '</tr></thead><tbody>';
+      rowLines.forEach((r, rIdx) => {
+        const cells = r.split('|').map(c => c.trim()).filter((c, i, a) => i > 0 && i < a.length - 1);
+        tableHtml += `<tr class="${rIdx % 2 === 0 ? 'even' : 'odd'}">`;
+        cells.forEach(cell => {
+          tableHtml += `<td>${escapeHtml(cell)}</td>`;
+        });
+        tableHtml += '</tr>';
+      });
+      tableHtml += '</tbody></table></div>';
+      return '\n\n' + tableHtml + '\n\n';
+    });
+
+    // 3. Code blocks with headers and copy buttons
+    html = html.replace(/```(?:sql|SQL)?([\s\S]*?)```/g, (match, sqlCode) => {
+      const trimmed = sqlCode.trim();
+      const encoded = encodeURIComponent(trimmed);
+      return `
+        <div class="theory-code-block-card">
+          <div class="theory-code-block-header">
+            <div class="code-lang-group">
+              <span class="code-lang-dot"></span>
+              <span class="code-lang-label">SQL</span>
+            </div>
+            <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encoded}')">
+              <span>📋 Copy</span>
+            </button>
+          </div>
+          <pre class="theory-code-snippet"><code>${escapeHtml(trimmed)}</code></pre>
+        </div>
+      `;
+    });
+
+    // 4. Bullet lists
+    html = html.replace(/(?:^|\n)((?:[ \t]*[-*]\s+[^\n]+\n?)+)/g, (match, listBlock) => {
+      const items = listBlock.trim().split('\n').map(line => line.replace(/^[ \t]*[-*]\s+/, '').trim());
+      return `\n<ul class="theory-list">\n${items.map(item => `  <li>${item}</li>`).join('\n')}\n</ul>\n`;
+    });
+
+    // 5. Numbered lists
+    html = html.replace(/(?:^|\n)((?:[ \t]*\d+\.\s+[^\n]+\n?)+)/g, (match, listBlock) => {
+      const items = listBlock.trim().split('\n').map(line => line.replace(/^[ \t]*\d+\.\s+/, '').trim());
+      return `\n<ol class="theory-numbered-list">\n${items.map(item => `  <li>${item}</li>`).join('\n')}\n</ol>\n`;
+    });
+
+    // 6. Inlines: bold, code
     html = html
-      .replace(/```sql([\s\S]*?)```/g, '<pre class="theory-code-snippet">$1</pre>')
-      .replace(/`([^\`]+)`/g, '<code>$1</code>')
-      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/\n\n/g, '</p><p>')
-      .replace(/\n- /g, '<br>&bull; ');
+      .replace(/`([^`]+)`/g, '<code class="theory-inline-code">$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+    // 7. Paragraphs: wrap non-container text
+    const blocks = html.split(/\n\s*\n/);
+    html = blocks.map(block => {
+      const trimmed = block.trim();
+      if (!trimmed) return '';
+      if (trimmed.startsWith('<div') || trimmed.startsWith('<ul') || trimmed.startsWith('<ol') || trimmed.startsWith('<table') || trimmed.startsWith('<pre')) {
+        return trimmed;
+      }
+      return `<p class="theory-p">${trimmed}</p>`;
+    }).filter(Boolean).join('\n\n');
 
     return html;
   }
