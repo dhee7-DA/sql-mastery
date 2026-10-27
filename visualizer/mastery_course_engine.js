@@ -20,8 +20,11 @@ window.MasteryCourseEngine = (function () {
   const state = {
     activePhaseId: 'topic_01_select_from',
     activeStep: 'theory', // 'theory', 'mcqs', 'case', 'problem'
-    problemInput: {}, // key: phaseId => string (user query code)
-    testResults: {}, // key: phaseId => { passed, message, userRows, expRows, userCols, expCols }
+    problemInput: {}, // key: `${phaseId}_${tierId}` => string (user query code)
+    testResults: {}, // key: `${phaseId}_${tierId}` => { passed, message, userRows, expRows, userCols, expCols, diff, latencyMs }
+    runResults: {}, // key: `${phaseId}_${tierId}` => { rows, columns, latencyMs, isRunOnly, timestamp }
+    diffActiveTab: {}, // key: `${phaseId}_${tierId}` => 'diff' | 'user' | 'expected'
+    showSchemaPeek: {}, // key: phaseId => boolean
     activeProblemTier: {}, // key: phaseId => tierId (1, 2, or 3)
     tierCompleted: {}, // key: `${phaseId}_tier_${tierId}` => boolean
     mockInterview: { active: false, phaseId: null, timeLeft: 45, timer: null, text: '', detectedKeywords: [], score: null, seniority: null, feedback: '' },
@@ -84,6 +87,125 @@ window.MasteryCourseEngine = (function () {
       { customer_id: 8, name: 'Bob Jones', city: 'New York' },
       { customer_id: 12, name: 'Charlie Lee', city: 'Tokyo' }
     ]
+  };
+
+  // Comprehensive Relational Schema Map for Peek Inspector
+  const TABLE_SCHEMAS = {
+    Employees: {
+      columns: [
+        { name: 'id', type: 'INTEGER', key: 'PK' },
+        { name: 'first_name', type: 'VARCHAR(50)' },
+        { name: 'department', type: 'VARCHAR(50)' },
+        { name: 'salary', type: 'INTEGER' },
+        { name: 'tenure', type: 'INTEGER (Mos)' },
+        { name: 'bonus', type: 'INTEGER (Nullable)' }
+      ],
+      sampleRows: [
+        { id: 101, first_name: 'Ashley', department: 'Analytics', salary: 115000, tenure: 14, bonus: 5000 },
+        { id: 102, first_name: 'David', department: 'Engineering', salary: 125000, tenure: 36, bonus: 8000 },
+        { id: 103, first_name: 'Julia', department: 'Analytics', salary: 92000, tenure: 8, bonus: 'NULL' }
+      ]
+    },
+    Employee: {
+      columns: [
+        { name: 'employee_id', type: 'INTEGER', key: 'PK' },
+        { name: 'name', type: 'VARCHAR(50)' },
+        { name: 'months', type: 'INTEGER' },
+        { name: 'salary', type: 'INTEGER' }
+      ],
+      sampleRows: [
+        { employee_id: 12228, name: 'Rose', months: 15, salary: 1968 },
+        { employee_id: 33645, name: 'Angela', months: 1, salary: 3443 },
+        { employee_id: 45692, name: 'Frank', months: 17, salary: 1608 }
+      ]
+    },
+    CITY: {
+      columns: [
+        { name: 'ID', type: 'INTEGER', key: 'PK' },
+        { name: 'NAME', type: 'VARCHAR(100)' },
+        { name: 'COUNTRYCODE', type: 'VARCHAR(3)' },
+        { name: 'DISTRICT', type: 'VARCHAR(50)' },
+        { name: 'POPULATION', type: 'INTEGER' }
+      ],
+      sampleRows: [
+        { ID: 1613, NAME: 'Scottsdale', COUNTRYCODE: 'USA', DISTRICT: 'Arizona', POPULATION: 202705 },
+        { ID: 1614, NAME: 'Corona', COUNTRYCODE: 'USA', DISTRICT: 'California', POPULATION: 124966 },
+        { ID: 1661, NAME: 'Concord', COUNTRYCODE: 'USA', DISTRICT: 'California', POPULATION: 121780 }
+      ]
+    },
+    STATION: {
+      columns: [
+        { name: 'ID', type: 'INTEGER', key: 'PK' },
+        { name: 'CITY', type: 'VARCHAR(50)' },
+        { name: 'STATE', type: 'VARCHAR(2)' },
+        { name: 'LAT_N', type: 'NUMERIC(10,4)' },
+        { name: 'LONG_W', type: 'NUMERIC(10,4)' }
+      ],
+      sampleRows: [
+        { ID: 794, CITY: 'Kissee Mills', STATE: 'MO', LAT_N: 139.65, LONG_W: 73.45 },
+        { ID: 824, CITY: 'Loma Mar', STATE: 'CA', LAT_N: 48.71, LONG_W: 130.56 },
+        { ID: 630, CITY: 'Sandy Hook', STATE: 'CT', LAT_N: 72.11, LONG_W: 148.24 }
+      ]
+    },
+    Orders: {
+      columns: [
+        { name: 'order_id', type: 'INTEGER', key: 'PK' },
+        { name: 'customer_id', type: 'INTEGER', key: 'FK' },
+        { name: 'amount', type: 'NUMERIC(10,2)' },
+        { name: 'date', type: 'DATE' }
+      ],
+      sampleRows: [
+        { order_id: 101, customer_id: 5, amount: '$250.00', date: '2024-01-12' },
+        { order_id: 102, customer_id: 8, amount: '$120.00', date: '2024-01-14' },
+        { order_id: 103, customer_id: 9, amount: '$80.00', date: '2024-01-15' }
+      ]
+    },
+    Customers: {
+      columns: [
+        { name: 'customer_id', type: 'INTEGER', key: 'PK' },
+        { name: 'name', type: 'VARCHAR(100)' },
+        { name: 'city', type: 'VARCHAR(50)' }
+      ],
+      sampleRows: [
+        { customer_id: 5, name: 'Alice Smith', city: 'London' },
+        { customer_id: 8, name: 'Bob Jones', city: 'New York' },
+        { customer_id: 12, name: 'Charlie Lee', city: 'Tokyo' }
+      ]
+    },
+    TRIANGLES: {
+      columns: [
+        { name: 'A', type: 'INTEGER' },
+        { name: 'B', type: 'INTEGER' },
+        { name: 'C', type: 'INTEGER' }
+      ],
+      sampleRows: [
+        { A: 20, B: 20, C: 23 },
+        { A: 20, B: 20, C: 20 },
+        { A: 13, B: 14, C: 30 }
+      ]
+    },
+    Hackers: {
+      columns: [
+        { name: 'hacker_id', type: 'INTEGER', key: 'PK' },
+        { name: 'name', type: 'VARCHAR(50)' }
+      ],
+      sampleRows: [
+        { hacker_id: 5580, name: 'Rose' },
+        { hacker_id: 8439, name: 'Angela' },
+        { hacker_id: 27205, name: 'Frank' }
+      ]
+    },
+    Functions: {
+      columns: [
+        { name: 'X', type: 'INTEGER' },
+        { name: 'Y', type: 'INTEGER' }
+      ],
+      sampleRows: [
+        { X: 20, Y: 20 },
+        { X: 20, Y: 21 },
+        { X: 21, Y: 20 }
+      ]
+    }
   };
 
   // ===========================================================================
@@ -2677,6 +2799,272 @@ FROM Employees;`,
   // ===========================================================================
   // STAGE 4: QUERY PROBLEM & STUDIO SOLVER
   // ===========================================================================
+  // ===========================================================================
+  // RELATIONAL DIFF & QUERY CONSOLE ENGINE
+  // ===========================================================================
+  function computeRelationalDiff(userRows, expRows, userCols, expCols) {
+    const normVal = (v) => {
+      if (v === null || v === undefined) return 'NULL';
+      if (typeof v === 'number') return String(Math.round(v * 10000) / 10000);
+      return String(v).trim();
+    };
+
+    const getRowFingerprint = (row, cols) => {
+      return (cols || []).map(c => normVal(row[c])).join('|||');
+    };
+
+    const allCols = Array.from(new Set([...(expCols || []), ...(userCols || [])]));
+    const expMap = new Map();
+    (expRows || []).forEach(r => {
+      const fp = getRowFingerprint(r, expCols);
+      expMap.set(fp, (expMap.get(fp) || 0) + 1);
+    });
+
+    const diffRows = [];
+    let matchCount = 0;
+    let extraCount = 0;
+
+    (userRows || []).forEach(uRow => {
+      const fp = getRowFingerprint(uRow, expCols);
+      if (expMap.has(fp) && expMap.get(fp) > 0) {
+        expMap.set(fp, expMap.get(fp) - 1);
+        matchCount++;
+        diffRows.push({
+          status: 'match',
+          badge: '✓ MATCH',
+          row: uRow
+        });
+      } else {
+        extraCount++;
+        diffRows.push({
+          status: 'extra',
+          badge: '+ EXTRA',
+          row: uRow
+        });
+      }
+    });
+
+    let missingCount = 0;
+    (expRows || []).forEach(eRow => {
+      const fp = getRowFingerprint(eRow, expCols);
+      if (expMap.has(fp) && expMap.get(fp) > 0) {
+        expMap.set(fp, expMap.get(fp) - 1);
+        missingCount++;
+        diffRows.push({
+          status: 'missing',
+          badge: '- MISSING',
+          row: eRow
+        });
+      }
+    });
+
+    return {
+      diffRows,
+      matchCount,
+      extraCount,
+      missingCount,
+      totalExpected: (expRows || []).length,
+      totalUser: (userRows || []).length,
+      allCols,
+      isPerfectMatch: extraCount === 0 && missingCount === 0 && (userRows || []).length === (expRows || []).length
+    };
+  }
+
+  function renderSchemaPeek(targetTable) {
+    const schema = TABLE_SCHEMAS[targetTable] || TABLE_SCHEMAS.Employees;
+    const cols = schema.columns || [];
+    const samples = schema.sampleRows || [];
+
+    return `
+      <div class="schema-peek-card">
+        <div class="schema-peek-top">
+          <div class="schema-peek-title">
+            <span>🗄️ Table Schema: <code>${escapeHtml(targetTable)}</code></span>
+            <span class="schema-count-badge">${cols.length} Columns</span>
+          </div>
+          <span class="schema-hint-text">Inspect columns &amp; sample values to construct accurate queries</span>
+        </div>
+
+        <div class="schema-col-grid">
+          ${cols.map(c => `
+            <div class="schema-col-chip">
+              <span class="col-name">${escapeHtml(c.name)}</span>
+              <span class="col-type">${escapeHtml(c.type)}</span>
+              ${c.key ? `<span class="col-key">${escapeHtml(c.key)}</span>` : ''}
+            </div>
+          `).join('')}
+        </div>
+
+        ${samples.length > 0 ? `
+          <div class="schema-sample-table-wrap">
+            <div class="sample-title">Sample Tuples (${samples.length} rows):</div>
+            <table class="schema-sample-table">
+              <thead>
+                <tr>${cols.map(c => `<th>${escapeHtml(c.name)}</th>`).join('')}</tr>
+              </thead>
+              <tbody>
+                ${samples.map(r => `
+                  <tr>${cols.map(c => `<td>${escapeHtml(String(r[c.name] !== undefined ? r[c.name] : ''))}</td>`).join('')}</tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  function renderQueryConsole(phase, prob, key) {
+    const verdict = state.testResults[key];
+    const runOnly = state.runResults[key];
+
+    if (!verdict && !runOnly) return '';
+
+    const activeTab = state.diffActiveTab[key] || (verdict ? 'diff' : 'user');
+    const isVerdict = !!verdict;
+    const isPassed = verdict ? verdict.passed : null;
+    const latency = ((verdict ? verdict.latencyMs : runOnly.latencyMs) || 0.8).toFixed(1);
+
+    // Handle Syntax / Execution Error
+    if ((verdict && verdict.error) || (runOnly && runOnly.error)) {
+      const errMsg = verdict ? verdict.error : runOnly.error;
+      return `
+        <div class="test-verdict-card failed">
+          <div class="verdict-status-row">
+            <span class="diff-status-pill badge-extra">⚠️ Execution Error</span>
+            <span class="metric-pill latency">⚡ ${latency}ms</span>
+          </div>
+          <div class="verdict-details">${escapeHtml(errMsg)}</div>
+        </div>
+      `;
+    }
+
+    const uRows = (verdict ? verdict.userRows : runOnly.rows) || [];
+    const uCols = (verdict ? verdict.userCols : runOnly.columns) || [];
+    const eRows = (verdict ? verdict.expRows : []) || [];
+    const eCols = (verdict ? verdict.expCols : []) || [];
+    const diff = (verdict && verdict.diff) ? verdict.diff : { diffRows: uRows.map(r => ({ status: 'match', badge: '✓ MATCH', row: r })), matchCount: uRows.length, extraCount: 0, missingCount: 0, totalExpected: uRows.length, isPerfectMatch: true };
+
+    const tabButtons = `
+      <div class="console-tab-group">
+        ${isVerdict ? `
+          <button class="console-tab-btn ${activeTab === 'diff' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiffTab('${key}', 'diff')">
+            <span>📊 Visual Diff</span>
+            <span class="console-tab-pill ${diff.isPerfectMatch ? 'pill-pass' : 'pill-fail'}">${diff.matchCount}/${diff.totalExpected}</span>
+          </button>
+        ` : ''}
+        <button class="console-tab-btn ${activeTab === 'user' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiffTab('${key}', 'user')">
+          <span>👤 Your Output</span>
+          <span class="console-tab-pill">${uRows.length} rows</span>
+        </button>
+        ${isVerdict ? `
+          <button class="console-tab-btn ${activeTab === 'expected' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiffTab('${key}', 'expected')">
+            <span>🎯 Expected Output</span>
+            <span class="console-tab-pill">${eRows.length} rows</span>
+          </button>
+        ` : ''}
+      </div>
+    `;
+
+    let statusBadge = '';
+    if (isVerdict) {
+      if (isPassed) {
+        statusBadge = '<span class="status-chip chip-passed">🎉 Accepted</span>';
+      } else {
+        statusBadge = '<span class="status-chip chip-failed">❌ Mismatch</span>';
+      }
+    } else {
+      statusBadge = '<span class="status-chip chip-run">⚡ Executed</span>';
+    }
+
+    const metricsHud = `
+      <div class="console-metrics-hud">
+        ${statusBadge}
+        <span class="metric-pill latency" title="Execution Latency">⚡ ${latency}ms</span>
+        <span class="metric-pill" title="Row Count">📄 ${uRows.length} rows</span>
+        <span class="metric-pill" title="Columns">📐 ${uCols.length} cols</span>
+      </div>
+    `;
+
+    let tableContent = '';
+    if (activeTab === 'diff' && isVerdict) {
+      const allCols = Array.from(new Set([...eCols, ...uCols]));
+      tableContent = `
+        <div class="course-sim-table-wrap studio-diff-table-wrap">
+          <table class="course-sim-data-table diff-grid-table">
+            <thead>
+              <tr>
+                <th style="width: 100px;">STATUS</th>
+                ${allCols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${diff.diffRows.map(dr => {
+                const rowClass = dr.status === 'match' ? 'diff-row-match' : (dr.status === 'extra' ? 'diff-row-extra' : 'diff-row-missing');
+                const badgeClass = dr.status === 'match' ? 'badge-match' : (dr.status === 'extra' ? 'badge-extra' : 'badge-missing');
+                return `
+                  <tr class="${rowClass}">
+                    <td><span class="diff-status-pill ${badgeClass}">${dr.badge}</span></td>
+                    ${allCols.map(c => `<td>${escapeHtml(String(dr.row[c] !== undefined ? dr.row[c] : 'NULL'))}</td>`).join('')}
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } else if (activeTab === 'expected' && isVerdict) {
+      tableContent = `
+        <div class="course-sim-table-wrap studio-diff-table-wrap">
+          <table class="course-sim-data-table">
+            <thead>
+              <tr>${eCols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr>
+            </thead>
+            <tbody>
+              ${eRows.map(r => `
+                <tr class="diff-row-match">
+                  ${eCols.map(c => `<td>${escapeHtml(String(r[c] !== undefined ? r[c] : 'NULL'))}</td>`).join('')}
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } else {
+      if (uRows.length === 0) {
+        tableContent = '<div style="padding: 18px; text-align: center; color: var(--text-muted); font-size: 12px;">Query returned 0 rows (empty result set).</div>';
+      } else {
+        tableContent = `
+          <div class="course-sim-table-wrap studio-diff-table-wrap">
+            <table class="course-sim-data-table">
+              <thead>
+                <tr>${uCols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr>
+              </thead>
+              <tbody>
+                ${uRows.map(r => `
+                  <tr>
+                    ${uCols.map(c => `<td>${escapeHtml(String(r[c] !== undefined ? r[c] : 'NULL'))}</td>`).join('')}
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+    }
+
+    return `
+      <div class="query-console-wrap ${isVerdict ? (isPassed ? 'passed' : 'failed') : 'executed'}">
+        <div class="console-top-strip">
+          ${tabButtons}
+          ${metricsHud}
+        </div>
+        ${isVerdict ? `<div class="verdict-details" style="padding: 10px 14px 4px 14px; margin: 0;">${escapeHtml(verdict.message)}</div>` : ''}
+        ${tableContent}
+      </div>
+    `;
+  }
+
   function renderProblemStage(phase) {
     const problems = phase.problems || (phase.problem ? [phase.problem] : []);
     if (!problems.length) return '<div style="padding: 24px;">No problems defined for this topic.</div>';
@@ -2687,77 +3075,6 @@ FROM Employees;`,
     const isShowingSol = state.showSolution[`${phase.id}_${prob.tierId}`];
     const userCodeKey = `${phase.id}_${prob.tierId}`;
     const userCode = state.problemInput[userCodeKey] !== undefined ? state.problemInput[userCodeKey] : prob.starterSql;
-    const testVerdict = state.testResults[userCodeKey];
-
-    let verdictHtml = '';
-    if (testVerdict) {
-      if (testVerdict.passed) {
-        const rows = testVerdict.userRows || [];
-        const cols = testVerdict.userCols || Object.keys(rows[0] || {});
-        verdictHtml = `
-          <div class="test-verdict-card passed">
-            <div class="verdict-status-row">
-              <span>🎉 Accepted! (All ${rows.length} rows matched expected output)</span>
-            </div>
-            <div class="verdict-details">${escapeHtml(testVerdict.message)}</div>
-            <div class="course-sim-table-wrap" style="max-height: 220px; overflow-y: auto;">
-              <table class="course-sim-data-table">
-                <thead><tr>${cols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
-                <tbody>
-                  ${rows.map(r => `
-                    <tr class="highlight-match">
-                      ${cols.map(c => `<td>${escapeHtml(String(r[c] !== undefined ? r[c] : ''))}</td>`).join('')}
-                    </tr>
-                  `).join('')}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        `;
-      } else {
-        const uRows = testVerdict.userRows || [];
-        const eRows = testVerdict.expRows || [];
-        const uCols = testVerdict.userCols || Object.keys(uRows[0] || {});
-        const eCols = testVerdict.expCols || Object.keys(eRows[0] || {});
-
-        verdictHtml = `
-          <div class="test-verdict-card failed">
-            <div class="verdict-status-row">
-              <span>❌ Output Mismatch</span>
-            </div>
-            <div class="verdict-details">${escapeHtml(testVerdict.message)}</div>
-            <div class="test-diff-grid">
-              <div class="diff-table-card">
-                <div class="diff-table-title">Your Query Output (${uRows.length} rows)</div>
-                <div class="course-sim-table-wrap" style="max-height: 180px; overflow-y: auto;">
-                  <table class="course-sim-data-table">
-                    <thead><tr>${uCols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
-                    <tbody>
-                      ${uRows.slice(0, 5).map(r => `
-                        <tr>${uCols.map(c => `<td>${escapeHtml(String(r[c] !== undefined ? r[c] : ''))}</td>`).join('')}</tr>
-                      `).join('')}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="diff-table-card">
-                <div class="diff-table-title">Expected Solution Output (${eRows.length} rows)</div>
-                <div class="course-sim-table-wrap" style="max-height: 180px; overflow-y: auto;">
-                  <table class="course-sim-data-table">
-                    <thead><tr>${eCols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
-                    <tbody>
-                      ${eRows.slice(0, 5).map(r => `
-                        <tr class="highlight-match">${eCols.map(c => `<td>${escapeHtml(String(r[c] !== undefined ? r[c] : ''))}</td>`).join('')}</tr>
-                      `).join('')}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-    }
 
     return `
       <div class="stage-problems-container">
@@ -2790,29 +3107,42 @@ FROM Employees;`,
           <div class="problem-runner-wrap">
             <div class="problem-runner-header">
               <div class="problem-runner-title">
-                <span>⚡ Interactive Query Verifier (Target Table: <code>${prob.targetTable}</code>)</span>
+                <span>⚡ Interactive Query Studio (Target Table: <code>${escapeHtml(prob.targetTable)}</code>)</span>
               </div>
-              <span class="course-pill-tag">In-Memory SQL Engine</span>
+              <div class="problem-runner-meta">
+                <span class="editor-shortcut-hint">Ctrl + Enter to Run &amp; Verify</span>
+                <span class="course-pill-tag">In-Memory SQL Engine</span>
+              </div>
             </div>
 
-            <textarea id="courseProblemEditor" class="course-code-editor" spellcheck="false" placeholder="Write your SQL solution here..." oninput="window.MasteryCourseEngine.updateProblemInput('${userCodeKey}', this.value)">${escapeHtml(userCode)}</textarea>
+            <!-- Optional Schema Peek Drawer -->
+            ${state.showSchemaPeek[phase.id] ? renderSchemaPeek(prob.targetTable) : ''}
+
+            <textarea id="courseProblemEditor" class="course-code-editor" spellcheck="false" placeholder="Write your SQL solution here... (Ctrl+Enter to Run &amp; Verify)" oninput="window.MasteryCourseEngine.updateProblemInput('${userCodeKey}', this.value)">${escapeHtml(userCode)}</textarea>
 
             <div class="problem-action-strip">
               <button class="btn-verify-query" onclick="window.MasteryCourseEngine.verifyProblemSolution('${phase.id}', ${prob.tierId})">
-                <span>▶ Run &amp; Verify Solution</span>
+                <span>▶ Run &amp; Verify (Ctrl+Enter)</span>
+              </button>
+              <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.runProblemQuery('${phase.id}', ${prob.tierId})">
+                <span>⚡ Run Only</span>
+              </button>
+              <button class="phase-nav-btn ${state.showSchemaPeek[phase.id] ? 'active' : ''}" onclick="window.MasteryCourseEngine.toggleSchemaPeek('${phase.id}')">
+                <span>📋 Schema: ${escapeHtml(prob.targetTable)}</span>
               </button>
               <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.solveInStudio(encodeURIComponent(document.getElementById('courseProblemEditor') ? document.getElementById('courseProblemEditor').value : '${encodeURIComponent(prob.starterSql)}'), '${prob.targetTable}')">
-                <span>⚡ Open in Full Studio</span>
+                <span>⚡ Open Studio</span>
               </button>
               <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.toggleTierSolution('${phase.id}', ${prob.tierId})">
-                <span>${isShowingSol ? 'Hide Expected Solution' : '👁️ View Solution'}</span>
+                <span>${isShowingSol ? 'Hide Solution' : '👁️ Solution'}</span>
               </button>
               <button class="phase-nav-btn" style="margin-left: auto;" onclick="window.MasteryCourseEngine.resetProblemCode('${phase.id}', ${prob.tierId})">
-                <span>🔄 Reset Starter</span>
+                <span>🔄 Reset</span>
               </button>
             </div>
 
-            ${verdictHtml}
+            <!-- Elevated Visual Output Diff Grid & Console -->
+            ${renderQueryConsole(phase, prob, userCodeKey)}
           </div>
 
           ${isShowingSol ? `
@@ -2856,6 +3186,36 @@ FROM Employees;`,
         }
       });
     });
+
+    // Editor Keydown Shortcuts: Ctrl+Enter, Tab indent
+    const editor = container.querySelector('#courseProblemEditor');
+    if (editor) {
+      editor.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          e.preventDefault();
+          const activeTierId = state.activeProblemTier[state.activePhaseId] || 1;
+          verifyProblemSolution(state.activePhaseId, activeTierId);
+          return;
+        }
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const start = editor.selectionStart;
+          const end = editor.selectionEnd;
+          const val = editor.value;
+          if (!e.shiftKey) {
+            editor.value = val.substring(0, start) + '  ' + val.substring(end);
+            editor.selectionStart = editor.selectionEnd = start + 2;
+          } else {
+            if (start >= 2 && val.substring(start - 2, start) === '  ') {
+              editor.value = val.substring(0, start - 2) + val.substring(end);
+              editor.selectionStart = editor.selectionEnd = start - 2;
+            }
+          }
+          const userCodeKey = `${state.activePhaseId}_${state.activeProblemTier[state.activePhaseId] || 1}`;
+          state.problemInput[userCodeKey] = editor.value;
+        }
+      });
+    }
 
     // Prev / Next Navigation Buttons
     const btnPrev = container.querySelector('#btnPrevPhase');
@@ -3220,6 +3580,41 @@ FROM Employees;`,
     }
   }
 
+  function runProblemQuery(phaseId, tierId) {
+    const phase = getPhase(phaseId);
+    const problems = phase.problems || (phase.problem ? [phase.problem] : []);
+    const currentTierId = tierId || state.activeProblemTier[phaseId] || 1;
+    const prob = problems.find(p => p.tierId === currentTierId) || problems[0];
+
+    const key = `${phaseId}_${currentTierId}`;
+    const editor = document.getElementById('courseProblemEditor');
+    const userSql = editor ? editor.value.trim() : (state.problemInput[key] || prob.starterSql);
+    state.problemInput[key] = userSql;
+
+    const userRes = executeQuerySafe(userSql, prob.targetTable);
+
+    state.runResults[key] = {
+      isRunOnly: true,
+      error: userRes.error,
+      rows: userRes.rows || [],
+      columns: userRes.columns || ((userRes.rows && userRes.rows[0]) ? Object.keys(userRes.rows[0]) : []),
+      latencyMs: userRes.latencyMs || 0.8,
+      timestamp: Date.now()
+    };
+    state.diffActiveTab[key] = 'user';
+    init();
+  }
+
+  function setDiffTab(key, tab) {
+    state.diffActiveTab[key] = tab;
+    init();
+  }
+
+  function toggleSchemaPeek(phaseId) {
+    state.showSchemaPeek[phaseId] = !state.showSchemaPeek[phaseId];
+    init();
+  }
+
   function verifyProblemSolution(phaseId, tierId) {
     const phase = getPhase(phaseId);
     const problems = phase.problems || (phase.problem ? [phase.problem] : []);
@@ -3240,32 +3635,44 @@ FROM Employees;`,
       state.testResults[key] = {
         passed: false,
         error: userRes.error,
-        message: 'SQL Syntax / Execution Error: ' + userRes.error
+        latencyMs: userRes.latencyMs || 0.5,
+        message: 'SQL Execution Error: ' + userRes.error
       };
       init();
       return;
     }
 
-    const userRows = userRes.rows || [];
-    const expRows = expRes.rows || [];
-    const userCols = userRes.columns || [];
-    const expCols = expRes.columns || [];
+    const uRows = userRes.rows || [];
+    const eRows = expRes.rows || [];
+    const uCols = userRes.columns || ((uRows && uRows[0]) ? Object.keys(uRows[0]) : []);
+    const eCols = expRes.columns || ((eRows && eRows[0]) ? Object.keys(eRows[0]) : []);
 
-    const rowCountMatch = userRows.length === expRows.length;
-    const norm = (arr) => arr.map(r => Object.values(r).join('|')).sort();
-    const contentMatch = JSON.stringify(norm(userRows)) === JSON.stringify(norm(expRows));
+    const diff = computeRelationalDiff(uRows, eRows, uCols, eCols);
+    const passed = diff.isPerfectMatch;
 
-    if (rowCountMatch && (contentMatch || userRows.length === 0)) {
-      state.testResults[key] = {
-        passed: true,
-        userRows,
-        expRows,
-        userCols,
-        expCols,
-        message: `Accepted! All ${userRows.length} rows matched expected relational output perfectly.`
-      };
+    let message = '';
+    if (passed) {
+      message = `Accepted! All ${uRows.length} tuples and ${uCols.length} columns matched expected output perfectly.`;
+    } else if (uRows.length !== eRows.length) {
+      message = `Row count mismatch: Returned ${uRows.length} rows, but expected solution produces ${eRows.length} rows (${diff.matchCount} matched, ${diff.extraCount} extra, ${diff.missingCount} missing).`;
+    } else {
+      message = `Content mismatch: Returned ${uRows.length} rows, but row values or column projections differ from expected output.`;
+    }
 
-      // Mark this tier completed
+    state.testResults[key] = {
+      passed,
+      message,
+      userRows: uRows,
+      expRows: eRows,
+      userCols: uCols,
+      expCols: eCols,
+      latencyMs: userRes.latencyMs || 0.9,
+      diff
+    };
+
+    state.diffActiveTab[key] = 'diff';
+
+    if (passed) {
       state.tierCompleted[`${phaseId}_tier_${currentTierId}`] = true;
       try {
         if (typeof localStorage !== 'undefined') {
@@ -3273,7 +3680,6 @@ FROM Employees;`,
         }
       } catch (e) {}
 
-      // Check if all tiers for this topic are solved
       const allTiersDone = problems.every(p => state.tierCompleted[`${phaseId}_tier_${p.tierId}`]);
       if (allTiersDone) {
         state.completedPhases.add(phaseId);
@@ -3288,19 +3694,6 @@ FROM Employees;`,
       if (window.soundFX && typeof window.soundFX.playPop === 'function') {
         window.soundFX.playPop();
       }
-    } else {
-      let mismatchMsg = `Row count mismatch: Your query returned ${userRows.length} rows, but expected solution returned ${expRows.length} rows.`;
-      if (rowCountMatch && !contentMatch) {
-        mismatchMsg = `Content mismatch: Returned ${userRows.length} rows, but row values or projected columns differ from expected solution.`;
-      }
-      state.testResults[key] = {
-        passed: false,
-        userRows,
-        expRows,
-        userCols,
-        expCols,
-        message: mismatchMsg
-      };
     }
 
     init();
@@ -3686,12 +4079,15 @@ Certified in high-speed verbal architecture defense across:
   }
 
   function executeQuerySafe(sql, targetTable) {
+    const t0 = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
     try {
       if (typeof window.parseAndBuildPipeline === 'function') {
         window.parseAndBuildPipeline(sql);
         const steps = window.EngineState && (window.EngineState.steps || window.EngineState.pipelineSteps);
         if (steps && steps.length > 0) {
           const lastStep = steps[steps.length - 1];
+          const t1 = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+          const latencyMs = Math.max(0.1, Math.round((t1 - t0) * 100) / 100);
           return {
             columns: lastStep.columns || Object.keys((lastStep.rows && lastStep.rows[0]) || {}),
             rows: (lastStep.rows || []).map(r => {
@@ -3699,81 +4095,19 @@ Certified in high-speed verbal architecture defense across:
               delete cleanRow._passed;
               delete cleanRow._reason;
               return cleanRow;
-            })
+            }),
+            latencyMs
           };
         }
       }
-      return { columns: ['result'], rows: [{ result: 'Executed' }] };
+      const t1 = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+      const latencyMs = Math.max(0.1, Math.round((t1 - t0) * 100) / 100);
+      return { columns: ['result'], rows: [{ result: 'Executed' }], latencyMs };
     } catch (err) {
-      return { error: err.message || 'Execution error' };
+      const t1 = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+      const latencyMs = Math.max(0.1, Math.round((t1 - t0) * 100) / 100);
+      return { error: err.message || 'Execution error', latencyMs };
     }
-  }
-
-  function verifyProblemSolution(phaseId) {
-    const phase = getPhase(phaseId);
-    const prob = phase.problem;
-    const editor = document.getElementById('courseProblemEditor');
-    const userSql = editor ? editor.value.trim() : (state.problemInput[phaseId] || prob.starterSql);
-    state.problemInput[phaseId] = userSql;
-
-    const expectedSql = prob.expectedSolutionSql || prob.starterSql;
-
-    const userRes = executeQuerySafe(userSql, prob.targetTable);
-    const expRes = executeQuerySafe(expectedSql, prob.targetTable);
-
-    if (userRes.error) {
-      state.testResults[phaseId] = {
-        passed: false,
-        error: userRes.error,
-        message: 'SQL Syntax / Execution Error: ' + userRes.error
-      };
-      init();
-      return;
-    }
-
-    const userRows = userRes.rows || [];
-    const expRows = expRes.rows || [];
-    const userCols = userRes.columns || [];
-    const expCols = expRes.columns || [];
-
-    const rowCountMatch = userRows.length === expRows.length;
-    const norm = (arr) => arr.map(r => Object.values(r).join('|')).sort();
-    const contentMatch = JSON.stringify(norm(userRows)) === JSON.stringify(norm(expRows));
-
-    if (rowCountMatch && (contentMatch || userRows.length === 0)) {
-      state.testResults[phaseId] = {
-        passed: true,
-        userRows,
-        expRows,
-        userCols,
-        expCols,
-        message: `Accepted! All ${userRows.length} rows matched expected relational output perfectly.`
-      };
-      state.completedPhases.add(phaseId);
-      try {
-        if (typeof localStorage !== 'undefined') {
-          localStorage.setItem('sql_foundry_learning_order_v1', JSON.stringify(Array.from(state.completedPhases)));
-        }
-      } catch (e) {}
-      if (window.soundFX && typeof window.soundFX.playPop === 'function') {
-        window.soundFX.playPop();
-      }
-    } else {
-      let mismatchMsg = `Row count mismatch: Your query returned ${userRows.length} rows, but expected solution returned ${expRows.length} rows.`;
-      if (rowCountMatch && !contentMatch) {
-        mismatchMsg = `Content mismatch: Returned ${userRows.length} rows, but row values or projected columns differ from expected solution.`;
-      }
-      state.testResults[phaseId] = {
-        passed: false,
-        userRows,
-        expRows,
-        userCols,
-        expCols,
-        message: mismatchMsg
-      };
-    }
-
-    init();
   }
 
   return {
@@ -3790,7 +4124,10 @@ Certified in high-speed verbal architecture defense across:
     solveInStudio,
     updateProblemInput,
     resetProblemCode,
+    runProblemQuery,
     verifyProblemSolution,
+    setDiffTab,
+    toggleSchemaPeek,
     setProblemTier,
     toggleTierSolution,
     openMockInterview,

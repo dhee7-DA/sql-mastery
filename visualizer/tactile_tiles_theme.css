@@ -817,3 +817,44 @@
   color: #ffffff !important;
   box-shadow: 0 2px 8px -1px rgba(255, 42, 81, 0.3) !important;
 }
+
+/* =============================================================================
+   10. INLINE QUERY STUDIO CONSOLE TACTILE TILES
+   ============================================================================= */
+.console-tab-btn {
+  border-radius: var(--tile-radius-btn, 8px) !important;
+  transition: transform 140ms ease, background-color 140ms ease, color 140ms ease, box-shadow 140ms ease !important;
+}
+
+.console-tab-btn:hover {
+  transform: translateY(-1px) !important;
+}
+
+.console-tab-btn:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+.console-tab-pill,
+.status-chip,
+.diff-status-pill,
+.schema-count-badge {
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+}
+
+.schema-col-chip {
+  border-radius: var(--tile-radius-inner, 8px) !important;
+  transition: transform 120ms ease, box-shadow 120ms ease !important;
+}
+
+.schema-col-chip:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+}
+
+.query-console-wrap {
+  border-radius: var(--tile-radius-card, 12px) !important;
+}
+
+.schema-peek-card {
+  border-radius: var(--tile-radius-inner, 10px) !important;
+}
