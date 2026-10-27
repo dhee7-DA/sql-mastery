@@ -14,27 +14,36 @@ interface TopicRailProps {
 
 export function TopicRail({ topics, activeTopicId, onSelectTopic, completedTopics }: TopicRailProps) {
   return (
-    <div className="relative w-full rounded-xl border border-border/80 bg-muted-surface p-1.5 shadow-panel">
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+    <div className="relative w-full rounded-xl border border-border/80 bg-muted-surface p-1 shadow-panel">
+      <div className="flex items-center gap-1 overflow-x-auto pb-0.5 sm:pb-0 scrollbar-none">
         {topics.map((topic) => {
           const isActive = topic.id === activeTopicId;
           const isDone = completedTopics.has(topic.id);
 
           return (
-            <button
+            <motion.button
               key={topic.id}
+              whileTap={{ scale: 0.98 }}
               onClick={() => onSelectTopic(topic.id)}
-              className={`group relative flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+              className={`relative flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors duration-150 cursor-pointer ${
                 isActive
-                  ? 'bg-surface text-foreground font-bold shadow-xs border border-border/90'
+                  ? 'text-foreground font-semibold'
                   : isDone
                   ? 'text-emerald-700 hover:text-emerald-800'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
+              {isActive && (
+                <motion.div
+                  layoutId="activeTopicRailPill"
+                  className="absolute inset-0 rounded-lg bg-surface border border-border shadow-xs"
+                  transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                />
+              )}
+
               {/* Sequence badge */}
               <span
-                className={`flex size-4.5 items-center justify-center rounded text-[10px] font-mono font-bold ${
+                className={`relative z-10 flex size-4 items-center justify-center rounded text-[9px] font-mono font-bold ${
                   isActive
                     ? 'bg-foreground text-background'
                     : isDone
@@ -45,8 +54,8 @@ export function TopicRail({ topics, activeTopicId, onSelectTopic, completedTopic
                 {isDone ? <Check className="size-2.5 stroke-[3]" /> : topic.seq}
               </span>
 
-              <span className="font-sans">{topic.shortName || topic.title}</span>
-            </button>
+              <span className="relative z-10 font-sans text-xs">{topic.shortName || topic.title}</span>
+            </motion.button>
           );
         })}
       </div>

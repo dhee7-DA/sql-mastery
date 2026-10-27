@@ -24,6 +24,7 @@ const config: Config = {
       },
       boxShadow: {
         panel: 'var(--theme-shadow-panel)',
+        'panel-hover': '0px 0px 0px 1px #fff, 0px 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 6px 16px -2px rgba(0, 0, 0, 0.06)',
         xs: '0 1px 2px 0 rgba(0, 0, 0, 0.04)',
       },
       maxWidth: {

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ArrowUpRight, Award, CheckCircle2 } from 'lucide-react';
-import { TOPIC_PHASES, TopicPhase } from '@/data/masteryCourseData';
+import { motion, AnimatePresence } from 'framer-motion';
+import { TOPIC_PHASES } from '@/data/masteryCourseData';
 import { TopicRail } from '@/components/course/TopicRail';
 import { ActiveTopicHero } from '@/components/course/ActiveTopicHero';
 import { BentoTheoryStage } from '@/components/course/BentoTheoryStage';
@@ -32,10 +32,10 @@ export function KobbeSectionCurriculum() {
   };
 
   return (
-    <section id="section-curriculum" className="py-20 border-t border-border/60">
-      <div className="mx-auto grid w-full max-w-320 grid-cols-1 gap-x-8 px-4 sm:px-8 lg:grid-cols-12 *:col-span-full gap-y-12">
+    <section id="section-curriculum" className="py-14 sm:py-18 border-t border-border/60">
+      <div className="mx-auto grid w-full max-w-320 grid-cols-1 gap-x-8 px-4 sm:px-8 lg:grid-cols-12 *:col-span-full gap-y-8">
         {/* Left Column (Kobbe 4-col descriptor) */}
-        <p className="text-sm text-muted-foreground max-w-64 leading-normal text-pretty lg:col-span-4 lg:mt-2">
+        <p className="text-xs sm:text-sm text-muted-foreground max-w-64 leading-normal text-pretty lg:col-span-4 lg:mt-1.5">
           <span className="text-foreground font-medium block mb-1">
             Complete Curriculum,
           </span>
@@ -43,19 +43,19 @@ export function KobbeSectionCurriculum() {
         </p>
 
         {/* Right Column (Kobbe 8-col headline and description) */}
-        <div className="flex min-w-0 flex-col gap-6 lg:col-span-8">
+        <div className="flex min-w-0 flex-col gap-4 lg:col-span-8">
           <div className="flex flex-col gap-2">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-medium tracking-tight leading-tight text-pretty text-foreground">
+            <h2 className="text-2xl sm:text-3xl font-medium tracking-tight leading-tight text-pretty text-foreground">
               Everything you need for SQL mastery, plus the parts others charge extra for
             </h2>
-            <p className="text-base text-muted-foreground max-w-lg leading-relaxed text-pretty">
+            <p className="text-xs sm:text-sm text-muted-foreground max-w-lg leading-relaxed text-pretty">
               Every phase includes an everyday metaphor, deep technical chapter, high-yield traps with corporate impact, FAANG spoken interview defense script, interactive quiz, real incident case study, and a 3-tier coding studio.
             </p>
           </div>
         </div>
 
         {/* Full-width Curriculum Workspace Container */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
           {/* Topic Rail */}
           <TopicRail
             topics={TOPIC_PHASES}
@@ -73,28 +73,38 @@ export function KobbeSectionCurriculum() {
             totalTopics={TOPIC_PHASES.length}
           />
 
-          {/* Active Step Workspace */}
-          <div className="rounded-xl border border-border/80 bg-muted-surface p-4 sm:p-7 shadow-panel">
-            {activeStep === 'theory' && <BentoTheoryStage topic={activeTopic} />}
-            {activeStep === 'quiz' && (
-              <StepQuiz
-                mcqs={activeTopic.mcqs}
-                topicName={activeTopic.title}
-                onComplete={() => handleToggleComplete()}
-              />
-            )}
-            {activeStep === 'case' && (
-              <StepCase
-                caseStudy={activeTopic.caseStudy}
-                onOpenStudio={() => setActiveStep('studio')}
-              />
-            )}
-            {activeStep === 'studio' && (
-              <StepStudio
-                topic={activeTopic}
-                onCompleteTier={() => handleToggleComplete()}
-              />
-            )}
+          {/* Active Step Workspace with Smooth Cross-fade Animation */}
+          <div className="rounded-xl border border-border/80 bg-muted-surface p-3.5 sm:p-5 shadow-panel overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`${activeTopicId}-${activeStep}`}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {activeStep === 'theory' && <BentoTheoryStage topic={activeTopic} />}
+                {activeStep === 'quiz' && (
+                  <StepQuiz
+                    mcqs={activeTopic.mcqs}
+                    topicName={activeTopic.title}
+                    onComplete={() => handleToggleComplete()}
+                  />
+                )}
+                {activeStep === 'case' && (
+                  <StepCase
+                    caseStudy={activeTopic.caseStudy}
+                    onOpenStudio={() => setActiveStep('studio')}
+                  />
+                )}
+                {activeStep === 'studio' && (
+                  <StepStudio
+                    topic={activeTopic}
+                    onCompleteTier={() => handleToggleComplete()}
+                  />
+                )}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>

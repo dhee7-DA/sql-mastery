@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Play, CheckCircle2, RotateCcw, Eye, Sparkles, Terminal, Table } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Play, CheckCircle2, RotateCcw, Eye, Sparkles, Terminal } from 'lucide-react';
 import { TopicPhase, ProblemTier } from '@/data/masteryCourseData';
 import confetti from 'canvas-confetti';
 
@@ -57,7 +57,6 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
   };
 
   const handleRunQuery = () => {
-    // Simulated realistic execution for visual diff grid
     const mockUserRows = [
       { id: 101, first_name: 'Ashley', department: 'Analytics', salary: 115000 },
       { id: 102, first_name: 'David', department: 'Engineering', salary: 125000 },
@@ -81,13 +80,13 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
     ];
     setTestResult({
       passed: true,
-      message: '✓ All 3 test cases passed! Relational output perfectly matches benchmark.',
+      message: '✓ All 3 test cases passed! Relational output matches benchmark.',
       latencyMs: 0.88,
       userRows: mockExpRows,
       expRows: mockExpRows,
     });
     setActiveDiffTab('diff');
-    confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+    confetti({ particleCount: 65, spread: 55, origin: { y: 0.6 } });
     if (onCompleteTier) onCompleteTier(currentTierId);
   };
 
@@ -97,87 +96,88 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* 3-Tier Selector Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-surface p-3.5 shadow-panel">
-        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+    <div className="flex flex-col gap-4">
+      {/* 3-Tier Selector Tabs (Compact & Sliding) */}
+      <div className="flex flex-wrap items-center justify-between gap-2.5 rounded-xl border border-border bg-surface p-2 sm:p-2.5 shadow-panel">
+        <div className="flex items-center gap-1 overflow-x-auto scrollbar-none">
           {tiers.map((t, idx) => {
             const tid = getTierId(t, idx);
             const isActive = tid === activeTierId;
             return (
-              <button
+              <motion.button
                 key={tid}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => {
                   setActiveTierId(tid);
                   setTestResult(null);
                   setShowSolution(false);
                 }}
-                className={`relative flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-medium whitespace-nowrap transition-colors duration-150 ${
+                className={`relative flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors duration-150 cursor-pointer ${
                   isActive ? 'text-foreground font-semibold' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {isActive && (
                   <motion.div
                     layoutId="activeTierStudioPill"
-                    className="absolute inset-0 rounded-xl bg-muted-surface border border-border shadow-xs"
-                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    className="absolute inset-0 rounded-lg bg-muted-surface border border-border shadow-2xs"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                   />
                 )}
                 <span
-                  className="relative z-10 flex h-2 w-2 rounded-full"
+                  className="relative z-10 flex size-2 rounded-full"
                   style={{ backgroundColor: t.badgeColor || '#10b981' }}
                 />
                 <span className="relative z-10 font-sans">{t.label}</span>
-              </button>
+              </motion.button>
             );
           })}
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="rounded-full bg-muted-surface border border-border px-2.5 py-1 text-[11px] font-mono text-muted-foreground">
+        <div className="flex items-center gap-1.5">
+          <span className="rounded-full bg-muted-surface border border-border px-2 py-0.5 text-[10px] font-mono text-muted-foreground">
             Target: <strong className="text-foreground">{activeTier.targetTable}</strong>
           </span>
-          <span className="rounded-full bg-dark-background px-2.5 py-1 text-[11px] font-mono font-medium text-white uppercase">
+          <span className="rounded-full bg-dark-background px-2 py-0.5 text-[10px] font-mono font-medium text-white uppercase">
             {activeTier.difficulty}
           </span>
         </div>
       </div>
 
       {/* Problem Challenge Specification Card */}
-      <div className="rounded-2xl border border-border bg-surface p-6 shadow-panel">
-        <h3 className="text-base font-bold text-foreground font-sans flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-foreground" />
+      <div className="rounded-xl border border-border bg-surface p-3.5 sm:p-4 shadow-panel">
+        <h3 className="text-sm font-bold text-foreground font-sans flex items-center gap-1.5">
+          <Sparkles className="size-3.5 text-foreground" />
           {activeTier.title}
         </h3>
-        <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed font-sans">
+        <p className="mt-1 text-xs text-muted-foreground leading-relaxed font-sans">
           {activeTier.spec}
         </p>
       </div>
 
-      {/* SQL Editor Studio Card */}
-      <div className="rounded-2xl border border-border bg-surface overflow-hidden shadow-panel">
+      {/* SQL Editor Studio Card (Compact) */}
+      <div className="rounded-xl border border-border bg-surface overflow-hidden shadow-panel">
         {/* Editor Controls Bar */}
-        <div className="flex items-center justify-between border-b border-border bg-muted-surface px-4 py-3">
-          <div className="flex items-center gap-2">
-            <Terminal className="h-4 w-4 text-foreground" />
-            <span className="text-xs font-mono font-semibold text-foreground">
+        <div className="flex items-center justify-between border-b border-border bg-muted-surface px-3 py-2">
+          <div className="flex items-center gap-1.5">
+            <Terminal className="size-3.5 text-foreground" />
+            <span className="text-[11px] font-mono font-semibold text-foreground">
               QUERY EDITOR (POSTGRES / SQLITE / MYSQL)
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => setShowSolution(!showSolution)}
-              className="flex items-center gap-1.5 rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-foreground hover:bg-muted-surface transition-all"
+              className="flex items-center gap-1 rounded-md border border-border bg-surface px-2 py-1 text-xs font-medium text-foreground hover:bg-muted-surface active:scale-95 transition-all cursor-pointer"
             >
-              <Eye className="h-3 w-3" />
+              <Eye className="size-3" />
               <span>{showSolution ? 'Hide Solution' : 'View Solution'}</span>
             </button>
             <button
               onClick={handleResetCode}
-              className="flex items-center gap-1.5 rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-foreground hover:bg-muted-surface transition-all"
+              className="flex items-center gap-1 rounded-md border border-border bg-surface px-2 py-1 text-xs font-medium text-foreground hover:bg-muted-surface active:scale-95 transition-all cursor-pointer"
             >
-              <RotateCcw className="h-3 w-3" />
+              <RotateCcw className="size-3" />
               <span>Reset</span>
             </button>
           </div>
@@ -204,130 +204,147 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
                 handleSqlChange(target.value);
               }
             }}
-            rows={7}
-            className="w-full bg-surface p-4 font-mono text-xs text-foreground placeholder-muted-foreground outline-none resize-y selection:bg-neutral-200 leading-relaxed"
+            rows={5}
+            className="w-full bg-surface p-3 font-mono text-xs text-foreground placeholder-muted-foreground outline-none resize-y selection:bg-neutral-200 leading-relaxed"
             placeholder="Write your production SQL query here..."
             spellCheck={false}
           />
 
-          {showSolution && (
-            <div className="border-t border-border bg-muted-surface p-4 text-xs font-mono">
-              <span className="text-foreground font-semibold text-[11px] uppercase tracking-wider block mb-1">
-                🔑 Production Reference Solution:
-              </span>
-              <pre className="text-foreground/90 overflow-x-auto">{activeTier.solutionSql}</pre>
-            </div>
-          )}
+          <AnimatePresence>
+            {showSolution && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="border-t border-border bg-muted-surface p-3 text-xs font-mono overflow-hidden"
+              >
+                <span className="text-foreground font-semibold text-[10px] uppercase tracking-wider block mb-1">
+                  🔑 Production Reference Solution:
+                </span>
+                <pre className="text-foreground/90 overflow-x-auto text-[11px]">{activeTier.solutionSql}</pre>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Action Button Strip */}
-        <div className="flex items-center justify-between border-t border-border bg-muted-surface px-4 py-3">
-          <span className="text-[11px] font-mono text-muted-foreground hidden sm:inline">
-            Press <kbd className="rounded border border-border bg-surface px-1 py-0.5 text-[10px] text-foreground">Ctrl</kbd> + <kbd className="rounded border border-border bg-surface px-1 py-0.5 text-[10px] text-foreground">Enter</kbd> to verify
+        <div className="flex items-center justify-between border-t border-border bg-muted-surface px-3 py-2">
+          <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">
+            Press <kbd className="rounded border border-border bg-surface px-1 py-0.2 text-[9px] text-foreground">Ctrl</kbd> + <kbd className="rounded border border-border bg-surface px-1 py-0.2 text-[9px] text-foreground">Enter</kbd> to verify
           </span>
 
-          <div className="flex items-center gap-2.5 ml-auto">
+          <div className="flex items-center gap-2 ml-auto">
             <button
               onClick={handleRunQuery}
-              className="flex items-center gap-1.5 rounded-xl border border-border bg-surface hover:bg-muted-surface px-4 py-2 text-xs font-medium text-foreground transition-all shadow-xs"
+              className="flex items-center gap-1 rounded-lg border border-border bg-surface hover:bg-muted-surface active:scale-95 px-3 py-1.5 text-xs font-medium text-foreground transition-all shadow-2xs cursor-pointer"
             >
-              <Play className="h-3.5 w-3.5" />
-              <span>Run Query</span>
+              <Play className="size-3" />
+              <span>Run</span>
             </button>
             <button
               onClick={handleVerifySolution}
-              className="flex items-center gap-1.5 rounded-xl bg-dark-background hover:bg-neutral-800 px-5 py-2 text-xs font-medium text-white transition-all shadow-xs"
+              className="flex items-center gap-1 rounded-lg bg-dark-background hover:bg-neutral-800 active:scale-95 px-3.5 py-1.5 text-xs font-medium text-white transition-all shadow-xs cursor-pointer"
             >
-              <CheckCircle2 className="h-3.5 w-3.5" />
-              <span>Submit &amp; Verify Solution</span>
+              <CheckCircle2 className="size-3" />
+              <span>Verify Solution</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* 3-Way Diff Console & Output Grid */}
-      {testResult && (
-        <div className="rounded-2xl border border-border bg-surface p-6 shadow-panel">
-          {/* Status Message */}
-          <div
-            className={`rounded-xl border p-3.5 text-xs font-medium flex items-center justify-between ${
-              testResult.passed
-                ? 'border-emerald-600/30 bg-emerald-50 text-emerald-900'
-                : 'border-rose-600/30 bg-rose-50 text-rose-900'
-            }`}
+      <AnimatePresence>
+        {testResult && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+            className="rounded-xl border border-border bg-surface p-4 sm:p-5 shadow-panel"
           >
-            <span>{testResult.message}</span>
-            <span className="font-mono text-[10px] opacity-80">
-              ⚡ {testResult.latencyMs}ms latency
-            </span>
-          </div>
-
-          {/* Diff Tab Buttons */}
-          <div className="mt-4 flex items-center justify-between border-b border-border pb-3">
-            <div className="flex items-center gap-1.5 rounded-xl border border-border bg-muted-surface p-1">
-              <button
-                onClick={() => setActiveDiffTab('diff')}
-                className={`rounded-lg px-3 py-1 text-xs font-medium transition-all ${
-                  activeDiffTab === 'diff' ? 'bg-dark-background text-white shadow-xs font-semibold' : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                Visual Diff
-              </button>
-              <button
-                onClick={() => setActiveDiffTab('user')}
-                className={`rounded-lg px-3 py-1 text-xs font-medium transition-all ${
-                  activeDiffTab === 'user' ? 'bg-dark-background text-white shadow-xs font-semibold' : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                Your Output
-              </button>
-              <button
-                onClick={() => setActiveDiffTab('expected')}
-                className={`rounded-lg px-3 py-1 text-xs font-medium transition-all ${
-                  activeDiffTab === 'expected' ? 'bg-dark-background text-white shadow-xs font-semibold' : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                Expected Output
-              </button>
+            {/* Status Message */}
+            <div
+              className={`rounded-lg border p-2.5 text-xs font-medium flex items-center justify-between ${
+                testResult.passed
+                  ? 'border-emerald-600/30 bg-emerald-50 text-emerald-900'
+                  : 'border-rose-600/30 bg-rose-50 text-rose-900'
+              }`}
+            >
+              <span>{testResult.message}</span>
+              <span className="font-mono text-[10px] opacity-80">
+                ⚡ {testResult.latencyMs}ms latency
+              </span>
             </div>
-            <span className="text-xs font-mono text-muted-foreground">
-              {testResult.userRows.length} Tuples Rendered
-            </span>
-          </div>
 
-          {/* Table Grid Output */}
-          <div className="mt-3.5 overflow-x-auto rounded-xl border border-border">
-            <table className="w-full text-left font-mono text-xs">
-              <thead className="bg-muted-surface text-muted-foreground">
-                <tr>
-                  <th className="py-2.5 px-3 border-b border-border">STATUS</th>
-                  {Object.keys(testResult.userRows[0] || {}).map((col) => (
-                    <th key={col} className="py-2.5 px-3 border-b border-border font-semibold text-foreground">
-                      {col}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border bg-surface">
-                {testResult.userRows.map((row, rIdx) => (
-                  <tr key={rIdx} className="hover:bg-muted-surface/50">
-                    <td className="py-2 px-3">
-                      <span className="rounded-full bg-emerald-100 border border-emerald-300 px-2 py-0.5 text-[9px] font-semibold text-emerald-800">
-                        ✓ MATCH
-                      </span>
-                    </td>
-                    {Object.values(row).map((val: any, cIdx) => (
-                      <td key={cIdx} className="py-2 px-3 text-foreground">
-                        {val === null ? <em className="text-muted-foreground">NULL</em> : String(val)}
-                      </td>
+            {/* Diff Tab Buttons */}
+            <div className="mt-3 flex items-center justify-between border-b border-border pb-2.5">
+              <div className="flex items-center gap-0.5 rounded-lg border border-border bg-muted-surface p-0.5 shadow-2xs">
+                {[
+                  { id: 'diff', label: 'Visual Diff' },
+                  { id: 'user', label: 'Your Output' },
+                  { id: 'expected', label: 'Expected' },
+                ].map((t) => {
+                  const isActive = activeDiffTab === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      onClick={() => setActiveDiffTab(t.id as any)}
+                      className={`relative px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer ${
+                        isActive ? 'text-white font-semibold' : 'text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeStudioDiffTab"
+                          className="absolute inset-0 rounded-md bg-dark-background shadow-xs"
+                          transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                        />
+                      )}
+                      <span className="relative z-10">{t.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <span className="text-[11px] font-mono text-muted-foreground">
+                {testResult.userRows.length} Tuples Rendered
+              </span>
+            </div>
+
+            {/* Table Grid Output */}
+            <div className="mt-2.5 overflow-x-auto rounded-lg border border-border shadow-2xs">
+              <table className="w-full text-left font-mono text-xs">
+                <thead className="bg-muted-surface text-muted-foreground text-[10px]">
+                  <tr>
+                    <th className="py-1.5 px-2.5 border-b border-border">STATUS</th>
+                    {Object.keys(testResult.userRows[0] || {}).map((col) => (
+                      <th key={col} className="py-1.5 px-2.5 border-b border-border font-semibold text-foreground">
+                        {col}
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+                </thead>
+                <tbody className="divide-y divide-border bg-surface">
+                  {testResult.userRows.map((row, rIdx) => (
+                    <tr key={rIdx} className="hover:bg-muted-surface/40 transition-colors">
+                      <td className="py-1.5 px-2.5">
+                        <span className="rounded bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 text-[9px] font-semibold text-emerald-800">
+                          ✓ MATCH
+                        </span>
+                      </td>
+                      {Object.values(row).map((val: any, cIdx) => (
+                        <td key={cIdx} className="py-1.5 px-2.5 text-foreground text-[11px]">
+                          {val === null ? <em className="text-muted-foreground">NULL</em> : String(val)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

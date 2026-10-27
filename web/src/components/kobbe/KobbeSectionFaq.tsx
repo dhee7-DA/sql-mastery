@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
 export function KobbeSectionFaq() {
@@ -30,10 +31,10 @@ export function KobbeSectionFaq() {
   ];
 
   return (
-    <section id="section-faq" className="py-20 border-t border-border/60">
-      <div className="mx-auto grid w-full max-w-320 grid-cols-1 gap-x-8 px-4 sm:px-8 lg:grid-cols-12 *:col-span-full gap-y-12">
+    <section id="section-faq" className="py-14 sm:py-18 border-t border-border/60">
+      <div className="mx-auto grid w-full max-w-320 grid-cols-1 gap-x-8 px-4 sm:px-8 lg:grid-cols-12 *:col-span-full gap-y-8">
         {/* Left Column (Kobbe 4-col descriptor) */}
-        <p className="text-sm text-muted-foreground max-w-64 leading-normal text-pretty lg:col-span-4 lg:mt-2">
+        <p className="text-xs sm:text-sm text-muted-foreground max-w-64 leading-normal text-pretty lg:col-span-4 lg:mt-1.5">
           <span className="text-foreground font-medium block mb-1">
             FAQ,
           </span>
@@ -41,39 +42,49 @@ export function KobbeSectionFaq() {
         </p>
 
         {/* Right Column (Kobbe 8-col headline and description) */}
-        <div className="flex min-w-0 flex-col gap-6 lg:col-span-8">
+        <div className="flex min-w-0 flex-col gap-4 lg:col-span-8">
           <div className="flex flex-col gap-2">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-medium tracking-tight leading-tight text-pretty text-foreground">
+            <h2 className="text-2xl sm:text-3xl font-medium tracking-tight leading-tight text-pretty text-foreground">
               Questions, answered plainly
             </h2>
-            <p className="text-base text-muted-foreground max-w-lg leading-relaxed text-pretty">
+            <p className="text-xs sm:text-sm text-muted-foreground max-w-lg leading-relaxed text-pretty">
               Everything about how queries execute, how data stays private, and why understanding execution order matters for senior software and data engineering roles.
             </p>
           </div>
         </div>
 
-        {/* FAQ Accordion List (Kobbe Editorial Style) */}
+        {/* FAQ Accordion List (Kobbe Editorial Style with Smooth Height Animation) */}
         <div className="flex flex-col divide-y divide-border/70 border-y border-border/70">
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
-              <div key={idx} className="py-5">
+              <div key={idx} className="py-3.5">
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
-                  className="flex w-full items-center justify-between gap-4 text-left font-medium text-base sm:text-lg text-foreground hover:text-foreground/80 transition-colors cursor-pointer"
+                  className="flex w-full items-center justify-between gap-4 text-left font-medium text-sm sm:text-base text-foreground hover:text-foreground/80 transition-colors cursor-pointer"
                 >
                   <span>{faq.q}</span>
                   <ChevronDown
-                    className={`size-4 text-muted-foreground shrink-0 transition-transform duration-200 ${
+                    className={`size-4 text-muted-foreground shrink-0 transition-transform duration-250 ease-out ${
                       isOpen ? 'rotate-180 text-foreground' : ''
                     }`}
                   />
                 </button>
-                {isOpen && (
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-3xl">
-                    {faq.a}
-                  </p>
-                )}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-3xl">
+                        {faq.a}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}

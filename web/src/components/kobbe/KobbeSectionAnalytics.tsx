@@ -1,19 +1,19 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { Download, Copy, Check, Award, Database, Zap, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Download, Award } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export function KobbeSectionAnalytics() {
   const [candidateName, setCandidateName] = useState<string>('Staff Data Candidate');
-  const [copied, setCopied] = useState<boolean>(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const stats = [
-    { label: 'Mastered Topics', value: '10 / 10', meta: '100% Curriculum Completed', change: '+100%' },
-    { label: 'Challenges Solved', value: '30 / 30', meta: 'Warm-up • Standard • Edge', change: '+30' },
-    { label: 'Avg Query Latency', value: '1.14 ms', meta: 'P95: 2.8 ms (In-Memory)', change: '0.8ms' },
-    { label: 'FAANG Interview Readiness', value: '99.4%', meta: '0 Syntax Errors Recorded', change: '+99%' },
+    { label: 'Mastered Topics', value: '10 / 10', meta: '100% Curriculum Completed' },
+    { label: 'Challenges Solved', value: '30 / 30', meta: 'Warm-up • Standard • Edge' },
+    { label: 'Avg Query Latency', value: '1.14 ms', meta: 'P95: 2.8 ms (In-Memory)' },
+    { label: 'Interview Readiness', value: '99.4%', meta: '0 Syntax Errors Recorded' },
   ];
 
   const generateCard = () => {
@@ -22,11 +22,10 @@ export function KobbeSectionAnalytics() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Draw 1200x630 canvas
     canvas.width = 1200;
     canvas.height = 630;
 
-    // Background (Kobbe warm bone linen)
+    // Background
     ctx.fillStyle = '#fbfaf8';
     ctx.fillRect(0, 0, 1200, 630);
 
@@ -81,7 +80,7 @@ export function KobbeSectionAnalytics() {
       ctx.font = 'bold 32px "Geist Mono", monospace';
       ctx.fillText(s.value, x + 16, startY + 85);
 
-      ctx.fillStyle = '#10b981';
+      ctx.fillStyle = '#15803d';
       ctx.font = 'bold 12px "Geist Mono", monospace';
       ctx.fillText(s.meta, x + 16, startY + 118);
     });
@@ -90,7 +89,7 @@ export function KobbeSectionAnalytics() {
     const certId = 'CERT-' + Math.random().toString(36).substring(2, 10).toUpperCase();
     ctx.fillStyle = '#6f6e69';
     ctx.font = '14px "Geist Mono", monospace';
-    ctx.fillText(`Verification ID: ${certId} • Certified via SQLite WASM In-Browser Compiler • 100% Cookieless`, 60, 540);
+    ctx.fillText(`Verification ID: ${certId} • Certified via SQLite WASM Compiler • 100% Cookieless`, 60, 540);
   };
 
   const handleDownload = () => {
@@ -106,10 +105,10 @@ export function KobbeSectionAnalytics() {
   };
 
   return (
-    <section id="section-analytics" className="py-20 border-t border-border/60">
-      <div className="mx-auto grid w-full max-w-320 grid-cols-1 gap-x-8 px-4 sm:px-8 lg:grid-cols-12 *:col-span-full gap-y-12">
+    <section id="section-analytics" className="py-14 sm:py-18 border-t border-border/60">
+      <div className="mx-auto grid w-full max-w-320 grid-cols-1 gap-x-8 px-4 sm:px-8 lg:grid-cols-12 *:col-span-full gap-y-8">
         {/* Left Column (Kobbe 4-col descriptor) */}
-        <p className="text-sm text-muted-foreground max-w-64 leading-normal text-pretty lg:col-span-4 lg:mt-2">
+        <p className="text-xs sm:text-sm text-muted-foreground max-w-64 leading-normal text-pretty lg:col-span-4 lg:mt-1.5">
           <span className="text-foreground font-medium block mb-1">
             Proof of Work,
           </span>
@@ -117,47 +116,49 @@ export function KobbeSectionAnalytics() {
         </p>
 
         {/* Right Column (Kobbe 8-col headline and description) */}
-        <div className="flex min-w-0 flex-col gap-6 lg:col-span-8">
+        <div className="flex min-w-0 flex-col gap-4 lg:col-span-8">
           <div className="flex flex-col gap-2">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-medium tracking-tight leading-tight text-pretty text-foreground">
+            <h2 className="text-2xl sm:text-3xl font-medium tracking-tight leading-tight text-pretty text-foreground">
               Quantifiable readiness metrics with zero cloud tracking
             </h2>
-            <p className="text-base text-muted-foreground max-w-lg leading-relaxed text-pretty">
+            <p className="text-xs sm:text-sm text-muted-foreground max-w-lg leading-relaxed text-pretty">
               Export high-resolution proof-of-work credentials for LinkedIn, resume portfolios, or interview preparation. Generated client-side directly onto an HTML5 canvas.
             </p>
           </div>
         </div>
 
-        {/* 4 Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* 4 Stats Grid (Compact) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {stats.map((s, idx) => (
-            <div
+            <motion.div
               key={idx}
-              className="bg-muted-surface rounded-xl p-5 border border-border/80 shadow-panel flex flex-col justify-between"
+              whileHover={{ y: -1.5 }}
+              transition={{ duration: 0.18 }}
+              className="bg-muted-surface rounded-xl p-3.5 sm:p-4 border border-border/80 shadow-panel flex flex-col justify-between hover:border-foreground/25 hover:shadow-panel-hover transition-colors"
             >
-              <span className="text-xs font-mono font-bold text-muted-foreground uppercase">
+              <span className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
                 {s.label}
               </span>
-              <div className="my-3">
-                <span className="text-3xl font-mono font-bold text-foreground block">
+              <div className="my-2">
+                <span className="text-2xl font-mono font-bold text-foreground block">
                   {s.value}
                 </span>
-                <span className="text-[11px] text-emerald-700 font-semibold font-mono block mt-1">
+                <span className="text-[10px] text-emerald-700 font-semibold font-mono block mt-0.5">
                   {s.meta}
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* Proof of Work Card Generator Box */}
-        <div className="bg-muted-surface rounded-xl p-6 sm:p-8 border border-border/80 shadow-panel flex flex-col gap-5">
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-border/70">
+        {/* Proof of Work Card Generator Box (Compact) */}
+        <div className="bg-muted-surface rounded-xl p-4 sm:p-5 border border-border/80 shadow-panel flex flex-col gap-3.5">
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border/70">
             <div>
-              <h3 className="text-base font-medium text-foreground">
+              <h3 className="text-sm font-semibold text-foreground">
                 Official Proof-of-Work Certificate (1200x630)
               </h3>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-[11px] text-muted-foreground mt-0.5">
                 Generate high-resolution image credential for social proof and interview submissions.
               </p>
             </div>
@@ -168,23 +169,23 @@ export function KobbeSectionAnalytics() {
                 value={candidateName}
                 onChange={(e) => setCandidateName(e.target.value)}
                 placeholder="Candidate Full Name"
-                className="rounded-lg border border-border bg-surface px-3 py-1.5 text-xs font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-foreground/20"
+                className="rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-foreground/20"
               />
               <button
                 onClick={handleDownload}
-                className="inline-flex cursor-pointer items-center gap-1.5 font-medium transition-colors w-fit rounded-lg px-3.5 py-1.5 text-xs bg-dark-background text-surface hover:bg-dark-background/85 shadow-xs"
+                className="inline-flex cursor-pointer items-center gap-1 font-medium transition-all w-fit rounded-lg px-3 py-1 text-xs bg-dark-background text-surface hover:bg-dark-background/85 active:scale-95 shadow-xs"
               >
-                <Download className="size-3.5" />
-                <span>Export PNG Card</span>
+                <Download className="size-3" />
+                <span>Export PNG</span>
               </button>
             </div>
           </div>
 
-          <div className="bg-surface rounded-lg border border-border p-4 flex items-center justify-center overflow-x-auto">
+          <div className="bg-surface rounded-lg border border-border p-3 flex items-center justify-center overflow-x-auto shadow-2xs">
             <canvas
               ref={canvasRef}
-              className="max-w-full h-auto border border-border/60 rounded-md shadow-xs"
-              style={{ width: '600px', height: '315px' }}
+              className="max-w-full h-auto border border-border/60 rounded-md shadow-2xs"
+              style={{ width: '500px', height: '262px' }}
             />
           </div>
         </div>
