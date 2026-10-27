@@ -858,3 +858,63 @@
 .schema-peek-card {
   border-radius: var(--tile-radius-inner, 10px) !important;
 }
+
+
+/* =============================================================================
+   9. CROSS-APP HARMONIZATION & ZERO-GAP CONCENTRIC GEOMETRY
+   ============================================================================= */
+
+/* Tighten Layout & Zero Awkward Whitespace */
+.lc-arena-wrapper,
+.company-hub-wrapper,
+.studio-container,
+.sql-terminal-wrapper {
+  gap: 12px !important;
+}
+
+/* LeetCode 323 Problem Cards & Grid */
+.lc-problem-card,
+.lc-problem-row {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease !important;
+}
+
+.lc-problem-card:hover,
+.lc-problem-row:hover {
+  transform: translateY(-1.5px) !important;
+  border-color: var(--accent, #e11d48) !important;
+  box-shadow: var(--tile-shadow-lift) !important;
+}
+
+/* Filter Strips: Eliminate excessive whitespace */
+.lc-filter-row,
+.company-filter-strip,
+.studio-controls-bar {
+  margin-bottom: 12px !important;
+  gap: 8px !important;
+}
+
+/* Company Hub Directory Cards */
+.company-directory-card {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  padding: 16px 18px !important;
+}
+
+/* Studio Editor & Console Containers */
+.studio-editor-box,
+.studio-output-box,
+.terminal-window {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  overflow: hidden !important;
+}
+
+/* Modal Cards: Concentric 16px Radii */
+.shortcuts-modal-card,
+.analytics-modal-card,
+.cert-modal-card,
+.mock-modal-card {
+  border-radius: 16px !important;
+}

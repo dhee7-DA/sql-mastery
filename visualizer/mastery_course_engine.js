@@ -45,6 +45,15 @@ window.MasteryCourseEngine = (function () {
       topic_08_case_when: 'tiers', // 'tiers', 'pass_fail', 'coalesce'
       topic_09_ctes: 'both', // 'step1', 'step2', 'both'
       topic_10_window_functions: 'row_number' // 'row_number', 'rank', 'dense_rank', 'running_total'
+    },
+    shortcutsModal: { show: false },
+    analyticsModal: { show: false, tab: 'stats' },
+    executionOrder: {
+      mode: 'logical', // 'logical' | 'lexical' | 'puzzle'
+      activeClauseId: 'from',
+      puzzleOrder: ['select', 'from', 'where', 'group_by', 'having', 'order_by', 'limit'],
+      puzzleSubmitted: false,
+      puzzleCorrect: false
     }
   };
 
@@ -88,6 +97,81 @@ window.MasteryCourseEngine = (function () {
       { customer_id: 12, name: 'Charlie Lee', city: 'Tokyo' }
     ]
   };
+
+
+  // SQL Execution Order Clause Definitions (Logical vs Lexical)
+  const SQL_CLAUSES = [
+    {
+      id: 'from',
+      keyword: 'FROM & JOIN',
+      lexicalPos: 2,
+      logicalPos: 1,
+      role: 'Source & Cartography',
+      action: 'Loads candidate tables into memory and builds the Cartesian product / join graph with ON predicates.',
+      whyItMatters: 'Tables must exist before anything can be evaluated. If a table is missing or filtered out here, no later clause can resurrect it.',
+      interviewTip: 'Senior engineers know JOIN filters in ON vs WHERE behave differently in OUTER joins: ON filters prior to join, WHERE filters after.'
+    },
+    {
+      id: 'where',
+      keyword: 'WHERE',
+      lexicalPos: 3,
+      logicalPos: 2,
+      role: 'Row-Level Gatekeeper',
+      action: 'Filters individual rows BEFORE any grouping or aggregation takes place.',
+      whyItMatters: 'CRITICAL INTERVIEW TRAP: You CANNOT use column aliases defined in SELECT here, because SELECT has not executed yet!',
+      interviewTip: 'Always filter early in WHERE to reduce the row count before costly GROUP BY hash tables are built.'
+    },
+    {
+      id: 'group_by',
+      keyword: 'GROUP BY',
+      lexicalPos: 4,
+      logicalPos: 3,
+      role: 'Bucket Aggregator',
+      action: 'Collapses rows sharing identical group keys into single summary buckets.',
+      whyItMatters: 'Once grouped, individual non-aggregated columns cannot be projected unless they are part of the GROUP BY key.',
+      interviewTip: 'Under the hood, DB engines construct either a Hash Aggregate or Sort Aggregate depending on index presence.'
+    },
+    {
+      id: 'having',
+      keyword: 'HAVING',
+      lexicalPos: 5,
+      logicalPos: 4,
+      role: 'Group-Level Filter',
+      action: 'Evaluates conditions against aggregated bucket values (e.g., COUNT(*) > 5, SUM(revenue) > 100k).',
+      whyItMatters: 'Unlike WHERE, HAVING has access to aggregate function results. Never put raw row conditions in HAVING that belong in WHERE.',
+      interviewTip: 'Interviewer question: "Can you use HAVING without GROUP BY?" Answer: "Yes, the entire table is treated as one single implicit group."'
+    },
+    {
+      id: 'select',
+      keyword: 'SELECT & WINDOW',
+      lexicalPos: 1,
+      logicalPos: 5,
+      role: 'Projection & Expression',
+      action: 'Evaluates mathematical formulas, column aliases, CASE statements, and Window Functions (OVER).',
+      whyItMatters: 'Aliases are born here! Window functions run here after WHERE/GROUP BY, which is why window functions cannot be filtered directly in WHERE.',
+      interviewTip: 'To filter on a Window Function result (e.g. ROW_NUMBER() = 1), you MUST wrap the query in a CTE or subquery.'
+    },
+    {
+      id: 'order_by',
+      keyword: 'ORDER BY',
+      lexicalPos: 6,
+      logicalPos: 6,
+      role: 'Final Sorting',
+      action: 'Sorts the final projected result set (ASC or DESC, NULLS FIRST/LAST).',
+      whyItMatters: 'Because ORDER BY runs AFTER SELECT, you CAN safely reference SELECT column aliases and expressions here!',
+      interviewTip: 'Sorting is computationally expensive (O(N log N) or external disk merge sort). Combine with LIMIT to allow Top-N heap optimization.'
+    },
+    {
+      id: 'limit',
+      keyword: 'LIMIT / OFFSET',
+      lexicalPos: 7,
+      logicalPos: 7,
+      role: 'Window Slicing',
+      action: 'Truncates the sorted stream to return only the first N rows (optionally skipping OFFSET).',
+      whyItMatters: 'LIMIT without ORDER BY produces non-deterministic, flaky results between database runs.',
+      interviewTip: 'High-offset pagination (OFFSET 1000000) causes full-table scans. Use keyset/cursor pagination for enterprise scale.'
+    }
+  ];
 
   // Comprehensive Relational Schema Map for Peek Inspector
   const TABLE_SCHEMAS = {
@@ -1716,6 +1800,12 @@ FROM Employees;`,
                 <span>👑 Grandmaster</span>
               </span>
 
+              <button class="milestone-badge-chip hotkey-chip" onclick="window.MasteryCourseEngine.openShortcutsModal()" title="Keyboard Shortcuts (Press ?)">
+                <span>⌨️ Hotkeys [?]</span>
+              </button>
+              <button class="milestone-badge-chip analytics-chip" onclick="window.MasteryCourseEngine.openAnalyticsModal('stats')" title="Progress Analytics &amp; Social Share (Press A)">
+                <span>📊 Analytics &amp; Share [A]</span>
+              </button>
               <button class="btn-claim-cert" onclick="window.MasteryCourseEngine.openCertificate('cert')">
                 <span>🎓 Claim Certificate &amp; Portfolio</span>
               </button>
@@ -1793,6 +1883,8 @@ FROM Employees;`,
 
         ${renderMockInterviewModal()}
         ${renderCertificateModal()}
+        ${renderShortcutsModal()}
+        ${renderAnalyticsModal()}
       </div>
     `;
   }
@@ -1888,6 +1980,9 @@ FROM Employees;`,
             </div>
           ` : ''}
         </div>
+
+        <!-- Interactive SQL Execution Sequencer (Logical vs Lexical Order) -->
+        ${renderExecutionOrderCard()}
 
         <!-- Main Lesson Content & Guidance Grid -->
         <div class="theory-content-grid">
@@ -2010,6 +2105,9 @@ FROM Employees;`,
               <div class="course-toc-list">
                 <a href="#section-analogy" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-analogy').scrollIntoView({ behavior: 'smooth' });">
                   <span>🎯 Everyday Analogy</span>
+                </a>
+                <a href="#section-execution-order" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-execution-order').scrollIntoView({ behavior: 'smooth' });">
+                  <span>⚡ Logical vs Lexical Order</span>
                 </a>
                 <a href="#section-theory" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-theory').scrollIntoView({ behavior: 'smooth' });">
                   <span>📖 Core Theory Chapters</span>
@@ -3257,19 +3355,111 @@ FROM Employees;`,
       });
     }
 
-    // Keyboard Shortcuts (1-4 for MCQs)
+    // Comprehensive Power-User Speedrun Keyboard Navigation
     const handleKeydown = (e) => {
       const activeEl = document.activeElement;
-      if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) return;
-      if (state.activeStep !== 'mcqs') return;
+      const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
 
-      const key = e.key;
-      if (['1', '2', '3', '4'].includes(key)) {
-        const optIdx = parseInt(key, 10) - 1;
-        const phase = getPhase(state.activePhaseId);
-        const unansweredIdx = (phase.mcqs || []).findIndex((_, qIdx) => state.mcqAnswers[`${phase.id}_${qIdx}`] === undefined);
-        if (unansweredIdx !== -1) {
-          handleOptionClick(phase.id, unansweredIdx, optIdx);
+      // Escape key always dismisses open modals
+      if (e.key === 'Escape') {
+        if (state.shortcutsModal && state.shortcutsModal.show) {
+          closeShortcutsModal();
+          return;
+        }
+        if (state.analyticsModal && state.analyticsModal.show) {
+          closeAnalyticsModal();
+          return;
+        }
+        if (state.certificate && state.certificate.show) {
+          closeCertificate();
+          return;
+        }
+        if (state.mockInterview && state.mockInterview.active) {
+          closeMockInterview();
+          return;
+        }
+        return;
+      }
+
+      // If user is editing in an input or textarea, don't intercept standard typing
+      if (isTyping) return;
+
+      // '?' or Shift+/ : Toggle Shortcuts HUD
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        e.preventDefault();
+        if (state.shortcutsModal && state.shortcutsModal.show) {
+          closeShortcutsModal();
+        } else {
+          openShortcutsModal();
+        }
+        return;
+      }
+
+      // 'a' or 'A' : Toggle Progress Analytics & Social Share Card
+      if (e.key === 'a' || e.key === 'A') {
+        e.preventDefault();
+        if (state.analyticsModal && state.analyticsModal.show) {
+          closeAnalyticsModal();
+        } else {
+          openAnalyticsModal('stats');
+        }
+        return;
+      }
+
+      // '[' or ArrowLeft : Navigate Previous Topic
+      if (e.key === '[' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const currIdx = getPhaseIndex(state.activePhaseId);
+        if (currIdx > 0) {
+          state.activePhaseId = PHASES[currIdx - 1].id;
+          init();
+        }
+        return;
+      }
+
+      // ']' or ArrowRight : Navigate Next Topic
+      if (e.key === ']' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const currIdx = getPhaseIndex(state.activePhaseId);
+        if (currIdx < PHASES.length - 1) {
+          state.activePhaseId = PHASES[currIdx + 1].id;
+          init();
+        }
+        return;
+      }
+
+      // 'm' or 'M' : Toggle Mark Topic Complete
+      if (e.key === 'm' || e.key === 'M') {
+        e.preventDefault();
+        if (state.completedPhases.has(state.activePhaseId)) {
+          state.completedPhases.delete(state.activePhaseId);
+        } else {
+          state.completedPhases.add(state.activePhaseId);
+          if (window.soundFX) window.soundFX.playSuccess();
+        }
+        try {
+          localStorage.setItem('sql_foundry_learning_order_v1', JSON.stringify(Array.from(state.completedPhases)));
+        } catch (err) {}
+        init();
+        return;
+      }
+
+      // '1', '2', '3', '4' : Step Jumping or Quiz Option Answering
+      if (['1', '2', '3', '4'].includes(e.key)) {
+        const num = parseInt(e.key, 10);
+        if (state.activeStep === 'mcqs') {
+          const phase = getPhase(state.activePhaseId);
+          const unansweredIdx = (phase.mcqs || []).findIndex((_, qIdx) => state.mcqAnswers[`${phase.id}_${qIdx}`] === undefined);
+          if (unansweredIdx !== -1) {
+            handleOptionClick(phase.id, unansweredIdx, num - 1);
+            return;
+          }
+        }
+        const steps = ['theory', 'mcqs', 'case', 'problem'];
+        const targetStep = steps[num - 1];
+        if (targetStep && targetStep !== state.activeStep) {
+          state.activeStep = targetStep;
+          init();
         }
       }
     };
@@ -4110,6 +4300,805 @@ Certified in high-speed verbal architecture defense across:
     }
   }
 
+
+  // ===========================================================================
+  // OPTION 3: LOGICAL VS LEXICAL EXECUTION ORDER INTERACTIVE SEQUENCER
+  // ===========================================================================
+  function setExecutionOrderMode(mode) {
+    state.executionOrder.mode = mode;
+    init();
+  }
+
+  function selectExecutionClause(clauseId) {
+    state.executionOrder.activeClauseId = clauseId;
+    init();
+  }
+
+  function movePuzzleClause(idx, delta) {
+    const list = [...state.executionOrder.puzzleOrder];
+    const targetIdx = idx + delta;
+    if (targetIdx < 0 || targetIdx >= list.length) return;
+    const temp = list[idx];
+    list[idx] = list[targetIdx];
+    list[targetIdx] = temp;
+    state.executionOrder.puzzleOrder = list;
+    state.executionOrder.puzzleSubmitted = false;
+    init();
+  }
+
+  function verifyExecutionPuzzle() {
+    const correctSeq = ['from', 'where', 'group_by', 'having', 'select', 'order_by', 'limit'];
+    const userSeq = state.executionOrder.puzzleOrder;
+    const isCorrect = userSeq.every((id, idx) => id === correctSeq[idx]);
+
+    state.executionOrder.puzzleSubmitted = true;
+    state.executionOrder.puzzleCorrect = isCorrect;
+
+    if (isCorrect) {
+      if (window.soundFX) window.soundFX.playSuccess();
+      launchConfetti();
+    } else {
+      if (window.soundFX) window.soundFX.playWhoosh();
+    }
+    init();
+  }
+
+  function resetExecutionPuzzle() {
+    state.executionOrder.puzzleOrder = ['select', 'from', 'where', 'group_by', 'having', 'order_by', 'limit'];
+    state.executionOrder.puzzleSubmitted = false;
+    state.executionOrder.puzzleCorrect = false;
+    init();
+  }
+
+  function renderExecutionOrderCard() {
+    const mode = state.executionOrder.mode || 'logical';
+    const activeClause = SQL_CLAUSES.find(c => c.id === state.executionOrder.activeClauseId) || SQL_CLAUSES[0];
+
+    // Sorted clauses based on mode
+    let orderedClauses = [];
+    if (mode === 'logical') {
+      orderedClauses = [...SQL_CLAUSES].sort((a, b) => a.logicalPos - b.logicalPos);
+    } else if (mode === 'lexical') {
+      orderedClauses = [...SQL_CLAUSES].sort((a, b) => a.lexicalPos - b.lexicalPos);
+    }
+
+    return `
+      <div class="interactive-simulator-card exec-sequencer-card" id="section-execution-order">
+        <div class="visual-mode-toggle-bar">
+          <div class="visual-mode-title-group">
+            <span style="font-size: 18px;">⚡</span>
+            <div>
+              <span style="font-size: 13.5px; font-weight: 700;">SQL Engine Execution Order: Logical vs. Lexical</span>
+              <span style="display: block; font-size: 11px; color: var(--text-muted); font-weight: 500;">
+                What you write (lexical) is NOT how the engine computes it (logical).
+              </span>
+            </div>
+          </div>
+          <div class="visual-mode-toggle-group">
+            <button class="visual-toggle-btn ${mode === 'logical' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setExecutionOrderMode('logical')">
+              <span>🔍 Engine Logical Order</span>
+            </button>
+            <button class="visual-toggle-btn ${mode === 'lexical' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setExecutionOrderMode('lexical')">
+              <span>✍️ Lexical Writing Order</span>
+            </button>
+            <button class="visual-toggle-btn ${mode === 'puzzle' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setExecutionOrderMode('puzzle')">
+              <span>🧩 Execution Puzzle</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="padding: 16px;">
+          ${mode === 'puzzle' ? renderExecutionPuzzle() : `
+            <!-- Order Pipeline Flow -->
+            <div class="exec-pipeline-rail">
+              ${orderedClauses.map((clause, idx) => {
+                const isSelected = clause.id === activeClause.id;
+                const posNum = mode === 'logical' ? clause.logicalPos : clause.lexicalPos;
+                const sep = idx < orderedClauses.length - 1 ? '<span class="exec-pipeline-arrow">➔</span>' : '';
+                return `
+                  <button class="exec-clause-btn ${isSelected ? 'active' : ''}" onclick="window.MasteryCourseEngine.selectExecutionClause('${clause.id}')">
+                    <span class="exec-clause-num">${posNum}</span>
+                    <span class="exec-clause-keyword">${clause.keyword}</span>
+                  </button>
+                  ${sep}
+                `;
+              }).join('')}
+            </div>
+
+            <!-- Deep Inspection Card for Selected Clause -->
+            <div class="exec-clause-detail-card">
+              <div class="exec-detail-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="exec-detail-tag">Stage ${mode === 'logical' ? activeClause.logicalPos : activeClause.lexicalPos} of 7</span>
+                  <h4 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--text-primary);">
+                    ${activeClause.keyword} <span style="font-size: 12px; font-weight: 500; color: var(--text-muted); font-family: var(--font-sans);">(${activeClause.role})</span>
+                  </h4>
+                </div>
+                <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent); font-weight: 700;">
+                  Logical Step: #${activeClause.logicalPos}  •  Lexical Step: #${activeClause.lexicalPos}
+                </div>
+              </div>
+
+              <div class="exec-detail-grid">
+                <div class="exec-detail-col">
+                  <div class="exec-detail-section-title">⚙️ Database Engine Action</div>
+                  <p class="exec-detail-p">${escapeHtml(activeClause.action)}</p>
+
+                  <div class="exec-detail-section-title" style="margin-top: 12px;">💡 The Under-the-Hood Truth</div>
+                  <p class="exec-detail-p">${escapeHtml(activeClause.whyItMatters)}</p>
+                </div>
+
+                <div class="exec-detail-col">
+                  <div class="exec-detail-section-title">🎙️ Senior Technical Interview Takeaway</div>
+                  <div class="exec-interview-box">
+                    ${escapeHtml(activeClause.interviewTip)}
+                  </div>
+
+                  <div class="exec-golden-rule-box">
+                    <strong>Golden Rule:</strong>
+                    ${activeClause.id === 'where' ? 'You cannot filter on SELECT aliases in WHERE because WHERE executes at Step 2 while SELECT executes at Step 5!' : ''}
+                    ${activeClause.id === 'from' ? 'The engine creates the universe of tuples here. Everything downstream filters or reshapes this initial stream.' : ''}
+                    ${activeClause.id === 'group_by' ? 'Aggregation transforms individual rows into group records. Non-grouped columns disappear from scope!' : ''}
+                    ${activeClause.id === 'having' ? 'Filters group buckets after aggregation. Raw row filters here cause costly unnecessary grouping!' : ''}
+                    ${activeClause.id === 'select' ? 'Aliases and window functions come alive here, long after WHERE has discarded filtered rows.' : ''}
+                    ${activeClause.id === 'order_by' ? 'Because ORDER BY runs after SELECT, referencing SELECT aliases here is completely valid and encouraged.' : ''}
+                    ${activeClause.id === 'limit' ? 'Always pair LIMIT with deterministic ORDER BY to prevent random row slicing in production queries.' : ''}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderExecutionPuzzle() {
+    const puzzleOrder = state.executionOrder.puzzleOrder;
+    const isSubmitted = state.executionOrder.puzzleSubmitted;
+    const isCorrect = state.executionOrder.puzzleCorrect;
+
+    return `
+      <div class="exec-puzzle-container">
+        <div class="exec-puzzle-banner">
+          <div>
+            <h4 style="margin: 0 0 4px 0; font-size: 15px; font-weight: 700;">🧩 Interactive Engine Execution Sequencer</h4>
+            <span style="font-size: 12px; color: var(--text-muted);">
+              Use the ▲ Up and ▼ Down buttons to arrange the 7 clauses in the EXACT order the database engine processes them.
+            </span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="tier-tab-btn active" onclick="window.MasteryCourseEngine.verifyExecutionPuzzle()">
+              <span>🎯 Verify Sequence</span>
+            </button>
+            <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.resetExecutionPuzzle()">
+              <span>🔄 Reset</span>
+            </button>
+          </div>
+        </div>
+
+        ${isSubmitted ? `
+          <div class="exec-puzzle-feedback ${isCorrect ? 'correct' : 'incorrect'}">
+            ${isCorrect ? `
+              <span style="font-size: 20px;">🎉</span>
+              <div>
+                <strong>PERFECT SCORE!</strong> You mastered the internal relational engine pipeline. You understand exactly why aliases are born in SELECT, why WHERE cannot see them, and why ORDER BY can!
+              </div>
+            ` : `
+              <span style="font-size: 20px;">⚠️</span>
+              <div>
+                <strong>Not quite in execution order!</strong> Remember the logical lifecycle: The engine must find the data source (FROM) before filtering rows (WHERE), group rows (GROUP BY) before evaluating group thresholds (HAVING), and calculate expressions (SELECT) before sorting (ORDER BY).
+              </div>
+            `}
+          </div>
+        ` : ''}
+
+        <div class="exec-puzzle-list">
+          ${puzzleOrder.map((clauseId, idx) => {
+            const clause = SQL_CLAUSES.find(c => c.id === clauseId);
+            const isFirst = idx === 0;
+            const isLast = idx === puzzleOrder.length - 1;
+            const isCorrectPos = isSubmitted && clause.logicalPos === (idx + 1);
+
+            return `
+              <div class="exec-puzzle-item ${isSubmitted ? (isCorrectPos ? 'item-correct' : 'item-wrong') : ''}">
+                <div class="exec-puzzle-rank">#${idx + 1}</div>
+                <div class="exec-puzzle-content">
+                  <span class="exec-puzzle-keyword">${clause.keyword}</span>
+                  <span class="exec-puzzle-role">${clause.role}</span>
+                </div>
+                <div class="exec-puzzle-actions">
+                  <button class="exec-puzzle-move-btn" ${isFirst ? 'disabled' : ''} onclick="window.MasteryCourseEngine.movePuzzleClause(${idx}, -1)" title="Move Up">▲</button>
+                  <button class="exec-puzzle-move-btn" ${isLast ? 'disabled' : ''} onclick="window.MasteryCourseEngine.movePuzzleClause(${idx}, 1)" title="Move Down">▼</button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // ===========================================================================
+  // OPTION 2: SPEEDRUN KEYBOARD SHORTCUTS HUD MODAL
+  // ===========================================================================
+  function openShortcutsModal() {
+    state.shortcutsModal = { show: true };
+    init();
+  }
+
+  function closeShortcutsModal() {
+    state.shortcutsModal = { show: false };
+    init();
+  }
+
+  function renderShortcutsModal() {
+    if (!state.shortcutsModal || !state.shortcutsModal.show) return '';
+
+    return `
+      <div class="course-modal-backdrop no-print" onclick="if(event.target === this) window.MasteryCourseEngine.closeShortcutsModal()">
+        <div class="shortcuts-modal-card">
+          <div class="mock-modal-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 22px;">⌨️</span>
+              <div>
+                <h3 style="margin: 0; font-size: 16px; font-weight: 700;">SQL Foundry Speedrun Hotkeys HUD</h3>
+                <span style="font-size: 11px; color: var(--text-muted);">Navigate, practice, and verify queries without lifting your hands from the keyboard</span>
+              </div>
+            </div>
+            <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.closeShortcutsModal()">✕</button>
+          </div>
+
+          <div class="mock-modal-body" style="padding: 20px;">
+            <div class="shortcuts-grid">
+              <!-- Card 1: Topic Speedrun -->
+              <div class="shortcut-category-card">
+                <div class="shortcut-cat-title">📖 Topic Navigation</div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">Previous Topic</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">[</kbd> <span style="font-size: 10px; color: var(--text-muted);">or</span> <kbd class="hotkey-pill">←</kbd></div>
+                </div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">Next Topic</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">]</kbd> <span style="font-size: 10px; color: var(--text-muted);">or</span> <kbd class="hotkey-pill">→</kbd></div>
+                </div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">Toggle Mark Complete</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">M</kbd></div>
+                </div>
+              </div>
+
+              <!-- Card 2: 4-Step Jumping -->
+              <div class="shortcut-category-card">
+                <div class="shortcut-cat-title">⚡ 4-Step Jumping</div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">1. Learn &amp; Visualize</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">1</kbd></div>
+                </div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">2. Quick Quiz</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">2</kbd></div>
+                </div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">3. Real Case Study</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">3</kbd></div>
+                </div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">4. Query Studio</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">4</kbd></div>
+                </div>
+              </div>
+
+              <!-- Card 3: Query Studio Ergonomics -->
+              <div class="shortcut-category-card">
+                <div class="shortcut-cat-title">💻 Query Studio Ergonomics</div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">Verify &amp; Diff Solution</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">Ctrl</kbd> + <kbd class="hotkey-pill">Enter</kbd></div>
+                </div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">Indent Code (2 spaces)</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">Tab</kbd></div>
+                </div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">Outdent Code</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">Shift</kbd> + <kbd class="hotkey-pill">Tab</kbd></div>
+                </div>
+              </div>
+
+              <!-- Card 4: Global HUD & Dialogs -->
+              <div class="shortcut-category-card">
+                <div class="shortcut-cat-title">🌐 Global Modals &amp; HUD</div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">Toggle Hotkeys HUD</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">?</kbd> <span style="font-size: 10px; color: var(--text-muted);">or</span> <kbd class="hotkey-pill">Shift</kbd> + <kbd class="hotkey-pill">/</kbd></div>
+                </div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">Analytics &amp; Share</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">A</kbd></div>
+                </div>
+                <div class="shortcut-row">
+                  <span class="shortcut-desc">Dismiss Any Modal</span>
+                  <div class="shortcut-keys"><kbd class="hotkey-pill">Esc</kbd></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ===========================================================================
+  // OPTION 4: PROGRESS ANALYTICS & SOCIAL SHARE CARD GENERATOR
+  // ===========================================================================
+  function openAnalyticsModal(tab) {
+    state.analyticsModal = { show: true, tab: tab || 'stats' };
+    init();
+    if (state.analyticsModal.tab === 'social') {
+      setTimeout(() => {
+        const canvas = document.getElementById('socialCardCanvas');
+        if (canvas) generateSocialCardCanvas(canvas);
+      }, 60);
+    }
+  }
+
+  function closeAnalyticsModal() {
+    state.analyticsModal = { show: false, tab: 'stats' };
+    init();
+  }
+
+  function setAnalyticsTab(tab) {
+    state.analyticsModal.tab = tab;
+    init();
+    if (tab === 'social') {
+      setTimeout(() => {
+        const canvas = document.getElementById('socialCardCanvas');
+        if (canvas) generateSocialCardCanvas(canvas);
+      }, 60);
+    }
+  }
+
+  function updateSocialCardName(val) {
+    state.certificate.name = val;
+    const canvas = document.getElementById('socialCardCanvas');
+    if (canvas) generateSocialCardCanvas(canvas);
+  }
+
+  function generateSocialCardCanvas(canvas) {
+    if (!canvas || !canvas.getContext) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const w = 1200;
+    const h = 630;
+    canvas.width = w;
+    canvas.height = h;
+
+    // Background gradient: Rich deep navy with smooth dark falloff
+    const bgGrad = ctx.createLinearGradient(0, 0, w, h);
+    bgGrad.addColorStop(0, '#090d16');
+    bgGrad.addColorStop(0.5, '#0d1527');
+    bgGrad.addColorStop(1, '#05070c');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, w, h);
+
+    // Soft ambient radial glows
+    const roseGlow = ctx.createRadialGradient(150, 100, 10, 150, 100, 380);
+    roseGlow.addColorStop(0, 'rgba(225, 29, 72, 0.25)');
+    roseGlow.addColorStop(1, 'rgba(225, 29, 72, 0)');
+    ctx.fillStyle = roseGlow;
+    ctx.fillRect(0, 0, w, h);
+
+    const blueGlow = ctx.createRadialGradient(1050, 520, 10, 1050, 520, 420);
+    blueGlow.addColorStop(0, 'rgba(37, 99, 235, 0.2)');
+    blueGlow.addColorStop(1, 'rgba(37, 99, 235, 0)');
+    ctx.fillStyle = blueGlow;
+    ctx.fillRect(0, 0, w, h);
+
+    // Subtle Double Border
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(30, 30, w - 60, h - 60);
+
+    ctx.strokeStyle = 'rgba(225, 29, 72, 0.35)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(36, 36, w - 72, h - 72);
+
+    // Header Bar
+    ctx.fillStyle = '#e11d48';
+    ctx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('SQL FOUNDRY • OFFICIAL CANDIDATE PROOF-OF-WORK CREDENTIAL', 65, 80);
+
+    // Cert ID & Date
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '14px monospace';
+    const certId = (state.certificate && state.certificate.certId) || 'SQLF-MASTER';
+    const certDate = (state.certificate && state.certificate.date) || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    ctx.fillText(`ID: ${certId}  |  ISSUED: ${certDate}`, w - 65, 80);
+
+    // Candidate Name
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 44px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    const candName = (state.certificate && state.certificate.name) || 'Senior SQL Candidate';
+    ctx.fillText(candName, 65, 170);
+
+    // Subtitle
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = '600 20px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('Full-Stack Relational Engineering & Production Query Architecture', 65, 210);
+
+    // Stats Grid - 3 tactile tiles on canvas
+    const completedPhasesCount = state.completedPhases.size;
+    const completedTiersCount = Object.keys(state.tierCompleted).filter(k => state.tierCompleted[k]).length;
+    let rankBadge = 'APPRENTICE';
+    if (completedPhasesCount >= 10) rankBadge = 'STAFF GRANDMASTER';
+    else if (completedPhasesCount >= 7) rankBadge = 'ARCHITECT';
+    else if (completedPhasesCount >= 3) rankBadge = 'DEVELOPER';
+
+    const stats = [
+      { label: 'TOPICS MASTERED', val: `${completedPhasesCount} / 10`, color: '#e11d48' },
+      { label: '30-TIER CHALLENGES', val: `${completedTiersCount} / 30`, color: '#10b981' },
+      { label: 'CAREER READINESS', val: rankBadge, color: '#f59e0b' }
+    ];
+
+    const tileW = 340;
+    const tileH = 100;
+    const startX = 65;
+    const startY = 250;
+    const gap = 35;
+
+    stats.forEach((st, i) => {
+      const x = startX + i * (tileW + gap);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+      ctx.fillRect(x, startY, tileW, tileH);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x, startY, tileW, tileH);
+
+      ctx.fillStyle = st.color;
+      ctx.fillRect(x, startY, 4, tileH);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = 'bold 12px monospace';
+      ctx.fillText(st.label, x + 20, startY + 36);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.fillText(st.val, x + 20, startY + 76);
+    });
+
+    // Topic Checklist Pills (10 topics)
+    const pillY = 405;
+    ctx.fillStyle = '#cbd5e1';
+    ctx.font = 'bold 13px monospace';
+    ctx.fillText('CURRICULUM MILESTONES VERIFIED:', 65, pillY - 12);
+
+    const topicNames = ['01 SELECT', '02 WHERE', '03 ORDER', '04 AGG', '05 GROUP', '06 JOINS', '07 SETS', '08 CASE', '09 CTES', '10 WINDOWS'];
+    const pW = 100;
+    const pH = 34;
+    const pGap = 8;
+
+    topicNames.forEach((name, i) => {
+      const phase = PHASES[i];
+      const isDone = phase ? state.completedPhases.has(phase.id) : false;
+      const px = 65 + i * (pW + pGap);
+
+      ctx.fillStyle = isDone ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255, 255, 255, 0.03)';
+      ctx.strokeStyle = isDone ? 'rgba(16, 185, 129, 0.5)' : 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 1;
+      ctx.fillRect(px, pillY, pW, pH);
+      ctx.strokeRect(px, pillY, pW, pH);
+
+      ctx.fillStyle = isDone ? '#34d399' : '#64748b';
+      ctx.font = 'bold 11px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(name + (isDone ? ' ✓' : ''), px + pW / 2, pillY + 22);
+    });
+
+    // Footer stamp
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#64748b';
+    ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('Verified in-browser by SQL Foundry Interactive Relational Engine • ACID-Compliant', 65, 575);
+
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#e11d48';
+    ctx.font = 'bold 13px monospace';
+    ctx.fillText('https://sqlfoundry.dev', w - 65, 575);
+  }
+
+  function downloadSocialCardPng() {
+    const canvas = document.getElementById('socialCardCanvas');
+    if (!canvas) return;
+    generateSocialCardCanvas(canvas);
+    if (!canvas.toDataURL) return;
+    const dataUrl = canvas.toDataURL('image/png');
+    if (typeof document === 'undefined' || typeof document.createElement !== 'function' || !document.body) return;
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    const candName = ((state.certificate && state.certificate.name) || 'candidate').toLowerCase().replace(/\s+/g, '_');
+    a.download = `sql_foundry_mastery_${candName}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  function copySocialCardImage(btn) {
+    const canvas = document.getElementById('socialCardCanvas');
+    if (!canvas || !canvas.toBlob) {
+      downloadSocialCardPng();
+      return;
+    }
+    canvas.toBlob(blob => {
+      if (!blob) return;
+      if (typeof ClipboardItem !== 'undefined' && navigator.clipboard && navigator.clipboard.write) {
+        navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(() => {
+          showCopied(btn, 'Copied Image!');
+        }).catch(() => {
+          downloadSocialCardPng();
+        });
+      } else {
+        downloadSocialCardPng();
+      }
+    });
+  }
+
+  function exportProgressJson() {
+    const exportData = {
+      version: 1,
+      appName: 'SQL Foundry Mastery Course',
+      exportedAt: new Date().toISOString(),
+      completedPhases: Array.from(state.completedPhases),
+      tierCompleted: state.tierCompleted,
+      problemInput: state.problemInput,
+      mcqAnswers: state.mcqAnswers,
+      certificate: state.certificate
+    };
+    const jsonStr = JSON.stringify(exportData, null, 2);
+    if (typeof Blob === 'undefined' || typeof document === 'undefined' || typeof document.createElement !== 'function' || !document.body) return jsonStr;
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `sql_foundry_progress_backup_${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    return jsonStr;
+  }
+
+  function importProgressJson(jsonString) {
+    try {
+      const data = JSON.parse(jsonString);
+      if (!data || (!data.completedPhases && !data.tierCompleted)) {
+        if (typeof alert !== 'undefined') alert('Invalid SQL Foundry backup file format.');
+        return false;
+      }
+      if (Array.isArray(data.completedPhases)) {
+        state.completedPhases = new Set(data.completedPhases);
+        try { localStorage.setItem('sql_foundry_learning_order_v1', JSON.stringify(data.completedPhases)); } catch (e) {}
+      }
+      if (data.tierCompleted && typeof data.tierCompleted === 'object') {
+        state.tierCompleted = data.tierCompleted;
+        try { localStorage.setItem('sql_foundry_tier_completed_v1', JSON.stringify(data.tierCompleted)); } catch (e) {}
+      }
+      if (data.problemInput && typeof data.problemInput === 'object') {
+        state.problemInput = { ...state.problemInput, ...data.problemInput };
+      }
+      if (data.mcqAnswers && typeof data.mcqAnswers === 'object') {
+        state.mcqAnswers = { ...state.mcqAnswers, ...data.mcqAnswers };
+      }
+      if (data.certificate && typeof data.certificate === 'object') {
+        state.certificate = { ...state.certificate, ...data.certificate };
+      }
+      init();
+      if (typeof alert !== 'undefined') alert('Progress restored successfully!');
+      return true;
+    } catch (e) {
+      if (typeof alert !== 'undefined') alert('Failed to parse backup JSON: ' + e.message);
+      return false;
+    }
+  }
+
+  function resetAllProgress() {
+    if (typeof confirm !== 'undefined' && !confirm('Are you sure you want to reset all SQL Foundry course progress? This cannot be undone.')) {
+      return;
+    }
+    state.completedPhases.clear();
+    state.tierCompleted = {};
+    state.testResults = {};
+    state.runResults = {};
+    state.problemInput = {};
+    state.mcqAnswers = {};
+    try {
+      localStorage.removeItem('sql_foundry_learning_order_v1');
+      localStorage.removeItem('sql_foundry_tier_completed_v1');
+    } catch (e) {}
+    init();
+  }
+
+  function renderAnalyticsModal() {
+    if (!state.analyticsModal || !state.analyticsModal.show) return '';
+    const activeTab = state.analyticsModal.tab || 'stats';
+    const completedPhasesCount = state.completedPhases.size;
+    const progressPct = Math.round((completedPhasesCount / PHASES.length) * 100);
+    const completedTiersCount = Object.keys(state.tierCompleted).filter(k => state.tierCompleted[k]).length;
+
+    // MCQ accuracy calculation
+    let totalMcqAnswered = 0;
+    let totalMcqCorrect = 0;
+    PHASES.forEach(p => {
+      (p.mcqs || []).forEach((q, qIdx) => {
+        const userAns = state.mcqAnswers[`${p.id}_${qIdx}`];
+        if (userAns !== undefined) {
+          totalMcqAnswered++;
+          if (userAns === q.correct) totalMcqCorrect++;
+        }
+      });
+    });
+    const mcqAccuracy = totalMcqAnswered > 0 ? Math.round((totalMcqCorrect / totalMcqAnswered) * 100) : 0;
+
+    let rankLabel = '🌱 Relational Apprentice';
+    if (completedPhasesCount >= 10) rankLabel = '👑 Staff SQL Grandmaster';
+    else if (completedPhasesCount >= 7) rankLabel = '⚔️ Production Data Architect';
+    else if (completedPhasesCount >= 3) rankLabel = '🔰 SQL Developer';
+
+    return `
+      <div class="course-modal-backdrop no-print" onclick="if(event.target === this) window.MasteryCourseEngine.closeAnalyticsModal()">
+        <div class="analytics-modal-card">
+          <!-- Modal Tab Strip -->
+          <div class="mock-modal-header">
+            <div style="display: flex; gap: 8px;">
+              <button class="tier-tab-btn ${activeTab === 'stats' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setAnalyticsTab('stats')">
+                <span>📊 Mastery &amp; Stats</span>
+              </button>
+              <button class="tier-tab-btn ${activeTab === 'social' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setAnalyticsTab('social')">
+                <span>💼 Social Share Card (1200x630)</span>
+              </button>
+              <button class="tier-tab-btn ${activeTab === 'backup' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setAnalyticsTab('backup')">
+                <span>💾 Backup &amp; Sync</span>
+              </button>
+            </div>
+            <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.closeAnalyticsModal()">✕</button>
+          </div>
+
+          <div class="mock-modal-body" style="padding: 20px;">
+            ${activeTab === 'stats' ? `
+              <div class="stats-tab-content">
+                <!-- 4 High Impact Metric Tiles -->
+                <div class="stats-metrics-grid">
+                  <div class="stats-metric-tile">
+                    <span class="metric-tile-label">COURSE MASTERY</span>
+                    <span class="metric-tile-val" style="color: var(--accent);">${completedPhasesCount} / 10</span>
+                    <span class="metric-tile-sub">${progressPct}% Completed</span>
+                  </div>
+                  <div class="stats-metric-tile">
+                    <span class="metric-tile-label">TIERED CHALLENGES</span>
+                    <span class="metric-tile-val" style="color: #10b981;">${completedTiersCount} / 30</span>
+                    <span class="metric-tile-sub">Warm-up, Standard &amp; Edge</span>
+                  </div>
+                  <div class="stats-metric-tile">
+                    <span class="metric-tile-label">QUIZ ACCURACY</span>
+                    <span class="metric-tile-val" style="color: #3b82f6;">${mcqAccuracy}%</span>
+                    <span class="metric-tile-sub">${totalMcqCorrect} of ${totalMcqAnswered} Questions</span>
+                  </div>
+                  <div class="stats-metric-tile">
+                    <span class="metric-tile-label">CAREER READINESS</span>
+                    <span class="metric-tile-val" style="font-size: 16px; color: #f59e0b; margin-top: 6px;">${rankLabel}</span>
+                    <span class="metric-tile-sub">Based on verified solutions</span>
+                  </div>
+                </div>
+
+                <!-- Topic Breakdown Table -->
+                <div class="topic-breakdown-card">
+                  <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700;">10-Topic Curriculum Progress Map</h4>
+                  <div class="topic-breakdown-list">
+                    ${PHASES.map((p, idx) => {
+                      const isDone = state.completedPhases.has(p.id);
+                      const t1Done = !!state.tierCompleted[`${p.id}_tier_1`];
+                      const t2Done = !!state.tierCompleted[`${p.id}_tier_2`];
+                      const t3Done = !!state.tierCompleted[`${p.id}_tier_3`];
+                      const tiersDoneCount = [t1Done, t2Done, t3Done].filter(Boolean).length;
+
+                      return `
+                        <div class="topic-breakdown-row ${isDone ? 'done' : ''}">
+                          <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="phase-seq-tag">${p.seq}</span>
+                            <span style="font-weight: 600; font-size: 13px;">${p.title}</span>
+                          </div>
+                          <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">${tiersDoneCount}/3 Tiers</span>
+                            <span class="topic-status-pill ${isDone ? 'completed' : 'pending'}">${isDone ? '✓ Mastered' : 'In Progress'}</span>
+                            <button class="tier-tab-btn" onclick="window.MasteryCourseEngine.selectPhase('${p.id}'); window.MasteryCourseEngine.closeAnalyticsModal();" style="padding: 3px 8px; font-size: 11px;">
+                              Jump ➔
+                            </button>
+                          </div>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              </div>
+            ` : ''}
+
+            ${activeTab === 'social' ? `
+              <div class="social-tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                  <div>
+                    <h4 style="margin: 0; font-size: 15px; font-weight: 700;">Social Proof-of-Work Credential Card (1200x630)</h4>
+                    <span style="font-size: 12px; color: var(--text-muted);">High-resolution preview card optimized for LinkedIn, X (Twitter), GitHub, and resumes</span>
+                  </div>
+                  <div style="display: flex; gap: 8px; align-items: center;">
+                    <button class="case-solve-cta" onclick="window.MasteryCourseEngine.downloadSocialCardPng()">
+                      <span>📥 Download PNG</span>
+                    </button>
+                    <button class="case-solve-cta" style="background: var(--bg-hover); color: var(--text-primary); border: 1px solid var(--border-default);" onclick="window.MasteryCourseEngine.copySocialCardImage(this)">
+                      <span>📋 Copy Image</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 12px; font-weight: 600;">Recipient Name:</span>
+                  <input type="text" class="cert-candidate-name-input" value="${escapeHtml(state.certificate.name)}" oninput="window.MasteryCourseEngine.updateSocialCardName(this.value)" placeholder="Enter Candidate Name" style="max-width: 320px;" />
+                </div>
+
+                <div class="social-canvas-container">
+                  <canvas id="socialCardCanvas" width="1200" height="630"></canvas>
+                </div>
+              </div>
+            ` : ''}
+
+            ${activeTab === 'backup' ? `
+              <div class="backup-tab-content">
+                <div class="backup-cards-grid">
+                  <div class="backup-card">
+                    <div style="font-size: 24px; margin-bottom: 8px;">📥</div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 15px;">Export Progress Backup</h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+                      Download your verified solutions, completed tiers, quiz answers, and credential record as an offline JSON snapshot.
+                    </p>
+                    <button class="case-solve-cta" onclick="window.MasteryCourseEngine.exportProgressJson()">
+                      <span>📥 Download JSON Backup</span>
+                    </button>
+                  </div>
+
+                  <div class="backup-card">
+                    <div style="font-size: 24px; margin-bottom: 8px;">📤</div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 15px;">Restore from Backup</h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+                      Restore your learning progress from a previously saved JSON backup file.
+                    </p>
+                    <textarea id="importProgressTextarea" placeholder="Paste JSON backup here..." style="width: 100%; height: 75px; font-family: monospace; font-size: 11px; padding: 8px; border-radius: 6px; border: 1px solid var(--border-default); background: var(--bg-surface); margin-bottom: 10px;"></textarea>
+                    <button class="case-solve-cta" onclick="const ta = document.getElementById('importProgressTextarea'); if(ta) window.MasteryCourseEngine.importProgressJson(ta.value);">
+                      <span>🔄 Apply Backup JSON</span>
+                    </button>
+                  </div>
+
+                  <div class="backup-card" style="border-color: rgba(239, 68, 68, 0.35);">
+                    <div style="font-size: 24px; margin-bottom: 8px;">⚠️</div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 15px; color: #ef4444;">Reset All Progress</h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+                      Wipe all completed topics, tiered solutions, and stored attempts to start fresh from scratch.
+                    </p>
+                    <button class="phase-nav-btn" style="border-color: #ef4444; color: #ef4444; font-weight: 700;" onclick="window.MasteryCourseEngine.resetAllProgress()">
+                      <span>🗑️ Reset All Progress</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   return {
     init,
     getPhases: () => PHASES,
@@ -4139,7 +5128,27 @@ Certified in high-speed verbal architecture defense across:
     setCertTab,
     updateCertName,
     copyPortfolioMarkdown,
-    launchConfetti
+    launchConfetti,
+    // Option 2: Shortcuts HUD
+    openShortcutsModal,
+    closeShortcutsModal,
+    // Option 3: Execution Order Sequencer
+    setExecutionOrderMode,
+    selectExecutionClause,
+    movePuzzleClause,
+    verifyExecutionPuzzle,
+    resetExecutionPuzzle,
+    // Option 4: Progress Analytics & Social Share Card
+    openAnalyticsModal,
+    closeAnalyticsModal,
+    setAnalyticsTab,
+    generateSocialCardCanvas,
+    downloadSocialCardPng,
+    copySocialCardImage,
+    updateSocialCardName,
+    exportProgressJson,
+    importProgressJson,
+    resetAllProgress
   };
 
 })();
