@@ -59,122 +59,122 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
     <div className="flex flex-col gap-6">
       {/* 1. Top Bento Grid: Architecture Preview & Everyday Analogy */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Bento Card 1: Interactive Architecture / Concept Explainer (8 cols) */}
-        <div className="lg:col-span-7 flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-[#0c101b]/80 p-6 backdrop-blur-xl shadow-bento">
+        {/* Bento Card 1: Interactive Architecture / Concept Explainer (7 cols) */}
+        <div className="lg:col-span-7 flex flex-col justify-between rounded-2xl border border-border bg-surface p-6 shadow-panel">
           <div>
-            <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+            <div className="flex items-center justify-between pb-4 border-b border-border">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-rose-400" />
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                <Sparkles className="h-4 w-4 text-foreground" />
+                <h3 className="text-xs font-mono font-semibold text-foreground uppercase tracking-wider">
                   RELATIONAL ARCHITECTURE &amp; EXECUTION ENGINE
                 </h3>
               </div>
-              <span className="rounded-full bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-0.5 text-[10px] font-mono font-semibold text-indigo-400">
+              <span className="rounded-full bg-muted-surface border border-border px-2.5 py-0.5 text-[10px] font-mono font-medium text-muted-foreground">
                 ACTIVE PIPELINE
               </span>
             </div>
 
-            <div className="mt-4 flex flex-col gap-3">
-              <h4 className="text-base font-bold text-slate-100 font-sans">
+            <div className="mt-4 flex flex-col gap-2.5">
+              <h4 className="text-base font-semibold text-foreground font-sans">
                 {topic.name}
               </h4>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 {(topic.deepTheory && topic.deepTheory[0]?.body) || topic.summary}
               </p>
             </div>
           </div>
 
-          <div className="mt-6 flex items-center justify-between rounded-xl border border-white/[0.06] bg-black/40 p-3.5">
+          <div className="mt-6 flex items-center justify-between rounded-xl border border-border bg-muted-surface p-3.5">
             <div className="flex items-center gap-3">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold">
+              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-dark-background text-white text-[10px] font-mono font-semibold">
                 SQL
               </span>
-              <span className="text-xs text-slate-300 font-mono">
+              <span className="text-xs text-foreground font-mono">
                 SELECT * FROM Employees WHERE salary &gt; 100000;
               </span>
             </div>
-            <span className="text-[11px] font-mono text-emerald-400 font-semibold flex items-center gap-1">
-              <Play className="h-3 w-3 fill-emerald-400" /> Live AST
+            <span className="text-[11px] font-mono text-muted-foreground font-medium flex items-center gap-1">
+              <Play className="h-3 w-3 fill-current" /> Live AST
             </span>
           </div>
         </div>
 
         {/* Bento Card 2: Everyday Analogy (5 cols) */}
-        <div className="lg:col-span-5 flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-[#0c101b]/80 p-6 backdrop-blur-xl shadow-bento">
+        <div className="lg:col-span-5 flex flex-col justify-between rounded-2xl border border-border bg-surface p-6 shadow-panel">
           <div>
-            <div className="flex items-center gap-2 pb-4 border-b border-white/[0.08]">
-              <Lightbulb className="h-4 w-4 text-amber-400" />
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+            <div className="flex items-center gap-2 pb-4 border-b border-border">
+              <Lightbulb className="h-4 w-4 text-foreground" />
+              <h3 className="text-xs font-mono font-semibold text-foreground uppercase tracking-wider">
                 EVERYDAY METAPHOR
               </h3>
             </div>
 
             <div className="mt-4">
-              <h4 className="text-sm font-bold text-amber-300">
+              <h4 className="text-sm font-semibold text-foreground">
                 {topic.analogy.metaphor}
               </h4>
-              <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed italic">
+              <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed italic">
                 &ldquo;{topic.analogy.story}&rdquo;
               </p>
             </div>
           </div>
 
           {topic.analogy.takeaway && (
-            <div className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-3 text-xs text-amber-200/90 leading-relaxed">
-              <strong>💡 Golden Takeaway:</strong> {topic.analogy.takeaway}
+            <div className="mt-4 rounded-xl border border-border bg-muted-surface p-3.5 text-xs text-foreground leading-relaxed">
+              <strong className="font-semibold">💡 Key Principle:</strong> {topic.analogy.takeaway}
             </div>
           )}
         </div>
       </div>
 
       {/* 2. Bento Card 3: Interactive Execution Sequencer (Logical vs Lexical) */}
-      <div className="rounded-2xl border border-white/[0.08] bg-[#0c101b]/80 p-6 backdrop-blur-xl shadow-bento">
+      <div className="rounded-2xl border border-border bg-surface p-6 shadow-panel">
         {/* Header with Mode Switcher */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border">
           <div>
             <div className="flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-md bg-rose-500/20 border border-rose-500/40 text-rose-400 text-xs font-bold">
+              <span className="flex h-5 w-5 items-center justify-center rounded-md bg-dark-background text-white text-xs font-bold">
                 ⚡
               </span>
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+              <h3 className="text-xs font-mono font-semibold text-foreground uppercase tracking-wider">
                 SQL ENGINE EXECUTION ORDER (LOGICAL VS. LEXICAL)
               </h3>
             </div>
-            <p className="mt-0.5 text-xs text-slate-400">
+            <p className="mt-0.5 text-xs text-muted-foreground">
               What you write (lexical) is NOT how the engine computes it (logical).
             </p>
           </div>
 
-          <div className="flex items-center gap-1 rounded-xl border border-white/[0.08] bg-black/40 p-1">
+          <div className="flex items-center gap-1 rounded-xl border border-border bg-muted-surface p-1">
             <button
               onClick={() => setOrderMode('logical')}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                 orderMode === 'logical'
-                  ? 'bg-rose-500 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-dark-background text-white shadow-xs font-semibold'
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              🔍 Logical (Engine)
+              Logical (Engine)
             </button>
             <button
               onClick={() => setOrderMode('lexical')}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                 orderMode === 'lexical'
-                  ? 'bg-rose-500 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-dark-background text-white shadow-xs font-semibold'
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              ✍️ Lexical (Syntax)
+              Lexical (Syntax)
             </button>
             <button
               onClick={() => setOrderMode('puzzle')}
-              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                 orderMode === 'puzzle'
-                  ? 'bg-rose-500 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-dark-background text-white shadow-xs font-semibold'
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              🧩 Puzzle Mode
+              Puzzle Mode
             </button>
           </div>
         </div>
@@ -183,19 +183,19 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
         {orderMode === 'puzzle' ? (
           <div className="mt-5 flex flex-col gap-4">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <p className="text-xs text-slate-300">
-                Arrange the 7 clauses below in the <strong>exact order</strong> the engine processes them:
+              <p className="text-xs text-muted-foreground">
+                Arrange the 7 clauses below in the <strong>exact order</strong> the relational engine evaluates them:
               </p>
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleVerifyPuzzle}
-                  className="rounded-lg bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 text-xs font-bold text-white transition-all shadow-sm flex items-center gap-1"
+                  className="rounded-lg bg-dark-background hover:bg-neutral-800 px-3 py-1.5 text-xs font-medium text-white transition-all shadow-xs flex items-center gap-1.5"
                 >
                   <CheckCircle2 className="h-3.5 w-3.5" /> Verify Sequence
                 </button>
                 <button
                   onClick={handleResetPuzzle}
-                  className="rounded-lg border border-white/10 hover:border-white/20 px-3 py-1.5 text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center gap-1"
+                  className="rounded-lg border border-border bg-surface hover:bg-muted-surface px-3 py-1.5 text-xs font-medium text-foreground transition-all flex items-center gap-1.5"
                 >
                   <RotateCcw className="h-3.5 w-3.5" /> Reset
                 </button>
@@ -206,8 +206,8 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
               <div
                 className={`rounded-xl border p-3.5 text-xs font-medium ${
                   puzzleCorrect
-                    ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300'
-                    : 'border-rose-500/40 bg-rose-500/10 text-rose-300'
+                    ? 'border-emerald-600/30 bg-emerald-50 text-emerald-900'
+                    : 'border-rose-600/30 bg-rose-50 text-rose-900'
                 }`}
               >
                 {puzzleCorrect
@@ -222,25 +222,25 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
                 return (
                   <div
                     key={id}
-                    className="flex items-center justify-between rounded-xl border border-white/[0.08] bg-black/40 px-4 py-2.5 text-xs"
+                    className="flex items-center justify-between rounded-xl border border-border bg-muted-surface px-4 py-2.5 text-xs"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="font-mono font-bold text-rose-400">#{idx + 1}</span>
-                      <span className="font-mono font-bold text-white">{clause.keyword}</span>
-                      <span className="text-slate-400 font-sans">({clause.role})</span>
+                      <span className="font-mono font-bold text-foreground">#{idx + 1}</span>
+                      <span className="font-mono font-semibold text-foreground">{clause.keyword}</span>
+                      <span className="text-muted-foreground font-sans">({clause.role})</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <button
                         disabled={idx === 0}
                         onClick={() => movePuzzleItem(idx, -1)}
-                        className="rounded border border-white/10 bg-white/5 px-2 py-0.5 text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="rounded border border-border bg-surface px-2 py-0.5 text-foreground hover:bg-muted-surface disabled:opacity-30 disabled:cursor-not-allowed"
                       >
                         ▲
                       </button>
                       <button
                         disabled={idx === puzzleOrder.length - 1}
                         onClick={() => movePuzzleItem(idx, 1)}
-                        className="rounded border border-white/10 bg-white/5 px-2 py-0.5 text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="rounded border border-border bg-surface px-2 py-0.5 text-foreground hover:bg-muted-surface disabled:opacity-30 disabled:cursor-not-allowed"
                       >
                         ▼
                       </button>
@@ -261,19 +261,21 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
                   <React.Fragment key={clause.id}>
                     <button
                       onClick={() => setActiveClauseId(clause.id)}
-                      className={`relative flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${
+                      className={`relative flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs whitespace-nowrap transition-all ${
                         isSelected
-                          ? 'bg-rose-500 text-white shadow-glow-rose font-bold'
-                          : 'border border-white/[0.08] bg-white/[0.03] text-slate-400 hover:text-white'
+                          ? 'bg-dark-background text-white shadow-xs font-semibold'
+                          : 'border border-border bg-muted-surface text-muted-foreground hover:text-foreground'
                       }`}
                     >
-                      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-black/30 text-[9px] font-mono font-bold">
+                      <span className={`flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-mono font-bold ${
+                        isSelected ? 'bg-white/20 text-white' : 'bg-surface text-foreground border border-border'
+                      }`}>
                         {stepNum}
                       </span>
                       <span className="font-mono">{clause.keyword}</span>
                     </button>
                     {idx < sortedClauses.length - 1 && (
-                      <ArrowRight className="h-3 w-3 text-slate-600 shrink-0" />
+                      <ArrowRight className="h-3 w-3 text-muted-foreground/40 shrink-0" />
                     )}
                   </React.Fragment>
                 );
@@ -281,37 +283,37 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
             </div>
 
             {/* Selected Clause Deep Dive */}
-            <div className="rounded-xl border border-white/[0.08] bg-black/30 p-4.5">
-              <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
+            <div className="rounded-xl border border-border bg-muted-surface p-5">
+              <div className="flex items-center justify-between border-b border-border pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-rose-500/20 border border-rose-500/30 px-2 py-0.5 text-[10px] font-mono font-bold text-rose-400">
+                  <span className="rounded-full bg-dark-background px-2.5 py-0.5 text-[10px] font-mono font-medium text-white">
                     STAGE {orderMode === 'logical' ? activeClause.logicalPos : activeClause.lexicalPos} OF 7
                   </span>
-                  <h4 className="font-bold text-white font-mono text-sm">
-                    {activeClause.keyword} <span className="font-sans text-slate-400 text-xs">({activeClause.role})</span>
+                  <h4 className="font-semibold text-foreground font-mono text-sm">
+                    {activeClause.keyword} <span className="font-sans text-muted-foreground text-xs font-normal">({activeClause.role})</span>
                   </h4>
                 </div>
               </div>
 
               <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                 <div>
-                  <span className="font-mono font-bold text-slate-400 uppercase tracking-wider text-[10px]">
-                    ⚙️ ENGINE ACTION:
+                  <span className="font-mono font-medium text-muted-foreground uppercase tracking-wider text-[10px]">
+                    ENGINE ACTION:
                   </span>
-                  <p className="mt-1 text-slate-300 leading-relaxed">
+                  <p className="mt-1 text-foreground leading-relaxed">
                     {activeClause.action}
                   </p>
-                  <p className="mt-2 text-slate-400 leading-relaxed">
+                  <p className="mt-2 text-muted-foreground leading-relaxed">
                     {activeClause.whyItMatters}
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-2.5">
-                  <div className="rounded-lg border border-indigo-500/20 bg-indigo-500/5 p-3">
-                    <span className="font-mono font-bold text-indigo-400 uppercase tracking-wider text-[10px]">
+                  <div className="rounded-lg border border-border bg-surface p-3.5 shadow-xs">
+                    <span className="font-mono font-semibold text-foreground uppercase tracking-wider text-[10px]">
                       🎙️ FAANG INTERVIEW DEFENSE:
                     </span>
-                    <p className="mt-1 text-slate-300 leading-relaxed italic">
+                    <p className="mt-1 text-muted-foreground leading-relaxed italic">
                       &ldquo;{activeClause.interviewTip}&rdquo;
                     </p>
                   </div>
@@ -326,25 +328,25 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Bento Card 4: FAANG Screening Script (6 cols) */}
         {topic.interviewDefense && (
-          <div className="lg:col-span-6 rounded-2xl border border-white/[0.08] bg-[#0c101b]/80 p-6 backdrop-blur-xl shadow-bento flex flex-col justify-between">
+          <div className="lg:col-span-6 rounded-2xl border border-border bg-surface p-6 shadow-panel flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+              <div className="flex items-center justify-between pb-4 border-b border-border">
                 <div className="flex items-center gap-2">
-                  <Mic className="h-4 w-4 text-rose-400" />
-                  <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                  <Mic className="h-4 w-4 text-foreground" />
+                  <h3 className="text-xs font-mono font-semibold text-foreground uppercase tracking-wider">
                     FAANG SCREENING SCRIPT
                   </h3>
                 </div>
-                <span className="rounded-full bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 text-[10px] font-mono font-bold text-rose-400">
+                <span className="rounded-full bg-muted-surface border border-border px-2.5 py-0.5 text-[10px] font-mono font-medium text-foreground">
                   {topic.interviewDefense.difficulty}
                 </span>
               </div>
 
               <div className="mt-4">
-                <h4 className="text-sm font-bold text-white">
+                <h4 className="text-sm font-semibold text-foreground">
                   &ldquo;{topic.interviewDefense.question}&rdquo;
                 </h4>
-                <div className="mt-3 rounded-xl border border-white/[0.08] bg-black/40 p-3.5 text-xs text-slate-300 leading-relaxed italic">
+                <div className="mt-3 rounded-xl border border-border bg-muted-surface p-3.5 text-xs text-foreground/90 leading-relaxed italic">
                   &ldquo;{topic.interviewDefense.spokenAnswer}&rdquo;
                 </div>
               </div>
@@ -352,11 +354,11 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
 
             {topic.interviewDefense.powerKeywords && (
               <div className="mt-4 flex flex-wrap items-center gap-1.5">
-                <span className="text-[10px] font-mono text-slate-400">KEYWORDS:</span>
+                <span className="text-[10px] font-mono text-muted-foreground">KEYWORDS:</span>
                 {topic.interviewDefense.powerKeywords.map((kw, i) => (
                   <span
                     key={i}
-                    className="rounded-full border border-indigo-500/25 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-mono text-indigo-300"
+                    className="rounded-full border border-border bg-muted-surface px-2.5 py-0.5 text-[10px] font-mono text-foreground"
                   >
                     {kw}
                   </span>
@@ -368,36 +370,36 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
 
         {/* Bento Card 5: High-Yield Traps & Corporate Gotchas (6 cols) */}
         {topic.traps && topic.traps.length > 0 && (
-          <div className="lg:col-span-6 rounded-2xl border border-white/[0.08] bg-[#0c101b]/80 p-6 backdrop-blur-xl shadow-bento flex flex-col justify-between">
+          <div className="lg:col-span-6 rounded-2xl border border-border bg-surface p-6 shadow-panel flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+              <div className="flex items-center justify-between pb-4 border-b border-border">
                 <div className="flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4 text-amber-400" />
-                  <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                  <AlertTriangle className="h-4 w-4 text-foreground" />
+                  <h3 className="text-xs font-mono font-semibold text-foreground uppercase tracking-wider">
                     HIGH-YIELD GOTCHA &amp; TRAP
                   </h3>
                 </div>
-                <span className="rounded-full bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 text-[10px] font-mono font-bold text-amber-400">
+                <span className="rounded-full bg-muted-surface border border-border px-2.5 py-0.5 text-[10px] font-mono font-medium text-foreground">
                   {topic.traps[0].severity}
                 </span>
               </div>
 
               <div className="mt-4 flex flex-col gap-3">
-                <h4 className="text-sm font-bold text-amber-300">
+                <h4 className="text-sm font-semibold text-foreground">
                   {topic.traps[0].title}
                 </h4>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   {topic.traps[0].whyItBreaks}
                 </p>
-                <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-2.5 text-[11px] text-red-300">
+                <div className="rounded-lg border border-border bg-muted-surface p-2.5 text-[11px] text-foreground">
                   <strong>🚨 Corporate Impact:</strong> {topic.traps[0].corporateImpact}
                 </div>
               </div>
             </div>
 
-            <div className="mt-4 rounded-xl border border-white/[0.06] bg-black/40 p-3 font-mono text-[11px]">
-              <span className="text-emerald-400">✓ Production Standard:</span>
-              <pre className="mt-1 text-slate-200 overflow-x-auto">{topic.traps[0].goodSql}</pre>
+            <div className="mt-4 rounded-xl border border-border bg-muted-surface p-3 font-mono text-[11px]">
+              <span className="text-foreground font-semibold">✓ Production Standard:</span>
+              <pre className="mt-1 text-muted-foreground overflow-x-auto">{topic.traps[0].goodSql}</pre>
             </div>
           </div>
         )}

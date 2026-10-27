@@ -58,7 +58,6 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
 
   const handleRunQuery = () => {
     // Simulated realistic execution for visual diff grid
-    const sampleCols = ['id', 'first_name', 'department', 'salary'];
     const mockUserRows = [
       { id: 101, first_name: 'Ashley', department: 'Analytics', salary: 115000 },
       { id: 102, first_name: 'David', department: 'Engineering', salary: 125000 },
@@ -100,7 +99,7 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
   return (
     <div className="flex flex-col gap-6">
       {/* 3-Tier Selector Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/[0.08] bg-[#0c101b]/80 p-3 backdrop-blur-xl shadow-bento">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-surface p-3.5 shadow-panel">
         <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
           {tiers.map((t, idx) => {
             const tid = getTierId(t, idx);
@@ -113,14 +112,14 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
                   setTestResult(null);
                   setShowSolution(false);
                 }}
-                className={`relative flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold whitespace-nowrap transition-colors duration-150 ${
-                  isActive ? 'text-white font-bold' : 'text-slate-400 hover:text-slate-200'
+                className={`relative flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-medium whitespace-nowrap transition-colors duration-150 ${
+                  isActive ? 'text-foreground font-semibold' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {isActive && (
                   <motion.div
                     layoutId="activeTierStudioPill"
-                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-rose-500/20 via-indigo-500/20 to-rose-500/15 border border-rose-500/35 shadow-sm"
+                    className="absolute inset-0 rounded-xl bg-muted-surface border border-border shadow-xs"
                     transition={{ type: 'spring', stiffness: 450, damping: 32 }}
                   />
                 )}
@@ -135,33 +134,33 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="rounded-full bg-white/5 border border-white/10 px-2.5 py-1 text-[11px] font-mono text-slate-400">
-            Target: <strong className="text-white">{activeTier.targetTable}</strong>
+          <span className="rounded-full bg-muted-surface border border-border px-2.5 py-1 text-[11px] font-mono text-muted-foreground">
+            Target: <strong className="text-foreground">{activeTier.targetTable}</strong>
           </span>
-          <span className="rounded-full bg-rose-500/10 border border-rose-500/30 px-2.5 py-1 text-[11px] font-mono font-bold text-rose-400 uppercase">
+          <span className="rounded-full bg-dark-background px-2.5 py-1 text-[11px] font-mono font-medium text-white uppercase">
             {activeTier.difficulty}
           </span>
         </div>
       </div>
 
       {/* Problem Challenge Specification Card */}
-      <div className="rounded-2xl border border-white/[0.08] bg-[#0c101b]/80 p-5 backdrop-blur-xl shadow-bento">
-        <h3 className="text-base font-bold text-white font-sans flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-amber-400" />
+      <div className="rounded-2xl border border-border bg-surface p-6 shadow-panel">
+        <h3 className="text-base font-bold text-foreground font-sans flex items-center gap-2">
+          <Sparkles className="h-4 w-4 text-foreground" />
           {activeTier.title}
         </h3>
-        <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+        <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed font-sans">
           {activeTier.spec}
         </p>
       </div>
 
       {/* SQL Editor Studio Card */}
-      <div className="rounded-2xl border border-white/[0.08] bg-[#07090e] overflow-hidden shadow-bento">
+      <div className="rounded-2xl border border-border bg-surface overflow-hidden shadow-panel">
         {/* Editor Controls Bar */}
-        <div className="flex items-center justify-between border-b border-white/[0.08] bg-[#0d111d] px-4 py-2.5">
+        <div className="flex items-center justify-between border-b border-border bg-muted-surface px-4 py-3">
           <div className="flex items-center gap-2">
-            <Terminal className="h-4 w-4 text-rose-400" />
-            <span className="text-xs font-mono font-bold text-white">
+            <Terminal className="h-4 w-4 text-foreground" />
+            <span className="text-xs font-mono font-semibold text-foreground">
               QUERY EDITOR (POSTGRES / SQLITE / MYSQL)
             </span>
           </div>
@@ -169,14 +168,14 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowSolution(!showSolution)}
-              className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-semibold text-slate-300 hover:text-white transition-all"
+              className="flex items-center gap-1.5 rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-foreground hover:bg-muted-surface transition-all"
             >
               <Eye className="h-3 w-3" />
               <span>{showSolution ? 'Hide Solution' : 'View Solution'}</span>
             </button>
             <button
               onClick={handleResetCode}
-              className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-semibold text-slate-300 hover:text-white transition-all"
+              className="flex items-center gap-1.5 rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-foreground hover:bg-muted-surface transition-all"
             >
               <RotateCcw className="h-3 w-3" />
               <span>Reset</span>
@@ -206,38 +205,38 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
               }
             }}
             rows={7}
-            className="w-full bg-[#07090e] p-4 font-mono text-xs text-slate-100 placeholder-slate-600 outline-none resize-y selection:bg-rose-500/30 leading-relaxed"
+            className="w-full bg-surface p-4 font-mono text-xs text-foreground placeholder-muted-foreground outline-none resize-y selection:bg-neutral-200 leading-relaxed"
             placeholder="Write your production SQL query here..."
             spellCheck={false}
           />
 
           {showSolution && (
-            <div className="border-t border-amber-500/30 bg-[#161208] p-4 text-xs font-mono">
-              <span className="text-amber-400 font-bold text-[11px] uppercase tracking-wider block mb-1">
+            <div className="border-t border-border bg-muted-surface p-4 text-xs font-mono">
+              <span className="text-foreground font-semibold text-[11px] uppercase tracking-wider block mb-1">
                 🔑 Production Reference Solution:
               </span>
-              <pre className="text-amber-200 overflow-x-auto">{activeTier.solutionSql}</pre>
+              <pre className="text-foreground/90 overflow-x-auto">{activeTier.solutionSql}</pre>
             </div>
           )}
         </div>
 
         {/* Action Button Strip */}
-        <div className="flex items-center justify-between border-t border-white/[0.08] bg-[#0c101a] px-4 py-3">
-          <span className="text-[11px] font-mono text-slate-500 hidden sm:inline">
-            Press <kbd className="rounded border border-white/10 bg-white/5 px-1 py-0.5 text-[10px] text-slate-300">Ctrl</kbd> + <kbd className="rounded border border-white/10 bg-white/5 px-1 py-0.5 text-[10px] text-slate-300">Enter</kbd> to verify
+        <div className="flex items-center justify-between border-t border-border bg-muted-surface px-4 py-3">
+          <span className="text-[11px] font-mono text-muted-foreground hidden sm:inline">
+            Press <kbd className="rounded border border-border bg-surface px-1 py-0.5 text-[10px] text-foreground">Ctrl</kbd> + <kbd className="rounded border border-border bg-surface px-1 py-0.5 text-[10px] text-foreground">Enter</kbd> to verify
           </span>
 
           <div className="flex items-center gap-2.5 ml-auto">
             <button
               onClick={handleRunQuery}
-              className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 px-4 py-2 text-xs font-semibold text-white transition-all shadow-sm"
+              className="flex items-center gap-1.5 rounded-xl border border-border bg-surface hover:bg-muted-surface px-4 py-2 text-xs font-medium text-foreground transition-all shadow-xs"
             >
               <Play className="h-3.5 w-3.5" />
               <span>Run Query</span>
             </button>
             <button
               onClick={handleVerifySolution}
-              className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-indigo-600 hover:from-rose-600 hover:to-indigo-700 px-5 py-2 text-xs font-bold text-white transition-all shadow-glow-rose"
+              className="flex items-center gap-1.5 rounded-xl bg-dark-background hover:bg-neutral-800 px-5 py-2 text-xs font-medium text-white transition-all shadow-xs"
             >
               <CheckCircle2 className="h-3.5 w-3.5" />
               <span>Submit &amp; Verify Solution</span>
@@ -248,13 +247,13 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
 
       {/* 3-Way Diff Console & Output Grid */}
       {testResult && (
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c101b]/80 p-5 backdrop-blur-xl shadow-bento">
+        <div className="rounded-2xl border border-border bg-surface p-6 shadow-panel">
           {/* Status Message */}
           <div
             className={`rounded-xl border p-3.5 text-xs font-medium flex items-center justify-between ${
               testResult.passed
-                ? 'border-emerald-500/35 bg-emerald-500/10 text-emerald-300'
-                : 'border-rose-500/35 bg-rose-500/10 text-rose-300'
+                ? 'border-emerald-600/30 bg-emerald-50 text-emerald-900'
+                : 'border-rose-600/30 bg-rose-50 text-rose-900'
             }`}
           >
             <span>{testResult.message}</span>
@@ -264,62 +263,62 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
           </div>
 
           {/* Diff Tab Buttons */}
-          <div className="mt-4 flex items-center justify-between border-b border-white/[0.08] pb-3">
-            <div className="flex items-center gap-1.5 rounded-xl border border-white/[0.08] bg-black/40 p-1">
+          <div className="mt-4 flex items-center justify-between border-b border-border pb-3">
+            <div className="flex items-center gap-1.5 rounded-xl border border-border bg-muted-surface p-1">
               <button
                 onClick={() => setActiveDiffTab('diff')}
-                className={`rounded-lg px-3 py-1 text-xs font-semibold transition-all ${
-                  activeDiffTab === 'diff' ? 'bg-rose-500 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                className={`rounded-lg px-3 py-1 text-xs font-medium transition-all ${
+                  activeDiffTab === 'diff' ? 'bg-dark-background text-white shadow-xs font-semibold' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                📊 Visual Diff
+                Visual Diff
               </button>
               <button
                 onClick={() => setActiveDiffTab('user')}
-                className={`rounded-lg px-3 py-1 text-xs font-semibold transition-all ${
-                  activeDiffTab === 'user' ? 'bg-rose-500 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                className={`rounded-lg px-3 py-1 text-xs font-medium transition-all ${
+                  activeDiffTab === 'user' ? 'bg-dark-background text-white shadow-xs font-semibold' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                👤 Your Output
+                Your Output
               </button>
               <button
                 onClick={() => setActiveDiffTab('expected')}
-                className={`rounded-lg px-3 py-1 text-xs font-semibold transition-all ${
-                  activeDiffTab === 'expected' ? 'bg-rose-500 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                className={`rounded-lg px-3 py-1 text-xs font-medium transition-all ${
+                  activeDiffTab === 'expected' ? 'bg-dark-background text-white shadow-xs font-semibold' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                🎯 Expected Output
+                Expected Output
               </button>
             </div>
-            <span className="text-xs font-mono text-slate-400">
+            <span className="text-xs font-mono text-muted-foreground">
               {testResult.userRows.length} Tuples Rendered
             </span>
           </div>
 
           {/* Table Grid Output */}
-          <div className="mt-3.5 overflow-x-auto rounded-xl border border-white/[0.08]">
+          <div className="mt-3.5 overflow-x-auto rounded-xl border border-border">
             <table className="w-full text-left font-mono text-xs">
-              <thead className="bg-[#121727] text-slate-400">
+              <thead className="bg-muted-surface text-muted-foreground">
                 <tr>
-                  <th className="py-2.5 px-3 border-b border-white/[0.08]">STATUS</th>
+                  <th className="py-2.5 px-3 border-b border-border">STATUS</th>
                   {Object.keys(testResult.userRows[0] || {}).map((col) => (
-                    <th key={col} className="py-2.5 px-3 border-b border-white/[0.08] font-bold text-white">
+                    <th key={col} className="py-2.5 px-3 border-b border-border font-semibold text-foreground">
                       {col}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.04] bg-black/30">
+              <tbody className="divide-y divide-border bg-surface">
                 {testResult.userRows.map((row, rIdx) => (
-                  <tr key={rIdx} className="hover:bg-white/[0.02]">
+                  <tr key={rIdx} className="hover:bg-muted-surface/50">
                     <td className="py-2 px-3">
-                      <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[9px] font-bold text-emerald-400">
+                      <span className="rounded-full bg-emerald-100 border border-emerald-300 px-2 py-0.5 text-[9px] font-semibold text-emerald-800">
                         ✓ MATCH
                       </span>
                     </td>
                     {Object.values(row).map((val: any, cIdx) => (
-                      <td key={cIdx} className="py-2 px-3 text-slate-200">
-                        {val === null ? <em className="text-slate-500">NULL</em> : String(val)}
+                      <td key={cIdx} className="py-2 px-3 text-foreground">
+                        {val === null ? <em className="text-muted-foreground">NULL</em> : String(val)}
                       </td>
                     ))}
                   </tr>

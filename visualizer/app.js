@@ -1738,7 +1738,7 @@ function generateSqlFromBuilder() {
   try {
     let savedTheme = localStorage.getItem('sql_visualizer_theme');
     if (!savedTheme || savedTheme === 'zinc-pitch' || savedTheme === 'cursor-dark' || savedTheme === 'active-builders') {
-      savedTheme = 'saas-midnight';
+      savedTheme = 'kobbe-nordic';
     }
     document.documentElement.setAttribute('data-theme', savedTheme);
   } catch (e) {}
@@ -1746,14 +1746,14 @@ function generateSqlFromBuilder() {
 
 function initThemeController() {
   const themeSelect = document.getElementById('themeSelect');
-  let savedTheme = 'saas-midnight';
+  let savedTheme = 'kobbe-nordic';
   try {
     const stored = localStorage.getItem('sql_visualizer_theme');
     if (stored && stored !== 'zinc-pitch' && stored !== 'cursor-dark' && stored !== 'active-builders') {
       savedTheme = stored;
     } else {
-      savedTheme = 'saas-midnight';
-      localStorage.setItem('sql_visualizer_theme', 'saas-midnight');
+      savedTheme = 'kobbe-nordic';
+      localStorage.setItem('sql_visualizer_theme', 'kobbe-nordic');
     }
   } catch (e) {}
 

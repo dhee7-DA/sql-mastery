@@ -1,0 +1,245 @@
+/* =============================================================================
+   SQL FOUNDRY - KOBBE.IO NORDIC EDITORIAL DESIGN SYSTEM (data-theme="kobbe-nordic")
+   Exact reverse-engineered design system from https://kobbe.io (Michael Andreuzza)
+   - Warm Bone Linen Paper Canvas: oklch(98.2% 0.002 84.559) / #fbfaf8
+   - Muted Surface: oklch(96.5% 0.004 84.559) / #f2f1ec
+   - Hairline Paper Borders: oklch(91.2% 0.006 84.559) / #e5e3dc
+   - Charcoal Typography: oklch(28.9% 0 0) / #262626
+   - Muted Charcoal: oklch(55.6% 0.008 84.559) / #6f6e69
+   - Deep Button Accent: #1c1c1c
+   - Signature Layered Panel Shadow:
+     0px 0px 0px 1px #fff, 0px 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 2px 1px 0px rgba(0,0,0,0.02), 0px 4px 6px -1px rgba(0,0,0,0.04), 0px 2px 4px -2px rgba(0,0,0,0.04)
+   ============================================================================= */
+
+:root,
+[data-theme="kobbe-nordic"] {
+  /* Warm Bone Canvas & Linen Surfaces */
+  --bg-canvas: #fbfaf8;
+  --bg-surface: #fbfaf8;
+  --bg-surface-elevated: #f2f1ec;
+  --bg-card: #fbfaf8;
+  --bg-card-subtle: #f2f1ec;
+  --bg-hover: #ebe9e2;
+  --bg-active: #e2dfd7;
+
+  /* Paper Borders */
+  --border-subtle: #eae8e1;
+  --border-default: #e5e3dc;
+  --border-muted: #eceae3;
+  --border-hover: #d5d2c8;
+  --border-focus: #1c1c1c;
+
+  /* Charcoal Typography */
+  --text-primary: #262626;
+  --text-secondary: #6f6e69;
+  --text-muted: #8e8d87;
+
+  /* Nordic Dark Button Accent */
+  --accent: #1c1c1c;
+  --accent-hover: #2e2e2e;
+  --accent-soft: #f2f1ec;
+  --accent-border: #e5e3dc;
+  --accent-glow: none;
+
+  /* Status Colors */
+  --status-success: #15803d;
+  --status-success-bg: #f0fdf4;
+  --status-success-border: #bbf7d0;
+
+  --status-fail: #b91c1c;
+  --status-fail-bg: #fef2f2;
+  --status-fail-border: #fecaca;
+
+  --status-warning: #b45309;
+  --status-warning-bg: #fffbeb;
+  --status-warning-border: #fde68a;
+
+  --status-info: #0369a1;
+  --status-info-bg: #f0f9ff;
+  --status-info-border: #bae6fd;
+
+  --status-neutral: #f2f1ec;
+
+  /* Kobbe Signature Layered Shadows */
+  --shadow-panel: 0px 0px 0px 1px #ffffff, 0px 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 2px 1px 0px rgba(0, 0, 0, 0.02), 0px 4px 6px -1px rgba(0, 0, 0, 0.04), 0px 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-card: var(--shadow-panel);
+  --shadow-card-hover: 0px 0px 0px 1px #ffffff, 0px 0px 0px 2px rgba(0, 0, 0, 0.09), 0px 6px 12px -2px rgba(0, 0, 0, 0.06);
+  --shadow-specular: none;
+  --shadow-specular-bright: none;
+
+  /* Editorial Fonts */
+  --font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* Concentric Geometry */
+  --radius-outer: 16px;
+  --radius-card: 12px;
+  --radius-inner: 8px;
+  --radius-pill: 9999px;
+
+  color-scheme: light;
+}
+
+/* Base Body Application */
+[data-theme="kobbe-nordic"] body,
+[data-theme="kobbe-nordic"] .app-layout {
+  background-color: var(--bg-canvas) !important;
+  background-image: none !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-sans) !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+/* Header Bar */
+[data-theme="kobbe-nordic"] .app-header {
+  background: var(--bg-canvas) !important;
+  border-bottom: 1px solid var(--border-default) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+[data-theme="kobbe-nordic"] .brand-name {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="kobbe-nordic"] .brand-badge {
+  background: var(--bg-surface-elevated) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-default) !important;
+}
+
+/* Navigation Switcher Pills */
+[data-theme="kobbe-nordic"] .nav-groups-container {
+  background: var(--bg-surface-elevated) !important;
+  border: 1px solid var(--border-default) !important;
+  border-radius: 10px !important;
+  padding: 3px !important;
+}
+
+[data-theme="kobbe-nordic"] .nav-group-trigger {
+  color: var(--text-secondary) !important;
+  border-radius: 7px !important;
+}
+
+[data-theme="kobbe-nordic"] .nav-group-trigger:hover {
+  background: var(--bg-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="kobbe-nordic"] .nav-group-trigger.active {
+  background: #ffffff !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 1px var(--border-default) !important;
+  font-weight: 600 !important;
+}
+
+/* Cards & Panels across all views */
+[data-theme="kobbe-nordic"] .mastery-course-shell,
+[data-theme="kobbe-nordic"] .arena-container,
+[data-theme="kobbe-nordic"] .company-mastery-shell,
+[data-theme="kobbe-nordic"] .studio-workbench-shell,
+[data-theme="kobbe-nordic"] .mock-interview-shell {
+  background: var(--bg-canvas) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="kobbe-nordic"] .bento-card,
+[data-theme="kobbe-nordic"] .arena-card,
+[data-theme="kobbe-nordic"] .course-card,
+[data-theme="kobbe-nordic"] .panel-container,
+[data-theme="kobbe-nordic"] .stage-bento-hero,
+[data-theme="kobbe-nordic"] .active-topic-banner,
+[data-theme="kobbe-nordic"] .problem-studio-shell {
+  background: #ffffff !important;
+  border: 1px solid var(--border-default) !important;
+  box-shadow: var(--shadow-panel) !important;
+  border-radius: var(--radius-card) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Secondary Panels & Code Blocks */
+[data-theme="kobbe-nordic"] .code-surface,
+[data-theme="kobbe-nordic"] pre,
+[data-theme="kobbe-nordic"] code,
+[data-theme="kobbe-nordic"] .sql-console,
+[data-theme="kobbe-nordic"] .terminal-output,
+[data-theme="kobbe-nordic"] .diff-grid-container {
+  background: var(--bg-surface-elevated) !important;
+  border: 1px solid var(--border-default) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-mono) !important;
+}
+
+/* Primary CTAs - Kobbe Deep Dark Button */
+[data-theme="kobbe-nordic"] .btn-primary,
+[data-theme="kobbe-nordic"] .btn-cta,
+[data-theme="kobbe-nordic"] .action-btn-primary,
+[data-theme="kobbe-nordic"] .run-query-btn-primary {
+  background: #1c1c1c !important;
+  color: #ffffff !important;
+  border: 1px solid #1c1c1c !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="kobbe-nordic"] .btn-primary:hover,
+[data-theme="kobbe-nordic"] .btn-cta:hover,
+[data-theme="kobbe-nordic"] .action-btn-primary:hover {
+  background: #2e2e2e !important;
+  border-color: #2e2e2e !important;
+}
+
+/* Secondary Buttons */
+[data-theme="kobbe-nordic"] .btn-secondary,
+[data-theme="kobbe-nordic"] .action-btn-secondary {
+  background: #ffffff !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-default) !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="kobbe-nordic"] .btn-secondary:hover,
+[data-theme="kobbe-nordic"] .action-btn-secondary:hover {
+  background: var(--bg-hover) !important;
+}
+
+/* Tables & Output Grids */
+[data-theme="kobbe-nordic"] table {
+  background: #ffffff !important;
+  border: 1px solid var(--border-default) !important;
+}
+
+[data-theme="kobbe-nordic"] th {
+  background: var(--bg-surface-elevated) !important;
+  color: var(--text-secondary) !important;
+  border-bottom: 1px solid var(--border-default) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+}
+
+[data-theme="kobbe-nordic"] td {
+  border-bottom: 1px solid var(--border-subtle) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="kobbe-nordic"] tr:hover td {
+  background: var(--bg-surface-elevated) !important;
+}
+
+/* Badges & Tags */
+[data-theme="kobbe-nordic"] .badge-topic,
+[data-theme="kobbe-nordic"] .pill-tag {
+  background: var(--bg-surface-elevated) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-default) !important;
+  font-family: var(--font-mono) !important;
+}
+
+/* Select Dropdown Theme Picker */
+[data-theme="kobbe-nordic"] .theme-select {
+  background: #ffffff !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-default) !important;
+}

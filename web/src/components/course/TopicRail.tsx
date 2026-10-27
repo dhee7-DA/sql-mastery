@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, Sparkles } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { TopicPhase } from '@/data/masteryCourseData';
 
 interface TopicRailProps {
@@ -14,58 +14,39 @@ interface TopicRailProps {
 
 export function TopicRail({ topics, activeTopicId, onSelectTopic, completedTopics }: TopicRailProps) {
   return (
-    <div className="relative w-full rounded-2xl border border-white/[0.08] bg-[#0c101a]/70 p-2 backdrop-blur-xl shadow-bento">
+    <div className="relative w-full rounded-xl border border-border/80 bg-muted-surface p-1.5 shadow-panel">
       <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
-        {topics.map((topic, idx) => {
+        {topics.map((topic) => {
           const isActive = topic.id === activeTopicId;
           const isDone = completedTopics.has(topic.id);
 
           return (
-            <React.Fragment key={topic.id}>
-              <button
-                onClick={() => onSelectTopic(topic.id)}
-                className={`group relative flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-semibold whitespace-nowrap transition-colors duration-150 ${
+            <button
+              key={topic.id}
+              onClick={() => onSelectTopic(topic.id)}
+              className={`group relative flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+                isActive
+                  ? 'bg-surface text-foreground font-bold shadow-xs border border-border/90'
+                  : isDone
+                  ? 'text-emerald-700 hover:text-emerald-800'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              {/* Sequence badge */}
+              <span
+                className={`flex size-4.5 items-center justify-center rounded text-[10px] font-mono font-bold ${
                   isActive
-                    ? 'text-white font-bold'
+                    ? 'bg-foreground text-background'
                     : isDone
-                    ? 'text-emerald-400/90 hover:text-emerald-300'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : 'bg-border/60 text-muted-foreground'
                 }`}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeTopicRailPill"
-                    className="absolute inset-0 rounded-full bg-gradient-to-r from-rose-500/25 via-indigo-500/25 to-rose-500/20 border border-rose-500/40 shadow-glow-rose"
-                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
-                  />
-                )}
+                {isDone ? <Check className="size-2.5 stroke-[3]" /> : topic.seq}
+              </span>
 
-                {/* Sequence badge */}
-                <span
-                  className={`relative z-10 flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-mono font-bold ${
-                    isActive
-                      ? 'bg-rose-500 text-white'
-                      : isDone
-                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                      : 'bg-white/10 text-slate-300'
-                  }`}
-                >
-                  {isDone ? <Check className="h-2.5 w-2.5 stroke-[3]" /> : topic.seq}
-                </span>
-
-                {/* Title */}
-                <span className="relative z-10 font-sans">{topic.shortName}</span>
-
-                {/* Star indicator for active */}
-                {isActive && (
-                  <Sparkles className="h-3 w-3 relative z-10 text-rose-400 animate-pulse" />
-                )}
-              </button>
-
-              {idx < topics.length - 1 && (
-                <span className="text-slate-600 text-xs select-none px-0.5">›</span>
-              )}
-            </React.Fragment>
+              <span className="font-sans">{topic.shortName || topic.title}</span>
+            </button>
           );
         })}
       </div>
