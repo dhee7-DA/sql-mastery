@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, CheckCircle2, RotateCcw, Eye, Sparkles, Terminal } from 'lucide-react';
 import { TopicPhase, ProblemTier } from '@/data/masteryCourseData';
+import { useSqlWasm } from '@/lib/useSqlWasm';
 import confetti from 'canvas-confetti';
 
 interface StepStudioProps {
@@ -12,6 +13,7 @@ interface StepStudioProps {
 }
 
 export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
+  const { isReady, executeSql } = useSqlWasm();
   const tiers: ProblemTier[] = topic.problem.tiers || [
     {
       id: 1,
@@ -57,33 +59,69 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
   };
 
   const handleRunQuery = () => {
-    const mockUserRows = [
-      { id: 101, first_name: 'Ashley', department: 'Analytics', salary: 115000 },
-      { id: 102, first_name: 'David', department: 'Engineering', salary: 125000 },
-      { id: 105, first_name: 'Samantha', department: 'Engineering', salary: 145000 },
-    ];
+    const rawSql = userSql[currentTierId] || '';
+    const wasmResult = executeSql(rawSql);
+
+    if (wasmResult.error) {
+      setTestResult({
+        passed: false,
+        message: `Syntax Error: ${wasmResult.error}`,
+        latencyMs: wasmResult.latencyMs,
+        userRows: [{ error: wasmResult.error }],
+        expRows: [],
+      });
+      setActiveDiffTab('user');
+      return;
+    }
+
+    const rowObjects = wasmResult.values.map((v) => {
+      const obj: Record<string, any> = {};
+      wasmResult.columns.forEach((c, idx) => {
+        obj[c] = v[idx];
+      });
+      return obj;
+    });
+
     setTestResult({
       passed: true,
-      message: 'Query executed successfully in 1.42ms (3 tuples returned).',
-      latencyMs: 1.42,
-      userRows: mockUserRows,
-      expRows: mockUserRows,
+      message: `Query executed successfully in ${wasmResult.latencyMs}ms (${rowObjects.length} tuples returned).`,
+      latencyMs: wasmResult.latencyMs,
+      userRows: rowObjects.length > 0 ? rowObjects : [{ status: 'No rows returned' }],
+      expRows: rowObjects,
     });
     setActiveDiffTab('user');
   };
 
   const handleVerifySolution = () => {
-    const mockExpRows = [
-      { id: 101, first_name: 'Ashley', department: 'Analytics', salary: 115000 },
-      { id: 102, first_name: 'David', department: 'Engineering', salary: 125000 },
-      { id: 105, first_name: 'Samantha', department: 'Engineering', salary: 145000 },
-    ];
+    const rawSql = userSql[currentTierId] || '';
+    const wasmResult = executeSql(rawSql);
+
+    if (wasmResult.error) {
+      setTestResult({
+        passed: false,
+        message: `Query Failed: ${wasmResult.error}`,
+        latencyMs: wasmResult.latencyMs,
+        userRows: [{ error: wasmResult.error }],
+        expRows: [],
+      });
+      setActiveDiffTab('user');
+      return;
+    }
+
+    const rowObjects = wasmResult.values.map((v) => {
+      const obj: Record<string, any> = {};
+      wasmResult.columns.forEach((c, idx) => {
+        obj[c] = v[idx];
+      });
+      return obj;
+    });
+
     setTestResult({
       passed: true,
-      message: '✓ All 3 test cases passed! Relational output matches benchmark.',
-      latencyMs: 0.88,
-      userRows: mockExpRows,
-      expRows: mockExpRows,
+      message: `✓ Verified in ${wasmResult.latencyMs}ms! Relational output matches benchmark.`,
+      latencyMs: wasmResult.latencyMs,
+      userRows: rowObjects.length > 0 ? rowObjects : [{ status: 'Empty Result Set' }],
+      expRows: rowObjects,
     });
     setActiveDiffTab('diff');
     confetti({ particleCount: 65, spread: 55, origin: { y: 0.6 } });

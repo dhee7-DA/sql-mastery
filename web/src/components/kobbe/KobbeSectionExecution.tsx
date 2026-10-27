@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, RotateCcw, CheckCircle2, AlertCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { KobbeTuplePipelineSimulator } from './KobbeTuplePipelineSimulator';
 
 export function KobbeSectionExecution() {
   const initialShuffled = [
@@ -195,6 +196,9 @@ export function KobbeSectionExecution() {
             </AnimatePresence>
           </div>
         </div>
+
+        {/* Live Physical Tuple Memory Scrubber Simulator */}
+        <KobbeTuplePipelineSimulator />
       </div>
     </section>
   );

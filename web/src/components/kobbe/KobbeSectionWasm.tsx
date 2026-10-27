@@ -1,35 +1,46 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowUpRight, Play, Database, Copy, Check } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUpRight, Play, Database, Copy, Check, AlertCircle } from 'lucide-react';
+import { useSqlWasm } from '@/lib/useSqlWasm';
 
 export function KobbeSectionWasm() {
+  const { isReady, executeSql } = useSqlWasm();
+
   const [query, setQuery] = useState<string>(
-    `-- Physical In-Browser Execution Demo\nSELECT department, COUNT(*) as headcount, ROUND(AVG(salary), 2) as avg_comp\nFROM Employees\nWHERE salary > 80000\nGROUP BY department\nHAVING COUNT(*) >= 1\nORDER BY avg_comp DESC;`
+    `SELECT department, COUNT(*) as headcount, ROUND(AVG(salary), 2) as avg_comp\nFROM Employees\nWHERE salary > 80000\nGROUP BY department\nHAVING COUNT(*) >= 1\nORDER BY avg_comp DESC;`
   );
 
-  const [outputRows, setOutputRows] = useState<any[]>([
-    { department: 'Engineering', headcount: 2, avg_comp: '$135,000.00' },
-    { department: 'Analytics', headcount: 1, avg_comp: '$115,000.00' },
-    { department: 'Product', headcount: 1, avg_comp: '$118,000.00' },
+  const [columns, setColumns] = useState<string[]>(['department', 'headcount', 'avg_comp']);
+  const [rows, setRows] = useState<any[][]>([
+    ['Engineering', 3, 133333.33],
+    ['Product', 1, 118000.0],
+    ['Analytics', 3, 106000.0],
+    ['Design', 1, 92000.0],
   ]);
-
-  const [latencyMs, setLatencyMs] = useState<number>(1.24);
+  const [error, setError] = useState<string | null>(null);
+  const [latencyMs, setLatencyMs] = useState<number>(0.92);
   const [copied, setCopied] = useState<boolean>(false);
   const [isRunning, setIsRunning] = useState<boolean>(false);
 
   const handleRun = () => {
     setIsRunning(true);
-    setTimeout(() => {
-      setLatencyMs(Number((0.7 + Math.random() * 0.8).toFixed(2)));
-      setOutputRows([
-        { department: 'Engineering', headcount: 2, avg_comp: '$135,000.00' },
-        { department: 'Analytics', headcount: 1, avg_comp: '$115,000.00' },
-        { department: 'Product', headcount: 1, avg_comp: '$118,000.00' },
-      ]);
+    setError(null);
+    try {
+      const res = executeSql(query);
+      setLatencyMs(res.latencyMs);
+      if (res.error) {
+        setError(res.error);
+      } else {
+        setColumns(res.columns);
+        setRows(res.values);
+      }
+    } catch (e: any) {
+      setError(e.message || 'Execution error');
+    } finally {
       setIsRunning(false);
-    }, 120);
+    }
   };
 
   const handleCopy = () => {
@@ -37,6 +48,13 @@ export function KobbeSectionWasm() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  // Run on initial ready
+  useEffect(() => {
+    if (isReady) {
+      handleRun();
+    }
+  }, [isReady]);
 
   return (
     <section id="section-studio" className="py-14 sm:py-18 border-t border-border/60">
@@ -79,10 +97,10 @@ export function KobbeSectionWasm() {
               <div className="flex items-center gap-2">
                 <span className="flex size-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-xs font-mono font-bold text-foreground">
-                  LOCAL WASM RUNTIME ACTIVE
+                  LOCAL WASM RUNTIME {isReady ? 'ACTIVE' : 'INITIALIZING'}
                 </span>
                 <span className="text-[11px] font-mono text-muted-foreground hidden sm:inline">
-                  (ANSI SQL / SQLite WASM)
+                  (SQLite 3.45.2 WASM • Client Memory)
                 </span>
               </div>
 
@@ -111,11 +129,17 @@ export function KobbeSectionWasm() {
               <div className="lg:col-span-7 flex flex-col rounded-lg border border-border bg-surface overflow-hidden shadow-2xs">
                 <div className="flex items-center justify-between px-3 py-1.5 bg-muted-surface border-b border-border text-[11px] font-mono text-muted-foreground">
                   <span>INPUT: query.sql</span>
-                  <span>Dialect: ANSI SQL</span>
+                  <span>Dialect: SQLite / ANSI</span>
                 </div>
                 <textarea
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                      e.preventDefault();
+                      handleRun();
+                    }
+                  }}
                   rows={5}
                   className="w-full bg-surface p-3 font-mono text-xs text-foreground placeholder-muted-foreground outline-none resize-none leading-relaxed"
                   spellCheck={false}
@@ -125,28 +149,37 @@ export function KobbeSectionWasm() {
               {/* Live Output */}
               <div className="lg:col-span-5 flex flex-col rounded-lg border border-border bg-surface overflow-hidden shadow-2xs">
                 <div className="flex items-center justify-between px-3 py-1.5 bg-muted-surface border-b border-border text-[11px] font-mono text-muted-foreground">
-                  <span>OUTPUT: 3 tuples</span>
+                  <span>OUTPUT: {rows.length} tuples</span>
                   <span className="text-emerald-700 font-semibold">{latencyMs}ms</span>
                 </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left font-mono text-xs border-collapse">
-                    <thead>
-                      <tr className="border-b border-border text-muted-foreground text-[10px]">
-                        <th className="py-1.5 px-2.5">DEPARTMENT</th>
-                        <th className="py-1.5 px-2.5">HEADCOUNT</th>
-                        <th className="py-1.5 px-2.5">AVG_COMP</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border">
-                      {outputRows.map((r, i) => (
-                        <tr key={i} className="hover:bg-muted-surface/40 transition-colors">
-                          <td className="py-1.5 px-2.5 text-foreground font-medium">{r.department}</td>
-                          <td className="py-1.5 px-2.5 text-muted-foreground">{r.headcount}</td>
-                          <td className="py-1.5 px-2.5 text-foreground">{r.avg_comp}</td>
+                <div className="overflow-x-auto min-h-24">
+                  {error ? (
+                    <div className="p-3 text-xs font-mono text-rose-600 flex items-start gap-1.5 bg-rose-50/50">
+                      <AlertCircle className="size-3.5 shrink-0 mt-0.5" />
+                      <span>{error}</span>
+                    </div>
+                  ) : (
+                    <table className="w-full text-left font-mono text-xs border-collapse">
+                      <thead>
+                        <tr className="border-b border-border text-muted-foreground text-[10px]">
+                          {columns.map((col) => (
+                            <th key={col} className="py-1.5 px-2.5">{col.toUpperCase()}</th>
+                          ))}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="divide-y divide-border">
+                        {rows.map((r, i) => (
+                          <tr key={i} className="hover:bg-muted-surface/40 transition-colors">
+                            {r.map((val: any, cIdx: number) => (
+                              <td key={cIdx} className="py-1.5 px-2.5 text-foreground text-[11px]">
+                                {val === null ? <em className="text-muted-foreground">NULL</em> : String(val)}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
                 </div>
               </div>
             </div>

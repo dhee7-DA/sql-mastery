@@ -52,7 +52,7 @@ export function KobbeHero({ onStartCourse, onOpenStudio }: KobbeHeroProps) {
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
               onClick={onStartCourse}
-              className="inline-flex cursor-pointer items-center gap-1.5 font-medium transition-colors w-fit rounded-lg px-3.5 py-2 text-xs sm:text-sm bg-dark-background text-surface hover:bg-dark-background/85 shadow-xs"
+              className="inline-flex cursor-pointer items-center gap-1.5 font-medium transition-colors w-fit rounded-lg px-3.5 py-2 text-xs sm:text-sm bg-dark-background text-cta-text hover:bg-dark-background/85 shadow-xs"
             >
               <span>Start Mastery Course</span>
               <ArrowUpRight className="size-3.5" />

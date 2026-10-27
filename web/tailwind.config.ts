@@ -17,6 +17,7 @@ const config: Config = {
         foreground: 'var(--color-foreground)',
         'muted-foreground': 'var(--color-muted-foreground)',
         'dark-background': 'var(--color-dark-background)',
+        'cta-text': 'var(--color-cta-text)',
       },
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
