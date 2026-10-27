@@ -30,35 +30,35 @@ window.MasterySvgEngine = (function() {
         <path d="M 24 38 Q 24 24 38 24 L 320 24 Q 334 24 334 38 L 334 66 L 24 66 Z" class="svg-panel-header"/>
         <text x="42" y="50" class="svg-text-title">📁 ${escapeXml(src.name || 'FROM Employees')}</text>
 
-        <text x="38" y="86" class="svg-text-col" fill="#71717a">id</text>
-        <text x="76" y="86" class="svg-text-col" fill="var(--accent)" font-weight="800">first_name ★</text>
-        <text x="174" y="86" class="svg-text-col" fill="#71717a">dept</text>
-        <text x="236" y="86" class="svg-text-col" fill="var(--accent)" font-weight="800">salary ★</text>
-        <line x1="34" y1="94" x2="324" y2="94" stroke="var(--border-default)" stroke-width="1"/>
+        <text x="36" y="86" class="svg-text-col" fill="#71717a">id</text>
+        <text x="68" y="86" class="svg-text-col" fill="var(--accent)" font-weight="800">first_name ★</text>
+        <text x="144" y="86" class="svg-text-col" fill="#71717a">dept</text>
+        <text x="246" y="86" class="svg-text-col" fill="var(--accent)" font-weight="800">salary ★</text>
+        <line x1="30" y1="94" x2="328" y2="94" stroke="var(--border-default)" stroke-width="1"/>
 
-        <rect x="34" y="104" width="290" height="34" rx="6" class="svg-row-even"/>
-        <text x="40" y="126" class="svg-text-cell svg-mono" fill="#a1a1aa">101</text>
-        <text x="76" y="126" class="svg-text-cell" font-weight="700" fill="var(--accent)">Ashley</text>
-        <text x="174" y="126" class="svg-text-cell" fill="#a1a1aa">Analytics</text>
-        <text x="236" y="126" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$115,000</text>
+        <rect x="30" y="104" width="298" height="34" rx="6" class="svg-row-even"/>
+        <text x="36" y="126" class="svg-text-cell svg-mono" fill="#a1a1aa">101</text>
+        <text x="68" y="126" class="svg-text-cell" font-weight="700" fill="var(--accent)">Ashley</text>
+        <text x="144" y="126" class="svg-text-cell" fill="#a1a1aa">Analytics</text>
+        <text x="246" y="126" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$115,000</text>
 
-        <rect x="34" y="144" width="290" height="34" rx="6" class="svg-row-odd"/>
-        <text x="40" y="166" class="svg-text-cell svg-mono" fill="#a1a1aa">102</text>
-        <text x="76" y="166" class="svg-text-cell" font-weight="700" fill="var(--accent)">David</text>
-        <text x="174" y="166" class="svg-text-cell" fill="#a1a1aa">Engineering</text>
-        <text x="236" y="166" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$125,000</text>
+        <rect x="30" y="144" width="298" height="34" rx="6" class="svg-row-odd"/>
+        <text x="36" y="166" class="svg-text-cell svg-mono" fill="#a1a1aa">102</text>
+        <text x="68" y="166" class="svg-text-cell" font-weight="700" fill="var(--accent)">David</text>
+        <text x="144" y="166" class="svg-text-cell" fill="#a1a1aa">Eng</text>
+        <text x="246" y="166" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$125,000</text>
 
-        <rect x="34" y="184" width="290" height="34" rx="6" class="svg-row-even"/>
-        <text x="40" y="206" class="svg-text-cell svg-mono" fill="#a1a1aa">103</text>
-        <text x="76" y="206" class="svg-text-cell" font-weight="700" fill="var(--accent)">Julia</text>
-        <text x="174" y="206" class="svg-text-cell" fill="#a1a1aa">Analytics</text>
-        <text x="236" y="206" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$95,000</text>
+        <rect x="30" y="184" width="298" height="34" rx="6" class="svg-row-even"/>
+        <text x="36" y="206" class="svg-text-cell svg-mono" fill="#a1a1aa">103</text>
+        <text x="68" y="206" class="svg-text-cell" font-weight="700" fill="var(--accent)">Julia</text>
+        <text x="144" y="206" class="svg-text-cell" fill="#a1a1aa">Analytics</text>
+        <text x="246" y="206" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$95,000</text>
 
-        <rect x="34" y="224" width="290" height="34" rx="6" class="svg-row-odd"/>
-        <text x="40" y="246" class="svg-text-cell svg-mono" fill="#a1a1aa">104</text>
-        <text x="76" y="246" class="svg-text-cell" font-weight="700" fill="var(--accent)">Carlos</text>
-        <text x="174" y="246" class="svg-text-cell" fill="#a1a1aa">Engineering</text>
-        <text x="236" y="246" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$72,000</text>
+        <rect x="30" y="224" width="298" height="34" rx="6" class="svg-row-odd"/>
+        <text x="36" y="246" class="svg-text-cell svg-mono" fill="#a1a1aa">104</text>
+        <text x="68" y="246" class="svg-text-cell" font-weight="700" fill="var(--accent)">Carlos</text>
+        <text x="144" y="246" class="svg-text-cell" fill="#a1a1aa">Eng</text>
+        <text x="246" y="246" class="svg-text-cell svg-mono" font-weight="700" fill="var(--accent)">$72,000</text>
 
         <rect x="34" y="266" width="290" height="24" rx="6" fill="rgba(161, 161, 170, 0.1)"/>
         <text x="179" y="282" text-anchor="middle" font-size="10.5" fill="var(--text-muted)">Unselected Columns [id, dept, tenure] Pruned</text>
@@ -90,7 +90,7 @@ window.MasterySvgEngine = (function() {
       <g opacity="${resOpacity}" class="svg-anim-layer">
         <rect x="634" y="24" width="320" height="280" rx="14" class="svg-panel-bg" stroke="${step === 3 ? '#10b981' : 'var(--border-default)'}" stroke-width="${step === 3 ? '2.5' : '1.2'}"/>
         <path d="M 634 38 Q 634 24 648 24 L 940 24 Q 954 24 954 38 L 954 66 L 634 66 Z" fill="rgba(16, 185, 129, 0.12)"/>
-        <text x="652" y="50" class="svg-text-title" fill="#047857">✨ ${escapeXml(res.name || 'EMITTED PROJECTION')}</text>
+        <text x="652" y="50" class="svg-text-title" fill="#047857">✨ Projected Result (2 Columns)</text>
 
         <text x="654" y="86" class="svg-text-col" fill="#047857">first_name</text>
         <text x="790" y="86" class="svg-text-col" fill="#047857">projected_comp (+10%)</text>
