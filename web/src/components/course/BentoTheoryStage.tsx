@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Lightbulb, AlertTriangle, Mic, ArrowRight, Play, CheckCircle2, RotateCcw } from 'lucide-react';
 import { TopicPhase } from '@/data/masteryCourseData';
 import { SQL_CLAUSES, SqlClause } from '@/data/sqlClausesData';
+import { SqlKeywordText } from '@/components/common/SqlKeywordText';
 import confetti from 'canvas-confetti';
 
 interface BentoTheoryStageProps {
@@ -90,7 +91,7 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
                 SQL
               </span>
               <span className="text-xs text-foreground font-mono">
-                SELECT * FROM Employees WHERE salary &gt; 100000;
+                <SqlKeywordText text="SELECT * FROM Employees WHERE salary > 100000;" />
               </span>
             </div>
             <span className="text-[10px] font-mono text-muted-foreground font-medium flex items-center gap-1">
@@ -121,7 +122,8 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
 
           {topic.analogy.takeaway && (
             <div className="mt-3 rounded-lg border border-border bg-muted-surface p-2.5 text-xs text-foreground leading-relaxed">
-              <strong className="font-semibold">💡 Principle:</strong> {topic.analogy.takeaway}
+              <strong className="font-mono text-[10px] uppercase tracking-wider text-foreground">[ENGINE PRINCIPLE]</strong>{' '}
+              <SqlKeywordText text={topic.analogy.takeaway} />
             </div>
           )}
         </div>
@@ -133,8 +135,8 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border">
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="flex size-4.5 items-center justify-center rounded bg-dark-background text-white text-[10px] font-bold">
-                ⚡
+              <span className="flex size-4.5 items-center justify-center rounded bg-dark-background text-white text-[9px] font-mono font-bold">
+                07
               </span>
               <h3 className="text-xs font-mono font-semibold text-foreground uppercase tracking-wider">
                 SQL ENGINE EXECUTION ORDER (LOGICAL VS. LEXICAL)
@@ -211,8 +213,8 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
                 }`}
               >
                 {puzzleCorrect
-                  ? '🎉 100% CORRECT! You understand the internal relational engine pipeline better than 90% of candidates!'
-                  : '⚠️ Not quite in execution order! Remember: FROM gathers the data before WHERE filters rows, and GROUP BY executes before HAVING.'}
+                  ? '✓ VERIFIED: Relational pipeline order accurately matched.'
+                  : '✕ MISMATCH: Relational engines process FROM before WHERE, and GROUP BY before HAVING.'}
               </div>
             )}
 
@@ -300,7 +302,8 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
                         STAGE {orderMode === 'logical' ? activeClause.logicalPos : activeClause.lexicalPos} OF 7
                       </span>
                       <h4 className="font-semibold text-foreground font-mono text-xs sm:text-sm">
-                        {activeClause.keyword} <span className="font-sans text-muted-foreground text-xs font-normal">({activeClause.role})</span>
+                        <SqlKeywordText text={activeClause.keyword} />{' '}
+                        <span className="font-sans text-muted-foreground text-xs font-normal">({activeClause.role})</span>
                       </h4>
                     </div>
                   </div>
@@ -321,7 +324,7 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
                     <div className="flex flex-col gap-2">
                       <div className="rounded-md border border-border bg-surface p-2.5 shadow-2xs">
                         <span className="font-mono font-semibold text-foreground uppercase tracking-wider text-[9px]">
-                          🎙️ FAANG INTERVIEW DEFENSE:
+                          [FAANG SCREENING DEFENSE]
                         </span>
                         <p className="mt-0.5 text-muted-foreground leading-relaxed italic text-xs">
                           &ldquo;{activeClause.interviewTip}&rdquo;
@@ -404,14 +407,17 @@ export function BentoTheoryStage({ topic }: BentoTheoryStageProps) {
                   {topic.traps[0].whyItBreaks}
                 </p>
                 <div className="rounded-md border border-border bg-muted-surface p-2 text-[11px] text-foreground">
-                  <strong>🚨 Corporate Impact:</strong> {topic.traps[0].corporateImpact}
+                  <strong className="font-mono text-[10px] uppercase tracking-wider text-foreground">[CORPORATE IMPACT]</strong>{' '}
+                  {topic.traps[0].corporateImpact}
                 </div>
               </div>
             </div>
 
             <div className="mt-3 rounded-lg border border-border bg-muted-surface p-2.5 font-mono text-[11px]">
-              <span className="text-foreground font-semibold">✓ Production Standard:</span>
-              <pre className="mt-1 text-muted-foreground overflow-x-auto text-[10px]">{topic.traps[0].goodSql}</pre>
+              <span className="text-foreground font-semibold">[PRODUCTION STANDARD]</span>
+              <pre className="mt-1 text-muted-foreground overflow-x-auto text-[10px]">
+                <SqlKeywordText text={topic.traps[0].goodSql} />
+              </pre>
             </div>
           </div>
         )}

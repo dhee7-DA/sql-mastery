@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, Terminal, Sparkles } from 'lucide-react';
 import { SQL_CLAUSES } from '@/data/sqlClausesData';
+import { SqlKeywordText } from '@/components/common/SqlKeywordText';
 
 interface KobbeHeroProps {
   onStartCourse: () => void;
@@ -119,7 +120,7 @@ export function KobbeHero({ onStartCourse, onOpenStudio }: KobbeHeroProps) {
                       )}
                     </div>
                     <span className="text-xs font-mono font-bold text-foreground">
-                      {clause.keyword}
+                      <SqlKeywordText text={clause.keyword} />
                     </span>
                     <span className="text-[10px] text-muted-foreground truncate w-full">
                       {clause.role}
@@ -143,7 +144,7 @@ export function KobbeHero({ onStartCourse, onOpenStudio }: KobbeHeroProps) {
                   <div className="flex flex-col gap-1 max-w-2xl">
                     <div className="flex items-center gap-2">
                       <span className="text-[11px] font-mono font-bold text-foreground bg-muted-surface border border-border rounded px-1.5 py-0.5">
-                        Stage 0{activeClause.logicalPos}: {activeClause.keyword}
+                        Stage 0{activeClause.logicalPos}: <SqlKeywordText text={activeClause.keyword} />
                       </span>
                       <span className="text-[11px] text-muted-foreground font-medium">
                         ({activeClause.role})
@@ -153,7 +154,8 @@ export function KobbeHero({ onStartCourse, onOpenStudio }: KobbeHeroProps) {
                       <strong className="font-semibold">Engine Action:</strong> {activeClause.action}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      <strong>💡 Rule:</strong> {activeClause.whyItMatters}
+                      <strong className="font-mono text-[10px] uppercase tracking-wider text-foreground">[RULE]</strong>{' '}
+                      {activeClause.whyItMatters}
                     </p>
                   </div>
 

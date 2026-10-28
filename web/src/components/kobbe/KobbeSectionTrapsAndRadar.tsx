@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AlertTriangle, RotateCw, CheckCircle2, ShieldAlert, Award, Sparkles } from 'lucide-react';
+import { SqlKeywordText } from '@/components/common/SqlKeywordText';
 
 interface Flashcard {
   id: number;
@@ -168,7 +169,7 @@ export function KobbeSectionTrapsAndRadar() {
                         </div>
 
                         <div className="flex items-center justify-between pt-2 border-t border-border/70 text-[10px] font-mono text-muted-foreground">
-                          <span>⚠️ Flip to see bug & fix</span>
+                          <span>Click to inspect bug &amp; fix</span>
                           <RotateCw className="size-3 group-hover:rotate-45 transition-transform" />
                         </div>
                       </div>
@@ -178,7 +179,7 @@ export function KobbeSectionTrapsAndRadar() {
                         <div>
                           <div className="flex items-center justify-between pb-2 border-b border-border/70">
                             <span className="text-[9px] font-mono font-bold text-emerald-700 dark:text-emerald-400 uppercase">
-                              ✓ SENIOR PRODUCTION FIX
+                              [PRODUCTION FIX]
                             </span>
                             <span className="text-[9px] font-mono text-muted-foreground">FLIPPED</span>
                           </div>
@@ -188,7 +189,7 @@ export function KobbeSectionTrapsAndRadar() {
                           </p>
 
                           <pre className="mt-2 rounded bg-surface border border-border p-2 text-[10px] font-mono text-emerald-700 dark:text-emerald-400 overflow-x-auto leading-relaxed">
-                            {card.productionFix}
+                            <SqlKeywordText text={card.productionFix} />
                           </pre>
                         </div>
 

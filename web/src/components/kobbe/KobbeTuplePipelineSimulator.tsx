@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, ChevronLeft, ChevronRight, RotateCcw, Cpu, HardDrive, Layers, Sparkles } from 'lucide-react';
+import { SqlKeywordText } from '@/components/common/SqlKeywordText';
 
 interface StageData {
   step: number;
@@ -232,7 +233,7 @@ export function KobbeTuplePipelineSimulator() {
                 {isCurrent && <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />}
               </div>
               <span className="text-[11px] font-mono font-semibold text-foreground truncate w-full">
-                {s.clause}
+                <SqlKeywordText text={s.clause} />
               </span>
             </button>
           );
@@ -252,7 +253,7 @@ export function KobbeTuplePipelineSimulator() {
           <div className="flex flex-col gap-1 max-w-xl">
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono font-bold text-foreground">
-                STAGE {stage.step}: {stage.clause}
+                STAGE {stage.step}: <SqlKeywordText text={stage.clause} />
               </span>
               <span className="text-[11px] text-muted-foreground">({stage.role})</span>
             </div>
@@ -260,7 +261,8 @@ export function KobbeTuplePipelineSimulator() {
               {stage.description}
             </p>
             <p className="text-[11px] text-muted-foreground">
-              <strong>💡 Engine Rule:</strong> {stage.engineRule}
+              <strong className="font-mono text-[10px] uppercase tracking-wider text-foreground">[ENGINE RULE]</strong>{' '}
+              {stage.engineRule}
             </p>
           </div>
 

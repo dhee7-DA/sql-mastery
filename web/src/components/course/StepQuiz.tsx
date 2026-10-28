@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, CheckCircle, XCircle, RotateCcw } from 'lucide-react';
 import { McqOption } from '@/data/masteryCourseData';
+import { SqlKeywordText } from '@/components/common/SqlKeywordText';
 import confetti from 'canvas-confetti';
 
 interface StepQuizProps {
@@ -140,9 +141,11 @@ export function StepQuiz({ mcqs, onCompleteTopic, onComplete, topicName }: StepQ
                         className="mt-2.5 rounded-lg border border-border bg-surface p-2.5 text-xs leading-relaxed text-foreground overflow-hidden"
                       >
                         <strong className="font-mono text-[10px] uppercase tracking-wider text-foreground">
-                          💡 Explainer:
+                          [EXPLAINER]
                         </strong>{' '}
-                        <span className="text-muted-foreground text-xs">{q.explanation}</span>
+                        <span className="text-muted-foreground text-xs">
+                          <SqlKeywordText text={q.explanation} />
+                        </span>
                       </motion.div>
                     )}
                   </AnimatePresence>

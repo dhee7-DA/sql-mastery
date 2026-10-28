@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { TopicPhase } from '@/data/masteryCourseData';
+import { SqlKeywordText } from '@/components/common/SqlKeywordText';
 
 interface TopicRailProps {
   topics: TopicPhase[];
@@ -54,7 +55,9 @@ export function TopicRail({ topics, activeTopicId, onSelectTopic, completedTopic
                 {isDone ? <Check className="size-2.5 stroke-[3]" /> : topic.seq}
               </span>
 
-              <span className="relative z-10 font-sans text-xs">{topic.shortName || topic.title}</span>
+              <span className="relative z-10 font-sans text-xs">
+                <SqlKeywordText text={topic.title} />
+              </span>
             </motion.button>
           );
         })}

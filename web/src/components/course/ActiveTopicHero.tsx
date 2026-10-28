@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Brain, Briefcase, Terminal } from 'lucide-react';
 import { TopicPhase } from '@/data/masteryCourseData';
+import { SqlKeywordText } from '@/components/common/SqlKeywordText';
 
 interface ActiveTopicHeroProps {
   topic: TopicPhase;
@@ -34,8 +35,8 @@ export function ActiveTopicHero({
       <div className="relative z-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         {/* Left: Topic Title & Meta */}
         <div className="flex items-start gap-3">
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-muted-surface text-lg shadow-2xs text-foreground">
-            {topic.icon}
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-muted-surface font-mono font-bold text-xs text-foreground shadow-2xs">
+            {topic.seq}
           </div>
           <div>
             <div className="flex items-center gap-2">
@@ -47,10 +48,10 @@ export function ActiveTopicHero({
               </span>
             </div>
             <h1 className="mt-0.5 text-base sm:text-lg font-bold tracking-tight text-foreground font-sans">
-              {topic.title}
+              <SqlKeywordText text={topic.title} />
             </h1>
             <p className="mt-0.5 max-w-2xl text-xs text-muted-foreground leading-relaxed">
-              {topic.summary}
+              <SqlKeywordText text={topic.summary} />
             </p>
           </div>
         </div>

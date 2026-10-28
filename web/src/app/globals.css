@@ -11,6 +11,13 @@
   --color-dark-background: var(--color-foreground);
   --color-cta-text: #ffffff;
 
+  /* SQL Syntax Tokens (Laser Focus) */
+  --color-sql-keyword: #2563eb;
+  --color-sql-function: #059669;
+  --color-sql-string: #b45309;
+  --color-sql-number: #7c3aed;
+  --color-sql-comment: #6b7280;
+
   /* Exact Kobbe.io Multi-layered Panel Shadow */
   --theme-shadow-panel: 0px 0px 0px 1px #fff, 0px 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 2px 1px 0px rgba(0, 0, 0, 0.02), 0px 4px 3px -1.5px rgba(0, 0, 0, 0.02), 0px 7px 6px -3px rgba(0, 0, 0, 0.02), 0px 13px 12px -6px rgba(0, 0, 0, 0.02), 0px 25px 24px -12px rgba(0, 0, 0, 0.02);
   --blur-fade-color: 251, 250, 248;
@@ -28,8 +35,32 @@
   --color-dark-background: #f2f1ec;
   --color-cta-text: #141416;
 
+  /* SQL Syntax Tokens (Laser Focus - Dark Mode) */
+  --color-sql-keyword: #60a5fa;
+  --color-sql-function: #34d399;
+  --color-sql-string: #fbbf24;
+  --color-sql-number: #c084fc;
+  --color-sql-comment: #9ca3af;
+
   --theme-shadow-panel: 0px 0px 0px 1px rgba(255, 255, 255, 0.06), 0px 0px 0px 2px rgba(0, 0, 0, 0.3), 0px 2px 4px rgba(0, 0, 0, 0.4), 0px 6px 16px rgba(0, 0, 0, 0.25);
   --blur-fade-color: 20, 20, 22;
+}
+
+/* SQL Syntax Utilities */
+.text-sql-keyword {
+  color: var(--color-sql-keyword);
+}
+.text-sql-function {
+  color: var(--color-sql-function);
+}
+.text-sql-string {
+  color: var(--color-sql-string);
+}
+.text-sql-number {
+  color: var(--color-sql-number);
+}
+.text-sql-comment {
+  color: var(--color-sql-comment);
 }
 
 html {

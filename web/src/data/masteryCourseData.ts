@@ -146,7 +146,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     "title": "SELECT & FROM",
     "shortName": "01. SELECT & FROM",
     "name": "The Starting Line: Inspecting Tables, Column Projections, Expressions & Aliases",
-    "icon": "📖",
+    "icon": "01",
     "execRank": "Level 1: Foundation (Physical Step 05 / Logical Step 01)",
     "summary": "Master the absolute foundation of relational querying: table navigation, explicit column projection, dynamic math expressions, aliasing with AS, and set deduplication with DISTINCT.",
     "analogy": {
@@ -239,7 +239,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
       },
       {
         "title": "2. The Projection Engine: Why SELECT * is an Anti-Pattern",
-        "body": "The asterisk (`*`) is wildcard shorthand instructing the database engine to retrieve **all columns** defined on the table schema.\n\n```sql\n-- Fetches every column\nSELECT * \nFROM Employees;\n```\n\n### Why Senior Engineers Ban `SELECT *` in Production:\n1. **Network & Buffer Bandwidth**: If a table has 45 columns including large `TEXT` or `JSON` blobs, `SELECT *` forces the database engine to stream gigabytes of unneeded bytes over the network socket.\n2. **Breaks Application Contracts**: If a DBA adds or removes a column in production, an application expecting a fixed array order will crash.\n3. **Columnar Warehouse Billing Multiplier**: In modern columnar databases (Snowflake, BigQuery, Redshift), storage is physically organized by columns. Pricing is billed per Terabyte scanned. Querying `SELECT *` reads all 50 column files off S3, multiplying cloud costs by 50x compared to `SELECT user_id, email`.\n\n```sql\n-- ✅ Production Best Practice: Always explicitly list the exact columns required\nSELECT first_name, department, salary\nFROM Employees;\n```\\n\\n> [!WARNING] The Alias in WHERE Trap\n> Never attempt to filter on a column alias in the `WHERE` clause (e.g. `WHERE monthly_pay > 5000`). Relational engines parse and execute `WHERE` in Step 02, long before `SELECT` creates the alias in Step 05."
+        "body": "The asterisk (`*`) is wildcard shorthand instructing the database engine to retrieve **all columns** defined on the table schema.\n\n```sql\n-- Fetches every column\nSELECT * \nFROM Employees;\n```\n\n### Why Senior Engineers Ban `SELECT *` in Production:\n1. **Network & Buffer Bandwidth**: If a table has 45 columns including large `TEXT` or `JSON` blobs, `SELECT *` forces the database engine to stream gigabytes of unneeded bytes over the network socket.\n2. **Breaks Application Contracts**: If a DBA adds or removes a column in production, an application expecting a fixed array order will crash.\n3. **Columnar Warehouse Billing Multiplier**: In modern columnar databases (Snowflake, BigQuery, Redshift), storage is physically organized by columns. Pricing is billed per Terabyte scanned. Querying `SELECT *` reads all 50 column files off S3, multiplying cloud costs by 50x compared to `SELECT user_id, email`.\n\n```sql\n-- ✓ Production Best Practice: Always explicitly list the exact columns required\nSELECT first_name, department, salary\nFROM Employees;\n```\\n\\n> [!WARNING] The Alias in WHERE Trap\n> Never attempt to filter on a column alias in the `WHERE` clause (e.g. `WHERE monthly_pay > 5000`). Relational engines parse and execute `WHERE` in Step 02, long before `SELECT` creates the alias in Step 05."
       },
       {
         "title": "3. Column Aliasing with AS: Semantic Naming & Header Cleanliness",
@@ -263,8 +263,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_select_trailing_comma",
         "title": "The Trailing Comma Syntax Crash",
         "severity": "HIGH",
-        "badSql": "-- ❌ WRONG: Trailing comma before FROM clause\nSELECT \n  first_name, \n  department, \n  salary, \nFROM Employees;",
-        "goodSql": "-- ✅ CORRECT: No comma after the final projected column\nSELECT \n  first_name, \n  department, \n  salary\nFROM Employees;",
+        "badSql": "-- ✕ WRONG: Trailing comma before FROM clause\nSELECT \n  first_name, \n  department, \n  salary, \nFROM Employees;",
+        "goodSql": "-- ✓ CORRECT: No comma after the final projected column\nSELECT \n  first_name, \n  department, \n  salary\nFROM Employees;",
         "whyItBreaks": "SQL parsing engines expect an identifier or expression after every comma. A comma immediately preceding the FROM keyword throws an unrecoverable syntax parse error (e.g., `ERROR 1064: You have an error in your SQL syntax near FROM`).",
         "corporateImpact": "Automated CI/CD data pipeline runs fail during nightly batch loads due to careless copy-pasting of column lists."
       },
@@ -272,8 +272,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_where_alias_inaccessible",
         "title": "The WHERE Column Alias Inaccessibility Error",
         "severity": "CRITICAL",
-        "badSql": "-- ❌ WRONG: Attempting to filter on an alias created in SELECT\nSELECT \n  first_name, \n  salary * 0.15 AS bonus_amount\nFROM Employees\nWHERE bonus_amount > 15000;\n-- FAILS: \"Column 'bonus_amount' does not exist\"",
-        "goodSql": "-- ✅ CORRECT: Repeat the underlying expression or wrap in a CTE\nSELECT \n  first_name, \n  salary * 0.15 AS bonus_amount\nFROM Employees\nWHERE (salary * 0.15) > 15000;",
+        "badSql": "-- ✕ WRONG: Attempting to filter on an alias created in SELECT\nSELECT \n  first_name, \n  salary * 0.15 AS bonus_amount\nFROM Employees\nWHERE bonus_amount > 15000;\n-- FAILS: \"Column 'bonus_amount' does not exist\"",
+        "goodSql": "-- ✓ CORRECT: Repeat the underlying expression or wrap in a CTE\nSELECT \n  first_name, \n  salary * 0.15 AS bonus_amount\nFROM Employees\nWHERE (salary * 0.15) > 15000;",
         "whyItBreaks": "Physical Query Execution Order! The database engine executes `FROM` (Step 1) and `WHERE` (Step 2) long BEFORE `SELECT` (Step 5). At the moment `WHERE` evaluates rows, the alias `bonus_amount` has not been allocated in memory yet.",
         "corporateImpact": "Analysts waste hours debugging query compilation failures in executive reporting scripts."
       },
@@ -281,8 +281,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_select_star_cloud_waste",
         "title": "The Columnar SELECT * Billing Multiplier",
         "severity": "FATAL",
-        "badSql": "-- ❌ CATASTROPHIC IN SNOWFLAKE / BIGQUERY:\nSELECT * \nFROM TelemetryEvents \nWHERE event_date = '2026-01-01';\n-- Scans all 120 columns off cloud storage! Bills for 3 Terabytes!",
-        "goodSql": "-- ✅ LEAN & COST-EFFICIENT:\nSELECT user_id, event_type, created_at\nFROM TelemetryEvents \nWHERE event_date = '2026-01-01';\n-- Scans only 3 column partitions. Bills for 45 Megabytes (65x cost reduction)!",
+        "badSql": "-- ✕ CATASTROPHIC IN SNOWFLAKE / BIGQUERY:\nSELECT * \nFROM TelemetryEvents \nWHERE event_date = '2026-01-01';\n-- Scans all 120 columns off cloud storage! Bills for 3 Terabytes!",
+        "goodSql": "-- ✓ LEAN & COST-EFFICIENT:\nSELECT user_id, event_type, created_at\nFROM TelemetryEvents \nWHERE event_date = '2026-01-01';\n-- Scans only 3 column partitions. Bills for 45 Megabytes (65x cost reduction)!",
         "whyItBreaks": "Columnar analytical warehouses store data column-by-column across compressed micro-partitions. Pricing is strictly tied to total bytes scanned from disk. `SELECT *` forces the storage engine to decompress and transfer every single unused column.",
         "corporateImpact": "An unexpected $30,000 cloud bill at month-end, triggering infrastructure budget freezes and architecture reviews."
       }
@@ -399,7 +399,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     ],
     "caseStudy": {
       "company": "Amazon",
-      "icon": "📦",
+      "icon": "",
       "role": "Business Intelligence & Operations Analyst",
       "badge": "Amazon Supply Chain",
       "title": "Active Customer Orders & Country Filtering",
@@ -484,7 +484,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     "title": "Filtering Rows with WHERE",
     "shortName": "02. Filtering with WHERE",
     "name": "Row-Level Filtering, Boolean Predicates, SARGability & 3-Valued Logic",
-    "icon": "🎯",
+    "icon": "02",
     "execRank": "Level 2: Row Elimination (Physical Step 02 / Logical Step 02)",
     "summary": "Control which rows survive into the query pipeline using boolean operators, comparison bounds, text wildcards, SARGable indexes, and three-valued logic.",
     "analogy": {
@@ -562,11 +562,11 @@ export const TOPIC_PHASES: TopicPhase[] = [
       },
       {
         "title": "2. SARGability: The #1 Performance Rule for Database Indexes",
-        "body": "**SARGable** stands for *Search Argument Able*. A query predicate is SARGable if the database engine can utilize an existing B-Tree Index Seek to pinpoint rows directly, instead of performing a slow Full Table Scan (FTS).\n\n```sql\n-- ❌ NON-SARGABLE: Wrapping the indexed column in a function prevents index usage!\nWHERE YEAR(created_at) = 2024;\n\n-- ✅ SARGABLE: Keeps the indexed column isolated; scans the index leaf pages in O(log N)\nWHERE created_at >= '2024-01-01 00:00:00'\n  AND created_at <  '2025-01-01 00:00:00';\n```\\n\\n> [!TIP] Sargable Predicates for Index Seeks\n> Never wrap indexed columns in functions like `WHERE YEAR(created_at) = 2024`. Doing so destroys sargability, forcing a 100% full table scan. Rewrite as `WHERE created_at >= '2024-01-01' AND created_at < '2025-01-01'` to trigger high-speed B-Tree index range seeks."
+        "body": "**SARGable** stands for *Search Argument Able*. A query predicate is SARGable if the database engine can utilize an existing B-Tree Index Seek to pinpoint rows directly, instead of performing a slow Full Table Scan (FTS).\n\n```sql\n-- ✕ NON-SARGABLE: Wrapping the indexed column in a function prevents index usage!\nWHERE YEAR(created_at) = 2024;\n\n-- ✓ SARGABLE: Keeps the indexed column isolated; scans the index leaf pages in O(log N)\nWHERE created_at >= '2024-01-01 00:00:00'\n  AND created_at <  '2025-01-01 00:00:00';\n```\\n\\n> [!TIP] Sargable Predicates for Index Seeks\n> Never wrap indexed columns in functions like `WHERE YEAR(created_at) = 2024`. Doing so destroys sargability, forcing a 100% full table scan. Rewrite as `WHERE created_at >= '2024-01-01' AND created_at < '2025-01-01'` to trigger high-speed B-Tree index range seeks."
       },
       {
         "title": "3. Compound Filtering & Operator Precedence (AND vs OR)",
-        "body": "In SQL, `AND` has higher operator precedence than `OR` (similar to multiplication before addition in arithmetic).\n\n```sql\n-- ⚠️ DANGEROUS: Evaluates (country = 'CA' AND spend > 500) first!\nWHERE country = 'US' OR country = 'CA' AND spend > 500;\n-- BUG: Returns ALL US customers regardless of how much they spent!\n\n-- ✅ CORRECT: Use explicit parentheses to enforce intended evaluation order\nWHERE (country = 'US' OR country = 'CA') AND spend > 500;\n```\\n\\n> [!RULE] Safe Production Filtering Rule\n> When mixing `AND` and `OR` operators, always wrap clauses in explicit parentheses: `WHERE (is_active = 1 OR is_admin = 1) AND organization_id = 42`. In SQL, `AND` takes precedence over `OR`, which leads to catastrophic security leaks if unparenthesized."
+        "body": "In SQL, `AND` has higher operator precedence than `OR` (similar to multiplication before addition in arithmetic).\n\n```sql\n-- [WARNING] DANGEROUS: Evaluates (country = 'CA' AND spend > 500) first!\nWHERE country = 'US' OR country = 'CA' AND spend > 500;\n-- BUG: Returns ALL US customers regardless of how much they spent!\n\n-- ✓ CORRECT: Use explicit parentheses to enforce intended evaluation order\nWHERE (country = 'US' OR country = 'CA') AND spend > 500;\n```\\n\\n> [!RULE] Safe Production Filtering Rule\n> When mixing `AND` and `OR` operators, always wrap clauses in explicit parentheses: `WHERE (is_active = 1 OR is_admin = 1) AND organization_id = 42`. In SQL, `AND` takes precedence over `OR`, which leads to catastrophic security leaks if unparenthesized."
       },
       {
         "title": "4. Set Inclusion (IN) and Continuous Range Filtering (BETWEEN)",
@@ -582,8 +582,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_sargability",
         "title": "The SARGability Index Killer (Scalar Wrapping)",
         "severity": "FATAL",
-        "badSql": "-- ❌ WRONG: Scalar function wraps the indexed column\nSELECT user_id, amount_usd\nFROM Transactions\nWHERE YEAR(created_at) = 2024;",
-        "goodSql": "-- ✅ CORRECT: Keep indexed column raw; isolate the date range\nSELECT user_id, amount_usd\nFROM Transactions\nWHERE created_at >= '2024-01-01 00:00:00'\n  AND created_at <  '2025-01-01 00:00:00';",
+        "badSql": "-- ✕ WRONG: Scalar function wraps the indexed column\nSELECT user_id, amount_usd\nFROM Transactions\nWHERE YEAR(created_at) = 2024;",
+        "goodSql": "-- ✓ CORRECT: Keep indexed column raw; isolate the date range\nSELECT user_id, amount_usd\nFROM Transactions\nWHERE created_at >= '2024-01-01 00:00:00'\n  AND created_at <  '2025-01-01 00:00:00';",
         "whyItBreaks": "B-Tree indexes store raw values of `created_at`. Wrapping it in `YEAR()` forces the engine to perform a Full Table Scan (FTS), computing `YEAR()` for every single row on disk.",
         "corporateImpact": "On a 50-million-row ledger, query time explodes from 4 milliseconds to 45 seconds, pegging database CPU at 100%."
       },
@@ -591,8 +591,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_3vl_null_blackhole",
         "title": "The Three-Valued Logic (3VL) NULL Black Hole",
         "severity": "CRITICAL",
-        "badSql": "-- ❌ WRONG: Expecting to get all non-active users (including NULLs)\nSELECT user_id, email, kyc_status\nFROM Users\nWHERE kyc_status != 'VERIFIED';\n-- SILENT BUG: Omits all users where kyc_status IS NULL!",
-        "goodSql": "-- ✅ CORRECT: Explicitly handle NULL using IS NULL or COALESCE\nSELECT user_id, email, kyc_status\nFROM Users\nWHERE kyc_status != 'VERIFIED' OR kyc_status IS NULL;",
+        "badSql": "-- ✕ WRONG: Expecting to get all non-active users (including NULLs)\nSELECT user_id, email, kyc_status\nFROM Users\nWHERE kyc_status != 'VERIFIED';\n-- SILENT BUG: Omits all users where kyc_status IS NULL!",
+        "goodSql": "-- ✓ CORRECT: Explicitly handle NULL using IS NULL or COALESCE\nSELECT user_id, email, kyc_status\nFROM Users\nWHERE kyc_status != 'VERIFIED' OR kyc_status IS NULL;",
         "whyItBreaks": "In ANSI SQL, any comparison with NULL (`NULL != 'VERIFIED'`) evaluates to UNKNOWN. Because WHERE filters for TRUE, rows with NULL are silently discarded.",
         "corporateImpact": "Compliance audits fail because newly registered unverified accounts with NULL status are omitted from fraud screening reports."
       }
@@ -693,7 +693,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     ],
     "caseStudy": {
       "company": "Meta",
-      "icon": "📱",
+      "icon": "",
       "role": "Product Analytics & Growth Data Scientist",
       "badge": "Meta Growth & Integrity",
       "title": "A/B Test Cohort Allocation & Verified User Filtering",
@@ -724,7 +724,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
       "testedConcept": "SARGable Predicates & B-Tree Index Traversal",
       "interviewerIntent": "Evaluating if the candidate understands how database query planners utilize B-Tree index seeks versus full table scans.",
       "spokenAnswer": "SARGable stands for Search Argument Able. B-Tree indexes store raw values in sorted leaf pages. When you wrap a column in a scalar function like YEAR(created_at), the query optimizer cannot perform an Index Seek to traverse the B-Tree root-to-leaf in O(log N) time. It is forced to evaluate YEAR() on every single row via an expensive Full Table Scan. The SARGable fix is to isolate the raw column using boundary ranges: created_at >= '2024-01-01' AND created_at < '2025-01-01'.",
-      "codeSnippet": "-- ✅ SARGABLE: Traverses B-Tree in O(log N) seeks:\nSELECT user_id, amount\nFROM Transactions\nWHERE created_at >= '2024-01-01 00:00:00'\n  AND created_at <  '2025-01-01 00:00:00';",
+      "codeSnippet": "-- ✓ SARGABLE: Traverses B-Tree in O(log N) seeks:\nSELECT user_id, amount\nFROM Transactions\nWHERE created_at >= '2024-01-01 00:00:00'\n  AND created_at <  '2025-01-01 00:00:00';",
       "powerKeywords": [
         "SARGable Predicate",
         "B-Tree Index Seek",
@@ -777,7 +777,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     "title": "Sorting & Limiting (ORDER BY & LIMIT)",
     "shortName": "03. ORDER BY & LIMIT",
     "name": "Sorting Mechanics, Multi-Column Tie-Breakers & High-Performance Pagination",
-    "icon": "📊",
+    "icon": "03",
     "execRank": "Level 3: Windowing & Sorting (Physical Steps 07 & 08)",
     "summary": "Master physical result sorting, deterministic tie-breaking, ascending vs descending order, NULL placement, and pagination limits.",
     "analogy": {
@@ -859,7 +859,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
       },
       {
         "title": "2. Multi-Column Sorting & Deterministic Tie-Breaking",
-        "body": "When multiple rows possess identical values in the primary sort column, their relative order is completely random unless a secondary tie-breaker is provided:\n\n```sql\n-- ✅ Deterministic: Sorts by department, then breaks ties by salary descending\nSELECT first_name, department, salary\nFROM Employees\nORDER BY department ASC, salary DESC, id ASC;\n```\\n\\n> [!TIP] Deterministic Pagination Guarantee\n> Always append a unique key (such as `id`) as the final column in your `ORDER BY` clause. If records share the same sort value (like identical salaries), the database returns them in arbitrary disk order, causing rows to disappear or duplicate across pagination pages."
+        "body": "When multiple rows possess identical values in the primary sort column, their relative order is completely random unless a secondary tie-breaker is provided:\n\n```sql\n-- ✓ Deterministic: Sorts by department, then breaks ties by salary descending\nSELECT first_name, department, salary\nFROM Employees\nORDER BY department ASC, salary DESC, id ASC;\n```\\n\\n> [!TIP] Deterministic Pagination Guarantee\n> Always append a unique key (such as `id`) as the final column in your `ORDER BY` clause. If records share the same sort value (like identical salaries), the database returns them in arbitrary disk order, causing rows to disappear or duplicate across pagination pages."
       },
       {
         "title": "3. Slicing with LIMIT and OFFSET (Pagination)",
@@ -871,8 +871,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_non_deterministic_pagination",
         "title": "Non-Deterministic Pagination Ghost Rows",
         "severity": "CRITICAL",
-        "badSql": "-- ❌ WRONG: Sorting solely by non-unique column in pagination\nSELECT customer_id, annual_spend\nFROM Customers\nORDER BY annual_spend DESC\nLIMIT 25 OFFSET 25;\n-- BUG: If 40 customers share annual_spend = $1,000, rows duplicate or vanish across pages!",
-        "goodSql": "-- ✅ CORRECT: Always append a unique primary key as the final tie-breaker\nSELECT customer_id, annual_spend\nFROM Customers\nORDER BY annual_spend DESC, customer_id ASC\nLIMIT 25 OFFSET 25;",
+        "badSql": "-- ✕ WRONG: Sorting solely by non-unique column in pagination\nSELECT customer_id, annual_spend\nFROM Customers\nORDER BY annual_spend DESC\nLIMIT 25 OFFSET 25;\n-- BUG: If 40 customers share annual_spend = $1,000, rows duplicate or vanish across pages!",
+        "goodSql": "-- ✓ CORRECT: Always append a unique primary key as the final tie-breaker\nSELECT customer_id, annual_spend\nFROM Customers\nORDER BY annual_spend DESC, customer_id ASC\nLIMIT 25 OFFSET 25;",
         "whyItBreaks": "Without a deterministic tie-breaker, the engine's internal sorting algorithm does not guarantee row order across independent query executions.",
         "corporateImpact": "Customers viewing paginated invoice tables see duplicate invoices on Page 2 and missing invoices on Page 3, triggering customer support escalations."
       }
@@ -882,7 +882,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trick_keyset_pagination",
         "title": "Keyset / Seek Pagination for Deep Scrolling",
         "concept": "O(1) Pagination vs O(N) OFFSET",
-        "codeSnippet": "-- ⚡ FAST: Index Seek directly to next batch\nSELECT id, title, created_at\nFROM Articles\nWHERE id > 10542\nORDER BY id ASC\nLIMIT 20;",
+        "codeSnippet": "--  FAST: Index Seek directly to next batch\nSELECT id, title, created_at\nFROM Articles\nWHERE id > 10542\nORDER BY id ASC\nLIMIT 20;",
         "explanation": "Avoids scanning and discarding 500,000 rows on disk when users scroll deep into feeds.",
         "analystValue": "Essential for building infinite-scroll mobile feeds and high-throughput data APIs."
       }
@@ -973,7 +973,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     ],
     "caseStudy": {
       "company": "Spotify",
-      "icon": "🎧",
+      "icon": "",
       "role": "Music Streaming & Artist Analytics",
       "badge": "Spotify Content Intelligence",
       "title": "Top 5 Most Streamed Tracks of the Year",
@@ -1005,7 +1005,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
       "testedConcept": "Offset Thrashing vs Keyset (Seek) Pagination",
       "interviewerIntent": "Testing knowledge of database buffer memory, disk I/O on large offsets, and deterministic cursor pagination.",
       "spokenAnswer": "Standard OFFSET pagination requires the storage engine to read and sort all 500,020 rows off disk, discard the first 500,000 in memory, and deliver only the final 20. As the offset increases, I/O cost scales linearly. The senior solution is Keyset or Seek Pagination: instead of OFFSET, we filter using the primary key of the last seen record, such as WHERE id > last_seen_id ORDER BY id ASC LIMIT 20. This converts an O(N) scan into an instantaneous O(log N) B-Tree seek.",
-      "codeSnippet": "-- ⚡ FAST: Index Seek directly to next batch:\nSELECT id, title, created_at\nFROM Articles\nWHERE id > 500000\nORDER BY id ASC\nLIMIT 20;",
+      "codeSnippet": "--  FAST: Index Seek directly to next batch:\nSELECT id, title, created_at\nFROM Articles\nWHERE id > 500000\nORDER BY id ASC\nLIMIT 20;",
       "powerKeywords": [
         "Keyset / Seek Pagination",
         "Offset Thrashing",
@@ -1058,7 +1058,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     "title": "Summarizing Data (Aggregates)",
     "shortName": "04. Aggregates",
     "name": "Summarizing Data: Scalar Reductions, NULL Handling & Cardinality",
-    "icon": "📈",
+    "icon": "04",
     "execRank": "Level 4: Scalar Reduction (Physical Step 05)",
     "summary": "Collapse millions of detailed rows into high-level business metrics using COUNT, SUM, AVG, MIN, MAX, and deduplicated counts.",
     "analogy": {
@@ -1140,8 +1140,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_count_star_vs_column",
         "title": "The COUNT(*) vs COUNT(col) Cardinality Mismatch",
         "severity": "FATAL",
-        "badSql": "-- ❌ WRONG: Assuming COUNT(commission) counts all sales reps\nSELECT department, COUNT(commission_pct) AS total_reps\nFROM SalesReps\nGROUP BY department;\n-- BUG: Reps with NULL commission are completely omitted from the headcount!",
-        "goodSql": "-- ✅ CORRECT: Use COUNT(*) for row headcount; COUNT(col) for non-null tallies\nSELECT department, COUNT(*) AS total_reps, COUNT(commission_pct) AS reps_with_commission\nFROM SalesReps\nGROUP BY department;",
+        "badSql": "-- ✕ WRONG: Assuming COUNT(commission) counts all sales reps\nSELECT department, COUNT(commission_pct) AS total_reps\nFROM SalesReps\nGROUP BY department;\n-- BUG: Reps with NULL commission are completely omitted from the headcount!",
+        "goodSql": "-- ✓ CORRECT: Use COUNT(*) for row headcount; COUNT(col) for non-null tallies\nSELECT department, COUNT(*) AS total_reps, COUNT(commission_pct) AS reps_with_commission\nFROM SalesReps\nGROUP BY department;",
         "whyItBreaks": "`COUNT(column_name)` skips NULLs. If 40 out of 100 reps have NULL commission, `COUNT(commission_pct)` returns 60, not 100.",
         "corporateImpact": "Headcount reports understate company staffing, leading to budget and payroll allocation errors."
       }
@@ -1151,7 +1151,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trick_coalesce_sum",
         "title": "Scalar Coalesce: COALESCE(SUM(col), 0)",
         "concept": "Performance & Zero-Safety",
-        "codeSnippet": "-- ⚡ FASTER: Coalesce scalar output once\nSELECT COALESCE(SUM(amount_usd), 0.00) AS total_revenue\nFROM Ledger;",
+        "codeSnippet": "--  FASTER: Coalesce scalar output once\nSELECT COALESCE(SUM(amount_usd), 0.00) AS total_revenue\nFROM Ledger;",
         "explanation": "Evaluating COALESCE on the final scalar total evaluates the function once, whereas SUM(COALESCE(col, 0)) evaluates it for every row scanned.",
         "analystValue": "Substantial performance boost on multi-million row financial ledgers."
       }
@@ -1242,7 +1242,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     ],
     "caseStudy": {
       "company": "Airbnb",
-      "icon": "🏡",
+      "icon": "",
       "role": "Marketplace Dynamics & Pricing Analyst",
       "badge": "Airbnb Host Intelligence",
       "title": "Marketplace Inventory & Price Spread Audit",
@@ -1327,7 +1327,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     "title": "Grouping Data (GROUP BY & HAVING)",
     "shortName": "05. GROUP BY & HAVING",
     "name": "Partitioning Data: Group Buckets, Aggregation Boundaries & Group Filters",
-    "icon": "📦",
+    "icon": "05",
     "execRank": "Level 5: Bucketing & Partitioning (Physical Steps 03 & 04)",
     "summary": "Partition datasets into categorical buckets, calculate group-level statistics, and filter grouped summaries using HAVING.",
     "analogy": {
@@ -1403,8 +1403,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_where_vs_having_filter_stage",
         "title": "Filtering Non-Aggregates in HAVING (Engine Memory Bloat)",
         "severity": "HIGH",
-        "badSql": "-- ❌ WRONG: Filtering row-level attributes in HAVING\nSELECT department_id, SUM(salary) AS total_payroll\nFROM Employees\nGROUP BY department_id, is_active\nHAVING is_active = 1 AND SUM(salary) > 500000;",
-        "goodSql": "-- ✅ CORRECT: Filter raw rows in WHERE; filter group metrics in HAVING\nSELECT department_id, SUM(salary) AS total_payroll\nFROM Employees\nWHERE is_active = 1\nGROUP BY department_id\nHAVING SUM(salary) > 500000;",
+        "badSql": "-- ✕ WRONG: Filtering row-level attributes in HAVING\nSELECT department_id, SUM(salary) AS total_payroll\nFROM Employees\nGROUP BY department_id, is_active\nHAVING is_active = 1 AND SUM(salary) > 500000;",
+        "goodSql": "-- ✓ CORRECT: Filter raw rows in WHERE; filter group metrics in HAVING\nSELECT department_id, SUM(salary) AS total_payroll\nFROM Employees\nWHERE is_active = 1\nGROUP BY department_id\nHAVING SUM(salary) > 500000;",
         "whyItBreaks": "WHERE shrinks the dataset before grouping. Putting row filters in HAVING forces the engine to hash and aggregate inactive rows unnecessarily, consuming 5x more buffer RAM.",
         "corporateImpact": "Queries cause temporary disk spills and slow down production reporting clusters."
       }
@@ -1505,7 +1505,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     ],
     "caseStudy": {
       "company": "Uber",
-      "icon": "🚗",
+      "icon": "",
       "role": "Operations & Driver Marketplace Analyst",
       "badge": "Uber Mobility",
       "title": "City Driver Volume & High-Performance Hubs",
@@ -1589,7 +1589,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     "title": "Combining Tables (INNER & LEFT JOIN)",
     "shortName": "06. Joins (INNER & LEFT)",
     "name": "Relational Multi-Table Stitching, Cardinality & Outer Join Preservation",
-    "icon": "🔗",
+    "icon": "06",
     "execRank": "Level 6: Relational Algebra (Physical Step 01)",
     "summary": "Stitch relational entities across primary and foreign keys using INNER and LEFT JOINs without cartesian blowouts or fan-out bugs.",
     "analogy": {
@@ -1694,8 +1694,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_outer_join_where_collapse",
         "title": "The Outer Join WHERE Collapse Bug",
         "severity": "FATAL",
-        "badSql": "-- ❌ WRONG: Filtering right table in WHERE clause\nSELECT c.customer_id, c.name, o.order_id\nFROM Customers c\nLEFT JOIN Orders o ON c.customer_id = o.customer_id\nWHERE o.order_status = 'ACTIVE';\n-- SILENT DISASTER: Drops all customers with 0 orders because NULL = 'ACTIVE' is UNKNOWN!",
-        "goodSql": "-- ✅ CORRECT: Put right-table filter inside the ON clause\nSELECT c.customer_id, c.name, o.order_id\nFROM Customers c\nLEFT JOIN Orders o ON c.customer_id = o.customer_id AND o.order_status = 'ACTIVE';",
+        "badSql": "-- ✕ WRONG: Filtering right table in WHERE clause\nSELECT c.customer_id, c.name, o.order_id\nFROM Customers c\nLEFT JOIN Orders o ON c.customer_id = o.customer_id\nWHERE o.order_status = 'ACTIVE';\n-- SILENT DISASTER: Drops all customers with 0 orders because NULL = 'ACTIVE' is UNKNOWN!",
+        "goodSql": "-- ✓ CORRECT: Put right-table filter inside the ON clause\nSELECT c.customer_id, c.name, o.order_id\nFROM Customers c\nLEFT JOIN Orders o ON c.customer_id = o.customer_id AND o.order_status = 'ACTIVE';",
         "whyItBreaks": "WHERE runs after the join. Any condition in WHERE evaluating a NULL-padded column to a literal string evaluates to UNKNOWN and is dropped, converting the LEFT JOIN into an INNER JOIN.",
         "corporateImpact": "Customer retention and churn dashboards silently omit all inactive users who have made 0 purchases, skewing retention metrics by 35%."
       },
@@ -1703,8 +1703,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_fanout_duplication",
         "title": "The 1-to-Many Fan-Out Balance Duplication Bug",
         "severity": "FATAL",
-        "badSql": "-- ❌ WRONG: Summing parent balance across child rows\nSELECT c.customer_id, SUM(c.account_balance) AS total_balance, SUM(o.amount) AS total_spend\nFROM Customers c\nJOIN Orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id;",
-        "goodSql": "-- ✅ CORRECT: Pre-aggregate child table in a CTE before joining\nWITH OrderSums AS (\n  SELECT customer_id, SUM(amount) AS total_spend\n  FROM Orders\n  GROUP BY customer_id\n)\nSELECT c.customer_id, c.account_balance, COALESCE(os.total_spend, 0.00) AS total_spend\nFROM Customers c\nLEFT JOIN OrderSums os ON c.customer_id = os.customer_id;",
+        "badSql": "-- ✕ WRONG: Summing parent balance across child rows\nSELECT c.customer_id, SUM(c.account_balance) AS total_balance, SUM(o.amount) AS total_spend\nFROM Customers c\nJOIN Orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id;",
+        "goodSql": "-- ✓ CORRECT: Pre-aggregate child table in a CTE before joining\nWITH OrderSums AS (\n  SELECT customer_id, SUM(amount) AS total_spend\n  FROM Orders\n  GROUP BY customer_id\n)\nSELECT c.customer_id, c.account_balance, COALESCE(os.total_spend, 0.00) AS total_spend\nFROM Customers c\nLEFT JOIN OrderSums os ON c.customer_id = os.customer_id;",
         "whyItBreaks": "A 1-to-many join duplicates the parent row for every matching child. Summing `account_balance` multiplies the balance by the customer's order count.",
         "corporateImpact": "Bank credit risk or total asset balance sheets are overstated by 5x to 10x, triggering audit restatements."
       }
@@ -1714,7 +1714,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trick_ban_right_join",
         "title": "Why Senior Teams Ban RIGHT JOIN",
         "concept": "Cognitive Flow Directionality",
-        "codeSnippet": "-- ✅ UNIVERSAL STANDARD: Re-order using LEFT JOIN:\nSELECT d.dept_name, e.emp_name\nFROM Departments d\nLEFT JOIN Employees e ON d.dept_id = e.dept_id;",
+        "codeSnippet": "-- ✓ UNIVERSAL STANDARD: Re-order using LEFT JOIN:\nSELECT d.dept_name, e.emp_name\nFROM Departments d\nLEFT JOIN Employees e ON d.dept_id = e.dept_id;",
         "explanation": "Humans read from left to right. Mixing LEFT and RIGHT joins forces the reader to reverse mental direction repeatedly.",
         "analystValue": "Instant code review approval and alignment with Google, Amazon, and Stripe SQL style guides."
       },
@@ -1813,7 +1813,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     ],
     "caseStudy": {
       "company": "Netflix",
-      "icon": "🍿",
+      "icon": "",
       "role": "Content Intelligence & Retention Analyst",
       "badge": "Netflix Media Analytics",
       "title": "Customer Churn & Unviewed Catalog Anti-Join",
@@ -1897,7 +1897,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     "title": "Advanced Joins & Sets (RIGHT, FULL & UNION)",
     "shortName": "07. Advanced Joins & UNION",
     "name": "Set Operations, Vertical Stacking, Full Outer Joins & Self-Referential Trees",
-    "icon": "⚡",
+    "icon": "07",
     "execRank": "Level 7: Set Theory & Graph Joins (Physical Step 06)",
     "summary": "Stack datasets vertically with UNION and UNION ALL, handle full outer join bilateral gaps, and navigate organizational hierarchies with self-joins.",
     "analogy": {
@@ -1991,8 +1991,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_blind_union",
         "title": "Blindly Using UNION Instead of UNION ALL",
         "severity": "HIGH",
-        "badSql": "-- ❌ SLOW: Deduplicating two non-overlapping monthly partitions\nSELECT order_id, amount FROM Orders_Jan2026\nUNION\nSELECT order_id, amount FROM Orders_Feb2026;",
-        "goodSql": "-- ✅ FAST: Use UNION ALL when datasets are naturally disjoint\nSELECT order_id, amount FROM Orders_Jan2026\nUNION ALL\nSELECT order_id, amount FROM Orders_Feb2026;",
+        "badSql": "-- ✕ SLOW: Deduplicating two non-overlapping monthly partitions\nSELECT order_id, amount FROM Orders_Jan2026\nUNION\nSELECT order_id, amount FROM Orders_Feb2026;",
+        "goodSql": "-- ✓ FAST: Use UNION ALL when datasets are naturally disjoint\nSELECT order_id, amount FROM Orders_Jan2026\nUNION ALL\nSELECT order_id, amount FROM Orders_Feb2026;",
         "whyItBreaks": "Orders in January and February have unique IDs and dates. Using UNION forces the engine to sort millions of rows in memory to find duplicate records that do not exist.",
         "corporateImpact": "ETL batch runtimes jump from 5 minutes to 45 minutes, delaying executive morning dashboards."
       }
@@ -2093,7 +2093,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     ],
     "caseStudy": {
       "company": "Apple",
-      "icon": "🍎",
+      "icon": "",
       "role": "Global Channel Sales & Retail Operations",
       "badge": "Apple Omnichannel",
       "title": "Global Store & Online Order Harmonization",
@@ -2177,7 +2177,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     "title": "Conditional Logic & Functions (CASE WHEN)",
     "shortName": "08. Conditional CASE WHEN",
     "name": "Decision Trees, Branching Logic, Conditional Aggregation & Null Shields",
-    "icon": "⚖️",
+    "icon": "08",
     "execRank": "Level 8: Expression Evaluation (Step 05 Projection)",
     "summary": "Implement if-else branching logic, categorize continuous data into business tiers, pivot matrix summaries, and protect formulas against zero-division.",
     "analogy": {
@@ -2262,8 +2262,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_case_short_circuit_order",
         "title": "The Premature Short-Circuit Trap",
         "severity": "CRITICAL",
-        "badSql": "-- ❌ WRONG: General condition precedes specific condition\nSELECT triangle_id, side_a, side_b, side_c,\n  CASE \n    WHEN side_a = side_b OR side_b = side_c THEN 'Isosceles'\n    WHEN side_a = side_b AND side_b = side_c THEN 'Equilateral' -- DEAD CODE!\n    ELSE 'Scalene'\n  END AS triangle_type\nFROM Triangles;\n-- BUG: Equilateral triangles (5,5,5) hit the first branch and get mislabeled 'Isosceles'!",
-        "goodSql": "-- ✅ CORRECT: Most specific condition evaluated first\nSELECT triangle_id, side_a, side_b, side_c,\n  CASE \n    WHEN side_a + side_b <= side_c OR side_a + side_c <= side_b OR side_b + side_c <= side_a THEN 'Not A Triangle'\n    WHEN side_a = side_b AND side_b = side_c THEN 'Equilateral'\n    WHEN side_a = side_b OR side_b = side_c OR side_a = side_c THEN 'Isosceles'\n    ELSE 'Scalene'\n  END AS triangle_type\nFROM Triangles;",
+        "badSql": "-- ✕ WRONG: General condition precedes specific condition\nSELECT triangle_id, side_a, side_b, side_c,\n  CASE \n    WHEN side_a = side_b OR side_b = side_c THEN 'Isosceles'\n    WHEN side_a = side_b AND side_b = side_c THEN 'Equilateral' -- DEAD CODE!\n    ELSE 'Scalene'\n  END AS triangle_type\nFROM Triangles;\n-- BUG: Equilateral triangles (5,5,5) hit the first branch and get mislabeled 'Isosceles'!",
+        "goodSql": "-- ✓ CORRECT: Most specific condition evaluated first\nSELECT triangle_id, side_a, side_b, side_c,\n  CASE \n    WHEN side_a + side_b <= side_c OR side_a + side_c <= side_b OR side_b + side_c <= side_a THEN 'Not A Triangle'\n    WHEN side_a = side_b AND side_b = side_c THEN 'Equilateral'\n    WHEN side_a = side_b OR side_b = side_c OR side_a = side_c THEN 'Isosceles'\n    ELSE 'Scalene'\n  END AS triangle_type\nFROM Triangles;",
         "whyItBreaks": "CASE WHEN short-circuits. As soon as any WHEN evaluates to TRUE, all subsequent branches are skipped.",
         "corporateImpact": "Misclassifying customer risk tiers or mortgage applications because broad criteria swallowed high-priority exceptions."
       }
@@ -2364,7 +2364,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     ],
     "caseStudy": {
       "company": "Stripe",
-      "icon": "💳",
+      "icon": "",
       "role": "Financial Risk & Fraud Analytics",
       "badge": "Stripe Payments",
       "title": "Merchant Chargeback Risk Tiering & Volume Matrix",
@@ -2448,7 +2448,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     "title": "Multi-Step Queries (CTEs & Subqueries)",
     "shortName": "09. CTEs & Subqueries",
     "name": "Modular Pipelines, Common Table Expressions & Subquery Optimization",
-    "icon": "🏗️",
+    "icon": "09",
     "execRank": "Level 9: Multi-Stage Pipelines (Physical Execution Pipeline)",
     "summary": "Decompose complex corporate business logic into clean, readable, modular data pipelines using Common Table Expressions (WITH) and correlated subqueries.",
     "analogy": {
@@ -2525,8 +2525,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_not_in_null_subquery",
         "title": "The NOT IN with NULL Subquery Catastrophe",
         "severity": "FATAL",
-        "badSql": "-- ❌ WRONG: Using NOT IN against a subquery that returns a NULL\nSELECT employee_id, first_name\nFROM Employees\nWHERE employee_id NOT IN (\n  SELECT manager_id FROM Employees -- If even ONE manager_id is NULL (e.g., CEO)...\n);\n-- CATASTROPHE: Query returns ZERO ROWS! Completely empty result set!",
-        "goodSql": "-- ✅ CORRECT: Use NOT EXISTS or an Anti-Join\nSELECT e.employee_id, e.first_name\nFROM Employees e\nWHERE NOT EXISTS (\n  SELECT 1 FROM Employees m WHERE m.manager_id = e.employee_id\n);",
+        "badSql": "-- ✕ WRONG: Using NOT IN against a subquery that returns a NULL\nSELECT employee_id, first_name\nFROM Employees\nWHERE employee_id NOT IN (\n  SELECT manager_id FROM Employees -- If even ONE manager_id is NULL (e.g., CEO)...\n);\n-- CATASTROPHE: Query returns ZERO ROWS! Completely empty result set!",
+        "goodSql": "-- ✓ CORRECT: Use NOT EXISTS or an Anti-Join\nSELECT e.employee_id, e.first_name\nFROM Employees e\nWHERE NOT EXISTS (\n  SELECT 1 FROM Employees m WHERE m.manager_id = e.employee_id\n);",
         "whyItBreaks": "`val NOT IN (1, 2, NULL)` expands to `val != 1 AND val != 2 AND val != NULL`. Any comparison with NULL evaluates to UNKNOWN. In an AND chain, if one operand is UNKNOWN, the whole expression is never TRUE.",
         "corporateImpact": "Automated fraud alerts, orphan-record checks, or compliance queries silently return 0 records, allowing security breaches to go undetected."
       }
@@ -2627,7 +2627,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     ],
     "caseStudy": {
       "company": "Goldman Sachs",
-      "icon": "🏦",
+      "icon": "",
       "role": "Quantitative Portfolio & Risk Analytics",
       "badge": "Goldman Asset Management",
       "title": "Multi-Stage Portfolio Outlier Detection",
@@ -2658,7 +2658,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
       "testedConcept": "Three-Valued Logic Predicate Collapse in NOT IN",
       "interviewerIntent": "High-level test on ANSI SQL Three-Valued Logic and subquery evaluation pitfalls in production systems.",
       "spokenAnswer": "Under ANSI SQL, val NOT IN (1, 2, NULL) expands logically into val != 1 AND val != 2 AND val != NULL. Any inequality comparison with NULL evaluates to UNKNOWN. In an AND chain, if even one condition is UNKNOWN, the entire predicate can never evaluate to TRUE. As a result, if the subquery returns even one NULL—such as an unassigned manager ID—the entire query silently emits zero rows. The safe enterprise alternative is to use NOT EXISTS or an Anti-Join, which safely bypasses NULL values.",
-      "codeSnippet": "-- ✅ SAFE: Null-Aware Anti-Join:\nSELECT e.employee_id, e.first_name\nFROM Employees e\nWHERE NOT EXISTS (\n  SELECT 1 FROM Employees m WHERE m.manager_id = e.employee_id\n);",
+      "codeSnippet": "-- ✓ SAFE: Null-Aware Anti-Join:\nSELECT e.employee_id, e.first_name\nFROM Employees e\nWHERE NOT EXISTS (\n  SELECT 1 FROM Employees m WHERE m.manager_id = e.employee_id\n);",
       "powerKeywords": [
         "NOT IN NULL Black Hole",
         "Predicate Short-Circuit",
@@ -2711,7 +2711,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     "title": "Advanced Analytics (Window Functions)",
     "shortName": "10. Window Functions",
     "name": "Analytical Sliding Windows, Partitioning, Rankings & Period-over-Period Growth",
-    "icon": "👑",
+    "icon": "10",
     "execRank": "Level 10: Elite Analytics (Physical Step 05 / 07)",
     "summary": "Calculate departmental rankings, running totals, and period-over-period growth metrics using OVER, PARTITION BY, ROW_NUMBER, RANK, DENSE_RANK, and LAG/LEAD without collapsing rows.",
     "analogy": {
@@ -2808,8 +2808,8 @@ export const TOPIC_PHASES: TopicPhase[] = [
         "id": "trap_window_in_where",
         "title": "Using Window Functions in WHERE (Syntax Error)",
         "severity": "CRITICAL",
-        "badSql": "-- ❌ WRONG: Window function inside WHERE clause\nSELECT employee_id, salary\nFROM Employees\nWHERE ROW_NUMBER() OVER (ORDER BY salary DESC) <= 3;\n-- SYNTAX CRASH: \"Window functions are not allowed in WHERE\"",
-        "goodSql": "-- ✅ CORRECT: Wrap in a CTE and filter on the calculated rank alias\nWITH RankedStaff AS (\n  SELECT employee_id, salary, ROW_NUMBER() OVER (ORDER BY salary DESC) AS rn\n  FROM Employees\n)\nSELECT employee_id, salary\nFROM RankedStaff\nWHERE rn <= 3;",
+        "badSql": "-- ✕ WRONG: Window function inside WHERE clause\nSELECT employee_id, salary\nFROM Employees\nWHERE ROW_NUMBER() OVER (ORDER BY salary DESC) <= 3;\n-- SYNTAX CRASH: \"Window functions are not allowed in WHERE\"",
+        "goodSql": "-- ✓ CORRECT: Wrap in a CTE and filter on the calculated rank alias\nWITH RankedStaff AS (\n  SELECT employee_id, salary, ROW_NUMBER() OVER (ORDER BY salary DESC) AS rn\n  FROM Employees\n)\nSELECT employee_id, salary\nFROM RankedStaff\nWHERE rn <= 3;",
         "whyItBreaks": "Execution order! The WHERE clause evaluates in Step 02, whereas window functions are calculated during Step 05 (SELECT). The window metrics do not exist when WHERE filters rows.",
         "corporateImpact": "Analysts get blocked during live technical interview screening rounds."
       }
@@ -2910,7 +2910,7 @@ export const TOPIC_PHASES: TopicPhase[] = [
     ],
     "caseStudy": {
       "company": "Google",
-      "icon": "🔍",
+      "icon": "",
       "role": "People Operations & Global Compensation Analytics",
       "badge": "Google People Analytics",
       "title": "Department Salary Dense-Rank & Cumulative Run-Rate",

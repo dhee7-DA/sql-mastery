@@ -6,6 +6,7 @@ import { Play, CheckCircle2, RotateCcw, Eye, Sparkles, Terminal } from 'lucide-r
 import { TopicPhase, ProblemTier } from '@/data/masteryCourseData';
 import { useSqlWasm, QueryPlanAnalysis } from '@/lib/useSqlWasm';
 import { KobbeQueryPlanVisualizer } from '@/components/kobbe/KobbeQueryPlanVisualizer';
+import { SqlKeywordText } from '@/components/common/SqlKeywordText';
 import confetti from 'canvas-confetti';
 
 interface StepStudioProps {
@@ -263,10 +264,12 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
                 transition={{ duration: 0.2 }}
                 className="border-t border-border bg-muted-surface p-3 text-xs font-mono overflow-hidden"
               >
-                <span className="text-foreground font-semibold text-[10px] uppercase tracking-wider block mb-1">
-                  🔑 Production Reference Solution:
+                <span className="text-foreground font-mono font-semibold text-[10px] uppercase tracking-wider block mb-1">
+                  [PRODUCTION REFERENCE SOLUTION]
                 </span>
-                <pre className="text-foreground/90 overflow-x-auto text-[11px]">{activeTier.solutionSql}</pre>
+                <pre className="text-foreground/90 overflow-x-auto text-[11px]">
+                  <SqlKeywordText text={activeTier.solutionSql || ''} />
+                </pre>
               </motion.div>
             )}
           </AnimatePresence>
@@ -317,7 +320,7 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
             >
               <span>{testResult.message}</span>
               <span className="font-mono text-[10px] opacity-80">
-                ⚡ {testResult.latencyMs}ms latency
+                {testResult.latencyMs}ms latency
               </span>
             </div>
 

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, RotateCcw, CheckCircle2, AlertCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { KobbeTuplePipelineSimulator } from './KobbeTuplePipelineSimulator';
+import { SqlKeywordText } from '@/components/common/SqlKeywordText';
 
 export function KobbeSectionExecution() {
   const initialShuffled = [
@@ -145,7 +146,7 @@ export function KobbeSectionExecution() {
                       {idx + 1}
                     </span>
                     <span className="font-mono text-xs font-bold text-foreground">
-                      {clause}
+                      <SqlKeywordText text={clause} />
                     </span>
                   </div>
 

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Database, Terminal, Layers, Award, Moon, Sun, BookOpen, Sparkles, HelpCircle, ArrowRight } from 'lucide-react';
 import { TOPIC_PHASES } from '@/data/masteryCourseData';
+import { SqlKeywordText } from '@/components/common/SqlKeywordText';
 
 interface KobbeCommandPaletteProps {
   isOpen: boolean;
@@ -157,7 +158,7 @@ export function KobbeCommandPalette({
     ...TOPIC_PHASES.map((t) => ({
       id: `topic-${t.id}`,
       category: 'topics' as const,
-      title: `Topic 0${t.seq}: ${t.title}`,
+      title: `Topic ${t.seq}: ${t.title}`,
       subtitle: `${t.execRank} • ${t.caseStudy.company} Incident`,
       icon: Database,
       action: () => {
@@ -265,7 +266,7 @@ export function KobbeCommandPalette({
                         </div>
                         <div className="flex flex-col min-w-0">
                           <span className="text-xs font-sans font-medium text-foreground truncate">
-                            {item.title}
+                            <SqlKeywordText text={item.title} />
                           </span>
                           {item.subtitle && (
                             <span className="text-[10px] text-muted-foreground font-mono truncate">

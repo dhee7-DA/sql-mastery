@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Briefcase, Copy, Check, Terminal } from 'lucide-react';
 import { CaseStudy } from '@/data/masteryCourseData';
+import { SqlKeywordText } from '@/components/common/SqlKeywordText';
 
 interface StepCaseProps {
   caseStudy: CaseStudy;
@@ -52,7 +53,7 @@ export function StepCase({ caseStudy, onOpenStudio }: StepCaseProps) {
         {/* Business Scenario Description */}
         <div className="mt-3.5 flex flex-col gap-1.5">
           <span className="text-[10px] font-mono font-semibold text-muted-foreground uppercase tracking-wider">
-            🚨 Incident Context &amp; Challenge:
+            [INCIDENT CONTEXT &amp; CHALLENGE]
           </span>
           <p className="text-xs sm:text-[13px] text-foreground/90 leading-relaxed">
             {caseStudy.scenario}
@@ -97,7 +98,7 @@ export function StepCase({ caseStudy, onOpenStudio }: StepCaseProps) {
         </div>
 
         <pre className="mt-3 rounded-lg border border-border bg-muted-surface p-3 font-mono text-[11px] text-foreground overflow-x-auto leading-relaxed">
-          {solutionSql}
+          <SqlKeywordText text={solutionSql} />
         </pre>
       </div>
     </div>

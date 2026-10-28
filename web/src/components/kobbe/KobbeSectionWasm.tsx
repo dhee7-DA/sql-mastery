@@ -20,22 +20,22 @@ import { KobbeQueryPlanVisualizer } from './KobbeQueryPlanVisualizer';
 
 const QUERY_PRESETS = [
   {
-    label: '⚡ Indexed Seek (O(log N))',
+    label: 'INDEX SEEK (O(log N))',
     sql: `SELECT id, first_name, department, salary\nFROM Employees\nWHERE department = 'Engineering';`,
     desc: 'Uses B-Tree index idx_emp_dept for fast binary search',
   },
   {
-    label: '🔍 Scan + Temp Sort (O(N))',
+    label: 'TABLE SCAN (O(N))',
     sql: `SELECT department, COUNT(*) as headcount, ROUND(AVG(salary), 2) as avg_comp\nFROM Employees\nWHERE salary > 80000\nGROUP BY department\nHAVING COUNT(*) >= 1\nORDER BY avg_comp DESC;`,
     desc: 'Sequential table scan with memory B-Tree sort',
   },
   {
-    label: '🔗 Relational Join Plan',
+    label: 'RELATIONAL JOIN',
     sql: `SELECT c.first_name, c.country, o.order_id, o.amount, o.status\nFROM Customers c\nJOIN Orders o ON c.customer_id = o.customer_id\nWHERE o.amount > 200\nORDER BY o.amount DESC;`,
     desc: 'Indexed foreign key join between Customers & Orders',
   },
   {
-    label: '📦 Correlated Subquery',
+    label: 'CORRELATED SUBQUERY',
     sql: `SELECT first_name, department, salary\nFROM Employees e1\nWHERE salary > (\n  SELECT AVG(salary) FROM Employees e2 WHERE e2.department = e1.department\n);`,
     desc: 'Evaluates subquery plan stream per department',
   },
