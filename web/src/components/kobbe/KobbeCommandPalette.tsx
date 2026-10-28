@@ -121,6 +121,28 @@ export function KobbeCommandPalette({
       },
     },
     {
+      id: 'nav-explain',
+      category: 'tools',
+      title: 'Physical EXPLAIN QUERY PLAN Tree',
+      subtitle: 'Inspect B-Tree index seeks vs table scans',
+      icon: Layers,
+      action: () => {
+        onNavigateSection('section-studio');
+        onClose();
+      },
+    },
+    {
+      id: 'nav-schema',
+      category: 'tools',
+      title: 'Relational Schema Explorer',
+      subtitle: 'Browse tables, columns, indexes & sample data',
+      icon: Database,
+      action: () => {
+        onNavigateSection('section-studio');
+        onClose();
+      },
+    },
+    {
       id: 'nav-analytics',
       category: 'tools',
       title: 'Verified Proof-of-Work Credential',

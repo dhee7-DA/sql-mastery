@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, CheckCircle2, RotateCcw, Eye, Sparkles, Terminal } from 'lucide-react';
 import { TopicPhase, ProblemTier } from '@/data/masteryCourseData';
-import { useSqlWasm } from '@/lib/useSqlWasm';
+import { useSqlWasm, QueryPlanAnalysis } from '@/lib/useSqlWasm';
+import { KobbeQueryPlanVisualizer } from '@/components/kobbe/KobbeQueryPlanVisualizer';
 import confetti from 'canvas-confetti';
 
 interface StepStudioProps {
@@ -13,7 +14,7 @@ interface StepStudioProps {
 }
 
 export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
-  const { isReady, executeSql } = useSqlWasm();
+  const { isReady, executeSql, explainQueryPlan } = useSqlWasm();
   const tiers: ProblemTier[] = topic.problem.tiers || [
     {
       id: 1,
@@ -44,7 +45,8 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
     return init;
   });
 
-  const [activeDiffTab, setActiveDiffTab] = useState<'diff' | 'user' | 'expected'>('diff');
+  const [activeDiffTab, setActiveDiffTab] = useState<'diff' | 'user' | 'expected' | 'plan'>('diff');
+  const [queryPlan, setQueryPlan] = useState<QueryPlanAnalysis | null>(null);
   const [testResult, setTestResult] = useState<{
     passed: boolean;
     message: string;
@@ -61,6 +63,8 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
   const handleRunQuery = () => {
     const rawSql = userSql[currentTierId] || '';
     const wasmResult = executeSql(rawSql);
+    const plan = explainQueryPlan(rawSql);
+    setQueryPlan(plan);
 
     if (wasmResult.error) {
       setTestResult({
@@ -95,6 +99,8 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
   const handleVerifySolution = () => {
     const rawSql = userSql[currentTierId] || '';
     const wasmResult = executeSql(rawSql);
+    const plan = explainQueryPlan(rawSql);
+    setQueryPlan(plan);
 
     if (wasmResult.error) {
       setTestResult({
@@ -322,6 +328,7 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
                   { id: 'diff', label: 'Visual Diff' },
                   { id: 'user', label: 'Your Output' },
                   { id: 'expected', label: 'Expected' },
+                  { id: 'plan', label: 'Query Plan (Tree)' },
                 ].map((t) => {
                   const isActive = activeDiffTab === t.id;
                   return (
@@ -345,41 +352,49 @@ export function StepStudio({ topic, onCompleteTier }: StepStudioProps) {
                 })}
               </div>
               <span className="text-[11px] font-mono text-muted-foreground">
-                {testResult.userRows.length} Tuples Rendered
+                {activeDiffTab === 'plan'
+                  ? `${queryPlan?.overallRating || 'analyzed'} plan`
+                  : `${testResult.userRows.length} Tuples Rendered`}
               </span>
             </div>
 
-            {/* Table Grid Output */}
-            <div className="mt-2.5 overflow-x-auto rounded-lg border border-border shadow-2xs">
-              <table className="w-full text-left font-mono text-xs">
-                <thead className="bg-muted-surface text-muted-foreground text-[10px]">
-                  <tr>
-                    <th className="py-1.5 px-2.5 border-b border-border">STATUS</th>
-                    {Object.keys(testResult.userRows[0] || {}).map((col) => (
-                      <th key={col} className="py-1.5 px-2.5 border-b border-border font-semibold text-foreground">
-                        {col}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border bg-surface">
-                  {testResult.userRows.map((row, rIdx) => (
-                    <tr key={rIdx} className="hover:bg-muted-surface/40 transition-colors">
-                      <td className="py-1.5 px-2.5">
-                        <span className="rounded bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 text-[9px] font-semibold text-emerald-800">
-                          ✓ MATCH
-                        </span>
-                      </td>
-                      {Object.values(row).map((val: any, cIdx) => (
-                        <td key={cIdx} className="py-1.5 px-2.5 text-foreground text-[11px]">
-                          {val === null ? <em className="text-muted-foreground">NULL</em> : String(val)}
-                        </td>
+            {/* Content Display: Query Plan or Table Grid Output */}
+            {activeDiffTab === 'plan' && queryPlan ? (
+              <div className="mt-2.5">
+                <KobbeQueryPlanVisualizer plan={queryPlan} />
+              </div>
+            ) : (
+              <div className="mt-2.5 overflow-x-auto rounded-lg border border-border shadow-2xs">
+                <table className="w-full text-left font-mono text-xs">
+                  <thead className="bg-muted-surface text-muted-foreground text-[10px]">
+                    <tr>
+                      <th className="py-1.5 px-2.5 border-b border-border">STATUS</th>
+                      {Object.keys(testResult.userRows[0] || {}).map((col) => (
+                        <th key={col} className="py-1.5 px-2.5 border-b border-border font-semibold text-foreground">
+                          {col}
+                        </th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-border bg-surface">
+                    {testResult.userRows.map((row, rIdx) => (
+                      <tr key={rIdx} className="hover:bg-muted-surface/40 transition-colors">
+                        <td className="py-1.5 px-2.5">
+                          <span className="rounded bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 text-[9px] font-semibold text-emerald-800">
+                            ✓ MATCH
+                          </span>
+                        </td>
+                        {Object.values(row).map((val: any, cIdx) => (
+                          <td key={cIdx} className="py-1.5 px-2.5 text-foreground text-[11px]">
+                            {val === null ? <em className="text-muted-foreground">NULL</em> : String(val)}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
