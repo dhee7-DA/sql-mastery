@@ -22,7 +22,7 @@ export function KobbeSectionDiff() {
   ];
 
   return (
-    <section id="section-diff" className="py-14 sm:py-18 border-t border-border/60">
+    <section id="section-diff" className="py-14 sm:py-18 border-t border-border/60 scroll-mt-20">
       <div className="mx-auto grid w-full max-w-320 grid-cols-1 gap-x-8 px-4 sm:px-8 lg:grid-cols-12 *:col-span-full gap-y-8">
         {/* Left Column (Kobbe 4-col descriptor) */}
         <p className="text-xs sm:text-sm text-muted-foreground max-w-64 leading-normal text-pretty lg:col-span-4 lg:mt-1.5">
@@ -71,9 +71,9 @@ export function KobbeSectionDiff() {
               {/* Tabs with sliding indicator */}
               <div className="flex items-center gap-0.5 bg-surface p-0.5 rounded-lg border border-border shadow-2xs">
                 {[
-                  { id: 'diff', label: '📊 Visual Diff' },
-                  { id: 'user', label: '👤 Candidate' },
-                  { id: 'expected', label: '🎯 Benchmark' },
+                  { id: 'diff', label: 'Visual Diff' },
+                  { id: 'user', label: 'Candidate' },
+                  { id: 'expected', label: 'Benchmark' },
                 ].map((tab) => {
                   const isActive = activeTab === tab.id;
                   return (

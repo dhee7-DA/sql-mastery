@@ -1,0 +1,2984 @@
+/**
+ * SQL FOUNDRY: TIMED FAANG & WALL STREET MOCK INTERVIEW DATA VAULT
+ * 5 Comprehensive Company Interview Tracks (45-Minute Technical Screens)
+ * - Citadel Securities (HFT & Quantitative Risk)
+ * - Meta / Instagram (Product Analytics & Social Graph)
+ * - Stripe (Core Ledgers & FinTech Payments)
+ * - Snowflake (Cloud Infrastructure & Multi-Tenant Compute)
+ * - Google / YouTube (Streaming Media & User Sessionization)
+ */
+
+window.MOCK_INTERVIEW_DATA = {
+  tracks: [
+    // =========================================================================
+    // TRACK 1: CITADEL SECURITIES (QUANTITATIVE FINANCE & HFT)
+    // =========================================================================
+    {
+      id: "track_citadel",
+      company: "Citadel Securities",
+      role: "Quantitative Data Engineer (Core Trading Systems)",
+      badge: "Wall Street / HFT",
+      icon: "🏛️",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$350,000 – $520,000",
+      description: "Fast-paced market microstructure screen testing high-frequency trade blotters, volume-weighted pricing, crossing spreads, and portfolio drawdown recovery.",
+      interviewer: {
+        name: "Marcus Vance",
+        title: "Head of Quantitative Data Infrastructure",
+        avatar: "🎩"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS market_trades;
+CREATE TABLE IF NOT EXISTS market_trades (
+  trade_id TEXT PRIMARY KEY,
+  ticker TEXT NOT NULL,
+  side TEXT NOT NULL,
+  price REAL NOT NULL,
+  shares INTEGER NOT NULL,
+  trade_time TEXT NOT NULL
+);
+
+INSERT INTO market_trades VALUES
+  ('T-01', 'NVDA', 'BUY', 120.00, 500, '2026-10-15 09:30:01'),
+  ('T-02', 'NVDA', 'BUY', 120.50, 1000, '2026-10-15 09:30:03'),
+  ('T-03', 'NVDA', 'SELL', 121.00, 1500, '2026-10-15 09:30:05'),
+  ('T-04', 'NVDA', 'BUY', 120.25, 2000, '2026-10-15 09:30:09'),
+  ('T-05', 'AAPL', 'BUY', 225.00, 800, '2026-10-15 09:30:02'),
+  ('T-06', 'AAPL', 'SELL', 224.50, 1200, '2026-10-15 09:30:06'),
+  ('T-07', 'AAPL', 'BUY', 225.50, 500, '2026-10-15 09:30:10');
+
+DROP TABLE IF EXISTS quote_ticks;
+CREATE TABLE IF NOT EXISTS quote_ticks (
+  tick_id INTEGER PRIMARY KEY,
+  ticker TEXT NOT NULL,
+  bid_price REAL NOT NULL,
+  ask_price REAL NOT NULL,
+  tick_time TEXT NOT NULL
+);
+
+INSERT INTO quote_ticks VALUES
+  (1, 'NVDA', 120.00, 120.10, '09:30:01'),
+  (2, 'NVDA', 120.15, 120.25, '09:30:02'),
+  (3, 'NVDA', 120.30, 120.20, '09:30:03'), -- INVERTED / CROSSED (Bid > Ask)
+  (4, 'NVDA', 120.10, 120.20, '09:30:04'),
+  (5, 'NVDA', 120.40, 120.35, '09:30:05'), -- INVERTED / CROSSED
+  (6, 'AAPL', 225.00, 225.10, '09:30:01'),
+  (7, 'AAPL', 225.20, 225.15, '09:30:02'); -- INVERTED / CROSSED
+
+DROP TABLE IF EXISTS portfolio_snapshots;
+CREATE TABLE IF NOT EXISTS portfolio_snapshots (
+  day_id INTEGER PRIMARY KEY,
+  trading_day TEXT NOT NULL,
+  portfolio_nav REAL NOT NULL
+);
+
+INSERT INTO portfolio_snapshots VALUES
+  (1, '2026-10-01', 100000000.00),
+  (2, '2026-10-02', 103000000.00), -- Peak 1 (103M)
+  (3, '2026-10-03', 101000000.00), -- Drawdown
+  (4, '2026-10-04', 98000000.00),  -- Deep Drawdown
+  (5, '2026-10-05', 102500000.00), -- Recovery
+  (6, '2026-10-06', 104000000.00), -- New Peak (104M)
+  (7, '2026-10-07', 103500000.00);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: Volume-Weighted Average Price (VWAP) Engine",
+          difficulty: "Warmup / Medium",
+          prompt: `Write a query to calculate the **Volume-Weighted Average Price (VWAP)** for each ticker from the \`market_trades\` table.
+          
+**Formula:**
+$$\\text{VWAP} = \\frac{\\sum(\\text{price} \\times \\text{shares})}{\\sum(\\text{shares})}$$
+
+**Requirements:**
+- Return columns: \`ticker\`, \`total_shares\`, \`total_notional\`, \`vwap\`.
+- Round \`total_notional\` and \`vwap\` to 2 decimal places.
+- Order by \`total_notional\` DESC.`,
+          starterSql: `-- Citadel Round 1: Calculate VWAP per Ticker
+SELECT
+  ticker,
+  -- Your code here
+FROM market_trades
+GROUP BY ticker;`,
+          solutionSql: `SELECT
+  ticker,
+  SUM(shares) AS total_shares,
+  ROUND(SUM(price * shares), 2) AS total_notional,
+  ROUND(SUM(price * shares) * 1.0 / SUM(shares), 2) AS vwap
+FROM market_trades
+GROUP BY ticker
+ORDER BY total_notional DESC;`,
+          hints: [
+            "Use SUM(price * shares) to compute the total dollar notional traded.",
+            "Make sure to multiply by 1.0 or use CAST to prevent integer division before rounding."
+          ],
+          expectedColumns: ["ticker", "total_shares", "total_notional", "vwap"],
+          expectedRowCount: 2,
+          bloopGreeting: "Welcome to Citadel! We process 8 billion orders daily. Let's start with a clean VWAP calculation across execution blotters."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Crossed & Inverted Market Ticks Detection",
+          difficulty: "Intermediate",
+          prompt: `In liquid equity markets, the Ask price is strictly higher than the Bid price ($\\text{Ask} > \\text{Bid}$). An inverted quote where $\\text{Bid} > \\text{Ask}$ signals an execution crossing break or stale quote latch.
+
+**Requirements:**
+- Identify all crossed ticks where \`bid_price > ask_price\`.
+- For each crossed tick, compute the crossing spread: \`ROUND(bid_price - ask_price, 4)\` as \`crossed_spread\`.
+- Also use a window function to look up the prior tick's \`bid_price\` as \`prev_bid\` for that ticker.
+- Return: \`ticker\`, \`tick_time\`, \`bid_price\`, \`ask_price\`, \`crossed_spread\`, \`prev_bid\`.
+- Order by \`ticker\`, \`tick_time\` ASC.`,
+          starterSql: `-- Citadel Round 2: Detect Crossed Market Ticks
+SELECT
+  ticker,
+  tick_time,
+  bid_price,
+  ask_price,
+  -- Calculate crossed_spread and prev_bid
+FROM quote_ticks
+-- Add WHERE condition
+ORDER BY ticker, tick_time ASC;`,
+          solutionSql: `WITH CrossedQuotes AS (
+  SELECT
+    ticker,
+    tick_time,
+    bid_price,
+    ask_price,
+    ROUND(bid_price - ask_price, 4) AS crossed_spread,
+    LAG(bid_price, 1) OVER (PARTITION BY ticker ORDER BY tick_time) AS prev_bid
+  FROM quote_ticks
+)
+SELECT
+  ticker,
+  tick_time,
+  bid_price,
+  ask_price,
+  crossed_spread,
+  prev_bid
+FROM CrossedQuotes
+WHERE crossed_spread > 0
+ORDER BY ticker, tick_time ASC;`,
+          hints: [
+            "Compute LAG(bid_price, 1) OVER (PARTITION BY ticker ORDER BY tick_time) in a CTE or subquery first.",
+            "Filter for bid_price > ask_price (or crossed_spread > 0) in the outer query."
+          ],
+          expectedColumns: ["ticker", "tick_time", "bid_price", "ask_price", "crossed_spread", "prev_bid"],
+          expectedRowCount: 3,
+          bloopGreeting: "Solid work on VWAP! Now let's test market micro-structure. Spot inverted crossed quotes in our high-frequency tick stream."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: Cumulative High-Water Mark & Peak Drawdown",
+          difficulty: "Staff / Advanced",
+          prompt: `Citadel's risk committee monitors portfolio drawdown from the all-time peak (High-Water Mark).
+          
+**Requirements:**
+- For each \`trading_day\` in \`portfolio_snapshots\`:
+  1. Compute the cumulative \`high_water_mark\` (the maximum NAV observed up to and including the current day).
+  2. Compute the current \`drawdown_pct\`:
+     $$\\text{drawdown\\_pct} = \\text{ROUND}\\left(\\frac{\\text{portfolio\\_nav} - \\text{high\\_water\\_mark}}{\\text{high\\_water\\_mark}} \\times 100, 2\\right)$$
+  3. Classify \`status\`:
+     - If $\\text{drawdown\\_pct} = 0$, assign \`'NEW_PEAK'\`.
+     - If $\\text{drawdown\\_pct} \\le -3.00$, assign \`'CRITICAL_DRAWDOWN'\`.
+     - Otherwise, assign \`'NORMAL_FLUCTUATION'\`.
+- Return columns: \`trading_day\`, \`portfolio_nav\`, \`high_water_mark\`, \`drawdown_pct\`, \`status\`.
+- Order by \`trading_day\` ASC.`,
+          starterSql: `-- Citadel Round 3: High-Water Mark & Drawdown Calculation
+SELECT
+  trading_day,
+  portfolio_nav,
+  -- Calculate high_water_mark, drawdown_pct, status
+FROM portfolio_snapshots
+ORDER BY trading_day ASC;`,
+          solutionSql: `WITH HwmSeries AS (
+  SELECT
+    trading_day,
+    portfolio_nav,
+    MAX(portfolio_nav) OVER (
+      ORDER BY trading_day 
+      ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS high_water_mark
+  FROM portfolio_snapshots
+)
+SELECT
+  trading_day,
+  portfolio_nav,
+  high_water_mark,
+  ROUND((portfolio_nav - high_water_mark) * 100.0 / high_water_mark, 2) AS drawdown_pct,
+  CASE
+    WHEN portfolio_nav = high_water_mark THEN 'NEW_PEAK'
+    WHEN ((portfolio_nav - high_water_mark) * 100.0 / high_water_mark) <= -3.00 THEN 'CRITICAL_DRAWDOWN'
+    ELSE 'NORMAL_FLUCTUATION'
+  END AS status
+FROM HwmSeries
+ORDER BY trading_day ASC;`,
+          hints: [
+            "Use MAX(portfolio_nav) OVER (ORDER BY trading_day ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) to compute cumulative peak.",
+            "Calculate drawdown_pct in a second SELECT layer or wrap in a CTE to make CASE statements clean and DRY."
+          ],
+          expectedColumns: ["trading_day", "portfolio_nav", "high_water_mark", "drawdown_pct", "status"],
+          expectedRowCount: 7,
+          bloopGreeting: "Final question! This is the exact problem we give Staff Quantitative Engineers. Show me how you compute dynamic high-water mark drawdowns."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 2: META / INSTAGRAM (PRODUCT ANALYTICS & SOCIAL GRAPH)
+    // =========================================================================
+    {
+      id: "track_meta",
+      company: "Meta",
+      role: "Senior Data Engineer (Instagram Growth & Engagement)",
+      badge: "Big Tech / FAANG",
+      icon: "🌐",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$240,000 – $380,000",
+      description: "Core engagement screen assessing active user cohorts, rolling 3-day video watch time trajectories, and mutual connection triangles.",
+      interviewer: {
+        name: "Chloe Zhang",
+        title: "Staff Data Engineer, Growth Analytics",
+        avatar: "👩‍💻"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS user_logins;
+CREATE TABLE IF NOT EXISTS user_logins (
+  login_id INTEGER PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  login_date TEXT NOT NULL
+);
+
+INSERT INTO user_logins VALUES
+  (1, 101, '2026-10-10'), (2, 101, '2026-10-11'), (3, 101, '2026-10-12'),
+  (4, 102, '2026-10-10'), (5, 102, '2026-10-12'),
+  (6, 103, '2026-10-10'),
+  (7, 104, '2026-10-11'), (8, 104, '2026-10-12'),
+  (9, 105, '2026-10-12');
+
+DROP TABLE IF EXISTS user_video_views;
+CREATE TABLE IF NOT EXISTS user_video_views (
+  view_id INTEGER PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  view_date TEXT NOT NULL,
+  watch_seconds INTEGER NOT NULL
+);
+
+INSERT INTO user_video_views VALUES
+  (1, 101, '2026-10-01', 300),
+  (2, 101, '2026-10-02', 450),
+  (3, 101, '2026-10-03', 600),
+  (4, 101, '2026-10-04', 200),
+  (5, 102, '2026-10-01', 120),
+  (6, 102, '2026-10-02', 150),
+  (7, 102, '2026-10-03', 80);
+
+DROP TABLE IF EXISTS friendships;
+CREATE TABLE IF NOT EXISTS friendships (
+  user_id1 INTEGER NOT NULL,
+  user_id2 INTEGER NOT NULL,
+  PRIMARY KEY (user_id1, user_id2)
+);
+
+INSERT INTO friendships VALUES
+  (1, 2), (2, 1),
+  (2, 3), (3, 2),
+  (1, 3), (3, 1), -- Triangle: 1, 2, 3
+  (3, 4), (4, 3);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: Daily Active Users (DAU) & User Frequency",
+          difficulty: "Warmup / Medium",
+          prompt: `Calculate the **Total Distinct Active Days** for each user between \`2026-10-10\` and \`2026-10-12\` from \`user_logins\`.
+          
+**Requirements:**
+- Return: \`user_id\`, \`active_days\`, \`cohort_tier\`.
+- \`cohort_tier\` rules:
+  - If \`active_days = 3\`, assign \`'DAILY_POWER_USER'\`.
+  - If \`active_days = 2\`, assign \`'REGULAR_USER'\`.
+  - Otherwise, assign \`'OCCASIONAL_USER'\`.
+- Order by \`active_days\` DESC, \`user_id\` ASC.`,
+          starterSql: `-- Meta Round 1: DAU & Cohort Frequency
+SELECT
+  user_id,
+  -- Calculate active_days and cohort_tier
+FROM user_logins
+GROUP BY user_id;`,
+          solutionSql: `SELECT
+  user_id,
+  COUNT(DISTINCT login_date) AS active_days,
+  CASE
+    WHEN COUNT(DISTINCT login_date) = 3 THEN 'DAILY_POWER_USER'
+    WHEN COUNT(DISTINCT login_date) = 2 THEN 'REGULAR_USER'
+    ELSE 'OCCASIONAL_USER'
+  END AS cohort_tier
+FROM user_logins
+GROUP BY user_id
+ORDER BY active_days DESC, user_id ASC;`,
+          hints: [
+            "Use COUNT(DISTINCT login_date) to prevent counting multiple logins on the same day twice.",
+            "Use a CASE WHEN expression evaluated against the count."
+          ],
+          expectedColumns: ["user_id", "active_days", "cohort_tier"],
+          expectedRowCount: 5,
+          bloopGreeting: "Hi! I'm Chloe from Instagram Growth. We track hundreds of millions of daily cohort transitions. Let's start with active user segmentation."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Rolling 3-Day Video Watch Time Window",
+          difficulty: "Intermediate",
+          prompt: `To detect binge-watching streaks on Instagram Reels, compute a **Rolling 3-Day Moving Average** of video watch time for each user.
+          
+**Requirements:**
+- For each record in \`user_video_views\`:
+  - Compute \`rolling_3d_watch_seconds\`: the sum of \`watch_seconds\` over the current row and the preceding 2 days (up to 3 rows).
+  - Compute \`rolling_avg_seconds\`: the average \`watch_seconds\` over this 3-day frame, rounded to 1 decimal place.
+- Return: \`user_id\`, \`view_date\`, \`watch_seconds\`, \`rolling_3d_watch_seconds\`, \`rolling_avg_seconds\`.
+- Order by \`user_id\`, \`view_date\` ASC.`,
+          starterSql: `-- Meta Round 2: Rolling 3-Day Video Watch Time
+SELECT
+  user_id,
+  view_date,
+  watch_seconds,
+  -- Calculate rolling window sums and averages
+FROM user_video_views
+ORDER BY user_id, view_date ASC;`,
+          solutionSql: `SELECT
+  user_id,
+  view_date,
+  watch_seconds,
+  SUM(watch_seconds) OVER (
+    PARTITION BY user_id
+    ORDER BY view_date
+    ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+  ) AS rolling_3d_watch_seconds,
+  ROUND(AVG(watch_seconds) OVER (
+    PARTITION BY user_id
+    ORDER BY view_date
+    ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+  ), 1) AS rolling_avg_seconds
+FROM user_video_views
+ORDER BY user_id, view_date ASC;`,
+          hints: [
+            "Use ROWS BETWEEN 2 PRECEDING AND CURRENT ROW inside your OVER clause.",
+            "Remember to PARTITION BY user_id so users' streams do not mix."
+          ],
+          expectedColumns: ["user_id", "view_date", "watch_seconds", "rolling_3d_watch_seconds", "rolling_avg_seconds"],
+          expectedRowCount: 7,
+          bloopGreeting: "Great job on the cohorts! Now let's calculate sliding window moving averages for Reels engagement."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: Mutual Connection Triangles (Social Graph)",
+          difficulty: "Staff / Advanced",
+          prompt: `Meta's "People You May Know" algorithm relies heavily on closed friend triangles. A mutual triangle exists between 3 distinct users $(A < B < C)$ if:
+- $A$ is friends with $B$
+- $B$ is friends with $C$
+- $A$ is friends with $C$
+
+**Requirements:**
+- Query the bidirectional \`friendships\` table.
+- Identify all unique triangles $(user_a < user_b < user_c)$.
+- Return columns: \`user_a\`, \`user_b\`, \`user_c\`.
+- Order by \`user_a\`, \`user_b\`, \`user_c\` ASC.`,
+          starterSql: `-- Meta Round 3: Mutual Connection Triangles
+SELECT
+  -- Identify user_a, user_b, user_c forming a closed triangle
+FROM friendships f1
+-- Join to detect triangle
+ORDER BY user_a, user_b, user_c;`,
+          solutionSql: `SELECT
+  f1.user_id1 AS user_a,
+  f1.user_id2 AS user_b,
+  f2.user_id2 AS user_c
+FROM friendships f1
+JOIN friendships f2
+  ON f1.user_id2 = f2.user_id1
+JOIN friendships f3
+  ON f2.user_id2 = f3.user_id1
+ AND f3.user_id2 = f1.user_id1
+WHERE f1.user_id1 < f1.user_id2
+  AND f1.user_id2 < f2.user_id2
+ORDER BY user_a, user_b, user_c ASC;`,
+          hints: [
+            "Join friendships three times to complete the cycle: f1 (A->B), f2 (B->C), f3 (C->A).",
+            "Enforce A < B AND B < C in the WHERE clause to eliminate duplicates and directional permutations."
+          ],
+          expectedColumns: ["user_a", "user_b", "user_c"],
+          expectedRowCount: 1,
+          bloopGreeting: "This is our signature graph problem. How do you find closed 3-node triangles without generating factorial Cartesian explosions?"
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 3: STRIPE (CORE LEDGERS & FINTECH PAYMENTS)
+    // =========================================================================
+    {
+      id: "track_stripe",
+      company: "Stripe",
+      role: "Staff Database Engineer (Core Payments & Settlement)",
+      badge: "FinTech / Payments",
+      icon: "💳",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$280,000 – $440,000",
+      description: "Financial integrity screen testing transaction net margins, circular money-laundering rings, and running ledger discrepancies.",
+      interviewer: {
+        name: "Siddharth Rao",
+        title: "Principal Engineer, Treasury & Settlements",
+        avatar: "⚡"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS stripe_charges;
+CREATE TABLE IF NOT EXISTS stripe_charges (
+  charge_id TEXT PRIMARY KEY,
+  merchant_id TEXT NOT NULL,
+  amount_usd REAL NOT NULL,
+  fee_fixed REAL NOT NULL,
+  fee_variable_pct REAL NOT NULL,
+  charge_status TEXT NOT NULL
+);
+
+INSERT INTO stripe_charges VALUES
+  ('CH-01', 'MERCH-A', 100.00, 0.30, 0.029, 'SUCCEEDED'),
+  ('CH-02', 'MERCH-A', 250.00, 0.30, 0.029, 'SUCCEEDED'),
+  ('CH-03', 'MERCH-A', 50.00, 0.30, 0.029, 'REFUNDED'),
+  ('CH-04', 'MERCH-B', 1200.00, 0.30, 0.029, 'SUCCEEDED'),
+  ('CH-05', 'MERCH-B', 80.00, 0.30, 0.029, 'DISPUTED'),
+  ('CH-06', 'MERCH-C', 5000.00, 0.30, 0.025, 'SUCCEEDED');
+
+DROP TABLE IF EXISTS ledger_entries;
+CREATE TABLE IF NOT EXISTS ledger_entries (
+  entry_id INTEGER PRIMARY KEY,
+  account_id TEXT NOT NULL,
+  entry_type TEXT NOT NULL, -- CREDIT or DEBIT
+  amount REAL NOT NULL,
+  entry_timestamp TEXT NOT NULL
+);
+
+INSERT INTO ledger_entries VALUES
+  (1, 'ACC-99', 'CREDIT', 1000.00, '2026-10-01 10:00:00'),
+  (2, 'ACC-99', 'DEBIT', 250.00, '2026-10-01 11:30:00'),
+  (3, 'ACC-99', 'DEBIT', 150.00, '2026-10-01 14:00:00'),
+  (4, 'ACC-99', 'CREDIT', 500.00, '2026-10-01 18:00:00'),
+  (5, 'ACC-88', 'CREDIT', 3000.00, '2026-10-01 09:00:00'),
+  (6, 'ACC-88', 'DEBIT', 1200.00, '2026-10-01 12:00:00');
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: Payment Processing Fee & Net Merchant Payout",
+          difficulty: "Warmup / Medium",
+          prompt: `For all successful charges (\`charge_status = 'SUCCEEDED'\`), calculate Stripe's fee revenue and the merchant's net payout.
+          
+**Formulas:**
+$$\\text{stripe\\_fee} = \\text{fee\\_fixed} + (\\text{amount\\_usd} \\times \\text{fee\\_variable\\_pct})$$
+$$\\text{merchant\\_net} = \\text{amount\\_usd} - \\text{stripe\\_fee}$$
+
+**Requirements:**
+- Group by \`merchant_id\`.
+- Return: \`merchant_id\`, \`successful_charges\`, \`gross_volume\`, \`total_fees\`, \`total_net_payout\`.
+- Round \`gross_volume\`, \`total_fees\`, and \`total_net_payout\` to 2 decimal places.
+- Order by \`gross_volume\` DESC.`,
+          starterSql: `-- Stripe Round 1: Net Merchant Payouts & Stripe Take Rate
+SELECT
+  merchant_id,
+  -- Calculate charges, gross_volume, total_fees, total_net_payout
+FROM stripe_charges
+WHERE charge_status = 'SUCCEEDED'
+GROUP BY merchant_id;`,
+          solutionSql: `SELECT
+  merchant_id,
+  COUNT(*) AS successful_charges,
+  ROUND(SUM(amount_usd), 2) AS gross_volume,
+  ROUND(SUM(fee_fixed + (amount_usd * fee_variable_pct)), 2) AS total_fees,
+  ROUND(SUM(amount_usd - (fee_fixed + (amount_usd * fee_variable_pct))), 2) AS total_net_payout
+FROM stripe_charges
+WHERE charge_status = 'SUCCEEDED'
+GROUP BY merchant_id
+ORDER BY gross_volume DESC;`,
+          hints: [
+            "Filter for charge_status = 'SUCCEEDED' before grouping.",
+            "Use ROUND(..., 2) on all monetary aggregations."
+          ],
+          expectedColumns: ["merchant_id", "successful_charges", "gross_volume", "total_fees", "total_net_payout"],
+          expectedRowCount: 3,
+          bloopGreeting: "Welcome to Stripe! At our scale, fractional cent rounding errors can cost millions. Let's calculate fee take rates and merchant settlement balances."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Running Balance Double-Entry Ledger",
+          difficulty: "Intermediate",
+          prompt: `In Stripe's core ledger, every account has credits and debits. Compute a **Cumulative Running Balance** for each account chronologically.
+          
+**Rules:**
+- A \`'CREDIT'\` increases the balance ($+\\text{amount}$).
+- A \`'DEBIT'\` decreases the balance ($-\\text{amount}$).
+
+**Requirements:**
+- Return: \`entry_id\`, \`account_id\`, \`entry_timestamp\`, \`entry_type\`, \`amount\`, \`running_balance\`.
+- \`running_balance\` must be computed using an analytical window function partitioned by \`account_id\` and ordered by \`entry_timestamp\` ASC.
+- Order result by \`account_id\`, \`entry_timestamp\` ASC.`,
+          starterSql: `-- Stripe Round 2: Cumulative Running Ledger Balance
+SELECT
+  entry_id,
+  account_id,
+  entry_timestamp,
+  entry_type,
+  amount,
+  -- Compute running balance
+FROM ledger_entries
+ORDER BY account_id, entry_timestamp ASC;`,
+          solutionSql: `SELECT
+  entry_id,
+  account_id,
+  entry_timestamp,
+  entry_type,
+  amount,
+  SUM(
+    CASE 
+      WHEN entry_type = 'CREDIT' THEN amount 
+      ELSE -amount 
+    END
+  ) OVER (
+    PARTITION BY account_id
+    ORDER BY entry_timestamp
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ) AS running_balance
+FROM ledger_entries
+ORDER BY account_id, entry_timestamp ASC;`,
+          hints: [
+            "Use a CASE WHEN inside SUM() to make credits positive and debits negative.",
+            "Order by entry_timestamp with ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW."
+          ],
+          expectedColumns: ["entry_id", "account_id", "entry_timestamp", "entry_type", "amount", "running_balance"],
+          expectedRowCount: 6,
+          bloopGreeting: "Clean fee calculation! Now for Stripe's backbone: the immutable double-entry ledger. Build the running balance vector."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: High-Risk Chargeback Rate & Merchant Freeze Trigger",
+          difficulty: "Staff / Advanced",
+          prompt: `Stripe's Risk team automatically freezes merchants whose chargeback volume exceeds 1.0% of their total gross volume.
+          
+**Requirements:**
+- Query \`stripe_charges\` across ALL merchants.
+- Calculate:
+  - \`total_charges_count\`: count of all charges.
+  - \`total_gross_volume\`: sum of all \`amount_usd\`.
+  - \`chargeback_volume\`: sum of \`amount_usd\` for charges with \`charge_status = 'DISPUTED'\` (use 0 if none).
+  - \`chargeback_pct\`: $\\text{ROUND}\\left(\\frac{\\text{chargeback\\_volume}}{\\text{total\\_gross\\_volume}} \\times 100, 2\\right)$.
+  - \`risk_verdict\`:
+    - If $\\text{chargeback\\_pct} \\ge 1.00$, assign \`'FREEZE_PAYOUTS'\`.
+    - Otherwise, assign \`'HEALTHY'\`.
+- Return: \`merchant_id\`, \`total_gross_volume\`, \`chargeback_volume\`, \`chargeback_pct\`, \`risk_verdict\`.
+- Order by \`chargeback_pct\` DESC.`,
+          starterSql: `-- Stripe Round 3: Merchant Risk & Payout Freeze Trigger
+SELECT
+  merchant_id,
+  -- Calculate volumes, chargeback rate, and risk verdict
+FROM stripe_charges
+GROUP BY merchant_id;`,
+          solutionSql: `SELECT
+  merchant_id,
+  ROUND(SUM(amount_usd), 2) AS total_gross_volume,
+  ROUND(SUM(CASE WHEN charge_status = 'DISPUTED' THEN amount_usd ELSE 0 END), 2) AS chargeback_volume,
+  ROUND(
+    SUM(CASE WHEN charge_status = 'DISPUTED' THEN amount_usd ELSE 0 END) * 100.0 / 
+    NULLIF(SUM(amount_usd), 0), 2
+  ) AS chargeback_pct,
+  CASE
+    WHEN (SUM(CASE WHEN charge_status = 'DISPUTED' THEN amount_usd ELSE 0 END) * 100.0 / NULLIF(SUM(amount_usd), 0)) >= 1.00 
+    THEN 'FREEZE_PAYOUTS'
+    ELSE 'HEALTHY'
+  END AS risk_verdict
+FROM stripe_charges
+GROUP BY merchant_id
+ORDER BY chargeback_pct DESC;`,
+          hints: [
+            "Use conditional aggregation SUM(CASE WHEN charge_status = 'DISPUTED' THEN amount_usd ELSE 0 END).",
+            "Use NULLIF(SUM(amount_usd), 0) to safeguard against division by zero."
+          ],
+          expectedColumns: ["merchant_id", "total_gross_volume", "chargeback_volume", "chargeback_pct", "risk_verdict"],
+          expectedRowCount: 3,
+          bloopGreeting: "Final question for the Staff level! Design Stripe's automated risk trigger to catch card fraud and freeze high-risk merchants."
+        }
+      ]
+    },
+    // =========================================================================
+    // TRACK 4: NETFLIX (STREAMING MEDIA & CONTENT ALGORITHMS)
+    // =========================================================================
+    {
+      id: "track_netflix",
+      company: "Netflix",
+      role: "Senior Streaming & Personalization Data Engineer",
+      badge: "FAANG / Media",
+      icon: "🍿",
+      difficulty: "Medium – Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$320,000 – $480,000",
+      description: "Personalization and telemetry screen: evaluate completion funnels, sessionize continuous binge viewing via Islands & Gaps, and forecast 30-day subscriber churn risk.",
+      interviewer: {
+        name: "Elena Rostova",
+        title: "Principal Streaming Architect",
+        avatar: "🎬"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS netflix_streams;
+CREATE TABLE netflix_streams (
+  stream_id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  title_id TEXT NOT NULL,
+  title_name TEXT NOT NULL,
+  content_type TEXT NOT NULL,
+  duration_seconds INTEGER NOT NULL,
+  watched_seconds INTEGER NOT NULL,
+  stream_date TEXT NOT NULL,
+  country TEXT NOT NULL
+);
+
+INSERT INTO netflix_streams VALUES
+  ('S-01', 'U-101', 'T-501', 'Stranger Things S5', 'SERIES', 3600, 3550, '2026-10-10 19:00:00', 'USA'),
+  ('S-02', 'U-101', 'T-502', 'Stranger Things S5', 'SERIES', 3600, 3600, '2026-10-10 20:05:00', 'USA'),
+  ('S-03', 'U-101', 'T-503', 'Stranger Things S5', 'SERIES', 3600, 3400, '2026-10-10 21:10:00', 'USA'),
+  ('S-04', 'U-102', 'T-501', 'Stranger Things S5', 'SERIES', 3600, 250, '2026-10-10 19:30:00', 'GBR'),
+  ('S-05', 'U-103', 'T-701', 'Glass Onion 2', 'MOVIE', 7200, 7100, '2026-10-11 20:00:00', 'USA'),
+  ('S-06', 'U-104', 'T-701', 'Glass Onion 2', 'MOVIE', 7200, 900, '2026-10-11 21:00:00', 'CAN'),
+  ('S-07', 'U-105', 'T-701', 'Glass Onion 2', 'MOVIE', 7200, 45, '2026-10-11 22:00:00', 'USA'),
+  ('S-08', 'U-106', 'T-801', 'Chef Table France', 'SERIES', 2400, 2300, '2026-10-12 18:00:00', 'FRA'),
+  ('S-09', 'U-107', 'T-801', 'Chef Table France', 'SERIES', 2400, 2200, '2026-10-12 19:00:00', 'FRA');
+
+DROP TABLE IF EXISTS netflix_user_history;
+CREATE TABLE netflix_user_history (
+  history_id INTEGER PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  event_time TEXT NOT NULL,
+  title_name TEXT NOT NULL,
+  duration_minutes INTEGER NOT NULL
+);
+
+INSERT INTO netflix_user_history VALUES
+  (1, 'U-201', '2026-10-12 18:00:00', 'Black Mirror Ep 1', 60),
+  (2, 'U-201', '2026-10-12 19:05:00', 'Black Mirror Ep 2', 60),
+  (3, 'U-201', '2026-10-12 20:15:00', 'Black Mirror Ep 3', 55),
+  (4, 'U-201', '2026-10-12 23:45:00', 'The Crown Ep 1', 60),
+  (5, 'U-202', '2026-10-12 14:00:00', 'Wednesday Ep 1', 50),
+  (6, 'U-202', '2026-10-12 17:30:00', 'Wednesday Ep 2', 50);
+
+DROP TABLE IF EXISTS netflix_subscribers;
+CREATE TABLE netflix_subscribers (
+  user_id TEXT PRIMARY KEY,
+  tier TEXT NOT NULL,
+  recent_7d_hours REAL NOT NULL,
+  prior_21d_hours REAL NOT NULL
+);
+
+INSERT INTO netflix_subscribers VALUES
+  ('U-301', 'PREMIUM', 4.0, 36.0),
+  ('U-302', 'STANDARD', 18.0, 20.0),
+  ('U-303', 'STANDARD', 2.5, 24.0),
+  ('U-304', 'PREMIUM', 22.0, 25.0),
+  ('U-305', 'BASIC', 0.5, 12.0);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: Video Completion Rate & Abandonment Ratio",
+          difficulty: "Warmup",
+          prompt: `In Netflix's content evaluation platform, raw view counts are misleading without completion telemetry.
+          
+**Requirements:**
+- Query \`netflix_streams\`.
+- Filter out accidental preview clicks where \`watched_seconds < 60\`.
+- For each \`title_name\` and \`content_type\`, compute:
+  - \`total_streams\`: Total valid playback sessions.
+  - \`avg_completion_pct\`: Average percentage of title watched: \`ROUND(AVG(watched_seconds * 100.0 / NULLIF(duration_seconds, 0)), 1)\`.
+  - \`abandonment_rate_pct\`: Percentage of valid streams abandoned early (\`watched_seconds < 0.2 * duration_seconds\`), rounded to 1 decimal place.
+- Return: \`title_name\`, \`content_type\`, \`total_streams\`, \`avg_completion_pct\`, \`abandonment_rate_pct\`.
+- Order by \`total_streams\` DESC, \`avg_completion_pct\` DESC.`,
+          starterSql: `-- Netflix Round 1: Video Completion & Abandonment Ratio
+SELECT
+  title_name,
+  content_type,
+  -- Calculate stream counts, avg completion %, and early abandonment %
+FROM netflix_streams
+WHERE watched_seconds >= 60
+GROUP BY title_name, content_type
+ORDER BY total_streams DESC;`,
+          solutionSql: `SELECT
+  title_name,
+  content_type,
+  COUNT(*) AS total_streams,
+  ROUND(AVG(watched_seconds * 100.0 / NULLIF(duration_seconds, 0)), 1) AS avg_completion_pct,
+  ROUND(SUM(CASE WHEN watched_seconds < (0.2 * duration_seconds) THEN 1.0 ELSE 0.0 END) * 100.0 / COUNT(*), 1) AS abandonment_rate_pct
+FROM netflix_streams
+WHERE watched_seconds >= 60
+GROUP BY title_name, content_type
+ORDER BY total_streams DESC, avg_completion_pct DESC;`,
+          hints: [
+            "Filter for watched_seconds >= 60 in the WHERE clause.",
+            "Use NULLIF(duration_seconds, 0) inside AVG() to protect against zero division.",
+            "Calculate abandonment rate using SUM(CASE WHEN watched_seconds < 0.2 * duration_seconds THEN 1.0 ELSE 0.0 END) * 100.0 / COUNT(*)."
+          ],
+          expectedColumns: ["title_name", "content_type", "total_streams", "avg_completion_pct", "abandonment_rate_pct"],
+          expectedRowCount: 3,
+          bloopGreeting: "Welcome to Netflix! We care intensely about engagement depth. Let's calculate completion funnels and early drop-off ratios."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Binge-Watching Sessionization (Islands & Gaps)",
+          difficulty: "Intermediate",
+          prompt: `Netflix defines a **Binge-Watching Session** as a continuous sequence of video plays by a user where the gap between the end of one stream and the start of the next stream does NOT exceed 30 minutes.
+
+**Rules:**
+- If the idle pause between previous stream end and next stream start is > 30 minutes, a **new session** begins.
+- The first stream for any user always starts session \`1\`.
+
+**Requirements:**
+- Query \`netflix_user_history\`.
+- Detect session boundaries using \`LAG()\` and assign a sequential integer \`session_id\` per user using cumulative summing.
+- Aggregate at the \`(user_id, session_id)\` level and return:
+  - \`user_id\`, \`session_id\`, \`titles_watched\`, \`total_watch_minutes\`, \`session_start\`, \`session_end\`.
+- Order by \`user_id\` ASC, \`session_id\` ASC.`,
+          starterSql: `-- Netflix Round 2: Binge Sessionization (Islands & Gaps)
+WITH stream_lags AS (
+  SELECT
+    user_id,
+    event_time,
+    title_name,
+    duration_minutes,
+    -- Compute prior stream end time
+  FROM netflix_user_history
+)
+-- Build session markers and cumulative session_id
+SELECT * FROM stream_lags;`,
+          solutionSql: `WITH stream_lags AS (
+  SELECT
+    user_id,
+    event_time,
+    title_name,
+    duration_minutes,
+    LAG(event_time) OVER (PARTITION BY user_id ORDER BY event_time) AS prev_event_time,
+    LAG(duration_minutes) OVER (PARTITION BY user_id ORDER BY event_time) AS prev_duration
+  FROM netflix_user_history
+),
+session_markers AS (
+  SELECT
+    user_id,
+    event_time,
+    title_name,
+    duration_minutes,
+    CASE
+      WHEN prev_event_time IS NULL THEN 1
+      WHEN (strftime('%s', event_time) - (strftime('%s', prev_event_time) + (prev_duration * 60))) > (30 * 60) THEN 1
+      ELSE 0
+    END AS is_new_session
+  FROM stream_lags
+),
+session_grouped AS (
+  SELECT
+    user_id,
+    event_time,
+    title_name,
+    duration_minutes,
+    SUM(is_new_session) OVER (PARTITION BY user_id ORDER BY event_time) AS session_id
+  FROM session_markers
+)
+SELECT
+  user_id,
+  session_id,
+  COUNT(*) AS titles_watched,
+  SUM(duration_minutes) AS total_watch_minutes,
+  MIN(event_time) AS session_start,
+  MAX(event_time) AS session_end
+FROM session_grouped
+GROUP BY user_id, session_id
+ORDER BY user_id, session_id;`,
+          hints: [
+            "Use LAG(event_time) and LAG(duration_minutes) to determine when the prior stream finished.",
+            "Compute idle gap in seconds: strftime('%s', event_time) - (strftime('%s', prev_event_time) + prev_duration * 60).",
+            "Assign session_id with SUM(is_new_session) OVER (PARTITION BY user_id ORDER BY event_time)."
+          ],
+          expectedColumns: ["user_id", "session_id", "titles_watched", "total_watch_minutes", "session_start", "session_end"],
+          expectedRowCount: 4,
+          bloopGreeting: "Superb warmup! Now for a classic FAANG favorite: the Islands & Gaps sessionization pattern. Group consecutive streams into single binge sessions."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: 30-Day Churn Leading Indicator & Cohort Risk",
+          difficulty: "Staff / Advanced",
+          prompt: `Predicting subscriber cancellation before it occurs is critical for Netflix retention teams. An early warning metric is **Viewing Velocity Decay**.
+          
+**Requirements:**
+- Query \`netflix_subscribers\`.
+- \`recent_7d_hours\` is the total hours viewed over the last 7 days.
+- \`prior_21d_hours\` is the total hours viewed in the preceding 3 weeks (21 days).
+- Compute:
+  - \`baseline_weekly_hours\`: Average weekly consumption across the prior 21 days: \`ROUND(prior_21d_hours / 3.0, 1)\`.
+  - \`velocity_pct_change\`: Percentage shift in weekly consumption:
+    $$\\text{ROUND}\\left(\\frac{\\text{recent\\_7d\\_hours} - \\text{baseline\\_weekly\\_hours}}{\\text{baseline\\_weekly\\_hours}} \\times 100, 1\\right)$$
+  - \`risk_tier\`:
+    - If velocity dropped by $\\ge 50\\%$ (\`velocity_pct_change <= -50.0\`), assign \`'CRITICAL_CHURN_RISK'\`.
+    - If velocity dropped between $0\\%$ and $50\\%$, assign \`'DECLINING'\`.
+    - Otherwise, assign \`'HEALTHY'\`.
+- Return: \`user_id\`, \`tier\`, \`recent_7d_hours\`, \`baseline_weekly_hours\`, \`velocity_pct_change\`, \`risk_tier\`.
+- Order by \`velocity_pct_change\` ASC (highest risk first).`,
+          starterSql: `-- Netflix Round 3: Churn Velocity & Account Risk Scoring
+SELECT
+  user_id,
+  tier,
+  recent_7d_hours,
+  -- Calculate weekly baseline, velocity % delta, and risk classification
+FROM netflix_subscribers
+ORDER BY user_id;`,
+          solutionSql: `SELECT
+  user_id,
+  tier,
+  recent_7d_hours,
+  ROUND(prior_21d_hours / 3.0, 1) AS baseline_weekly_hours,
+  ROUND(
+    ((recent_7d_hours - (prior_21d_hours / 3.0)) / NULLIF(prior_21d_hours / 3.0, 0)) * 100.0,
+    1
+  ) AS velocity_pct_change,
+  CASE
+    WHEN ((recent_7d_hours - (prior_21d_hours / 3.0)) / NULLIF(prior_21d_hours / 3.0, 0)) <= -0.50 THEN 'CRITICAL_CHURN_RISK'
+    WHEN ((recent_7d_hours - (prior_21d_hours / 3.0)) / NULLIF(prior_21d_hours / 3.0, 0)) < 0.0 THEN 'DECLINING'
+    ELSE 'HEALTHY'
+  END AS risk_tier
+FROM netflix_subscribers
+ORDER BY velocity_pct_change ASC;`,
+          hints: [
+            "Divide prior_21d_hours by 3.0 to normalize to a 7-day weekly baseline.",
+            "Use NULLIF(prior_21d_hours / 3.0, 0) to prevent division by zero.",
+            "Evaluate risk_tier with CASE WHEN percentage drop is <= -50.0."
+          ],
+          expectedColumns: ["user_id", "tier", "recent_7d_hours", "baseline_weekly_hours", "velocity_pct_change", "risk_tier"],
+          expectedRowCount: 5,
+          bloopGreeting: "Final question for the Staff level! Build the analytical churn leading indicator that alerts growth teams before users click cancel."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 5: UBER / DOORDASH (LOGISTICS & MARKETPLACE DISPATCH)
+    // =========================================================================
+    {
+      id: "track_uber",
+      company: "Uber / DoorDash",
+      role: "Staff Logistics & Marketplace Algorithms Engineer",
+      badge: "Marketplace / Logistics",
+      icon: "🚗",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$340,000 – $490,000",
+      description: "High-throughput marketplace dispatch screen: evaluate zone delivery SLAs, compute 15-minute rolling surge multipliers, and analyze driver shift deadhead transit ratios.",
+      interviewer: {
+        name: "Darius Thorne",
+        title: "Staff Marketplace Optimization Engineer",
+        avatar: "🗺️"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS uber_deliveries;
+CREATE TABLE uber_deliveries (
+  delivery_id TEXT PRIMARY KEY,
+  zone_id TEXT NOT NULL,
+  zone_name TEXT NOT NULL,
+  order_time TEXT NOT NULL,
+  estimated_minutes INTEGER NOT NULL,
+  actual_minutes INTEGER NOT NULL,
+  delivery_status TEXT NOT NULL
+);
+
+INSERT INTO uber_deliveries VALUES
+  ('D-001', 'Z-MAN', 'Manhattan Core', '2026-10-15 18:00:00', 30, 28, 'COMPLETED'),
+  ('D-002', 'Z-MAN', 'Manhattan Core', '2026-10-15 18:05:00', 35, 42, 'COMPLETED'),
+  ('D-003', 'Z-MAN', 'Manhattan Core', '2026-10-15 18:10:00', 25, 24, 'COMPLETED'),
+  ('D-004', 'Z-MAN', 'Manhattan Core', '2026-10-15 18:15:00', 40, 55, 'COMPLETED'),
+  ('D-005', 'Z-BK', 'Brooklyn North', '2026-10-15 18:02:00', 30, 48, 'COMPLETED'),
+  ('D-006', 'Z-BK', 'Brooklyn North', '2026-10-15 18:12:00', 30, 45, 'COMPLETED'),
+  ('D-007', 'Z-BK', 'Brooklyn North', '2026-10-15 18:20:00', 30, 32, 'COMPLETED'),
+  ('D-008', 'Z-QNS', 'Queens West', '2026-10-15 18:00:00', 25, 23, 'COMPLETED'),
+  ('D-009', 'Z-QNS', 'Queens West', '2026-10-15 18:30:00', 25, 26, 'COMPLETED');
+
+DROP TABLE IF EXISTS uber_zone_snapshots;
+CREATE TABLE uber_zone_snapshots (
+  snapshot_id INTEGER PRIMARY KEY,
+  zone_name TEXT NOT NULL,
+  snapshot_time TEXT NOT NULL,
+  ride_requests INTEGER NOT NULL,
+  available_drivers INTEGER NOT NULL
+);
+
+INSERT INTO uber_zone_snapshots VALUES
+  (1, 'Downtown Financial', '2026-10-15 17:00:00', 120, 100),
+  (2, 'Downtown Financial', '2026-10-15 17:15:00', 180, 90),
+  (3, 'Downtown Financial', '2026-10-15 17:30:00', 250, 80),
+  (4, 'Airport JFK', '2026-10-15 17:00:00', 200, 180),
+  (5, 'Airport JFK', '2026-10-15 17:15:00', 320, 120),
+  (6, 'Airport JFK', '2026-10-15 17:30:00', 400, 100),
+  (7, 'Suburbs North', '2026-10-15 17:00:00', 30, 50),
+  (8, 'Suburbs North', '2026-10-15 17:15:00', 35, 45);
+
+DROP TABLE IF EXISTS uber_driver_shifts;
+CREATE TABLE uber_driver_shifts (
+  trip_id TEXT PRIMARY KEY,
+  driver_id TEXT NOT NULL,
+  pickup_time TEXT NOT NULL,
+  dropoff_time TEXT NOT NULL,
+  paid_miles REAL NOT NULL,
+  pickup_deadhead_miles REAL NOT NULL
+);
+
+INSERT INTO uber_driver_shifts VALUES
+  ('TR-101', 'DRV-1', '2026-10-15 08:00:00', '2026-10-15 08:25:00', 8.5, 2.0),
+  ('TR-102', 'DRV-1', '2026-10-15 08:40:00', '2026-10-15 09:10:00', 12.0, 3.5),
+  ('TR-103', 'DRV-1', '2026-10-15 09:25:00', '2026-10-15 10:00:00', 14.5, 1.5),
+  ('TR-201', 'DRV-2', '2026-10-15 08:15:00', '2026-10-15 08:45:00', 6.0, 4.0),
+  ('TR-202', 'DRV-2', '2026-10-15 09:30:00', '2026-10-15 10:15:00', 9.0, 6.5);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: Delivery SLA Breach Rate & Zone Performance",
+          difficulty: "Warmup",
+          prompt: `In Uber Eats / DoorDash dispatch, delivery latency directly causes customer churn and cold food refunds.
+          
+**Requirements:**
+- Query \`uber_deliveries\`.
+- A delivery breaches SLA if \`actual_minutes > estimated_minutes\`.
+- For each \`zone_name\`, calculate:
+  - \`total_deliveries\`: Total delivery count.
+  - \`breached_sla_count\`: Number of late deliveries.
+  - \`breach_rate_pct\`: Percentage of deliveries that breached SLA, rounded to 1 decimal place.
+  - \`avg_delay_minutes\`: Average overrun (\`actual_minutes - estimated_minutes\`) across all deliveries in that zone, rounded to 1 decimal place.
+- Return: \`zone_name\`, \`total_deliveries\`, \`breached_sla_count\`, \`breach_rate_pct\`, \`avg_delay_minutes\`.
+- Order by \`breach_rate_pct\` DESC, \`total_deliveries\` DESC.`,
+          starterSql: `-- Uber Round 1: Zone SLA Breach Analysis
+SELECT
+  zone_name,
+  -- Compute delivery totals, late counts, breach %, and average delay
+FROM uber_deliveries
+GROUP BY zone_name
+ORDER BY breach_rate_pct DESC;`,
+          solutionSql: `SELECT
+  zone_name,
+  COUNT(*) AS total_deliveries,
+  SUM(CASE WHEN actual_minutes > estimated_minutes THEN 1 ELSE 0 END) AS breached_sla_count,
+  ROUND(
+    SUM(CASE WHEN actual_minutes > estimated_minutes THEN 1.0 ELSE 0.0 END) * 100.0 / COUNT(*),
+    1
+  ) AS breach_rate_pct,
+  ROUND(AVG(actual_minutes - estimated_minutes), 1) AS avg_delay_minutes
+FROM uber_deliveries
+GROUP BY zone_name
+ORDER BY breach_rate_pct DESC, total_deliveries DESC;`,
+          hints: [
+            "Use CASE WHEN actual_minutes > estimated_minutes THEN 1 ELSE 0 END to count breaches.",
+            "Multiply by 100.0 for floating point percentage division before ROUND(..., 1).",
+            "Calculate average delay with AVG(actual_minutes - estimated_minutes)."
+          ],
+          expectedColumns: ["zone_name", "total_deliveries", "breached_sla_count", "breach_rate_pct", "avg_delay_minutes"],
+          expectedRowCount: 3,
+          bloopGreeting: "Welcome to Uber! In real-time logistics, every minute of latency matters. Let's calculate zone SLA compliance and delivery overruns."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: 15-Minute Dynamic Surge Pricing Multiplier",
+          difficulty: "Intermediate",
+          prompt: `Uber balances supply and demand dynamically by adjusting pricing multipliers based on unfulfilled trip requests versus available nearby drivers.
+
+**Surge Rules:**
+$$\\text{demand\\_supply\\_ratio} = \\frac{\\text{ride\\_requests}}{\\text{available\\_drivers}}$$
+- If $\\text{ratio} \\ge 3.0$, surge multiplier is \`2.5\`.
+- If $\\text{ratio} \\ge 2.0$, surge multiplier is \`2.0\`.
+- If $\\text{ratio} \\ge 1.5$, surge multiplier is \`1.5\`.
+- Otherwise, surge multiplier is \`1.0\` (base rate).
+
+**Requirements:**
+- Query \`uber_zone_snapshots\`.
+- Calculate \`demand_supply_ratio\` rounded to 2 decimal places.
+- Determine the \`surge_multiplier\`.
+- Return: \`zone_name\`, \`snapshot_time\`, \`ride_requests\`, \`available_drivers\`, \`demand_supply_ratio\`, \`surge_multiplier\`.
+- Order by \`demand_supply_ratio\` DESC.`,
+          starterSql: `-- Uber Round 2: Dynamic Surge Pricing Engine
+SELECT
+  zone_name,
+  snapshot_time,
+  ride_requests,
+  available_drivers,
+  -- Calculate ratio and assign surge tier
+FROM uber_zone_snapshots
+ORDER BY demand_supply_ratio DESC;`,
+          solutionSql: `SELECT
+  zone_name,
+  snapshot_time,
+  ride_requests,
+  available_drivers,
+  ROUND(ride_requests * 1.0 / NULLIF(available_drivers, 0), 2) AS demand_supply_ratio,
+  CASE
+    WHEN (ride_requests * 1.0 / NULLIF(available_drivers, 0)) >= 3.0 THEN 2.5
+    WHEN (ride_requests * 1.0 / NULLIF(available_drivers, 0)) >= 2.0 THEN 2.0
+    WHEN (ride_requests * 1.0 / NULLIF(available_drivers, 0)) >= 1.5 THEN 1.5
+    ELSE 1.0
+  END AS surge_multiplier
+FROM uber_zone_snapshots
+ORDER BY demand_supply_ratio DESC;`,
+          hints: [
+            "Use NULLIF(available_drivers, 0) to guard against division by zero in empty zones.",
+            "Round demand_supply_ratio to 2 decimal places.",
+            "Use CASE WHEN with descending thresholds (>= 3.0, >= 2.0, >= 1.5)."
+          ],
+          expectedColumns: ["zone_name", "snapshot_time", "ride_requests", "available_drivers", "demand_supply_ratio", "surge_multiplier"],
+          expectedRowCount: 8,
+          bloopGreeting: "Great work on SLAs! Now let's implement Uber's signature mechanism: real-time algorithmic surge pricing based on local supply/demand density."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: Driver Deadhead Mileage vs Paid Trip Efficiency",
+          difficulty: "Staff / Advanced",
+          prompt: `Driver retention and unit economics depend heavily on minimizing "deadhead" miles—unpaid distance spent driving to pick up a passenger versus actual paid trip miles.
+
+**Requirements:**
+- Query \`uber_driver_shifts\`.
+- For each \`driver_id\`, calculate:
+  - \`completed_trips\`: Count of trips completed.
+  - \`total_paid_miles\`: Sum of \`paid_miles\`, rounded to 1 decimal place.
+  - \`total_deadhead_miles\`: Sum of \`pickup_deadhead_miles\`, rounded to 1 decimal place.
+  - \`total_shift_miles\`: Sum of \`paid_miles + pickup_deadhead_miles\`, rounded to 1 decimal place.
+  - \`paid_efficiency_pct\`: Percentage of total driven miles that were revenue-generating:
+    $$\\text{ROUND}\\left(\\frac{\\text{total\\_paid\\_miles}}{\\text{total\\_shift\\_miles}} \\times 100, 1\\right)$$
+- Return: \`driver_id\`, \`completed_trips\`, \`total_paid_miles\`, \`total_deadhead_miles\`, \`total_shift_miles\`, \`paid_efficiency_pct\`.
+- Order by \`paid_efficiency_pct\` DESC.`,
+          starterSql: `-- Uber Round 3: Driver Deadhead Mileage & Shift Efficiency
+SELECT
+  driver_id,
+  -- Calculate paid vs deadhead miles and overall driver efficiency ratio
+FROM uber_driver_shifts
+GROUP BY driver_id;`,
+          solutionSql: `SELECT
+  driver_id,
+  COUNT(*) AS completed_trips,
+  ROUND(SUM(paid_miles), 1) AS total_paid_miles,
+  ROUND(SUM(pickup_deadhead_miles), 1) AS total_deadhead_miles,
+  ROUND(SUM(paid_miles + pickup_deadhead_miles), 1) AS total_shift_miles,
+  ROUND(
+    (SUM(paid_miles) * 100.0) / NULLIF(SUM(paid_miles + pickup_deadhead_miles), 0),
+    1
+  ) AS paid_efficiency_pct
+FROM uber_driver_shifts
+GROUP BY driver_id
+ORDER BY paid_efficiency_pct DESC;`,
+          hints: [
+            "Sum both paid_miles and pickup_deadhead_miles per driver.",
+            "Calculate efficiency ratio as (SUM(paid_miles) * 100.0) / NULLIF(SUM(paid_miles + pickup_deadhead_miles), 0).",
+            "Round all mile aggregates to 1 decimal place."
+          ],
+          expectedColumns: ["driver_id", "completed_trips", "total_paid_miles", "total_deadhead_miles", "total_shift_miles", "paid_efficiency_pct"],
+          expectedRowCount: 2,
+          bloopGreeting: "Final question for the Staff level! Optimize marketplace driver economics by analyzing unpaid deadhead miles vs revenue-generating passenger trips."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 6: GOOGLE / YOUTUBE (ADTECH & AUCTION CLEARING)
+    // =========================================================================
+    {
+      id: "track_google",
+      company: "Google / YouTube",
+      role: "Staff Ads Infrastructure & Auction Systems Engineer",
+      badge: "FAANG / AdTech",
+      icon: "🔍",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$360,000 – $510,000",
+      description: "Search auction and click-stream telemetry screen: evaluate advertiser eCPM, clear live Generalized Second-Price (GSP) ad auctions, and detect automated click fraud bursts.",
+      interviewer: {
+        name: "Dr. Sanjay Patel",
+        title: "Distinguished Search Ads Architect",
+        avatar: "🔬"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS google_ad_campaigns;
+CREATE TABLE google_ad_campaigns (
+  campaign_id TEXT PRIMARY KEY,
+  advertiser_name TEXT NOT NULL,
+  industry TEXT NOT NULL,
+  impressions INTEGER NOT NULL,
+  clicks INTEGER NOT NULL,
+  spend_usd REAL NOT NULL
+);
+
+INSERT INTO google_ad_campaigns VALUES
+  ('CMP-01', 'Nike Athletic', 'Retail', 150000, 3200, 4800.00),
+  ('CMP-02', 'Adidas Running', 'Retail', 120000, 2400, 3120.00),
+  ('CMP-03', 'Geico Direct', 'Insurance', 80000, 4100, 16400.00),
+  ('CMP-04', 'Progressive Auto', 'Insurance', 95000, 4600, 20700.00),
+  ('CMP-05', 'Shopify Growth', 'SaaS', 200000, 5000, 12500.00);
+
+DROP TABLE IF EXISTS google_ad_auctions;
+CREATE TABLE google_ad_auctions (
+  auction_id TEXT NOT NULL,
+  keyword TEXT NOT NULL,
+  advertiser_name TEXT NOT NULL,
+  bid_amount REAL NOT NULL,
+  quality_score INTEGER NOT NULL
+);
+
+INSERT INTO google_ad_auctions VALUES
+  ('AUC-101', 'best running shoes', 'Nike Athletic', 2.50, 9),
+  ('AUC-101', 'best running shoes', 'Adidas Running', 3.00, 7),
+  ('AUC-101', 'best running shoes', 'Puma Speed', 2.00, 6),
+  ('AUC-101', 'best running shoes', 'Generic Shoe Store', 3.50, 4),
+  ('AUC-102', 'car insurance quote', 'Geico Direct', 15.00, 9),
+  ('AUC-102', 'car insurance quote', 'Progressive Auto', 16.00, 8),
+  ('AUC-102', 'car insurance quote', 'State Farm Agent', 14.00, 8);
+
+DROP TABLE IF EXISTS google_ad_clicks;
+CREATE TABLE google_ad_clicks (
+  click_id INTEGER PRIMARY KEY,
+  campaign_id TEXT NOT NULL,
+  user_ip TEXT NOT NULL,
+  click_time TEXT NOT NULL
+);
+
+INSERT INTO google_ad_clicks VALUES
+  (1, 'CMP-01', '192.168.1.50', '2026-10-15 12:00:01'),
+  (2, 'CMP-01', '192.168.1.50', '2026-10-15 12:00:03'),
+  (3, 'CMP-01', '192.168.1.50', '2026-10-15 12:00:05'),
+  (4, 'CMP-01', '192.168.1.50', '2026-10-15 12:00:07'),
+  (5, 'CMP-01', '192.168.1.50', '2026-10-15 12:00:09'),
+  (6, 'CMP-01', '10.0.0.99', '2026-10-15 12:00:02'),
+  (7, 'CMP-02', '172.16.0.4', '2026-10-15 12:01:00'),
+  (8, 'CMP-03', '8.8.8.8', '2026-10-15 12:02:00');
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: Advertiser Effective CPM & Cost Efficiency",
+          difficulty: "Warmup",
+          prompt: `In Google AdSense and YouTube Ads, monetization performance is compared across advertisers via Cost-Per-Mille (eCPM) and Click-Through-Rate (CTR).
+
+**Formulas:**
+$$\\text{ctr\\_pct} = \\frac{\\text{clicks}}{\\text{impressions}} \\times 100$$
+$$\\text{ecpm\\_usd} = \\frac{\\text{spend\\_usd}}{\\text{impressions}} \\times 1000$$
+$$\\text{cpc\\_usd} = \\frac{\\text{spend\\_usd}}{\\text{clicks}}$$
+
+**Requirements:**
+- Query \`google_ad_campaigns\`.
+- Compute \`ctr_pct\` (rounded to 2 decimals), \`ecpm_usd\` (rounded to 2 decimals), and \`cpc_usd\` (rounded to 2 decimals).
+- Return: \`industry\`, \`advertiser_name\`, \`impressions\`, \`clicks\`, \`ctr_pct\`, \`ecpm_usd\`, \`cpc_usd\`.
+- Order by \`ecpm_usd\` DESC.`,
+          starterSql: `-- Google Round 1: Advertiser Ad Monetization Metrics
+SELECT
+  industry,
+  advertiser_name,
+  impressions,
+  clicks,
+  -- Compute CTR %, eCPM ($ per 1,000 impressions), and average CPC
+FROM google_ad_campaigns
+ORDER BY spend_usd DESC;`,
+          solutionSql: `SELECT
+  industry,
+  advertiser_name,
+  impressions,
+  clicks,
+  ROUND((clicks * 100.0) / NULLIF(impressions, 0), 2) AS ctr_pct,
+  ROUND((spend_usd * 1000.0) / NULLIF(impressions, 0), 2) AS ecpm_usd,
+  ROUND(spend_usd / NULLIF(clicks, 0), 2) AS cpc_usd
+FROM google_ad_campaigns
+ORDER BY ecpm_usd DESC;`,
+          hints: [
+            "Use NULLIF(impressions, 0) and NULLIF(clicks, 0) to prevent divide-by-zero errors.",
+            "eCPM formula is (spend_usd * 1000.0) / impressions.",
+            "Round all monetary and percentage results to 2 decimal places."
+          ],
+          expectedColumns: ["industry", "advertiser_name", "impressions", "clicks", "ctr_pct", "ecpm_usd", "cpc_usd"],
+          expectedRowCount: 5,
+          bloopGreeting: "Welcome to Google! We power billions of ad auctions every single day. Let's start with foundational eCPM and auction performance metrics."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Generalized Second-Price (GSP) Auction Clearing",
+          difficulty: "Intermediate",
+          prompt: `Google's search ads run on a **Generalized Second-Price (GSP)** auction mechanism.
+          
+**Auction Mechanics:**
+1. Each advertiser's **Ad Rank** is calculated as:
+   $$\\text{ad\\_rank} = \\text{bid\\_amount} \\times \\text{quality\\_score}$$
+2. The advertiser with the highest Ad Rank wins the top ad slot (\`rank_pos = 1\`).
+3. Under GSP rules, the winner does NOT pay their own bid. Instead, they pay the minimum price needed to beat the second-highest bidder's Ad Rank:
+   $$\\text{clearing\\_price\\_cpc} = \\text{ROUND}\\left(\\frac{\\text{next\\_ad\\_rank}}{\\text{winner\\_quality\\_score}} + 0.01, 2\\right)$$
+
+**Requirements:**
+- Query \`google_ad_auctions\`.
+- For each \`auction_id\`, identify the winning advertiser (\`rank_pos = 1\`).
+- Return: \`auction_id\`, \`keyword\`, \`winning_advertiser\`, \`original_bid\`, \`quality_score\`, \`ad_rank\`, \`clearing_price_cpc\`.
+- Order by \`auction_id\` ASC.`,
+          starterSql: `-- Google Round 2: Generalized Second-Price (GSP) Auction Clearing
+WITH ranked_bids AS (
+  SELECT
+    auction_id,
+    keyword,
+    advertiser_name,
+    bid_amount,
+    quality_score,
+    -- Compute Ad Rank and determine next highest rank
+  FROM google_ad_auctions
+)
+SELECT * FROM ranked_bids;`,
+          solutionSql: `WITH ranked_bids AS (
+  SELECT
+    auction_id,
+    keyword,
+    advertiser_name,
+    bid_amount,
+    quality_score,
+    ROUND(bid_amount * quality_score, 2) AS ad_rank,
+    ROW_NUMBER() OVER (PARTITION BY auction_id ORDER BY (bid_amount * quality_score) DESC) AS rank_pos,
+    LEAD(ROUND(bid_amount * quality_score, 2)) OVER (PARTITION BY auction_id ORDER BY (bid_amount * quality_score) DESC) AS next_ad_rank
+  FROM google_ad_auctions
+)
+SELECT
+  auction_id,
+  keyword,
+  advertiser_name AS winning_advertiser,
+  bid_amount AS original_bid,
+  quality_score,
+  ad_rank,
+  ROUND((COALESCE(next_ad_rank, 0.0) / quality_score) + 0.01, 2) AS clearing_price_cpc
+FROM ranked_bids
+WHERE rank_pos = 1
+ORDER BY auction_id;`,
+          hints: [
+            "Compute ad_rank as bid_amount * quality_score.",
+            "Use ROW_NUMBER() OVER (PARTITION BY auction_id ORDER BY ad_rank DESC) to find the winner.",
+            "Use LEAD(ad_rank) OVER (PARTITION BY auction_id ORDER BY ad_rank DESC) to fetch the 2nd place rank.",
+            "Calculate clearing price as (next_ad_rank / quality_score) + 0.01."
+          ],
+          expectedColumns: ["auction_id", "keyword", "winning_advertiser", "original_bid", "quality_score", "ad_rank", "clearing_price_cpc"],
+          expectedRowCount: 2,
+          bloopGreeting: "Excellent metrics understanding! Now implement Google's core revenue engine: the Generalized Second-Price auction clearing algorithm."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: High-Frequency IP Click Burst Fraud Detector",
+          difficulty: "Staff / Advanced",
+          prompt: `Ad fraud networks deploy automated click-bots to drain competitor ad budgets. Google's Click Quality team detects rapid click bursts originating from the same IP address.
+
+**Detection Rule:**
+- Flag any \`user_ip\` generating $\\ge 5$ clicks within a **10-second rolling window** (\`RANGE BETWEEN 9 PRECEDING AND CURRENT ROW\` on timestamp seconds).
+
+**Requirements:**
+- Query \`google_ad_clicks\`.
+- Order clicks chronologically by timestamp in seconds: \`CAST(strftime('%s', click_time) AS INTEGER)\`.
+- Compute the rolling 10-second click count per \`user_ip\`.
+- Return: \`user_ip\`, \`campaign_id\`, \`peak_burst_count\` (the maximum burst observed), and assign \`fraud_action = 'MALICIOUS_BOT_FRAUD'\`.
+- Group by \`user_ip\`, \`campaign_id\` where rolling clicks reached at least 5.`,
+          starterSql: `-- Google Round 3: High-Frequency Click Burst Fraud Detector
+WITH click_bursts AS (
+  SELECT
+    user_ip,
+    campaign_id,
+    click_time,
+    -- Compute rolling 10-second click count using RANGE
+  FROM google_ad_clicks
+)
+SELECT * FROM click_bursts;`,
+          solutionSql: `WITH click_bursts AS (
+  SELECT
+    user_ip,
+    campaign_id,
+    click_time,
+    COUNT(*) OVER (
+      PARTITION BY user_ip 
+      ORDER BY CAST(strftime('%s', click_time) AS INTEGER)
+      RANGE BETWEEN 9 PRECEDING AND CURRENT ROW
+    ) AS rolling_10s_clicks
+  FROM google_ad_clicks
+)
+SELECT
+  user_ip,
+  campaign_id,
+  MAX(rolling_10s_clicks) AS peak_burst_count,
+  'MALICIOUS_BOT_FRAUD' AS fraud_action
+FROM click_bursts
+WHERE rolling_10s_clicks >= 5
+GROUP BY user_ip, campaign_id;`,
+          hints: [
+            "Cast strftime('%s', click_time) to INTEGER so RANGE operates on numeric seconds.",
+            "Use RANGE BETWEEN 9 PRECEDING AND CURRENT ROW partitioned by user_ip.",
+            "Filter for rolling_10s_clicks >= 5 in the outer query."
+          ],
+          expectedColumns: ["user_ip", "campaign_id", "peak_burst_count", "fraud_action"],
+          expectedRowCount: 1,
+          bloopGreeting: "Final question for the Staff level! Protect billions of advertiser dollars by building Google's real-time click fraud burst detector."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 7: AMAZON / AWS (CLOUD INFRASTRUCTURE & SUPPLY CHAIN)
+    // =========================================================================
+    {
+      id: "track_amazon",
+      company: "Amazon / AWS",
+      role: "Principal AWS Spot & Supply Chain Systems Engineer",
+      badge: "FAANG / Cloud & Supply Chain",
+      icon: "📦",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$350,000 – $500,000",
+      description: "Scale infrastructure screen: audit fulfillment center pick-to-pack SLA throughput, analyze Prime Day checkout drop-off funnels, and clear AWS Spot Instance cloud capacity.",
+      interviewer: {
+        name: "Rachel Chen",
+        title: "Director of AWS Spot Optimization & Fulfillment",
+        avatar: "⚡"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS amazon_fulfillment_orders;
+CREATE TABLE amazon_fulfillment_orders (
+  order_id TEXT PRIMARY KEY,
+  fc_code TEXT NOT NULL,
+  city TEXT NOT NULL,
+  order_time TEXT NOT NULL,
+  ship_time TEXT NOT NULL,
+  target_sla_minutes INTEGER NOT NULL
+);
+
+INSERT INTO amazon_fulfillment_orders VALUES
+  ('ORD-01', 'JFK8', 'Staten Island', '2026-10-15 08:00:00', '2026-10-15 09:45:00', 120),
+  ('ORD-02', 'JFK8', 'Staten Island', '2026-10-15 08:15:00', '2026-10-15 11:00:00', 120),
+  ('ORD-03', 'JFK8', 'Staten Island', '2026-10-15 08:30:00', '2026-10-15 10:15:00', 120),
+  ('ORD-04', 'BFI4', 'Kent', '2026-10-15 09:00:00', '2026-10-15 10:30:00', 120),
+  ('ORD-05', 'BFI4', 'Kent', '2026-10-15 09:30:00', '2026-10-15 12:45:00', 120),
+  ('ORD-06', 'OAK4', 'Tracy', '2026-10-15 08:00:00', '2026-10-15 09:30:00', 120),
+  ('ORD-07', 'OAK4', 'Tracy', '2026-10-15 08:30:00', '2026-10-15 09:50:00', 120);
+
+DROP TABLE IF EXISTS amazon_cart_funnel;
+CREATE TABLE amazon_cart_funnel (
+  session_id TEXT PRIMARY KEY,
+  category TEXT NOT NULL,
+  cart_value_usd REAL NOT NULL,
+  added_to_cart INTEGER NOT NULL,
+  checkout_started INTEGER NOT NULL,
+  payment_confirmed INTEGER NOT NULL
+);
+
+INSERT INTO amazon_cart_funnel VALUES
+  ('SESS-01', 'Consumer Electronics', 250.00, 1, 1, 1),
+  ('SESS-02', 'Consumer Electronics', 400.00, 1, 1, 0),
+  ('SESS-03', 'Consumer Electronics', 150.00, 1, 0, 0),
+  ('SESS-04', 'Consumer Electronics', 320.00, 1, 1, 1),
+  ('SESS-05', 'Home & Kitchen', 60.00, 1, 1, 1),
+  ('SESS-06', 'Home & Kitchen', 45.00, 1, 1, 1),
+  ('SESS-07', 'Home & Kitchen', 90.00, 1, 1, 0),
+  ('SESS-08', 'Apparel & Shoes', 120.00, 1, 0, 0),
+  ('SESS-09', 'Apparel & Shoes', 85.00, 1, 1, 0);
+
+DROP TABLE IF EXISTS aws_spot_market;
+CREATE TABLE aws_spot_market (
+  bid_id TEXT PRIMARY KEY,
+  instance_type TEXT NOT NULL,
+  az_id TEXT NOT NULL,
+  bid_price_usd REAL NOT NULL,
+  requested_units INTEGER NOT NULL
+);
+
+INSERT INTO aws_spot_market VALUES
+  ('BID-01', 'c6g.4xlarge', 'us-east-1a', 0.85, 20),
+  ('BID-02', 'c6g.4xlarge', 'us-east-1a', 0.72, 30),
+  ('BID-03', 'c6g.4xlarge', 'us-east-1a', 0.65, 40),
+  ('BID-04', 'c6g.4xlarge', 'us-east-1a', 0.50, 50),
+  ('BID-05', 'c6g.4xlarge', 'us-east-1a', 0.40, 25);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: Fulfillment Center Pick-to-Ship SLA Delays",
+          difficulty: "Warmup",
+          prompt: `In Amazon Robotics and Fulfillment Centers, maintaining same-day package dispatch promises requires strict tracking of pick-to-ship latency.
+
+**Requirements:**
+- Query \`amazon_fulfillment_orders\`.
+- Order duration in minutes is computed as:
+  $$\\frac{\\text{strftime('%s', ship\\_time)} - \\text{strftime('%s', order\\_time)}}{60}$$
+- A package is delayed if its duration exceeds \`target_sla_minutes\`.
+- For each fulfillment center (\`fc_code\`, \`city\`), calculate:
+  - \`total_orders\`: Count of all processed orders.
+  - \`delayed_orders\`: Count of orders exceeding target SLA.
+  - \`delay_rate_pct\`: Percentage of orders delayed, rounded to 1 decimal place.
+  - \`avg_duration_minutes\`: Average fulfillment duration across all orders, rounded to 1 decimal place.
+- Return: \`fc_code\`, \`city\`, \`total_orders\`, \`delayed_orders\`, \`delay_rate_pct\`, \`avg_duration_minutes\`.
+- Order by \`delay_rate_pct\` DESC, \`total_orders\` DESC.`,
+          starterSql: `-- Amazon Round 1: Fulfillment Center SLA Delays
+SELECT
+  fc_code,
+  city,
+  -- Compute order count, delayed shipments, delay rate %, and avg fulfillment duration
+FROM amazon_fulfillment_orders
+GROUP BY fc_code, city
+ORDER BY delay_rate_pct DESC;`,
+          solutionSql: `SELECT
+  fc_code,
+  city,
+  COUNT(*) AS total_orders,
+  SUM(CASE WHEN (strftime('%s', ship_time) - strftime('%s', order_time)) / 60 > target_sla_minutes THEN 1 ELSE 0 END) AS delayed_orders,
+  ROUND(
+    SUM(CASE WHEN (strftime('%s', ship_time) - strftime('%s', order_time)) / 60 > target_sla_minutes THEN 1.0 ELSE 0.0 END) * 100.0 / COUNT(*),
+    1
+  ) AS delay_rate_pct,
+  ROUND(AVG((strftime('%s', ship_time) - strftime('%s', order_time)) / 60.0), 1) AS avg_duration_minutes
+FROM amazon_fulfillment_orders
+GROUP BY fc_code, city
+ORDER BY delay_rate_pct DESC, total_orders DESC;`,
+          hints: [
+            "Use (strftime('%s', ship_time) - strftime('%s', order_time)) / 60 to calculate minutes.",
+            "Compare the duration against target_sla_minutes in a CASE WHEN statement.",
+            "Round delay percentage and average duration to 1 decimal place."
+          ],
+          expectedColumns: ["fc_code", "city", "total_orders", "delayed_orders", "delay_rate_pct", "avg_duration_minutes"],
+          expectedRowCount: 3,
+          bloopGreeting: "Welcome to Amazon! With millions of Prime orders moving daily, logistics bottlenecks are immediately costly. Let's audit FC dispatch delays."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Prime Day Cart Abandonment Velocity & Drop-off",
+          difficulty: "Intermediate",
+          prompt: `During Prime Day, Amazon tracks checkout drop-offs across product categories to optimize friction points.
+
+**Conversion Stages:**
+- Stage 1: Added to Cart (\`added_to_cart = 1\`)
+- Stage 2: Checkout Started (\`checkout_started = 1\`)
+- Stage 3: Payment Confirmed (\`payment_confirmed = 1\`)
+
+**Requirements:**
+- Query \`amazon_cart_funnel\`.
+- For each product \`category\`, calculate:
+  - \`total_carts\`: Total sessions that added to cart.
+  - \`checkouts_started\`: Count of sessions that started checkout.
+  - \`payments_confirmed\`: Count of sessions that completed purchase.
+  - \`cart_to_checkout_drop_pct\`: Percentage of cart sessions that abandoned before checkout:
+    $$\\text{ROUND}\\left(\\frac{\\text{total\\_carts} - \\text{checkouts\\_started}}{\\text{total\\_carts}} \\times 100, 1\\right)$$
+  - \`checkout_to_paid_drop_pct\`: Percentage of checkout sessions that abandoned at payment:
+    $$\\text{ROUND}\\left(\\frac{\\text{checkouts\\_started} - \\text{payments\\_confirmed}}{\\text{checkouts\\_started}} \\times 100, 1\\right)$$
+  - \`total_converted_revenue\`: Sum of \`cart_value_usd\` for confirmed purchases (\`payment_confirmed = 1\`), rounded to 2 decimal places.
+- Return: \`category\`, \`total_carts\`, \`checkouts_started\`, \`payments_confirmed\`, \`cart_to_checkout_drop_pct\`, \`checkout_to_paid_drop_pct\`, \`total_converted_revenue\`.
+- Order by \`total_converted_revenue\` DESC.`,
+          starterSql: `-- Amazon Round 2: Prime Day Funnel Abandonment
+SELECT
+  category,
+  -- Calculate stage drop-off rates and total converted revenue
+FROM amazon_cart_funnel
+GROUP BY category
+ORDER BY total_converted_revenue DESC;`,
+          solutionSql: `SELECT
+  category,
+  COUNT(*) AS total_carts,
+  SUM(checkout_started) AS checkouts_started,
+  SUM(payment_confirmed) AS payments_confirmed,
+  ROUND(
+    ((COUNT(*) - SUM(checkout_started)) * 100.0) / COUNT(*),
+    1
+  ) AS cart_to_checkout_drop_pct,
+  ROUND(
+    ((SUM(checkout_started) - SUM(payment_confirmed)) * 100.0) / NULLIF(SUM(checkout_started), 0),
+    1
+  ) AS checkout_to_paid_drop_pct,
+  ROUND(SUM(CASE WHEN payment_confirmed = 1 THEN cart_value_usd ELSE 0 END), 2) AS total_converted_revenue
+FROM amazon_cart_funnel
+GROUP BY category
+ORDER BY total_converted_revenue DESC;`,
+          hints: [
+            "Use SUM(checkout_started) and SUM(payment_confirmed) for stage counts.",
+            "Use NULLIF(SUM(checkout_started), 0) to safeguard drop-off calculation.",
+            "Only sum cart_value_usd when payment_confirmed = 1."
+          ],
+          expectedColumns: ["category", "total_carts", "checkouts_started", "payments_confirmed", "cart_to_checkout_drop_pct", "checkout_to_paid_drop_pct", "total_converted_revenue"],
+          expectedRowCount: 3,
+          bloopGreeting: "Sharp analysis on warehouse SLAs! Now examine Amazon's core e-commerce engine: multi-stage cart drop-off velocity during Prime Day traffic peaks."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: Multi-AZ AWS Spot Instance Capacity Clearing Price",
+          difficulty: "Staff / Advanced",
+          prompt: `AWS EC2 Spot Instances allow customers to bid on unused cloud compute capacity. When aggregate customer demand exceeds available capacity, the spot market clears at the marginal bid price.
+
+**Spot Rules:**
+- In availability zone \`'us-east-1a'\`, AWS has **75 available compute units** of \`'c6g.4xlarge'\`.
+- Bids are ordered by highest \`bid_price_usd\` first (tiebreaker: \`bid_id\` ASC).
+- Running cumulative demand is calculated across bids.
+- The **Marginal Clearing Bid** is the first bid where cumulative requested units reaches or exceeds the 75-unit capacity threshold.
+- The clearing price is set to that marginal bid's price, and all higher bids clear at this uniform clearing price.
+
+**Requirements:**
+- Query \`aws_spot_market\`.
+- Compute cumulative demand ordered by \`bid_price_usd\` DESC, \`bid_id\` ASC.
+- Filter for the marginal clearing bid (where \`cumulative_demand >= 75\` with highest price).
+- Return: \`instance_type\`, \`az_id\`, \`marginal_bid_id\`, \`spot_clearing_price\`, \`allocated_units\` (cumulative demand at clearing), and \`allocation_status = 'MARGINAL_CLEARING'\`.
+- Output exactly the 1 marginal clearing record.`,
+          starterSql: `-- Amazon Round 3: AWS Spot Market Capacity Clearing Engine
+WITH sorted_bids AS (
+  SELECT
+    bid_id,
+    instance_type,
+    az_id,
+    bid_price_usd,
+    requested_units,
+    -- Compute cumulative demand
+  FROM aws_spot_market
+)
+SELECT * FROM sorted_bids;`,
+          solutionSql: `WITH sorted_bids AS (
+  SELECT
+    bid_id,
+    instance_type,
+    az_id,
+    bid_price_usd,
+    requested_units,
+    SUM(requested_units) OVER (
+      PARTITION BY instance_type, az_id 
+      ORDER BY bid_price_usd DESC, bid_id ASC
+    ) AS cumulative_demand
+  FROM aws_spot_market
+)
+SELECT
+  instance_type,
+  az_id,
+  bid_id AS marginal_bid_id,
+  bid_price_usd AS spot_clearing_price,
+  cumulative_demand AS allocated_units,
+  CASE 
+    WHEN cumulative_demand <= 75 THEN 'FULLY_ALLOCATED'
+    ELSE 'MARGINAL_CLEARING'
+  END AS allocation_status
+FROM sorted_bids
+WHERE cumulative_demand >= 75
+ORDER BY bid_price_usd DESC
+LIMIT 1;`,
+          hints: [
+            "Use SUM(requested_units) OVER (PARTITION BY instance_type, az_id ORDER BY bid_price_usd DESC, bid_id ASC).",
+            "Filter for cumulative_demand >= 75 and take the highest price (LIMIT 1).",
+            "Output marginal_bid_id and spot_clearing_price."
+          ],
+          expectedColumns: ["instance_type", "az_id", "marginal_bid_id", "spot_clearing_price", "allocated_units", "allocation_status"],
+          expectedRowCount: 1,
+          bloopGreeting: "Final question for the Staff level! Design the AWS Spot Market clearing price engine that allocates millions of spare cloud compute instances."
+        }
+      ]
+    },
+    // =========================================================================
+    // TRACK 8: JANE STREET / GOLDMAN SACHS (QUANTITATIVE RISK & TRADING)
+    // =========================================================================
+    {
+      id: "track_janestreet",
+      company: "Jane Street / Goldman Sachs",
+      role: "Quantitative Systems & Risk Engine Architect",
+      badge: "Wall Street / Quant",
+      icon: "📉",
+      difficulty: "Hard / Elite",
+      timeLimitMinutes: 45,
+      compensationRange: "$400,000 – $600,000",
+      description: "Elite quantitative trading screen: calculate multi-asset portfolio sector exposures, trigger intraday maintenance margin calls, and simulate multi-tier limit order book sweep slippage.",
+      interviewer: {
+        name: "Julian Thorne",
+        title: "Global Head of Quantitative Risk Engines",
+        avatar: "🏛️"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS janestreet_portfolio_positions;
+CREATE TABLE janestreet_portfolio_positions (
+  position_id TEXT PRIMARY KEY,
+  fund_id TEXT NOT NULL,
+  symbol TEXT NOT NULL,
+  asset_class TEXT NOT NULL,
+  shares INTEGER NOT NULL,
+  market_price REAL NOT NULL,
+  entry_price REAL NOT NULL
+);
+
+INSERT INTO janestreet_portfolio_positions VALUES
+  ('POS-01', 'FUND-ALPHA', 'AAPL', 'EQUITY', 10000, 220.0, 200.0),
+  ('POS-02', 'FUND-ALPHA', 'NVDA', 'EQUITY', 15000, 120.0, 110.0),
+  ('POS-03', 'FUND-ALPHA', 'GLD', 'COMMODITY', 5000, 240.0, 250.0),
+  ('POS-04', 'FUND-BETA', 'TSLA', 'EQUITY', 8000, 250.0, 270.0),
+  ('POS-05', 'FUND-BETA', 'USO', 'COMMODITY', 20000, 70.0, 75.0);
+
+DROP TABLE IF EXISTS janestreet_margin_accounts;
+CREATE TABLE janestreet_margin_accounts (
+  account_id TEXT PRIMARY KEY,
+  client_name TEXT NOT NULL,
+  total_equity REAL NOT NULL,
+  borrowed_margin REAL NOT NULL,
+  maintenance_margin_pct REAL NOT NULL
+);
+
+INSERT INTO janestreet_margin_accounts VALUES
+  ('ACC-101', 'Alpha Horizon Fund', 3500000.0, 10000000.0, 0.25),
+  ('ACC-102', 'Cobalt Capital', 1800000.0, 8000000.0, 0.25),
+  ('ACC-103', 'Renaissance Apex', 8000000.0, 12000000.0, 0.25),
+  ('ACC-104', 'Meridian Quant', 1200000.0, 5000000.0, 0.25);
+
+DROP TABLE IF EXISTS janestreet_orderbook_asks;
+CREATE TABLE janestreet_orderbook_asks (
+  level_id INTEGER PRIMARY KEY,
+  symbol TEXT NOT NULL,
+  price_level REAL NOT NULL,
+  available_shares INTEGER NOT NULL
+);
+
+INSERT INTO janestreet_orderbook_asks VALUES
+  (1, 'AAPL', 220.10, 500),
+  (2, 'AAPL', 220.25, 1000),
+  (3, 'AAPL', 220.50, 1500),
+  (4, 'AAPL', 221.00, 2000);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: Portfolio Exposure & Unrealized PnL Engine",
+          difficulty: "Warmup",
+          prompt: `In high-frequency quantitative asset management, risk engines compute net exposure and mark-to-market PnL across active investment funds.
+
+**Formulas:**
+$$\\text{total\\_market\\_value} = \\sum(\\text{shares} \\times \\text{market\\_price})$$
+$$\\text{total\\_unrealized\\_pnl} = \\sum(\\text{shares} \\times (\\text{market\\_price} - \\text{entry\\_price}))$$
+$$\\text{pnl\\_pct} = \\text{ROUND}\\left(\\frac{\\text{total\\_unrealized\\_pnl}}{\\sum(\\text{shares} \\times \\text{entry\\_price})} \\times 100, 2\\right)$$
+
+**Requirements:**
+- Query \`janestreet_portfolio_positions\`.
+- For each \`fund_id\` and \`asset_class\`, calculate:
+  - \`total_positions\`: Count of position holdings.
+  - \`total_market_value\`: Total current mark-to-market value, rounded to 2 decimal places.
+  - \`total_unrealized_pnl\`: Total dollar gain/loss, rounded to 2 decimal places.
+  - \`pnl_pct\`: Percentage return against cost basis, rounded to 2 decimal places.
+- Return: \`fund_id\`, \`asset_class\`, \`total_positions\`, \`total_market_value\`, \`total_unrealized_pnl\`, \`pnl_pct\`.
+- Order by \`total_market_value\` DESC.`,
+          starterSql: `-- Jane Street Round 1: Portfolio Exposure & PnL
+SELECT
+  fund_id,
+  asset_class,
+  -- Calculate position count, market value, dollar PnL, and percentage return
+FROM janestreet_portfolio_positions
+GROUP BY fund_id, asset_class
+ORDER BY fund_id;`,
+          solutionSql: `SELECT
+  fund_id,
+  asset_class,
+  COUNT(*) AS total_positions,
+  ROUND(SUM(shares * market_price), 2) AS total_market_value,
+  ROUND(SUM(shares * (market_price - entry_price)), 2) AS total_unrealized_pnl,
+  ROUND(
+    (SUM(shares * (market_price - entry_price)) * 100.0) / NULLIF(SUM(shares * entry_price), 0),
+    2
+  ) AS pnl_pct
+FROM janestreet_portfolio_positions
+GROUP BY fund_id, asset_class
+ORDER BY total_market_value DESC;`,
+          hints: [
+            "Compute market value as SUM(shares * market_price).",
+            "Cost basis is SUM(shares * entry_price); use NULLIF to prevent divide-by-zero.",
+            "Round all monetary values and percentages to 2 decimal places."
+          ],
+          expectedColumns: ["fund_id", "asset_class", "total_positions", "total_market_value", "total_unrealized_pnl", "pnl_pct"],
+          expectedRowCount: 4,
+          bloopGreeting: "Welcome to Jane Street! Precision is paramount when managing billions in multi-asset quantitative risk. Let's start with real-time portfolio NAV exposure."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Intraday Maintenance Margin Calls & Deficit Liquidation",
+          difficulty: "Intermediate",
+          prompt: `Prime brokerage desks provide leverage to institutional clients. When market moves erode an account's equity below its maintenance requirement, an immediate **Margin Call** is triggered.
+
+**Rules:**
+$$\\text{total\\_portfolio\\_value} = \\text{total\\_equity} + \\text{borrowed\\_margin}$$
+$$\\text{current\\_equity\\_pct} = \\text{ROUND}\\left(\\frac{\\text{total\\_equity}}{\\text{total\\_portfolio\\_value}} \\times 100, 2\\right)$$
+$$\\text{margin\\_deficit} = \\text{MAX}\\left(0.0, (\\text{total\\_portfolio\\_value} \\times \\text{maintenance\\_margin\\_pct}) - \\text{total\\_equity}\\right)$$
+
+- If $\\frac{\\text{total\\_equity}}{\\text{total\\_portfolio\\_value}} < \\text{maintenance\\_margin\\_pct}$, assign \`risk_status = 'MARGIN_CALL'\`.
+- Otherwise, assign \`risk_status = 'HEALTHY'\`.
+
+**Requirements:**
+- Query \`janestreet_margin_accounts\`.
+- Return: \`account_id\`, \`client_name\`, \`total_portfolio_value\`, \`current_equity_pct\`, \`margin_deficit\`, \`risk_status\`.
+- Order by \`margin_deficit\` DESC.`,
+          starterSql: `-- Jane Street Round 2: Intraday Margin Call Trigger
+SELECT
+  account_id,
+  client_name,
+  -- Compute portfolio value, equity %, margin deficit, and risk status
+FROM janestreet_margin_accounts
+ORDER BY account_id;`,
+          solutionSql: `SELECT
+  account_id,
+  client_name,
+  ROUND(total_equity + borrowed_margin, 2) AS total_portfolio_value,
+  ROUND((total_equity * 100.0) / NULLIF(total_equity + borrowed_margin, 0), 2) AS current_equity_pct,
+  ROUND(
+    MAX(0.0, ((total_equity + borrowed_margin) * maintenance_margin_pct) - total_equity),
+    2
+  ) AS margin_deficit,
+  CASE
+    WHEN (total_equity / NULLIF(total_equity + borrowed_margin, 0)) < maintenance_margin_pct THEN 'MARGIN_CALL'
+    ELSE 'HEALTHY'
+  END AS risk_status
+FROM janestreet_margin_accounts
+ORDER BY margin_deficit DESC;`,
+          hints: [
+            "Total portfolio value is total_equity + borrowed_margin.",
+            "Use MAX(0.0, required_equity - total_equity) to ensure deficit is never negative.",
+            "Trigger 'MARGIN_CALL' whenever actual equity ratio is below maintenance_margin_pct."
+          ],
+          expectedColumns: ["account_id", "client_name", "total_portfolio_value", "current_equity_pct", "margin_deficit", "risk_status"],
+          expectedRowCount: 4,
+          bloopGreeting: "Sharp risk calculations! Now implement the firm's prime brokerage liquidation monitor: detect margin breaches and compute capital call deficits."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: Multi-Tier Limit Order Book Market Order Sweep Slippage",
+          difficulty: "Staff / Advanced",
+          prompt: `When an execution algorithm sends a market buy order larger than the top-of-book depth, it sweeps through multiple ascending ask levels. This causes **Execution Slippage**.
+
+**Scenario:**
+- An institutional buy order arrives for **2,500 shares** of \`'AAPL'\`.
+- The order sweeps the ask levels in ascending price order:
+  - Level 1: 500 shares @ $220.10
+  - Level 2: 1,000 shares @ $220.25 (cumulative: 1,500)
+  - Level 3: 1,000 shares @ $220.50 (fills remaining 1,000 of 2,500)
+- **Top-of-Book Price:** The lowest available ask price ($220.10).
+- **VWAP Execution Price:** $\\frac{\\sum(\\text{filled\\_shares} \\times \\text{price})}{\\sum(\\text{filled\\_shares})}$.
+- **Slippage (Basis Points):**
+  $$\\text{ROUND}\\left(\\frac{\\text{vwap\\_execution\\_price} - \\text{top\\_of\\_book\\_price}}{\\text{top\\_of\\_book\\_price}} \\times 10000, 2\\right)$$
+
+**Requirements:**
+- Query \`janestreet_orderbook_asks\` for \`symbol = 'AAPL'\`.
+- Using window functions, compute cumulative depth and calculate the exact shares filled at each price level to complete 2,500 shares.
+- Return: \`symbol\`, \`order_size_filled\`, \`total_fill_cost\`, \`vwap_execution_price\`, \`top_of_book_price\`, \`slippage_bps\`.`,
+          starterSql: `-- Jane Street Round 3: Multi-Level Order Book Sweep & Slippage
+WITH book_depth AS (
+  SELECT
+    level_id,
+    symbol,
+    price_level,
+    available_shares,
+    -- Compute cumulative depth and top-of-book price
+  FROM janestreet_orderbook_asks
+  WHERE symbol = 'AAPL'
+)
+SELECT * FROM book_depth;`,
+          solutionSql: `WITH book_depth AS (
+  SELECT
+    level_id,
+    symbol,
+    price_level,
+    available_shares,
+    SUM(available_shares) OVER (PARTITION BY symbol ORDER BY price_level ASC) AS cum_shares,
+    COALESCE(SUM(available_shares) OVER (PARTITION BY symbol ORDER BY price_level ASC ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0) AS prev_cum_shares,
+    FIRST_VALUE(price_level) OVER (PARTITION BY symbol ORDER BY price_level ASC) AS top_of_book_price
+  FROM janestreet_orderbook_asks
+  WHERE symbol = 'AAPL'
+),
+filled_levels AS (
+  SELECT
+    level_id,
+    symbol,
+    price_level,
+    top_of_book_price,
+    CASE
+      WHEN cum_shares <= 2500 THEN available_shares
+      WHEN prev_cum_shares < 2500 THEN 2500 - prev_cum_shares
+      ELSE 0
+    END AS filled_shares
+  FROM book_depth
+  WHERE prev_cum_shares < 2500
+)
+SELECT
+  symbol,
+  SUM(filled_shares) AS order_size_filled,
+  ROUND(SUM(filled_shares * price_level), 2) AS total_fill_cost,
+  ROUND(SUM(filled_shares * price_level) / SUM(filled_shares), 2) AS vwap_execution_price,
+  top_of_book_price,
+  ROUND(
+    ((SUM(filled_shares * price_level) / SUM(filled_shares)) - top_of_book_price) * 10000.0 / top_of_book_price,
+    2
+  ) AS slippage_bps
+FROM filled_levels
+GROUP BY symbol, top_of_book_price;`,
+          hints: [
+            "Use SUM(available_shares) OVER (ORDER BY price_level) to track cumulative depth.",
+            "Use FIRST_VALUE(price_level) OVER (ORDER BY price_level) for top-of-book benchmark price.",
+            "Fill 2500 shares across levels with CASE WHEN prev_cum_shares < 2500 THEN 2500 - prev_cum_shares.",
+            "Slippage in bps is ((vwap - top_of_book) / top_of_book) * 10000."
+          ],
+          expectedColumns: ["symbol", "order_size_filled", "total_fill_cost", "vwap_execution_price", "top_of_book_price", "slippage_bps"],
+          expectedRowCount: 1,
+          bloopGreeting: "Final question for the Staff level! Simulate a high-speed market order book sweep, calculate VWAP fills, and measure market impact slippage in basis points."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 9: AIRBNB (HOSPITALITY, CALENDAR AVAILABILITY & DYNAMIC PRICING)
+    // =========================================================================
+    {
+      id: "track_airbnb",
+      company: "Airbnb",
+      role: "Staff Marketplace Dynamics & Search Infrastructure Engineer",
+      badge: "Marketplaces & Travel",
+      icon: "🏡",
+      difficulty: "Medium – Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$330,000 – $470,000",
+      description: "Hospitality marketplace screen: evaluate Superhost inquiry response conversion, detect contiguous 7-day vacant booking windows (Islands & Gaps), and optimize RevPAR seasonal price elasticity.",
+      interviewer: {
+        name: "Chloe Mercier",
+        title: "Principal Search & Pricing Architect",
+        avatar: "✨"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS airbnb_hosts;
+CREATE TABLE airbnb_hosts (
+  host_id TEXT PRIMARY KEY,
+  host_name TEXT NOT NULL,
+  total_inquiries INTEGER NOT NULL,
+  accepted_bookings INTEGER NOT NULL,
+  avg_response_hours REAL NOT NULL,
+  cancellation_count INTEGER NOT NULL
+);
+
+INSERT INTO airbnb_hosts VALUES
+  ('H-101', 'Sarah Jenkins', 120, 114, 1.2, 0),
+  ('H-102', 'Marco Silva', 80, 68, 4.5, 2),
+  ('H-103', 'Yuki Tanaka', 200, 192, 0.8, 1),
+  ('H-104', 'Elena Rossi', 50, 35, 12.0, 4);
+
+DROP TABLE IF EXISTS airbnb_calendar_days;
+CREATE TABLE airbnb_calendar_days (
+  day_id INTEGER PRIMARY KEY,
+  listing_id TEXT NOT NULL,
+  calendar_date TEXT NOT NULL,
+  is_available INTEGER NOT NULL
+);
+
+INSERT INTO airbnb_calendar_days VALUES
+  (1, 'LST-01', '2026-11-01', 1),
+  (2, 'LST-01', '2026-11-02', 1),
+  (3, 'LST-01', '2026-11-03', 1),
+  (4, 'LST-01', '2026-11-04', 1),
+  (5, 'LST-01', '2026-11-05', 1),
+  (6, 'LST-01', '2026-11-06', 1),
+  (7, 'LST-01', '2026-11-07', 1),
+  (8, 'LST-01', '2026-11-08', 0),
+  (9, 'LST-01', '2026-11-09', 1),
+  (10, 'LST-01', '2026-11-10', 1),
+  (11, 'LST-01', '2026-11-11', 0),
+  (12, 'LST-02', '2026-11-01', 1),
+  (13, 'LST-02', '2026-11-02', 1),
+  (14, 'LST-02', '2026-11-03', 1);
+
+DROP TABLE IF EXISTS airbnb_pricing_elasticity;
+CREATE TABLE airbnb_pricing_elasticity (
+  experiment_id TEXT PRIMARY KEY,
+  neighborhood TEXT NOT NULL,
+  nightly_price_usd REAL NOT NULL,
+  total_available_nights INTEGER NOT NULL,
+  booked_nights INTEGER NOT NULL
+);
+
+INSERT INTO airbnb_pricing_elasticity VALUES
+  ('EXP-01', 'SoHo Manhattan', 250.0, 100, 85),
+  ('EXP-02', 'SoHo Manhattan', 300.0, 100, 78),
+  ('EXP-03', 'SoHo Manhattan', 380.0, 100, 50),
+  ('EXP-04', 'Mission SF', 180.0, 100, 90),
+  ('EXP-05', 'Mission SF', 220.0, 100, 80),
+  ('EXP-06', 'Mission SF', 280.0, 100, 55);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: Host Acceptance Rate & Superhost Certification",
+          difficulty: "Warmup",
+          prompt: `In Airbnb's host quality scoring, Superhost status drives guest trust and premium search placement.
+
+**Superhost Criteria:**
+- \`acceptance_rate_pct >= 90.0\`
+- \`avg_response_hours <= 2.0\`
+- \`cancellation_count = 0\`
+- If \`acceptance_rate_pct < 75.0\` OR \`cancellation_count >= 3\`, assign \`'AT_RISK'\`.
+- Otherwise, assign \`'STANDARD'\`.
+
+**Requirements:**
+- Query \`airbnb_hosts\`.
+- Compute \`acceptance_rate_pct\` as:
+  $$\\text{ROUND}\\left(\\frac{\\text{accepted\\_bookings}}{\\text{total\\_inquiries}} \\times 100, 1\\right)$$
+- Return: \`host_id\`, \`host_name\`, \`acceptance_rate_pct\`, \`avg_response_hours\`, \`cancellation_count\`, \`host_badge\`.
+- Order by \`acceptance_rate_pct\` DESC.`,
+          starterSql: `-- Airbnb Round 1: Superhost Tier Certification
+SELECT
+  host_id,
+  host_name,
+  -- Compute acceptance %, inspect response time, and assign badge
+FROM airbnb_hosts
+ORDER BY host_id;`,
+          solutionSql: `SELECT
+  host_id,
+  host_name,
+  ROUND((accepted_bookings * 100.0) / NULLIF(total_inquiries, 0), 1) AS acceptance_rate_pct,
+  avg_response_hours,
+  cancellation_count,
+  CASE
+    WHEN ((accepted_bookings * 100.0) / NULLIF(total_inquiries, 0)) >= 90.0 
+         AND avg_response_hours <= 2.0 
+         AND cancellation_count = 0 THEN 'SUPERHOST'
+    WHEN ((accepted_bookings * 100.0) / NULLIF(total_inquiries, 0)) < 75.0 
+         OR cancellation_count >= 3 THEN 'AT_RISK'
+    ELSE 'STANDARD'
+  END AS host_badge
+FROM airbnb_hosts
+ORDER BY acceptance_rate_pct DESC;`,
+          hints: [
+            "Compute acceptance_rate_pct using NULLIF(total_inquiries, 0).",
+            "Use CASE WHEN with compound AND conditions for Superhost certification.",
+            "Order by acceptance_rate_pct DESC."
+          ],
+          expectedColumns: ["host_id", "host_name", "acceptance_rate_pct", "avg_response_hours", "cancellation_count", "host_badge"],
+          expectedRowCount: 4,
+          bloopGreeting: "Welcome to Airbnb! In our travel marketplace, responsive hosts create unforgettable guest stays. Let's start with Superhost tier qualification."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Contiguous 7-Day Unbooked Calendar Vacancies (Islands & Gaps)",
+          difficulty: "Intermediate",
+          prompt: `To boost occupancy during off-peak seasons, Airbnb targets listings with long consecutive unbooked dates for weekly promotional discount campaigns.
+
+**Requirements:**
+- Query \`airbnb_calendar_days\` where \`is_available = 1\` (day is vacant/unbooked).
+- Identify contiguous sequences of consecutive available days using the **Islands & Gaps** difference technique:
+  $$\\text{grp} = \\text{CAST}(\\text{strftime}('\\%s', \\text{calendar\\_date}) / 86400 \\text{ AS INTEGER}) - \\text{ROW\\_NUMBER}()$$
+- Filter for vacancy blocks spanning at least **7 consecutive days** (\`COUNT(*) >= 7\`).
+- Return: \`listing_id\`, \`vacancy_start_date\` (earliest date in the block), \`vacancy_end_date\` (latest date in the block), \`consecutive_days\` (length of streak).
+- Order by \`listing_id\` ASC, \`vacancy_start_date\` ASC.`,
+          starterSql: `-- Airbnb Round 2: 7-Day Contiguous Vacancies (Islands & Gaps)
+WITH island_groups AS (
+  SELECT
+    listing_id,
+    calendar_date,
+    is_available,
+    -- Group contiguous dates
+  FROM airbnb_calendar_days
+  WHERE is_available = 1
+)
+SELECT * FROM island_groups;`,
+          solutionSql: `WITH island_groups AS (
+  SELECT
+    listing_id,
+    calendar_date,
+    is_available,
+    CAST(strftime('%s', calendar_date) / 86400 AS INTEGER) - 
+    ROW_NUMBER() OVER (PARTITION BY listing_id, is_available ORDER BY calendar_date) AS grp
+  FROM airbnb_calendar_days
+  WHERE is_available = 1
+)
+SELECT
+  listing_id,
+  MIN(calendar_date) AS vacancy_start_date,
+  MAX(calendar_date) AS vacancy_end_date,
+  COUNT(*) AS consecutive_days
+FROM island_groups
+GROUP BY listing_id, grp
+HAVING COUNT(*) >= 7
+ORDER BY listing_id, vacancy_start_date;`,
+          hints: [
+            "Divide strftime('%s', calendar_date) by 86400 to get days since epoch.",
+            "Subtract ROW_NUMBER() from epoch days to create a constant island group identifier.",
+            "Filter groups using HAVING COUNT(*) >= 7."
+          ],
+          expectedColumns: ["listing_id", "vacancy_start_date", "vacancy_end_date", "consecutive_days"],
+          expectedRowCount: 1,
+          bloopGreeting: "Great work! Now for a real marketplace search problem: detect contiguous unbooked calendar streaks to launch weekly discount promos."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: Dynamic Seasonal Pricing Elasticity & Revenue Per Room (RevPAR)",
+          difficulty: "Staff / Advanced",
+          prompt: `Setting the optimal nightly price requires balancing occupancy rate against price per night to maximize **Revenue Per Available Room (RevPAR)**.
+
+**Metrics:**
+$$\\text{occupancy\\_pct} = \\text{ROUND}\\left(\\frac{\\text{booked\\_nights}}{\\text{total\\_available\\_nights}} \\times 100, 1\\right)$$
+$$\\text{total\\_revenue} = \\text{booked\\_nights} \\times \\text{nightly\\_price\\_usd}$$
+$$\\text{max\\_revpar\\_usd} = \\text{ROUND}\\left(\\frac{\\text{total\\_revenue}}{\\text{total\\_available\\_nights}}, 2\\right)$$
+
+**Requirements:**
+- Query \`airbnb_pricing_elasticity\`.
+- For each \`neighborhood\`, evaluate all tested price points and find the single optimal nightly price that yields the highest RevPAR.
+- Return: \`neighborhood\`, \`optimal_nightly_price\`, \`occupancy_pct\`, \`max_revpar_usd\`, \`total_revenue\`.
+- Order by \`neighborhood\` ASC.`,
+          starterSql: `-- Airbnb Round 3: Dynamic Pricing Elasticity & Optimal RevPAR
+WITH revpar_calc AS (
+  SELECT
+    neighborhood,
+    nightly_price_usd,
+    -- Calculate occupancy, revenue, RevPAR, and rank price points per neighborhood
+  FROM airbnb_pricing_elasticity
+)
+SELECT * FROM revpar_calc;`,
+          solutionSql: `WITH revpar_calc AS (
+  SELECT
+    neighborhood,
+    nightly_price_usd AS optimal_nightly_price,
+    ROUND((booked_nights * 100.0) / NULLIF(total_available_nights, 0), 1) AS occupancy_pct,
+    ROUND((booked_nights * nightly_price_usd) / NULLIF(total_available_nights, 0), 2) AS max_revpar_usd,
+    ROUND(booked_nights * nightly_price_usd, 2) AS total_revenue,
+    ROW_NUMBER() OVER (
+      PARTITION BY neighborhood 
+      ORDER BY ((booked_nights * nightly_price_usd) / total_available_nights) DESC
+    ) AS rank_pos
+  FROM airbnb_pricing_elasticity
+)
+SELECT
+  neighborhood,
+  optimal_nightly_price,
+  occupancy_pct,
+  max_revpar_usd,
+  total_revenue
+FROM revpar_calc
+WHERE rank_pos = 1
+ORDER BY neighborhood ASC;`,
+          hints: [
+            "RevPAR is total revenue divided by total available nights.",
+            "Use ROW_NUMBER() OVER (PARTITION BY neighborhood ORDER BY revpar DESC) to pick the best price.",
+            "Filter for rank_pos = 1 to select the optimal revenue-maximizing price point."
+          ],
+          expectedColumns: ["neighborhood", "optimal_nightly_price", "occupancy_pct", "max_revpar_usd", "total_revenue"],
+          expectedRowCount: 2,
+          bloopGreeting: "Final question for the Staff level! Optimize marketplace dynamic pricing by identifying the exact nightly rate that maximizes RevPAR."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 10: COINBASE / ROBINHOOD (CRYPTO & RETAIL BROKERAGE)
+    // =========================================================================
+    {
+      id: "track_coinbase",
+      company: "Coinbase / Robinhood",
+      role: "Staff Blockchain Analytics & Market Surveillance Engineer",
+      badge: "Fintech / Crypto",
+      icon: "🪙",
+      difficulty: "Hard / Elite",
+      timeLimitMinutes: 45,
+      compensationRange: "$360,000 – $520,000",
+      description: "Crypto exchange and market surveillance screen: compute 24-hour trading volume with maker/taker fee splits, analyze deposit-to-trade settlement velocity, and detect circular wash trading rings.",
+      interviewer: {
+        name: "Kavita Rao",
+        title: "Head of Market Integrity & Surveillance",
+        avatar: "🛡️"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS coinbase_trades;
+CREATE TABLE coinbase_trades (
+  trade_id TEXT PRIMARY KEY,
+  product_id TEXT NOT NULL,
+  price REAL NOT NULL,
+  size REAL NOT NULL,
+  side TEXT NOT NULL,
+  fee_tier TEXT NOT NULL,
+  trade_time TEXT NOT NULL
+);
+
+INSERT INTO coinbase_trades VALUES
+  ('TR-01', 'BTC-USD', 65000.0, 1.5, 'BUY', 'TAKER', '2026-10-15 10:00:00'),
+  ('TR-02', 'BTC-USD', 65100.0, 2.0, 'SELL', 'MAKER', '2026-10-15 10:05:00'),
+  ('TR-03', 'BTC-USD', 64950.0, 0.8, 'BUY', 'TAKER', '2026-10-15 10:10:00'),
+  ('TR-04', 'ETH-USD', 3500.0, 10.0, 'BUY', 'TAKER', '2026-10-15 10:02:00'),
+  ('TR-05', 'ETH-USD', 3520.0, 15.0, 'SELL', 'MAKER', '2026-10-15 10:08:00'),
+  ('TR-06', 'SOL-USD', 150.0, 200.0, 'BUY', 'TAKER', '2026-10-15 10:01:00');
+
+DROP TABLE IF EXISTS coinbase_fiat_onramp;
+CREATE TABLE coinbase_fiat_onramp (
+  deposit_id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  deposit_time TEXT NOT NULL,
+  deposit_amount_usd REAL NOT NULL,
+  first_crypto_purchase_time TEXT NOT NULL,
+  is_withdrawn INTEGER NOT NULL
+);
+
+INSERT INTO coinbase_fiat_onramp VALUES
+  ('DEP-01', 'USR-901', '2026-10-15 09:00:00', 5000.0, '2026-10-15 09:04:00', 1),
+  ('DEP-02', 'USR-902', '2026-10-15 09:00:00', 25000.0, '2026-10-15 09:02:00', 1),
+  ('DEP-03', 'USR-903', '2026-10-15 09:00:00', 1500.0, '2026-10-15 14:30:00', 0),
+  ('DEP-04', 'USR-904', '2026-10-15 09:00:00', 8000.0, '2026-10-15 09:03:00', 0);
+
+DROP TABLE IF EXISTS coinbase_order_fills;
+CREATE TABLE coinbase_order_fills (
+  fill_id INTEGER PRIMARY KEY,
+  maker_account TEXT NOT NULL,
+  taker_account TEXT NOT NULL,
+  product_id TEXT NOT NULL,
+  fill_amount REAL NOT NULL,
+  fill_time TEXT NOT NULL
+);
+
+INSERT INTO coinbase_order_fills VALUES
+  (1, 'ACC-ALPHA', 'ACC-BETA', 'BTC-USD', 5.0, '2026-10-15 11:00:00'),
+  (2, 'ACC-BETA', 'ACC-GAMMA', 'BTC-USD', 5.0, '2026-10-15 11:02:00'),
+  (3, 'ACC-GAMMA', 'ACC-ALPHA', 'BTC-USD', 5.0, '2026-10-15 11:04:00'),
+  (4, 'ACC-USER1', 'ACC-USER2', 'ETH-USD', 2.5, '2026-10-15 11:10:00');
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 10,
+          title: "Round 1: 24-Hour Trading Volume & Maker/Taker Fee Split",
+          difficulty: "Warmup",
+          prompt: `In cryptocurrency exchange matching engines, fees differ sharply between liquidity makers and liquidity takers.
+
+**Fee Schedule:**
+- **Taker Fee:** $0.5\\%$ of notional value (\`price * size * 0.005\`).
+- **Maker Fee:** $0.2\\%$ of notional value (\`price * size * 0.002\`).
+
+**Requirements:**
+- Query \`coinbase_trades\`.
+- For each \`product_id\`, calculate:
+  - \`trade_count\`: Number of executed trades.
+  - \`total_volume_usd\`: Total notional volume ($), rounded to 2 decimal places.
+  - \`maker_volume_usd\`: Volume where \`fee_tier = 'MAKER'\`, rounded to 2 decimal places.
+  - \`taker_volume_usd\`: Volume where \`fee_tier = 'TAKER'\`, rounded to 2 decimal places.
+  - \`total_exchange_fees_usd\`: Total exchange revenue earned across maker and taker fills, rounded to 2 decimal places.
+- Return: \`product_id\`, \`trade_count\`, \`total_volume_usd\`, \`maker_volume_usd\`, \`taker_volume_usd\`, \`total_exchange_fees_usd\`.
+- Order by \`total_volume_usd\` DESC.`,
+          starterSql: `-- Coinbase Round 1: Product Volume & Maker/Taker Fees
+SELECT
+  product_id,
+  -- Compute volume totals, maker/taker splits, and exchange fee revenue
+FROM coinbase_trades
+GROUP BY product_id
+ORDER BY product_id;`,
+          solutionSql: `SELECT
+  product_id,
+  COUNT(*) AS trade_count,
+  ROUND(SUM(price * size), 2) AS total_volume_usd,
+  ROUND(SUM(CASE WHEN fee_tier = 'MAKER' THEN price * size ELSE 0 END), 2) AS maker_volume_usd,
+  ROUND(SUM(CASE WHEN fee_tier = 'TAKER' THEN price * size ELSE 0 END), 2) AS taker_volume_usd,
+  ROUND(
+    SUM(CASE WHEN fee_tier = 'TAKER' THEN price * size * 0.005 ELSE price * size * 0.002 END),
+    2
+  ) AS total_exchange_fees_usd
+FROM coinbase_trades
+GROUP BY product_id
+ORDER BY total_volume_usd DESC;`,
+          hints: [
+            "Compute notional volume as price * size.",
+            "Use conditional aggregation SUM(CASE WHEN fee_tier = 'MAKER' THEN price * size ELSE 0 END).",
+            "Apply 0.005 multiplier for takers and 0.002 multiplier for makers."
+          ],
+          expectedColumns: ["product_id", "trade_count", "total_volume_usd", "maker_volume_usd", "taker_volume_usd", "total_exchange_fees_usd"],
+          expectedRowCount: 3,
+          bloopGreeting: "Welcome to Coinbase! In 24/7 crypto markets, matching engines generate millions in maker/taker fee revenues. Let's analyze trading volume splits."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Deposit-to-Trade Settlement Latency & Outflow Risk",
+          difficulty: "Intermediate",
+          prompt: `Fraud rings frequently exploit ACH fiat instant deposits by purchasing volatile crypto assets within minutes and transferring them off-exchange before bank clearing settles.
+
+**Detection Rules:**
+- \`latency_minutes\`: Time elapsed between \`deposit_time\` and \`first_crypto_purchase_time\`:
+  $$\\text{ROUND}\\left(\\frac{\\text{strftime}('\\%s', \\text{first\\_crypto\\_purchase\\_time}) - \\text{strftime}('\\%s', \\text{deposit\\_time})}{60.0}, 1\\right)$$
+- If \`latency_minutes <= 5.0\` AND \`is_withdrawn = 1\`, assign \`risk_action = 'HIGH_RISK_FRAUD_FREEZE'\`.
+- If \`latency_minutes <= 5.0\` AND \`is_withdrawn = 0\`, assign \`risk_action = 'RAPID_CONVERSION_MONITOR'\`.
+- Otherwise, assign \`risk_action = 'NORMAL_VERIFIED'\`.
+
+**Requirements:**
+- Query \`coinbase_fiat_onramp\`.
+- Return: \`deposit_id\`, \`user_id\`, \`deposit_amount_usd\`, \`latency_minutes\`, \`is_withdrawn\`, \`risk_action\`.
+- Order by \`deposit_amount_usd\` DESC.`,
+          starterSql: `-- Coinbase Round 2: Deposit-to-Trade Velocity & Risk Flags
+SELECT
+  deposit_id,
+  user_id,
+  deposit_amount_usd,
+  -- Calculate latency in minutes and evaluate withdrawal risk
+FROM coinbase_fiat_onramp
+ORDER BY deposit_amount_usd DESC;`,
+          solutionSql: `SELECT
+  deposit_id,
+  user_id,
+  deposit_amount_usd,
+  ROUND((strftime('%s', first_crypto_purchase_time) - strftime('%s', deposit_time)) / 60.0, 1) AS latency_minutes,
+  is_withdrawn,
+  CASE
+    WHEN ((strftime('%s', first_crypto_purchase_time) - strftime('%s', deposit_time)) / 60.0) <= 5.0 
+         AND is_withdrawn = 1 THEN 'HIGH_RISK_FRAUD_FREEZE'
+    WHEN ((strftime('%s', first_crypto_purchase_time) - strftime('%s', deposit_time)) / 60.0) <= 5.0 
+         AND is_withdrawn = 0 THEN 'RAPID_CONVERSION_MONITOR'
+    ELSE 'NORMAL_VERIFIED'
+  END AS risk_action
+FROM coinbase_fiat_onramp
+ORDER BY deposit_amount_usd DESC;`,
+          hints: [
+            "Compute latency in minutes with (strftime('%s', purchase_time) - strftime('%s', deposit_time)) / 60.0.",
+            "Check both latency <= 5.0 and is_withdrawn = 1 for freeze condition.",
+            "Order results by deposit_amount_usd DESC."
+          ],
+          expectedColumns: ["deposit_id", "user_id", "deposit_amount_usd", "latency_minutes", "is_withdrawn", "risk_action"],
+          expectedRowCount: 4,
+          bloopGreeting: "Sharp compliance instincts! Now track fiat-to-crypto velocity: identify accounts that convert and withdraw funds before bank ACH settlement clears."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 20,
+          title: "Round 3: Circular Directed Graph Wash Trading Ring Detector",
+          difficulty: "Staff / Advanced",
+          prompt: `Wash trading is illegal market manipulation where colluding accounts trade the same tokens back and forth to create fake trading volume.
+
+**Collusion Ring Pattern (3-Node Triangle):**
+- Account **A** sells to **B** (\`Trade 1\`)
+- Account **B** sells to **C** (\`Trade 2\`, where \`Trade 2\` occurs after \`Trade 1\`)
+- Account **C** sells back to **A** (\`Trade 3\`, where \`Trade 3\` occurs after \`Trade 2\`)
+- All 3 trades involve the **same \`product_id\`** and **identical \`fill_amount\`**.
+- The entire circular loop completes in **10 minutes or less** ($\le 600$ seconds).
+
+**Requirements:**
+- Query \`coinbase_order_fills\`.
+- Use self-joins to detect the 3-node directed graph cycle ($A \to B \to C \to A$).
+- Compute \`ring_duration_seconds\` as \`strftime('%s', t3.fill_time) - strftime('%s', t1.fill_time)\`.
+- Return: \`ring_originator\` (A), \`intermediary_1\` (B), \`intermediary_2\` (C), \`product_id\`, \`washed_volume\`, \`ring_duration_seconds\`.`,
+          starterSql: `-- Coinbase Round 3: Circular Wash Trading Ring Detector
+SELECT
+  -- Detect 3-account wash cycle: A -> B -> C -> A
+FROM coinbase_order_fills t1
+JOIN coinbase_order_fills t2 ON ...
+JOIN coinbase_order_fills t3 ON ...;`,
+          solutionSql: `SELECT
+  t1.maker_account AS ring_originator,
+  t2.maker_account AS intermediary_1,
+  t3.maker_account AS intermediary_2,
+  t1.product_id,
+  t1.fill_amount AS washed_volume,
+  (strftime('%s', t3.fill_time) - strftime('%s', t1.fill_time)) AS ring_duration_seconds
+FROM coinbase_order_fills t1
+JOIN coinbase_order_fills t2 
+  ON t1.taker_account = t2.maker_account 
+  AND t1.product_id = t2.product_id 
+  AND t1.fill_amount = t2.fill_amount 
+  AND t2.fill_time > t1.fill_time
+JOIN coinbase_order_fills t3 
+  ON t2.taker_account = t3.maker_account 
+  AND t3.taker_account = t1.maker_account
+  AND t2.product_id = t3.product_id 
+  AND t2.fill_amount = t3.fill_amount 
+  AND t3.fill_time > t2.fill_time
+WHERE (strftime('%s', t3.fill_time) - strftime('%s', t1.fill_time)) <= 600;`,
+          hints: [
+            "Join t2 on t1.taker_account = t2.maker_account where product_id and fill_amount match and t2.fill_time > t1.fill_time.",
+            "Join t3 on t2.taker_account = t3.maker_account AND t3.taker_account = t1.maker_account to close the cycle.",
+            "Filter for total duration <= 600 seconds."
+          ],
+          expectedColumns: ["ring_originator", "intermediary_1", "intermediary_2", "product_id", "washed_volume", "ring_duration_seconds"],
+          expectedRowCount: 1,
+          bloopGreeting: "Final question for the Staff level! Detect illicit market manipulation by writing a graph cycle detection query to catch circular wash trading rings."
+        }
+      ]
+    }
+
+  ,
+
+    // =========================================================================
+    // TRACK 11: SNOWFLAKE (CLOUD DATA WAREHOUSING & MULTI-TENANT COMPUTE)
+    // =========================================================================
+    {
+      id: "track_snowflake",
+      company: "Snowflake",
+      role: "Senior Data Warehouse Engineer (Core Virtual Warehouse Engine)",
+      badge: "Modern Data Stack",
+      icon: "❄️",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$260,000 – $390,000",
+      description: "Cloud warehouse internals screen: micro-partition pruning, multi-tenant credit consumption metering, and deduplication via window QUALIFY semantics.",
+      interviewer: {
+        name: "Elena Rostova",
+        title: "Principal Warehouse Architect",
+        avatar: "❄️"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS snowflake_query_history;
+CREATE TABLE IF NOT EXISTS snowflake_query_history (
+  query_id TEXT PRIMARY KEY,
+  warehouse_name TEXT NOT NULL,
+  account_name TEXT NOT NULL,
+  credits_used REAL NOT NULL,
+  execution_seconds REAL NOT NULL,
+  bytes_scanned INTEGER NOT NULL,
+  start_time TEXT NOT NULL
+);
+
+INSERT INTO snowflake_query_history VALUES
+  ('Q-101', 'COMPUTE_WH_XL', 'AcmeCorp', 4.5, 120.5, 45000000000, '2026-10-20 10:00:00'),
+  ('Q-102', 'COMPUTE_WH_XL', 'AcmeCorp', 4.5, 85.0,  32000000000, '2026-10-20 10:05:00'),
+  ('Q-103', 'ANALYTICS_WH_S', 'FinBank', 1.0, 15.2,   500000000,   '2026-10-20 10:02:00'),
+  ('Q-104', 'ANALYTICS_WH_S', 'FinBank', 1.0, 45.0,   1200000000,  '2026-10-20 10:15:00'),
+  ('Q-105', 'ETL_WH_M',       'RetailCo', 2.0, 310.0,  88000000000, '2026-10-20 10:10:00'),
+  ('Q-106', 'COMPUTE_WH_XL', 'AcmeCorp', 4.5, 15.0,   8000000000,  '2026-10-20 10:25:00');
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 12,
+          title: "Round 1: Virtual Warehouse Credit Consumption & Heavy Scans",
+          difficulty: "Intermediate",
+          prompt: `In Snowflake's multi-tenant architecture, virtual warehouses consume compute credits per hour. Identify each account's total query activity, total credit burn, and average query scan efficiency.
+
+**Requirements:**
+- Query \`snowflake_query_history\`.
+- Return: \`account_name\`, \`total_queries\`, \`total_credits_used\`, \`avg_execution_seconds\`, \`total_gigabytes_scanned\` (divide \`bytes_scanned\` by \`1073741824.0\` rounded to 2 decimals).
+- Order by \`total_credits_used\` DESC, \`total_gigabytes_scanned\` DESC.`,
+          starterSql: `-- Snowflake Round 1: Credit Consumption Metering
+SELECT
+  account_name,
+  -- Calculate query count, credits, execution duration and GBs scanned
+FROM snowflake_query_history
+GROUP BY account_name
+ORDER BY total_credits_used DESC;`,
+          solutionSql: `SELECT
+  account_name,
+  COUNT(query_id) AS total_queries,
+  ROUND(SUM(credits_used), 2) AS total_credits_used,
+  ROUND(AVG(execution_seconds), 1) AS avg_execution_seconds,
+  ROUND(SUM(bytes_scanned) / 1073741824.0, 2) AS total_gigabytes_scanned
+FROM snowflake_query_history
+GROUP BY account_name
+ORDER BY total_credits_used DESC, total_gigabytes_scanned DESC;`,
+          hints: [
+            "Use COUNT(query_id) to count queries.",
+            "Use SUM(credits_used) and SUM(bytes_scanned) / 1073741824.0 to calculate gigabytes.",
+            "Group by account_name and sort by total_credits_used DESC."
+          ],
+          expectedColumns: ["account_name", "total_queries", "total_credits_used", "avg_execution_seconds", "total_gigabytes_scanned"],
+          expectedRowCount: 3,
+          bloopGreeting: "Welcome to Snowflake! Let's analyze cloud virtual warehouse credit burn and compute billing efficiency."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Micro-Partition Pruning & Top-Cost Query Deduplication",
+          difficulty: "Hard",
+          prompt: `For each virtual warehouse, identify the top single query with the highest credit consumption using window ranking (simulating Snowflake's native QUALIFY clause).
+
+**Requirements:**
+- Partition queries by \`warehouse_name\` ordered by \`credits_used\` DESC, \`execution_seconds\` DESC.
+- Return only rank 1 queries.
+- Output: \`warehouse_name\`, \`query_id\`, \`account_name\`, \`credits_used\`, \`execution_seconds\`.
+- Order by \`credits_used\` DESC, \`warehouse_name\` ASC.`,
+          starterSql: `-- Snowflake Round 2: Top Query per Warehouse (QUALIFY Simulation)
+WITH ranked_queries AS (
+  SELECT
+    warehouse_name,
+    query_id,
+    account_name,
+    credits_used,
+    execution_seconds,
+    ROW_NUMBER() OVER (PARTITION BY warehouse_name ORDER BY credits_used DESC, execution_seconds DESC) AS rnk
+  FROM snowflake_query_history
+)
+SELECT warehouse_name, query_id, account_name, credits_used, execution_seconds
+FROM ranked_queries
+WHERE rnk = 1
+ORDER BY credits_used DESC, warehouse_name ASC;`,
+          solutionSql: `WITH ranked_queries AS (
+  SELECT
+    warehouse_name,
+    query_id,
+    account_name,
+    credits_used,
+    execution_seconds,
+    ROW_NUMBER() OVER (PARTITION BY warehouse_name ORDER BY credits_used DESC, execution_seconds DESC) AS rnk
+  FROM snowflake_query_history
+)
+SELECT warehouse_name, query_id, account_name, credits_used, execution_seconds
+FROM ranked_queries
+WHERE rnk = 1
+ORDER BY credits_used DESC, warehouse_name ASC;`,
+          hints: [
+            "Assign ROW_NUMBER() partitioned by warehouse_name ordered by credits_used DESC.",
+            "Filter where rnk = 1.",
+            "Order outer results by credits_used DESC."
+          ],
+          expectedColumns: ["warehouse_name", "query_id", "account_name", "credits_used", "execution_seconds"],
+          expectedRowCount: 3,
+          bloopGreeting: "Great work! Now simulate Snowflake's famous QUALIFY clause by ranking warehouse queries to identify the highest resource hogs."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 18,
+          title: "Round 3: Heavy Scan Anomaly Detection & Spill Risk",
+          difficulty: "Staff",
+          prompt: `Queries scanning over 10GB that complete in under 30 seconds indicate highly optimized micro-partition pruning, whereas queries scanning over 40GB with durations exceeding 100 seconds risk local disk spilling.
+
+**Classification Rules:**
+- Classify each query:
+  - When \`bytes_scanned >= 40000000000\` AND \`execution_seconds >= 100\` THEN \`'SPILL_RISK_LONG_SCAN'\`
+  - When \`bytes_scanned >= 10000000000\` AND \`execution_seconds < 30\` THEN \`'OPTIMAL_PRUNING'\`
+  - Otherwise \`'STANDARD_EXECUTION'\`
+- Return: \`query_id\`, \`warehouse_name\`, \`account_name\`, \`bytes_scanned\`, \`execution_seconds\`, \`performance_tier\`.
+- Order by \`bytes_scanned\` DESC.`,
+          starterSql: `-- Snowflake Round 3: Partition Pruning & Spill Anomaly Detection
+SELECT
+  query_id,
+  warehouse_name,
+  account_name,
+  bytes_scanned,
+  execution_seconds,
+  -- Evaluate performance tier
+FROM snowflake_query_history
+ORDER BY bytes_scanned DESC;`,
+          solutionSql: `SELECT
+  query_id,
+  warehouse_name,
+  account_name,
+  bytes_scanned,
+  execution_seconds,
+  CASE
+    WHEN bytes_scanned >= 40000000000 AND execution_seconds >= 100 THEN 'SPILL_RISK_LONG_SCAN'
+    WHEN bytes_scanned >= 10000000000 AND execution_seconds < 30 THEN 'OPTIMAL_PRUNING'
+    ELSE 'STANDARD_EXECUTION'
+  END AS performance_tier
+FROM snowflake_query_history
+ORDER BY bytes_scanned DESC;`,
+          hints: [
+            "Use CASE WHEN with compound AND conditions.",
+            "Order by bytes_scanned DESC."
+          ],
+          expectedColumns: ["query_id", "warehouse_name", "account_name", "bytes_scanned", "execution_seconds", "performance_tier"],
+          expectedRowCount: 6,
+          bloopGreeting: "Final question for the Staff level! Classify query execution physics to prevent expensive micro-partition disk spills."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 12: APPLE (ECOSYSTEM SERVICES & APP STORE MONETIZATION)
+    // =========================================================================
+    {
+      id: "track_apple",
+      company: "Apple",
+      role: "Senior Data Engineer (Apple Services & App Store)",
+      badge: "Consumer & Subscriptions",
+      icon: "🍏",
+      difficulty: "Intermediate",
+      timeLimitMinutes: 45,
+      compensationRange: "$240,000 – $360,000",
+      description: "Apple Services technical screen: App Store in-app subscription lifecycle, trial conversion drop-off, and refund clawback reconciliation.",
+      interviewer: {
+        name: "David Chen",
+        title: "Engineering Manager, App Store Commerce",
+        avatar: "🍏"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS apple_subscriptions;
+CREATE TABLE IF NOT EXISTS apple_subscriptions (
+  sub_id TEXT PRIMARY KEY,
+  apple_id TEXT NOT NULL,
+  app_name TEXT NOT NULL,
+  plan_tier TEXT NOT NULL,
+  monthly_price_usd REAL NOT NULL,
+  is_trial INTEGER NOT NULL,
+  is_cancelled INTEGER NOT NULL,
+  start_date TEXT NOT NULL
+);
+
+INSERT INTO apple_subscriptions VALUES
+  ('SUB-01', 'USR-101', 'Apple Music', 'Family', 16.99, 0, 0, '2026-01-10'),
+  ('SUB-02', 'USR-102', 'iCloud+ 2TB', 'Pro', 9.99, 0, 0, '2026-02-15'),
+  ('SUB-03', 'USR-103', 'Apple Arcade', 'Standard', 6.99, 1, 1, '2026-03-01'),
+  ('SUB-04', 'USR-104', 'Apple TV+', 'Standard', 9.99, 1, 0, '2026-03-05'),
+  ('SUB-05', 'USR-101', 'Apple Fitness+', 'Standard', 9.99, 0, 0, '2026-03-20'),
+  ('SUB-06', 'USR-105', 'Apple Music', 'Individual', 10.99, 1, 1, '2026-04-01');
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 12,
+          title: "Round 1: Active Subscription ARR & Service Revenue",
+          difficulty: "Easy",
+          prompt: `Calculate total active monthly recurring revenue (MRR) and annualized run rate (ARR) across each Apple Service app. Only include non-cancelled subscriptions.
+
+**Requirements:**
+- Query \`apple_subscriptions\` where \`is_cancelled = 0\`.
+- Return: \`app_name\`, \`active_subscribers\`, \`monthly_mrr_usd\`, \`annual_arr_usd\` (monthly MRR * 12).
+- Order by \`monthly_mrr_usd\` DESC.`,
+          starterSql: `-- Apple Round 1: Active Subscription MRR & ARR
+SELECT
+  app_name,
+  -- Calculate active subscriber count, MRR, and ARR
+FROM apple_subscriptions
+WHERE is_cancelled = 0
+GROUP BY app_name
+ORDER BY monthly_mrr_usd DESC;`,
+          solutionSql: `SELECT
+  app_name,
+  COUNT(sub_id) AS active_subscribers,
+  ROUND(SUM(monthly_price_usd), 2) AS monthly_mrr_usd,
+  ROUND(SUM(monthly_price_usd) * 12.0, 2) AS annual_arr_usd
+FROM apple_subscriptions
+WHERE is_cancelled = 0
+GROUP BY app_name
+ORDER BY monthly_mrr_usd DESC;`,
+          hints: [
+            "Filter WHERE is_cancelled = 0.",
+            "Compute monthly_mrr_usd as SUM(monthly_price_usd).",
+            "Compute annual_arr_usd as SUM(monthly_price_usd) * 12.0."
+          ],
+          expectedColumns: ["app_name", "active_subscribers", "monthly_mrr_usd", "annual_arr_usd"],
+          expectedRowCount: 4,
+          bloopGreeting: "Welcome to Apple! Let's calculate Monthly Recurring Revenue (MRR) and ARR across Apple Services."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Free Trial Conversion & Churn Ratios",
+          difficulty: "Intermediate",
+          prompt: `Analyze free trial performance across all services. For each app, find how many users started a trial (\`is_trial = 1\`), how many cancelled during trial (\`is_cancelled = 1\`), and calculate the trial retention conversion percentage.
+
+**Requirements:**
+- Query \`apple_subscriptions\` where \`is_trial = 1\`.
+- Calculate:
+  - \`total_trials\`
+  - \`converted_trials\` (where \`is_cancelled = 0\`)
+  - \`conversion_rate_pct\` (\`ROUND(converted / total * 100.0, 1)\`)
+- Order by \`conversion_rate_pct\` DESC.`,
+          starterSql: `-- Apple Round 2: Free Trial Conversion Analytics
+SELECT
+  app_name,
+  COUNT(sub_id) AS total_trials,
+  SUM(CASE WHEN is_cancelled = 0 THEN 1 ELSE 0 END) AS converted_trials,
+  ROUND(SUM(CASE WHEN is_cancelled = 0 THEN 1.0 ELSE 0.0 END) / COUNT(sub_id) * 100.0, 1) AS conversion_rate_pct
+FROM apple_subscriptions
+WHERE is_trial = 1
+GROUP BY app_name
+ORDER BY conversion_rate_pct DESC;`,
+          solutionSql: `SELECT
+  app_name,
+  COUNT(sub_id) AS total_trials,
+  SUM(CASE WHEN is_cancelled = 0 THEN 1 ELSE 0 END) AS converted_trials,
+  ROUND(SUM(CASE WHEN is_cancelled = 0 THEN 1.0 ELSE 0.0 END) / COUNT(sub_id) * 100.0, 1) AS conversion_rate_pct
+FROM apple_subscriptions
+WHERE is_trial = 1
+GROUP BY app_name
+ORDER BY conversion_rate_pct DESC;`,
+          hints: [
+            "Filter WHERE is_trial = 1.",
+            "Use conditional aggregation SUM(CASE WHEN is_cancelled = 0 THEN 1 ELSE 0 END) for conversions.",
+            "Calculate conversion percentage with multiplication by 100.0."
+          ],
+          expectedColumns: ["app_name", "total_trials", "converted_trials", "conversion_rate_pct"],
+          expectedRowCount: 3,
+          bloopGreeting: "Clean aggregation! Now measure trial-to-paid conversion drop-offs to see which services retain subscribers."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 18,
+          title: "Round 3: Multi-Subscription Bundle Arbitrage & Apple One Candidates",
+          difficulty: "Hard",
+          prompt: `Users holding 2 or more distinct active Apple services qualify for an 'Apple One' bundle pitch. Identify all qualifying users, the count of services they hold, and their total current monthly spend.
+
+**Requirements:**
+- Query \`apple_subscriptions\` where \`is_cancelled = 0\`.
+- Group by \`apple_id\` having 2 or more distinct subscriptions.
+- Return: \`apple_id\`, \`service_count\`, \`total_monthly_spend_usd\`.
+- Order by \`total_monthly_spend_usd\` DESC.`,
+          starterSql: `-- Apple Round 3: Multi-Service Apple One Bundle Candidates
+SELECT
+  apple_id,
+  COUNT(sub_id) AS service_count,
+  ROUND(SUM(monthly_price_usd), 2) AS total_monthly_spend_usd
+FROM apple_subscriptions
+WHERE is_cancelled = 0
+GROUP BY apple_id
+HAVING COUNT(sub_id) >= 2
+ORDER BY total_monthly_spend_usd DESC;`,
+          solutionSql: `SELECT
+  apple_id,
+  COUNT(sub_id) AS service_count,
+  ROUND(SUM(monthly_price_usd), 2) AS total_monthly_spend_usd
+FROM apple_subscriptions
+WHERE is_cancelled = 0
+GROUP BY apple_id
+HAVING COUNT(sub_id) >= 2
+ORDER BY total_monthly_spend_usd DESC;`,
+          hints: [
+            "Filter active subscriptions WHERE is_cancelled = 0.",
+            "Group by apple_id and use HAVING COUNT(sub_id) >= 2.",
+            "Order by total_monthly_spend_usd DESC."
+          ],
+          expectedColumns: ["apple_id", "service_count", "total_monthly_spend_usd"],
+          expectedRowCount: 1,
+          bloopGreeting: "Final Apple question! Identify high-value users subscribing to multiple services as targets for Apple One bundles."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 13: BLOOMBERG (FINANCIAL TERMINALS & TICKER CORPORATE ACTIONS)
+    // =========================================================================
+    {
+      id: "track_bloomberg",
+      company: "Bloomberg",
+      role: "Financial Data Engineer (Ticker Pricing & Corporate Actions)",
+      badge: "Market Terminals",
+      icon: "📈",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$230,000 – $340,000",
+      description: "Bloomberg LP Terminal core: consecutive ticker price gain streaks, stock dividend split adjustments, and point-in-time consensus reconciliation.",
+      interviewer: {
+        name: "Vikram Malhotra",
+        title: "Senior Lead, Market Data Engineering",
+        avatar: "📈"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS bloomberg_daily_prices;
+CREATE TABLE IF NOT EXISTS bloomberg_daily_prices (
+  trade_date TEXT NOT NULL,
+  ticker TEXT NOT NULL,
+  close_price REAL NOT NULL,
+  volume INTEGER NOT NULL,
+  PRIMARY KEY (trade_date, ticker)
+);
+
+INSERT INTO bloomberg_daily_prices VALUES
+  ('2026-10-12', 'AAPL', 220.00, 45000000),
+  ('2026-10-13', 'AAPL', 222.50, 48000000),
+  ('2026-10-14', 'AAPL', 225.00, 52000000),
+  ('2026-10-15', 'AAPL', 224.00, 41000000),
+  ('2026-10-12', 'MSFT', 430.00, 22000000),
+  ('2026-10-13', 'MSFT', 435.00, 24000000),
+  ('2026-10-14', 'MSFT', 432.00, 19000000),
+  ('2026-10-15', 'MSFT', 438.00, 28000000);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 12,
+          title: "Round 1: Day-over-Day Return & Price Momentum",
+          difficulty: "Intermediate",
+          prompt: `For each ticker, calculate the prior day's close price using LAG() and determine the day-over-day price delta and percentage return.
+
+**Requirements:**
+- Query \`bloomberg_daily_prices\`.
+- Return: \`trade_date\`, \`ticker\`, \`close_price\`, \`prior_close\`, \`daily_delta_usd\`, \`pct_return\` (\`ROUND((close - prior) / prior * 100.0, 2)\`).
+- Order by \`ticker\` ASC, \`trade_date\` ASC.`,
+          starterSql: `-- Bloomberg Round 1: DoD Return via LAG()
+SELECT
+  trade_date,
+  ticker,
+  close_price,
+  -- Calculate prior close, delta, and percentage return
+FROM bloomberg_daily_prices
+ORDER BY ticker ASC, trade_date ASC;`,
+          solutionSql: `SELECT
+  trade_date,
+  ticker,
+  close_price,
+  LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC) AS prior_close,
+  ROUND(close_price - LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC), 2) AS daily_delta_usd,
+  ROUND((close_price - LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC)) / LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC) * 100.0, 2) AS pct_return
+FROM bloomberg_daily_prices
+ORDER BY ticker ASC, trade_date ASC;`,
+          hints: [
+            "Use LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC).",
+            "Handle first day NULL prior_close gracefully.",
+            "Order by ticker ASC, trade_date ASC."
+          ],
+          expectedColumns: ["trade_date", "ticker", "close_price", "prior_close", "daily_delta_usd", "pct_return"],
+          expectedRowCount: 8,
+          bloopGreeting: "Welcome to Bloomberg! Let's calculate point-in-time day-over-day return momentum across equity tickers."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Volume-Weighted Price Gainers & Turnover",
+          difficulty: "Hard",
+          prompt: `Calculate total notional trading turnover ($) per ticker (\`close_price * volume\`) and overall average volume over the 4-day period.
+
+**Requirements:**
+- Group by \`ticker\`.
+- Return: \`ticker\`, \`avg_close_price\`, \`total_volume\`, \`total_turnover_usd\` (rounded to 2 decimals).
+- Order by \`total_turnover_usd\` DESC.`,
+          starterSql: `-- Bloomberg Round 2: Total Turnover & Notional Volume
+SELECT
+  ticker,
+  ROUND(AVG(close_price), 2) AS avg_close_price,
+  SUM(volume) AS total_volume,
+  ROUND(SUM(close_price * volume), 2) AS total_turnover_usd
+FROM bloomberg_daily_prices
+GROUP BY ticker
+ORDER BY total_turnover_usd DESC;`,
+          solutionSql: `SELECT
+  ticker,
+  ROUND(AVG(close_price), 2) AS avg_close_price,
+  SUM(volume) AS total_volume,
+  ROUND(SUM(close_price * volume), 2) AS total_turnover_usd
+FROM bloomberg_daily_prices
+GROUP BY ticker
+ORDER BY total_turnover_usd DESC;`,
+          hints: [
+            "Use AVG(close_price) for mean price.",
+            "Turnover is SUM(close_price * volume).",
+            "Group by ticker."
+          ],
+          expectedColumns: ["ticker", "avg_close_price", "total_volume", "total_turnover_usd"],
+          expectedRowCount: 2,
+          bloopGreeting: "Great precision! Now compute equity market turnover and liquidity volume across trading days."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 18,
+          title: "Round 3: Consecutive Price Gainer Streaks",
+          difficulty: "Staff",
+          prompt: `Identify tickers with consecutive positive daily gains (close > prior_close). Filter for dates that experienced positive gain and compute rolling cumulative gain count.
+
+**Requirements:**
+- Use CTE with LAG to find daily gains where \`close_price > prior_close\`.
+- Return: \`trade_date\`, \`ticker\`, \`close_price\`, \`daily_gain_usd\`.
+- Order by \`ticker\` ASC, \`trade_date\` ASC.`,
+          starterSql: `-- Bloomberg Round 3: Positive Day Gain Filters
+WITH daily_deltas AS (
+  SELECT
+    trade_date,
+    ticker,
+    close_price,
+    close_price - LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC) AS daily_gain_usd
+  FROM bloomberg_daily_prices
+)
+SELECT trade_date, ticker, close_price, ROUND(daily_gain_usd, 2) AS daily_gain_usd
+FROM daily_deltas
+WHERE daily_gain_usd > 0
+ORDER BY ticker ASC, trade_date ASC;`,
+          solutionSql: `WITH daily_deltas AS (
+  SELECT
+    trade_date,
+    ticker,
+    close_price,
+    close_price - LAG(close_price) OVER (PARTITION BY ticker ORDER BY trade_date ASC) AS daily_gain_usd
+  FROM bloomberg_daily_prices
+)
+SELECT trade_date, ticker, close_price, ROUND(daily_gain_usd, 2) AS daily_gain_usd
+FROM daily_deltas
+WHERE daily_gain_usd > 0
+ORDER BY ticker ASC, trade_date ASC;`,
+          hints: [
+            "Compute daily delta in CTE.",
+            "Filter WHERE daily_gain_usd > 0 in outer query.",
+            "Order by ticker ASC, trade_date ASC."
+          ],
+          expectedColumns: ["trade_date", "ticker", "close_price", "daily_gain_usd"],
+          expectedRowCount: 4,
+          bloopGreeting: "Final Bloomberg challenge! Filter for consecutive positive gain streaks to power momentum screener terminals."
+        }
+      ]
+    },
+
+    // =========================================================================
+    // TRACK 14: MICROSOFT (ENTERPRISE CLOUD & ORGANIZATIONAL HIERARCHY)
+    // =========================================================================
+    {
+      id: "track_microsoft",
+      company: "Microsoft",
+      role: "Principal Data Engineer (Azure Enterprise & Teams Graph)",
+      badge: "Enterprise SaaS & Graph",
+      icon: "🏢",
+      difficulty: "Hard",
+      timeLimitMinutes: 45,
+      compensationRange: "$250,000 – $380,000",
+      description: "Microsoft Azure & Teams screen: recursive organizational hierarchy trees, multi-tenant subscription seat utilization, and collaborative graph edges.",
+      interviewer: {
+        name: "Satya Nadella",
+        title: "Executive VP, Enterprise Cloud Architecture",
+        avatar: "🏢"
+      },
+      seedSql: `
+DROP TABLE IF EXISTS msft_employees;
+CREATE TABLE IF NOT EXISTS msft_employees (
+  emp_id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  manager_id INTEGER,
+  department TEXT NOT NULL,
+  salary INTEGER NOT NULL
+);
+
+INSERT INTO msft_employees VALUES
+  (1, 'Satya', NULL, 'Executive', 2500000),
+  (2, 'Amy', 1, 'Finance', 1200000),
+  (3, 'Scott', 1, 'Cloud & AI', 1400000),
+  (4, 'Phil', 1, 'Gaming', 1100000),
+  (5, 'Julia', 3, 'Cloud & AI', 600000),
+  (6, 'Mark', 3, 'Cloud & AI', 650000),
+  (7, 'Sarah', 5, 'Cloud & AI', 320000);
+`,
+      rounds: [
+        {
+          roundNum: 1,
+          timeBudgetMinutes: 12,
+          title: "Round 1: Department Headcount & Salary Distribution",
+          difficulty: "Easy",
+          prompt: `Analyze organizational salary spend across Microsoft divisions. For each department, find employee headcount, total department payroll, and the maximum single salary.
+
+**Requirements:**
+- Query \`msft_employees\`.
+- Return: \`department\`, \`headcount\`, \`total_payroll\`, \`max_salary\`.
+- Order by \`total_payroll\` DESC.`,
+          starterSql: `-- Microsoft Round 1: Department Payroll & Headcount
+SELECT
+  department,
+  COUNT(emp_id) AS headcount,
+  SUM(salary) AS total_payroll,
+  MAX(salary) AS max_salary
+FROM msft_employees
+GROUP BY department
+ORDER BY total_payroll DESC;`,
+          solutionSql: `SELECT
+  department,
+  COUNT(emp_id) AS headcount,
+  SUM(salary) AS total_payroll,
+  MAX(salary) AS max_salary
+FROM msft_employees
+GROUP BY department
+ORDER BY total_payroll DESC;`,
+          hints: [
+            "Use COUNT(emp_id) for headcount.",
+            "Use SUM(salary) and MAX(salary).",
+            "Group by department and order by total_payroll DESC."
+          ],
+          expectedColumns: ["department", "headcount", "total_payroll", "max_salary"],
+          expectedRowCount: 4,
+          bloopGreeting: "Welcome to Microsoft! Let's analyze enterprise organizational structure and department payroll rollups."
+        },
+        {
+          roundNum: 2,
+          timeBudgetMinutes: 15,
+          title: "Round 2: Manager-Direct Report Self-Joins",
+          difficulty: "Intermediate",
+          prompt: `For every employee who reports to a manager, join \`msft_employees\` to itself to display the employee's name, their direct manager's name, and their salary differential (manager salary - employee salary).
+
+**Requirements:**
+- Query \`msft_employees\` where \`manager_id IS NOT NULL\`.
+- Return: \`employee_name\`, \`manager_name\`, \`employee_salary\`, \`manager_salary\`, \`salary_differential\`.
+- Order by \`salary_differential\` DESC.`,
+          starterSql: `-- Microsoft Round 2: Manager Self-Join
+SELECT
+  e.name AS employee_name,
+  m.name AS manager_name,
+  e.salary AS employee_salary,
+  m.salary AS manager_salary,
+  (m.salary - e.salary) AS salary_differential
+FROM msft_employees e
+JOIN msft_employees m ON e.manager_id = m.emp_id
+ORDER BY salary_differential DESC;`,
+          solutionSql: `SELECT
+  e.name AS employee_name,
+  m.name AS manager_name,
+  e.salary AS employee_salary,
+  m.salary AS manager_salary,
+  (m.salary - e.salary) AS salary_differential
+FROM msft_employees e
+JOIN msft_employees m ON e.manager_id = m.emp_id
+ORDER BY salary_differential DESC;`,
+          hints: [
+            "Perform INNER JOIN msft_employees m ON e.manager_id = m.emp_id.",
+            "Compute salary_differential as m.salary - e.salary.",
+            "Order by salary_differential DESC."
+          ],
+          expectedColumns: ["employee_name", "manager_name", "employee_salary", "manager_salary", "salary_differential"],
+          expectedRowCount: 6,
+          bloopGreeting: "Spot on! Now write a self-join to map reporting lines and evaluate salary differentials between managers and reports."
+        },
+        {
+          roundNum: 3,
+          timeBudgetMinutes: 18,
+          title: "Round 3: Recursive Hierarchy Tree Traversal (CTE)",
+          difficulty: "Staff",
+          prompt: `Write a recursive Common Table Expression (CTE) to traverse Microsoft's organizational chart starting from the CEO (\`manager_id IS NULL\` at \`level = 1\`) down through all reporting tiers.
+
+**Requirements:**
+- Anchor member: Select CEO where \`manager_id IS NULL\` with \`level = 1\`.
+- Recursive member: Join subordinates where \`e.manager_id = r.emp_id\` with \`level = r.level + 1\`.
+- Return: \`emp_id\`, \`name\`, \`department\`, \`level\`.
+- Order by \`level\` ASC, \`emp_id\` ASC.`,
+          starterSql: `-- Microsoft Round 3: Recursive Org Hierarchy
+WITH RECURSIVE org_tree AS (
+  SELECT emp_id, name, department, 1 AS level
+  FROM msft_employees
+  WHERE manager_id IS NULL
+
+  UNION ALL
+
+  SELECT e.emp_id, e.name, e.department, r.level + 1
+  FROM msft_employees e
+  JOIN org_tree r ON e.manager_id = r.emp_id
+)
+SELECT emp_id, name, department, level
+FROM org_tree
+ORDER BY level ASC, emp_id ASC;`,
+          solutionSql: `WITH RECURSIVE org_tree AS (
+  SELECT emp_id, name, department, 1 AS level
+  FROM msft_employees
+  WHERE manager_id IS NULL
+
+  UNION ALL
+
+  SELECT e.emp_id, e.name, e.department, r.level + 1
+  FROM msft_employees e
+  JOIN org_tree r ON e.manager_id = r.emp_id
+)
+SELECT emp_id, name, department, level
+FROM org_tree
+ORDER BY level ASC, emp_id ASC;`,
+          hints: [
+            "Use WITH RECURSIVE org_tree AS (...).",
+            "Anchor: WHERE manager_id IS NULL.",
+            "Recursive step: JOIN org_tree r ON e.manager_id = r.emp_id incrementing level + 1."
+          ],
+          expectedColumns: ["emp_id", "name", "department", "level"],
+          expectedRowCount: 7,
+          bloopGreeting: "Final question for the Staff level! Traverse recursive tree graphs using RECURSIVE CTEs to map Microsoft's complete management hierarchy."
+        }
+      ]
+    }
+]
+};

@@ -19,7 +19,7 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
 
-  // Initialize theme from localStorage
+  // Initialize theme from localStorage & handle anchor hash scrolling
   useEffect(() => {
     try {
       const saved = localStorage.getItem('sql_foundry_theme');
@@ -31,6 +31,15 @@ export default function Home() {
         document.documentElement.classList.remove('dark');
       }
     } catch (e) {}
+
+    // Auto-scroll to anchor hash if present in URL
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const hash = window.location.hash.replace('#', '');
+      setTimeout(() => {
+        const el = document.getElementById(hash);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 350);
+    }
   }, []);
 
   const handleToggleTheme = () => {

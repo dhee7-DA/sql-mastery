@@ -119,21 +119,26 @@ export function KobbeSectionWasm() {
   }, [isReady]);
 
   return (
-    <section id="section-studio" className="py-14 sm:py-18 border-t border-border/60">
+    <section id="section-studio" className="py-14 sm:py-18 border-t border-border/60 scroll-mt-20">
       <div className="mx-auto grid w-full max-w-320 grid-cols-1 gap-x-8 px-4 sm:px-8 lg:grid-cols-12 *:col-span-full gap-y-8">
         {/* Left Column (Kobbe 4-col descriptor) */}
         <p className="text-xs sm:text-sm text-muted-foreground max-w-64 leading-normal text-pretty lg:col-span-4 lg:mt-1.5">
           <span className="text-foreground font-medium block mb-1">
-            Visual EXPLAIN & Schema Explorer,
+            Visual EXPLAIN &amp; Schema Explorer,
           </span>
-          real client-side SQLite WASM compiler with execution plan tree & database schema inspection.
+          real client-side SQLite WASM compiler with execution plan tree &amp; database schema inspection.
         </p>
 
         {/* Right Column (Kobbe 8-col headline and description) */}
         <div className="flex min-w-0 flex-col gap-4 lg:col-span-8">
           <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-dark-background text-surface px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider">
+                QUERY STUDIO
+              </span>
+            </div>
             <h2 className="text-2xl sm:text-3xl font-medium tracking-tight leading-tight text-pretty text-foreground">
-              Physical query plans, B-Tree indexes & schema inspection
+              Physical query plans, B-Tree indexes &amp; schema inspection
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-lg leading-relaxed text-pretty">
               Inspect behind the scenes of relational engines. Visualize whether your query performs an $O(\log N)$ B-Tree index seek or an $O(N)$ sequential table scan. Explore tables, inspect columns, and get direct query optimizer diagnostics.

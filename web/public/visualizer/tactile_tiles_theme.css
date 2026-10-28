@@ -1,0 +1,920 @@
+/* =============================================================================
+   SQL FOUNDRY - UNIFIED TACTILE TILES & CONCENTRIC RADIUS DESIGN SYSTEM
+   Propagates the signature tactile pill, tab, and card geometry across ALL app views:
+   - Header Navigation Switcher
+   - Mastery Course Nav & Step Tabs
+   - LeetCode 323 Arena Filter Chips & Pillar Tabs
+   - Company Mastery Directory Tabs & Cards
+   - Studio Workbench Dialect Pills & Action Tiles
+   - Mock Technical Screen Track Cards & Timer Badges
+   - Bottom Engineering Status Bar Pills
+   ============================================================================= */
+
+:root {
+  --tile-radius-card: 14px;
+  --tile-radius-btn: 10px;
+  --tile-radius-inner: 8px;
+  --tile-radius-pill: 9999px;
+  --tile-shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --tile-shadow-lift: 0 4px 14px -2px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03);
+  --tile-shadow-active: 0 3px 12px -2px rgba(225, 29, 72, 0.2), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* =============================================================================
+   1. TOP APPLICATION HEADER NAVIGATION SWITCHER
+   ============================================================================= */
+.app-header .nav-group-trigger {
+  height: 32px !important;
+  padding: 0 11px !important;
+  border-radius: 9px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: var(--text-secondary, #71717a) !important;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 140ms ease, 
+              background-color 140ms ease, 
+              border-color 140ms ease,
+              color 140ms ease !important;
+}
+
+.app-header .nav-group-trigger:hover {
+  transform: translateY(-1px) !important;
+  background: var(--bg-hover, #f4f4f5) !important;
+  border-color: var(--border-default, #e4e4e7) !important;
+  color: var(--text-primary, #18181b) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+}
+
+.app-header .nav-group-trigger:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+.app-header .nav-group-trigger.active {
+  background: var(--bg-surface, #ffffff) !important;
+  border-color: var(--accent, #e11d48) !important;
+  color: var(--accent, #e11d48) !important;
+  font-weight: 700 !important;
+  box-shadow: var(--tile-shadow-active) !important;
+  transform: translateY(-0.5px) !important;
+}
+
+.app-header .nav-group-trigger.active .nav-group-icon {
+  color: var(--accent, #e11d48) !important;
+}
+
+.app-header .nav-item-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+  padding: 1.5px 7px !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  font-family: var(--font-mono, monospace) !important;
+  letter-spacing: 0.3px !important;
+  line-height: 1.2 !important;
+}
+
+.app-header .nav-item-tag.accent {
+  background: var(--accent-soft, rgba(225, 29, 72, 0.1)) !important;
+  color: var(--accent, #e11d48) !important;
+  border: 1px solid var(--accent-border, rgba(225, 29, 72, 0.25)) !important;
+}
+
+/* =============================================================================
+   2. LEETCODE 323 ARENA TACTILE TILES & PILLS
+   ============================================================================= */
+/* Pillar Tabs (Foundations, Architect, Wizard, etc.) */
+.lc-pillar-tab-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  height: 32px !important;
+  padding: 0 14px !important;
+  border-radius: var(--tile-radius-btn, 10px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  background: var(--bg-surface, #ffffff) !important;
+  color: var(--text-secondary, #52525b) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 140ms ease, 
+              border-color 140ms ease, 
+              background-color 140ms ease,
+              color 140ms ease !important;
+}
+
+.lc-pillar-tab-btn:hover {
+  transform: translateY(-1.5px) !important;
+  background: var(--bg-hover, #f4f4f5) !important;
+  border-color: var(--accent, #e11d48) !important;
+  color: var(--text-primary, #18181b) !important;
+  box-shadow: var(--tile-shadow-lift) !important;
+}
+
+.lc-pillar-tab-btn:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+.lc-pillar-tab-btn.active {
+  background: var(--bg-surface, #ffffff) !important;
+  border-color: var(--accent, #e11d48) !important;
+  color: var(--accent, #e11d48) !important;
+  font-weight: 700 !important;
+  box-shadow: var(--tile-shadow-active) !important;
+  transform: translateY(-0.5px) !important;
+}
+
+/* Filter Chips (SQL 50, Advanced 50, Topics) */
+.lc-filter-chip,
+.lc-diff-tab-btn,
+.lc-filter-reset-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  height: 28px !important;
+  padding: 0 13px !important;
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  background: var(--bg-surface, #ffffff) !important;
+  color: var(--text-secondary, #71717a) !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 140ms ease, 
+              border-color 140ms ease, 
+              background-color 140ms ease, 
+              color 140ms ease !important;
+}
+
+.lc-filter-chip:hover,
+.lc-diff-tab-btn:hover,
+.lc-filter-reset-btn:hover {
+  transform: translateY(-1px) !important;
+  background: var(--bg-hover, #f4f4f5) !important;
+  border-color: var(--accent, #e11d48) !important;
+  color: var(--text-primary, #18181b) !important;
+}
+
+.lc-filter-chip:active,
+.lc-diff-tab-btn:active,
+.lc-filter-reset-btn:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+.lc-filter-chip.active,
+.lc-diff-tab-btn.active {
+  background: var(--accent, #e11d48) !important;
+  color: #ffffff !important;
+  border-color: var(--accent, #e11d48) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 3px 10px -2px rgba(225, 29, 72, 0.35) !important;
+}
+
+/* LeetCode Focus Cards */
+.lc-focus-card,
+.lc-topic-card {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease !important;
+}
+
+.lc-focus-card:hover,
+.lc-topic-card:hover {
+  border-color: var(--accent, #e11d48) !important;
+  box-shadow: var(--tile-shadow-lift) !important;
+}
+
+/* Difficulty Badges */
+.difficulty-badge,
+.lc-diff-badge,
+.problem-difficulty-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+  padding: 2px 9px !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2px !important;
+  text-transform: capitalize !important;
+}
+
+/* =============================================================================
+   3. COMPANY MASTERY TILES & DIRECTORY CARDS
+   ============================================================================= */
+.company-tab-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  height: 32px !important;
+  padding: 0 14px !important;
+  background: var(--bg-surface, #ffffff) !important;
+  border: 1px solid var(--border-default, #d4d4d8) !important;
+  border-radius: var(--tile-radius-btn, 10px) !important;
+  color: var(--text-secondary, #3f3f46) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 140ms ease, 
+              border-color 140ms ease, 
+              background-color 140ms ease,
+              color 140ms ease !important;
+}
+
+.company-tab-btn:hover {
+  transform: translateY(-1.5px) !important;
+  background: var(--bg-hover, #f4f4f5) !important;
+  border-color: var(--accent, #e11d48) !important;
+  color: var(--text-primary, #18181b) !important;
+  box-shadow: var(--tile-shadow-lift) !important;
+}
+
+.company-tab-btn:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+.company-tab-btn.active {
+  background: var(--accent, #e11d48) !important;
+  border-color: var(--accent, #e11d48) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px -2px rgba(225, 29, 72, 0.35) !important;
+}
+
+.company-tab-count {
+  font-size: 10px !important;
+  font-family: var(--font-mono, monospace) !important;
+  background: rgba(0, 0, 0, 0.08) !important;
+  padding: 1.5px 6px !important;
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+}
+
+.company-tab-btn.active .company-tab-count {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.company-directory-card {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+  transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 160ms ease, 
+              border-color 160ms ease !important;
+}
+
+.company-directory-card:hover {
+  transform: translateY(-2px) !important;
+  border-color: var(--accent, #e11d48) !important;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.company-card-open-btn {
+  border-radius: var(--tile-radius-inner, 8px) !important;
+  transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease !important;
+}
+
+.company-card-open-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.company-card-open-btn:active {
+  transform: translateY(1px) scale(0.98) !important;
+}
+
+/* =============================================================================
+   4. STUDIO WORKBENCH TILES & DIALECT PILLS
+   ============================================================================= */
+.studio-topbar {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+}
+
+.studio-dialect-group {
+  border-radius: var(--tile-radius-btn, 10px) !important;
+  padding: 3px !important;
+}
+
+.dialect-pill {
+  height: 28px !important;
+  padding: 0 12px !important;
+  border-radius: 7px !important;
+  border: 1px solid transparent !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: transform 140ms ease, background-color 140ms ease, color 140ms ease, box-shadow 140ms ease !important;
+}
+
+.dialect-pill:hover {
+  transform: translateY(-1px) !important;
+  color: var(--text-primary, #18181b) !important;
+}
+
+.dialect-pill:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+.dialect-pill.active {
+  background: var(--bg-surface, #ffffff) !important;
+  border-color: var(--border-default, #e4e4e7) !important;
+  color: var(--accent, #e11d48) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+}
+
+.studio-compact-select {
+  border-radius: var(--tile-radius-inner, 8px) !important;
+}
+
+.studio-action-btn,
+.btn-studio-run,
+.btn-format-sql {
+  border-radius: var(--tile-radius-btn, 10px) !important;
+  transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 160ms ease !important;
+}
+
+.studio-action-btn:hover,
+.btn-studio-run:hover,
+.btn-format-sql:hover {
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 4px 14px -2px rgba(225, 29, 72, 0.35) !important;
+}
+
+.studio-action-btn:active,
+.btn-studio-run:active,
+.btn-format-sql:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+/* =============================================================================
+   5. MOCK INTERVIEW TRACK CARDS & TIMER BADGES
+   ============================================================================= */
+.interview-hero {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+}
+
+.interview-track-card {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease !important;
+}
+
+.interview-track-card:hover {
+  transform: translateY(-2px) !important;
+  border-color: var(--accent, #e11d48) !important;
+  box-shadow: var(--tile-shadow-lift) !important;
+}
+
+.mock-timer-chip,
+.keyword-detect-badge,
+.track-pill {
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+  font-weight: 700 !important;
+}
+
+/* =============================================================================
+   6. BOTTOM STATUS BAR PILLS
+   ============================================================================= */
+.status-bar .status-item,
+.status-bar .status-badge,
+.status-bar .hud-pill,
+.status-left > span,
+.status-right > span {
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+  padding: 2.5px 10px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  transition: transform 120ms ease, background-color 120ms ease !important;
+}
+
+.status-bar .status-item:hover,
+.status-bar .status-badge:hover {
+  transform: translateY(-0.5px) !important;
+}
+
+/* =============================================================================
+   7. DARK MODE CONSISTENCY OVERRIDES
+   ============================================================================= */
+[data-theme="dark"] .app-header .nav-group-trigger.active,
+.theme-dark .app-header .nav-group-trigger.active,
+[data-theme="active-builders-dark"] .app-header .nav-group-trigger.active {
+  background: #18181e !important;
+  border-color: var(--accent, #ff2a51) !important;
+  color: var(--accent, #ff2a51) !important;
+  box-shadow: 0 2px 8px -1px rgba(255, 42, 81, 0.25) !important;
+}
+
+[data-theme="dark"] .lc-pillar-tab-btn,
+.theme-dark .lc-pillar-tab-btn,
+[data-theme="active-builders-dark"] .lc-pillar-tab-btn {
+  background: #131316 !important;
+  border-color: #27272a !important;
+  color: #a1a1aa !important;
+}
+
+[data-theme="dark"] .lc-pillar-tab-btn.active,
+.theme-dark .lc-pillar-tab-btn.active,
+[data-theme="active-builders-dark"] .lc-pillar-tab-btn.active {
+  background: #18181e !important;
+  border-color: var(--accent, #ff2a51) !important;
+  color: var(--accent, #ff2a51) !important;
+  box-shadow: 0 3px 12px -2px rgba(255, 42, 81, 0.3) !important;
+}
+
+[data-theme="dark"] .company-tab-btn,
+.theme-dark .company-tab-btn,
+[data-theme="active-builders-dark"] .company-tab-btn {
+  background: #131316 !important;
+  border-color: #27272a !important;
+  color: #d4d4d8 !important;
+}
+
+[data-theme="dark"] .dialect-pill.active,
+.theme-dark .dialect-pill.active,
+[data-theme="active-builders-dark"] .dialect-pill.active {
+  background: #18181e !important;
+  border-color: #2e2e34 !important;
+  color: var(--accent, #ff2a51) !important;
+}
+
+/* =============================================================================
+   8. MASTERY COURSE SIGNATURE TACTILE TILES & CONCENTRIC RADII
+   ============================================================================= */
+
+/* Rail Container & Topic Step Navigation Pills */
+.phase-execution-rail {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-wrap: wrap !important;
+  padding: 10px 16px !important;
+  background: var(--bg-surface, #ffffff) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  border-radius: var(--tile-radius-card, 14px) !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+  min-height: 48px !important;
+}
+
+.phase-node-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 14px !important;
+  height: 34px !important;
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  background: var(--bg-surface, #ffffff) !important;
+  color: var(--text-secondary, #52525b) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+  white-space: nowrap !important;
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 140ms ease,
+              border-color 140ms ease,
+              background-color 140ms ease,
+              color 140ms ease !important;
+}
+
+.phase-node-btn:hover {
+  transform: translateY(-1.5px) !important;
+  border-color: var(--accent, #e11d48) !important;
+  background: var(--bg-hover, #f4f4f5) !important;
+  color: var(--text-primary, #18181b) !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06) !important;
+}
+
+.phase-node-btn:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+.phase-node-btn.active {
+  background: var(--accent, #e11d48) !important;
+  border-color: var(--accent, #e11d48) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 3px 12px -2px rgba(225, 29, 72, 0.35) !important;
+  transform: translateY(-0.5px) !important;
+}
+
+.phase-node-btn.completed {
+  border-color: rgba(22, 163, 74, 0.35) !important;
+  background: rgba(22, 163, 74, 0.08) !important;
+  color: #16a34a !important;
+}
+
+.phase-node-btn.completed.active {
+  background: var(--accent, #e11d48) !important;
+  border-color: var(--accent, #e11d48) !important;
+  color: #ffffff !important;
+}
+
+.phase-rail-sep {
+  color: var(--border-hover, #a1a1aa) !important;
+  font-size: 15px !important;
+  line-height: 1 !important;
+  user-select: none !important;
+  opacity: 0.55 !important;
+  margin: 0 2px !important;
+}
+
+/* Active Topic Card & 4-Step Order Tabs */
+.active-phase-card {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+}
+
+.phase-hero-badge {
+  border-radius: var(--tile-radius-inner, 10px) !important;
+}
+
+.step-order-tabs {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: var(--bg-card-subtle, #f4f4f5) !important;
+  padding: 4px !important;
+  border-radius: var(--tile-radius-inner, 12px) !important;
+  border: 1px solid var(--border-subtle, #e4e4e7) !important;
+}
+
+.step-tab-btn {
+  height: 36px !important;
+  padding: 0 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: var(--tile-radius-btn, 9px) !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: var(--text-secondary, #52525b) !important;
+  cursor: pointer !important;
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 140ms ease,
+              background-color 140ms ease,
+              color 140ms ease,
+              border-color 140ms ease !important;
+  white-space: nowrap !important;
+}
+
+.step-tab-btn:hover {
+  transform: translateY(-1px) !important;
+  color: var(--text-primary, #18181b) !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+
+.step-tab-btn:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+.step-tab-btn.active {
+  background: var(--bg-surface, #ffffff) !important;
+  color: var(--accent, #e11d48) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid var(--accent-border, rgba(225, 29, 72, 0.3)) !important;
+  transform: translateY(-0.5px) !important;
+}
+
+.step-tab-btn .step-count-pill {
+  font-size: 10px !important;
+  font-family: var(--font-mono, monospace) !important;
+  padding: 2px 7px !important;
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+  background: var(--bg-card-subtle, #e4e4e7) !important;
+  color: var(--text-secondary, #52525b) !important;
+  font-weight: 700 !important;
+}
+
+.step-tab-btn.active .step-count-pill {
+  background: var(--accent-soft, rgba(225, 29, 72, 0.12)) !important;
+  color: var(--accent, #e11d48) !important;
+  border: 1px solid var(--accent-border, rgba(225, 29, 72, 0.25)) !important;
+}
+
+/* Visual Mode Switcher (Diagram vs Live Sandbox) */
+.visual-mode-toggle-group {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  background: var(--bg-surface, #ffffff) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+  padding: 3px !important;
+}
+
+.visual-toggle-btn {
+  height: 30px !important;
+  padding: 0 14px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: var(--text-secondary, #52525b) !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  transition: transform 140ms ease, background-color 140ms ease, color 140ms ease, box-shadow 140ms ease !important;
+}
+
+.visual-toggle-btn:hover {
+  transform: translateY(-1px) !important;
+  color: var(--text-primary, #18181b) !important;
+}
+
+.visual-toggle-btn:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+.visual-toggle-btn.active {
+  background: var(--accent, #e11d48) !important;
+  color: #ffffff !important;
+  border-color: var(--accent, #e11d48) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px -1px rgba(225, 29, 72, 0.35) !important;
+  transform: translateY(-0.5px) !important;
+}
+
+/* Interactive SVG Stepper Pills */
+.diagram-stepper-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 12px 16px !important;
+  background: var(--bg-card-subtle, #f4f4f5) !important;
+  border-top: 1px solid var(--border-subtle, #e4e4e7) !important;
+  border-radius: 0 0 var(--tile-radius-card, 14px) var(--tile-radius-card, 14px) !important;
+  flex-wrap: wrap !important;
+}
+
+.diagram-step-btn {
+  height: 30px !important;
+  padding: 0 14px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  background: var(--bg-surface, #ffffff) !important;
+  color: var(--text-secondary, #52525b) !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+  transition: transform 140ms ease, border-color 140ms ease, background-color 140ms ease, color 140ms ease, box-shadow 140ms ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.diagram-step-btn:hover {
+  transform: translateY(-1px) !important;
+  border-color: var(--accent, #e11d48) !important;
+  color: var(--text-primary, #18181b) !important;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06) !important;
+}
+
+.diagram-step-btn:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+.diagram-step-btn.active {
+  background: var(--accent, #e11d48) !important;
+  color: #ffffff !important;
+  border-color: var(--accent, #e11d48) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 3px 10px -2px rgba(225, 29, 72, 0.35) !important;
+  transform: translateY(-0.5px) !important;
+}
+
+/* Course Cards Concentric Geometry */
+.interactive-simulator-card,
+.course-svg-diagram-card,
+.analogy-hero-card,
+.theory-card,
+.trap-card,
+.pattern-card,
+.mcq-card,
+.case-study-hero,
+.case-study-card,
+.query-challenge-card {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+}
+
+/* Bottom Navigation Buttons */
+.phase-nav-btn {
+  height: 36px !important;
+  padding: 0 16px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  border-radius: var(--tile-radius-btn, 10px) !important;
+  border: 1px solid var(--border-default, #d4d4d8) !important;
+  background: var(--bg-surface, #ffffff) !important;
+  color: var(--text-secondary, #3f3f46) !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+  cursor: pointer !important;
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 140ms ease, border-color 140ms ease, color 140ms ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.phase-nav-btn:hover:not(:disabled) {
+  transform: translateY(-1.5px) !important;
+  border-color: var(--accent, #e11d48) !important;
+  color: var(--text-primary, #18181b) !important;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08) !important;
+}
+
+.phase-nav-btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+/* =============================================================================
+   9. DARK MODE HARMONIZATION FOR ALL TACTILE TILES
+   ============================================================================= */
+[data-theme="dark"] .phase-execution-rail,
+.theme-dark .phase-execution-rail,
+[data-theme="active-builders-dark"] .phase-execution-rail {
+  background: #131316 !important;
+  border-color: #27272a !important;
+}
+
+[data-theme="dark"] .phase-node-btn,
+.theme-dark .phase-node-btn,
+[data-theme="active-builders-dark"] .phase-node-btn {
+  background: #18181e !important;
+  border-color: #27272a !important;
+  color: #a1a1aa !important;
+}
+
+[data-theme="dark"] .phase-node-btn.active,
+.theme-dark .phase-node-btn.active,
+[data-theme="active-builders-dark"] .phase-node-btn.active {
+  background: var(--accent, #ff2a51) !important;
+  border-color: var(--accent, #ff2a51) !important;
+  color: #ffffff !important;
+  box-shadow: 0 3px 12px -2px rgba(255, 42, 81, 0.4) !important;
+}
+
+[data-theme="dark"] .step-order-tabs,
+.theme-dark .step-order-tabs,
+[data-theme="active-builders-dark"] .step-order-tabs {
+  background: #131316 !important;
+  border-color: #27272a !important;
+}
+
+[data-theme="dark"] .step-tab-btn.active,
+.theme-dark .step-tab-btn.active,
+[data-theme="active-builders-dark"] .step-tab-btn.active {
+  background: #18181e !important;
+  border-color: var(--accent, #ff2a51) !important;
+  color: var(--accent, #ff2a51) !important;
+  box-shadow: 0 2px 8px -1px rgba(255, 42, 81, 0.25) !important;
+}
+
+[data-theme="dark"] .diagram-step-btn,
+.theme-dark .diagram-step-btn,
+[data-theme="active-builders-dark"] .diagram-step-btn {
+  background: #18181e !important;
+  border-color: #27272a !important;
+  color: #a1a1aa !important;
+}
+
+[data-theme="dark"] .diagram-step-btn.active,
+.theme-dark .diagram-step-btn.active,
+[data-theme="active-builders-dark"] .diagram-step-btn.active {
+  background: var(--accent, #ff2a51) !important;
+  border-color: var(--accent, #ff2a51) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px -1px rgba(255, 42, 81, 0.3) !important;
+}
+
+/* =============================================================================
+   10. INLINE QUERY STUDIO CONSOLE TACTILE TILES
+   ============================================================================= */
+.console-tab-btn {
+  border-radius: var(--tile-radius-btn, 8px) !important;
+  transition: transform 140ms ease, background-color 140ms ease, color 140ms ease, box-shadow 140ms ease !important;
+}
+
+.console-tab-btn:hover {
+  transform: translateY(-1px) !important;
+}
+
+.console-tab-btn:active {
+  transform: translateY(1px) scale(0.985) !important;
+}
+
+.console-tab-pill,
+.status-chip,
+.diff-status-pill,
+.schema-count-badge {
+  border-radius: var(--tile-radius-pill, 9999px) !important;
+}
+
+.schema-col-chip {
+  border-radius: var(--tile-radius-inner, 8px) !important;
+  transition: transform 120ms ease, box-shadow 120ms ease !important;
+}
+
+.schema-col-chip:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+}
+
+.query-console-wrap {
+  border-radius: var(--tile-radius-card, 12px) !important;
+}
+
+.schema-peek-card {
+  border-radius: var(--tile-radius-inner, 10px) !important;
+}
+
+
+/* =============================================================================
+   9. CROSS-APP HARMONIZATION & ZERO-GAP CONCENTRIC GEOMETRY
+   ============================================================================= */
+
+/* Tighten Layout & Zero Awkward Whitespace */
+.lc-arena-wrapper,
+.company-hub-wrapper,
+.studio-container,
+.sql-terminal-wrapper {
+  gap: 12px !important;
+}
+
+/* LeetCode 323 Problem Cards & Grid */
+.lc-problem-card,
+.lc-problem-row {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  box-shadow: var(--tile-shadow-soft) !important;
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease !important;
+}
+
+.lc-problem-card:hover,
+.lc-problem-row:hover {
+  transform: translateY(-1.5px) !important;
+  border-color: var(--accent, #e11d48) !important;
+  box-shadow: var(--tile-shadow-lift) !important;
+}
+
+/* Filter Strips: Eliminate excessive whitespace */
+.lc-filter-row,
+.company-filter-strip,
+.studio-controls-bar {
+  margin-bottom: 12px !important;
+  gap: 8px !important;
+}
+
+/* Company Hub Directory Cards */
+.company-directory-card {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  padding: 16px 18px !important;
+}
+
+/* Studio Editor & Console Containers */
+.studio-editor-box,
+.studio-output-box,
+.terminal-window {
+  border-radius: var(--tile-radius-card, 14px) !important;
+  border: 1px solid var(--border-default, #e4e4e7) !important;
+  overflow: hidden !important;
+}
+
+/* Modal Cards: Concentric 16px Radii */
+.shortcuts-modal-card,
+.analytics-modal-card,
+.cert-modal-card,
+.mock-modal-card {
+  border-radius: 16px !important;
+}

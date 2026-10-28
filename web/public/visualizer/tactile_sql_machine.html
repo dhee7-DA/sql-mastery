@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Relational Data Foundry · Visual SQL Execution Factory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --paper: #f4f1ea;
+      --paper-card: #ffffff;
+      --paper-elevated: #faf8f5;
+      --ink: #1e1b18;
+      --ink-muted: #6b6357;
+      --ink-subtle: #9c9384;
+      --border-ink: #2b2621;
+      --border-subtle: rgba(43, 38, 33, 0.15);
+      
+      --brass: #d4a342;
+      --brass-dark: #8c6317;
+      --accent-pass: #10b981;
+      --accent-fail: #ef4444;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-amber: #f59e0b;
+      
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --font-serif: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 20px 40px 20px;
+      overflow-x: hidden;
+    }
+
+    /* Ambient paper texture */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(rgba(30, 27, 24, 0.08) 0.75px, transparent 0.75px);
+      background-size: 20px 20px;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* Header */
+    .foundry-header {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border-ink);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .header-titles h1 {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-titles p {
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      margin-top: 3px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-ink);
+      background: #fffdf9;
+      box-shadow: 2px 2px 0 var(--border-ink);
+    }
+
+    .btn-return {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-ink);
+      background: #ffffff;
+      color: var(--ink);
+      text-decoration: none;
+      transition: all 0.15s ease;
+      box-shadow: 2px 2px 0 var(--border-ink);
+    }
+
+    .btn-return:hover {
+      background: #fdf2d0;
+      transform: translateY(-1px);
+    }
+
+    /* SQL Query Console */
+    .console-card {
+      width: 100%;
+      max-width: 1200px;
+      background: var(--paper-card);
+      border: 2px solid var(--border-ink);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 4px 4px 0 var(--border-ink);
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .presets-scroll-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .preset-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink-muted);
+      white-space: nowrap;
+      margin-right: 4px;
+    }
+
+    .preset-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      background: var(--paper-elevated);
+      border: 1.5px solid var(--border-ink);
+      border-radius: 6px;
+      color: var(--ink);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .preset-btn:hover {
+      background: #fff3cb;
+      transform: translateY(-1px);
+      box-shadow: 2px 2px 0 var(--border-ink);
+    }
+
+    .preset-btn.active {
+      background: var(--brass);
+      color: #1a1405;
+      font-weight: 800;
+      box-shadow: 2px 2px 0 var(--border-ink);
+    }
+
+    .query-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .query-input {
+      flex: 1;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 14px;
+      border: 2px solid var(--border-ink);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+      outline: none;
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .query-input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.06), 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .btn-assemble {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 10px 18px;
+      background: var(--accent-pass);
+      color: #ffffff;
+      border: 2px solid var(--border-ink);
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--border-ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: all 0.12s ease;
+    }
+
+    .btn-assemble:hover {
+      background: #059669;
+      transform: translateY(-1px);
+      box-shadow: 3px 3px 0 var(--border-ink);
+    }
+
+    .btn-assemble:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0 0 0 var(--border-ink);
+    }
+
+    /* Execution Order Pipeline Navigation */
+    .pipeline-nav {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      scrollbar-width: thin;
+    }
+
+    .pipe-step-btn {
+      flex: 1;
+      min-width: 125px;
+      background: var(--paper-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-align: left;
+      transition: all 0.15s ease;
+      opacity: 0.55;
+    }
+
+    .pipe-step-btn.active-stage {
+      opacity: 1;
+      border-color: var(--border-ink);
+      background: #ffffff;
+      box-shadow: 2px 2px 0 var(--border-ink);
+    }
+
+    .pipe-step-btn.current {
+      background: #fff8e1;
+      border-color: var(--border-ink);
+      box-shadow: 2px 2px 0 var(--border-ink);
+      transform: translateY(-2px);
+      border-top: 4px solid var(--brass);
+    }
+
+    .step-order {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 800;
+      color: var(--ink-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .step-name {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .step-badge {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Controls Strip */
+    .controls-strip {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .playback-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .ctrl-btn {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border-ink);
+      background: #ffffff;
+      color: var(--ink);
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--border-ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.12s ease;
+    }
+
+    .ctrl-btn:hover {
+      background: #fdf2d0;
+      transform: translateY(-1px);
+    }
+
+    .ctrl-btn.primary {
+      background: var(--brass);
+      color: #1a1405;
+    }
+
+    .speed-control {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* THE VISUAL FACTORY FLOOR */
+    .foundry-floor-card {
+      width: 100%;
+      max-width: 1200px;
+      background: #ffffff;
+      border: 2px solid var(--border-ink);
+      border-radius: 14px;
+      box-shadow: 6px 6px 0 var(--border-ink);
+      padding: 20px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Active Station Stage Spotlight */
+    .stage-spotlight-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #faf8f3;
+      border: 1.5px solid var(--border-ink);
+      border-radius: 8px;
+      padding: 8px 14px;
+      margin-bottom: 16px;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.06);
+    }
+
+    .spotlight-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .spotlight-icon {
+      font-size: 20px;
+    }
+
+    .spotlight-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .spotlight-desc {
+      font-size: 11.5px;
+      color: var(--ink-muted);
+    }
+
+    .spotlight-stats {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* Conveyor Tracks & Rows Layout */
+    .conveyor-assembly {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .stream-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink-muted);
+      border-bottom: 1px dashed var(--border-subtle);
+      padding-bottom: 4px;
+    }
+
+    /* Physical Cassette Cards Container */
+    .cassette-stream {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+      min-height: 240px;
+    }
+
+    /* Tactile Row Cassette Card */
+    .row-cassette {
+      background: var(--paper-card);
+      border: 2px solid var(--border-ink);
+      border-radius: 8px;
+      padding: 10px 12px;
+      box-shadow: 3px 3px 0 var(--border-ink);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .row-cassette:hover {
+      transform: translateY(-2px);
+      box-shadow: 4px 4px 0 var(--border-ink);
+    }
+
+    .row-cassette.status-active {
+      border-color: var(--brass-dark);
+      background: #fffbee;
+      box-shadow: 0 0 0 2px var(--brass);
+    }
+
+    .row-cassette.status-passed {
+      border-color: #059669;
+      background: #f0fdf4;
+    }
+
+    .row-cassette.status-rejected {
+      border-color: #dc2626;
+      background: #fef2f2;
+      opacity: 0.55;
+    }
+
+    .cassette-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cassette-id {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 800;
+      background: #ece8de;
+      padding: 1px 6px;
+      border-radius: 4px;
+      color: var(--ink);
+    }
+
+    .cassette-verdict {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .cassette-verdict.pass { background: #d1fae5; color: #065f46; }
+    .cassette-verdict.fail { background: #fee2e2; color: #991b1b; }
+    .cassette-verdict.pending { background: #f3f4f6; color: #4b5563; }
+
+    .cassette-main {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .cassette-attrs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .attr-pill {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      background: #f3efe6;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--ink-muted);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .attr-pill.highlight {
+      background: #fef3c7;
+      color: #92400e;
+      font-weight: 700;
+      border-color: #fde68a;
+    }
+
+    /* Bottom Inspection Deck & Result View */
+    .inspection-deck {
+      width: 100%;
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .inspection-deck { grid-template-columns: 1fr; }
+    }
+
+    .deck-card {
+      background: var(--paper-card);
+      border: 2px solid var(--border-ink);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 4px 4px 0 var(--border-ink);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .deck-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1.5px solid var(--border-ink);
+      padding-bottom: 6px;
+    }
+
+    /* Explanation Microscope */
+    .microscope-body {
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .microscope-clause {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      background: #fbf7ee;
+      border: 1px solid var(--brass);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--brass-dark);
+      font-weight: 700;
+    }
+
+    .microscope-verdict-box {
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #faf8f5;
+    }
+
+    /* Final Result Matrix */
+    .matrix-table-wrap {
+      max-height: 190px;
+      overflow-y: auto;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      text-align: left;
+    }
+
+    .matrix-table th {
+      background: #f4efe4;
+      border-bottom: 1.5px solid var(--border-ink);
+      padding: 6px 10px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      position: sticky;
+      top: 0;
+    }
+
+    .matrix-table td {
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 6px 10px;
+    }
+
+    .matrix-table tr:hover td {
+      background: #fffbee;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="foundry-header">
+    <div class="header-titles">
+      <h1>⚙️ THE RELATIONAL DATA FOUNDRY</h1>
+      <p>Visual Execution Factory · Understand How Any SQL Query Physically Processes Data Tuples</p>
+    </div>
+    <div class="header-actions">
+      <span class="badge-pill">EXECUTION ORDER ARCHITECTURE</span>
+      <a href="index.html" class="btn-return">← Back to Visualizer</a>
+    </div>
+  </header>
+
+  <!-- SQL Query Console -->
+  <section class="console-card">
+    <div class="presets-scroll-bar">
+      <span class="preset-label">Query Archetypes:</span>
+      <button class="preset-btn active" onclick="selectPreset(0)">1. Filter Sieve (WHERE)</button>
+      <button class="preset-btn" onclick="selectPreset(1)">2. Hash Inner Join</button>
+      <button class="preset-btn" onclick="selectPreset(2)">3. Group By &amp; Aggregate</button>
+      <button class="preset-btn" onclick="selectPreset(3)">4. Having Quality Gate</button>
+      <button class="preset-btn" onclick="selectPreset(4)">5. Window Running Total</button>
+      <button class="preset-btn" onclick="selectPreset(5)">6. Order By &amp; Top-N Limit</button>
+      <button class="preset-btn" onclick="selectPreset(6)">7. Complete Enterprise Query</button>
+      <button class="preset-btn" onclick="selectPreset(7)">8. Left Anti-Join (IS NULL)</button>
+    </div>
+
+    <div class="query-bar">
+      <input type="text" id="queryInput" class="query-input" value="SELECT name, salary, dept_id FROM employees WHERE salary > 50000 ORDER BY salary DESC LIMIT 4;" spellcheck="false" />
+      <button class="btn-assemble" onclick="assemblePipeline()">
+        <span>⚙️ Assemble Pipeline</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Execution Order Pipeline Stepper -->
+  <div class="pipeline-nav" id="pipelineNav">
+    <!-- Populated dynamically via JS -->
+  </div>
+
+  <!-- Playback Controls -->
+  <div class="controls-strip">
+    <div class="playback-group">
+      <button class="ctrl-btn primary" id="btnPlayPause" onclick="togglePlayPause()">
+        <span id="playIcon">▶</span> <span id="playText">Run Pipeline</span>
+      </button>
+      <button class="ctrl-btn" onclick="stepForward()">
+        <span>⏭ Step Next Station</span>
+      </button>
+      <button class="ctrl-btn" onclick="resetPipeline()">
+        <span>⏮ Rewind to Start</span>
+      </button>
+    </div>
+
+    <div class="speed-control">
+      <span>Playback Speed:</span>
+      <select id="speedSelect" onchange="changeSpeed(this.value)" style="padding: 4px 8px; font-family: var(--font-mono); border: 1.5px solid var(--border-ink); border-radius: 6px; font-weight: 700;">
+        <option value="1600">0.5x Slow Motion</option>
+        <option value="1000" selected>1.0x Normal</option>
+        <option value="500">2.0x Fast</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- THE VISUAL FACTORY FLOOR -->
+  <div class="foundry-floor-card">
+    <div class="stage-spotlight-bar" id="stageSpotlightBar">
+      <div class="spotlight-left">
+        <span class="spotlight-icon" id="stageIcon">📥</span>
+        <div>
+          <div class="spotlight-title" id="stageTitle">1. Ingestion Station: FROM employees</div>
+          <div class="spotlight-desc" id="stageDesc">Feeding raw data punchcard cassettes into the assembly line.</div>
+        </div>
+      </div>
+      <div class="spotlight-stats" id="stageStats">8 Rows Ingested</div>
+    </div>
+
+    <div class="conveyor-assembly">
+      <div class="stream-header">
+        <span id="streamCategoryLabel">Current Punchcard Cassettes on Assembly Belt</span>
+        <span id="streamCountLabel">8 Records Available</span>
+      </div>
+
+      <!-- Physical Row Cassettes -->
+      <div class="cassette-stream" id="cassetteStream">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Inspection Microscope & Live Result Matrix -->
+  <div class="inspection-deck">
+    <!-- Left: Microscope -->
+    <div class="deck-card">
+      <div class="deck-header">
+        <span>🔬 Station Logic Microscope</span>
+        <span id="currentClauseTag" style="color: var(--brass-dark); font-weight: 800;">CLAUSE 1 of 8</span>
+      </div>
+      <div class="microscope-body">
+        <div class="microscope-clause" id="microscopeClause">
+          FROM employees
+        </div>
+        <div class="microscope-verdict-box" id="microscopeExplanation">
+          Loading 8 physical employee records into memory buffers. Each cassette holds the primary attributes: Employee ID, Name, Department, and Salary.
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Result Matrix -->
+    <div class="deck-card">
+      <div class="deck-header">
+        <span>🧺 Final Relational Output Tray</span>
+        <span id="outputTupleCount" style="color: var(--accent-pass);">0 Tuples Prepared</span>
+      </div>
+      <div class="matrix-table-wrap">
+        <table class="matrix-table" id="resultTable">
+          <thead id="resultThead">
+            <tr><th>#</th><th>Name</th><th>Dept</th><th>Salary</th></tr>
+          </thead>
+          <tbody id="resultTbody">
+            <tr><td colspan="4" style="text-align: center; color: var(--ink-subtle); padding: 20px;">Pipeline active. Advance to final SELECT stage to inspect results.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================================
+       CANONICAL CORPORATE DATASETS (PUNCHCARDS)
+       ========================================================================= */
+    const RAW_EMPLOYEES = [
+      { emp_id: 101, name: 'Alice Miller', dept_id: 'ENG', salary: 125000, tenure: 14 },
+      { emp_id: 102, name: 'Bob Chen',     dept_id: 'FIN', salary: 42000,  tenure: 36 },
+      { emp_id: 103, name: 'Carol Smith',  dept_id: 'ANA', salary: 92000,  tenure: 8 },
+      { emp_id: 104, name: 'Dave Brown',   dept_id: 'ENG', salary: 35000,  tenure: 22 },
+      { emp_id: 105, name: 'Evan Davis',   dept_id: 'ANA', salary: 110000, tenure: 48 },
+      { emp_id: 106, name: 'Frank Jackson',dept_id: 'FIN', salary: 28000,  tenure: 26 },
+      { emp_id: 107, name: 'Grace Taylor', dept_id: 'ENG', salary: 145000, tenure: 19 },
+      { emp_id: 108, name: 'Hank Wilson',  dept_id: 'HR',  salary: 58000,  tenure: 12 }
+    ];
+
+    const RAW_DEPARTMENTS = [
+      { id: 'ENG', dept_name: 'Engineering', budget: 500000 },
+      { id: 'ANA', dept_name: 'Analytics',   budget: 350000 },
+      { id: 'FIN', dept_name: 'Finance',     budget: 280000 }
+    ];
+
+    /* =========================================================================
+       8 CANONICAL QUERY ARCHETYPES
+       ========================================================================= */
+    const PRESETS = [
+      {
+        title: "1. Filter Sieve (WHERE)",
+        sql: "SELECT name, salary, dept_id FROM employees WHERE salary > 50000 ORDER BY salary DESC LIMIT 4;"
+      },
+      {
+        title: "2. Hash Inner Join",
+        sql: "SELECT e.name, d.dept_name, e.salary FROM employees e JOIN departments d ON e.dept_id = d.id;"
+      },
+      {
+        title: "3. Group By & Aggregate",
+        sql: "SELECT dept_id, COUNT(*), AVG(salary) FROM employees GROUP BY dept_id;"
+      },
+      {
+        title: "4. Having Quality Gate",
+        sql: "SELECT dept_id, COUNT(*), SUM(salary) FROM employees GROUP BY dept_id HAVING COUNT(*) >= 2;"
+      },
+      {
+        title: "5. Window Running Total",
+        sql: "SELECT name, salary, SUM(salary) OVER (ORDER BY salary) AS running_total FROM employees;"
+      },
+      {
+        title: "6. Order By & Top-N Limit",
+        sql: "SELECT name, salary FROM employees ORDER BY salary DESC LIMIT 3;"
+      },
+      {
+        title: "7. Complete Enterprise Query",
+        sql: "SELECT e.dept_id, COUNT(*), AVG(e.salary) FROM employees e JOIN departments d ON e.dept_id = d.id WHERE e.salary >= 40000 GROUP BY e.dept_id HAVING AVG(e.salary) > 60000 ORDER BY AVG(e.salary) DESC LIMIT 2;"
+      },
+      {
+        title: "8. Left Anti-Join (IS NULL)",
+        sql: "SELECT e.name, e.dept_id FROM employees e LEFT JOIN departments d ON e.dept_id = d.id WHERE d.id IS NULL;"
+      }
+    ];
+
+    /* =========================================================================
+       PIPELINE EXECUTION PHASES (SQL LOGICAL EXECUTION ORDER)
+       ========================================================================= */
+    let currentStationIndex = 0;
+    let isPlaying = false;
+    let playTimer = null;
+    let stepCadence = 1000;
+    let activeParsed = null;
+    let pipelineStages = [];
+
+    function selectPreset(idx) {
+      document.querySelectorAll('.preset-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+      document.getElementById('queryInput').value = PRESETS[idx].sql;
+      assemblePipeline();
+    }
+
+    function parseSql(sql) {
+      const clean = sql.trim().replace(/;$/, '');
+      const hasJoin = /JOIN\s+([a-zA-Z_]+)/i.test(clean);
+      const isLeft = /LEFT\s+JOIN/i.test(clean);
+      const hasWhere = /\bWHERE\b/i.test(clean);
+      const hasGroupBy = /\bGROUP\s+BY\b/i.test(clean);
+      const hasHaving = /\bHAVING\b/i.test(clean);
+      const hasWindow = /\bOVER\s*\(/i.test(clean);
+      const hasOrderBy = /\bORDER\s+BY\b/i.test(clean);
+      const hasLimit = /\bLIMIT\s+(\d+)/i.test(clean);
+
+      let whereExpr = '';
+      if (hasWhere) {
+        const match = clean.match(/WHERE\s+(.*?)(?=\s+GROUP\s+BY|\s+HAVING|\s+ORDER\s+BY|\s+LIMIT|$)/i);
+        if (match) whereExpr = match[1].trim();
+      }
+
+      let groupByCol = 'dept_id';
+      if (hasGroupBy) {
+        const match = clean.match(/GROUP\s+BY\s+(.*?)(?=\s+HAVING|\s+ORDER\s+BY|\s+LIMIT|$)/i);
+        if (match) groupByCol = match[1].trim().split(',')[0].trim().replace(/^e\./, '');
+      }
+
+      let havingExpr = '';
+      if (hasHaving) {
+        const match = clean.match(/HAVING\s+(.*?)(?=\s+ORDER\s+BY|\s+LIMIT|$)/i);
+        if (match) havingExpr = match[1].trim();
+      }
+
+      let limitN = 999;
+      if (hasLimit) {
+        const match = clean.match(/LIMIT\s+(\d+)/i);
+        if (match) limitN = parseInt(match[1], 10);
+      }
+
+      return {
+        raw: sql,
+        hasJoin,
+        isLeft,
+        hasWhere,
+        whereExpr,
+        hasGroupBy,
+        groupByCol,
+        hasHaving,
+        havingExpr,
+        hasWindow,
+        hasOrderBy,
+        hasLimit,
+        limitN
+      };
+    }
+
+    function assemblePipeline() {
+      const sql = document.getElementById('queryInput').value;
+      activeParsed = parseSql(sql);
+      buildPipelineStages();
+      renderPipelineNav();
+      currentStationIndex = 0;
+      updateStageView();
+    }
+
+    function buildPipelineStages() {
+      const q = activeParsed;
+      pipelineStages = [];
+
+      // 1. FROM (Ingestion)
+      let fromRows = RAW_EMPLOYEES.map(e => ({
+        ...e,
+        _status: 'passed',
+        _verdict: 'Loaded',
+        _reason: 'Read from physical storage buffer'
+      }));
+      pipelineStages.push({
+        id: 'stage_from',
+        orderNum: 1,
+        title: 'FROM employees',
+        icon: '📥',
+        clause: 'FROM employees',
+        desc: 'Scan storage blocks and ingest raw tuples into memory buffers.',
+        active: true,
+        rows: fromRows
+      });
+
+      // 2. JOIN
+      let joinRows = [];
+      if (q.hasJoin) {
+        fromRows.forEach(e => {
+          const dept = RAW_DEPARTMENTS.find(d => d.id === e.dept_id);
+          if (dept) {
+            joinRows.push({
+              ...e,
+              dept_name: dept.dept_name,
+              budget: dept.budget,
+              _status: 'passed',
+              _verdict: 'Matched',
+              _reason: `Key ${e.dept_id} == ${dept.id}`
+            });
+          } else if (q.isLeft) {
+            joinRows.push({
+              ...e,
+              dept_name: null,
+              budget: null,
+              _status: 'passed',
+              _verdict: 'NULL Padded',
+              _reason: `No dept match; LEFT JOIN preserves row with NULLs`
+            });
+          } else {
+            joinRows.push({
+              ...e,
+              dept_name: 'NONE',
+              _status: 'rejected',
+              _verdict: 'Dropped',
+              _reason: `No matching department for dept_id '${e.dept_id}'`
+            });
+          }
+        });
+      } else {
+        joinRows = fromRows.map(r => ({ ...r, _reason: 'Direct pass (no JOIN in query)' }));
+      }
+
+      pipelineStages.push({
+        id: 'stage_join',
+        orderNum: 2,
+        title: q.hasJoin ? 'JOIN departments' : 'JOIN (Bypassed)',
+        icon: '🔗',
+        clause: q.hasJoin ? 'JOIN departments ON employees.dept_id = departments.id' : '/* No JOIN required */',
+        desc: q.hasJoin ? 'Probe hash table on join keys. Match or drop records based on relational integrity.' : 'No secondary table joined; tuples bypass directly to next station.',
+        active: q.hasJoin,
+        rows: joinRows
+      });
+
+      // 3. WHERE Filter
+      const prevJoinRows = joinRows.filter(r => r._status !== 'rejected');
+      let whereRows = [];
+      prevJoinRows.forEach(r => {
+        let pass = true;
+        let testLog = '';
+        if (q.hasWhere) {
+          if (/salary\s*>\s*(\d+)/i.test(q.whereExpr)) {
+            const v = parseInt(q.whereExpr.match(/salary\s*>\s*(\d+)/i)[1], 10);
+            pass = r.salary > v;
+            testLog = `$${r.salary.toLocaleString()} > $${v.toLocaleString()} is ${pass ? 'TRUE' : 'FALSE'}`;
+          } else if (/salary\s*>=\s*(\d+)/i.test(q.whereExpr)) {
+            const v = parseInt(q.whereExpr.match(/salary\s*>=\s*(\d+)/i)[1], 10);
+            pass = r.salary >= v;
+            testLog = `$${r.salary.toLocaleString()} >= $${v.toLocaleString()} is ${pass ? 'TRUE' : 'FALSE'}`;
+          } else if (/IS\s+NULL/i.test(q.whereExpr)) {
+            pass = r.dept_name === null;
+            testLog = `dept_name is ${r.dept_name === null ? 'NULL (TRUE)' : 'NOT NULL (FALSE)'}`;
+          }
+        } else {
+          testLog = 'No WHERE clause: all rows pass unconditionally';
+        }
+
+        whereRows.push({
+          ...r,
+          _status: pass ? 'passed' : 'rejected',
+          _verdict: pass ? 'Passed' : 'Sifted Out',
+          _reason: testLog
+        });
+      });
+
+      pipelineStages.push({
+        id: 'stage_where',
+        orderNum: 3,
+        title: q.hasWhere ? `WHERE ${q.whereExpr}` : 'WHERE (Bypassed)',
+        icon: '🔍',
+        clause: q.hasWhere ? `WHERE ${q.whereExpr}` : '/* No WHERE filter applied */',
+        desc: q.hasWhere ? 'Evaluate row-level Boolean predicates. Non-matching rows fall through the scrap chute.' : 'All candidate rows flow freely to the grouping station.',
+        active: q.hasWhere,
+        rows: whereRows
+      });
+
+      // 4. GROUP BY & Aggregates
+      const prevWhereRows = whereRows.filter(r => r._status !== 'rejected');
+      let groupRows = [];
+      if (q.hasGroupBy) {
+        const groups = {};
+        prevWhereRows.forEach(r => {
+          const k = r[q.groupByCol] || 'Other';
+          if (!groups[k]) groups[k] = [];
+          groups[k].push(r);
+        });
+
+        Object.keys(groups).forEach(k => {
+          const list = groups[k];
+          const count = list.length;
+          const sumSal = list.reduce((a, b) => a + b.salary, 0);
+          const avgSal = Math.round(sumSal / count);
+          groupRows.push({
+            name: `Group: ${k}`,
+            dept_id: k,
+            count: count,
+            avg_salary: avgSal,
+            sum_salary: sumSal,
+            _status: 'passed',
+            _verdict: `${count} Rows Bundled`,
+            _reason: `Collapsed ${count} tuples into 1 summary group ingot for ${k}`
+          });
+        });
+      } else {
+        groupRows = prevWhereRows.map(r => ({ ...r, _reason: 'No GROUP BY: rows remain individual tuples' }));
+      }
+
+      pipelineStages.push({
+        id: 'stage_group',
+        orderNum: 4,
+        title: q.hasGroupBy ? `GROUP BY ${q.groupByCol}` : 'GROUP BY (Bypassed)',
+        icon: '🗂️',
+        clause: q.hasGroupBy ? `GROUP BY ${q.groupByCol}` : '/* No GROUP BY aggregation */',
+        desc: q.hasGroupBy ? 'Partition rows into rotary accumulator cylinders and compress into consolidated summary ingots.' : 'Tuples remain distinct rows without rollup compression.',
+        active: q.hasGroupBy,
+        rows: groupRows
+      });
+
+      // 5. HAVING
+      let havingRows = [];
+      if (q.hasHaving && q.hasGroupBy) {
+        groupRows.forEach(g => {
+          let pass = true;
+          let testLog = '';
+          if (/COUNT\s*\(\s*\*\s*\)\s*>=\s*(\d+)/i.test(q.havingExpr)) {
+            const n = parseInt(q.havingExpr.match(/COUNT\s*\(\s*\*\s*\)\s*>=\s*(\d+)/i)[1], 10);
+            pass = g.count >= n;
+            testLog = `Count ${g.count} >= ${n} is ${pass ? 'TRUE' : 'FALSE'}`;
+          } else if (/AVG.*?>\s*(\d+)/i.test(q.havingExpr)) {
+            const v = parseInt(q.havingExpr.match(/AVG.*?>\s*(\d+)/i)[1], 10);
+            pass = g.avg_salary > v;
+            testLog = `AVG salary $${g.avg_salary.toLocaleString()} > $${v.toLocaleString()} is ${pass ? 'TRUE' : 'FALSE'}`;
+          }
+
+          havingRows.push({
+            ...g,
+            _status: pass ? 'passed' : 'rejected',
+            _verdict: pass ? 'Qualified' : 'Underweight',
+            _reason: testLog
+          });
+        });
+      } else {
+        havingRows = groupRows.map(r => ({ ...r, _reason: 'No HAVING clause applied' }));
+      }
+
+      pipelineStages.push({
+        id: 'stage_having',
+        orderNum: 5,
+        title: q.hasHaving ? `HAVING ${q.havingExpr}` : 'HAVING (Bypassed)',
+        icon: '⚖️',
+        clause: q.hasHaving ? `HAVING ${q.havingExpr}` : '/* No HAVING post-aggregation filter */',
+        desc: q.hasHaving ? 'Weigh aggregate group ingots on the balance scale. Underweight groups get dumped.' : 'All groups qualify for projection and ordering.',
+        active: q.hasHaving,
+        rows: havingRows
+      });
+
+      // 6. WINDOW OVER()
+      const prevHavingRows = havingRows.filter(r => r._status !== 'rejected');
+      let windowRows = [];
+      if (q.hasWindow) {
+        let runningTotal = 0;
+        const sorted = [...prevHavingRows].sort((a,b) => (a.salary || 0) - (b.salary || 0));
+        sorted.forEach((r, idx) => {
+          runningTotal += (r.salary || 0);
+          windowRows.push({
+            ...r,
+            running_total: runningTotal,
+            _status: 'passed',
+            _verdict: `Frame #${idx+1}`,
+            _reason: `Sliding window computed cumulative sum: $${runningTotal.toLocaleString()}`
+          });
+        });
+      } else {
+        windowRows = prevHavingRows.map(r => ({ ...r, _reason: 'Direct pass (no window functions)' }));
+      }
+
+      pipelineStages.push({
+        id: 'stage_window',
+        orderNum: 6,
+        title: q.hasWindow ? 'WINDOW OVER()' : 'WINDOW (Bypassed)',
+        icon: '🪟',
+        clause: q.hasWindow ? 'SUM(salary) OVER (ORDER BY salary)' : '/* No Window clause */',
+        desc: q.hasWindow ? 'Sliding optical aperture frame travels along rows to compute running metrics without collapsing tuples.' : 'No window frames computed.',
+        active: q.hasWindow,
+        rows: windowRows
+      });
+
+      // 7. ORDER BY & LIMIT
+      let orderRows = [...windowRows];
+      if (q.hasOrderBy) {
+        orderRows.sort((a, b) => {
+          const valA = a.salary || a.avg_salary || 0;
+          const valB = b.salary || b.avg_salary || 0;
+          return valB - valA; // DESC
+        });
+      }
+
+      let slicedRows = [];
+      orderRows.forEach((r, idx) => {
+        const pass = idx < q.limitN;
+        slicedRows.push({
+          ...r,
+          _status: pass ? 'passed' : 'rejected',
+          _verdict: pass ? `Rank #${idx+1}` : `Exceeded Limit (${idx+1} > ${q.limitN})`,
+          _reason: pass ? `Within LIMIT ${q.limitN}` : `Guillotine dropped at N=${q.limitN}`
+        });
+      });
+
+      pipelineStages.push({
+        id: 'stage_order',
+        orderNum: 7,
+        title: q.hasLimit ? `ORDER & LIMIT ${q.limitN}` : (q.hasOrderBy ? 'ORDER BY DESC' : 'ORDER (Bypassed)'),
+        icon: '📶',
+        clause: q.hasOrderBy ? (q.hasLimit ? `ORDER BY ... LIMIT ${q.limitN}` : 'ORDER BY ...') : '/* Natural Order */',
+        desc: 'Escalator reorders rows into height sequence; heavy guillotine drops down to shear off excess records.',
+        active: q.hasOrderBy || q.hasLimit,
+        rows: slicedRows
+      });
+
+      // 8. SELECT (Projection)
+      const finalSurviving = slicedRows.filter(r => r._status !== 'rejected');
+      pipelineStages.push({
+        id: 'stage_select',
+        orderNum: 8,
+        title: 'SELECT Columns',
+        icon: '🏷️',
+        clause: 'SELECT final attributes',
+        desc: 'Overhead stamping press punches out unselected columns and deposits pristine cards into the Output Tray.',
+        active: true,
+        rows: finalSurviving.map(r => ({
+          ...r,
+          _verdict: 'Completed Tuple',
+          _reason: 'Polished, projected, and delivered to consumer'
+        }))
+      });
+    }
+
+    /* =========================================================================
+       RENDERERS
+       ========================================================================= */
+    function renderPipelineNav() {
+      const nav = document.getElementById('pipelineNav');
+      nav.innerHTML = pipelineStages.map((s, idx) => `
+        <button class="pipe-step-btn ${s.active ? 'active-stage' : ''} ${idx === currentStationIndex ? 'current' : ''}" onclick="jumpToStation(${idx})">
+          <div class="step-order">
+            <span>STEP 0${s.orderNum}</span>
+            <span>${s.active ? '⚡' : '—'}</span>
+          </div>
+          <div class="step-name">${s.icon} ${s.title.split(' ')[0]}</div>
+          <div class="step-badge">${s.active ? s.title : 'Bypassed'}</div>
+        </button>
+      `).join('');
+    }
+
+    function jumpToStation(idx) {
+      currentStationIndex = idx;
+      updateStageView();
+    }
+
+    function updateStageView() {
+      const stage = pipelineStages[currentStationIndex];
+      renderPipelineNav();
+
+      // Spotlight Header
+      document.getElementById('stageIcon').textContent = stage.icon;
+      document.getElementById('stageTitle').textContent = `Step ${stage.orderNum}: ${stage.title}`;
+      document.getElementById('stageDesc').textContent = stage.desc;
+
+      const passedCount = stage.rows.filter(r => r._status !== 'rejected').length;
+      document.getElementById('stageStats').textContent = `${passedCount} of ${stage.rows.length} Passed`;
+
+      // Stream Labels
+      document.getElementById('streamCategoryLabel').textContent = `Station 0${stage.orderNum} Work Area (${stage.title})`;
+      document.getElementById('streamCountLabel').textContent = `${stage.rows.length} Total Tuples at Station`;
+
+      // Render Cassettes
+      const stream = document.getElementById('cassetteStream');
+      stream.innerHTML = stage.rows.map(r => {
+        const isPassed = r._status === 'passed';
+        const isRejected = r._status === 'rejected';
+        const verdictCls = isPassed ? 'pass' : (isRejected ? 'fail' : 'pending');
+
+        return `
+          <div class="row-cassette ${isPassed ? 'status-passed' : (isRejected ? 'status-rejected' : 'status-active')}">
+            <div class="cassette-top">
+              <span class="cassette-id">#${r.emp_id || 'GRP'}</span>
+              <span class="cassette-verdict ${verdictCls}">${r._verdict}</span>
+            </div>
+            <div class="cassette-main">${r.name || 'Group Aggregate'}</div>
+            <div class="cassette-attrs">
+              ${r.dept_id ? `<span class="attr-pill">Dept: <strong>${r.dept_id}</strong></span>` : ''}
+              ${r.salary ? `<span class="attr-pill highlight">Sal: <strong>$${r.salary.toLocaleString()}</strong></span>` : ''}
+              ${r.dept_name ? `<span class="attr-pill">Org: <strong>${r.dept_name}</strong></span>` : ''}
+              ${r.count ? `<span class="attr-pill highlight">Count: <strong>${r.count}</strong></span>` : ''}
+              ${r.avg_salary ? `<span class="attr-pill highlight">Avg: <strong>$${r.avg_salary.toLocaleString()}</strong></span>` : ''}
+              ${r.running_total ? `<span class="attr-pill highlight">CumSum: <strong>$${r.running_total.toLocaleString()}</strong></span>` : ''}
+            </div>
+            <div style="font-size: 10.5px; color: var(--ink-muted); margin-top: 4px; font-family: var(--font-mono); border-top: 1px dotted var(--border-subtle); padding-top: 4px;">
+              ${r._reason}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Microscope
+      document.getElementById('currentClauseTag').textContent = `STEP 0${stage.orderNum} OF 08`;
+      document.getElementById('microscopeClause').textContent = stage.clause;
+      document.getElementById('microscopeExplanation').innerHTML = `
+        <strong>Mechanical Station Action:</strong><br/>
+        ${stage.desc}<br/><br/>
+        <strong>Telemetry:</strong> ${passedCount} records successfully cleared this phase. ${stage.rows.length - passedCount} records were shunted to scrap or rejected by relational rules.
+      `;
+
+      // Update Final Table
+      updateFinalOutputTable();
+    }
+
+    function updateFinalOutputTable() {
+      const finalStage = pipelineStages[pipelineStages.length - 1];
+      const rows = finalStage.rows;
+      const thead = document.getElementById('resultThead');
+      const tbody = document.getElementById('resultTbody');
+
+      document.getElementById('outputTupleCount').textContent = `${rows.length} Tuples Prepared`;
+
+      if (rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #b91c1c; padding: 20px;">0 tuples survived all quality gates. Result is an empty set.</td></tr>`;
+        return;
+      }
+
+      const keys = Object.keys(rows[0]).filter(k => !k.startsWith('_'));
+      thead.innerHTML = `<tr><th>#</th>${keys.map(k => `<th>${k.toUpperCase()}</th>`).join('')}</tr>`;
+
+      tbody.innerHTML = rows.map((r, i) => `
+        <tr>
+          <td><strong>${i + 1}</strong></td>
+          ${keys.map(k => `<td>${r[k] !== null ? (typeof r[k] === 'number' && k.includes('sal') ? '$' + r[k].toLocaleString() : r[k]) : '<em style="color:#ef4444;">NULL</em>'}</td>`).join('')}
+        </tr>
+      `).join('');
+    }
+
+    /* =========================================================================
+       PLAYBACK CONTROLS
+       ========================================================================= */
+    function togglePlayPause() {
+      isPlaying = !isPlaying;
+      const icon = document.getElementById('playIcon');
+      const text = document.getElementById('playText');
+      const btn = document.getElementById('btnPlayPause');
+
+      if (isPlaying) {
+        icon.textContent = '⏸';
+        text.textContent = 'Pause';
+        btn.classList.add('primary');
+        startLoop();
+      } else {
+        icon.textContent = '▶';
+        text.textContent = 'Run Pipeline';
+        clearInterval(playTimer);
+      }
+    }
+
+    function startLoop() {
+      clearInterval(playTimer);
+      playTimer = setInterval(() => {
+        if (currentStationIndex < pipelineStages.length - 1) {
+          currentStationIndex++;
+          updateStageView();
+        } else {
+          togglePlayPause();
+        }
+      }, stepCadence);
+    }
+
+    function stepForward() {
+      if (currentStationIndex < pipelineStages.length - 1) {
+        currentStationIndex++;
+      } else {
+        currentStationIndex = 0;
+      }
+      updateStageView();
+    }
+
+    function resetPipeline() {
+      currentStationIndex = 0;
+      updateStageView();
+    }
+
+    function changeSpeed(val) {
+      stepCadence = parseInt(val, 10);
+      if (isPlaying) startLoop();
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      selectPreset(0);
+    });
+  </script>
+</body>
+</html>

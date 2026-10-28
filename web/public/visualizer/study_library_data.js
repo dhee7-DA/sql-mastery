@@ -1,0 +1,789 @@
+// =============================================================================
+// SQL MASTERY PLATFORM — COMPREHENSIVE STUDY LIBRARY & KNOWLEDGE REPOSITORY
+// Exhaustive, textbook-grade study materials and Modern Dark-Glass visual diagrams
+// directly aligned with the 1,200 MCQs Technical Vault & 1,040 Case Studies.
+// =============================================================================
+
+window.STUDY_LIBRARY = [
+  {
+    "id": "sec_execution_order",
+    "pillarId": "pillar1",
+    "icon": "⚡",
+    "title": "01. Physical Execution Order & Query Lifecycle Engine",
+    "badge": "Core Architecture",
+    "badgeClass": "pill-from",
+    "readTime": "12 min read",
+    "summary": "Why SQL queries are written declaratively in lexical order (SELECT ... FROM) but executed by the relational engine in a completely different physical sequence.",
+    "svgDiagram": "\n      <svg viewBox=\"0 0 860 270\" width=\"100%\" height=\"100%\" style=\"min-height: 220px; max-height: 320px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n        <rect width=\"860\" height=\"270\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <!-- Header Banner -->\n        <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n          PHYSICAL EXECUTION PIPELINE (LEXICAL SELECT RUNS 5TH, NOT 1ST!)\n        </text>\n\n        <!-- Stage Boxes: 8 Discrete Physical Steps -->\n        <!-- Step 1: FROM & JOIN -->\n        <rect x=\"20\" y=\"70\" width=\"90\" height=\"90\" fill=\"rgba(56, 189, 248, 0.07)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"65\" y=\"93\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\" text-anchor=\"middle\">01. FROM</text>\n        <text x=\"65\" y=\"112\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"800\" text-anchor=\"middle\">&amp; JOINs</text>\n        <rect x=\"28\" y=\"125\" width=\"74\" height=\"26\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <text x=\"65\" y=\"142\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">RAM Table Bind</text>\n\n        <!-- Arrow 1 -->\n        <path d=\"M 115 115 L 125 115\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\" stroke-linecap=\"round\"/>\n\n        <!-- Step 2: WHERE -->\n        <rect x=\"127\" y=\"70\" width=\"90\" height=\"90\" fill=\"rgba(244, 63, 94, 0.07)\" rx=\"8\" stroke=\"rgba(244, 63, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"172\" y=\"93\" fill=\"#ffffff\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\" text-anchor=\"middle\">02. WHERE</text>\n        <text x=\"172\" y=\"112\" fill=\"#ffffff\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"800\" text-anchor=\"middle\">Row Filter</text>\n        <rect x=\"135\" y=\"125\" width=\"74\" height=\"26\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <text x=\"172\" y=\"142\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">Discard Fails</text>\n\n        <!-- Arrow 2 -->\n        <path d=\"M 222 115 L 232 115\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\" stroke-linecap=\"round\"/>\n\n        <!-- Step 3: GROUP BY -->\n        <rect x=\"234\" y=\"70\" width=\"90\" height=\"90\" fill=\"rgba(251, 191, 36, 0.07)\" rx=\"8\" stroke=\"rgba(251, 191, 36, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"279\" y=\"93\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"900\" text-anchor=\"middle\">03. GROUP</text>\n        <text x=\"279\" y=\"112\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"800\" text-anchor=\"middle\">Hash Buckets</text>\n        <rect x=\"242\" y=\"125\" width=\"74\" height=\"26\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <text x=\"279\" y=\"142\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">Partition Rows</text>\n\n        <!-- Arrow 3 -->\n        <path d=\"M 329 115 L 339 115\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\" stroke-linecap=\"round\"/>\n\n        <!-- Step 4: HAVING -->\n        <rect x=\"341\" y=\"70\" width=\"90\" height=\"90\" fill=\"rgba(244, 114, 182, 0.07)\" rx=\"8\" stroke=\"rgba(244, 114, 182, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"386\" y=\"93\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\" text-anchor=\"middle\">04. HAVING</text>\n        <text x=\"386\" y=\"112\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"800\" text-anchor=\"middle\">Group Filter</text>\n        <rect x=\"349\" y=\"125\" width=\"74\" height=\"26\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <text x=\"386\" y=\"142\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">Filter Aggregates</text>\n\n        <!-- Arrow 4 -->\n        <path d=\"M 436 115 L 446 115\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\" stroke-linecap=\"round\"/>\n\n        <!-- Step 5: SELECT -->\n        <rect x=\"448\" y=\"70\" width=\"90\" height=\"90\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"8\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"493\" y=\"93\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\" text-anchor=\"middle\">05. SELECT</text>\n        <text x=\"493\" y=\"112\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"800\" text-anchor=\"middle\">Projections</text>\n        <rect x=\"456\" y=\"125\" width=\"74\" height=\"26\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <text x=\"493\" y=\"142\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">Assign Aliases</text>\n\n        <!-- Arrow 5 -->\n        <path d=\"M 543 115 L 553 115\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\" stroke-linecap=\"round\"/>\n\n        <!-- Step 6: DISTINCT -->\n        <rect x=\"555\" y=\"70\" width=\"90\" height=\"90\" fill=\"rgba(192, 132, 252, 0.07)\" rx=\"8\" stroke=\"rgba(192, 132, 252, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"600\" y=\"93\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"900\" text-anchor=\"middle\">06. DISTINCT</text>\n        <text x=\"600\" y=\"112\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"800\" text-anchor=\"middle\">Deduplicate</text>\n        <rect x=\"563\" y=\"125\" width=\"74\" height=\"26\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <text x=\"600\" y=\"142\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">Unique Tuples</text>\n\n        <!-- Arrow 6 -->\n        <path d=\"M 650 115 L 660 115\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\" stroke-linecap=\"round\"/>\n\n        <!-- Step 7: ORDER BY -->\n        <rect x=\"662\" y=\"70\" width=\"90\" height=\"90\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"8\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"707\" y=\"93\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\" text-anchor=\"middle\">07. ORDER BY</text>\n        <text x=\"707\" y=\"112\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"800\" text-anchor=\"middle\">Sort Engine</text>\n        <rect x=\"670\" y=\"125\" width=\"74\" height=\"26\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <text x=\"707\" y=\"142\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">Priority Heap</text>\n\n        <!-- Arrow 7 -->\n        <path d=\"M 757 115 L 767 115\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\" stroke-linecap=\"round\"/>\n\n        <!-- Step 8: LIMIT -->\n        <rect x=\"769\" y=\"70\" width=\"68\" height=\"90\" fill=\"rgba(56, 189, 248, 0.07)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"803\" y=\"93\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"900\" text-anchor=\"middle\">08. LIMIT</text>\n        <text x=\"803\" y=\"112\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"800\" text-anchor=\"middle\">Truncate</text>\n        <rect x=\"774\" y=\"125\" width=\"58\" height=\"26\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <text x=\"803\" y=\"142\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">Top Rows</text>\n\n        <!-- Bottom Callout Strips (The Critical Traps) -->\n        <rect x=\"20\" y=\"176\" width=\"394\" height=\"74\" fill=\"rgba(244, 63, 94, 0.07)\" rx=\"10\" stroke=\"rgba(244, 63, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"35\" y=\"198\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\">\u26a0\ufe0f WHY ALIASES FAIL IN WHERE:</text>\n        <text x=\"35\" y=\"217\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">WHERE runs at Step 02, while SELECT aliases are created</text>\n        <text x=\"35\" y=\"234\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">at Step 05. The column alias does not physically exist yet!</text>\n        <rect x=\"432\" y=\"176\" width=\"407\" height=\"74\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"10\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"447\" y=\"198\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\">\ud83d\udca1 WHY ALIASES WORK IN ORDER BY:</text>\n        <text x=\"447\" y=\"217\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">ORDER BY executes at Step 07, AFTER Step 05 has projected</text>\n        <text x=\"447\" y=\"234\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">all columns and registered your custom aliases in memory!</text>\n      </svg>\n    ",
+    "sections": [
+      {
+        "heading": "1. Declarative Syntax vs. Imperative Storage Physics",
+        "content": "In standard declarative SQL, queries are written in **Lexical Order**:\n```sql\nSELECT customer_id, COUNT(*) AS orders_count\nFROM Orders\nWHERE order_date >= '2026-01-01'\nGROUP BY customer_id\nHAVING COUNT(*) >= 5\nORDER BY orders_count DESC\nLIMIT 10;\n```\nHowever, the relational storage engine cannot read columns before it knows which tables to scan! Under the hood, MySQL InnoDB and PostgreSQL translate the query into an **Abstract Syntax Tree (AST)** and execute it in **Strict Physical Order**:\n1. **FROM & JOINs**: Binds the target tables from disk storage pages into virtual working memory.\n2. **WHERE**: Evaluates row-by-row boolean predicates, discarding failing records before any aggregation overhead.\n3. **GROUP BY**: Hashes the surviving rows into discrete aggregation buckets in temporary RAM buffers.\n4. **HAVING**: Filters group summary buckets based on aggregate function results.\n5. **SELECT**: Evaluates mathematical projections and registers column aliases.\n6. **DISTINCT**: Hashes or sorts output tuples to remove duplicate rows.\n7. **ORDER BY**: Sorts the final stream using an in-memory priority queue heap or multi-way merge filesort.\n8. **LIMIT / OFFSET**: Truncates the result stream to the requested row count."
+      },
+      {
+        "heading": "2. The Alias Scope Fence (Interview Trap #1)",
+        "content": "A universal senior SQL interview question is: *\"Why does `WHERE total_price > 100` fail with `Unknown column 'total_price'` if `total_price` was declared in `SELECT`?\"*\n\nThe answer lies entirely in physical sequencing:\n- At Step 2 (**WHERE**), the query engine is evaluating raw rows streaming from disk.\n- Step 5 (**SELECT**) has not yet executed, meaning the alias `total_price` does not exist in the engine's symbol table!\n- Conversely, at Step 7 (**ORDER BY**), Step 5 has completed. Therefore, `ORDER BY total_price DESC` works seamlessly."
+      },
+      {
+        "heading": "3. WHERE vs. HAVING: Physical Filter Boundaries",
+        "content": "Understanding the physical execution boundary between Step 2 and Step 4 is essential for query performance:\n- **WHERE filters base rows BEFORE grouping**: It operates on individual records. Running `WHERE salary > 50000` discards ineligible rows immediately, dramatically reducing the memory required by `GROUP BY`.\n- **HAVING filters groups AFTER aggregation**: It operates on summary buckets. `HAVING COUNT(*) > 5` checks the computed aggregate accumulator.\n- **Rule of Thumb**: Never filter raw unaggregated columns in `HAVING`. Always push row-level predicates into `WHERE` so the engine can utilize B-Tree indexes!"
+      },
+      {
+        "heading": "4. Memory Buffers & Disk Spill Mechanics",
+        "content": "When queries exceed available RAM, the physical engine alters its strategy:\n- **tmp_table_size & max_heap_table_size**: Governs in-memory temporary tables created during `GROUP BY` and `DISTINCT`. If the aggregate hash table exceeds this limit, MySQL converts the table to an on-disk InnoDB temporary table, incurring heavy disk I/O.\n- **sort_buffer_size**: Used by `ORDER BY`. When sorting small sets with `LIMIT N`, MySQL uses an in-memory Priority Queue. When the dataset exceeds this buffer, it performs a disk-based multi-way merge sort."
+      }
+    ],
+    "interviewGotchas": [
+      {
+        "title": "The Alias Collision Trap",
+        "trap": "Attempting to use a SELECT alias in WHERE or HAVING (in standard ANSI SQL) produces syntax errors. In MySQL, aliases are permitted in HAVING due to an engine extension, but this breaks portability to Postgres, Oracle, and SQL Server."
+      },
+      {
+        "title": "The WHERE Aggregate Crash",
+        "trap": "Writing WHERE COUNT(*) > 1 throws 'Invalid use of group function' because COUNT(*) requires groups that do not physically exist until Step 3!"
+      }
+    ]
+  },
+  {
+    "id": "sec_filtering",
+    "pillarId": "pillar2",
+    "icon": "🎯",
+    "title": "02. Filtering, Predicates & Three-Valued Logic (3VL)",
+    "badge": "Predicate Engine",
+    "badgeClass": "pill-where",
+    "readTime": "11 min read",
+    "summary": "Master SQL Three-Valued Logic (TRUE, FALSE, UNKNOWN), the deadly NOT IN (NULL) trap, and SARGable B-Tree index optimization.",
+    "svgDiagram": "\n      <svg viewBox=\"0 0 860 280\" width=\"100%\" height=\"100%\" style=\"min-height: 230px; max-height: 330px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n        <rect width=\"860\" height=\"280\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <!-- Header -->\n        <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n          THREE-VALUED LOGIC (3VL) &amp; SARGABLE B-TREE INDEX SEEK PRESERVATION\n        </text>\n\n        <!-- Left Block: 3VL Truth Matrix -->\n        <rect x=\"20\" y=\"65\" width=\"395\" height=\"192\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"10\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"35\" y=\"90\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"12\" font-weight=\"900\">\ud83e\udde0 3-VALUED LOGIC TRUTH MATRIX</text>\n\n        <!-- Table Header -->\n        <rect x=\"35\" y=\"102\" width=\"365\" height=\"22\" fill=\"rgba(0, 0, 0, 0.6)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <text x=\"50\" y=\"117\" fill=\"#ffffff\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"800\">Expression</text>\n        <text x=\"210\" y=\"117\" fill=\"#ffffff\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"800\">Evaluates To</text>\n        <text x=\"310\" y=\"117\" fill=\"#ffffff\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"800\">WHERE Keeps?</text>\n\n        <!-- Row 1 -->\n        <text x=\"50\" y=\"138\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">col = NULL</text>\n        <text x=\"210\" y=\"138\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">UNKNOWN</text>\n        <text x=\"320\" y=\"138\" fill=\"#fb7185\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"900\">\u274c NO (Dropped)</text>\n\n        <!-- Row 2 -->\n        <text x=\"50\" y=\"158\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">col IS NULL</text>\n        <text x=\"210\" y=\"158\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">TRUE / FALSE</text>\n        <text x=\"320\" y=\"158\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"900\">\u2705 YES (If Null)</text>\n\n        <!-- Row 3 -->\n        <text x=\"50\" y=\"178\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">TRUE AND UNKNOWN</text>\n        <text x=\"210\" y=\"178\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">UNKNOWN</text>\n        <text x=\"320\" y=\"178\" fill=\"#fb7185\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"900\">\u274c NO</text>\n\n        <!-- Row 4 -->\n        <text x=\"50\" y=\"198\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">FALSE AND UNKNOWN</text>\n        <text x=\"210\" y=\"198\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">FALSE</text>\n        <text x=\"320\" y=\"198\" fill=\"#fb7185\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"900\">\u274c NO</text>\n\n        <!-- Warning Pill -->\n        <rect x=\"35\" y=\"212\" width=\"365\" height=\"35\" fill=\"#fee2e2\" rx=\"6\" stroke=\"#b91c1c\" stroke-width=\"1.5\"/>\n        <text x=\"45\" y=\"227\" fill=\"#fb7185\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"800\">\u26a0\ufe0f DEADLY TRAP: NOT IN (1, 2, NULL)</text>\n        <text x=\"45\" y=\"240\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"8.5\" font-weight=\"700\">Any NULL in NOT IN makes entire predicate UNKNOWN -> 0 rows returned!</text>\n\n        <!-- Right Block: SARGability -->\n        <rect x=\"442\" y=\"65\" width=\"395\" height=\"192\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"10\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"457\" y=\"90\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"12\" font-weight=\"900\">\u26a1 SARGABLE VS NON-SARGABLE PREDICATES</text>\n\n        <!-- Non-SARGable Box -->\n        <rect x=\"457\" y=\"102\" width=\"365\" height=\"66\" fill=\"rgba(244, 63, 94, 0.07)\" rx=\"6\" stroke=\"rgba(244, 63, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"467\" y=\"118\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"900\">\u274c NON-SARGABLE (FULL TABLE SCAN - 1M ROWS READ):</text>\n        <text x=\"467\" y=\"134\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">WHERE UPPER(email) = 'ALICE@CORP.COM'</text>\n        <text x=\"467\" y=\"150\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">WHERE YEAR(created_at) = 2026</text>\n        <text x=\"467\" y=\"162\" fill=\"#fb7185\" font-family=\"system-ui, sans-serif\" font-size=\"8\" font-weight=\"700\">Function wraps column -> Engine cannot use B-Tree index!</text>\n\n        <!-- SARGable Box -->\n        <rect x=\"457\" y=\"178\" width=\"365\" height=\"68\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"6\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"467\" y=\"195\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"900\">\u2705 SARGABLE (INDEX RANGE SEEK - 3 I/O HOPS):</text>\n        <text x=\"467\" y=\"211\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">WHERE email = 'alice@corp.com'</text>\n        <text x=\"467\" y=\"227\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">WHERE created_at >= '2026-01-01' AND created_at &lt; '2027-01-01'</text>\n        <text x=\"467\" y=\"240\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"8\" font-weight=\"700\">Direct column comparison -> High-speed B-Tree index traversal!</text>\n      </svg>\n    ",
+    "sections": [
+      {
+        "heading": "1. Three-Valued Logic (3VL) Foundations",
+        "content": "Standard programming languages operate on two-valued boolean logic (`TRUE` or `FALSE`). Relational SQL operates on **Three-Valued Logic (3VL)**: `TRUE`, `FALSE`, and `UNKNOWN`.\n\n- `NULL` represents missing, unrecorded, or inapplicable information.\n- Comparing any value to `NULL` using equality (`col = NULL` or `col != NULL`) evaluates to `UNKNOWN`.\n- **The Golden WHERE Rule**: A `WHERE` clause only admits rows where the predicate evaluates strictly to `TRUE`. Both `FALSE` and `UNKNOWN` are discarded!"
+      },
+      {
+        "heading": "2. The Fatal NOT IN (NULL) Catastrophe",
+        "content": "Consider this query intended to find employees who manage no departments:\n```sql\nSELECT emp_id, name \nFROM Employees \nWHERE emp_id NOT IN (SELECT manager_id FROM Departments);\n```\nIf **a single row** in `Departments.manager_id` is `NULL`, the query returns **0 rows**, even if there are 10,000 unmanaged employees!\n\n**Why?**\n```sql\nx NOT IN (1, 2, NULL)\n-- Expands to:\n(x != 1) AND (x != 2) AND (x != NULL)\n-- (x != NULL) evaluates to UNKNOWN:\nTRUE AND TRUE AND UNKNOWN -> UNKNOWN\n```\nBecause `UNKNOWN` is rejected by `WHERE`, no rows are ever returned.\n**Production Fix**: Always filter out NULLs in subqueries, or use `NOT EXISTS`:\n```sql\nWHERE NOT EXISTS (\n  SELECT 1 FROM Departments d WHERE d.manager_id = Employees.emp_id\n);\n```"
+      },
+      {
+        "heading": "3. SARGability (Search Argument Able)",
+        "content": "A predicate is **SARGable** if the relational query optimizer can navigate a B-Tree index directly to locate rows in $O(log N)$ time rather than performing a sequential Full Table Scan ($O(N)$).\n\n- **Index Destroyer: Function Wraps**: `WHERE SUBSTRING(phone, 1, 3) = '415'` forces the database to invoke `SUBSTRING()` on every single row in the table.\n- **SARGable Equivalent**: `WHERE phone LIKE '415%'`. Because `LIKE` has a leading constant, MySQL can seek directly into the B-Tree range!\n- **Index Destroyer: Leading Wildcards**: `WHERE name LIKE '%son'` cannot use an index because the root character is unknown."
+      },
+      {
+        "heading": "4. REGEXP & Pattern Matching Syntax",
+        "content": "MySQL 8.0 uses ICU regular expressions via `REGEXP` / `RLIKE`:\n- `^`: Matches start of string (`REGEXP '^[aeiou]'` matches vowels at start).\n- `$`: Matches end of string (`REGEXP '[aeiou]$'` matches vowels at end).\n- `[a-z]`: Character range.\n- `|`: Alternation / OR operator.\n- **Gotcha**: Unlike `LIKE`, `REGEXP` matches anywhere in the string unless bounded by `^` and `$`!"
+      }
+    ],
+    "interviewGotchas": [
+      {
+        "title": "NULL != NULL Paradox",
+        "trap": "In SQL, NULL = NULL evaluates to UNKNOWN. Even two NULL values are not considered equal because one unknown value cannot be proven identical to another unknown value!"
+      },
+      {
+        "title": "NULL in ORDER BY Position",
+        "trap": "In MySQL, NULL values are treated as the lowest possible values and appear first in ASC order. In PostgreSQL, you can explicitly dictate placement using ORDER BY col ASC NULLS LAST."
+      }
+    ]
+  },
+  {
+    "id": "sec_sorting",
+    "pillarId": "pillar3",
+    "icon": "🔢",
+    "title": "03. Sorting, Determinism & Slicing Engine",
+    "badge": "Sort Physics",
+    "badgeClass": "pill-orderby",
+    "readTime": "10 min read",
+    "summary": "Priority queue heaps vs disk-spill filesorts, non-deterministic pagination bugs, and deep OFFSET performance optimization.",
+    "svgDiagram": "\n      <svg viewBox=\"0 0 860 270\" width=\"100%\" height=\"100%\" style=\"min-height: 220px; max-height: 320px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n        <rect width=\"860\" height=\"270\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <!-- Header -->\n        <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n          PHYSICAL SORT ENGINE: IN-MEMORY PRIORITY HEAP VS. DISK-SPILL FILESORT\n        </text>\n\n        <!-- Left Branch: Small Limit Heap -->\n        <rect x=\"20\" y=\"65\" width=\"395\" height=\"182\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"10\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"35\" y=\"90\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"12\" font-weight=\"900\">\u26a1 PATH A: IN-MEMORY PRIORITY HEAP</text>\n        <text x=\"35\" y=\"108\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">Triggered by ORDER BY ... LIMIT N (N fits in sort_buffer)</text>\n\n        <rect x=\"35\" y=\"118\" width=\"365\" height=\"50\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"6\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"45\" y=\"137\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"800\">Priority Queue Size: Exactly N Elements</text>\n        <text x=\"45\" y=\"154\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"9.5\" font-weight=\"700\">Reads rows, maintains top N in RAM, discards excess. Zero disk I/O!</text>\n\n        <rect x=\"35\" y=\"178\" width=\"365\" height=\"56\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"6\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"45\" y=\"196\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">Execution Speed: ~1.2ms (Ultra Fast)</text>\n        <text x=\"45\" y=\"214\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"700\">Complexity: O(M * log N) where M = candidate rows, N = limit count.</text>\n\n        <!-- Right Branch: Large Dataset Filesort -->\n        <rect x=\"442\" y=\"65\" width=\"395\" height=\"182\" fill=\"rgba(244, 63, 94, 0.07)\" rx=\"10\" stroke=\"rgba(244, 63, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"457\" y=\"90\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"12\" font-weight=\"900\">\u26a0\ufe0f PATH B: DISK-SPILL FILESORT MERGE</text>\n        <text x=\"457\" y=\"108\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">Triggered when dataset exceeds sort_buffer_size</text>\n\n        <rect x=\"457\" y=\"118\" width=\"365\" height=\"50\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"6\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"467\" y=\"137\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"10\" font-weight=\"800\">Chunk Spills: Temp Files on Disk Pages</text>\n        <text x=\"467\" y=\"154\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"9.5\" font-weight=\"700\">Sorts chunks in RAM, writes temp files to disk, runs multi-way merge.</text>\n\n        <rect x=\"457\" y=\"178\" width=\"365\" height=\"56\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"6\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"467\" y=\"196\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">Execution Speed: ~480ms (Disk Bottleneck)</text>\n        <text x=\"467\" y=\"214\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"700\">Fix: Add composite B-Tree index matching ORDER BY columns!</text>\n      </svg>\n    ",
+    "sections": [
+      {
+        "heading": "1. Physical Sorting: Priority Queue vs. Filesort",
+        "content": "When MySQL InnoDB encounters an `ORDER BY` clause without an index, it initiates a **Filesort**:\n- **Priority Queue Optimization**: If the query includes `LIMIT N` and $N$ rows fit within `sort_buffer_size`, MySQL does **not** sort the entire table! It maintains an in-memory binary heap of size $N$, streams rows through it, and immediately returns the top elements.\n- **Disk-Spill Multi-Way Merge**: If the candidate rows exceed `sort_buffer_size`, the engine partitions the rows, sorts each batch in memory, writes intermediate files to disk, and merges them using a multi-way merge algorithm."
+      },
+      {
+        "heading": "2. The Non-Deterministic Pagination Bug",
+        "content": "A catastrophic bug in web applications is the **Jumping Row Syndrome** across paginated tables:\n```sql\n-- Page 1:\nSELECT id, name, salary FROM Employees ORDER BY salary DESC LIMIT 0, 10;\n-- Page 2:\nSELECT id, name, salary FROM Employees ORDER BY salary DESC LIMIT 10, 10;\n```\nIf multiple employees share the exact same salary (e.g., $95,000), the SQL standard allows the storage engine to return duplicate-salary rows in **any arbitrary order**! An employee can appear on Page 1, and then appear again on Page 2!\n\n**The Production Fix: Deterministic Tie-Breaker**:\n```sql\nORDER BY salary DESC, id ASC;\n```\nAlways append a unique primary key column as the final tie-breaker."
+      },
+      {
+        "heading": "3. Deep OFFSET Degradation & Keyset Pagination",
+        "content": "Why does `LIMIT 1000000, 10` take 8 seconds on an indexed table?\n- The database must read and sort **1,000,010 rows**, traverse all of them, and then discard the first 1,000,000!\n- **Keyset Pagination (Cursor-Based)**: Replace `OFFSET` with a seek on the last observed primary key:\n```sql\n-- Page 2 onwards:\nSELECT id, name, salary \nFROM Employees \nWHERE id > 1000000 \nORDER BY id ASC \nLIMIT 10;\n```\nThis converts an $O(N)$ full table scan into an instant $O(log N)$ B-Tree index seek."
+      }
+    ],
+    "interviewGotchas": [
+      {
+        "title": "LENGTH() vs CHAR_LENGTH() Slicing",
+        "trap": "LENGTH() returns the number of bytes, while CHAR_LENGTH() returns the number of characters. For UTF-8 multi-byte characters (emoji, accents, CJK), LENGTH('café') returns 5 or 6 bytes, while CHAR_LENGTH() returns 4!"
+      },
+      {
+        "title": "Sorting on Expressions",
+        "trap": "ORDER BY RIGHT(name, 3) prevents index usage because the expression must be evaluated on every row. To optimize, create a generated column with an index."
+      }
+    ]
+  },
+  {
+    "id": "sec_casewhen",
+    "pillarId": "pillar4",
+    "icon": "⚖️",
+    "title": "04. Conditional Logic, CASE WHEN & Matrix Pivoting",
+    "badge": "Branching Engine",
+    "badgeClass": "pill-casewhen",
+    "readTime": "11 min read",
+    "summary": "Simple vs Searched CASE, short-circuit execution order, implicit type coercion, and 0-cost pivot reporting.",
+    "svgDiagram": "\n      <svg viewBox=\"0 0 860 270\" width=\"100%\" height=\"100%\" style=\"min-height: 220px; max-height: 320px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n        <rect width=\"860\" height=\"270\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <!-- Header -->\n        <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n          CASE WHEN SHORT-CIRCUITING &amp; PIVOT MATRIX CONDITIONAL AGGREGATION\n        </text>\n\n        <!-- Left Block: AST Short-Circuit Flow -->\n        <rect x=\"20\" y=\"65\" width=\"395\" height=\"182\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"10\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"35\" y=\"90\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"12\" font-weight=\"900\">\ud83c\udf33 SHORT-CIRCUITING EVALUATION FLOW</text>\n\n        <rect x=\"35\" y=\"103\" width=\"220\" height=\"30\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"6\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"45\" y=\"122\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"800\">1. WHEN marks >= 90</text>\n        <path d=\"M 255 118 L 290 118\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n        <text x=\"300\" y=\"122\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">TRUE -> 'A' (EXIT)</text>\n\n        <rect x=\"35\" y=\"143\" width=\"220\" height=\"30\" fill=\"rgba(56, 189, 248, 0.07)\" rx=\"6\" stroke=\"rgba(56, 189, 248, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"45\" y=\"162\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"800\">2. WHEN marks >= 75</text>\n        <path d=\"M 255 158 L 290 158\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n        <text x=\"300\" y=\"162\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">TRUE -> 'B' (EXIT)</text>\n\n        <rect x=\"35\" y=\"183\" width=\"220\" height=\"30\" fill=\"rgba(244, 114, 182, 0.07)\" rx=\"6\" stroke=\"rgba(244, 114, 182, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"45\" y=\"202\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"800\">3. ELSE</text>\n        <path d=\"M 255 198 L 290 198\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n        <text x=\"300\" y=\"202\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">FALLTHROUGH -> 'C'</text>\n\n        <text x=\"35\" y=\"235\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"9.5\" font-weight=\"800\">First TRUE condition returns immediately. Later conditions never run!</text>\n\n        <!-- Right Block: Matrix Pivot Aggregation -->\n        <rect x=\"442\" y=\"65\" width=\"395\" height=\"182\" fill=\"#fef9c3\" rx=\"10\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"457\" y=\"90\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"12\" font-weight=\"900\">\ud83d\udcca 0-COST MATRIX PIVOT (ROW TO COLUMN)</text>\n\n        <rect x=\"457\" y=\"103\" width=\"365\" height=\"72\" fill=\"#cbd5e1\" rx=\"6\"/>\n        <text x=\"467\" y=\"122\" fill=\"#38bdf8\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"700\">SELECT dept_id,</text>\n        <text x=\"467\" y=\"138\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"700\">  SUM(CASE WHEN role='Dev' THEN 1 ELSE 0 END) AS devs,</text>\n        <text x=\"467\" y=\"154\" fill=\"#fbbf24\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"700\">  SUM(CASE WHEN role='QA'  THEN 1 ELSE 0 END) AS qas</text>\n        <text x=\"467\" y=\"168\" fill=\"#ffffff\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"700\">FROM Employees GROUP BY dept_id;</text>\n\n        <rect x=\"457\" y=\"185\" width=\"365\" height=\"48\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"6\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"467\" y=\"202\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"9.5\" font-weight=\"900\">\ud83d\udca1 1 SINGLE TABLE SCAN REPLACES 3 JOINs!</text>\n        <text x=\"467\" y=\"218\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"700\">Generates cross-tabulation reports without expensive multi-table joins.</text>\n      </svg>\n    ",
+    "sections": [
+      {
+        "heading": "1. Simple CASE vs. Searched CASE",
+        "content": "SQL provides two distinct syntactic forms of `CASE`:\n- **Simple CASE**: Evaluates an expression against exact literal matches:\n```sql\nCASE status_code\n  WHEN 200 THEN 'OK'\n  WHEN 404 THEN 'Not Found'\n  ELSE 'Unknown'\nEND\n```\n- **Searched CASE**: Evaluates independent boolean predicates for each branch:\n```sql\nCASE \n  WHEN salary >= 100000 THEN 'Executive'\n  WHEN salary >= 60000  THEN 'Senior'\n  ELSE 'Associate'\nEND\n```\n**Interview Rule**: Searched `CASE` is vastly more powerful because it supports inequality operators (`>`, `<`), `BETWEEN`, `AND`, `OR`, and `IS NULL`. Simple `CASE` cannot evaluate NULLs because `status_code = NULL` evaluates to `UNKNOWN`!"
+      },
+      {
+        "heading": "2. The Triangle Inequality Algorithm",
+        "content": "A core technical benchmark problem (HackerRank & LeetCode) is classifying geometric triangles from lengths $A, B, C$:\n```sql\nSELECT \n  CASE\n    WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'\n    WHEN A = B AND B = C THEN 'Equilateral'\n    WHEN A = B OR B = C OR A = C THEN 'Isosceles'\n    ELSE 'Scalene'\n  END AS triangle_type\nFROM TRIANGLES;\n```\n**Critical Execution Order Rule**:\nYou **MUST** test for `Not A Triangle` **FIRST**! If a triangle has sides $A=2, B=2, C=10$, evaluating `A = B` first would incorrectly classify it as `Isosceles` before catching that it physically cannot form a closed triangle!"
+      },
+      {
+        "heading": "3. Short-Circuit Evaluation Guarantee",
+        "content": "The SQL standard specifies that `CASE` expressions short-circuit: the first `WHEN` condition that evaluates to `TRUE` returns its value, and the engine **does not evaluate remaining branches**.\n\nThis makes `CASE` safe against division-by-zero errors:\n```sql\nSELECT \n  CASE \n    WHEN total_orders = 0 THEN 0 \n    ELSE total_revenue / total_orders \n  END AS avg_order_val\nFROM Merchants;\n```\nIf `total_orders = 0`, the `ELSE` division is never executed!"
+      },
+      {
+        "heading": "4. Type Coercion & Default NULL Fallthrough",
+        "content": "All `THEN` and `ELSE` return expressions in a `CASE` statement must resolve to a single, compatible data type:\n- If you mix `THEN 1` (INTEGER) with `THEN 'N/A'` (VARCHAR), MySQL will coerce the return type to VARCHAR.\n- **Omitted ELSE**: If no `ELSE` is specified and no `WHEN` condition matches, SQL implicitly returns `NULL` (`ELSE NULL`). Always specify explicit `ELSE` clauses in enterprise code to prevent unexpected NULL propagation!"
+      }
+    ],
+    "interviewGotchas": [
+      {
+        "title": "The NULL Fallthrough Trap",
+        "trap": "Writing CASE WHEN status = 'ACTIVE' THEN 1 END without an ELSE clause results in NULL for all inactive rows, which can silently corrupt mathematical operations like SUM() or AVG()."
+      },
+      {
+        "title": "Evaluation Priority in Searched CASE",
+        "trap": "In multi-condition checks, placing broader conditions before specific ones causes early exit on the broader check, shadowing your specific edge-case handlers."
+      }
+    ]
+  },
+  {
+    "id": "sec_aggregations",
+    "pillarId": "pillar5",
+    "icon": "📊",
+    "title": "05. Basic & Statistical Aggregations (GROUP BY & HAVING)",
+    "badge": "Aggregation Engine",
+    "badgeClass": "pill-groupby",
+    "readTime": "13 min read",
+    "summary": "COUNT(*) vs COUNT(col), NULL aggregation physics, ONLY_FULL_GROUP_BY standards, and two-phase hash bucketing.",
+    "svgDiagram": "\n      <svg viewBox=\"0 0 860 270\" width=\"100%\" height=\"100%\" style=\"min-height: 220px; max-height: 320px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n        <rect width=\"860\" height=\"270\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <!-- Header -->\n        <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n          TWO-PHASE HASH BUCKETING &amp; NULL AGGREGATION ACCUMULATOR MECHANICS\n        </text>\n\n        <!-- Left Block: Stream to Hash Buckets -->\n        <rect x=\"20\" y=\"65\" width=\"395\" height=\"182\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"10\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"35\" y=\"90\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"12\" font-weight=\"900\">\ud83d\udce5 STREAMING INTO RAM HASH BUCKETS</text>\n\n        <!-- Bucket 1: Dept 10 -->\n        <rect x=\"35\" y=\"105\" width=\"175\" height=\"60\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"6\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"45\" y=\"122\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">BUCKET: Dept 10</text>\n        <text x=\"45\" y=\"138\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"700\">Rows: [Sal: 50k, 70k, NULL]</text>\n        <text x=\"45\" y=\"152\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"800\">SUM=120k | COUNT=2 | AVG=60k</text>\n\n        <!-- Bucket 2: Dept 20 -->\n        <rect x=\"220\" y=\"105\" width=\"180\" height=\"60\" fill=\"rgba(56, 189, 248, 0.07)\" rx=\"6\" stroke=\"rgba(56, 189, 248, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"230\" y=\"122\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">BUCKET: Dept 20</text>\n        <text x=\"230\" y=\"138\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"700\">Rows: [Sal: 80k, 90k]</text>\n        <text x=\"230\" y=\"152\" fill=\"#0284c7\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"800\">SUM=170k | COUNT=2 | AVG=85k</text>\n\n        <!-- Rule Pill -->\n        <rect x=\"35\" y=\"176\" width=\"365\" height=\"58\" fill=\"#fef3c7\" rx=\"6\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"45\" y=\"195\" fill=\"#fbbf24\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">\u26a1 NULL PHYSICS IN AGGREGATES:</text>\n        <text x=\"45\" y=\"211\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"700\">AVG(salary) divides by 2 (non-nulls), NOT 3! NULLs are skipped.</text>\n        <text x=\"45\" y=\"224\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"700\">COUNT(*) = 3, but COUNT(salary) = 2!</text>\n\n        <!-- Right Block: ONLY_FULL_GROUP_BY Rule -->\n        <rect x=\"442\" y=\"65\" width=\"395\" height=\"182\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"10\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"457\" y=\"90\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"12\" font-weight=\"900\">\ud83d\udee1\ufe0f ONLY_FULL_GROUP_BY STANDARD RULE</text>\n\n        <rect x=\"457\" y=\"105\" width=\"365\" height=\"60\" fill=\"rgba(244, 63, 94, 0.07)\" rx=\"6\" stroke=\"rgba(244, 63, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"467\" y=\"122\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"900\">\u274c ILLEGAL (SYNTAX ERROR IN SQL:2016):</text>\n        <text x=\"467\" y=\"138\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">SELECT dept_id, name, AVG(salary)</text>\n        <text x=\"467\" y=\"152\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">FROM Employees GROUP BY dept_id;</text>\n        <text x=\"467\" y=\"161\" fill=\"#fb7185\" font-family=\"system-ui, sans-serif\" font-size=\"7.5\" font-weight=\"800\">'name' is non-deterministic (which employee name should the engine display?)</text>\n\n        <rect x=\"457\" y=\"176\" width=\"365\" height=\"58\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"6\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"467\" y=\"195\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"900\">\u2705 COMPLIANT SQL STANDARD:</text>\n        <text x=\"467\" y=\"211\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">SELECT dept_id, AVG(salary), COUNT(*)</text>\n        <text x=\"467\" y=\"225\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">FROM Employees GROUP BY dept_id;</text>\n      </svg>\n    ",
+    "sections": [
+      {
+        "heading": "1. The 5 Core Aggregation Accumulators",
+        "content": "Aggregate functions compute a single summary value across a set of rows:\n- `COUNT(*)`: Counts total physical row slots in the bucket, **including NULLs and duplicates**.\n- `COUNT(column)`: Counts non-NULL entries in that column.\n- `COUNT(DISTINCT column)`: Computes unique, non-NULL entries using a temporary deduplication set.\n- `SUM(column)`: Computes total sum of non-NULL values. If all rows are NULL, returns `NULL`.\n- `AVG(column)`: Computes arithmetic mean: `SUM(col) / COUNT(col)`. **Critical**: The divisor is `COUNT(col)`, never `COUNT(*)`!\n- `MIN(column)` & `MAX(column)`: Identifies extreme values (supports numbers, dates, and alphabetic strings)."
+      },
+      {
+        "heading": "2. ONLY_FULL_GROUP_BY & The SQL Standard",
+        "content": "In MySQL 5.7+ and all modern engines (PostgreSQL, SQL Server, Snowflake), `ONLY_FULL_GROUP_BY` is enabled by default:\n- **The Rule**: Every non-aggregated column in the `SELECT` list **must** be explicitly declared in the `GROUP BY` clause.\n- If a department has 50 employees, running `SELECT dept_id, employee_name, AVG(salary) FROM Employees GROUP BY dept_id` makes no logical sense: which of the 50 names should be displayed?\n- **Workarounds**: Aggregate with `GROUP_CONCAT(employee_name)`, use `MAX(employee_name)`, or include `employee_name` in `GROUP BY`."
+      },
+      {
+        "heading": "3. Statistical Metrics: Variance & Standard Deviation",
+        "content": "In quantitative analysis and risk engineering:\n- `VARIANCE(col)` / `VAR_POP(col)`: Population variance $sigma^2 = \frac{sum (x - mu)^2}{N}$.\n- `VAR_SAMP(col)`: Sample variance $s^2 = \frac{sum (x - \bar{x})^2}{N - 1}$ (Bessel's correction).\n- `STDDEV(col)` / `STDDEV_POP(col)`: Population standard deviation $sigma = sqrt{\text{Variance}}$.\n- **FinTech Gotcha**: If a group has only 1 row, `VAR_SAMP()` returns `NULL` due to division by zero ($N-1 = 0$)!"
+      },
+      {
+        "heading": "4. Physical Memory Architecture for Aggregations",
+        "content": "How engines execute `GROUP BY`:\n1. **Hash Aggregation**: The engine hashes the grouping keys into an in-memory hash table in RAM (`tmp_table_size`). As rows stream through, hash collisions increment accumulator registers in place. Extremely fast ($O(N)$).\n2. **Streaming Aggregation**: If the grouping columns have a pre-existing B-Tree index, the engine doesn't need a hash table! It reads rows in sorted order, emitting group summaries as soon as the key changes ($O(1)$ memory)."
+      }
+    ],
+    "interviewGotchas": [
+      {
+        "title": "COUNT(1) vs COUNT(*)",
+        "trap": "In modern database optimizers, COUNT(1) and COUNT(*) parse to identical execution plans. However, COUNT(col) is physically different because it tests for NULL on every single row!"
+      },
+      {
+        "title": "Empty Table Aggregation Divergence",
+        "trap": "On an empty table: COUNT(*) returns 0, but SUM(val), AVG(val), MIN(val), and MAX(val) all return NULL!"
+      }
+    ]
+  },
+  {
+    "id": "sec_math",
+    "pillarId": "pillar6",
+    "icon": "📐",
+    "title": "06. Spatial Coordinates, Math Functions & Medians",
+    "badge": "Spatial Engine",
+    "badgeClass": "pill-select",
+    "readTime": "11 min read",
+    "summary": "Manhattan vs Euclidean distance vectors, ROUND vs TRUNCATE, and calculating continuous medians without native window functions.",
+    "svgDiagram": "\n      <svg viewBox=\"0 0 860 270\" width=\"100%\" height=\"100%\" style=\"min-height: 220px; max-height: 320px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n        <rect width=\"860\" height=\"270\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <!-- Header -->\n        <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n          SPATIAL METRICS (MANHATTAN VS. EUCLIDEAN) &amp; CONTINUOUS MEDIAN INTERPOLATION\n        </text>\n\n        <!-- Left Block: Distance Vectors -->\n        <rect x=\"20\" y=\"65\" width=\"395\" height=\"182\" fill=\"rgba(56, 189, 248, 0.06)\" rx=\"10\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n        <text x=\"35\" y=\"90\" fill=\"#0284c7\" font-family=\"monospace\" font-size=\"12\" font-weight=\"900\">\ud83d\udcd0 SPATIAL DISTANCE FORMULAS</text>\n\n        <!-- Manhattan Box -->\n        <rect x=\"35\" y=\"103\" width=\"365\" height=\"58\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"6\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"45\" y=\"122\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">1. MANHATTAN DISTANCE (L1 NORM - GRID):</text>\n        <text x=\"45\" y=\"139\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"800\">|X1 - X2| + |Y1 - Y2|</text>\n        <text x=\"45\" y=\"152\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"9\" font-weight=\"700\">ROUND(ABS(MIN(LAT) - MAX(LAT)) + ABS(MIN(LONG) - MAX(LONG)), 4)</text>\n\n        <!-- Euclidean Box -->\n        <rect x=\"35\" y=\"171\" width=\"365\" height=\"64\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"6\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"45\" y=\"190\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\">2. EUCLIDEAN DISTANCE (L2 NORM - HYPOTENUSE):</text>\n        <text x=\"45\" y=\"207\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"800\">SQRT( (X1 - X2)^2 + (Y1 - Y2)^2 )</text>\n        <text x=\"45\" y=\"222\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"9\" font-weight=\"700\">ROUND(SQRT(POW(MAX(LAT)-MIN(LAT),2) + POW(MAX(LONG)-MIN(LONG),2)), 4)</text>\n\n        <!-- Right Block: Median Calculation -->\n        <rect x=\"442\" y=\"65\" width=\"395\" height=\"182\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"10\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"457\" y=\"90\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"12\" font-weight=\"900\">\ud83c\udfaf CONTINUOUS MEDIAN ALGORITHM</text>\n\n        <rect x=\"457\" y=\"103\" width=\"365\" height=\"74\" fill=\"#cbd5e1\" rx=\"6\"/>\n        <text x=\"467\" y=\"122\" fill=\"#38bdf8\" font-family=\"monospace\" font-size=\"9\" font-weight=\"700\">WITH Ranked AS (</text>\n        <text x=\"467\" y=\"136\" fill=\"#f472b6\" font-family=\"monospace\" font-size=\"9\" font-weight=\"700\">  SELECT val, ROW_NUMBER() OVER (ORDER BY val) AS r,</text>\n        <text x=\"467\" y=\"150\" fill=\"#f472b6\" font-family=\"monospace\" font-size=\"9\" font-weight=\"700\">         COUNT(*) OVER () AS total_n FROM Table</text>\n        <text x=\"467\" y=\"164\" fill=\"#38bdf8\" font-family=\"monospace\" font-size=\"9\" font-weight=\"700\">)</text>\n        <text x=\"467\" y=\"174\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"9\" font-weight=\"700\">SELECT ROUND(AVG(val), 4) FROM Ranked</text>\n        <text x=\"467\" y=\"185\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"9\" font-weight=\"700\">WHERE r IN (FLOOR((total_n+1)/2), CEIL((total_n+1)/2));</text>\n\n        <rect x=\"457\" y=\"196\" width=\"365\" height=\"38\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"6\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"467\" y=\"211\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"900\">\u2705 WORKS FOR BOTH EVEN AND ODD DATASETS!</text>\n        <text x=\"467\" y=\"225\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"8.5\" font-weight=\"700\">Even N takes average of middle two; Odd N picks exact center.</text>\n      </svg>\n    ",
+    "sections": [
+      {
+        "heading": "1. Spatial Distance Metrics (HackerRank Station Challenges)",
+        "content": "Spatial coordinate querying is standard in logistics, ridesharing (Uber, Lyft), and supply chains:\n- **Manhattan Distance ($L_1$ Norm)**: Measures taxicab distance along orthogonal grid axes:\n  $$\\text{Distance} = |x_1 - x_2| + |y_1 - y_2|$$\n  ```sql\n  SELECT ROUND(ABS(MIN(LAT_N) - MAX(LAT_N)) + ABS(MIN(LONG_W) - MAX(LONG_W)), 4)\n  FROM STATION;\n  ```\n- **Euclidean Distance ($L_2$ Norm)**: Measures direct straight-line distance across the hypotenuse:\n  $$\\text{Distance} = \\sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$$\n  ```sql\n  SELECT ROUND(SQRT(POW(MAX(LAT_N) - MIN(LAT_N), 2) + POW(MAX(LONG_W) - MIN(LONG_W), 2)), 4)\n  FROM STATION;\n  ```"
+      },
+      {
+        "heading": "2. ROUND vs. TRUNCATE vs. FLOOR / CEIL",
+        "content": "Mathematical precision requires strict keyword discipline:\n- `ROUND(x, d)`: Rounds half-up toward nearest integer at decimal place $d$. `ROUND(3.14159, 4) = 3.1416`.\n- `TRUNCATE(x, d)`: Cuts off digits strictly after $d$ decimal places **without rounding**. `TRUNCATE(3.14159, 4) = 3.1415`.\n- **Negative Decimals**: Rounds to powers of 10!\n  - `ROUND(12345.67, -2) = 12300`\n  - `TRUNCATE(12345.67, -3) = 12000`\n- `FLOOR(x)`: Greatest integer $le x$. `FLOOR(-3.2) = -4`.\n- `CEIL(x)` / `CEILING(x)`: Smallest integer $ge x$. `CEIL(-3.2) = -3`."
+      },
+      {
+        "heading": "3. Calculating the Median in MySQL",
+        "content": "Unlike Oracle or Snowflake, standard MySQL 8.0 lacks a native `MEDIAN()` aggregate function.\nTo compute the true median:\n1. Rank records in ascending order with `ROW_NUMBER() OVER (ORDER BY val)`.\n2. Compute the total count $N$.\n3. If $N$ is odd, select the single middle record at $(N+1)/2$.\n4. If $N$ is even, select the two middle records at $N/2$ and $(N/2)+1$, and average them using `AVG(val)`.\n```sql\nWITH RankedData AS (\n  SELECT LAT_N, \n         ROW_NUMBER() OVER (ORDER BY LAT_N) AS row_num,\n         COUNT(*) OVER () AS total_count\n  FROM STATION\n)\nSELECT ROUND(AVG(LAT_N), 4) AS median_latitude\nFROM RankedData\nWHERE row_num IN (FLOOR((total_count + 1) / 2), CEIL((total_count + 1) / 2));\n```"
+      }
+    ],
+    "interviewGotchas": [
+      {
+        "title": "Floating-Point Precision Trap",
+        "trap": "Using DOUBLE or FLOAT for currency or exact coordinates causes floating-point roundoff errors (e.g. 0.1 + 0.2 = 0.30000000000000004). Always use DECIMAL(18, 4) or NUMERIC for financial and geospatial coordinates!"
+      },
+      {
+        "title": "Negative Decimal ROUND in Payroll",
+        "trap": "Using ROUND(salary, -3) rounds salaries to the nearest thousand (e.g. 84,600 becomes 85,000)."
+      }
+    ]
+  },
+  {
+    "id": "sec_joins",
+    "pillarId": "pillar7",
+    "icon": "🔗",
+    "title": "07. Relational Multi-Table Joins & Physical Algorithms",
+    "badge": "Relational Core",
+    "badgeClass": "pill-from",
+    "readTime": "15 min read",
+    "summary": "The 8 ANSI relational joins, Cartesian product explosions, Anti-Joins, and physical execution algorithms (Nested Loop vs Hash Join).",
+    "svgDiagram": "\n      <svg viewBox=\"0 0 860 300\" width=\"100%\" height=\"100%\" style=\"min-height: 250px; max-height: 350px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n        <rect width=\"860\" height=\"300\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <!-- Header -->\n        <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n          RELATIONAL SET THEORY &amp; PHYSICAL JOIN EXECUTION ALGORITHMS\n        </text>\n\n        <!-- 4 Join Visual Set Cards -->\n        <!-- Card 1: INNER JOIN -->\n        <rect x=\"20\" y=\"65\" width=\"195\" height=\"130\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"117\" y=\"86\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\" text-anchor=\"middle\">1. INNER JOIN</text>\n        <circle cx=\"85\" cy=\"120\" r=\"32\" fill=\"rgba(56, 189, 248, 0.2)\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <circle cx=\"150\" cy=\"120\" r=\"32\" fill=\"rgba(244, 114, 182, 0.2)\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <path d=\"M 117 95 A 32 32 0 0 1 117 145 A 32 32 0 0 1 117 95\" fill=\"#22c55e\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n        <text x=\"117\" y=\"180\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"800\" text-anchor=\"middle\">Intersection (Matched Keys)</text>\n\n        <!-- Card 2: LEFT JOIN -->\n        <rect x=\"227\" y=\"65\" width=\"195\" height=\"130\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"324\" y=\"86\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\" text-anchor=\"middle\">2. LEFT JOIN</text>\n        <circle cx=\"292\" cy=\"120\" r=\"32\" fill=\"#38bdf8\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <circle cx=\"357\" cy=\"120\" r=\"32\" fill=\"rgba(244, 114, 182, 0.15)\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"324\" y=\"180\" fill=\"#0284c7\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"800\" text-anchor=\"middle\">All Left + Matched Right</text>\n\n        <!-- Card 3: LEFT ANTI-JOIN -->\n        <rect x=\"435\" y=\"65\" width=\"195\" height=\"130\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"532\" y=\"86\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\" text-anchor=\"middle\">3. LEFT ANTI-JOIN</text>\n        <circle cx=\"500\" cy=\"120\" r=\"32\" fill=\"#f43f5e\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <circle cx=\"565\" cy=\"120\" r=\"32\" fill=\"#ffffff\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"532\" y=\"180\" fill=\"#fb7185\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"800\" text-anchor=\"middle\">WHERE right.id IS NULL</text>\n\n        <!-- Card 4: FULL OUTER JOIN -->\n        <rect x=\"642\" y=\"65\" width=\"195\" height=\"130\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"739\" y=\"86\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\" text-anchor=\"middle\">4. FULL OUTER JOIN</text>\n        <circle cx=\"707\" cy=\"120\" r=\"32\" fill=\"#c084fc\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <circle cx=\"772\" cy=\"120\" r=\"32\" fill=\"#c084fc\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"739\" y=\"180\" fill=\"#c084fc\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"800\" text-anchor=\"middle\">Complete Union (All Rows)</text>\n\n        <!-- Bottom Engineering Algorithms Strip -->\n        <rect x=\"20\" y=\"205\" width=\"820\" height=\"74\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"8\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"35\" y=\"226\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\">\u2699\ufe0f PHYSICAL JOIN ALGORITHMS IN THE STORAGE ENGINE:</text>\n        <text x=\"35\" y=\"245\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"10.5\" font-weight=\"800\">\n          \u2022 Nested Loop Join (NLJ): For every row in Outer table, engine performs B-Tree Index Seek on Inner table (O(N log M) - Fast).\n        </text>\n        <text x=\"35\" y=\"262\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"10.5\" font-weight=\"800\">\n          \u2022 Hash Join (MySQL 8.0+): Builds in-memory hash table of smaller table, then probes it with stream from larger table (O(N+M)).\n        </text>\n      </svg>\n    ",
+    "sections": [
+      {
+        "heading": "1. The 8 ANSI Relational Joins",
+        "content": "Relational database engines link disparate entities through primary key (PK) and foreign key (FK) relationships:\n1. **INNER JOIN**: Retains tuples where the join predicate evaluates to TRUE on both sides. Drops orphan rows.\n2. **LEFT (OUTER) JOIN**: Preserves 100% of rows from the left table. If no match exists on the right, right-side columns populate as `NULL`.\n3. **RIGHT (OUTER) JOIN**: Mirror of Left Join; preserves all rows from the right table.\n4. **FULL OUTER JOIN**: Preserves all rows from both tables, populating NULLs wherever alignment fails. *(Emulated in MySQL via LEFT JOIN UNION RIGHT JOIN)*.\n5. **LEFT ANTI-JOIN**: Identifies records in the left table with **no corresponding record** in the right table (`WHERE right.id IS NULL`).\n6. **CROSS JOIN**: Produces the Cartesian Product ($N \\times M$ rows).\n7. **SELF JOIN**: A table joined to itself using unique aliases (used for hierarchical trees like employees and managers).\n8. **NON-EQUI JOIN**: Joins on inequality or range predicates (e.g. `ON emp.salary BETWEEN grade.low AND grade.high`)."
+      },
+      {
+        "heading": "2. The Cartesian Explosion Catastrophe",
+        "content": "If you omit the `ON` clause or specify a non-unique foreign key relationship:\n- Joining Table A (10,000 rows) with Table B (10,000 rows) produces **100,000,000 output tuples**!\n- This causes memory exhaustion, disk buffer overflows, and crashes production reporting servers.\n- **Rule**: Always verify cardinality (1-to-1, 1-to-many, or many-to-many) before executing joins on massive datasets."
+      },
+      {
+        "heading": "3. Physical Join Algorithms: NLJ vs Hash Join",
+        "content": "How does the relational optimizer physically join 2 tables?\n- **Index Nested Loop Join**: The outer table is scanned. For each outer row, the database performs a high-speed B-Tree index seek on the inner table. Ideal for indexed OLTP lookups.\n- **Block Nested Loop (BNL)**: If the inner table lacks an index, the engine buffers batches of outer rows in `join_buffer_size` in RAM to reduce repeated table scans.\n- **Hash Join (Introduced in MySQL 8.0.18)**: Replaces BNL. The engine builds an in-memory hash table on the join key of the smaller table, then streams the larger table and probes the hash table in $O(1)$ time per row."
+      },
+      {
+        "heading": "4. ON vs. WHERE Predicate Placement in Outer Joins",
+        "content": "A classic senior interview question: *\"What is the physical difference between filtering in ON vs WHERE in a LEFT JOIN?\"*\n```sql\n-- Query A: Filter in ON\nSELECT c.name, o.order_id \nFROM Customers c \nLEFT JOIN Orders o ON c.id = o.customer_id AND o.status = 'COMPLETED';\n\n-- Query B: Filter in WHERE\nSELECT c.name, o.order_id \nFROM Customers c \nLEFT JOIN Orders o ON c.id = o.customer_id \nWHERE o.status = 'COMPLETED';\n```\n- **Query A**: Returns **ALL** customers! Customers without completed orders still appear with `order_id = NULL`.\n- **Query B**: Accidentally converts the LEFT JOIN into an **INNER JOIN**! Because `WHERE o.status = 'COMPLETED'` discards NULL rows, any customer without orders is eliminated!"
+      }
+    ],
+    "interviewGotchas": [
+      {
+        "title": "The Accidental Inner Join Trap",
+        "trap": "Adding WHERE right_table.col = 'val' on a LEFT JOIN immediately converts it to an INNER JOIN because NULLs generated by the join fail the WHERE predicate!"
+      },
+      {
+        "title": "Cartesian Multiplication in Multi-Join",
+        "trap": "Joining a customer table simultaneously to multiple one-to-many child tables (e.g. Orders and SupportTickets) creates duplicate permutations of both child rows, multiplying aggregate sums!"
+      }
+    ]
+  },
+  {
+    "id": "sec_theory_architecture",
+    "pillarId": "pillar0",
+    "icon": "🏛️",
+    "title": "08. Database Architecture, Storage Engines & ACID Internals",
+    "badge": "Interview Foundations",
+    "badgeClass": "pill-from",
+    "readTime": "14 min read",
+    "summary": "B+ Tree 16KB disk page anatomy, clustered vs secondary indexes, OLTP vs OLAP columnar storage, and ACID transaction isolation.",
+    "svgDiagram": "\n      <svg viewBox=\"0 0 860 280\" width=\"100%\" height=\"100%\" style=\"min-height: 230px; max-height: 330px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n        <rect width=\"860\" height=\"280\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n        <!-- Header -->\n        <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n          PHYSICAL B+ TREE INDEX PAGE HIERARCHY (16KB INNODB DISK PAGES)\n        </text>\n\n        <!-- Root Node -->\n        <rect x=\"352\" y=\"65\" width=\"150\" height=\"38\" fill=\"rgba(56, 189, 248, 0.07)\" rx=\"6\" stroke=\"rgba(56, 189, 248, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"427\" y=\"88\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\" text-anchor=\"middle\">ROOT PAGE [Key: 50]</text>\n\n        <!-- Branch Lines -->\n        <path d=\"M 370 103 L 235 125\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n        <path d=\"M 485 103 L 625 125\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n\n        <!-- Intermediate Branch Nodes -->\n        <rect x=\"150\" y=\"125\" width=\"165\" height=\"36\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"6\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"232\" y=\"147\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"900\" text-anchor=\"middle\">BRANCH [Keys: 10, 30]</text>\n        <rect x=\"540\" y=\"125\" width=\"165\" height=\"36\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"6\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"622\" y=\"147\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"900\" text-anchor=\"middle\">BRANCH [Keys: 70, 90]</text>\n\n        <!-- Leaf Node Lines -->\n        <path d=\"M 180 161 L 110 185\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n        <path d=\"M 285 161 L 320 185\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n        <path d=\"M 570 161 L 535 185\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n        <path d=\"M 675 161 L 745 185\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n\n        <!-- Leaf Pages: Doubly Linked on Disk -->\n        <rect x=\"20\" y=\"185\" width=\"180\" height=\"42\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"6\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"110\" y=\"204\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\" text-anchor=\"middle\">LEAF PAGE 1 (16KB)</text>\n        <text x=\"110\" y=\"218\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">[Rec 1, 2, 5, 8] &#x2194;</text>\n        <rect x=\"230\" y=\"185\" width=\"180\" height=\"42\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"6\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"320\" y=\"204\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\" text-anchor=\"middle\">LEAF PAGE 2 (16KB)</text>\n        <text x=\"320\" y=\"218\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">&#x2194; [Rec 10, 15, 22] &#x2194;</text>\n        <rect x=\"440\" y=\"185\" width=\"180\" height=\"42\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"6\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"530\" y=\"204\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\" text-anchor=\"middle\">LEAF PAGE 3 (16KB)</text>\n        <text x=\"530\" y=\"218\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">&#x2194; [Rec 55, 62, 68] &#x2194;</text>\n        <rect x=\"650\" y=\"185\" width=\"180\" height=\"42\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"6\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n        <text x=\"740\" y=\"204\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"10\" font-weight=\"900\" text-anchor=\"middle\">LEAF PAGE 4 (16KB)</text>\n        <text x=\"740\" y=\"218\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"8.5\" font-weight=\"800\" text-anchor=\"middle\">&#x2194; [Rec 75, 82, 99]</text>\n\n        <!-- Bottom Explainer -->\n        <rect x=\"23\" y=\"238\" width=\"814\" height=\"28\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"6\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n        <text x=\"430\" y=\"256\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"9.5\" font-weight=\"800\" text-anchor=\"middle\">\n          Clustered Index stores complete row data on leaf pages. Secondary Index leaf stores Key + PK (requires double lookup hop).\n        </text>\n      </svg>\n    ",
+    "sections": [
+      {
+        "heading": "1. B+ Tree Anatomy & 16KB Disk Pages",
+        "content": "Relational databases use **B+ Trees** rather than binary search trees because disk I/O operates in blocks:\n- **InnoDB Page Size**: By default, MySQL reads and writes data in **16KB physical disk pages**.\n- **High Fan-Out**: A single 16KB index page can hold over 1,000 keys and pointers. As a result, a 3-level B+ Tree can index over **1 billion records** with only 3 I/O reads ($O(\\log N)$)!\n- **Clustered Index**: In InnoDB, the table **is** the clustered index (ordered by Primary Key). The leaf pages contain the actual row data.\n- **Secondary Index**: A separate B+ Tree. Its leaf nodes do not contain data rows; they store the Primary Key value. Looking up a row via a secondary index requires a **Bookmark Lookup** (2 traversals) unless all requested columns exist in the index (**Covering Index**)."
+      },
+      {
+        "heading": "2. OLTP vs. OLAP: Row-Oriented vs. Columnar",
+        "content": "Understanding database workload classification dictates system architecture:\n- **OLTP (Online Transaction Processing - MySQL, Postgres, Aurora)**:\n  - Optimized for low-latency concurrent reads and single-row updates.\n  - Rows are stored contiguously on disk.\n  - Bottlenecks when scanning millions of rows for analytical aggregations.\n- **OLAP (Online Analytical Processing - Snowflake, BigQuery, ClickHouse)**:\n  - Optimized for massive analytical scans.\n  - Stores each column separately across contiguous micro-partitions.\n  - Calculating `SUM(revenue)` reads **only the revenue column**, skipping all other data on disk, providing 50x query speedups and 10x compression ratios."
+      },
+      {
+        "heading": "3. ACID Guarantees & The 4 Isolation Levels",
+        "content": "The 4 foundational guarantees protecting concurrent database transactions:\n- **Atomicity**: All statements in a transaction commit together, or all roll back via the Undo Log.\n- **Consistency**: Database transitions from one valid state to another, enforcing foreign keys and check constraints.\n- **Isolation**: Prevents concurrent transactions from observing uncommitted changes.\n- **Durability**: Committed data is safely written to the Write-Ahead Log (WAL / Redo Log) before returning success.\n\n**The 4 ANSI Transaction Isolation Levels**:\n1. **Read Uncommitted**: Suffers from **Dirty Reads** (reading data that gets rolled back).\n2. **Read Committed** *(PostgreSQL default)*: Eliminates dirty reads; allows Non-Repeatable Reads.\n3. **Repeatable Read** *(MySQL InnoDB default)*: Guarantees that rows read once retain identical values throughout the transaction using Multi-Version Concurrency Control (MVCC) snapshots.\n4. **Serializable**: Highest isolation. Eliminates phantom rows using range locks, but incurs high lock contention."
+      },
+      {
+        "heading": "4. Buffer Pool & Write-Ahead Logging (WAL)",
+        "content": "Writing directly to random disk pages for every update would destroy performance:\n- **Buffer Pool**: Dedicated RAM cache in memory (typically 70-80% of server RAM). All reads and writes happen in the buffer pool first.\n- **Dirty Pages**: Pages modified in RAM but not yet written to disk.\n- **Write-Ahead Logging (WAL / Redo Log)**: Before a dirty page is flushed to disk, the change is written sequentially to the append-only Redo Log. Sequential writes to NVMe take &lt; 0.1ms. If the server loses power, InnoDB replays the Redo Log to recover all committed data!"
+      }
+    ],
+    "interviewGotchas": [
+      {
+        "title": "The Covering Index Superpower",
+        "trap": "If a query requests SELECT id, email FROM Users WHERE email = '...', and an index exists on (email, id), the engine reads the data directly from the index leaf without ever touching the primary clustered table disk pages (Using index)!"
+      },
+      {
+        "title": "Phantom Read vs Non-Repeatable Read",
+        "trap": "Non-repeatable read occurs when existing rows are modified or deleted by another transaction. Phantom read occurs when brand-new rows matching the WHERE filter are inserted into the range."
+      }
+    ]
+  },
+  {
+    "id": "sec_intermediate_joins",
+    "pillarId": "pillar3",
+    "icon": "🔀",
+    "title": "09. Intermediate Joins, Non-Equi Conditions, Multi-Table Chains & Set Operations",
+    "badge": "Intermediate Relational Modeling",
+    "badgeClass": "pill-from",
+    "readTime": "15 min read",
+    "summary": "Master range-based non-equi joins (BETWEEN), 4+ table relational traversal chains, hierarchical self-joins, and the fundamental set algebra of UNION, INTERSECT, and EXCEPT.",
+    "svgDiagram": "<svg viewBox=\"0 0 860 300\" width=\"100%\" height=\"100%\" style=\"min-height: 250px; max-height: 350px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect width=\"860\" height=\"300\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <!-- Header -->\n  <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n    INTERMEDIATE RELATIONAL ENGINE: NON-EQUI JOINS, CHAINS &amp; SET OPERATIONS\n  </text>\n\n  <!-- Box 1: Non-Equi Join Range Slider -->\n  <rect x=\"20\" y=\"68\" width=\"260\" height=\"135\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"10\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"35\" y=\"93\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"12\" font-weight=\"900\">1. NON-EQUI JOIN (BETWEEN)</text>\n  <text x=\"35\" y=\"112\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"700\">ON marks BETWEEN min AND max</text>\n  \n  <!-- Visual slider track -->\n  <rect x=\"35\" y=\"125\" width=\"230\" height=\"16\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"6\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n  <rect x=\"100\" y=\"125\" width=\"75\" height=\"16\" fill=\"rgba(56, 189, 248, 0.07)\" rx=\"0\" stroke=\"rgba(56, 189, 248, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"137\" y=\"137\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">Grade 8: 70-79</text>\n  <circle cx=\"145\" cy=\"133\" r=\"6\" fill=\"#f43f5e\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n  <text x=\"145\" y=\"165\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">Mark: 75 (Matched!)</text>\n  <text x=\"35\" y=\"190\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"700\">No PK/FK equality! Maps continuous to discrete.</text>\n\n  <!-- Box 2: 4-Table Relational Join Chain -->\n  <rect x=\"300\" y=\"68\" width=\"270\" height=\"135\" fill=\"#bae6fd\" rx=\"10\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n  <text x=\"315\" y=\"93\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"12\" font-weight=\"900\">2. MULTI-TABLE JOIN CHAIN</text>\n  <text x=\"315\" y=\"112\" fill=\"#0369a1\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"700\">Submissions -&gt; Challenges -&gt; Difficulty</text>\n  \n  <rect x=\"315\" y=\"125\" width=\"52\" height=\"28\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"341\" y=\"142\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">Subs</text>\n  <path d=\"M 368 139 L 380 139\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n  <rect x=\"382\" y=\"125\" width=\"52\" height=\"28\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"408\" y=\"142\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">Chall</text>\n  <path d=\"M 435 139 L 447 139\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n  <rect x=\"449\" y=\"125\" width=\"52\" height=\"28\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"475\" y=\"142\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">Diff</text>\n  <path d=\"M 502 139 L 514 139\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n  <rect x=\"516\" y=\"125\" width=\"46\" height=\"28\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"539\" y=\"142\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">Hack</text>\n  <text x=\"315\" y=\"175\" fill=\"#0c4a6e\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"700\">Multi-Hop Foreign Key Traversal</text>\n  <text x=\"315\" y=\"190\" fill=\"#fb7185\" font-family=\"system-ui, sans-serif\" font-size=\"9.5\" font-weight=\"800\">Must preserve grain to prevent row multiplication!</text>\n\n  <!-- Box 3: Self-Join & Set Operations -->\n  <rect x=\"590\" y=\"68\" width=\"245\" height=\"135\" fill=\"#bbf7d0\" rx=\"10\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n  <text x=\"605\" y=\"93\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"12\" font-weight=\"900\">3. SELF-JOIN &amp; SET OPS</text>\n  <text x=\"605\" y=\"112\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"700\">UNION vs UNION ALL</text>\n  \n  <rect x=\"605\" y=\"125\" width=\"105\" height=\"26\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"657\" y=\"141\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"800\" text-anchor=\"middle\">UNION ALL: Fast</text>\n  <rect x=\"720\" y=\"125\" width=\"105\" height=\"26\" fill=\"rgba(244, 63, 94, 0.07)\" rx=\"5\" stroke=\"rgba(244, 63, 94, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"772\" y=\"141\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"900\" text-anchor=\"middle\">UNION: Dedupe</text>\n  \n  <text x=\"605\" y=\"172\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"700\">Self-Joins require aliases (e1, e2).</text>\n  <text x=\"605\" y=\"188\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"700\">Enforce a.id &lt; b.id to prevent duplicates!</text>\n\n  <!-- Bottom Callout -->\n  <rect x=\"20\" y=\"216\" width=\"817\" height=\"66\" fill=\"#fff1f2\" rx=\"10\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n  <text x=\"35\" y=\"238\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\">\u26a0\ufe0f SENIOR INTERVIEW TRAP: THE CARTESIAN EXPLOSION IN JOIN CHAINS</text>\n  <text x=\"35\" y=\"256\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">When chaining 4+ tables, joining two 1-to-Many relationships causes the row count to multiply exponentially (M * N).</text>\n  <text x=\"35\" y=\"272\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">Always pre-aggregate the child table in a CTE before joining, or group by unique parent primary keys!</text>\n</svg>",
+    "sections": [
+      {
+        "heading": "1. Non-Equi Joins & Range Slicing (The BETWEEN Pattern)",
+        "content": "In basic SQL, joins rely on strict primary key = foreign key equality (`ON a.id = b.id`). However, real-world data modeling frequently requires joining continuous values to discrete policy brackets:\n```sql\n-- HackerRank Classic: 'The Report'\nSELECT \n    CASE WHEN g.grade >= 8 THEN s.name ELSE NULL END AS student_name,\n    g.grade,\n    s.marks\nFROM Students s\nJOIN Grades g \n  ON s.marks BETWEEN g.min_mark AND g.max_mark\nORDER BY g.grade DESC, \n         CASE WHEN g.grade >= 8 THEN s.name ELSE NULL END ASC, \n         s.marks ASC;\n```\n**How the Storage Engine Executes Non-Equi Joins**:\n- The relational engine cannot use a simple hash join because there is no hash collision on continuous inequalities.\n- Instead, it performs an **Index Range Scan** on the `Grades` B-Tree or a **Nested Loop Join** checking `marks >= min_mark AND marks <= max_mark` for each student tuple.\n- **Enterprise Applications**: Financial tax brackets, tiered pricing models, employee salary bands, and commission bonus schedules."
+      },
+      {
+        "heading": "2. Multi-Table Join Chains & Grain Preservation",
+        "content": "Complex business questions require traversing long entity relationship paths. In HackerRank's **Top Competitors**, you must join 4 separate tables:\n```sql\nSELECT h.hacker_id, h.name\nFROM Submissions s\nJOIN Challenges c ON s.challenge_id = c.challenge_id\nJOIN Difficulty d ON c.difficulty_level = d.difficulty_level\nJOIN Hackers h    ON s.hacker_id = h.hacker_id\nWHERE s.score = d.score\nGROUP BY h.hacker_id, h.name\nHAVING COUNT(s.submission_id) > 1\nORDER BY COUNT(s.submission_id) DESC, h.hacker_id ASC;\n```\n**The Grain Preservation Rule**:\n- Every table has a **grain** (the real-world entity represented by 1 row). `Submissions` has grain *(1 row per attempt)*, while `Hackers` has grain *(1 row per user)*.\n- When joining from detail table to dimension tables (`Submissions` -> `Challenges` -> `Difficulty`), the 1-to-1 or N-to-1 relationship preserves the base grain.\n- If you accidentally join a 1-to-Many table (e.g. `Hackers` joined to both `Submissions` and `Badges`), the rows multiply exponentially, creating phantom totals!"
+      },
+      {
+        "heading": "3. Self-Joins, Hierarchies & Symmetric Pairs",
+        "content": "A **Self-Join** occurs when a table is joined with itself. Because both sides share the same table name, distinct table aliases (`e1`, `e2`) are strictly mandatory.\n\n**Use Case A: Manager-Employee Hierarchies**:\n```sql\nSELECT e.name AS employee, m.name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.emp_id;\n```\n\n**Use Case B: Symmetric Pairs & Directional Deduplication**:\nIn HackerRank's **Symmetric Pairs**, coordinate pairs `(X, Y)` must match `(Y, X)`. A naive join produces mirrored duplicates:\n```sql\nSELECT f1.x, f1.y\nFROM Functions f1\nJOIN Functions f2 \n  ON f1.x = f2.y AND f1.y = f2.x\nWHERE f1.x < f1.y  -- Directional inequality eliminates (2, 20) vs (20, 2) duplicates!\nUNION\nSELECT x, y\nFROM Functions\nWHERE x = y\nGROUP BY x, y\nHAVING COUNT(*) > 1\nORDER BY x;\n```"
+      },
+      {
+        "heading": "4. Set Operations: UNION, UNION ALL, INTERSECT & EXCEPT",
+        "content": "While joins combine columns horizontally from multiple tables, **Set Operations combine rows vertically** from separate query results:\n1. **UNION ALL**: Concatenates results directly with **zero overhead**. Does not inspect rows for duplicates.\n2. **UNION**: Concatenates results and executes an expensive **in-memory hash table or sort step** to remove duplicates.\n3. **INTERSECT**: Returns only rows that exist in both query result sets.\n4. **EXCEPT / MINUS**: Returns rows in the first query that do not exist in the second query.\n\n**Golden Performance Rule**: Always use `UNION ALL` unless business rules explicitly demand unique tuples. In high-volume financial ledgers, replacing `UNION` with `UNION ALL` frequently cuts query execution time by 80%!"
+      }
+    ],
+    "interviewGotchas": [
+      {
+        "title": "The UNION Memory Spill Trap",
+        "trap": "Using UNION on two 10-million row tables forces the query engine to allocate huge temp_table_size memory to hash and deduplicate. When memory runs out, it spills to disk filesort, causing dramatic query latency."
+      },
+      {
+        "title": "The Self-Join Row Doubling Bug",
+        "trap": "In coordinate matching (a.x = b.y AND a.y = b.x), failing to add a directional fence like a.x <= b.x returns every pair twice in opposite directions, corrupting analytical counts."
+      }
+    ]
+  },
+  {
+    "id": "sec_subqueries",
+    "pillarId": "pillar3",
+    "icon": "🎯",
+    "title": "10. Subqueries, Derived Tables, Correlated Logic & Semi-Joins",
+    "badge": "Intermediate Subquery Engine",
+    "badgeClass": "pill-from",
+    "readTime": "16 min read",
+    "summary": "Deep dive into scalar projections, inline derived tables, row-by-row correlated execution loops, subquery unnesting, and the critical EXISTS vs IN optimization boundaries.",
+    "svgDiagram": "<svg viewBox=\"0 0 860 300\" width=\"100%\" height=\"100%\" style=\"min-height: 250px; max-height: 350px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect width=\"860\" height=\"300\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <!-- Header -->\n  <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n    PHYSICAL SUBQUERY EXECUTION: INDEPENDENT vs CORRELATED vs SEMI-JOIN\n  </text>\n\n  <!-- Path A: Independent Subquery -->\n  <rect x=\"20\" y=\"68\" width=\"395\" height=\"135\" fill=\"rgba(56, 189, 248, 0.06)\" rx=\"10\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"35\" y=\"93\" fill=\"#38bdf8\" font-family=\"system-ui, sans-serif\" font-size=\"12\" font-weight=\"900\">PATH A: INDEPENDENT SUBQUERY (O(1) Evaluation)</text>\n  <text x=\"35\" y=\"112\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"700\">WHERE salary &gt; (SELECT AVG(salary) FROM Emp)</text>\n  \n  <rect x=\"35\" y=\"125\" width=\"105\" height=\"30\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"87\" y=\"144\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">Execute Once</text>\n  <path d=\"M 143 140 L 160 140\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n  <rect x=\"163\" y=\"125\" width=\"105\" height=\"30\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"5\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"215\" y=\"144\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">RAM Scalar: $75K</text>\n  <path d=\"M 271 140 L 288 140\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n  <rect x=\"291\" y=\"125\" width=\"110\" height=\"30\" fill=\"#bbf7d0\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n  <text x=\"346\" y=\"144\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">Filter Table</text>\n  <text x=\"35\" y=\"185\" fill=\"#38bdf8\" font-family=\"system-ui, sans-serif\" font-size=\"10.5\" font-weight=\"700\">Subquery runs exactly once; scalar result cached in RAM.</text>\n\n  <!-- Path B: Correlated Subquery -->\n  <rect x=\"440\" y=\"68\" width=\"395\" height=\"135\" fill=\"rgba(244, 63, 94, 0.07)\" rx=\"10\" stroke=\"rgba(244, 63, 94, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"455\" y=\"93\" fill=\"#fb7185\" font-family=\"system-ui, sans-serif\" font-size=\"12\" font-weight=\"900\">PATH B: CORRELATED SUBQUERY (O(N * M) Loop)</text>\n  <text x=\"455\" y=\"112\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"10\" font-weight=\"700\">WHERE coins = (SELECT MIN(coins) ... WHERE w1.age = w2.age)</text>\n  \n  <rect x=\"455\" y=\"125\" width=\"100\" height=\"30\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"505\" y=\"144\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">Outer Row #1</text>\n  <path d=\"M 558 140 L 575 140\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n  <rect x=\"578\" y=\"125\" width=\"115\" height=\"30\" fill=\"rgba(244, 114, 182, 0.07)\" rx=\"5\" stroke=\"rgba(244, 114, 182, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"635\" y=\"144\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"8.5\" font-weight=\"900\" text-anchor=\"middle\">Re-scan Inner N times</text>\n  <path d=\"M 696 140 L 713 140\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n  <rect x=\"716\" y=\"125\" width=\"105\" height=\"30\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"768\" y=\"144\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">Match/Discard</text>\n  <text x=\"455\" y=\"185\" fill=\"#fb7185\" font-family=\"system-ui, sans-serif\" font-size=\"10.5\" font-weight=\"800\">Requires Composite B-Tree Index or becomes catastrophic bottleneck!</text>\n\n  <!-- Bottom Callout Strip -->\n  <rect x=\"20\" y=\"216\" width=\"817\" height=\"66\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"10\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"35\" y=\"238\" fill=\"#fbbf24\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\">\u26a1 THE 'NOT IN (NULL)' CATASTROPHE vs 'NOT EXISTS'</text>\n  <text x=\"35\" y=\"256\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">If the inner query of 'WHERE id NOT IN (SELECT id ...)' contains even a single NULL, 3VL returns UNKNOWN for ALL rows.</text>\n  <text x=\"35\" y=\"272\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">Result: 0 rows returned! Always replace 'NOT IN' with 'NOT EXISTS' or a LEFT ANTI-JOIN in production SQL.</text>\n</svg>",
+    "sections": [
+      {
+        "heading": "1. Subquery Typology: Scalar, Row, and Derived Tables",
+        "content": "A subquery is any `SELECT` statement nested inside another SQL statement. The physical engine handles them according to their projected shape:\n\n1. **Scalar Subqueries**: Returns exactly **1 row and 1 column**. Can be used anywhere a literal value is expected (e.g. `SELECT`, `WHERE`, `HAVING`):\n```sql\nSELECT emp_id, salary,\n       (SELECT AVG(salary) FROM Employees) AS company_avg_salary\nFROM Employees;\n```\n*Runtime Danger*: If data changes and the subquery returns 2+ rows, the entire query throws `ERROR 1242: Subquery returns more than 1 row`.\n\n2. **Derived Tables (Subqueries in FROM)**: Evaluates an in-memory temporary table:\n```sql\nSELECT dept_id, MAX(cnt) AS max_hires\nFROM (\n    SELECT dept_id, COUNT(*) AS cnt\n    FROM Employees\n    GROUP BY dept_id\n) AS dept_summary\nGROUP BY dept_id;\n```\n*ANSI Rule*: In standard SQL, derived tables **must** have an explicit table alias (`AS dt`), or the parser throws a syntax error."
+      },
+      {
+        "heading": "2. Correlated Subqueries & Row-by-Row Execution",
+        "content": "An independent subquery executes once. A **Correlated Subquery** references a column from the outer query, forcing the engine to re-evaluate the inner query for **every single candidate row** streamed from the outer table!\n\n**Classic Interview Problem: HackerRank Ollivander's Inventory**:\nQuery the minimum coins needed to buy each non-evil wand with high power and age:\n```sql\nSELECT w.id, wp.age, w.coins_needed, w.power\nFROM Wands w\nJOIN Wands_Property wp ON w.code = wp.code\nWHERE wp.is_evil = 0\n  AND w.coins_needed = (\n      -- Correlated subquery: binds to outer w.power and outer wp.age!\n      SELECT MIN(w2.coins_needed)\n      FROM Wands w2\n      JOIN Wands_Property wp2 ON w2.code = wp2.code\n      WHERE wp2.is_evil = 0\n        AND w2.power = w.power\n        AND wp2.age = wp.age\n  )\nORDER BY w.power DESC, wp.age DESC;\n```\n**Performance Warning**: On a 100,000-row table, a correlated subquery without an index executes 100,000 table scans ($O(N^2)$). Always create a composite index on the correlated join keys (`power`, `age`, `coins_needed`)!"
+      },
+      {
+        "heading": "3. Semi-Joins & Anti-Semi-Joins (EXISTS vs IN)",
+        "content": "When checking for record existence across tables, SQL engines utilize specialized physical execution patterns:\n\n- **EXISTS (Semi-Join)**: Checks whether at least one matching row exists. The physical engine **short-circuits immediately** upon locating the first B-Tree leaf match without reading further rows.\n- **IN (Membership)**: Materializes the entire subquery result set into a temporary in-memory hash table before probing.\n- **The NOT IN (NULL) Disaster**:\n```sql\n-- ❌ DANGEROUS: If any inactive account has a NULL user_id, this returns ZERO rows!\nSELECT * FROM Users WHERE user_id NOT IN (SELECT user_id FROM InactiveAccounts);\n\n-- ✅ BULLETPROOF: Completely immune to NULL values!\nSELECT * FROM Users u WHERE NOT EXISTS (SELECT 1 FROM InactiveAccounts i WHERE i.user_id = u.user_id);\n```\n**Why it fails**: `NOT IN (1, 2, NULL)` expands to `NOT (id=1 OR id=2 OR id=NULL)`. If `id` is not 1 or 2, the expression evaluates to `NOT(UNKNOWN) = UNKNOWN`. Because `WHERE` requires `TRUE`, all rows are discarded!"
+      },
+      {
+        "heading": "4. Subqueries in HAVING: Dynamic Aggregation Thresholds",
+        "content": "When filtering aggregate groups, hardcoding static thresholds (`HAVING COUNT(*) > 5`) is insufficient. Enterprise analytics requires comparing group metrics against dynamic calculated maximums:\n\n**HackerRank Classic: Challenges**:\nFilter students who either created the maximum number of challenges, or created a unique challenge count not shared by any other student:\n```sql\nSELECT h.hacker_id, h.name, COUNT(c.challenge_id) AS total_challenges\nFROM Hackers h\nJOIN Challenges c ON h.hacker_id = c.hacker_id\nGROUP BY h.hacker_id, h.name\nHAVING total_challenges = (\n    -- Subquery 1: Global Maximum Challenge Count\n    SELECT MAX(cnt)\n    FROM (SELECT COUNT(*) AS cnt FROM Challenges GROUP BY hacker_id) AS max_sub\n)\nOR total_challenges IN (\n    -- Subquery 2: Unique Counts (No Ties)\n    SELECT cnt\n    FROM (SELECT COUNT(*) AS cnt FROM Challenges GROUP BY hacker_id) AS unique_sub\n    GROUP BY cnt\n    HAVING COUNT(cnt) = 1\n)\nORDER BY total_challenges DESC, h.hacker_id ASC;\n```"
+      }
+    ],
+    "interviewGotchas": [
+      {
+        "title": "The Runtime Cardinality Crash",
+        "trap": "Writing WHERE id = (SELECT id FROM Orders WHERE status = 'PENDING') works in local testing when only 1 pending order exists, but crashes production with 'Subquery returns more than 1 row' the moment multiple pending orders arrive."
+      },
+      {
+        "title": "The Correlated Cartesian Stall",
+        "trap": "Running a correlated subquery inside SELECT over a large dataset forces the database into a row-by-row nested loop, pinning CPU at 100% and causing query timeouts."
+      }
+    ]
+  },
+  {
+    "id": "sec_ctes",
+    "pillarId": "pillar3",
+    "icon": "🌲",
+    "title": "11. Common Table Expressions (CTEs), Modular Pipelines & Recursive Hierarchies",
+    "badge": "Intermediate Pipeline Architecture",
+    "badgeClass": "pill-from",
+    "readTime": "15 min read",
+    "summary": "Build modular, maintainable data transformation pipelines with non-recursive CTEs (WITH), understand physical inlining vs materialization, and master recursive CTEs for tree hierarchies and continuous date generators.",
+    "svgDiagram": "<svg viewBox=\"0 0 860 300\" width=\"100%\" height=\"100%\" style=\"min-height: 250px; max-height: 350px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect width=\"860\" height=\"300\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <!-- Header -->\n  <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n    COMMON TABLE EXPRESSIONS: MODULAR PIPELINES &amp; RECURSIVE ENGINE LOOPS\n  </text>\n\n  <!-- Part 1: Modular DAG Pipeline -->\n  <rect x=\"20\" y=\"68\" width=\"380\" height=\"135\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"10\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"35\" y=\"93\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"12\" font-weight=\"900\">1. LINEAR PIPELINE (WITH cte1, cte2)</text>\n  <text x=\"35\" y=\"112\" fill=\"#4ade80\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"700\">Top-Down Data Flow (Zero Nesting)</text>\n  \n  <rect x=\"35\" y=\"125\" width=\"95\" height=\"28\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"82\" y=\"143\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">raw_sales</text>\n  <path d=\"M 132 139 L 148 139\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n  <rect x=\"150\" y=\"125\" width=\"105\" height=\"28\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"202\" y=\"143\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">pre_aggregate</text>\n  <path d=\"M 257 139 L 273 139\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n  <rect x=\"275\" y=\"125\" width=\"105\" height=\"28\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"5\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"327\" y=\"143\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"900\" text-anchor=\"middle\">final_report</text>\n  <text x=\"35\" y=\"175\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"700\">Replaces 5-level nested subquery pyramids.</text>\n  <text x=\"35\" y=\"190\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"700\">Engine inlines or materializes based on cost.</text>\n\n  <!-- Part 2: Recursive Engine Loop -->\n  <rect x=\"425\" y=\"68\" width=\"410\" height=\"135\" fill=\"#f3e8ff\" rx=\"10\" stroke=\"rgba(255, 255, 255, 0.12)\" stroke-width=\"1\"/>\n  <text x=\"440\" y=\"93\" fill=\"#c084fc\" font-family=\"system-ui, sans-serif\" font-size=\"12\" font-weight=\"900\">2. RECURSIVE ENGINE LOOP (WITH RECURSIVE)</text>\n  <text x=\"440\" y=\"112\" fill=\"#c084fc\" font-family=\"monospace\" font-size=\"10.5\" font-weight=\"700\">Anchor Member -&gt; UNION ALL -&gt; Recursive Step</text>\n  \n  <rect x=\"440\" y=\"125\" width=\"90\" height=\"28\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"485\" y=\"143\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"8.5\" font-weight=\"900\" text-anchor=\"middle\">Anchor (L0)</text>\n  <path d=\"M 532 139 L 548 139\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n  <rect x=\"550\" y=\"125\" width=\"115\" height=\"28\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"5\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"607\" y=\"143\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"8.5\" font-weight=\"900\" text-anchor=\"middle\">Working Table</text>\n  <path d=\"M 667 139 L 683 139\" stroke=\"rgba(255, 255, 255, 0.3)\" stroke-width=\"1.5\"/>\n  <rect x=\"685\" y=\"125\" width=\"135\" height=\"28\" fill=\"rgba(192, 132, 252, 0.07)\" rx=\"5\" stroke=\"rgba(192, 132, 252, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"752\" y=\"143\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"8.5\" font-weight=\"900\" text-anchor=\"middle\">Intermediate Accumulator</text>\n  <text x=\"440\" y=\"175\" fill=\"#c084fc\" font-family=\"system-ui, sans-serif\" font-size=\"10\" font-weight=\"700\">Loops until Working Table is empty (Termination condition).</text>\n  <text x=\"440\" y=\"190\" fill=\"#fb7185\" font-family=\"system-ui, sans-serif\" font-size=\"9.5\" font-weight=\"800\">Essential for Org Charts, BOM &amp; Gapless Date Generators!</text>\n\n  <!-- Bottom Callout Strip -->\n  <rect x=\"20\" y=\"216\" width=\"817\" height=\"66\" fill=\"rgba(244, 63, 94, 0.07)\" rx=\"10\" stroke=\"rgba(244, 63, 94, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"35\" y=\"238\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\">\u26a0\ufe0f SENIOR INTERVIEW TRAP: UNBOUNDED RECURSION STACK OVERFLOW</text>\n  <text x=\"35\" y=\"256\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">A circular reference in an employee-manager hierarchy (A manages B, B manages A) causes an infinite loop.</text>\n  <text x=\"35\" y=\"272\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">Always enforce safety bounds: 'WHERE depth &lt; 50' or configure 'SET cte_max_recursion_depth = 1000'.</text>\n</svg>",
+    "sections": [
+      {
+        "heading": "1. The CTE Architecture: Eliminating the Pyramid of Doom",
+        "content": "A **Common Table Expression (CTE)** defines a temporary named result set available within the execution scope of a single query. Introduced in ANSI SQL:1999 and supported in MySQL 8.0+, PostgreSQL, SQL Server, and Oracle:\n```sql\nWITH RegionalRevenue AS (\n    SELECT region_id, SUM(amount) AS total_rev\n    FROM Sales\n    WHERE sale_date >= '2026-01-01'\n    GROUP BY region_id\n),\nTopRegions AS (\n    SELECT region_id\n    FROM RegionalRevenue\n    WHERE total_rev > 1000000\n)\nSELECT r.region_name, rr.total_rev\nFROM TopRegions tr\nJOIN RegionalRevenue rr ON tr.region_id = rr.region_id\nJOIN Regions r          ON tr.region_id = r.region_id;\n```\n**Why Enterprise Codebases Mandate CTEs**:\n- **Cognitive Clarity**: Queries are read top-to-bottom like clean procedural code, rather than inside-out like nested subquery pyramids.\n- **Single Source of Truth**: A CTE defined once can be referenced multiple times within the downstream query, avoiding code duplication."
+      },
+      {
+        "heading": "2. Physical Engine Mechanics: Materialization vs. Inlining",
+        "content": "Under the hood, database optimizers handle CTEs in two distinct physical ways:\n\n1. **Inlining (AST Macro Substitution)**:\nThe optimizer takes the CTE query text and merges it directly into the main query's Abstract Syntax Tree. This allows the optimizer to push down `WHERE` predicates and utilize indexes on the underlying tables.\n\n2. **Materialization (Temporary RAM Table)**:\nThe optimizer executes the CTE once, saves the resulting tuples into an in-memory temporary table (or on disk if `tmp_table_size` is exceeded), and scans that temp table.\n- **MySQL 8.0 Rule**: Non-recursive CTEs are inlined by default unless they contain window functions, aggregations, or are referenced multiple times.\n- **PostgreSQL 12+ Control**: Developers can explicitly guide the optimizer:\n```sql\nWITH cte AS MATERIALIZED (SELECT ...)    -- Forces execution into temp table\nWITH cte AS NOT MATERIALIZED (SELECT ...)-- Forces inlining\n```"
+      },
+      {
+        "heading": "3. Recursive CTEs (WITH RECURSIVE): The Inductive Loop",
+        "content": "A **Recursive CTE** references itself, allowing SQL to iterate through graphs, tree structures, and sequences without procedural loops (`WHILE` / `FOR`).\n\n**The 3 Mandatory Components**:\n```sql\nWITH RECURSIVE NumberSequence AS (\n    -- 1. ANCHOR MEMBER: Initial Seed (Iteration 0)\n    SELECT 1 AS num\n    \n    UNION ALL\n    \n    -- 2. RECURSIVE MEMBER: Inductive Step (Iteration n + 1)\n    SELECT num + 1\n    FROM NumberSequence\n    -- 3. TERMINATION CONDITION: Prevents infinite loop!\n    WHERE num < 10\n)\nSELECT num FROM NumberSequence;\n```\n**Physical Execution Cycle**:\n1. The engine executes the **Anchor Member** and writes the rows to an internal **Working Table** and an **Accumulator**.\n2. The engine executes the **Recursive Member** using the Working Table as its input source.\n3. If the recursive member produces rows, the Working Table is replaced with the new rows, and the rows are appended to the Accumulator.\n4. Steps 2-3 repeat until the Working Table is empty."
+      },
+      {
+        "heading": "4. Enterprise Use Cases: Hierarchies & Gapless Date Tables",
+        "content": "**Use Case A: Employee Management Tree (Org Chart Traversal)**:\n```sql\nWITH RECURSIVE OrgHierarchy AS (\n    -- Anchor: Find Top-Level CEO (no manager)\n    SELECT emp_id, name, manager_id, 1 AS depth, CAST(name AS CHAR(200)) AS path\n    FROM Employees\n    WHERE manager_id IS NULL\n    \n    UNION ALL\n    \n    -- Recursive Step: Find all direct reports for the current level\n    SELECT e.emp_id, e.name, e.manager_id, h.depth + 1, CONCAT(h.path, ' -> ', e.name)\n    FROM Employees e\n    JOIN OrgHierarchy h ON e.manager_id = h.emp_id\n    WHERE h.depth < 10 -- Safety fence\n)\nSELECT depth, path FROM OrgHierarchy ORDER BY depth, path;\n```\n\n**Use Case B: Continuous Date Table Generator (Financial Analytics Essential)**:\nFinancial and cohort models fail if a day with $0 revenue drops out of the dataset. A recursive CTE generates a gapless calendar:\n```sql\nWITH RECURSIVE Calendar AS (\n    SELECT DATE('2026-01-01') AS cal_date\n    UNION ALL\n    SELECT DATE_ADD(cal_date, INTERVAL 1 DAY)\n    FROM Calendar\n    WHERE cal_date < '2026-01-31'\n)\nSELECT c.cal_date, COALESCE(SUM(s.amount), 0) AS daily_revenue\nFROM Calendar c\nLEFT JOIN Sales s ON c.cal_date = s.sale_date\nGROUP BY c.cal_date\nORDER BY c.cal_date;\n```"
+      }
+    ],
+    "interviewGotchas": [
+      {
+        "title": "The Circular Reference Infinite Loop",
+        "trap": "In organizational charts, if employee A lists B as manager, and B lists A as manager, a recursive CTE will spin in an infinite loop until it crashes with 'Recursive query aborted after 1001 iterations. Try increasing @@cte_max_recursion_depth'."
+      },
+      {
+        "title": "The UNION ALL vs UNION Syntax Failure",
+        "trap": "Recursive CTEs strictly mandate UNION ALL. Using UNION throws a syntax error in PostgreSQL and causes massive deduplication hash table overhead in MySQL."
+      }
+    ]
+  },
+{
+  "id": "sec_window_functions",
+  "pillarId": "pillar4",
+  "icon": "🪟",
+  "title": "12. Analytical Window Functions, Value Offsets & Sliding Window Physics",
+  "badge": "Advanced Analytics Engine",
+  "badgeClass": "pill-select",
+  "readTime": "18 min read",
+  "summary": "Master the crown jewel of analytical SQL: partition fences, row ranking mechanics (ROW_NUMBER vs RANK vs DENSE_RANK), value offset navigation (LAG / LEAD), and physical sliding frame apertures (ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW).",
+  "svgDiagram": "<svg viewBox=\"0 0 860 300\" width=\"100%\" height=\"100%\" style=\"min-height: 250px; max-height: 350px; display: block;\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect width=\"860\" height=\"300\" fill=\"#080c14\" rx=\"14\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <!-- Header -->\n  <rect x=\"18\" y=\"16\" width=\"824\" height=\"34\" fill=\"rgba(255, 255, 255, 0.03)\" rx=\"8\" stroke=\"rgba(56, 189, 248, 0.25)\" stroke-width=\"1\"/>\n  <text x=\"430\" y=\"38\" fill=\"#38bdf8\" font-family=\"system-ui, -apple-system, sans-serif\" font-size=\"13\" font-weight=\"900\" text-anchor=\"middle\" letter-spacing=\"0.5\">\n    WINDOW FUNCTION MECHANICS: PARTITION FENCES, RANKING TRIAD &amp; SLIDING FRAMES\n  </text>\n\n  <!-- Section 1: Non-Destructive Partitioning -->\n  <rect x=\"20\" y=\"68\" width=\"260\" height=\"135\" fill=\"rgba(250, 204, 21, 0.07)\" rx=\"10\" stroke=\"rgba(250, 204, 21, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"35\" y=\"93\" fill=\"#fbbf24\" font-family=\"system-ui, sans-serif\" font-size=\"11.5\" font-weight=\"900\">1. PARTITION BY (NO ROW COLLAPSE)</text>\n  <text x=\"35\" y=\"110\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"700\">OVER (PARTITION BY dept)</text>\n  \n  <rect x=\"35\" y=\"122\" width=\"230\" height=\"22\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"42\" y=\"137\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"800\">Alice (Eng, $120k) \u2500\u2500\u25ba Rank: 2</text>\n  <rect x=\"35\" y=\"148\" width=\"230\" height=\"22\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"42\" y=\"163\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"800\">Bob   (Eng, $140k) \u2500\u2500\u25ba Rank: 1</text>\n  <text x=\"35\" y=\"190\" fill=\"#fbbf24\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"800\">Every detail row preserved (N -> N)!</text>\n\n  <!-- Section 2: The Ranking Triad -->\n  <rect x=\"295\" y=\"68\" width=\"265\" height=\"135\" fill=\"rgba(244, 114, 182, 0.07)\" rx=\"10\" stroke=\"rgba(244, 114, 182, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"310\" y=\"93\" fill=\"#f472b6\" font-family=\"system-ui, sans-serif\" font-size=\"11.5\" font-weight=\"900\">2. THE TIE-BREAKING TRIAD</text>\n  <text x=\"310\" y=\"110\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"700\">Tied Scores: [100, 90, 90, 80]</text>\n  \n  <rect x=\"310\" y=\"122\" width=\"235\" height=\"18\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"3\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"315\" y=\"135\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"8.5\" font-weight=\"800\">ROW_NUMBER() : 1, 2, 3, 4 (No ties)</text>\n  <rect x=\"310\" y=\"144\" width=\"235\" height=\"18\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"3\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"315\" y=\"157\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"8.5\" font-weight=\"800\">RANK()       : 1, 2, 2, 4 (Gaps!)</text>\n  <rect x=\"310\" y=\"166\" width=\"235\" height=\"18\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"3\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"315\" y=\"179\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"8.5\" font-weight=\"800\">DENSE_RANK() : 1, 2, 2, 3 (No gaps)</text>\n\n  <!-- Section 3: Sliding Frame Aperture & Offsets -->\n  <rect x=\"575\" y=\"68\" width=\"260\" height=\"135\" fill=\"rgba(34, 197, 94, 0.07)\" rx=\"10\" stroke=\"rgba(34, 197, 94, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"590\" y=\"93\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"11.5\" font-weight=\"900\">3. SLIDING FRAMES &amp; OFFSETS</text>\n  <text x=\"590\" y=\"110\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9.5\" font-weight=\"700\">LAG(rev, 1) -&gt; MoM Growth</text>\n  \n  <rect x=\"590\" y=\"122\" width=\"230\" height=\"22\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"595\" y=\"137\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"800\">SUM() OVER (ROWS UNBOUNDED PRECEDING)</text>\n  <rect x=\"590\" y=\"148\" width=\"230\" height=\"22\" fill=\"rgba(0, 0, 0, 0.45)\" rx=\"4\" stroke=\"rgba(255, 255, 255, 0.1)\" stroke-width=\"1\"/>\n  <text x=\"595\" y=\"163\" fill=\"#cbd5e1\" font-family=\"monospace\" font-size=\"9\" font-weight=\"800\">AVG() OVER (ROWS 6 PRECEDING) [7-Day]</text>\n  <text x=\"590\" y=\"190\" fill=\"#4ade80\" font-family=\"system-ui, sans-serif\" font-size=\"9\" font-weight=\"800\">Running Totals &amp; Moving Averages</text>\n\n  <!-- Bottom Callout Strip -->\n  <rect x=\"20\" y=\"216\" width=\"815\" height=\"66\" fill=\"rgba(244, 63, 94, 0.07)\" rx=\"10\" stroke=\"rgba(244, 63, 94, 0.3)\" stroke-width=\"1\"/>\n  <text x=\"35\" y=\"238\" fill=\"#fb7185\" font-family=\"monospace\" font-size=\"11\" font-weight=\"900\">\u26a0\ufe0f CRITICAL EXECUTION RULE: WHY WINDOW FUNCTIONS FAIL IN WHERE</text>\n  <text x=\"35\" y=\"256\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">WHERE evaluates at Step 02, while Window Functions calculate at Step 05. The rank value physically does not exist yet!</text>\n  <text x=\"35\" y=\"272\" fill=\"#cbd5e1\" font-family=\"system-ui, sans-serif\" font-size=\"11\" font-weight=\"700\">Universal Solution: Wrap in a Common Table Expression (CTE) or Derived Table, then filter 'WHERE rnk &lt;= 3'.</text>\n</svg>",
+  "sections": [
+    {
+      "heading": "1. The Non-Destructive Analytical Paradigm",
+      "content": "Before window functions were codified in SQL:2003, calculating peer-relative metrics or running balances required expensive self-joins or temporary tables. \n\n**The Architectural Difference**:\n- **`GROUP BY` (Destructive)**: Collapses input rows into summary buckets. Detail rows are discarded ($N \\to 1$).\n- **Window Functions (Non-Destructive)**: Evaluates aggregate, ranking, or offset expressions across a virtual window partition while **retaining every individual input row** ($N \\to N$).\n\n```sql\n-- Full employee detail preserved alongside department aggregate\nSELECT employee_id, department_id, salary,\n       AVG(salary) OVER(PARTITION BY department_id) AS dept_avg_salary,\n       salary - AVG(salary) OVER(PARTITION BY department_id) AS variance_from_avg\nFROM Employees;\n```"
+    },
+    {
+      "heading": "2. The Big 4 Ranking Triad & Quantiles",
+      "content": "Understanding how tied values are handled is the single most tested concept in technical SQL screens:\n\n1. **`ROW_NUMBER()`**: Strictly sequential ($1, 2, 3, 4, 5$). Completely ignores ties. If no unique secondary sort key is provided, tie resolution is non-deterministic.\n2. **`RANK()`**: Olympic competition ranking ($1, 2, 2, 4, 5$). Tied rows share the same rank, and subsequent rank numbers are skipped by the tie multiplicity.\n3. **`DENSE_RANK()`**: Compact level ranking ($1, 2, 2, 3, 4$). Tied rows share the same rank, and the next row receives the immediate next integer without gaps. Essential for 'Top N Salary' problems.\n4. **`NTILE(k)`**: Divides ordered partition rows into $k$ roughly equal-sized buckets. If $N$ is not divisible by $k$, extra rows are distributed to the lowest-numbered buckets first."
+    },
+    {
+      "heading": "3. Value Navigation: Offsets, Growth & Churn",
+      "content": "Window offset functions allow relational engines to peek forward or backward across rows without complex self-joins:\n\n- **`LAG(col, offset, default)`**: Accesses data from a preceding row. The engine standard for calculating **Month-over-Month (MoM)** growth:\n```sql\nWITH MonthlyRevenue AS (\n    SELECT DATE_FORMAT(order_date, '%Y-%m-01') AS rev_month, SUM(amount) AS revenue\n    FROM Orders GROUP BY 1\n)\nSELECT rev_month, revenue,\n       LAG(revenue, 1, 0) OVER (ORDER BY rev_month ASC) AS prev_month_revenue,\n       ROUND((revenue - LAG(revenue, 1) OVER (ORDER BY rev_month ASC)) \n             / NULLIF(LAG(revenue, 1) OVER (ORDER BY rev_month ASC), 0) * 100.0, 2) AS mom_growth_pct\nFROM MonthlyRevenue;\n```\n- **`LEAD(col, offset, default)`**: Accesses data from a subsequent row. Used to compute session timeouts and time-to-conversion."
+    },
+    {
+      "heading": "4. Physical Frame Apertures: ROWS vs. RANGE",
+      "content": "When an `ORDER BY` is added to a window function without an explicit frame clause, SQL engines apply a dangerous default:\n`RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`\n\n- **`ROWS` (Physical Rows)**: Operates on exact row counts regardless of duplicate values.\n- **`RANGE` (Logical Values)**: Groups duplicate values together. If two rows have the same timestamp, `RANGE` includes *both* in the running total at the same time, producing unexpected aggregate spikes!\n\n**Best Practice**: Always explicitly specify the physical frame:\n- **Running Total**: `SUM(amount) OVER (PARTITION BY account_id ORDER BY trans_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)`\n- **7-Day Moving Average**: `AVG(signups) OVER (ORDER BY signup_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)`"
+    },
+    {
+      "heading": "5. Execution Lifecycle & The CTE / QUALIFY Pattern",
+      "content": "A universal interview trap is attempting to write `WHERE ROW_NUMBER() OVER (...) <= 3`.\n\n**Physical Execution Sequence**:\n1. `FROM` & `JOIN`\n2. `WHERE` (Row filtering)\n3. `GROUP BY`\n4. `HAVING`\n5. **WINDOW FUNCTIONS** (Computed here at Step 5!)\n6. `SELECT`\n7. `ORDER BY`\n8. `LIMIT`\n\nBecause `WHERE` executes at Step 2, window results literally do not exist when `WHERE` runs. \n\n**Universal Solution**: Wrap the window calculation in a CTE or derived table, then filter in the outer query:"
+    }
+  ],
+  "interviewGotchas": [
+    {
+      "title": "The Indeterminate Sorting Hazard",
+      "trap": "Using ROW_NUMBER() with an ORDER BY on a non-unique column (like order_date) causes non-deterministic query results. Different runs may select different rows as rank 1! Always append a unique tie-breaker: 'ORDER BY order_date DESC, order_id DESC'."
+    },
+    {
+      "title": "The Default RANGE Cumulative Inflation",
+      "trap": "Defaulting to RANGE instead of ROWS means tied dates accumulate together. If two sales occur on Monday, Monday's running total will immediately jump to include both rows on the first row."
+    },
+    {
+      "title": "The WHERE Window Function Crash",
+      "trap": "Filtering window functions in WHERE throws 'Window functions are not allowed in WHERE'. Always encapsulate in a CTE and filter 'WHERE rnk <= 3' in the outer query."
+    }
+  ]
+},
+  {
+    "id": "sec_business_analytics",
+    "pillarId": "pillar4",
+    "icon": "📊",
+    "title": "13. Advanced Business Analytics: Churn, Retention Cohorts & LTV Curves",
+    "badge": "Analytics Engineering",
+    "badgeClass": "pill-group",
+    "readTime": "15 min read",
+    "summary": "Master enterprise cohort analysis, retention triangle heatmaps, customer churn bridge waterfalls, and cumulative Customer Lifetime Value (LTV) curves using window framing and date truncations.",
+    "svgDiagram": `
+      <svg viewBox="0 0 860 280" width="100%" height="100%" style="min-height: 230px; max-height: 330px; display: block;" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="280" fill="#080c14" rx="14" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
+        <rect x="18" y="16" width="824" height="34" fill="rgba(255, 255, 255, 0.03)" rx="8" stroke="rgba(56, 189, 248, 0.25)" stroke-width="1"/>
+        <text x="430" y="38" fill="#38bdf8" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="900" text-anchor="middle" letter-spacing="0.5">
+          ENTERPRISE COHORT RETENTION TRIANGLE &amp; CHURN BRIDGE WATERFALL ENGINE
+        </text>
+
+        <!-- Left: Retention Triangle Heatmap Matrix -->
+        <g transform="translate(20, 65)">
+          <rect width="400" height="195" fill="rgba(255,255,255,0.02)" rx="8" stroke="rgba(255,255,255,0.08)"/>
+          <text x="15" y="22" fill="#38bdf8" font-family="monospace" font-size="10.5" font-weight="900">📐 RETENTION TRIANGLE MATRIX (COHORT % BY MONTH)</text>
+          
+          <!-- Column Headers -->
+          <text x="60" y="42" fill="#94a3b8" font-family="monospace" font-size="8.5">Cohort</text>
+          <text x="125" y="42" fill="#38bdf8" font-family="monospace" font-size="8.5">M0</text>
+          <text x="180" y="42" fill="#38bdf8" font-family="monospace" font-size="8.5">M1</text>
+          <text x="235" y="42" fill="#38bdf8" font-family="monospace" font-size="8.5">M2</text>
+          <text x="290" y="42" fill="#38bdf8" font-family="monospace" font-size="8.5">M3</text>
+          <text x="345" y="42" fill="#38bdf8" font-family="monospace" font-size="8.5">M4</text>
+
+          <!-- Row 1: Jan 2026 -->
+          <text x="20" y="66" fill="#cbd5e1" font-family="monospace" font-size="8.5">2026-01</text>
+          <rect x="115" y="52" width="45" height="20" fill="rgba(34,197,94,0.4)" rx="3"/>
+          <text x="137" y="66" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">100%</text>
+          <rect x="170" y="52" width="45" height="20" fill="rgba(34,197,94,0.28)" rx="3"/>
+          <text x="192" y="66" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">68%</text>
+          <rect x="225" y="52" width="45" height="20" fill="rgba(34,197,94,0.20)" rx="3"/>
+          <text x="247" y="66" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">54%</text>
+          <rect x="280" y="52" width="45" height="20" fill="rgba(34,197,94,0.15)" rx="3"/>
+          <text x="302" y="66" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">47%</text>
+          <rect x="335" y="52" width="45" height="20" fill="rgba(34,197,94,0.12)" rx="3"/>
+          <text x="357" y="66" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">42%</text>
+
+          <!-- Row 2: Feb 2026 -->
+          <text x="20" y="96" fill="#cbd5e1" font-family="monospace" font-size="8.5">2026-02</text>
+          <rect x="115" y="82" width="45" height="20" fill="rgba(34,197,94,0.4)" rx="3"/>
+          <text x="137" y="96" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">100%</text>
+          <rect x="170" y="82" width="45" height="20" fill="rgba(34,197,94,0.30)" rx="3"/>
+          <text x="192" y="96" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">71%</text>
+          <rect x="225" y="82" width="45" height="20" fill="rgba(34,197,94,0.22)" rx="3"/>
+          <text x="247" y="96" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">58%</text>
+          <rect x="280" y="82" width="45" height="20" fill="rgba(34,197,94,0.17)" rx="3"/>
+          <text x="302" y="96" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">51%</text>
+
+          <!-- Row 3: Mar 2026 -->
+          <text x="20" y="126" fill="#cbd5e1" font-family="monospace" font-size="8.5">2026-03</text>
+          <rect x="115" y="112" width="45" height="20" fill="rgba(34,197,94,0.4)" rx="3"/>
+          <text x="137" y="126" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">100%</text>
+          <rect x="170" y="112" width="45" height="20" fill="rgba(34,197,94,0.32)" rx="3"/>
+          <text x="192" y="126" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">74%</text>
+          <rect x="225" y="112" width="45" height="20" fill="rgba(34,197,94,0.24)" rx="3"/>
+          <text x="247" y="126" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">61%</text>
+
+          <!-- Row 4: Apr 2026 -->
+          <text x="20" y="156" fill="#cbd5e1" font-family="monospace" font-size="8.5">2026-04</text>
+          <rect x="115" y="142" width="45" height="20" fill="rgba(34,197,94,0.4)" rx="3"/>
+          <text x="137" y="156" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">100%</text>
+          <rect x="170" y="142" width="45" height="20" fill="rgba(34,197,94,0.34)" rx="3"/>
+          <text x="192" y="156" fill="#ffffff" font-family="monospace" font-size="8" text-anchor="middle">76%</text>
+
+          <text x="20" y="182" fill="#64748b" font-family="system-ui, sans-serif" font-size="8">Offset: (active_year - cohort_year)*12 + (active_month - cohort_month)</text>
+        </g>
+
+        <!-- Right: SaaS MRR Churn Waterfall Bridge -->
+        <g transform="translate(435, 65)">
+          <rect width="405" height="195" fill="rgba(255,255,255,0.02)" rx="8" stroke="rgba(255,255,255,0.08)"/>
+          <text x="15" y="22" fill="#fbbf24" font-family="monospace" font-size="10.5" font-weight="900">🌊 SAAS MRR CHURN &amp; EXPANSION BRIDGE</text>
+          
+          <!-- Waterfall bars -->
+          <g transform="translate(15, 40)">
+            <!-- Bar 1: Starting MRR -->
+            <rect x="5" y="40" width="48" height="80" fill="rgba(56,189,248,0.25)" stroke="#38bdf8" rx="3"/>
+            <text x="29" y="32" fill="#38bdf8" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">$100k</text>
+            <text x="29" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">Starting</text>
+
+            <!-- Bar 2: New MRR -->
+            <rect x="68" y="20" width="48" height="40" fill="rgba(34,197,94,0.3)" stroke="#4ade80" rx="3"/>
+            <text x="92" y="12" fill="#4ade80" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">+$25k</text>
+            <text x="92" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">New</text>
+
+            <!-- Bar 3: Expansion MRR -->
+            <rect x="131" y="10" width="48" height="30" fill="rgba(192,132,252,0.3)" stroke="#c084fc" rx="3"/>
+            <text x="155" y="4" fill="#c084fc" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">+$15k</text>
+            <text x="155" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">Expansion</text>
+
+            <!-- Bar 4: Contraction MRR -->
+            <rect x="194" y="60" width="48" height="25" fill="rgba(245,158,11,0.3)" stroke="#fbbf24" rx="3"/>
+            <text x="218" y="52" fill="#fbbf24" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">-$8k</text>
+            <text x="218" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">Contraction</text>
+
+            <!-- Bar 5: Churn MRR -->
+            <rect x="257" y="75" width="48" height="35" fill="rgba(244,63,94,0.3)" stroke="#fb7185" rx="3"/>
+            <text x="281" y="68" fill="#fb7185" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">-$12k</text>
+            <text x="281" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">Full Churn</text>
+
+            <!-- Bar 6: Ending MRR -->
+            <rect x="320" y="20" width="48" height="100" fill="rgba(34,197,94,0.3)" stroke="#22c55e" rx="3" stroke-width="1.5"/>
+            <text x="344" y="12" fill="#4ade80" font-family="monospace" font-size="8" font-weight="bold" text-anchor="middle">$120k</text>
+            <text x="344" y="132" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="7.5" text-anchor="middle">Ending Net</text>
+          </g>
+          <text x="20" y="182" fill="#64748b" font-family="system-ui, sans-serif" font-size="8">NRR = (Starting + Expansion - Contraction - Churn) / Starting = 120%</text>
+        </g>
+      </svg>
+    `,
+    "sections": [
+      {
+        "heading": "1. Cohort Construction & First-Touch Attribution",
+        "content": "Cohort analysis tracks groups of users sharing a common acquisition date over time. Building a retention cohort requires a 3-step CTE architecture:\n\n1. **First-Action CTE**: Pinpoint the initial activation date per user using `MIN(order_date)`.\n2. **Activity Stream CTE**: Map all repeat orders by calendar month.\n3. **Cohort Index Calculation**: Derive the discrete integer month offset:\n```sql\nWITH UserCohorts AS (\n    SELECT user_id, DATE_FORMAT(MIN(order_date), '%Y-%m-01') AS cohort_month\n    FROM Orders\n    GROUP BY user_id\n),\nUserActivity AS (\n    SELECT DISTINCT o.user_id, c.cohort_month,\n           DATE_FORMAT(o.order_date, '%Y-%m-01') AS activity_month,\n           TIMESTAMPDIFF(MONTH, c.cohort_month, o.order_date) AS month_number\n    FROM Orders o\n    JOIN UserCohorts c ON o.user_id = c.user_id\n)\nSELECT cohort_month, month_number, COUNT(DISTINCT user_id) AS active_users\nFROM UserActivity\nGROUP BY cohort_month, month_number\nORDER BY cohort_month, month_number;\n```"
+      },
+      {
+        "heading": "2. The Triangle Retention Heatmap (Pivoting Month Offsets)",
+        "content": "To render the classic triangular retention heatmap, we pivot the `month_number` offset counts against the `month_0` baseline:\n\n```sql\nWITH CohortSizes AS (\n    SELECT cohort_month, COUNT(DISTINCT user_id) AS cohort_size\n    FROM UserActivity WHERE month_number = 0\n    GROUP BY cohort_month\n)\nSELECT a.cohort_month, cs.cohort_size,\n       ROUND(COUNT(DISTINCT CASE WHEN month_number = 1 THEN a.user_id END) * 100.0 / cs.cohort_size, 1) AS m1_retention_pct,\n       ROUND(COUNT(DISTINCT CASE WHEN month_number = 2 THEN a.user_id END) * 100.0 / cs.cohort_size, 1) AS m2_retention_pct,\n       ROUND(COUNT(DISTINCT CASE WHEN month_number = 3 THEN a.user_id END) * 100.0 / cs.cohort_size, 1) AS m3_retention_pct\nFROM UserActivity a\nJOIN CohortSizes cs ON a.cohort_month = cs.cohort_month\nGROUP BY a.cohort_month, cs.cohort_size\nORDER BY a.cohort_month;\n```"
+      },
+      {
+        "heading": "3. SaaS MRR Churn Bridge & Net Revenue Retention (NRR)",
+        "content": "Measuring revenue retention is far more critical than raw user counts. **Net Revenue Retention (NRR)** accounts for upgrades, downgrades, and cancellations:\n\nNRR = ((Starting MRR + Expansion - Contraction - Churn) / Starting MRR) * 100%\n\nUsing `LAG()` over consecutive billing cycles enables deterministic status classification:\n- **New**: `prev_mrr IS NULL AND current_mrr > 0`\n- **Retained**: `prev_mrr = current_mrr`\n- **Expansion**: `current_mrr > prev_mrr`\n- **Contraction**: `current_mrr < prev_mrr AND current_mrr > 0`\n- **Churn**: `current_mrr = 0 OR current_mrr IS NULL`"
+      },
+      {
+        "heading": "4. Cumulative LTV Curves with Running Frame Windows",
+        "content": "Customer Lifetime Value (LTV) curves depict the average cumulative gross margin a cohort generates over $N$ months of tenure:\n\n```sql\nSELECT cohort_month, month_number,\n       SUM(monthly_revenue) OVER (\n           PARTITION BY cohort_month\n           ORDER BY month_number\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) / cohort_size AS cumulative_ltv\nFROM CohortMonthlyRevenue;\n```\nWhen cumulative LTV surpasses Customer Acquisition Cost (CAC) by 3x+ within 12 months, unit economics are declared venture-scalable."
+      }
+    ],
+    "diff": {
+      "badTitle": "Correlated Subquery per Cohort Cell",
+      "badSql": "SELECT cohort_month,\n  (SELECT COUNT(*) FROM Orders o2 WHERE o2.user_id IN (...) AND o2.order_date BETWEEN '2026-02-01' AND '2026-02-28') / cohort_size\nFROM Cohorts;",
+      "badExplanation": "Fires quadratic subqueries for every cell in the triangle matrix, triggering millions of nested table scans.",
+      "goodTitle": "Single-Pass Windowed CTE with Date Math",
+      "goodSql": "WITH CohortUsers AS (\n  SELECT user_id, MIN(order_date) AS signup_date FROM Orders GROUP BY 1\n)\nSELECT DATE_FORMAT(signup_date, '%Y-%m-01') AS cohort,\n       TIMESTAMPDIFF(MONTH, signup_date, o.order_date) AS m_offset,\n       COUNT(DISTINCT o.user_id) AS active_users\nFROM Orders o JOIN CohortUsers cu ON o.user_id = cu.user_id\nGROUP BY 1, 2;",
+      "goodExplanation": "Computes the entire multi-year retention triangle in a single linear pass over indexed records."
+    },
+    "interviewGotchas": [
+      {
+        "title": "The Missing Month / Survivorship Bias Trap",
+        "trap": "Users who skip a month of purchases (e.g. active M0, inactive M1, active M2) will break row-based offsets like LAG(). Always compute calendar month diffs via TIMESTAMPDIFF(MONTH, ...) or DATE_TRUNC instead of physical row offsets!"
+      },
+      {
+        "title": "Rolling 30-Day vs Calendar Month Drift",
+        "trap": "Mixing INTERVAL 30 DAY with calendar month cohorts causes boundary drift where February (28 days) leaks into preceding or succeeding monthly buckets."
+      }
+    ]
+  },
+  {
+    "id": "sec_data_warehousing",
+    "pillarId": "pillar3",
+    "icon": "🏛️",
+    "title": "14. Enterprise Dimensional Modeling: Kimball Star Schema & Data Warehousing",
+    "badge": "Data Architecture",
+    "badgeClass": "pill-join",
+    "readTime": "16 min read",
+    "summary": "Architect industrial-scale analytics platforms using Ralph Kimball Star Schemas, Conformed Dimensions, Grain Definition, Surrogate Keys, and SCD Type 0/1/2/3 historical tracking.",
+    "svgDiagram": `
+      <svg viewBox="0 0 860 280" width="100%" height="100%" style="min-height: 230px; max-height: 330px; display: block;" xmlns="http://www.w3.org/2000/svg">
+        <rect width="860" height="280" fill="#080c14" rx="14" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
+        <rect x="18" y="16" width="824" height="34" fill="rgba(255, 255, 255, 0.03)" rx="8" stroke="rgba(192, 132, 252, 0.25)" stroke-width="1"/>
+        <text x="430" y="38" fill="#c084fc" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="900" text-anchor="middle" letter-spacing="0.5">
+          RALPH KIMBALL STAR SCHEMA &bull; CONFORMED DIMENSIONS &amp; SCD TYPE 2 TIMELINE
+        </text>
+
+        <!-- Center: Fact Table -->
+        <g transform="translate(320, 65)">
+          <rect width="220" height="195" fill="rgba(56, 189, 248, 0.08)" rx="8" stroke="#38bdf8" stroke-width="1.5"/>
+          <rect width="220" height="26" fill="rgba(56, 189, 248, 0.25)" rx="8"/>
+          <text x="110" y="17" fill="#ffffff" font-family="monospace" font-size="11" font-weight="900" text-anchor="middle">FACT_ORDERS (GRAIN: 1 ITEM)</text>
+          
+          <g transform="translate(12, 35)">
+            <text x="0" y="14" fill="#fbbf24" font-family="monospace" font-size="9" font-weight="bold">FK: order_date_skey (INT)</text>
+            <text x="0" y="28" fill="#fbbf24" font-family="monospace" font-size="9" font-weight="bold">FK: customer_skey (INT)</text>
+            <text x="0" y="42" fill="#fbbf24" font-family="monospace" font-size="9" font-weight="bold">FK: product_skey (INT)</text>
+            <text x="0" y="56" fill="#fbbf24" font-family="monospace" font-size="9" font-weight="bold">FK: store_skey (INT)</text>
+            <line x1="0" y1="65" x2="196" y2="65" stroke="rgba(255,255,255,0.15)"/>
+            <text x="0" y="80" fill="#4ade80" font-family="monospace" font-size="9" font-weight="bold">MEASURE: quantity</text>
+            <text x="0" y="94" fill="#4ade80" font-family="monospace" font-size="9" font-weight="bold">MEASURE: unit_price_cents</text>
+            <text x="0" y="108" fill="#4ade80" font-family="monospace" font-size="9" font-weight="bold">MEASURE: discount_cents</text>
+            <text x="0" y="122" fill="#4ade80" font-family="monospace" font-size="9" font-weight="bold">MEASURE: net_amount_cents</text>
+            <line x1="0" y1="130" x2="196" y2="130" stroke="rgba(255,255,255,0.15)"/>
+            <text x="0" y="145" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="8">Additive Measures &bull; 100M+ Rows</text>
+          </g>
+        </g>
+
+        <!-- Left Top: DIM_CUSTOMER (SCD Type 2) -->
+        <g transform="translate(20, 65)">
+          <rect width="270" height="92" fill="rgba(244, 63, 94, 0.08)" rx="6" stroke="rgba(244, 63, 94, 0.4)"/>
+          <rect width="270" height="22" fill="rgba(244, 63, 94, 0.2)" rx="6"/>
+          <text x="135" y="15" fill="#fb7185" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">DIM_CUSTOMER (SCD TYPE 2)</text>
+          <g transform="translate(10, 32)">
+            <text x="0" y="12" fill="#fbbf24" font-family="monospace" font-size="8.5">PK: customer_skey (Surrogate)</text>
+            <text x="0" y="24" fill="#cbd5e1" font-family="monospace" font-size="8.5">NK: customer_id (Natural/Business)</text>
+            <text x="0" y="36" fill="#cbd5e1" font-family="monospace" font-size="8.5">name, tier, city, state</text>
+            <text x="0" y="48" fill="#4ade80" font-family="monospace" font-size="8.5">valid_from, valid_to, is_current</text>
+          </g>
+          <path d="M 270 46 L 320 110" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,3"/>
+        </g>
+
+        <!-- Left Bottom: DIM_DATE (Calendar Master) -->
+        <g transform="translate(20, 168)">
+          <rect width="270" height="92" fill="rgba(251, 191, 36, 0.08)" rx="6" stroke="rgba(251, 191, 36, 0.4)"/>
+          <rect width="270" height="22" fill="rgba(251, 191, 36, 0.2)" rx="6"/>
+          <text x="135" y="15" fill="#fbbf24" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">DIM_DATE (ROLE-PLAYING CALENDAR)</text>
+          <g transform="translate(10, 32)">
+            <text x="0" y="12" fill="#fbbf24" font-family="monospace" font-size="8.5">PK: date_skey (e.g. 20261014)</text>
+            <text x="0" y="24" fill="#cbd5e1" font-family="monospace" font-size="8.5">full_date, day_of_week, day_name</text>
+            <text x="0" y="36" fill="#cbd5e1" font-family="monospace" font-size="8.5">fiscal_year, fiscal_quarter, is_holiday</text>
+            <text x="0" y="48" fill="#4ade80" font-family="monospace" font-size="8.5">Precomputed: ZERO date math at query time!</text>
+          </g>
+          <path d="M 270 46 L 320 20" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,3"/>
+        </g>
+
+        <!-- Right Top: DIM_PRODUCT -->
+        <g transform="translate(570, 65)">
+          <rect width="270" height="92" fill="rgba(34, 197, 94, 0.08)" rx="6" stroke="rgba(34, 197, 94, 0.4)"/>
+          <rect width="270" height="22" fill="rgba(34, 197, 94, 0.2)" rx="6"/>
+          <text x="135" y="15" fill="#4ade80" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">DIM_PRODUCT (CONFORMED)</text>
+          <g transform="translate(10, 32)">
+            <text x="0" y="12" fill="#fbbf24" font-family="monospace" font-size="8.5">PK: product_skey (Surrogate)</text>
+            <text x="0" y="24" fill="#cbd5e1" font-family="monospace" font-size="8.5">NK: sku_code (Natural)</text>
+            <text x="0" y="36" fill="#cbd5e1" font-family="monospace" font-size="8.5">product_name, category, brand</text>
+            <text x="0" y="48" fill="#4ade80" font-family="monospace" font-size="8.5">unit_cost_cents, is_discontinued</text>
+          </g>
+          <path d="M 0 46 L -30 110" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,3"/>
+        </g>
+
+        <!-- Right Bottom: DIM_STORE -->
+        <g transform="translate(570, 168)">
+          <rect width="270" height="92" fill="rgba(168, 85, 247, 0.08)" rx="6" stroke="rgba(168, 85, 247, 0.4)"/>
+          <rect width="270" height="22" fill="rgba(168, 85, 247, 0.2)" rx="6"/>
+          <text x="135" y="15" fill="#c084fc" font-family="monospace" font-size="10" font-weight="900" text-anchor="middle">DIM_STORE (LOCATION HIERARCHY)</text>
+          <g transform="translate(10, 32)">
+            <text x="0" y="12" fill="#fbbf24" font-family="monospace" font-size="8.5">PK: store_skey (Surrogate)</text>
+            <text x="0" y="24" fill="#cbd5e1" font-family="monospace" font-size="8.5">store_id, store_name, channel_type</text>
+            <text x="0" y="36" fill="#cbd5e1" font-family="monospace" font-size="8.5">city, state, region, country</text>
+            <text x="0" y="48" fill="#4ade80" font-family="monospace" font-size="8.5">square_feet, open_date</text>
+          </g>
+          <path d="M 0 46 L -30 20" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="3,3"/>
+        </g>
+      </svg>
+    `,
+    "sections": [
+      {
+        "heading": "1. The 4-Step Kimball Dimensional Design Process",
+        "content": "Ralph Kimball's dimensional modeling technique powers 95%+ of enterprise analytics systems (Snowflake, BigQuery, Databricks, Redshift). Designing an enterprise warehouse requires strict adherence to four sequential questions:\n\n1. **Select the Business Process**: Identify the operational process to model (e.g., Retail Sales, Order Fulfillment, Claims Processing).\n2. **Declare the Grain**: State precisely what a single row in the fact table represents (e.g., *'One row represents an individual line item on a customer retail checkout receipt'*). Never mix grains in a single fact table!\n3. **Identify the Dimensions**: Determine the context answering *Who, What, Where, When, and Why* (Customer, Product, Date, Store, Promotion).\n4. **Identify the Facts**: Select the numeric, additive performance measures generated by the event (Quantity, Gross Revenue, Discount, Cost, Net Margin)."
+      },
+      {
+        "heading": "2. The Three Fact Table Architectural Archetypes",
+        "content": "- **Transactional Fact Tables**: The most granular. One row per real-time event. Captures point-in-time state changes at the atomic level.\n- **Periodic Snapshot Fact Tables**: Captures the cumulative status of a process at regular intervals (e.g., daily inventory levels per SKU or month-end account balance). Crucial when transactions are too numerous or balances fluctuate.\n- **Accumulating Snapshot Fact Tables**: Tracks a workflow with a definite beginning and end (e.g., order processing: ordered -> paid -> picked -> packed -> shipped -> delivered). Contains multiple milestone date foreign keys that are continuously updated as the entity moves through the pipeline."
+      },
+      {
+        "heading": "3. Conformed Dimensions & The Enterprise Bus Matrix",
+        "content": "A **Conformed Dimension** is a dimension that means the exact same thing across multiple disparate business processes. For instance, `dim_customer` and `dim_date` must join seamlessly to both `fact_retail_orders` and `fact_support_tickets`.\n\nWithout conformed dimensions, cross-functional drill-across queries become impossible, leading to fragmented data silos and contradicting departmental metrics."
+      },
+      {
+        "heading": "4. Slowly Changing Dimensions (SCD Type 1 vs. Type 2)",
+        "content": "When dimensional attributes change in the real world (e.g., Alice moves from San Francisco to New York), the warehouse must choose how to represent history:\n\n- **SCD Type 1 (Overwrite)**: Updates the existing row directly. Historical transactions are retroactively re-assigned to the new state. Fast, but destroys history.\n- **SCD Type 2 (Add New Row with Validity Timeline)**: Closes the active row by setting `valid_to = CURRENT_DATE` and `is_current = FALSE`, then inserts a brand new row with a new surrogate key, `valid_from = CURRENT_DATE`, `valid_to = '9999-12-31'`, and `is_current = TRUE`.\n\n```sql\n-- Querying historical point-in-time snapshot with SCD Type 2\nSELECT f.order_id, f.amount, c.customer_name, c.city AS historical_city\nFROM fact_orders f\nJOIN dim_customer c \n  ON f.customer_id = c.natural_customer_id\n AND f.order_date BETWEEN c.valid_from AND c.valid_to;\n```"
+      }
+    ],
+    "diff": {
+      "badTitle": "Normalized 3NF Snowflaking for OLAP",
+      "badSql": "SELECT co.country_name, p.product_name, SUM(oi.amount)\nFROM order_items oi\nJOIN orders o ON oi.order_id = o.id\nJOIN customers c ON o.cust_id = c.id\nJOIN addresses a ON c.address_id = a.id\nJOIN cities ci ON a.city_id = ci.id\nJOIN countries co ON ci.country_id = co.id\nJOIN products p ON oi.product_id = p.id\nGROUP BY 1, 2;",
+      "badExplanation": "A 7-table join traversal across normalized relational tables causes massive shuffle joins and degrades query latency.",
+      "goodTitle": "Kimball Star Schema with Surrogate Keys",
+      "goodSql": "SELECT d.country_name, p.product_name, SUM(f.amount_cents) / 100.0\nFROM fact_order_items f\nJOIN dim_customer d ON f.customer_skey = d.customer_skey\nJOIN dim_product p ON f.product_skey = p.product_skey\nGROUP BY 1, 2;",
+      "goodExplanation": "Single-hop joins on integer surrogate keys directly against denormalized dimension tables allow vectorized columnar scans."
+    },
+    "interviewGotchas": [
+      {
+        "title": "The Grain Mismatch Multiplication Trap",
+        "trap": "Attempting to join a line-item fact table directly to an invoice-level shipping fact without rolling up to matching grains creates a Cartesian fan-out, multiplying metrics by 2x-10x!"
+      },
+      {
+        "title": "Natural Key vs. Surrogate Key Join Trap",
+        "trap": "Joining fact tables on natural business keys (e.g. natural customer_id) instead of point-in-time surrogate keys causes duplicate rows in SCD Type 2 dimensions and assigns past revenue to current customer tiers."
+      }
+    ]
+  }
+];
+
+// Ensure quickActions are attached to all study modules
+const STUDY_QUICK_ACTIONS = {
+  sec_execution_order: { labTrack: 'track01', questId: 0, presetQuery: "SELECT department, COUNT(*) AS headcount FROM Employees WHERE salary > 60000 GROUP BY department HAVING headcount >= 1 ORDER BY headcount DESC;" },
+  sec_filtering: { labTrack: 'track01', questId: 1, presetQuery: "SELECT emp_id, first_name, department, salary, bonus FROM Employees WHERE bonus IS NULL OR salary > 80000;" },
+  sec_sorting: { labTrack: 'track01', questId: 2, presetQuery: "SELECT emp_id, first_name, department, salary FROM Employees ORDER BY department ASC, salary DESC, emp_id ASC LIMIT 5;" },
+  sec_casewhen: { labTrack: 'track02', questId: 3, presetQuery: "SELECT emp_id, first_name, salary,\n  CASE\n    WHEN salary >= 100000 THEN 'Executive'\n    WHEN salary >= 75000 THEN 'Senior'\n    ELSE 'Standard'\n  END AS compensation_tier\nFROM Employees;" },
+  sec_aggregations: { labTrack: 'trackAggregations', questId: 4, presetQuery: "SELECT department, COUNT(*) AS employees_count, ROUND(AVG(salary), 2) AS avg_salary, MAX(salary) AS top_salary FROM Employees GROUP BY department HAVING employees_count >= 2;" },
+  sec_math: { labTrack: 'trackAggregations', questId: 5, presetQuery: "SELECT department, ROUND(AVG(salary), 2) AS rounded_avg, MAX(salary) - MIN(salary) AS salary_range FROM Employees GROUP BY department;" },
+  sec_joins: { labTrack: 'trackJoins', questId: 6, presetQuery: "SELECT e.emp_id, e.first_name, e.department, d.location FROM Employees e INNER JOIN Departments d ON e.department = d.dept_name;" },
+  sec_theory_architecture: { labTrack: 'track01', questId: 7, presetQuery: "SELECT emp_id, first_name, department, salary FROM Employees WHERE emp_id = 101;" },
+  sec_intermediate_joins: { labTrack: 'trackJoins', questId: 8, presetQuery: "SELECT e.emp_id, e.first_name, e.salary, s.grade_level FROM Employees e INNER JOIN SalaryGrades s ON e.salary BETWEEN s.min_salary AND s.max_salary;" },
+  sec_subqueries: { labTrack: 'track01', questId: 9, presetQuery: "SELECT emp_id, first_name, department, salary FROM Employees WHERE salary > (SELECT AVG(salary) FROM Employees);" },
+  sec_ctes: { labTrack: 'track01', questId: 10, presetQuery: "WITH DeptAvg AS (\n  SELECT department, AVG(salary) AS avg_sal\n  FROM Employees\n  GROUP BY department\n)\nSELECT e.emp_id, e.first_name, e.department, e.salary, ROUND(d.avg_sal, 2) AS dept_avg\nFROM Employees e\nJOIN DeptAvg d ON e.department = d.department\nWHERE e.salary > d.avg_sal;" },
+  sec_window_functions: { labTrack: 'track01', questId: 11, presetQuery: "SELECT emp_id, first_name, department, salary,\n  DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_rank,\n  ROUND(AVG(salary) OVER (PARTITION BY department), 2) AS dept_avg\nFROM Employees;" },
+  sec_business_analytics: { labTrack: 'trackAggregations', questId: 4, presetQuery: "SELECT department, COUNT(*) AS emp_count, ROUND(AVG(salary), 2) AS avg_sal FROM Employees GROUP BY department;" },
+  sec_data_warehousing: { labTrack: 'trackJoins', questId: 6, presetQuery: "SELECT e.emp_id, e.first_name, e.department, d.location FROM Employees e INNER JOIN Departments d ON e.department = d.dept_name;" }
+};
+
+if (typeof window !== 'undefined' && window.STUDY_LIBRARY) {
+  window.STUDY_LIBRARY.forEach(item => {
+    if (!item.quickActions && STUDY_QUICK_ACTIONS[item.id]) {
+      item.quickActions = STUDY_QUICK_ACTIONS[item.id];
+    }
+  });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { STUDY_LIBRARY: window.STUDY_LIBRARY };
+}

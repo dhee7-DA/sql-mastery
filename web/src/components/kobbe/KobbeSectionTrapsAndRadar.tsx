@@ -97,7 +97,7 @@ export function KobbeSectionTrapsAndRadar() {
   const gridCircles = [0.25, 0.5, 0.75, 1.0];
 
   return (
-    <section id="section-traps" className="py-14 sm:py-18 border-t border-border/60">
+    <section id="section-traps" className="py-14 sm:py-18 border-t border-border/60 scroll-mt-20">
       <div className="mx-auto grid w-full max-w-320 grid-cols-1 gap-x-8 px-4 sm:px-8 lg:grid-cols-12 *:col-span-full gap-y-8">
         {/* Left Column (Kobbe 4-col descriptor) */}
         <p className="text-xs sm:text-sm text-muted-foreground max-w-64 leading-normal text-pretty lg:col-span-4 lg:mt-1.5">

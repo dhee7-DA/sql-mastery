@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Foundry &bull; Enterprise SQL Learning &amp; Execution Platform</title>
+  <meta name="description" content="Minimalist, professional SQL query execution simulator, active-retrieval syntax gym, and physical engine lifecycle platform.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/vqa3wut.css">
+  <link rel="stylesheet" href="style.css?v=116">
+  <link rel="stylesheet" href="landing_page.css?v=12">
+  <link rel="stylesheet" href="jpmorgan_theme.css?v=3">
+  <link rel="stylesheet" href="leetcode_theme.css?v=345">
+  <link rel="stylesheet" href="sql_terminal_theme.css?v=105">
+  <link rel="stylesheet" href="mock_interview_theme.css?v=106">
+  <link rel="stylesheet" href="company_mastery_theme.css?v=13">
+  <link rel="stylesheet" href="studio_workbench_theme.css?v=1">
+  <link rel="stylesheet" href="mastery_course_theme.css?v=10">
+  <link rel="stylesheet" href="command_palette.css?v=6">
+  <link rel="stylesheet" href="tactile_tiles_theme.css?v=10">
+  <link rel="stylesheet" href="new_age_saas_theme.css?v=1">
+  <link rel="stylesheet" href="kobbe_theme.css?v=1">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Unified Minimalist Header Bar -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="brand-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+          </svg>
+        </div>
+        <div class="brand-meta">
+          <span class="brand-name">SQL Foundry</span>
+          <span class="brand-badge">MySQL 8.0</span>
+        </div>
+
+        <div class="header-divider"></div>
+
+        <!-- Unified Navigation Switcher -->
+        <nav class="nav-groups-container">
+          <!-- 1. LEETCODE 323 ARENA (Default Active) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab active" id="btnNavHome" data-view="viewLandingPage" onclick="selectNavView('viewLandingPage', 'Home', null)" title="SQL Foundry Product Overview &amp; Feature Showcase">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">🏠</span>
+              <span class="nav-group-title">Home</span>
+            </span>
+          </button>
+
+          <!-- 1b. SQL MASTERY COURSE (ORDER OF EXECUTION) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavMasteryCourse" data-view="viewMasteryCourse" onclick="selectNavView('viewMasteryCourse', 'Course', null)" title="SQL Mastery &amp; Technical Interview Course (Order of Execution)">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">📖</span>
+              <span class="nav-group-title">Course</span>
+            </span>
+            <span class="nav-item-tag accent">Mastery</span>
+          </button>
+
+          <!-- 1. LEETCODE 323 ARENA -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavLeetCode" data-view="viewLeetCode50" onclick="selectNavView('viewLeetCode50', 'LeetCode 323', null)" title="LeetCode 323 Official SQL Arena">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">⚡</span>
+              <span class="nav-group-title">LeetCode</span>
+            </span>
+            <span class="nav-item-tag accent">323</span>
+          </button>
+
+          <!-- 2. STUDIO (Direct Tab) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="selectNavView('viewStudio', 'Studio', null)" title="Query Execution Studio &amp; Schema Inspector">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              </span>
+              <span class="nav-group-title">Studio</span>
+            </span>
+          </button>
+
+          <!-- PRACTICE DROPDOWN -->
+          <div class="nav-group-dropdown" id="navGroupPractice">
+            <button class="nav-group-trigger" id="btnGroupPractice" onclick="toggleNavGroupDropdown('navGroupPractice', event)">
+              <span class="nav-group-lead">
+                <span class="nav-group-icon">🧠</span>
+                <span class="nav-group-title">Practice</span>
+              </span>
+              <svg class="nav-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              
+            </button>
+            <div class="nav-dropdown-menu">
+              <div class="nav-dropdown-header">Featured Interview Screens</div>
+              <button class="nav-dropdown-item nav-tab" id="btnNavMockInterview" data-view="viewMockInterview" onclick="selectNavView('viewMockInterview', 'Mock Screen', 'navGroupPractice')">
+                <span class="nav-item-icon">🎯</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">FAANG &amp; Wall St Mock Screen</span>
+                    <span class="nav-item-tag timer">45m Timed</span>
+                  </div>
+                  <span class="nav-item-desc">Timed technical interview screen with real-time scoring</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" id="btnNavCompanyHub" data-view="viewCompanyHub" onclick="selectNavView('viewCompanyHub', 'Companies &amp; Domains', 'navGroupPractice')">
+                <span class="nav-item-icon">🏛️</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Companies &amp; Industry Domains</span>
+                    <span class="nav-item-tag accent">70+ Employers</span>
+                  </div>
+                  <span class="nav-item-desc">10 Domains &amp; 70+ premier target employers</span>
+                </div>
+              </button>
+              <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Drill &amp; Test Vaults</div>
+              <button class="nav-dropdown-item nav-tab" data-view="viewSqlTerminal" onclick="selectNavView('viewSqlTerminal', 'SQL Terminal', 'navGroupPractice')">
+                <span class="nav-item-icon">💻</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">SQL Terminal (WASM)</span>
+                    <span class="nav-item-tag accent">WASM Engine</span>
+                  </div>
+                  <span class="nav-item-desc">In-browser SQLite sandbox with 12 production tables</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewMcqs" onclick="selectNavView('viewMcqs', 'MCQs (2.1k)', 'navGroupPractice')">
+                <span class="nav-item-icon">🧠</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">MCQs Vault</span>
+                    <span class="nav-item-tag accent">2,100</span>
+                  </div>
+                  <span class="nav-item-desc">High-frequency interview traps &amp; edge cases</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewSyntaxGym" onclick="selectNavView('viewSyntaxGym', 'Syntax Gym', 'navGroupPractice')">
+                <span class="nav-item-icon">⚡</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Syntax Gym</span>
+                    <span class="nav-item-tag accent">1,700</span>
+                  </div>
+                  <span class="nav-item-desc">Speed &amp; muscle memory drills across 10 schemas</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewCases" onclick="selectNavView('viewCases', 'Case Studies', 'navGroupPractice')">
+                <span class="nav-item-icon">💼</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Case Studies</span>
+                    <span class="nav-item-tag accent">2,540</span>
+                  </div>
+                  <span class="nav-item-desc">Real-world production business incident dossiers</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewProblems" onclick="selectNavView('viewProblems', 'Problem Bank', 'navGroupPractice')">
+                <span class="nav-item-icon">🏆</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Problem Bank</span>
+                    <span class="nav-item-tag">Challenges</span>
+                  </div>
+                  <span class="nav-item-desc">Graded SQL interview challenges by difficulty</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewCapstones" onclick="selectNavView('viewCapstones', 'Capstones (10)', 'navGroupPractice')">
+                <span class="nav-item-icon">🎓</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Guided Capstones</span>
+                    <span class="nav-item-tag accent">Top 5 Domains</span>
+                  </div>
+                  <span class="nav-item-desc">10 production finance &amp; data projects with topic bridges</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewAmazonStory" onclick="selectNavView('viewAmazonStory', 'Amazon Analyst (30d)', 'navGroupPractice')">
+                <span class="nav-item-icon">📦</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Amazon Analyst Story</span>
+                    <span class="nav-item-tag" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">30-Day Sim</span>
+                  </div>
+                  <span class="nav-item-desc">Day-in-the-life L4 Data Analyst onboarding &amp; Prime Day war room</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewJPMorganStory" onclick="selectNavView('viewJPMorganStory', 'JPMorgan Analyst (30d)', 'navGroupPractice')">
+                <span class="nav-item-icon">🏛️</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">JPMorgan Analyst (30d)</span>
+                    <span class="nav-item-tag" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4);">Wall St</span>
+                  </div>
+                  <span class="nav-item-desc">Quantitative risk, core banking ledgers, AML &amp; treasury</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewTrapGym" onclick="selectNavView('viewTrapGym', 'Trap Gym (SRS)', 'navGroupPractice')">
+                <span class="nav-item-icon">🧠</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Trap Memory Gym</span>
+                    <span class="nav-item-tag accent" id="trapSrsNavBadge">🔥 36 Due</span>
+                  </div>
+                  <span class="nav-item-desc">Spaced repetition (Leitner SRS) for 36 critical production traps</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Activity Heatmap', 'navGroupPractice'); setTimeout(()=>{ const el = document.getElementById('curriculumActivityHeatmap'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 120);">
+                <span class="nav-item-icon">📅</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Activity Heatmap &amp; Streaks</span>
+                    <span class="nav-item-tag accent" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">112-Day</span>
+                  </div>
+                  <span class="nav-item-desc">GitHub-style deliberate practice matrix &amp; habit tracking</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. EXPLORE & LABS DROPDOWN -->
+          <div class="nav-group-dropdown" id="navGroupExplore">
+            <button class="nav-group-trigger" id="btnGroupExplore" onclick="toggleNavGroupDropdown('navGroupExplore', event)">
+              <span class="nav-group-lead">
+                <span class="nav-group-icon">🔬</span>
+                <span class="nav-group-title">Labs</span>
+              </span>
+              <svg class="nav-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="nav-dropdown-menu">
+              <div class="nav-dropdown-header">Interactive Core &amp; Labs</div>
+              <button class="nav-dropdown-item nav-tab" data-view="viewLearningJourney" onclick="selectNavView('viewLearningJourney', 'Learning Journey', 'navGroupExplore')">
+                <span class="nav-item-icon">🗺️</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">20-Day Learning Journey</span>
+                    <span class="nav-item-tag accent">Day 01–20</span>
+                  </div>
+                  <span class="nav-item-desc">Visual curriculum roadmap &amp; interactive daily milestone tracker</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewWindowMatrix" onclick="selectNavView('viewWindowMatrix', 'Window Cockpit', 'navGroupExplore')">
+                <span class="nav-item-icon">🪟</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Window Functions Cockpit</span>
+                    <span class="nav-item-tag accent">Day 11-12</span>
+                  </div>
+                  <span class="nav-item-desc">Sliding Frames, Ranking Dissection &amp; Offset Vectors</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Quests', 'navGroupExplore')">
+                <span class="nav-item-icon">🎮</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Interactive Quests</span>
+                    <span class="nav-item-tag">Puzzles</span>
+                  </div>
+                  <span class="nav-item-desc">Token assembly trays, blanks &amp; logic bug fixer</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item" onclick="openCurriculumReader(1)">
+                <span class="nav-item-icon">📖</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Curriculum Theory Compendium</span>
+                    <span class="nav-item-tag accent">Theory</span>
+                  </div>
+                  <span class="nav-item-desc">In-app textbook theory, daily logs &amp; interview defenses</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewTactileEngine" onclick="selectNavView('viewTactileEngine', 'SQL Machine', 'navGroupExplore')">
+                <span class="nav-item-icon">⚙️</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Tactile SQL Machine</span>
+                    <span class="nav-item-tag accent">Fig. 16</span>
+                  </div>
+                  <span class="nav-item-desc">Hand-inked physical relational machine &amp; query washer</span>
+                </div>
+              </button>
+              <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Documentation &amp; Schema</div>
+              <button class="nav-dropdown-item nav-tab" data-view="viewExplainer" onclick="selectNavView('viewExplainer', 'Study Docs', 'navGroupExplore')">
+                <span class="nav-item-icon">📚</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Study Docs</span>
+                    <span class="nav-item-tag">Deep-Dives</span>
+                  </div>
+                  <span class="nav-item-desc">Under-the-hood engine theory, gotchas &amp; AST diffs</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewDeconstructor" onclick="selectNavView('viewDeconstructor', 'Deconstructor', 'navGroupExplore')">
+                <span class="nav-item-icon">🔍</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Query Deconstructor</span>
+                    <span class="nav-item-tag">Mental Models</span>
+                  </div>
+                  <span class="nav-item-desc">Clause-by-clause query isolator and semantic breakdown</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewEnterpriseERD" onclick="selectNavView('viewEnterpriseERD', 'ERD Map', 'navGroupExplore')">
+                <span class="nav-item-icon">🗺️</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Enterprise ERD Map</span>
+                    <span class="nav-item-tag">Topology</span>
+                  </div>
+                  <span class="nav-item-desc">Relational entity diagrams &amp; foreign key relationships</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewVennMatrix" onclick="selectNavView('viewVennMatrix', 'Venn Matrix', 'navGroupExplore')">
+                <span class="nav-item-icon">⭕</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Venn &amp; Euler Matrix</span>
+                    <span class="nav-item-tag accent">Topology</span>
+                  </div>
+                  <span class="nav-item-desc">Interactive live-row set physics for Joins &amp; Set Ops</span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      
+
+      <div class="header-right">
+        <button class="header-cmd-palette-btn" id="btnHeaderCmdPalette" onclick="if(window.SQL_CMD_PALETTE) window.SQL_CMD_PALETTE.open();" title="Search problems, companies, and views (Ctrl+K or Cmd+K)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="cmd-palette-label">Search...</span>
+          <kbd class="cmd-palette-kbd">⌘K</kbd>
+        </button>
+        <div class="header-divider"></div>
+        <div class="header-stats-strip">
+          <span class="header-stat-chip" id="userStreakCounter" title="Daily SQL Mastery Streak (Click to open Calendar)" style="cursor: pointer;" onclick="if(window.dailyStreak) window.dailyStreak.open();">
+            <span class="stat-icon">🔥</span>
+            <span class="stat-val" id="streakDaysCount">1</span><span class="stat-unit">d</span>
+          </span>
+          <span class="header-stat-chip" id="userXpCounter" title="Total SQL Mastery Points (Click to view 112-Day Heatmap)" style="cursor: pointer;" onclick="if(window.selectNavView) window.selectNavView('viewQuests', 'Quests', null); setTimeout(()=>{ const el = document.getElementById('curriculumActivityHeatmap'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 150);">
+            <span class="stat-icon">⚡</span>
+            <span class="stat-val" id="xpPointsVal">60</span><span class="stat-unit">XP</span>
+          </span>
+          <span class="header-stat-chip flashcard-chip" id="headerFlashcardDuePill" title="Review Due SuperMemo-2 Flashcards" onclick="if(window.openFlashcardVault) window.openFlashcardVault();">
+            <span class="stat-icon">🗂️</span>
+            <span class="stat-val" id="flashcardDueCount">12</span><span class="stat-unit">Due</span>
+          </span>
+        </div>
+
+        <div class="header-divider"></div>
+
+        <button id="btnSoundToggle" class="header-icon-btn btn-sound-toggle" title="Toggle Sound FX" aria-label="Toggle Sound FX">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        </button>
+        <button id="btnCompanionTrigger" class="header-icon-btn btn-mascot-toggle" title="Customize Mascot &amp; Companion Settings" aria-label="Customize Mascot &amp; Companion" onclick="if(window.SQL_BUDDY){window.SQL_BUDDY.toggleCustomizer();}else if(typeof SQL_BUDDY!=='undefined'){SQL_BUDDY.toggleCustomizer();}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <circle cx="9" cy="10" r="1" fill="currentColor"></circle>
+            <circle cx="15" cy="10" r="1" fill="currentColor"></circle>
+            <path d="M9 14.5c1 .8 2 1 3 1s2-.2 3-1"></path>
+          </svg>
+        </button>
+        <div class="theme-select-wrapper header-icon-btn" title="Switch Theme" style="position: relative;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"></path>
+          </svg>
+          <select id="themeSelect" class="clean-select theme-select theme-select-overlay" title="Switch Theme">
+            <option value="kobbe-nordic" selected>🏛️ Kobbe Nordic (Warm Bone)</option>
+            <option value="saas-midnight">✨ SaaS Midnight (2026 AI-SaaS)</option>
+            <option value="active-builders">🔥 Neon Red (Light)</option>
+            <option value="active-builders-dark">🌙 Laser Neon Red (Dark)</option>
+            <option value="cyber-olive">🌿 Cyber Olive (Light)</option>
+            <option value="cyber-olive-dark">🌲 Deep Olive (Dark)</option>
+            <option value="cursor-dark">⚡ Cursor Dark</option>
+            <option value="pomegranate-powder">🍷 Pomegranate + Powder</option>
+            <option value="smoky-jade-oxblood">🌲 Smoky Jade + Oxblood</option>
+            <option value="petrol-persimmon">🌊 Petrol Teal + Persimmon</option>
+            <option value="tokyo-midnight">🌌 Tokyo Midnight</option>
+            <option value="nordic-carbon">❄️ Nordic Carbon</option>
+            <option value="warm-obsidian">🪵 Warm Obsidian</option>
+            <option value="paper-white">☀️ Paper White</option>
+            <option value="warm-cream">☕ Warm Cream</option>
+            <option value="sakura-mochi">🌸 Sakura Mochi</option>
+            <option value="matcha-latte">🍵 Matcha Latte</option>
+          </select>
+        </div>
+        <a href="http://localhost:3000" target="_blank" class="header-icon-btn saas-launch-pill" title="Open Next.js 15 Modern SaaS App" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:0 11px; height:32px; font-size:11.5px; font-weight:600; color:#a5b4fc; background:rgba(99,102,241,0.14); border:1px solid rgba(99,102,241,0.35); border-radius:8px; white-space:nowrap; transition:all 140ms ease;">
+          <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow:0 0 6px #10b981;"></span>
+          <span>Next.js App</span>
+        </a>
+        <button id="btnRunQuery" class="action-btn action-btn-primary header-cta-btn">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Run
+        </button>
+      </div>
+    </header>
+
+    <!-- VIEW: Product Landing Page & Feature Showcase -->
+    <div class="view-panel active" id="viewLandingPage"></div>
+
+    <!-- VIEW: SQL Mastery & Interview Prep Course (Order of Execution) -->
+    <div class="view-panel" id="viewMasteryCourse"></div>
+
+    <!-- VIEW: 20-Day Learning Journey & Adventure Roadmap Hub -->
+    <div class="view-panel" id="viewLearningJourney"></div>
+
+    <!-- VIEW 0: Topic Pathways & 4-Stage Modular Progression Hub -->
+    <div class="view-panel" id="viewPathways">
+      <div class="pathways-container">
+        <!-- Pathways Header & Module Selector -->
+        <div class="pathways-header">
+          <div class="pathways-title-row">
+            <div>
+              <h1 class="pathways-title">
+                <span>🎯 Topic-Based Curriculum &amp; Mastery Pathways</span>
+                <span class="status-pill" style="font-size: 11px; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3);">4-Stage Progression</span>
+              </h1>
+              <p class="pathways-subtitle">Master SQL systematically: 1. Visual Masterclass &rarr; 2. Traps &amp; Interview Secrets &rarr; 3. Topic MCQs &rarr; 4. Corporate Case Studies</p>
+            </div>
+            <div class="pathways-progress-summary">
+              <span>Vault: <strong>2,540 Cases</strong></span>
+              <span style="color: var(--border-default);">&bull;</span>
+              <span><strong>2,100 MCQs</strong></span>
+              <span style="color: var(--border-default);">&bull;</span>
+              <span><strong>30 Traps &amp; Tips</strong></span>
+            </div>
+          </div>
+
+          <!-- Real-Time Curriculum Analytics: Collapsible Drawer -->
+          <div class="analytics-drawer-bar" style="display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-default); border-radius: 8px; padding: 8px 14px; cursor: pointer; margin-top: 10px;" onclick="toggleCurriculumAnalyticsDrawer()">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 16px;">📊</span>
+              <span style="font-size: 12px; font-weight: 700; color: var(--text-primary);">112-Day Deliberate Practice Heatmap &amp; 6-Pillar Relational Competency Radar</span>
+              <span class="status-pill" style="font-size: 10px; padding: 1px 6px;">Telemetry</span>
+            </div>
+            <button class="card-nav-btn" id="btnToggleCurriculumAnalytics" style="font-size: 11px; padding: 2px 10px;">Show Analytics ▾</button>
+          </div>
+
+          <div class="curriculum-analytics-dashboard" id="curriculumAnalyticsDashboard" style="display: none; margin-top: 10px;">
+            <div class="analytics-card heatmap-card">
+              <div class="analytics-header">
+                <div class="analytics-title-wrap">
+                  <span class="analytics-icon">📅</span>
+                  <div>
+                    <span class="analytics-title">112-Day SQL Deliberate Practice Heatmap</span>
+                    <span class="analytics-subtitle">Real-time persistence across 2,100 MCQs, 1,700 Drills, Case Studies &amp; Studio</span>
+                  </div>
+                </div>
+                <div class="heatmap-streak-badge" id="heatmapStreakBadge" style="cursor: pointer;" onclick="if(window.dailyStreak) window.dailyStreak.open();" title="Click to view Streak Calendar">
+                  🔥 <strong>1 Day Streak</strong> &bull; 60 XP
+                </div>
+              </div>
+              <div class="activity-heatmap-grid" id="curriculumActivityHeatmap"></div>
+            </div>
+
+            <div class="analytics-card radar-card">
+              <div class="analytics-header">
+                <div class="analytics-title-wrap">
+                  <span class="analytics-icon">🎯</span>
+                  <div>
+                    <span class="analytics-title">6-Pillar Relational Domain Competency</span>
+                    <span class="analytics-subtitle">Evaluated over AST correctness, tie-breaker Gotchas &amp; schema design</span>
+                  </div>
+                </div>
+                <span class="status-pill status-pill-accent" id="overallMasteryPill">86% Mastery</span>
+              </div>
+              <div class="pillar-radar-grid" id="pillarMasteryRadar"></div>
+            </div>
+          </div>
+
+          <!-- Module Selector Track Header with Carousel Controls -->
+          <div class="pathway-nav-track-header">
+            <div class="pathway-nav-track-title">
+              <span>🗺️ Curriculum Topic Modules</span>
+              <span class="status-pill" style="font-size: 10px; padding: 1px 6px; background: rgba(56, 189, 248, 0.15); color: #38bdf8;">15 Modules Available</span>
+            </div>
+            <div class="pathway-nav-carousel-controls">
+              <button class="pathway-carousel-btn" onclick="scrollPathwayModules(-1)" title="Scroll Left (Previous Topics)">◀ Prev Topics</button>
+              <button class="pathway-carousel-btn" onclick="scrollPathwayModules(1)" title="Scroll Right (Next Topics)">Next Topics ▶</button>
+            </div>
+          </div>
+
+          <!-- Module Selector Horizontal Track -->
+          <div class="pathway-modules-nav" id="pathwayModulesNav">
+            <!-- Dynamically populated via app.js -->
+          </div>
+        </div>
+
+        <!-- 4-Stage Pathway Stepper -->
+        <div class="pathway-stepper-wrap" id="pathwayStepperWrap">
+          <button class="pathway-stage-btn active" id="btnPathwayStage_1" data-stage="1" onclick="selectPathwayStage(1)">
+            <span class="stage-num-pill">1</span>
+            <div class="stage-text-block">
+              <span class="stage-title">📖 Stage 1: Visual Masterclass</span>
+              <span class="stage-desc">High-Res SVGs, AST &amp; Theory</span>
+            </div>
+          </button>
+          <button class="pathway-stage-btn" id="btnPathwayStage_2" data-stage="2" onclick="selectPathwayStage(2)">
+            <span class="stage-num-pill">2</span>
+            <div class="stage-text-block">
+              <span class="stage-title">⚠️ Stage 2: Traps &amp; Secrets</span>
+              <span class="stage-desc">Deadly Gotchas &amp; Spoken Answers</span>
+            </div>
+          </button>
+          <button class="pathway-stage-btn" id="btnPathwayStage_3" data-stage="3" onclick="selectPathwayStage(3)">
+            <span class="stage-num-pill">3</span>
+            <div class="stage-text-block">
+              <span class="stage-title">🧠 Stage 3: Topic MCQs</span>
+              <span class="stage-desc">Instant Check &amp; XP Rewards</span>
+            </div>
+          </button>
+          <button class="pathway-stage-btn" id="btnPathwayStage_4" data-stage="4" onclick="selectPathwayStage(4)">
+            <span class="stage-num-pill">4</span>
+            <div class="stage-text-block">
+              <span class="stage-title">🛠️ Stage 4: Corporate Cases</span>
+              <span class="stage-desc">Easy / Med / Hard Token Blanks</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Stage 1 Content: Visual Masterclass -->
+        <div class="pathway-stage-panel active" id="pathwayStagePanel_1">
+          <div id="pathwayMasterclassContent">
+            <!-- Dynamic lesson content with SVGs -->
+          </div>
+        </div>
+
+        <!-- Stage 2 Content: Traps & Interview Secrets Deck -->
+        <div class="pathway-stage-panel" id="pathwayStagePanel_2">
+          <div id="pathwayTrapsContent">
+            <!-- Dynamic Traps, Tips & Interview Flashcards -->
+          </div>
+        </div>
+
+        <!-- Stage 3 Content: Topic MCQs -->
+        <div class="pathway-stage-panel" id="pathwayStagePanel_3">
+          <div id="pathwayMcqsContent">
+            <!-- Filtered Topic MCQs -->
+          </div>
+        </div>
+
+        <!-- Stage 4 Content: Corporate Case Studies -->
+        <div class="pathway-stage-panel" id="pathwayStagePanel_4">
+          <div id="pathwayCasesContent">
+            <!-- Compact Table + Full Cards View -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 1: Guided Learning Lab (Calm, Step-by-Step) -->
+    <div class="view-panel" id="viewGuidedLab">
+      <div class="guided-lab-container">
+        <!-- Track Switcher Header -->
+        <div class="track-switcher-bar">
+          <div class="track-pill-group">
+            <button class="track-btn active" id="btnTrack01">
+              <span>Track 01: Foundations (FROM &rarr; LIMIT)</span>
+            </button>
+            <button class="track-btn" id="btnTrack02">
+              <span>Track 02: CASE WHEN &amp; Decision Trees</span>
+            </button>
+            <button class="track-btn" id="btnTrackAggregations">
+              <span>Track 03: Aggregations &amp; GROUP BY</span>
+            </button>
+            <button class="track-btn" id="btnTrackJoins">
+              <span>Track 04: Relational JOINs</span>
+            </button>
+            <button class="track-btn" id="btnTrackOperators">
+              <span>⚡ Operators &amp; NULL Sandbox</span>
+            </button>
+          </div>
+          <span class="status-pill" id="trackActiveSchemaBadge">Schema: Employees (8 rows)</span>
+        </div>
+
+        <!-- Step Navigation Stepper Bar -->
+        <div class="guided-stepper-bar" id="guidedStepperBar">
+          <!-- Dynamically populated step buttons: 01 FROM, 02 WHERE, etc. -->
+        </div>
+
+        <!-- Single Focused Step Content -->
+        <div class="guided-step-card" id="guidedStepCard">
+          <!-- Dynamically populated for current step -->
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: Problem Deconstructor & Business Context -->
+    <div class="view-panel" id="viewDeconstructor">
+      <div class="deconstructor-container">
+        <div class="deconstructor-header">
+          <div>
+            <h2 class="view-title">SQL Problem Deconstructor &amp; Business Context Engine</h2>
+            <p class="view-subtitle">Deconstruct HackerRank &amp; LeetCode problems into plain goals, hidden trap edge cases, and real-world corporate applications.</p>
+          </div>
+          <div class="deconstructor-controls">
+            <select id="deconstructorPresetSelect" class="clean-select" style="min-width: 250px;">
+              <!-- Populated dynamically from window.DECONSTRUCTOR_PRESETS -->
+            </select>
+            <button class="card-nav-btn" id="btnOpenCustomModal" style="background: var(--bg-card); color: var(--text-primary);">
+              &plus; Paste Custom Problem
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic Deconstruction Body -->
+        <div class="deconstructor-body" id="deconstructorBody">
+          <!-- Dynamically rendered -->
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: Query Studio (Advanced Mode) -->
+    <div class="view-panel" id="viewStudio">
+      <!-- Dynamic Case Study Table Active Banner -->
+      <div id="dynamicTableBanner" class="dynamic-table-banner" style="display: none;"></div>
+
+      <main class="workspace-grid">
+        <!-- Left Column: Schema & Code Editor -->
+        <aside class="sidebar-col">
+        <!-- Schema Tree Section -->
+        <div class="card schema-card">
+          <div class="card-header">
+            <span class="section-title">Database Schema</span>
+            <span class="status-pill" id="activeTableBadge">TRIANGLES</span>
+          </div>
+          <div class="schema-list" id="schemaTree">
+            <!-- Dynamic Schema Items -->
+          </div>
+        </div>
+
+        <!-- Query Studio Section (Visual Builder & Raw SQL) -->
+        <div class="card editor-card">
+          <div class="card-header">
+            <div class="studio-mode-toggle">
+              <button id="btnModeBuilder" class="mode-toggle-btn active">Visual Builder</button>
+              <button id="btnModeRaw" class="mode-toggle-btn">Raw SQL</button>
+            </div>
+            <div class="preset-wrapper studio-preset-wrapper">
+              <span class="preset-caption">Preset</span>
+              <select id="presetSelect" class="clean-select" title="Load Query Preset">
+                <option value="preset_case_triangle" selected>CASE WHEN &mdash; Type of Triangle</option>
+                <option value="preset_case_credit">CASE WHEN &mdash; Credit Risk Buckets</option>
+                <option value="preset_station5_tiebreak">ORDER BY &mdash; LENGTH() &amp; Tie-Breaker</option>
+                <option value="preset_students_right">ORDER BY &mdash; RIGHT(Name, 3) Suffix</option>
+                <option value="preset_employees_salaries">WHERE &mdash; AND / OR Compound Filter</option>
+                <option value="preset_regex_vowels">REGEXP &mdash; Starts &amp; Ends with Vowel</option>
+                <option value="preset_distinct_cities">DISTINCT &mdash; Unique Market Tuples</option>
+                <option value="preset_top_earners">AGGREGATE &mdash; Top Earners (Months * Salary)</option>
+                <option value="preset_dept_payroll">GROUP BY &mdash; Department Total &amp; Avg Payroll</option>
+                <option value="preset_trade_recon">CAPSTONE &mdash; Prime Broker Recon (Day 15)</option>
+              </select>
+            </div>
+            <div class="editor-actions" id="rawEditorActions" style="display: none;">
+              <button id="btnFormatSQL" class="text-action-btn">Format</button>
+              <button id="btnClearSQL" class="text-action-btn">Clear</button>
+            </div>
+          </div>
+
+          <!-- Mode 1: Point-and-Click Visual Builder -->
+          <div class="builder-body" id="visualBuilderContainer">
+            <!-- 1. FROM Block -->
+            <div class="builder-section">
+              <div class="builder-section-title">
+                <span class="clause-pill pill-from">FROM</span> Source Table
+              </div>
+              <select id="builderTableSelect" class="builder-select full-width">
+                <option value="TRIANGLES">TRIANGLES (A, B, C)</option>
+                <option value="Employees">Employees (emp_id, salary, ...)</option>
+                <option value="Customers">Customers (customer_id, city, ...)</option>
+                <option value="STUDENTS">STUDENTS (ID, Name, Marks)</option>
+              </select>
+            </div>
+
+            <!-- 2. SELECT Block -->
+            <div class="builder-section">
+              <div class="builder-section-title">
+                <span class="clause-pill pill-select">SELECT</span> Columns &amp; Functions
+                <div class="select-quick-actions">
+                  <button id="btnSelectAllCols" class="micro-text-btn">All</button>
+                  <button id="btnClearAllCols" class="micro-text-btn">Clear</button>
+                  <label class="distinct-toggle">
+                    <input type="checkbox" id="builderDistinctCheck">
+                    <span>DISTINCT</span>
+                  </label>
+                </div>
+              </div>
+              <div class="column-chips" id="builderColumnChips">
+                <!-- Dynamically populated column checkboxes -->
+              </div>
+
+              <!-- Function / Expression Options -->
+              <div class="expression-group">
+                <label class="expr-toggle">
+                  <input type="checkbox" id="builderCaseWhenCheck" checked>
+                  <span id="builderCaseWhenLabel">+ Add CASE WHEN Classification</span>
+                </label>
+                <div class="transform-pill-row" id="builderTransformRow">
+                  <span class="sub-label">String / Math:</span>
+                  <button class="transform-chip" data-fn="none" id="btnFnNone">Standard</button>
+                  <button class="transform-chip" data-fn="length" id="btnFnLength">LENGTH()</button>
+                  <button class="transform-chip" data-fn="right3" id="btnFnRight">RIGHT(str, 3)</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. WHERE Block -->
+            <div class="builder-section">
+              <div class="builder-section-title">
+                <span class="clause-pill pill-where">WHERE</span> Filter Conditions
+                <div class="logic-toggle-group">
+                  <button class="logic-btn active" id="builderLogicAnd" data-logic="AND">AND</button>
+                  <button class="logic-btn" id="builderLogicOr" data-logic="OR">OR</button>
+                </div>
+              </div>
+
+              <!-- Quick Filter Templates -->
+              <div class="quick-filter-templates" id="quickFilterTemplates">
+                <!-- Populated per table -->
+              </div>
+
+              <div class="filter-rows" id="builderFilterList">
+                <!-- Dynamically populated filter condition rows -->
+              </div>
+              <button id="btnAddFilterRow" class="builder-btn-outline">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add Filter
+              </button>
+            </div>
+
+            <!-- 4. ORDER BY Block -->
+            <div class="builder-section">
+              <div class="builder-section-title">
+                <span class="clause-pill pill-order">ORDER BY</span> Sorting &amp; Tie-Breakers
+              </div>
+              <div class="order-controls">
+                <div class="order-row">
+                  <select id="builderOrderCol1" class="builder-select flex-1">
+                    <option value="">-- No Sort --</option>
+                  </select>
+                  <button id="builderOrderDir1" class="dir-toggle-btn" data-dir="ASC">ASC</button>
+                </div>
+                <div class="order-row">
+                  <select id="builderOrderCol2" class="builder-select flex-1">
+                    <option value="">-- Secondary Tie-Breaker --</option>
+                  </select>
+                  <button id="builderOrderDir2" class="dir-toggle-btn" data-dir="ASC">ASC</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. LIMIT Block -->
+            <div class="builder-section">
+              <div class="builder-section-title">
+                <span class="clause-pill pill-limit">LIMIT</span> Row Slicing
+              </div>
+              <div class="limit-controls">
+                <button class="limit-pill active" data-limit="All">All</button>
+                <button class="limit-pill" data-limit="5">Top 5</button>
+                <button class="limit-pill" data-limit="10">Top 10</button>
+                <input type="number" id="builderLimitInput" class="limit-input" placeholder="Custom" min="1" max="100">
+              </div>
+            </div>
+
+            <!-- Live Query Preview & Copy Card -->
+            <div class="builder-preview-card">
+              <div class="preview-header">
+                <span class="preview-title">Live SQL Generation</span>
+                <button id="btnCopyGeneratedSQL" class="copy-sql-btn" title="Copy SQL to Clipboard">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span id="copyBtnLabel">Copy</span>
+                </button>
+              </div>
+              <pre class="live-sql-code" id="liveSqlPreview">SELECT * FROM TRIANGLES;</pre>
+            </div>
+          </div>
+
+          <!-- Mode 2: Raw SQL Textarea (Hidden by default) -->
+          <div class="editor-body" id="rawSqlContainer" style="display: none;">
+            <textarea id="sqlInput" class="code-editor" spellcheck="false" placeholder="Write query..."></textarea>
+          </div>
+
+          <!-- Physical Query Execution Telemetry -->
+          <div class="query-telemetry-bar" id="queryTelemetryBar">
+            <div class="telemetry-chip plan-chip" id="telemetryPlanChip" title="Click to view interactive Visual EXPLAIN ANALYZE Execution Plan Tree" style="cursor: pointer;" onclick="if(window.VISUAL_EXPLAIN_TREE_ENGINE) window.VISUAL_EXPLAIN_TREE_ENGINE.openAndFocusTree();">
+              <span class="telemetry-label">PLAN:</span>
+              <span class="telemetry-val" id="telemetryPlanVal">INDEX RANGE SEEK</span>
+            </div>
+            <div class="telemetry-chip latency-chip" id="telemetryLatencyChip" title="Estimated Engine Execution Latency">
+              <span class="telemetry-label">LATENCY:</span>
+              <span class="telemetry-val" id="telemetryLatencyVal">1.4 ms</span>
+            </div>
+            <div class="telemetry-chip buffer-chip" id="telemetryBufferChip" title="InnoDB Buffer Pool Hit Ratio">
+              <span class="telemetry-label">BUFFER HIT:</span>
+              <span class="telemetry-val" id="telemetryBufferVal">100% (RAM)</span>
+            </div>
+            <div class="telemetry-chip select-chip" id="telemetrySelectChip" title="Row Filter Selectivity Ratio">
+              <span class="telemetry-label">SELECTIVITY:</span>
+              <span class="telemetry-val" id="telemetrySelectVal">8 / 8 Rows</span>
+            </div>
+            <div class="telemetry-chip ast-chip" id="telemetryAstChip" title="Calculated AST Tree Depth">
+              <span class="telemetry-label">AST DEPTH:</span>
+              <span class="telemetry-val" id="telemetryAstVal">Level 4</span>
+            </div>
+          </div>
+
+          <div class="editor-statusbar">
+            <span class="shortcut-legend">
+              <kbd>Ctrl</kbd> + <kbd>Enter</kbd> Run &bull; 
+              <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd> Format &bull; 
+              <kbd>Esc</kbd> Reset
+            </span>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <button id="btnFormatSQLInline" class="btn-format-inline" onclick="if(window.formatSQLEditorQuery) window.formatSQLEditorQuery();" title="Prettify &amp; Format SQL">
+                ✨ Prettify SQL
+              </button>
+              <button id="btnExplainPlanInline" class="btn-format-inline" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);" onclick="if(window.VISUAL_EXPLAIN_TREE_ENGINE) window.VISUAL_EXPLAIN_TREE_ENGINE.openAndFocusTree();" title="Inspect Visual EXPLAIN ANALYZE Execution Plan Tree">
+                ⚡ EXPLAIN Tree
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Execution Lifecycle & Visualization Panels -->
+      <section class="stage-col">
+        <!-- Pipeline Stepper Track -->
+        <div class="card stepper-card">
+          <div class="stepper-top">
+            <div class="stepper-meta">
+              <span class="step-counter" id="stepCounterLabel">STEP 1 OF 6</span>
+              <h2 class="step-heading" id="stepHeadingLabel">FROM Clause: Table Scan</h2>
+            </div>
+
+            <!-- Controls -->
+            <div class="stepper-controls">
+              <button id="btnPrevStep" class="icon-btn" title="Previous Step" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m15 18-6-6 6-6"/>
+                </svg>
+              </button>
+              <button id="btnPlayPause" class="play-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" id="playIcon">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span id="playBtnText">Play</span>
+              </button>
+              <button id="btnNextStep" class="icon-btn" title="Next Step">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
+              </button>
+              <button id="btnResetStep" class="icon-btn" title="Reset">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                  <path d="M3 3v5h5"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Linear Track Steps -->
+          <div class="stepper-track" id="stepperTrack">
+            <button class="track-node active" data-step="0">
+              <span class="node-num">01</span>
+              <span class="node-name">FROM</span>
+            </button>
+            <div class="track-line"></div>
+            <button class="track-node" data-step="1">
+              <span class="node-num">02</span>
+              <span class="node-name">WHERE</span>
+            </button>
+            <div class="track-line"></div>
+            <button class="track-node" data-step="2">
+              <span class="node-num">03</span>
+              <span class="node-name">SELECT</span>
+            </button>
+            <div class="track-line"></div>
+            <button class="track-node" data-step="3">
+              <span class="node-num">04</span>
+              <span class="node-name">DISTINCT</span>
+            </button>
+            <div class="track-line"></div>
+            <button class="track-node" data-step="4">
+              <span class="node-num">05</span>
+              <span class="node-name">ORDER BY</span>
+            </button>
+            <div class="track-line"></div>
+            <button class="track-node" data-step="5">
+              <span class="node-num">06</span>
+              <span class="node-name">LIMIT</span>
+            </button>
+          </div>
+
+          <!-- Step Description -->
+          <div class="step-explanation" id="stepExplanationText">
+            Loading table into memory buffer.
+          </div>
+        </div>
+
+        <!-- Data Stage Viewers -->
+        <div class="card viewer-card">
+          <div class="viewer-tabs">
+            <div class="tab-group">
+              <button class="tab-item active" data-tab="tabStepper">Data Grid</button>
+              <button class="tab-item" data-tab="tabExplainPlan" id="btnTabExplainPlan">🌳 Execution Plan Tree <span class="hot-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 700; margin-left: 4px;">EXPLAIN</span></button>
+              <button class="tab-item" data-tab="tabDecisionTree">Logic Flow</button>
+              <button class="tab-item" data-tab="tabChart">Distribution</button>
+              <button class="tab-item" data-tab="tabDiff">Input / Output Diff</button>
+            </div>
+            <div class="row-count-tag" id="rowCounterBadge">15 rows</div>
+          </div>
+
+          <div class="viewer-content">
+            <!-- Tab 1: Grid -->
+            <div class="tab-pane active" id="tabStepper">
+              <div class="table-scroll-wrapper" id="stepperTableContainer"></div>
+            </div>
+
+            <!-- Tab 2: Visual Execution Plan Tree (EXPLAIN ANALYZE) -->
+            <div class="tab-pane" id="tabExplainPlan">
+              <div class="explain-plan-tree-container" id="explainPlanTreeContainer"></div>
+            </div>
+
+            <!-- Tab 3: Decision Tree -->
+            <div class="tab-pane" id="tabDecisionTree">
+              <div class="tree-wrapper" id="decisionTreeContainer"></div>
+            </div>
+
+            <!-- Tab 4: Distribution Chart -->
+            <div class="tab-pane" id="tabChart">
+              <div class="chart-wrapper" id="chartContainer"></div>
+            </div>
+
+            <!-- Tab 5: Diff Grid -->
+            <div class="tab-pane" id="tabDiff">
+              <div class="diff-wrapper" id="diffContainer"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div><!-- End of viewStudio -->
+
+  <!-- VIEW 2: Study Material & Docs Hub -->
+  <div class="view-panel" id="viewExplainer">
+    <div class="study-portal-wrapper">
+      <!-- Left Sidebar: Search & Topic Navigator -->
+      <aside class="study-sidebar">
+        <!-- Curriculum Mastery Tracker Card -->
+        <div class="study-progress-card">
+          <div class="study-progress-header">
+            <span class="study-progress-title">Curriculum Mastery</span>
+            <span class="study-progress-pct" id="studyMasteryCount">0 / 7 Mastered</span>
+          </div>
+          <div class="study-progress-bar-track">
+            <div class="study-progress-bar-fill" id="studyMasteryBar" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="study-search-box">
+          <input type="text" id="studySearchInput" class="clean-search-input" placeholder="🔍 Search topics, syntax, gotchas..." />
+        </div>
+        <div class="study-nav-section-title">CURRICULUM PILLARS &amp; TOPICS</div>
+        <nav class="study-topics-nav" id="studyTopicsNav">
+          <!-- Dynamically populated from window.STUDY_LIBRARY -->
+        </nav>
+      </aside>
+
+      <!-- Right Main Reader: Structured Study Material -->
+      <main class="study-main-reader" id="studyMainReader">
+        <!-- Dynamically rendered active study section -->
+      </main>
+    </div>
+  </div>
+
+  <!-- VIEW 3: Interactive MCQs & Knowledge Check -->
+  <div class="view-panel" id="viewMcqs">
+    <div class="curriculum-container">
+      <div class="curriculum-header">
+        <div>
+          <h2 class="view-title">🎯 Topic Mastery Hub &amp; Practice Arena</h2>
+          <p class="view-subtitle">Unified curriculum workspace: Seamlessly explore 2,100 MCQs, 2,540 Corporate Case Studies, and 3,420+ Query Problems &amp; Quests in the same topic window.</p>
+        </div>
+        <div class="quiz-header-right">
+          <div class="quiz-score-badge">
+            Score: <span id="quizScoreCount">0</span> / <span id="quizTotalCount">0</span>
+          </div>
+        </div>
+      </div>
+      <div class="keyword-pill-filter" id="mcqPillFilter">
+        <!-- Dynamically populated MCQ keyword filter pills -->
+      </div>
+      <div class="mcq-cards-list" id="mcqCardsList">
+        <!-- Dynamically rendered from FOUNDATIONS_DATA.mcqs -->
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW: Dedicated Syntax Gym (1,700 Foundational Micro-Drills & Everyday Schemas) -->
+  <div class="view-panel" id="viewSyntaxGym">
+    <div class="curriculum-container">
+      <div class="curriculum-toolbar-deck">
+        <!-- Deck 1: Title, Solved Tally & Search -->
+        <div class="toolbar-deck-top">
+          <div>
+            <h2 class="view-title">🏋️ The SQL Syntax Gym (1,700 Progressive Micro-Drills)</h2>
+            <p class="view-subtitle">High-repetition punctuation &amp; clause muscle memory across 10 everyday relatable schemas. Zero corporate confusion.</p>
+          </div>
+          <div class="toolbar-deck-controls">
+            <button id="btnToggleBlitzMode" class="btn-blitz-toggle" onclick="toggleGymBlitzMode()" title="Toggle Rapid-Fire 10-Drill Blitz Mode with keyboard shortcuts & streak multipliers">
+              ⚡ Rapid-Fire Blitz (10-Drill Sprint)
+            </button>
+            <button id="btnToggleMasteryRadar" class="btn-radar-toggle" onclick="toggleMasteryRadar()" title="View 17-pillar mastery meters, mistake frequency heatmap, and spaced repetition focus">
+              📊 Mastery &amp; Weakness Radar
+            </button>
+            <button id="btnDailyWorkout" class="btn-blitz-toggle" style="background: #4f46e5; border-color: #6366f1; color: #ffffff;" onclick="window.GYM_SPACED_REPETITION && window.GYM_SPACED_REPETITION.openDailyWorkoutModal()" title="Start Daily 5 SuperMemo-2 Spaced Repetition Flashcard Workout">
+              🗂️ Daily 5 Workout
+            </button>
+            <input type="text" id="gymSearchInput" class="case-search-input" placeholder="🔍 Search 1,700 drills by keyword, table, query...">
+            <span id="gymCountBadge" class="status-pill">1,700 Drills</span>
+            <span id="gymSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="gymSolvedCount">0</span>/1,700 Solved</span>
+          </div>
+        </div>
+
+        <!-- Deck 2: Syllabus Pillars Switcher Bar -->
+        <div class="toolbar-deck-bottom">
+          <div class="case-section-group" id="gymPillarFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="case-section-btn active" data-pillar="all">All 1,700 Drills</button>
+            <button class="case-section-btn" data-pillar="select" style="border-color: #38bdf8; color: #38bdf8; font-weight: 700;">💎 Topic 1: SELECT &amp; Projections (100)</button>
+            <button class="case-section-btn" data-pillar="where" style="border-color: #f59e0b; color: #fbbf24; font-weight: 700;">🎯 Topic 2: WHERE &amp; Predicates (100)</button>
+            <button class="case-section-btn" data-pillar="order" style="border-color: #a855f7; color: #c084fc; font-weight: 700;">⚡ Topic 3: ORDER BY &amp; LIMIT Slicing (100)</button>
+            <button class="case-section-btn" data-pillar="aggregate" style="border-color: #ec4899; color: #f472b6; font-weight: 700;">📊 Topic 4: Aggregations &amp; GROUP BY (100)</button>
+            <button class="case-section-btn" data-pillar="casewhen" style="border-color: #10b981; color: #34d399; font-weight: 700;">🧩 Topic 5: CASE WHEN &amp; Conditional Logic (100)</button>
+            <button class="case-section-btn" data-pillar="string" style="border-color: #06b6d4; color: #22d3ee; font-weight: 700;">🔤 Topic 6: String Manipulation &amp; Patterns (100)</button>
+            <button class="case-section-btn" data-pillar="join_core" style="border-color: #6366f1; color: #818cf8; font-weight: 700;">🔗 Topic 7: Relational Joins Core (100)</button>
+            <button class="case-section-btn" data-pillar="join_adv" style="border-color: #e11d48; color: #fb7185; font-weight: 700;">🧬 Topic 8: Advanced Joins &amp; Structures (100)</button>
+            <button class="case-section-btn" data-pillar="join_agg" style="border-color: #d97706; color: #f59e0b; font-weight: 700;">⛓️ Topic 9: Multi-Table Chains &amp; Aggs (100)</button>
+            <button class="case-section-btn" data-pillar="date_time" style="border-color: #8b5cf6; color: #a78bfa; font-weight: 700;">⏱️ Topic 10: Date, Time &amp; Temporal (100)</button>
+            <button class="case-section-btn" data-pillar="subqueries" style="border-color: #14b8a6; color: #2dd4bf; font-weight: 700;">🧱 Topic 11: Subqueries &amp; Derived (100)</button>
+            <button class="case-section-btn" data-pillar="ctes" style="border-color: #f97316; color: #fb923c; font-weight: 700;">🏗️ Topic 12: Modular CTEs &amp; Pipelines (100)</button>
+            <button class="case-section-btn" data-pillar="window_ranking" style="border-color: #0ea5e9; color: #38bdf8; font-weight: 700;">🏆 Topic 13: Window Ranking &amp; Percentiles (100)</button>
+            <button class="case-section-btn" data-pillar="window_offsets" style="border-color: #10b981; color: #34d399; font-weight: 700;">📈 Topic 14: Value Offsets &amp; Deltas (100)</button>
+            <button class="case-section-btn" data-pillar="window_running" style="border-color: #8b5cf6; color: #a78bfa; font-weight: 700;">🌊 Topic 15: Running Balances &amp; Frames (100)</button>
+            <button class="case-section-btn" data-pillar="set_ops" style="border-color: #f43f5e; color: #fb7185; font-weight: 700;">🔀 Topic 16: Set Operations &amp; Combined (100)</button>
+            <button class="case-section-btn" data-pillar="ddl_dml" style="border-color: #eab308; color: #facc15; font-weight: 700;">⚙️ Topic 17: DDL &amp; DML Mutations (100)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Schema Browser: 10 Everyday Relational Tables Inspector -->
+      <div class="gym-tables-browser-card" id="gymTablesBrowser">
+        <!-- Dynamically rendered by renderSyntaxGymTablesBrowser() -->
+      </div>
+
+      <!-- Topic Mastery Meters & Weakness Radar Dashboard (Collapsible) -->
+      <div class="gym-radar-dashboard" id="gymRadarDashboard" style="display: none;">
+        <!-- Injected dynamically by renderMasteryRadar() -->
+      </div>
+
+      <!-- Rapid-Fire Blitz Mode Arena (Hidden by default, activated on ⚡ Blitz Mode) -->
+      <div class="blitz-arena-wrapper" id="blitzArenaWrapper" style="display: none;">
+        <!-- Injected dynamically by renderBlitzArena() -->
+      </div>
+
+      <!-- 1,700 Drills Grid -->
+      <div class="cases-grid" id="syntaxGymGrid">
+        <!-- Dynamically rendered by renderSyntaxGymDrills() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 4: Real-World Case Studies -->
+  <div class="view-panel" id="viewCases">
+    <div class="curriculum-container">
+      <div class="curriculum-toolbar-deck">
+        <!-- Deck 1: Title, Modes, Sort, Search & Solved Tally -->
+        <div class="toolbar-deck-top">
+          <div>
+            <h2 class="view-title">The 2,540 Corporate Case Study Master Vault</h2>
+            <p class="view-subtitle">2,540 production analytics scenarios across 10 enterprise sections with interactive slot challenges.</p>
+          </div>
+          <div class="toolbar-deck-controls">
+            <div class="mode-toggle-group">
+              <button id="btnCaseChallengeMode" class="card-nav-btn active">🧩 Token Puzzle Mode</button>
+              <button id="btnCaseStudyMode" class="card-nav-btn">👁️ Reference Mode</button>
+              <button id="btnToggleEli5Mode" class="btn-eli5-toggle" title="Switch between ELI5 Everyday English and Technical Specs">👶 ELI5 Beginner Mode</button>
+            </div>
+            <!-- Difficulty Sort Selector -->
+            <select id="caseSortSelect" class="case-sort-select">
+              <option value="diff_asc">Sort: Easy &rarr; Medium &rarr; Hard (Curriculum Order)</option>
+              <option value="diff_desc">Sort: Hard &rarr; Medium &rarr; Easy (Challenge Order)</option>
+              <option value="id_asc">Sort: Case ID #001 &rarr; #2540 (Chronological)</option>
+            </select>
+            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 2,540 cases by keyword, schema, query...">
+            <span id="caseCountBadge" class="status-pill">2,540 Cases</span>
+            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/2540 Solved</span>
+          </div>
+        </div>
+
+        <!-- Deck 2: Section Switcher & Filter Strips -->
+        <div class="toolbar-deck-bottom">
+          <!-- 10 Core Enterprise Sections Switcher Bar -->
+          <div class="case-section-group" id="caseSectionFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="case-section-btn active" data-section="all">All Sections (2540)</button>
+            <button class="case-section-btn" data-section="Section 1: Database Theory &amp; Architecture">Sec 1: Theory &amp; Interview Prep (100)</button>
+            <button class="case-section-btn" data-section="Section 2: Physical Query Execution Order &amp; Projections">Sec 2: Execution &amp; Projections (100)</button>
+            <button class="case-section-btn" data-section="Section 3: Filtering, Predicates &amp; Three-Valued Logic">Sec 3: Filtering &amp; 3VL (100)</button>
+            <button class="case-section-btn" data-section="Section 4: String Slicing, Text Manipulation &amp; Pattern Matching">Sec 4: String Manipulation (100)</button>
+            <button class="case-section-btn" data-section="Section 5: Sorting, Determinism &amp; Slicing">Sec 5: Sorting &amp; Slicing (100)</button>
+            <button class="case-section-btn section-btn-aggregations" data-section="Section 6: Aggregations, Statistical Metrics &amp; GROUP BY">🔥 Sec 6: Aggregations &amp; GROUP BY (100)</button>
+            <button class="case-section-btn section-btn-math" data-section="Section 7: Spatial Coordinates, Math Functions &amp; Medians" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">📍 Sec 7: Spatial Math &amp; Medians (50)</button>
+            <button class="case-section-btn section-btn-joins" data-section="Section 8: Relational Joins &amp; Financial Data Modeling" style="border-color: rgba(74, 222, 128, 0.4); color: #4ade80;">🔗 Sec 8: Relational Joins (FA/DA/BA) (390)</button>
+            <button class="case-section-btn section-btn-window" data-section="Section 9: Window Functions &amp; Quantitative Financial Analytics" style="border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">🪟 Sec 9: Window Functions &amp; Quant Analytics (300)</button>
+            <button class="case-section-btn section-btn-sec10" data-section="Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion &amp; Set Operations)" style="border-color: rgba(244, 114, 182, 0.4); color: #f472b6;">🗂️ Sec 10: Subqueries, CTEs &amp; Set Ops (150)</button>
+          </div>
+
+          <!-- Difficulty & Industry Strips -->
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="filter-strip-row" id="caseDifficultyFilters">
+              <span class="filter-strip-label">Difficulty:</span>
+              <button class="case-diff-filter-btn active" data-diff="all">All Difficulties (2540)</button>
+              <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">🟢 Easy &bull; Enterprise (530)</button>
+              <button class="case-diff-filter-btn diff-pill-medium" data-diff="Medium">🟡 Medium &bull; Production Standard (530)</button>
+              <button class="case-diff-filter-btn diff-pill-hard" data-diff="Hard">🔴 Hard &bull; Senior Edge Cases (430)</button>
+            </div>
+
+            <div class="filter-strip-row" id="caseIndustryFilters">
+              <span class="filter-strip-label">Industry:</span>
+              <button class="case-filter-btn active" data-industry="all">All (2540)</button>
+              <button class="case-filter-btn" data-industry="Fintech">Fintech (135)</button>
+              <button class="case-filter-btn" data-industry="SaaS">SaaS (120)</button>
+              <button class="case-filter-btn" data-industry="Retail">Retail (120)</button>
+              <button class="case-filter-btn" data-industry="Healthcare">Healthcare (130)</button>
+              <button class="case-filter-btn" data-industry="Logistics">Logistics (129)</button>
+              <button class="case-filter-btn" data-industry="Media">Media (118)</button>
+              <button class="case-filter-btn" data-industry="Security">Security (118)</button>
+              <button class="case-filter-btn" data-industry="Hardware">Hardware (118)</button>
+              <button class="case-filter-btn" data-industry="HR">HR (118)</button>
+              <button class="case-filter-btn" data-industry="Platforms">Platforms (119)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Persistent Interactive Domain ERD Showcase at the Top of Case Studies -->
+      <div class="domain-erd-showcase-panel" id="caseStudiesDomainErdShowcase"></div>
+
+      <div class="cases-grid" id="caseStudiesGrid">
+        <!-- Dynamically rendered from ALL_500_CASE_STUDIES -->
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW: Enterprise Multi-Table ERD Explorer -->
+  <div class="view-panel" id="viewEnterpriseERD">
+    <div class="curriculum-container">
+      <div class="curriculum-header" style="flex-direction: column; align-items: stretch; gap: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h2 class="view-title">🏛️ Enterprise Company Schemas &amp; Interactive ERD Map</h2>
+            <p class="view-subtitle">Inspect real-world multi-table production schemas (Stripe, Shopify, Uber) with primary/foreign keys, cardinality, and sample records.</p>
+          </div>
+          <!-- Company Switcher Pills -->
+          <div class="mode-toggle-group" id="erdCompanySelector">
+            <button class="card-nav-btn active" data-company="stripe">💳 Stripe (Fintech)</button>
+            <button class="card-nav-btn" data-company="shopify">🛒 Shopify (E-Commerce)</button>
+            <button class="card-nav-btn" data-company="uber">🚗 Uber (Mobility)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ERD Interactive Visual Diagram -->
+      <div class="erd-visual-board" id="erdVisualBoard">
+        <!-- Dynamically rendered visual entity cards with PK/FK and relationship connector badges -->
+      </div>
+
+      <!-- Selected Table Deep Inspector (Sample Data & Columns) -->
+      <div class="erd-table-inspector-card" id="erdTableInspector">
+        <!-- Dynamically rendered when a table is clicked -->
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW: Relational Set & Join Topology Venn Matrix -->
+  <div class="view-panel" id="viewVennMatrix">
+    <!-- Dynamically rendered by VennMatrixEngine -->
+  </div>
+
+  <!-- VIEW: Window Functions Mastery Cockpit (Day 11 & 12) -->
+  <div class="view-panel" id="viewWindowMatrix">
+    <!-- Dynamically rendered by WindowFunctionsEngine -->
+  </div>
+
+  <!-- VIEW 5: Graded Problem Bank -->
+  <div class="view-panel" id="viewProblems">
+    <div class="curriculum-container">
+      <div class="curriculum-header">
+        <div>
+          <h2 class="view-title">Interactive Problem Bank</h2>
+          <p class="view-subtitle">Graded SQL challenges (Easy / Medium / Hard) with 1-click loading into the Query Studio engine.</p>
+        </div>
+        <div class="difficulty-filter-group">
+          <button class="diff-filter-btn active" data-diff="all">All Levels</button>
+          <button class="diff-filter-btn" data-diff="Easy">Easy</button>
+          <button class="diff-filter-btn" data-diff="Medium">Medium</button>
+          <button class="diff-filter-btn" data-diff="Hard">Hard</button>
+        </div>
+      </div>
+      <div class="problems-list" id="problemsListGrid">
+        <!-- Dynamically rendered from FOUNDATIONS_DATA.problems -->
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW: Duolingo Interactive Quests -->
+  <div class="view-panel" id="viewQuests">
+    <div class="quests-container quests-wide-workspace">
+      <div class="quests-header">
+        <div>
+          <h2 class="view-title">🎮 SQL Quests: Learn by Doing (Duolingo Style)</h2>
+          <p class="view-subtitle">Interactive micro-games, live threshold sliders, tap-to-assemble word banks, and bug-fixing puzzles. Zero typing required!</p>
+        </div>
+        <div class="quest-progress-badge" style="display: flex; align-items: center; gap: 12px;">
+          <select id="questDirectLevelSelect" class="quest-level-select"></select>
+          <div>
+            <span id="questProgressText" style="font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); font-weight: 600;">Level 1 of 26</span>
+            <div class="quest-progress-bar-wrap">
+              <div class="quest-progress-bar-fill" id="questProgressBarFill" style="width: 5%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quest Section Navigator Bar -->
+      <div class="quest-section-bar" id="questSectionBar">
+        <button class="quest-section-tab active" data-section="section1" onclick="switchQuestSection('section1')">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge">Section 01</span>
+            <span class="section-tab-status">Active</span>
+          </div>
+          <span class="section-tab-title">Foundations &amp; Projections (100)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section2" onclick="switchQuestSection('section2')" title="Section 02: WHERE Predicates &amp; Filtering (100 Levels) — Unlocked">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge">Section 02</span>
+            <span class="section-tab-status" style="color: #38bdf8;">Active Track</span>
+          </div>
+          <span class="section-tab-title">WHERE &amp; Filtering (100)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section3" onclick="switchQuestSection('section3')" title="Section 03: ORDER BY &amp; LIMIT Slicing (100 Levels) — Unlocked">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge">Section 03</span>
+            <span class="section-tab-status" style="color: #38bdf8;">Active Track</span>
+          </div>
+          <span class="section-tab-title">ORDER BY &amp; Slicing (100)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section4" onclick="switchQuestSection('section4')" title="Section 04: Aggregations &amp; GROUP BY (100 Levels) — Unlocked">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge">Section 04</span>
+            <span class="section-tab-status" style="color: #38bdf8;">Active Track</span>
+          </div>
+          <span class="section-tab-title">Aggregations &amp; GROUP BY (100)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section5" onclick="switchQuestSection('section5')" title="Section 05: Relational JOINs Master Arena (420 Levels across 7 Join Types)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #10b981; background: rgba(16, 185, 129, 0.15);">Section 05</span>
+            <span class="section-tab-status" style="color: #10b981;">420 Quests</span>
+          </div>
+          <span class="section-tab-title">Relational JOINs Arena (420)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section6" onclick="switchQuestSection('section6')" title="Section 06: Window Functions Master Arena (420 Levels across 7 Disciplines)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #a855f7; background: rgba(168, 85, 247, 0.15);">Section 06</span>
+            <span class="section-tab-status" style="color: #a855f7;">420 Quests</span>
+          </div>
+          <span class="section-tab-title">Window Functions Arena (420)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section7" onclick="switchQuestSection('section7')" title="Section 07: Subqueries &amp; CTEs Master Arena (420 Levels across 7 Disciplines)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #ec4899; background: rgba(236, 72, 153, 0.15);">Section 07</span>
+            <span class="section-tab-status" style="color: #ec4899;">420 Quests</span>
+          </div>
+          <span class="section-tab-title">Subqueries &amp; CTEs Arena (420)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section8" onclick="switchQuestSection('section8')" title="Section 08: Conditional Logic &amp; Data Pivoting Arena (420 Levels across 7 Disciplines)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #10b981; background: rgba(16, 185, 129, 0.15);">Section 08</span>
+            <span class="section-tab-status" style="color: #10b981;">420 Quests</span>
+          </div>
+          <span class="section-tab-title">Conditional Pivots (420)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section9" onclick="switchQuestSection('section9')" title="Section 09: Set Operations &amp; Schema Harmonization Arena (420 Levels across 7 Disciplines)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #6366f1; background: rgba(99, 102, 241, 0.15);">Section 09</span>
+            <span class="section-tab-status" style="color: #6366f1;">420 Quests</span>
+          </div>
+          <span class="section-tab-title">Set Operations Arena (420)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section10" onclick="switchQuestSection('section10')" title="Section 10: DDL, Schema Architecture &amp; Integrity Constraints Arena (420 Levels across 7 Disciplines)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #ec4899; background: rgba(236, 72, 153, 0.15);">Section 10</span>
+            <span class="section-tab-status" style="color: #ec4899;">420 Quests</span>
+          </div>
+          <span class="section-tab-title">DDL &amp; Constraints Arena (420)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section11" onclick="switchQuestSection('section11')" title="Section 11: DML, Upserts &amp; ACID Transactions Arena (100 Levels across 5 Disciplines)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #10b981; background: rgba(16, 185, 129, 0.15);">Section 11</span>
+            <span class="section-tab-status" style="color: #10b981;">100 Quests</span>
+          </div>
+          <span class="section-tab-title">DML &amp; Transactions (100)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section12" onclick="switchQuestSection('section12')" title="Section 12: Views, Materialized Views &amp; Stored Procedures Arena (100 Levels across 5 Disciplines)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #38bdf8; background: rgba(56, 189, 248, 0.15);">Section 12</span>
+            <span class="section-tab-status" style="color: #38bdf8;">100 Quests</span>
+          </div>
+          <span class="section-tab-title">Views &amp; Procedures (100)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section13" onclick="switchQuestSection('section13')" title="Section 13: Query Performance, EXPLAIN ANALYZE &amp; Query Optimization (100 Levels across 5 Disciplines)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #ec4899; background: rgba(236, 72, 153, 0.15);">Section 13</span>
+            <span class="section-tab-status" style="color: #ec4899;">100 Quests</span>
+          </div>
+          <span class="section-tab-title">Optimization &amp; Tuning (100)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section14" onclick="switchQuestSection('section14')" title="Section 14: Cloud Warehouses &amp; Modern SQL (100 Levels across 5 Disciplines)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #10b981; background: rgba(16, 185, 129, 0.15);">Section 14</span>
+            <span class="section-tab-status" style="color: #10b981;">100 Quests</span>
+          </div>
+          <span class="section-tab-title">Cloud Warehouses (100)</span>
+        </button>
+        <button class="quest-section-tab" data-section="section15" onclick="switchQuestSection('section15')" title="Section 15: JSON &amp; Semi-Structured Data in SQL (100 Levels across 5 Disciplines)">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #06b6d4; background: rgba(6, 182, 212, 0.15);">Section 15</span>
+            <span class="section-tab-status" style="color: #06b6d4;">100 Quests</span>
+          </div>
+          <span class="section-tab-title">JSON &amp; Semi-Structured (100)</span>
+        </button>
+        <button class="quest-section-tab" data-section="featured" onclick="switchQuestSection('featured')" title="Original 30 Featured Boss Quests">
+          <div class="section-tab-header-row">
+            <span class="section-tab-badge" style="color: #f59e0b; background: rgba(245, 158, 11, 0.15);">Bonus</span>
+            <span class="section-tab-status" style="color: #f59e0b;">🏆 Boss Mode</span>
+          </div>
+          <span class="section-tab-title">Boss Gauntlet (30)</span>
+        </button>
+      </div>
+
+      <!-- 3-Column Ergonomic Quest Workspace (Uses full wide screen) -->
+      <div class="quest-workspace-3col">
+        <!-- LEFT COLUMN: Level Roadmap & Tier Navigator -->
+        <aside class="quest-sidebar-left">
+          <div class="quest-sidebar-panel">
+            <div class="sidebar-panel-header">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 13px;">🗺️</span>
+                <span class="sidebar-panel-title">100-LEVEL ROADMAP</span>
+              </div>
+              <span class="sidebar-pill-stat" id="sidebarProgressCount">Lvl 01 / 100</span>
+            </div>
+
+            <!-- Tier Progression Ladder -->
+            <div class="quest-tier-ladder">
+              <div class="tier-ladder-item active" id="ladderTier1">
+                <span class="ladder-dot" style="background: #38bdf8; box-shadow: 0 0 8px #38bdf888;"></span>
+                <div class="ladder-info">
+                  <div class="ladder-tier-title">Tier 1: Apprentice</div>
+                  <div class="ladder-tier-sub">Lvl 01–15 &bull; 3 Blanks</div>
+                </div>
+                <span class="ladder-badge" style="color: #38bdf8; border-color: #38bdf844;">Active</span>
+              </div>
+
+              <div class="tier-ladder-item" id="ladderTier2">
+                <span class="ladder-dot" style="background: #10b981;"></span>
+                <div class="ladder-info">
+                  <div class="ladder-tier-title">Tier 2: Practitioner</div>
+                  <div class="ladder-tier-sub">Lvl 16–40 &bull; 3–4 Blanks</div>
+                </div>
+                <span class="ladder-badge" style="color: #10b981; border-color: #10b98144;">Up Next</span>
+              </div>
+
+              <div class="tier-ladder-item" id="ladderTier3">
+                <span class="ladder-dot" style="background: #f59e0b;"></span>
+                <div class="ladder-info">
+                  <div class="ladder-tier-title">Tier 3: Specialist</div>
+                  <div class="ladder-tier-sub">Lvl 41–70 &bull; 4 Blanks</div>
+                </div>
+                <span class="ladder-badge" style="color: #f59e0b; border-color: #f59e0b44;">Locked</span>
+              </div>
+
+              <div class="tier-ladder-item" id="ladderTier4">
+                <span class="ladder-dot" style="background: #ec4899;"></span>
+                <div class="ladder-info">
+                  <div class="ladder-tier-title">Tier 4: Master</div>
+                  <div class="ladder-tier-sub">Lvl 71–100 &bull; 4–5 Blanks</div>
+                </div>
+                <span class="ladder-badge" style="color: #ec4899; border-color: #ec489944;">FAANG</span>
+              </div>
+            </div>
+
+            <!-- Leitner Mistake Vault Switcher -->
+            <div class="mistake-vault-toggle-bar">
+              <button class="mistake-vault-btn active" id="btnFilterAllQuests" onclick="toggleMistakeVaultFilter(false)">All Levels</button>
+              <button class="mistake-vault-btn" id="btnFilterMistakesQuests" onclick="toggleMistakeVaultFilter(true)">🔁 Mistakes (<span id="mistakeVaultCount">0</span>)</button>
+            </div>
+
+            <!-- Chunk Jump Controls -->
+            <div class="sidebar-chunk-tabs">
+              <button class="chunk-tab-btn active" onclick="setQuestChunkRange(0, 20)">01–20</button>
+              <button class="chunk-tab-btn" onclick="setQuestChunkRange(20, 40)">21–40</button>
+              <button class="chunk-tab-btn" onclick="setQuestChunkRange(40, 60)">41–60</button>
+              <button class="chunk-tab-btn" onclick="setQuestChunkRange(60, 80)">61–80</button>
+              <button class="chunk-tab-btn" onclick="setQuestChunkRange(80, 100)">81–100</button>
+            </div>
+
+            <!-- Scrollable Level Grid -->
+            <div class="sidebar-level-grid-scroll">
+              <div class="quest-drawer-grid" id="questStepperTrack">
+                <!-- Dynamically populated level chips -->
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- CENTER COLUMN: Active Quest Terminal -->
+        <main class="quest-center-col">
+          <!-- Sleek Compact Quest HUD Control Bar -->
+          <div class="quest-level-control-hud">
+            <div class="hud-left-group">
+              <button class="quest-drawer-toggle-btn" id="btnToggleQuestDrawer" onclick="toggleQuestLevelDrawer()">
+                <span class="drawer-icon">🗺️</span>
+                <span class="drawer-label" id="questDrawerLabel">Browse 100 Levels</span>
+                <span class="drawer-caret" id="questDrawerCaret">▾</span>
+              </button>
+              <span class="hud-level-pill" id="hudCurrentLevelPill">Level 01 of 100</span>
+            </div>
+
+            <div class="hud-stepper-actions">
+              <button class="card-nav-btn" onclick="openExecutionOrderModal()" title="View Animated Physical Query Execution Order">
+                <span>🎬 Engine Step-Through</span>
+              </button>
+              <button class="card-nav-btn" onclick="openSQLSandboxModal()" title="Open Interactive Free-Form SQL Sandbox">
+                <span>💻 SQL Sandbox</span>
+              </button>
+              <button class="card-nav-btn" onclick="openStreakCalendarModal()" title="View Daily Challenge & Streak Calendar">
+                <span>🔥 Daily Streak</span>
+              </button>
+              <button class="card-nav-btn" onclick="openSoundStudioModal()" title="Configure Soundscape Studio & Voice Synthesizer">
+                <span>🔊 Audio Studio</span>
+              </button>
+              <button class="btn-blitz-start" onclick="startQuestBlitzSprint()" title="Start 60-Second Rapid-Fire Blitz Challenge">
+                <span>⚡ 60s Blitz</span>
+              </button>
+              <button class="hud-nav-step-btn" id="btnQuestPrev" onclick="navigateQuestStep(-1)" title="Previous Level (Press [)">
+                &larr; Prev
+              </button>
+              <button class="hud-nav-step-btn" id="btnQuestNext" onclick="navigateQuestStep(1)" title="Next Level (Press ])">
+                Next &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Collapsible Level Drawer (For mobile/tablet or when toggled) -->
+          <div class="quest-level-drawer" id="questLevelDrawer" style="display: none;">
+            <div class="drawer-chunk-pills">
+              <span class="chunk-nav-label">CHUNK:</span>
+              <button class="chunk-jump-btn active" onclick="setQuestChunkRange(0, 20)">Lvl 01–20</button>
+              <button class="chunk-jump-btn" onclick="setQuestChunkRange(20, 40)">Lvl 21–40</button>
+              <button class="chunk-jump-btn" onclick="setQuestChunkRange(40, 60)">Lvl 41–60</button>
+              <button class="chunk-jump-btn" onclick="setQuestChunkRange(60, 80)">Lvl 61–80</button>
+              <button class="chunk-jump-btn" onclick="setQuestChunkRange(80, 100)">Lvl 81–100</button>
+              <button class="chunk-jump-btn" onclick="setQuestChunkRange(0, 100)">View All 100</button>
+            </div>
+            <div class="quest-drawer-grid" id="questStepperTrackDrawer">
+              <!-- Drawer level grid -->
+            </div>
+          </div>
+
+          <!-- Active Quest Card Container -->
+          <div class="quest-card" id="questActiveCard">
+            <!-- Dynamically populated for current quest -->
+          </div>
+        </main>
+
+        <!-- RIGHT COLUMN: Companion Station & Table Schema Cheat-Sheet -->
+        <aside class="quest-sidebar-right">
+          <!-- Mascot Companion Box -->
+          <div class="quest-sidebar-panel companion-box-panel">
+            <div class="sidebar-panel-header">
+              <div style="display: flex; align-items: center; gap: 7px;">
+                <span style="font-size: 16px;">👑</span>
+                <div>
+                  <div class="sidebar-panel-title" style="color: #38bdf8;">Sir Bloops-a-Lot</div>
+                  <div style="font-size: 9.5px; color: var(--text-muted);">Grand Master of the Query Plan</div>
+                </div>
+              </div>
+              <button class="card-nav-btn" style="padding: 2px 7px; font-size: 10px;" onclick="if(window.SQL_BUDDY) SQL_BUDDY.poke();" title="Poke Sir Bloops-a-Lot for SQL wisdom">👉 Poke</button>
+            </div>
+
+            <!-- Live Reactive Speech Commentary Box -->
+            <div class="companion-live-speech-box" id="companionStationSpeech">
+              <div class="speech-quote-icon">“</div>
+              <div id="companionSpeechContent" class="companion-speech-text">
+                Ahoy! I'm Sir Bloops-a-Lot. Select your blanks with 1–4 and let's conquer Section 01!
+              </div>
+            </div>
+
+            <!-- Mascot Mood & Quick Shapes -->
+            <div class="companion-mood-row">
+              <span class="companion-mood-pill" id="companionMoodTag">Mood: Ready ⚡</span>
+              <div class="companion-quick-shapes">
+                <button class="quick-shape-icon" onclick="if(window.SQL_BUDDY) SQL_BUDDY.setShape('galet')" title="Pebble">🪨</button>
+                <button class="quick-shape-icon" onclick="if(window.SQL_BUDDY) SQL_BUDDY.setShape('squircle')" title="Squircle">⬛</button>
+                <button class="quick-shape-icon" onclick="if(window.SQL_BUDDY) SQL_BUDDY.setShape('cercle')" title="Circle">⭕</button>
+                <button class="quick-shape-icon" onclick="if(window.SQL_BUDDY) SQL_BUDDY.setShape('nuage')" title="Cloud">☁️</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Table Columns Reference -->
+          <div class="quest-sidebar-panel">
+            <div class="sidebar-panel-header">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 13px;">📋</span>
+                <span class="sidebar-panel-title">TABLE SCHEMA</span>
+              </div>
+              <span class="sidebar-pill-stat" id="questActiveTableBadge">Books</span>
+            </div>
+            <div class="sidebar-schema-col-list" id="questActiveColumnsList">
+              <!-- Dynamically populated with columns & types -->
+            </div>
+          </div>
+
+          <!-- Pro Keyboard Shortcuts Card -->
+          <div class="quest-sidebar-panel">
+            <div class="sidebar-panel-header">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 13px;">⌨️</span>
+                <span class="sidebar-panel-title">SPEED SHORTCUTS</span>
+              </div>
+            </div>
+            <div class="sidebar-shortcuts-grid">
+              <div class="shortcut-row">
+                <div class="key-combo"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd></div>
+                <span class="key-desc">Fill Blank Options</span>
+              </div>
+              <div class="shortcut-row">
+                <div class="key-combo"><kbd>Enter</kbd></div>
+                <span class="key-desc">Check &amp; Advance</span>
+              </div>
+              <div class="shortcut-row">
+                <div class="key-combo"><kbd>[</kbd> <kbd>]</kbd></div>
+                <span class="key-desc">Prev / Next Level</span>
+              </div>
+              <div class="shortcut-row">
+                <div class="key-combo"><kbd>M</kbd></div>
+                <span class="key-desc">Toggle Drawer</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW: Guided Capstones Arena (Top 5 Hiring Domains) -->
+  <div class="view-panel" id="viewCapstones">
+    <div id="capstoneContentRoot" class="capstones-workspace-wrap">
+      <!-- Dynamically populated by capstone_engine.js -->
+    </div>
+  </div>
+
+  <!-- VIEW: Amazon Data Analyst 30-Day Onboarding Simulator -->
+  <div class="view-panel" id="viewAmazonStory">
+    <div id="amazonStoryContentRoot" class="amazon-story-workspace-wrap">
+      <!-- Dynamically populated by amazon_story_engine.js -->
+    </div>
+  </div>
+
+  <!-- VIEW: SQL Production Trap Memory Gym (Leitner SRS) -->
+  <div class="view-panel" id="viewTrapGym">
+    <!-- Populated dynamically by trap_memory_engine.js -->
+  </div>
+
+  <!-- VIEW: JPMorgan Chase Quantitative Risk & Treasury 30-Day Simulator -->
+  <div class="view-panel" id="viewJPMorganStory">
+    <div id="jpmorganStoryContentRoot" class="amazon-story-workspace-wrap">
+      <!-- Dynamically populated by jpmorgan_story_engine.js -->
+    </div>
+  </div>
+
+  <!-- VIEW: LeetCode 50 SQL Arena -->
+  <div class="view-panel" id="viewLeetCode50">
+    <!-- Dynamically populated by leetcode_arena_engine.js -->
+  </div>
+
+  <!-- VIEW: Interactive In-Browser SQLite WASM Terminal -->
+  <div class="view-panel" id="viewSqlTerminal"></div>
+
+  <!-- VIEW: Timed FAANG / Wall Street Mock Interview Screen -->
+  <div class="view-panel" id="viewMockInterview"></div>
+
+  <!-- VIEW: FAANG & Wall Street Company Mastery Hub -->
+  <div class="view-panel" id="viewCompanyHub">
+    <div id="companyHubContentRoot">
+      <!-- Dynamically populated by company_mastery_engine.js -->
+    </div>
+  </div>
+
+  <!-- VIEW: Tactile Isometric SQL Engine (Colorfigures Edition) -->
+  <div class="view-panel" id="viewTactileEngine" style="padding: 0; min-height: 850px;">
+    <div style="background: #f2efe7; border-bottom: 2px solid #231e16; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 0 rgba(35,30,22,0.06);">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 26px;">⚙️</span>
+        <div>
+          <div style="font-size: 14px; font-weight: 800; color: #231e16; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.02em;">
+            FIG. 16 &bull; TABULATOR RELATIONALIS &amp; MECHANICAL QUERY FACTORY
+          </div>
+          <div style="font-size: 11.5px; color: #857d6e; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;">
+            Bespoke Hand-Inked Apparatus &bull; Physical Execution Factory for Any Query &bull; Colorfigures Architecture
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <a href="tactile_sql_machine.html" target="_blank" style="text-decoration: none; font-size: 12px; padding: 6px 14px; background: #fff4d6; color: #231e16; border: 1.5px solid #231e16; border-radius: 999px; font-weight: 800; font-family: ui-monospace, monospace; display: inline-flex; align-items: center; gap: 6px; box-shadow: 2px 2px 0 #231e16;">
+          <span>↗ Open Standalone Popout</span>
+        </a>
+      </div>
+    </div>
+    <iframe id="iframeTactileEngine" src="tactile_sql_machine.html" style="width: 100%; height: 820px; border: none; background: #f2efe7; display: block;"></iframe>
+  </div>
+
+  <!-- 60-Second Rapid-Fire Blitz Modal -->
+  <div id="questBlitzModal" class="blitz-modal-overlay" style="display: none;">
+    <div class="blitz-modal-card">
+      <div class="blitz-hud-top">
+        <div class="blitz-timer-wrap">
+          <span>⏱️</span> <span id="blitzTimerDisplay">60s</span>
+        </div>
+        <div class="blitz-progress-pills" id="blitzProgressDots"></div>
+        <button class="card-nav-btn" onclick="closeBlitzModal()" style="padding: 2px 8px; font-size: 14px;">&times;</button>
+      </div>
+      <div id="blitzCardBody"></div>
+    </div>
+  </div>
+
+  <!-- Custom Problem Analyzer Modal -->
+  <div class="custom-modal-overlay" id="customProblemModal" style="display: none;">
+    <div class="custom-modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h3 class="custom-modal-title">&plus; Deconstruct Any SQL Problem &amp; Data</h3>
+        <button id="btnCloseCustomModal" class="card-nav-btn" style="padding: 3px 8px; font-size: 14px;">&times;</button>
+      </div>
+      <p style="font-size: 11.5px; color: var(--text-muted); margin: 0 0 12px 0;">
+        Paste any challenge from HackerRank, LeetCode, or an interview. The engine will instantly deconstruct its goal, detect silent edge-case traps, map its corporate application, and provide an executable simulation blueprint.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div>
+          <label style="font-size: 10px; font-family: var(--font-mono); color: var(--text-secondary); display: block; margin-bottom: 4px;">PROBLEM TITLE</label>
+          <input type="text" id="customProbTitle" class="custom-modal-input" placeholder="e.g. LeetCode 175: Combine Two Tables">
+        </div>
+        <div>
+          <label style="font-size: 10px; font-family: var(--font-mono); color: var(--text-secondary); display: block; margin-bottom: 4px;">RAW PROBLEM PROMPT / QUESTION DESCRIPTION</label>
+          <textarea id="customProbPrompt" class="custom-modal-textarea" placeholder="Write an SQL query to report the first name, last name, city, and state of each person in the Person table. If the address of a personId is not present, report null instead..."></textarea>
+        </div>
+        <div>
+          <label style="font-size: 10px; font-family: var(--font-mono); color: var(--text-secondary); display: block; margin-bottom: 4px;">SAMPLE SCHEMA OR RELEVANT COLUMNS (Optional)</label>
+          <input type="text" id="customProbSchema" class="custom-modal-input" placeholder="e.g. Person(personId, lastName, firstName) | Address(addressId, personId, city, state)">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px;">
+          <button id="btnRunCustomDeconstruct" class="btn-solve-in-studio" style="padding: 7px 16px; font-weight: 600;">
+            Deconstruct &amp; Analyze Problem &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full-Page Case Study Deep-Dive Dossier Modal -->
+  <div class="case-dossier-overlay" id="caseStudyDetailModal" style="display: none;">
+    <div class="case-dossier-container">
+      <!-- Modal Navigation Header -->
+      <div class="case-dossier-header">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <span class="status-pill" id="dossierCaseIdBadge" style="font-size: 11px; padding: 2px 8px;">#001</span>
+          <span class="dossier-diff-badge" id="dossierDifficultyBadge">Easy</span>
+          <span class="dossier-industry-badge" id="dossierIndustryBadge">Fintech</span>
+          <span class="dossier-section-badge" id="dossierSectionBadge">Section 1</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 10.5px; font-family: var(--font-mono); color: var(--text-muted);">Use &larr; &rarr; or Esc to close</span>
+          <button id="btnCloseDossierModal" class="dossier-close-btn" title="Close Dossier (Esc)">&times;</button>
+        </div>
+      </div>
+
+      <!-- Dossier Dynamic Content Body -->
+      <div class="case-dossier-body" id="caseDossierBody">
+        <!-- Dynamically rendered by CASE_DOSSIER_ENGINE -->
+      </div>
+
+      <!-- Dossier Persistent Footer Navigation -->
+      <div class="case-dossier-footer">
+        <div style="display: flex; gap: 8px;">
+          <button class="dossier-nav-btn" id="btnDossierPrev">
+            &larr; Previous Case
+          </button>
+          <button class="dossier-nav-btn" id="btnDossierNext">
+            Next Case &rarr;
+          </button>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button class="btn-toggle-sim" id="btnDossierToggleSim">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            Toggle Live 5-Row Simulator
+          </button>
+          <button class="btn-solve-in-studio" id="btnDossierSolveStudio" style="padding: 7px 18px; font-weight: 700;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Solve in Query Studio
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full-Screen Interactive Domain ERD Diagram Modal -->
+  <div class="domain-erd-modal-overlay" id="domainErdModal" style="display: none;">
+    <div class="domain-erd-modal-container" id="domainErdContent">
+      <!-- Dynamically rendered by DOMAIN_ERD_ENGINE -->
+    </div>
+  </div>
+
+  <!-- Interactive Click-to-Learn Glossary Flashcard Modal -->
+  <div class="glossary-modal-overlay" id="glossaryModal" style="display: none;">
+    <div class="glossary-modal-container" id="glossaryContent">
+      <!-- Dynamically rendered by CASE_DOSSIER_ENGINE.openGlossaryFlashcard -->
+    </div>
+  </div>
+
+  <!-- Slide-out Case Dossier Drawer (High-Density Practice Mode) -->
+  <div class="case-drawer-backdrop" id="caseDrawerBackdrop" onclick="closeCaseDrawer(event)">
+    <div class="case-drawer-panel" onclick="event.stopPropagation()">
+      <div class="case-drawer-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="clause-pill pill-from" id="drawerCaseIdBadge">CASE #001</span>
+          <span style="font-size: 14px; font-weight: 700; color: var(--text-primary);" id="drawerCaseTitle">Case Scenario</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button class="card-nav-btn" onclick="navigateDrawerCase(-1)" title="Previous Case Study" style="padding: 4px 10px; font-size: 11px;">&larr; Prev Case</button>
+          <button class="card-nav-btn" onclick="navigateDrawerCase(1)" title="Next Case Study" style="padding: 4px 10px; font-size: 11px;">Next Case &rarr;</button>
+          <button class="btn-drawer-close" onclick="closeCaseDrawer()" title="Close Drawer">&times;</button>
+        </div>
+      </div>
+      <div class="case-drawer-body" id="caseDrawerBody">
+        <!-- Dynamically rendered case practice card -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Modern IDE Footer -->
+  <footer class="app-footer">
+    <div class="footer-left-group">
+      <div class="footer-status">
+        <span class="status-dot"></span>
+        <span id="activeQueryStats">MySQL 8.0 &bull; Ready</span>
+      </div>
+      <span class="footer-tag" id="footerAstTag">Valid AST</span>
+      <span class="footer-track-pill" id="footerActiveTrack">Section 01: Foundations &amp; Projections (100)</span>
+    </div>
+
+    <div class="footer-center-group">
+      <span class="footer-hint">Deliberate Practice Mode</span>
+    </div>
+
+    <div class="footer-right-group">
+      <span class="footer-shortcut-hint">⌨️ 1-4 Pick &bull; Enter Run &bull; Esc Close</span>
+      <span class="footer-sep">|</span>
+      <a href="../FOUNDATIONS_MASTER_COMPENDIUM.md" target="_blank" class="footer-link">📖 Compendium</a>
+      <span class="footer-sep">|</span>
+      <button class="footer-mascot-btn" id="footerMascotToggle" onclick="if(window.SQL_BUDDY) window.SQL_BUDDY.toggleMinimize();" title="Toggle Assistant Mascot">🐙 Sir Bloops</button>
+    </div>
+  </footer>
+</div>
+
+  <!-- Persistent Living Avatar Container -->
+  <div id="sqlBuddyContainer" class="sql-buddy-container"></div>
+
+<script src="guided_lab_data.js"></script>
+<script src="casewhen_lab_data.js"></script>
+<script src="aggregations_lab_data.js"></script>
+<script src="joins_lab_data.js"></script>
+<script src="operators_sandbox.js"></script>
+<script src="quests_section1_data.js"></script>
+<script src="quests_section2_data.js"></script>
+<script src="quests_section3_data.js"></script>
+<script src="quests_section4_data.js"></script>
+<script src="quests_section5_data.js"></script>
+<script src="quests_section6_data.js"></script>
+<script src="quests_section7_data.js"></script>
+<script src="quests_section8_data.js"></script>
+<script src="quests_section9_data.js"></script>
+<script src="quests_section10_data.js"></script>
+<script src="quests_section11_data.js"></script>
+<script src="quests_section12_data.js"></script>
+<script src="quests_section13_data.js"></script>
+<script src="quests_section14_data.js"></script>
+<script src="quests_section15_data.js"></script>
+<script src="quests_engine.js"></script>
+<script src="execution_order_engine.js"></script>
+<script src="sql_sandbox_engine.js"></script>
+<script src="daily_streak_engine.js"></script>
+<script src="deconstructor_data.js"></script>
+<script src="theory_interview_prep.js"></script>
+<script src="syntax_gym_data.js"></script>
+<script src="case_studies_500.js?v=58"></script>
+<script src="case_study_blanks.js?v=57"></script>
+<script src="domain_erd_engine.js?v=57"></script>
+<script src="case_dossier_engine.js?v=57"></script>
+<script src="enterprise_erd_data.js"></script>
+<script src="case_simulator_engine.js?v=57"></script>
+<script src="foundations_curriculum.js"></script>
+<script src="joins_master_350_vault.js?v=57"></script>
+<script src="mcqs_vault_500.js?v=57"></script>
+<script src="traps_interview_secrets.js?v=57"></script>
+<script src="audio_fx.js"></script>
+<script src="study_library_data.js?v=65"></script>
+<script src="buddy_engine.js?v=87"></script>
+<script src="gym_blitz_engine.js?v=57"></script>
+<script src="gym_mastery_radar.js?v=57"></script>
+<script src="gym_autopsy_engine.js?v=57"></script>
+<script src="gym_execution_timeline.js?v=57"></script>
+<script src="gym_explain_optimizer.js?v=57"></script>
+<script src="visual_explain_tree_engine.js?v=1"></script>
+<script src="gym_faang_interviewer.js?v=57"></script>
+<script src="gym_dataflow_graph.js?v=57"></script>
+<script src="gym_typing_dojo.js?v=57"></script>
+<script src="gym_spaced_repetition.js?v=57"></script>
+<script src="venn_matrix_engine.js?v=89"></script>
+<script src="window_functions_engine.js?v=90"></script>
+<script src="activity_heatmap_engine.js?v=91"></script>
+<script src="learning_journey.js"></script>
+<script src="capstones_data.js"></script>
+<script src="capstone_engine.js"></script>
+<script src="amazon_story_data.js"></script>
+<script src="amazon_story_engine.js"></script>
+<script src="jpmorgan_sql_runner.js"></script>
+<script src="jpmorgan_sample_data.js"></script>
+<script src="jpmorgan_story_data.js"></script>
+<script src="jpmorgan_story_engine.js"></script>
+<script src="trap_flashcards_data.js"></script>
+<script src="trap_memory_engine.js"></script>
+<script src="leetcode_section1_data.js?v=8"></script>
+<script src="leetcode_section2_data.js?v=5"></script>
+<script src="leetcode_section3_data.js?v=2"></script>
+<script src="leetcode_section4_data.js?v=2"></script>
+<script src="leetcode_section5_data.js?v=2"></script>
+<script src="leetcode_section6_data.js?v=1"></script>
+<script src="leetcode_section7_data.js?v=1"></script>
+<script src="leetcode_section8_data.js?v=1"></script>
+<script src="leetcode_section9_data.js?v=1"></script>
+<script src="leetcode_section10_data.js?v=1"></script>
+<script src="leetcode_section11_data.js?v=1"></script>
+<script src="leetcode_300_master_vault.js"></script>
+<script src="leetcode_arena_engine.js?v=316"></script>
+<script src="sql-wasm.js"></script>
+<script src="sql_terminal_data.js?v=105"></script>
+<script src="sql_terminal_engine.js?v=105"></script>
+<script src="mock_interview_data.js?v=106"></script>
+<script src="mock_interview_engine.js?v=106"></script>
+<script src="company_mastery_engine.js?v=201"></script>
+<script src="curriculum_compendium_data.js"></script>
+<script src="curriculum_reader_engine.js"></script>
+<script src="command_palette.js?v=2"></script>
+<script src="landing_page_engine.js?v=12"></script>
+  <script src="studio_workbench_engine.js?v=1"></script>
+  <script src="mastery_course_data.js?v=10"></script>
+  <script src="mastery_course_svg_engine.js?v=10"></script>
+  <script src="mastery_course_engine.js?v=10"></script>
+  <script src="app.js?v=101"></script>
+<script>
+  // Automatic Hash & Default View Router
+  (function() {
+    function routeView() {
+      const hash = (window.location.hash || '').replace('#', '').toLowerCase();
+      if (hash === 'course' || hash === 'mastery' || hash === 'curriculum') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewMasteryCourse', 'Course', null);
+      } else       if (hash === 'guidedlab' || hash === 'guided-lab') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewGuidedLab', 'Guided Lab', 'navGroupLearn');
+      } else if (hash === 'interview' || hash === 'mock' || hash === 'mockinterview') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewMockInterview', 'Interview 🎯', null);
+      } else if (hash === 'company' || hash === 'companyhub' || hash === 'companies') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewCompanyHub', 'Company Hub', null);
+      } else if (hash === 'terminal' || hash === 'sqlterminal') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewSqlTerminal', 'SQL Terminal', null);
+      } else if (hash === 'studio') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewStudio', 'Studio', null);
+      } else if (hash === 'journey') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewLearningJourney', 'Learning Journey', null);
+      } else if (hash === 'mcqs') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewMcqs', 'MCQs', 'navGroupPractice');
+      } else if (hash === 'cases') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewCases', 'Case Studies', 'navGroupPractice');
+      } else {
+        // Default to Product Landing Page & Features Showcase
+        if (typeof window.selectNavView === 'function') {
+          window.selectNavView('viewLandingPage', 'Home', null);
+        } else if (typeof window.switchMainView === 'function') {
+          window.switchMainView('viewLandingPage');
+        }
+      }
+    }
+    if (document.readyState === 'complete') {
+      routeView();
+    } else {
+      window.addEventListener('load', () => setTimeout(routeView, 50));
+    }
+    window.addEventListener('hashchange', routeView);
+  })();
+</script>
+</body>
+</html>

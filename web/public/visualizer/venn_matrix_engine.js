@@ -1,0 +1,2609 @@
+// =============================================================================
+// SQL FOUNDRY — JOINS MASTERY PLATFORM (PURE JOINS EDITION)
+// 300 Progressive Pure-Join Problems (100 Easy / 100 Medium / 100 Hard)
+// Live Query Editor with Interactive Keyword Callout Ribbons & Pointer Bubbles,
+// Neon Laser Tracers, Mini Venn HUD, Step Scrubber & Diff Inspector
+// =============================================================================
+
+(function () {
+  'use strict';
+
+  // --- RELATIONAL SCHEMAS & DATASETS ---
+  const SCHEMAS = {
+    // 2-Table Employee & Department Schema
+    standard: {
+      tableA: {
+        name: 'Employees',
+        alias: 'e',
+        key: 'dept_id',
+        columns: ['emp_id', 'name', 'dept_id', 'salary'],
+        rows: [
+          { emp_id: 1, name: 'Alice Chen', dept_id: 10, salary: '$95,000' },
+          { emp_id: 2, name: 'Bob Smith', dept_id: 20, salary: '$78,000' },
+          { emp_id: 3, name: 'Charlie Kim', dept_id: 10, salary: '$110,000' },
+          { emp_id: 4, name: 'Diana Ross', dept_id: 30, salary: '$82,000' },
+          { emp_id: 5, name: 'Evan Vance', dept_id: null, salary: '$65,000' } // Orphan employee (dept_id IS NULL)
+        ]
+      },
+      tableB: {
+        name: 'Departments',
+        alias: 'd',
+        key: 'dept_id',
+        columns: ['dept_id', 'dept_name', 'location'],
+        rows: [
+          { dept_id: 10, dept_name: 'Engineering', location: 'San Francisco' },
+          { dept_id: 20, dept_name: 'Marketing', location: 'New York' },
+          { dept_id: 30, dept_name: 'Sales', location: 'Austin' },
+          { dept_id: 40, dept_name: 'Research', location: 'Boston' } // Orphan department (0 matching employees)
+        ]
+      }
+    },
+
+    // Self-Join Hierarchy Schema (Org Chart: Subordinate -> Manager)
+    selfJoin: {
+      tableA: {
+        name: 'Employees (Subordinates)',
+        alias: 'e',
+        columns: ['emp_id', 'name', 'manager_id', 'salary'],
+        rows: [
+          { emp_id: 1, name: 'Alice Chen (VP)', manager_id: null, salary: '$160,000' },
+          { emp_id: 2, name: 'Bob Smith (Lead)', manager_id: 1, salary: '$120,000' },
+          { emp_id: 3, name: 'Charlie Kim (Dev)', manager_id: 2, salary: '$95,000' },
+          { emp_id: 4, name: 'Diana Ross (Dev)', manager_id: 2, salary: '$98,000' },
+          { emp_id: 5, name: 'Evan Vance (Contractor)', manager_id: 99, salary: '$70,000' } // Orphan manager_id = 99
+        ]
+      },
+      tableB: {
+        name: 'Employees (Managers)',
+        alias: 'm',
+        columns: ['emp_id', 'name', 'salary'],
+        rows: [
+          { emp_id: 1, name: 'Alice Chen (VP)', salary: '$160,000' },
+          { emp_id: 2, name: 'Bob Smith (Lead)', salary: '$120,000' },
+          { emp_id: 3, name: 'Charlie Kim (Dev)', salary: '$95,000' },
+          { emp_id: 4, name: 'Diana Ross (Dev)', salary: '$98,000' }
+        ]
+      }
+    },
+
+    // 3-Table Chained Pipeline Schema (Employees -> Departments -> Projects)
+    multiHop: {
+      tableA: {
+        name: 'Employees (A)',
+        alias: 'e',
+        columns: ['emp_id', 'name', 'dept_id'],
+        rows: [
+          { emp_id: 1, name: 'Alice Chen', dept_id: 10 },
+          { emp_id: 2, name: 'Bob Smith', dept_id: 20 },
+          { emp_id: 3, name: 'Charlie Kim', dept_id: 10 },
+          { emp_id: 4, name: 'Diana Ross', dept_id: 30 },
+          { emp_id: 5, name: 'Evan Vance', dept_id: null }
+        ]
+      },
+      tableB: {
+        name: 'Departments (B)',
+        alias: 'd',
+        columns: ['dept_id', 'dept_name'],
+        rows: [
+          { dept_id: 10, dept_name: 'Engineering' },
+          { dept_id: 20, dept_name: 'Marketing' },
+          { dept_id: 30, dept_name: 'Sales' },
+          { dept_id: 40, dept_name: 'Research' }
+        ]
+      },
+      tableC: {
+        name: 'Projects (C)',
+        alias: 'p',
+        columns: ['proj_id', 'proj_name', 'dept_id'],
+        rows: [
+          { proj_id: 101, proj_name: 'Core Payment Engine', dept_id: 10 },
+          { proj_id: 102, proj_name: 'Growth Ads Funnel', dept_id: 20 },
+          { proj_id: 103, proj_name: 'Global CRM', dept_id: 30 },
+          { proj_id: 104, proj_name: 'AI Quantum Stealth', dept_id: 50 } // Orphan project (dept 50 does not exist!)
+        ]
+      }
+    },
+
+    // Non-Equi Salary Band Range Schema
+    salaryBands: {
+      tableA: {
+        name: 'Employees (A)',
+        alias: 'e',
+        columns: ['emp_id', 'name', 'salary_num'],
+        rows: [
+          { emp_id: 1, name: 'Alice Chen', salary_num: 95000 },
+          { emp_id: 2, name: 'Bob Smith', salary_num: 78000 },
+          { emp_id: 3, name: 'Charlie Kim', salary_num: 110000 },
+          { emp_id: 4, name: 'Diana Ross', salary_num: 82000 },
+          { emp_id: 5, name: 'Evan Vance', salary_num: 55000 }
+        ]
+      },
+      tableB: {
+        name: 'Salary_Bands (B)',
+        alias: 'b',
+        columns: ['band_code', 'band_name', 'min_sal', 'max_sal'],
+        rows: [
+          { band_code: 'L1', band_name: 'Junior Associate', min_sal: 50000, max_sal: 70000 },
+          { band_code: 'L2', band_name: 'Mid-Level Specialist', min_sal: 70001, max_sal: 90000 },
+          { band_code: 'L3', band_name: 'Senior Principal', min_sal: 90001, max_sal: 120000 }
+        ]
+      }
+    }
+  };
+
+  // --- CURRICULUM GENERATOR (300 PURE-JOIN PROBLEMS) ---
+  function buildProblemsCatalog() {
+    const problems = [];
+
+    // TIER 1: EASY (Problems 1 to 100) — Foundations of Joins
+    const easyTemplates = [
+      {
+        title: 'Match Personnel with Department Locations',
+        company: 'Stripe • Operations',
+        scenario: 'Generate an active staff directory pairing employees with department locations. Drop unassigned new hires and empty departments.',
+        goal: 'INNER JOIN Employees and Departments on dept_id. Return e.name, d.dept_name, d.location.',
+        schema: 'standard',
+        starterSQL: `SELECT e.name, d.dept_name, d.location\nFROM Employees e\nINNER JOIN Departments d ON e.dept_id = d.dept_id;`,
+        expectedJoin: 'inner',
+        requiredCols: ['name', 'dept_name', 'location'],
+        hints: ['Use INNER JOIN on e.dept_id = d.dept_id', 'Qualify column names with table aliases e and d']
+      },
+      {
+        title: 'Preserve Complete Staff Roster (Null Padding)',
+        company: 'Google • Workspace HR',
+        scenario: 'HR directory requires a list of ALL employees. If an employee has no department (like Evan Vance), keep them with NULL department attributes.',
+        goal: 'LEFT JOIN Employees to Departments on dept_id so all 5 employees survive.',
+        schema: 'standard',
+        starterSQL: `SELECT e.name, d.dept_name, d.location\nFROM Employees e\nLEFT JOIN Departments d ON e.dept_id = d.dept_id;`,
+        expectedJoin: 'left',
+        requiredCols: ['name', 'dept_name', 'location'],
+        hints: ['Use LEFT JOIN to preserve all Table A (Employees) rows', 'Evan Vance will show NULL for dept_name and location']
+      },
+      {
+        title: 'Audit Orphan Employees (Left Anti-Join)',
+        company: 'Amazon • Payroll Audit',
+        scenario: 'Isolate unassigned new hires who currently have NO matching department on file.',
+        goal: 'LEFT JOIN Departments and filter WHERE d.dept_id IS NULL to isolate Evan Vance.',
+        schema: 'standard',
+        starterSQL: `SELECT e.emp_id, e.name, e.salary\nFROM Employees e\nLEFT JOIN Departments d ON e.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;`,
+        expectedJoin: 'left_antijoin',
+        requiredCols: ['emp_id', 'name', 'salary'],
+        hints: ['Join using LEFT JOIN', 'Add WHERE d.dept_id IS NULL to catch orphan personnel']
+      },
+      {
+        title: 'Preserve All Corporate Departments',
+        company: 'Deloitte • Entity Management',
+        scenario: 'Ensure every department is shown in the output, even if it currently has zero staff assigned (e.g. Research).',
+        goal: 'RIGHT JOIN Departments on e.dept_id = d.dept_id so all 4 departments survive.',
+        schema: 'standard',
+        starterSQL: `SELECT e.name, d.dept_name, d.location\nFROM Employees e\nRIGHT JOIN Departments d ON e.dept_id = d.dept_id;`,
+        expectedJoin: 'right',
+        requiredCols: ['name', 'dept_name', 'location'],
+        hints: ['Use RIGHT JOIN Departments d ON e.dept_id = d.dept_id', 'Research will have NULL for employee name']
+      },
+      {
+        title: 'Generate Full Shift Rotation (Cartesian Product)',
+        company: 'FedEx • Logistics Dispatch',
+        scenario: 'Create all 20 hypothetical combinations pairing every employee with every department without conditions.',
+        goal: 'CROSS JOIN Employees and Departments to produce a 5 × 4 = 20 row matrix.',
+        schema: 'standard',
+        starterSQL: `SELECT e.name, d.dept_name\nFROM Employees e\nCROSS JOIN Departments d;`,
+        expectedJoin: 'cross',
+        requiredCols: ['name', 'dept_name'],
+        hints: ['Use CROSS JOIN without any ON clause', 'Computes Cartesian product: 5 × 4 = 20 rows']
+      }
+    ];
+
+    for (let i = 1; i <= 100; i++) {
+      const tmpl = easyTemplates[(i - 1) % easyTemplates.length];
+      problems.push({
+        id: `joins_easy_${i}`,
+        number: i,
+        tier: 'easy',
+        xp: 15,
+        title: i <= 5 ? tmpl.title : `${tmpl.title} (Variant ${Math.floor((i - 1) / 5) + 1})`,
+        company: tmpl.company,
+        scenario: tmpl.scenario,
+        goal: tmpl.goal,
+        schema: tmpl.schema,
+        starterSQL: tmpl.starterSQL,
+        expectedJoin: tmpl.expectedJoin,
+        requiredCols: tmpl.requiredCols,
+        hints: tmpl.hints
+      });
+    }
+
+    // TIER 2: MEDIUM (Problems 101 to 200) — Anti-Joins, Self-Joins & Traps
+    const mediumTemplates = [
+      {
+        title: 'The ON vs WHERE Predicate Placement Trap',
+        company: 'Meta • Integrity Engineering',
+        scenario: 'Filter for San Francisco departments while preserving unassigned staff. Placing the filter in WHERE drops Evan Vance; placing it in ON preserves him.',
+        goal: 'LEFT JOIN with AND d.location = \'San Francisco\' in the ON clause to keep all 5 staff.',
+        schema: 'standard',
+        starterSQL: `SELECT e.name, d.dept_name, d.location\nFROM Employees e\nLEFT JOIN Departments d\n  ON e.dept_id = d.dept_id\n AND d.location = 'San Francisco';`,
+        expectedJoin: 'left_predicate_on',
+        requiredCols: ['name', 'dept_name', 'location'],
+        hints: ['Move the location predicate into the ON clause', 'Do NOT use WHERE d.location = ... because NULL fails the equality test']
+      },
+      {
+        title: 'Direct Report to Manager Hierarchy Mapping',
+        company: 'Apple • Org Strategy',
+        scenario: 'Self-join the employee table to pair every direct report with their designated line manager.',
+        goal: 'INNER JOIN Employees e (subordinates) with Employees m (managers) on e.manager_id = m.emp_id.',
+        schema: 'selfJoin',
+        starterSQL: `SELECT e.name AS employee, m.name AS manager\nFROM Employees e\nINNER JOIN Employees m ON e.manager_id = m.emp_id;`,
+        expectedJoin: 'self_inner',
+        requiredCols: ['employee', 'manager'],
+        hints: ['Use self-join with aliases e and m', 'Join on e.manager_id = m.emp_id']
+      },
+      {
+        title: 'Include Top Executives in Management Tree',
+        company: 'Microsoft • People Operations',
+        scenario: 'Alice Chen is VP and has no manager (manager_id = NULL). Ensure top executives still appear with NULL manager.',
+        goal: 'LEFT JOIN self-hierarchy so executive Alice Chen survives with manager as NULL.',
+        schema: 'selfJoin',
+        starterSQL: `SELECT e.name AS employee, m.name AS manager\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.emp_id;`,
+        expectedJoin: 'self_left',
+        requiredCols: ['employee', 'manager'],
+        hints: ['Use LEFT JOIN on e.manager_id = m.emp_id', 'Alice Chen has NULL manager and will be preserved']
+      },
+      {
+        title: 'Detect Orphan Manager References',
+        company: 'Uber • Core DB Architecture',
+        scenario: 'Evan Vance has manager_id = 99, but manager #99 does not exist. Isolate staff with invalid manager foreign keys.',
+        goal: 'LEFT JOIN managers and filter WHERE e.manager_id IS NOT NULL AND m.emp_id IS NULL.',
+        schema: 'selfJoin',
+        starterSQL: `SELECT e.emp_id, e.name, e.manager_id\nFROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.emp_id\nWHERE e.manager_id IS NOT NULL AND m.emp_id IS NULL;`,
+        expectedJoin: 'self_orphan',
+        requiredCols: ['emp_id', 'name', 'manager_id'],
+        hints: ['Left join on manager_id', 'Filter WHERE e.manager_id IS NOT NULL AND m.emp_id IS NULL']
+      },
+      {
+        title: 'Find Empty Departments (Right Anti-Join)',
+        company: 'Salesforce • Territory Governance',
+        scenario: 'Identify divisions that have zero personnel assigned (e.g. Research in Boston).',
+        goal: 'RIGHT JOIN Departments and filter WHERE e.emp_id IS NULL to find Research.',
+        schema: 'standard',
+        starterSQL: `SELECT d.dept_id, d.dept_name, d.location\nFROM Employees e\nRIGHT JOIN Departments d ON e.dept_id = d.dept_id\nWHERE e.emp_id IS NULL;`,
+        expectedJoin: 'right_antijoin',
+        requiredCols: ['dept_id', 'dept_name', 'location'],
+        hints: ['Use RIGHT JOIN', 'Filter WHERE e.emp_id IS NULL']
+      }
+    ];
+
+    for (let i = 101; i <= 200; i++) {
+      const tmpl = mediumTemplates[(i - 101) % mediumTemplates.length];
+      problems.push({
+        id: `joins_med_${i}`,
+        number: i,
+        tier: 'medium',
+        xp: 25,
+        title: i <= 105 ? tmpl.title : `${tmpl.title} (Scenario ${Math.floor((i - 101) / 5) + 1})`,
+        company: tmpl.company,
+        scenario: tmpl.scenario,
+        goal: tmpl.goal,
+        schema: tmpl.schema,
+        starterSQL: tmpl.starterSQL,
+        expectedJoin: tmpl.expectedJoin,
+        requiredCols: tmpl.requiredCols,
+        hints: tmpl.hints
+      });
+    }
+
+    // TIER 3: HARD (Problems 201 to 300) — Complex Pure-Join Topologies
+    const hardTemplates = [
+      {
+        title: 'Prevent Downstream Inner Join Collapse in 3-Table Pipeline',
+        company: 'Palantir • Foundry Platform',
+        scenario: 'A common production bug: Joining Employees -> Departments (LEFT) -> Projects (INNER) silently kills unassigned staff because an inner join downstream collapses upstream outer rows.',
+        goal: 'Chain two consecutive LEFT JOINs so staff without projects still survive.',
+        schema: 'multiHop',
+        starterSQL: `SELECT e.name AS emp_name, d.dept_name, p.proj_name\nFROM Employees e\nLEFT JOIN Departments d ON e.dept_id = d.dept_id\nLEFT JOIN Projects p ON d.dept_id = p.dept_id;`,
+        expectedJoin: 'chained_left',
+        requiredCols: ['emp_name', 'dept_name', 'proj_name'],
+        hints: ['Use consecutive LEFT JOINs', 'Avoid INNER JOIN in downstream stages to prevent outer join collapse']
+      },
+      {
+        title: 'Isolate Disconnected Project Artifacts',
+        company: 'Snowflake • Metadata Catalog',
+        scenario: 'Project #104 has dept_id = 50 which does not exist in Departments. Identify orphan project nodes in the relational graph.',
+        goal: 'LEFT JOIN Projects to Departments and filter WHERE d.dept_id IS NULL.',
+        schema: 'multiHop',
+        starterSQL: `SELECT p.proj_id, p.proj_name, p.dept_id AS orphan_dept_key\nFROM Projects p\nLEFT JOIN Departments d ON p.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;`,
+        expectedJoin: 'orphan_project',
+        requiredCols: ['proj_id', 'proj_name', 'orphan_dept_key'],
+        hints: ['Start FROM Projects p', 'LEFT JOIN Departments d ON p.dept_id = d.dept_id WHERE d.dept_id IS NULL']
+      },
+      {
+        title: 'Non-Equi Range Join on Continuous Salary Bands',
+        company: 'Goldman Sachs • Compensation Systems',
+        scenario: 'Match each employee to their salary tier without equality operators using a non-equi BETWEEN boundary condition.',
+        goal: 'Join Employees with Salary_Bands ON e.salary_num BETWEEN b.min_sal AND b.max_sal.',
+        schema: 'salaryBands',
+        starterSQL: `SELECT e.name, e.salary_num, b.band_code, b.band_name\nFROM Employees e\nINNER JOIN Salary_Bands b\n  ON e.salary_num BETWEEN b.min_sal AND b.max_sal;`,
+        expectedJoin: 'nonequi_range',
+        requiredCols: ['name', 'salary_num', 'band_code', 'band_name'],
+        hints: ['Join on e.salary_num BETWEEN b.min_sal AND b.max_sal', 'No equality operator needed']
+      },
+      {
+        title: 'Deduplicated Peer Pairing (Inequality Self-Join)',
+        company: 'LinkedIn • Graph Insights',
+        scenario: 'Generate unique co-worker pairings within the same department without duplicates like (Alice, Charlie) and (Charlie, Alice), or self-pairs like (Alice, Alice).',
+        goal: 'Self-join on same dept_id with inequality predicate a.emp_id < b.emp_id.',
+        schema: 'standard',
+        starterSQL: `SELECT a.name AS worker_1, b.name AS worker_2, a.dept_id\nFROM Employees a\nINNER JOIN Employees b\n  ON a.dept_id = b.dept_id\n AND a.emp_id < b.emp_id;`,
+        expectedJoin: 'inequality_self',
+        requiredCols: ['worker_1', 'worker_2', 'dept_id'],
+        hints: ['Use a.dept_id = b.dept_id to ensure same team', 'Use a.emp_id < b.emp_id to strictly eliminate reverse duplicates and self-pairs']
+      },
+      {
+        title: 'Bilateral Reconciliation Audit (Full Outer Join)',
+        company: 'Citadel • Clearing Reconciliation',
+        scenario: 'Perform a 360° audit pairing all employees and departments. Preserve unassigned staff (Evan Vance) AND empty departments (Research).',
+        goal: 'FULL OUTER JOIN Employees and Departments on dept_id.',
+        schema: 'standard',
+        starterSQL: `SELECT e.name, d.dept_name, d.location\nFROM Employees e\nFULL OUTER JOIN Departments d ON e.dept_id = d.dept_id;`,
+        expectedJoin: 'full_outer',
+        requiredCols: ['name', 'dept_name', 'location'],
+        hints: ['Use FULL OUTER JOIN on e.dept_id = d.dept_id', 'In MySQL, full outer join is simulated using LEFT JOIN UNION RIGHT JOIN']
+      }
+    ];
+
+    for (let i = 201; i <= 300; i++) {
+      const tmpl = hardTemplates[(i - 201) % hardTemplates.length];
+      problems.push({
+        id: `joins_hard_${i}`,
+        number: i,
+        tier: 'hard',
+        xp: 50,
+        title: i <= 205 ? tmpl.title : `${tmpl.title} (Case ${Math.floor((i - 201) / 5) + 1})`,
+        company: tmpl.company,
+        scenario: tmpl.scenario,
+        goal: tmpl.goal,
+        schema: tmpl.schema,
+        starterSQL: tmpl.starterSQL,
+        expectedJoin: tmpl.expectedJoin,
+        requiredCols: tmpl.requiredCols,
+        hints: tmpl.hints
+      });
+    }
+
+    return problems;
+  }
+
+  const PROBLEMS = buildProblemsCatalog();
+
+  const state = {
+    activeTier: 'easy',
+    currentProblemIndex: 0,
+    userSQL: PROBLEMS[0].starterSQL,
+    selectedDialect: 'mysql',
+    activeExplainerTab: 'autopsy',
+    activeOptimizerAlgo: 'hash', // 'hash' | 'nested' | 'merge'
+    replayStep: 0,
+    isAutoPlaying: false,
+    autoPlayTimer: null,
+    editorMode: 'blueprint', // 'blueprint' (interactive hoverable query) | 'code' (raw textarea editor)
+    hoveredQueryToken: null, // active hoverable query token key
+    hoveredKey: null, // { side: 'left'|'right', id: number|string }
+    pinnedRow: null, // { side: 'left'|'right', id: number|string }
+    activeCalloutToken: 'join', // active token key for callout popup
+    diffView: false, // boolean: table vs diff inspector
+    showShortcutsModal: false, // boolean: keyboard modal
+    solvedProblemIds: new Set(),
+    userFeedback: null
+  };
+
+  // Load solved problems from localStorage
+  try {
+    const saved = localStorage.getItem('sqlfoundry_joins_mastery_solved');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        state.solvedProblemIds = new Set(parsed);
+      }
+    }
+  } catch (e) {}
+
+  // --- LIVE SQL PARSER & EVALUATOR ---
+  function parseAndEvaluateSQL(sql, schemaKey) {
+    const currentSchema = SCHEMAS[schemaKey] || SCHEMAS.standard;
+    const cleanSQL = (sql || '').trim();
+    const upperSQL = cleanSQL.toUpperCase();
+
+    // Detect join type
+    let joinType = 'inner';
+    if (upperSQL.includes('LEFT ANTI') || (upperSQL.includes('LEFT JOIN') && upperSQL.includes('IS NULL'))) {
+      joinType = 'left_antijoin';
+    } else if (upperSQL.includes('RIGHT ANTI') || (upperSQL.includes('RIGHT JOIN') && upperSQL.includes('IS NULL'))) {
+      joinType = 'right_antijoin';
+    } else if (upperSQL.includes('FULL OUTER JOIN') || upperSQL.includes('FULL JOIN')) {
+      joinType = 'full_outer';
+    } else if (upperSQL.includes('CROSS JOIN')) {
+      joinType = 'cross';
+    } else if (upperSQL.includes('LEFT JOIN') && upperSQL.includes('AND D.LOCATION')) {
+      joinType = 'left_predicate_on';
+    } else if (upperSQL.includes('LEFT JOIN') || upperSQL.includes('LEFT OUTER JOIN')) {
+      joinType = 'left';
+    } else if (upperSQL.includes('RIGHT JOIN') || upperSQL.includes('RIGHT OUTER JOIN')) {
+      joinType = 'right';
+    } else if (upperSQL.includes('BETWEEN') || upperSQL.includes('>=') || upperSQL.includes('<=')) {
+      joinType = 'nonequi_range';
+    } else if (upperSQL.includes('A.EMP_ID < B.EMP_ID') || upperSQL.includes('E1.EMP_ID < E2.EMP_ID')) {
+      joinType = 'inequality_self';
+    } else {
+      joinType = 'inner';
+    }
+
+    // Detect if filter on Table B is accidentally in WHERE clause
+    const hasFilterTrap = upperSQL.includes('LEFT JOIN') && upperSQL.includes('WHERE D.') && !upperSQL.includes('WHERE D.DEPT_ID IS NULL');
+
+    // Generate output rows & relational links
+    const outputRows = [];
+    const arrowLinks = [];
+
+    if (schemaKey === 'standard') {
+      const eRows = currentSchema.tableA.rows;
+      const dRows = currentSchema.tableB.rows;
+
+      if (joinType === 'inner') {
+        eRows.forEach(e => {
+          const match = dRows.find(d => d.dept_id === e.dept_id);
+          if (match) {
+            outputRows.push({ status: 'matched', emp_id: e.emp_id, name: e.name, dept_name: match.dept_name, location: match.location });
+            arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: `dept_${match.dept_id}`, sourceKey: e.dept_id, targetKey: match.dept_id, status: 'match', label: `Match (dept ${e.dept_id})` });
+          } else {
+            arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: null, sourceKey: e.dept_id, targetKey: null, status: 'dropped', label: 'Dropped (No Dept Match)' });
+          }
+        });
+        dRows.forEach(d => {
+          const hasE = eRows.some(e => e.dept_id === d.dept_id);
+          if (!hasE) {
+            arrowLinks.push({ sourceId: null, targetId: `dept_${d.dept_id}`, sourceKey: null, targetKey: d.dept_id, status: 'dropped', label: 'Dropped (0 Staff)' });
+          }
+        });
+      } else if (joinType === 'left' || joinType === 'left_predicate_on') {
+        eRows.forEach(e => {
+          const match = e.dept_id !== null ? dRows.find(d => d.dept_id === e.dept_id) : null;
+          if (match) {
+            outputRows.push({ status: 'matched', emp_id: e.emp_id, name: e.name, dept_name: match.dept_name, location: match.location });
+            arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: `dept_${match.dept_id}`, sourceKey: e.dept_id, targetKey: match.dept_id, status: 'match', label: `Match (dept ${e.dept_id})` });
+          } else {
+            outputRows.push({ status: 'null_padded', emp_id: e.emp_id, name: e.name, dept_name: null, location: null });
+            arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: null, sourceKey: e.dept_id, targetKey: null, status: 'null_pad', label: 'Preserved with NULL' });
+          }
+        });
+      } else if (joinType === 'left_antijoin') {
+        eRows.forEach(e => {
+          const match = e.dept_id !== null ? dRows.find(d => d.dept_id === e.dept_id) : null;
+          if (!match) {
+            outputRows.push({ status: 'exclusive', emp_id: e.emp_id, name: e.name, salary: e.salary });
+            arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: null, sourceKey: e.dept_id, targetKey: null, status: 'exclusive', label: 'Orphan Left (dept IS NULL)' });
+          } else {
+            arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: `dept_${match.dept_id}`, sourceKey: e.dept_id, targetKey: match.dept_id, status: 'dropped', label: 'Filtered (Has Active Dept)' });
+          }
+        });
+      } else if (joinType === 'right' || joinType === 'right_antijoin') {
+        dRows.forEach(d => {
+          const matches = eRows.filter(e => e.dept_id === d.dept_id);
+          if (matches.length > 0) {
+            matches.forEach(e => {
+              if (joinType !== 'right_antijoin') {
+                outputRows.push({ status: 'matched', emp_id: e.emp_id, name: e.name, dept_name: d.dept_name, location: d.location });
+              }
+              arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: `dept_${d.dept_id}`, sourceKey: e.dept_id, targetKey: d.dept_id, status: joinType === 'right_antijoin' ? 'dropped' : 'match', label: 'Match' });
+            });
+          } else {
+            outputRows.push({ status: joinType === 'right_antijoin' ? 'exclusive' : 'null_padded', emp_id: null, name: null, dept_id: d.dept_id, dept_name: d.dept_name, location: d.location });
+            arrowLinks.push({ sourceId: null, targetId: `dept_${d.dept_id}`, sourceKey: null, targetKey: d.dept_id, status: joinType === 'right_antijoin' ? 'exclusive' : 'null_pad', label: 'Preserved with NULL' });
+          }
+        });
+      } else if (joinType === 'full_outer') {
+        eRows.forEach(e => {
+          const match = e.dept_id !== null ? dRows.find(d => d.dept_id === e.dept_id) : null;
+          if (match) {
+            outputRows.push({ status: 'matched', emp_id: e.emp_id, name: e.name, dept_name: match.dept_name, location: match.location });
+            arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: `dept_${match.dept_id}`, sourceKey: e.dept_id, targetKey: match.dept_id, status: 'match', label: 'Match' });
+          } else {
+            outputRows.push({ status: 'null_padded', emp_id: e.emp_id, name: e.name, dept_name: null, location: null });
+            arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: null, sourceKey: e.dept_id, targetKey: null, status: 'null_pad', label: 'Left Preserved' });
+          }
+        });
+        dRows.forEach(d => {
+          const hasE = eRows.some(e => e.dept_id === d.dept_id);
+          if (!hasE) {
+            outputRows.push({ status: 'null_padded', emp_id: null, name: null, dept_name: d.dept_name, location: d.location });
+            arrowLinks.push({ sourceId: null, targetId: `dept_${d.dept_id}`, sourceKey: null, targetKey: d.dept_id, status: 'null_pad', label: 'Right Preserved' });
+          }
+        });
+      } else if (joinType === 'cross') {
+        eRows.forEach(e => {
+          dRows.forEach(d => {
+            outputRows.push({ status: 'cartesian', emp_id: e.emp_id, name: e.name, dept_name: d.dept_name });
+          });
+        });
+      }
+    } else if (schemaKey === 'selfJoin') {
+      const eRows = currentSchema.tableA.rows;
+      const mRows = currentSchema.tableB.rows;
+      eRows.forEach(e => {
+        const mgr = mRows.find(m => m.emp_id === e.manager_id);
+        if (mgr) {
+          outputRows.push({ status: 'matched', employee: e.name, manager: mgr.name });
+          arrowLinks.push({ sourceId: `sub_${e.emp_id}`, targetId: `mgr_${mgr.emp_id}`, sourceKey: e.manager_id, targetKey: mgr.emp_id, status: 'match', label: `Reports to ${mgr.name.split(' ')[0]}` });
+        } else {
+          outputRows.push({ status: 'null_padded', employee: e.name, manager: null });
+          arrowLinks.push({ sourceId: `sub_${e.emp_id}`, targetId: null, sourceKey: e.manager_id, targetKey: null, status: 'null_pad', label: 'No Manager (CEO / Orphan)' });
+        }
+      });
+    } else if (schemaKey === 'multiHop') {
+      const eRows = currentSchema.tableA.rows;
+      const dRows = currentSchema.tableB.rows;
+      const pRows = currentSchema.tableC.rows;
+
+      if (joinType === 'chained_left') {
+        eRows.forEach(e => {
+          const dMatch = e.dept_id !== null ? dRows.find(d => d.dept_id === e.dept_id) : null;
+          if (dMatch) {
+            const pMatch = pRows.find(p => p.dept_id === dMatch.dept_id);
+            outputRows.push({ status: 'matched', emp_name: e.name, dept_name: dMatch.dept_name, proj_name: pMatch ? pMatch.proj_name : null });
+            arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: `dept_${dMatch.dept_id}`, sourceKey: e.dept_id, targetKey: dMatch.dept_id, status: 'match', label: `E ➔ D ➔ P` });
+          } else {
+            outputRows.push({ status: 'null_padded', emp_name: e.name, dept_name: null, proj_name: null });
+            arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: null, sourceKey: e.dept_id, targetKey: null, status: 'null_pad', label: 'Dropped in Chain' });
+          }
+        });
+      } else {
+        pRows.forEach(p => {
+          const dMatch = dRows.find(d => d.dept_id === p.dept_id);
+          if (!dMatch) {
+            outputRows.push({ status: 'exclusive', proj_id: p.proj_id, proj_name: p.proj_name, orphan_dept_key: p.dept_id });
+          }
+        });
+      }
+    } else if (schemaKey === 'salaryBands') {
+      const eRows = currentSchema.tableA.rows;
+      const bRows = currentSchema.tableB.rows;
+      eRows.forEach(e => {
+        const band = bRows.find(b => e.salary_num >= b.min_sal && e.salary_num <= b.max_sal);
+        if (band) {
+          outputRows.push({ status: 'matched', name: e.name, salary_num: e.salary_num, band_code: band.band_code, band_name: band.band_name });
+          arrowLinks.push({ sourceId: `emp_${e.emp_id}`, targetId: `band_${band.band_code}`, sourceKey: e.salary_num, targetKey: band.band_code, status: 'match', label: `Band ${band.band_code}` });
+        }
+      });
+    }
+
+    return {
+      joinType,
+      hasFilterTrap,
+      outputRows,
+      arrowLinks
+    };
+  }
+
+  // --- GOAL EVALUATOR & DIFF INSPECTOR ---
+  function evaluateProblemGoal(problem, userParsed) {
+    const cleanUserSQL = (state.userSQL || '').toUpperCase();
+    const expectedParsed = parseAndEvaluateSQL(problem.starterSQL, problem.schema);
+
+    let joinMatches = false;
+    if (problem.expectedJoin === 'inner' && userParsed.joinType === 'inner') joinMatches = true;
+    else if (problem.expectedJoin === 'left' && (userParsed.joinType === 'left' || userParsed.joinType === 'left_predicate_on')) joinMatches = true;
+    else if (problem.expectedJoin === 'left_antijoin' && userParsed.joinType === 'left_antijoin') joinMatches = true;
+    else if (problem.expectedJoin === 'right' && userParsed.joinType === 'right') joinMatches = true;
+    else if (problem.expectedJoin === 'cross' && userParsed.joinType === 'cross') joinMatches = true;
+    else if (problem.expectedJoin === userParsed.joinType) joinMatches = true;
+
+    const hasFilterTrap = userParsed.hasFilterTrap;
+    const expectedRowCount = expectedParsed.outputRows.length;
+    const actualRowCount = userParsed.outputRows.length;
+    const rowCountMatches = expectedRowCount === actualRowCount;
+
+    const isSuccess = joinMatches && !hasFilterTrap && (rowCountMatches || (expectedRowCount > 0 && actualRowCount > 0));
+
+    // Compute diff breakdown
+    const matchedRows = [];
+    const missingRows = [];
+    const extraRows = [];
+
+    expectedParsed.outputRows.forEach(expRow => {
+      const found = userParsed.outputRows.some(actRow => {
+        return (actRow.name && actRow.name === expRow.name) ||
+               (actRow.employee && actRow.employee === expRow.employee) ||
+               (actRow.proj_name && actRow.proj_name === expRow.proj_name);
+      });
+      if (found) {
+        matchedRows.push(expRow);
+      } else {
+        missingRows.push(expRow);
+      }
+    });
+
+    userParsed.outputRows.forEach(actRow => {
+      const foundInExp = expectedParsed.outputRows.some(expRow => {
+        return (actRow.name && actRow.name === expRow.name) ||
+               (actRow.employee && actRow.employee === expRow.employee) ||
+               (actRow.proj_name && actRow.proj_name === expRow.proj_name);
+      });
+      if (!foundInExp) {
+        extraRows.push(actRow);
+      }
+    });
+
+    return {
+      isSuccess,
+      joinMatches,
+      hasFilterTrap,
+      expectedRowCount,
+      actualRowCount,
+      rowCountMatches,
+      matchedRows,
+      missingRows,
+      extraRows,
+      expectedParsed
+    };
+  }
+
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  // --- UNIVERSAL LINE-BY-LINE SQL SCANNER & TOKENIZER ---
+  function tokenizeSQLLineByLine(sql) {
+    const rawLines = (sql || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+    let currentClause = 'NONE'; // 'SELECT' | 'FROM' | 'JOIN' | 'ON' | 'WHERE' | 'OTHER'
+
+    return rawLines.map((lineText, lineIdx) => {
+      if (!lineText.trim()) {
+        return { lineNum: lineIdx + 1, tokens: [] };
+      }
+
+      // Regex to break line into comments, strings, multi-word join phrases, keywords, identifiers, numbers, symbols, and whitespace
+      const tokenRegex = /('(?:''|[^'])*'|"(?:""|[^"])*"|--.*$|\/\*[\s\S]*?\*\/|INNER\s+JOIN|LEFT\s+OUTER\s+JOIN|LEFT\s+ANTI-JOIN|LEFT\s+JOIN|RIGHT\s+OUTER\s+JOIN|RIGHT\s+JOIN|FULL\s+OUTER\s+JOIN|FULL\s+JOIN|CROSS\s+JOIN|GROUP\s+BY|ORDER\s+BY|IS\s+NOT\s+NULL|IS\s+NULL|[a-zA-Z_][a-zA-Z0-9_\.]*|\d+(?:\.\d+)?|!=|<>|<=|>=|[=><,;()*\+\-\/]|[\s]+|[^\s]+)/gi;
+
+      const matches = lineText.match(tokenRegex) || [lineText];
+      const tokens = [];
+
+      matches.forEach(rawToken => {
+        const trimmed = rawToken.trim();
+        const upper = trimmed.toUpperCase();
+
+        if (!trimmed) {
+          tokens.push({ text: rawToken, isWhitespace: true });
+          return;
+        }
+
+        // Comments
+        if (rawToken.startsWith('--') || rawToken.startsWith('/*')) {
+          tokens.push({ text: rawToken, type: 'sql-comment', dataToken: null });
+          return;
+        }
+
+        // String Literals
+        if ((rawToken.startsWith("'") && rawToken.endsWith("'")) || (rawToken.startsWith('"') && rawToken.endsWith('"'))) {
+          tokens.push({ text: rawToken, type: 'sql-string', dataToken: currentClause === 'ON' ? 'condition' : (currentClause === 'WHERE' ? 'where' : null) });
+          return;
+        }
+
+        // Numbers
+        if (/^\d+(?:\.\d+)?$/.test(trimmed)) {
+          tokens.push({ text: rawToken, type: 'sql-number', dataToken: currentClause === 'ON' ? 'condition' : (currentClause === 'WHERE' ? 'where' : null) });
+          return;
+        }
+
+        // Major Clause Starters
+        if (upper === 'SELECT' || upper === 'DISTINCT') {
+          currentClause = 'SELECT';
+          tokens.push({ text: rawToken, type: 'kw-select', dataToken: 'select' });
+          return;
+        }
+        if (upper === 'FROM') {
+          currentClause = 'FROM';
+          tokens.push({ text: rawToken, type: 'kw-from', dataToken: 'from' });
+          return;
+        }
+        if (/^(INNER|LEFT|RIGHT|FULL|CROSS)\s+JOIN$/i.test(upper) || upper === 'JOIN' || /^(LEFT|RIGHT|FULL)\s+OUTER\s+JOIN$/i.test(upper) || upper === 'LEFT ANTI-JOIN') {
+          currentClause = 'JOIN';
+          tokens.push({ text: rawToken, type: 'kw-join', dataToken: 'join' });
+          return;
+        }
+        if (upper === 'ON') {
+          currentClause = 'ON';
+          tokens.push({ text: rawToken, type: 'kw-on', dataToken: 'on' });
+          return;
+        }
+        if (upper === 'WHERE') {
+          currentClause = 'WHERE';
+          tokens.push({ text: rawToken, type: 'kw-where', dataToken: 'where' });
+          return;
+        }
+        if (upper === 'GROUP BY' || upper === 'ORDER BY' || upper === 'HAVING' || upper === 'LIMIT') {
+          currentClause = 'OTHER';
+          tokens.push({ text: rawToken, type: 'kw-keyword', dataToken: 'keyword' });
+          return;
+        }
+
+        // Conjunctions / secondary keywords
+        if (upper === 'AND' || upper === 'OR' || upper === 'NOT' || upper === 'IS NULL' || upper === 'IS NOT NULL') {
+          if (currentClause === 'ON') {
+            tokens.push({ text: rawToken, type: 'kw-on', dataToken: 'on' });
+          } else if (currentClause === 'WHERE') {
+            tokens.push({ text: rawToken, type: 'kw-where', dataToken: 'where' });
+          } else {
+            tokens.push({ text: rawToken, type: 'kw-keyword', dataToken: 'keyword' });
+          }
+          return;
+        }
+
+        // Standard SQL Keywords
+        if (['AS', 'BETWEEN', 'IN', 'LIKE', 'EXISTS', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'ASC', 'DESC', 'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'OVER', 'PARTITION'].includes(upper)) {
+          tokens.push({ text: rawToken, type: 'kw-keyword', dataToken: 'keyword' });
+          return;
+        }
+
+        // Punctuation and Comparison Operators
+        if (/^[=><!]+$/.test(trimmed)) {
+          tokens.push({ text: rawToken, type: 'op-symbol', dataToken: currentClause === 'ON' ? 'condition' : (currentClause === 'WHERE' ? 'where' : null) });
+          return;
+        }
+        if (/^[,;()]$/.test(trimmed)) {
+          tokens.push({ text: rawToken, type: 'punct-symbol', dataToken: null });
+          return;
+        }
+
+        // Identifiers and expressions categorized by clause context
+        if (currentClause === 'SELECT') {
+          tokens.push({ text: rawToken, type: 'col-item', dataToken: 'columns' });
+        } else if (currentClause === 'FROM') {
+          tokens.push({ text: rawToken, type: 'tbl-a', dataToken: 'table_a' });
+        } else if (currentClause === 'JOIN') {
+          tokens.push({ text: rawToken, type: 'tbl-b', dataToken: 'table_b' });
+        } else if (currentClause === 'ON') {
+          tokens.push({ text: rawToken, type: 'cond-item', dataToken: 'condition' });
+        } else if (currentClause === 'WHERE') {
+          tokens.push({ text: rawToken, type: 'filter-item', dataToken: 'where' });
+        } else {
+          tokens.push({ text: rawToken, type: 'identifier', dataToken: null });
+        }
+      });
+
+      return { lineNum: lineIdx + 1, tokens };
+    });
+  }
+
+  // --- PROBLEM-SPECIFIC & SCENARIO-AWARE QUERY EXPLANATION ENGINE ---
+  function getPatternExplanations(expected, p, sql) {
+    const company = p ? p.company : 'Enterprise SQL';
+    const title = p ? p.title : 'Relational Join';
+
+    const patterns = {
+      // 1. INNER JOIN (Stripe Operations)
+      inner: {
+        select: {
+          badge: 'SELECT • Output Projection',
+          color: '#1d4ed8',
+          systemHint: '✨ Output attributes surviving inner match',
+          desc: 'Specifies which attributes survive from both source tables for active personnel.',
+          scenarioImpact: 'Pairs employee name with confirmed department name and physical office location.'
+        },
+        columns: {
+          badge: 'Output Columns',
+          color: '#1d4ed8',
+          systemHint: '✨ Projected attributes for ' + company,
+          desc: 'Retrieves personnel details alongside department name and facility location.',
+          scenarioImpact: 'Produces the clean active roster for ' + title + '.'
+        },
+        from: {
+          badge: 'FROM (Table A: Employees)',
+          color: '#0f766e',
+          systemHint: '✨ Primary driving relation (5 rows)',
+          desc: 'Starts evaluation with the 5 corporate personnel records (Alice, Bob, Charlie, Diana, Evan).',
+          scenarioImpact: 'Every employee record is tested sequentially against the department lookup table.'
+        },
+        table_a: {
+          badge: 'Employees e (Table A)',
+          color: '#0f766e',
+          systemHint: '✨ Left dataset (4 valid, 1 NULL dept)',
+          desc: 'Alice (#1), Bob (#2), Charlie (#3), Diana (#4) have valid dept_ids. Evan Vance (#5) has dept_id = NULL.',
+          scenarioImpact: 'In an INNER JOIN, Evan Vance is excluded because NULL cannot match any primary key.'
+        },
+        join: {
+          badge: 'INNER JOIN • Strict Pairing',
+          color: '#059669',
+          systemHint: '✨ Strict Key Intersection (A ∩ B)',
+          desc: 'Strict bilateral match: keeps a row ONLY if dept_id exists in BOTH tables. Unmatched rows on either side are dropped.',
+          scenarioImpact: 'Drops unassigned Evan Vance (NULL dept) and empty Research department (0 staff).'
+        },
+        table_b: {
+          badge: 'Departments d (Table B)',
+          color: '#0f766e',
+          systemHint: '✨ 4 corporate divisions',
+          desc: 'Lookup table containing Engineering (10), Marketing (20), Sales (30), and Research (40).',
+          scenarioImpact: 'Research has 0 employees, so it is quietly discarded by the inner join.'
+        },
+        on: {
+          badge: 'ON (Foreign Key Bridge)',
+          color: '#b45309',
+          systemHint: '✨ Relational link: e.dept_id = d.dept_id',
+          desc: 'The foreign-to-primary key bridge connecting staff records to their assigned department.',
+          scenarioImpact: 'Evaluates TRUE for 4 staff members. Emits Alice, Bob, Charlie, and Diana.'
+        },
+        condition: {
+          badge: 'Join Predicate',
+          color: '#b45309',
+          systemHint: '✨ e.dept_id = d.dept_id',
+          desc: 'When employee dept_id equals department dept_id, row attributes merge into the output.',
+          scenarioImpact: 'Pairs Alice & Charlie with Engineering, Bob with Marketing, Diana with Sales.'
+        },
+        where: {
+          badge: 'WHERE Clause',
+          color: '#b45309',
+          systemHint: '✨ Post-join filtering',
+          desc: 'Optional post-join filter. No WHERE clause is needed because INNER JOIN already drops unmatched rows.',
+          scenarioImpact: 'Challenge goal satisfied purely through relational inner match.'
+        }
+      },
+
+      // 2. LEFT JOIN (Google Workspace HR)
+      left: {
+        join: {
+          badge: 'LEFT JOIN • Outer Roster Preservation',
+          color: '#2563eb',
+          systemHint: '✨ 100% Table A Preservation (Evan Vance)',
+          desc: 'Left Outer Join guarantee: all 5 employees survive regardless of whether they have a matching department.',
+          scenarioImpact: 'Evan Vance has dept_id = NULL. LEFT JOIN preserves him and pads department columns with NULL.'
+        },
+        table_a: {
+          badge: 'Employees e (Preserved Roster)',
+          color: '#0f766e',
+          systemHint: '✨ All 5 staff guaranteed',
+          desc: 'HR policy requires every employee to appear in the directory, even if currently unassigned.',
+          scenarioImpact: 'Guarantees zero employee headcount omission in ' + company + '.'
+        },
+        condition: {
+          badge: 'Outer Match Predicate',
+          color: '#b45309',
+          systemHint: '✨ e.dept_id = d.dept_id',
+          desc: 'Evaluates key matches for Table B attributes. If no match exists, Table B values are filled with NULLs.',
+          scenarioImpact: 'Evan Vance generates a row with NULL dept_name and location.'
+        }
+      },
+
+      // 3. LEFT ANTI-JOIN (Amazon Payroll Audit)
+      left_antijoin: {
+        join: {
+          badge: 'LEFT JOIN • Pre-Audit Outer Setup',
+          color: '#2563eb',
+          systemHint: '✨ Pairs all staff before filtering',
+          desc: 'Preserves all employees and generates NULL department values for unassigned personnel.',
+          scenarioImpact: 'Creates the NULL department keys necessary for the subsequent anti-join filter.'
+        },
+        where: {
+          badge: 'WHERE d.dept_id IS NULL • Anti-Join Filter',
+          color: '#d97706',
+          systemHint: '✨ Discards matched rows, isolates orphans',
+          desc: 'The Anti-Join pattern: filters out all successful matches, isolating ONLY personnel with no department.',
+          scenarioImpact: 'Isolates Evan Vance as an unassigned new hire requiring urgent HR placement.'
+        }
+      },
+
+      // 4. RIGHT JOIN (Deloitte Entity Management)
+      right: {
+        join: {
+          badge: 'RIGHT JOIN • Department Preservation',
+          color: '#7c3aed',
+          systemHint: '✨ 100% Table B Preservation (Research)',
+          desc: 'Right Outer Join guarantee: all 4 departments survive, even if they currently have zero assigned staff.',
+          scenarioImpact: 'Research (dept 40) is preserved in output with NULL employee attributes.'
+        },
+        table_b: {
+          badge: 'Departments d (Preserved Relation)',
+          color: '#0f766e',
+          systemHint: '✨ All corporate divisions survive',
+          desc: 'Deloitte entity governance requires listing every registered office division.',
+          scenarioImpact: 'Ensures empty divisions are not silently deleted from corporate reports.'
+        }
+      },
+
+      // 5. CROSS JOIN (FedEx Logistics Dispatch)
+      cross: {
+        join: {
+          badge: 'CROSS JOIN • Cartesian Matrix',
+          color: '#be185d',
+          systemHint: '✨ Unconditional Cartesian Product (20 Rows)',
+          desc: 'Cartesian Product: Multiplies every row of Table A with every row of Table B without conditions.',
+          scenarioImpact: '5 employees × 4 departments = 20 total shift combinations for dispatch.'
+        },
+        on: {
+          badge: 'NO ON CLAUSE (Unconditional)',
+          color: '#64748b',
+          systemHint: '✨ Cartesian joins do not use ON',
+          desc: 'Every employee is paired with every department unconditionally.',
+          scenarioImpact: 'Generates the complete hypothetical shift rotation matrix.'
+        }
+      },
+
+      // 6. PREDICATE PLACEMENT TRAP (Meta Integrity)
+      left_predicate_on: {
+        on: {
+          badge: 'ON Predicate Placement • Trap Solution',
+          color: '#059669',
+          systemHint: '✨ Evaluated BEFORE left row preservation',
+          desc: 'Placing AND d.location = \'San Francisco\' in the ON clause filters department matches BEFORE preserving left rows.',
+          scenarioImpact: 'Alice & Charlie match SF Engineering. Evan Vance survives with NULLs. Challenge solved!'
+        },
+        where: {
+          badge: '⚠️ WHERE PREDICATE TRAP WARNING',
+          color: '#dc2626',
+          systemHint: '⚠️ Never put Table B outer filter in WHERE',
+          desc: 'In a LEFT JOIN, WHERE d.location = \'San Francisco\' filters out NULL rows, accidentally turning the query into an INNER JOIN and dropping Evan Vance!',
+          scenarioImpact: 'Moving the filter into the ON clause is the proper solution.'
+        }
+      },
+
+      // 7. SELF-JOIN HIERARCHY (Apple Org Strategy)
+      self_inner: {
+        table_a: {
+          badge: 'Employees e (Direct Reports)',
+          color: '#0f766e',
+          systemHint: '✨ Subordinates carrying manager pointers',
+          desc: 'Table A alias \'e\' represents subordinate staff members who report to a line manager.',
+          scenarioImpact: 'Each subordinate carries a manager_id indicating who they report to.'
+        },
+        table_b: {
+          badge: 'Employees m (Line Managers)',
+          color: '#0f766e',
+          systemHint: '✨ Self-Join: Re-referencing Employees',
+          desc: 'Self-join technique: references the Employees table a second time with alias \'m\' to lookup manager details.',
+          scenarioImpact: 'Allows resolving manager names from the same company roster.'
+        },
+        on: {
+          badge: 'e.manager_id = m.emp_id',
+          color: '#b45309',
+          systemHint: '✨ Hierarchical foreign-to-primary link',
+          desc: 'Matches subordinate\'s manager pointer to the manager\'s primary employee ID.',
+          scenarioImpact: 'Pairs Bob & Charlie to Alice Chen (Mgr #1), and Diana to Bob Smith (Mgr #2).'
+        }
+      },
+
+      // 8. SELF-JOIN TOP EXECUTIVES (Microsoft People Ops)
+      self_left: {
+        join: {
+          badge: 'LEFT JOIN (Self-Hierarchy)',
+          color: '#2563eb',
+          systemHint: '✨ Preserves top executives with no manager',
+          desc: 'Left outer self-join ensures employees with no manager still appear in output.',
+          scenarioImpact: 'Alice Chen is VP (manager_id = NULL). LEFT JOIN keeps her with manager = NULL.'
+        }
+      },
+
+      // 9. DETECT ORPHAN MANAGERS (Uber DB Architecture)
+      self_orphan: {
+        where: {
+          badge: 'WHERE e.manager_id IS NOT NULL AND m.emp_id IS NULL',
+          color: '#d97706',
+          systemHint: '✨ Catches broken manager references',
+          desc: 'Isolates employees whose manager_id points to an ID that does not exist in the database.',
+          scenarioImpact: 'Detects Evan Vance whose manager_id = 99 has no matching manager in the database.'
+        }
+      },
+
+      // 10. RIGHT ANTI-JOIN (Salesforce Territory Governance)
+      right_antijoin: {
+        where: {
+          badge: 'WHERE e.emp_id IS NULL • Right Anti-Join',
+          color: '#7c3aed',
+          systemHint: '✨ Discards matched divisions, isolates empty ones',
+          desc: 'Right Anti-Join: keeps only departments that have zero assigned staff members.',
+          scenarioImpact: 'Identifies Research (dept 40) as an unstaffed division.'
+        }
+      },
+
+      // 11. NON-EQUI RANGE JOIN (Goldman Sachs Compensation)
+      nonequi_range: {
+        on: {
+          badge: 'ON e.salary_num BETWEEN b.min_sal AND b.max_sal',
+          color: '#b45309',
+          systemHint: '✨ Continuous Numerical Range Join',
+          desc: 'Matches employees into compensation tiers using boundary inequality instead of equality (=).',
+          scenarioImpact: 'Classifies salary into L1, L2, L3 bands without needing a shared ID column.'
+        },
+        table_b: {
+          badge: 'Salary_Bands b (Compensation Tiers)',
+          color: '#0f766e',
+          systemHint: '✨ Continuous bracket boundaries',
+          desc: 'Contains band_code, band_name, min_sal, and max_sal boundaries.',
+          scenarioImpact: 'Employees match based on numerical threshold membership.'
+        }
+      },
+
+      // 12. THREE-WAY MULTI-HOP (Palantir Foundry)
+      chained_left: {
+        join: {
+          badge: 'Chained LEFT JOINs • Pipeline Safety',
+          color: '#2563eb',
+          systemHint: '✨ Employees ➔ Departments ➔ Projects',
+          desc: 'Uses consecutive LEFT JOINs across 3 tables in a sequential relational pipeline.',
+          scenarioImpact: 'Prevents downstream inner join collapse: ensures staff without active projects still survive.'
+        }
+      },
+
+      // 13. DISCONNECTED PROJECT ARTIFACTS (Snowflake Metadata)
+      orphan_project: {
+        table_a: {
+          badge: 'Projects p (Catalog Artifacts)',
+          color: '#0f766e',
+          systemHint: '✨ Primary node audit dataset',
+          desc: 'Starts from projects table to audit orphaned nodes in the relational graph.',
+          scenarioImpact: 'Audits Project #104 (dept 50) which lacks a corresponding department.'
+        },
+        where: {
+          badge: 'WHERE d.dept_id IS NULL • Orphan Node Filter',
+          color: '#d97706',
+          systemHint: '✨ Isolates missing department foreign keys',
+          desc: 'Filters out projects with valid departments, keeping only disconnected orphan projects.',
+          scenarioImpact: 'Identifies AI Quantum Stealth (Project #104) as an orphaned graph node.'
+        }
+      },
+
+      // 14. INEQUALITY SELF-JOIN (LinkedIn Graph Insights)
+      inequality_self: {
+        on: {
+          badge: 'ON a.dept_id = b.dept_id AND a.emp_id < b.emp_id',
+          color: '#059669',
+          systemHint: '✨ Strict duplicate-free peer pairing',
+          desc: 'The strict inequality operator (<) prevents reverse duplicates (Alice, Bob vs Bob, Alice) and self-pairs (Alice, Alice).',
+          scenarioImpact: 'Produces unique coworker pairs like (Alice, Charlie) within the same department.'
+        }
+      },
+
+      // 15. FULL OUTER JOIN (Citadel Clearing Reconciliation)
+      full_outer: {
+        join: {
+          badge: 'FULL OUTER JOIN • 360° Bilateral Reconciliation',
+          color: '#b45309',
+          systemHint: '✨ Complete Two-Way Outer Join (A ∪ B)',
+          desc: 'Bilateral audit: keeps matching pairs PLUS unmatched records on BOTH sides.',
+          scenarioImpact: 'Preserves unassigned staff (Evan Vance) AND unassigned departments (Research) simultaneously.'
+        }
+      }
+    };
+
+    return patterns[expected] || null;
+  }
+
+  function synthesizeDynamicDescription(tokenKey, sql, problem) {
+    const upperSQL = (sql || '').toUpperCase();
+    const p = problem || (typeof PROBLEMS !== 'undefined' ? PROBLEMS[state.currentProblemIndex] : null);
+    const schema = p ? SCHEMAS[p.schema] || SCHEMAS.standard : SCHEMAS.standard;
+
+    if (tokenKey === 'select') {
+      return {
+        badge: 'SELECT (Projection)',
+        color: '#1d4ed8',
+        systemHint: '✨ Output column projection',
+        desc: 'Specifies which attributes survive and display in your final result table.',
+        scenarioImpact: p ? `Targeting required attributes for ${p.title}.` : ''
+      };
+    }
+    if (tokenKey === 'columns') {
+      return {
+        badge: 'Output Columns',
+        color: '#1d4ed8',
+        systemHint: '✨ Projected attributes',
+        desc: 'Attributes retrieved from joined source tables for the final output projection.',
+        scenarioImpact: p ? `Projecting columns for ${p.company}.` : ''
+      };
+    }
+    if (tokenKey === 'from') {
+      return {
+        badge: `FROM (${schema.tableA.name})`,
+        color: '#0f766e',
+        systemHint: '✨ Base driving dataset (Table A)',
+        desc: `Sets ${schema.tableA.name} as the primary starting relation for relational evaluation.`,
+        scenarioImpact: `Begins query execution from ${schema.tableA.name}.`
+      };
+    }
+    if (tokenKey === 'table_a') {
+      return {
+        badge: `Table A: ${schema.tableA.name}`,
+        color: '#0f766e',
+        systemHint: '✨ Primary driving relation',
+        desc: `Left-hand driving relation. Contains ${schema.tableA.rows.length} records.`,
+        scenarioImpact: `Primary source entity in active query.`
+      };
+    }
+    if (tokenKey === 'join') {
+      let typeName = 'INNER JOIN';
+      let color = '#059669';
+      let exp = 'Strict Match: Combines rows only when keys match in BOTH tables. Unmatched rows are dropped.';
+      let impact = 'Only pairs with matching keys survive.';
+
+      if (upperSQL.includes('LEFT JOIN') && upperSQL.includes('IS NULL')) {
+        typeName = 'LEFT ANTI-JOIN';
+        color = '#d97706';
+        exp = 'Left Exclusive: Keeps only rows in Table A with NO matching row in Table B.';
+        impact = 'Isolates orphan records with no matching foreign key.';
+      } else if (upperSQL.includes('LEFT JOIN')) {
+        typeName = 'LEFT JOIN';
+        color = '#2563eb';
+        exp = 'Preserves All Left Rows: Guarantees 100% of Table A records survive, padding missing Table B values with NULL.';
+        impact = 'Prevents dropping unmatched records from Table A.';
+      } else if (upperSQL.includes('RIGHT JOIN')) {
+        typeName = 'RIGHT JOIN';
+        color = '#7c3aed';
+        exp = 'Preserves All Right Rows: Guarantees 100% of Table B records survive, padding missing Table A values with NULL.';
+        impact = 'Prevents dropping unmatched records from Table B.';
+      } else if (upperSQL.includes('FULL')) {
+        typeName = 'FULL OUTER JOIN';
+        color = '#b45309';
+        exp = 'Bilateral Union: Keeps matching pairs plus unmatched rows from both Table A and Table B.';
+        impact = 'Complete 360° two-way reconciliation.';
+      } else if (upperSQL.includes('CROSS')) {
+        typeName = 'CROSS JOIN';
+        color = '#be185d';
+        exp = 'Cartesian Product: Multiplies every row of Table A with every row of Table B without conditions.';
+        impact = 'Produces complete combinatorial matrix.';
+      }
+
+      return {
+        badge: typeName,
+        color: color,
+        systemHint: '✨ Relational topology & match logic',
+        desc: exp,
+        scenarioImpact: impact
+      };
+    }
+    if (tokenKey === 'table_b') {
+      return {
+        badge: `Table B: ${schema.tableB.name}`,
+        color: '#0f766e',
+        systemHint: '✨ Target lookup relation',
+        desc: `Secondary relation being joined. Contains ${schema.tableB.rows.length} records.`,
+        scenarioImpact: `Lookup dataset merged into the query.`
+      };
+    }
+    if (tokenKey === 'on') {
+      return {
+        badge: 'ON (Match Predicate)',
+        color: '#b45309',
+        systemHint: '✨ Key comparison rule',
+        desc: 'The relational rule that evaluates which row in Table A links to which row in Table B.',
+        scenarioImpact: 'Controls physical arrow links and row matching.'
+      };
+    }
+    if (tokenKey === 'condition') {
+      return {
+        badge: 'Join Condition',
+        color: '#b45309',
+        systemHint: '✨ Predicate logic',
+        desc: 'Key comparison rule. When keys evaluate to TRUE, rows merge into the output dataset.',
+        scenarioImpact: 'Relational criteria for emitting combined rows.'
+      };
+    }
+    if (tokenKey === 'where') {
+      const isTrap = upperSQL.includes('LEFT JOIN') && upperSQL.includes('WHERE D.') && !upperSQL.includes('IS NULL');
+      return {
+        badge: isTrap ? '⚠️ FILTER TRAP' : 'WHERE Filter',
+        color: isTrap ? '#dc2626' : '#b45309',
+        systemHint: isTrap ? '⚠️ Warning: Silently turns LEFT JOIN into INNER JOIN' : '✨ Filters emitted rows',
+        desc: isTrap
+          ? 'Filtering Table B in WHERE drops NULL rows, accidentally converting your LEFT JOIN into an INNER JOIN! Move condition into the ON clause.'
+          : 'Applies post-join filtering on rows emitted from the relational join.',
+        scenarioImpact: isTrap ? 'Filter trap detected! Move condition to ON clause.' : 'Filters final result set.'
+      };
+    }
+
+    return {
+      badge: 'SQL Element',
+      color: '#1d4ed8',
+      systemHint: 'Relational query component',
+      desc: 'Active relational join query keyword or expression.',
+      scenarioImpact: p ? p.scenario : ''
+    };
+  }
+
+  function getTokenDescription(tokenKey, sql, problem) {
+    const p = problem !== undefined ? problem : (typeof PROBLEMS !== 'undefined' ? PROBLEMS[state.currentProblemIndex] : null);
+    const cleanSQL = (sql || '').trim();
+    const upperSQL = cleanSQL.toUpperCase();
+
+    // Determine current SQL's join semantics
+    let detectedJoin = null;
+    if (upperSQL.includes('LEFT ANTI') || (upperSQL.includes('LEFT JOIN') && upperSQL.includes('IS NULL'))) {
+      detectedJoin = 'left_antijoin';
+    } else if (upperSQL.includes('RIGHT ANTI') || (upperSQL.includes('RIGHT JOIN') && upperSQL.includes('IS NULL'))) {
+      detectedJoin = 'right_antijoin';
+    } else if (upperSQL.includes('FULL OUTER JOIN') || upperSQL.includes('FULL JOIN')) {
+      detectedJoin = 'full_outer';
+    } else if (upperSQL.includes('CROSS JOIN')) {
+      detectedJoin = 'cross';
+    } else if (upperSQL.includes('LEFT JOIN') && upperSQL.includes('AND D.LOCATION')) {
+      detectedJoin = 'left_predicate_on';
+    } else if (upperSQL.includes('LEFT JOIN') || upperSQL.includes('LEFT OUTER JOIN')) {
+      detectedJoin = 'left';
+    } else if (upperSQL.includes('RIGHT JOIN') || upperSQL.includes('RIGHT OUTER JOIN')) {
+      detectedJoin = 'right';
+    } else if (upperSQL.includes('BETWEEN') || upperSQL.includes('>=') || upperSQL.includes('<=')) {
+      detectedJoin = 'nonequi_range';
+    } else if (upperSQL.includes('A.EMP_ID < B.EMP_ID') || upperSQL.includes('E1.EMP_ID < E2.EMP_ID')) {
+      detectedJoin = 'inequality_self';
+    } else if (upperSQL.includes('INNER JOIN') || upperSQL.includes('JOIN')) {
+      detectedJoin = 'inner';
+    }
+
+    // 1. If problem is active and query matches the problem's expected pattern, use bespoke story profile
+    if (p && (!detectedJoin || detectedJoin === p.expectedJoin)) {
+      const profile = getPatternExplanations(p.expectedJoin, p, sql);
+      if (profile && profile[tokenKey]) {
+        return profile[tokenKey];
+      }
+    }
+
+    // 2. Otherwise (custom query, edited query, or token not in profile), synthesize dynamically
+    return synthesizeDynamicDescription(tokenKey, sql, p);
+  }
+
+  // --- TOPOLOGY QUICK-DIFF HELPERS ---
+  function generateTopologySQL(targetJoinType, currentSQL, problem) {
+    const p = problem || (typeof PROBLEMS !== 'undefined' ? PROBLEMS[state.currentProblemIndex] : null);
+    const clean = (currentSQL || (p ? p.starterSQL : '')).trim();
+
+    // Standard Employees & Departments schema replacement
+    const baseSelect = 'SELECT e.emp_id, e.name, d.dept_name, d.location\nFROM Employees e\n';
+    if (targetJoinType === 'inner') {
+      return baseSelect + 'INNER JOIN Departments d ON e.dept_id = d.dept_id;';
+    } else if (targetJoinType === 'left') {
+      return baseSelect + 'LEFT JOIN Departments d ON e.dept_id = d.dept_id;';
+    } else if (targetJoinType === 'right') {
+      return baseSelect + 'RIGHT JOIN Departments d ON e.dept_id = d.dept_id;';
+    } else if (targetJoinType === 'full_outer') {
+      return baseSelect + 'FULL OUTER JOIN Departments d ON e.dept_id = d.dept_id;';
+    } else if (targetJoinType === 'left_antijoin') {
+      return baseSelect + 'LEFT JOIN Departments d ON e.dept_id = d.dept_id\nWHERE d.dept_id IS NULL;';
+    }
+    return clean;
+  }
+
+  function getTopologySimulationCounts(problem) {
+    const p = problem || (typeof PROBLEMS !== 'undefined' ? PROBLEMS[state.currentProblemIndex] : null);
+    const schema = (p && p.schema) ? p.schema : 'standard';
+    return {
+      inner: parseAndEvaluateSQL(generateTopologySQL('inner', state.userSQL, p), schema).outputRows.length,
+      left: parseAndEvaluateSQL(generateTopologySQL('left', state.userSQL, p), schema).outputRows.length,
+      right: parseAndEvaluateSQL(generateTopologySQL('right', state.userSQL, p), schema).outputRows.length,
+      full_outer: parseAndEvaluateSQL(generateTopologySQL('full_outer', state.userSQL, p), schema).outputRows.length,
+      left_antijoin: parseAndEvaluateSQL(generateTopologySQL('left_antijoin', state.userSQL, p), schema).outputRows.length
+    };
+  }
+
+  // --- TUPLE DOSSIER HELPER ---
+  function renderTupleDossierHTML(activeTarget, problem, currentSchema, parsed) {
+    if (!activeTarget) {
+      return `
+        <div class="predicate-inspector-strip">
+          <div class="dossier-top-badge-row">
+            <span class="dossier-target-pill"><span class="framer-emoji-icon float">💡</span> Interactive Tuple Inspector</span>
+            <span class="dossier-fate-tag" style="color:var(--text-muted)">CLICK OR HOVER ANY RECORD</span>
+          </div>
+          <div class="dossier-content-text">
+            Click or hover any record in <strong>${currentSchema.tableA.name}</strong> or <strong>${currentSchema.tableB.name}</strong> to isolate its exact vector path and inspect its relational fate under ANSI Three-Valued Logic (3VL).
+          </div>
+        </div>
+      `;
+    }
+
+    const { side, id } = activeTarget;
+    if (side === 'left') {
+      const emp = currentSchema.tableA.rows.find(r => (r.emp_id || r.proj_id) === id);
+      if (!emp) return '';
+
+      let fateTag = '';
+      let fateClass = '';
+      let text = '';
+
+      if (emp.emp_id === 5 && emp.dept_id === null) {
+        fateTag = (parsed.joinType === 'left' || parsed.joinType === 'full_outer' || parsed.joinType === 'left_antijoin') ? '★ PRESERVED (NULL-PADDED)' : '⊘ DISCARDED (3VL)';
+        fateClass = (parsed.joinType === 'left' || parsed.joinType === 'full_outer' || parsed.joinType === 'left_antijoin') ? 'null_padded' : 'dropped';
+        text = `<strong>Evan Vance (#5)</strong> has <code>dept_id = NULL</code>. In ANSI SQL Three-Valued Logic, <code>NULL = 10/20/30/40</code> evaluates to <strong>UNKNOWN</strong>. Under ${parsed.joinType.toUpperCase().replace('_', ' ')}, UNKNOWN evaluates to ${parsed.joinType === 'inner' ? '<span style=\"color:#dc2626\">FALSE (row dropped from output ⊘)</span>' : '<span style=\"color:#2563eb\">Outer Preservation (emitted with NULL department attributes ✨)</span>'}.`;
+      } else if (emp.dept_id !== undefined) {
+        const match = currentSchema.tableB.rows.find(d => d.dept_id === emp.dept_id);
+        if (match) {
+          fateTag = parsed.joinType === 'left_antijoin' ? '⊘ FILTERED OUT' : '✓ MATCHED & EMITTED';
+          fateClass = parsed.joinType === 'left_antijoin' ? 'dropped' : 'matched';
+          text = `<strong>${emp.name} (#${emp.emp_id})</strong> has <code>dept_id = ${emp.dept_id}</code>, matching <strong>${match.dept_name}</strong>. Predicate <code>e.dept_id = d.dept_id</code> evaluates strictly to <strong>TRUE</strong> ✨. ${parsed.joinType === 'left_antijoin' ? 'Anti-join filter drops this row because department is not NULL.' : 'Row merges and emits into the final output table.'}`;
+        }
+      } else if (emp.manager_id !== undefined) {
+        const mgr = currentSchema.tableB.rows.find(m => m.emp_id === emp.manager_id);
+        fateTag = mgr ? '✓ REPORTS TO MGR' : (emp.manager_id === null ? '★ TOP EXEC (NULL MGR)' : '⊘ ORPHAN MGR');
+        fateClass = mgr ? 'matched' : (emp.manager_id === null ? 'null_padded' : 'exclusive');
+        text = mgr ? `<strong>${emp.name}</strong> reports to <strong>${mgr.name} (#${mgr.emp_id})</strong>. Self-join on <code>e.manager_id = m.emp_id</code> is TRUE ✨.` : `<strong>${emp.name}</strong> has manager_id ${emp.manager_id === null ? 'NULL (C-level leadership)' : '99 (unregistered manager)'}.`;
+      } else {
+        fateTag = '⚡ RANGE EVALUATED';
+        fateClass = 'matched';
+        text = `<strong>${emp.name}</strong> with salary <strong>$${(emp.salary_num || 0).toLocaleString()}</strong> evaluated against continuous salary band thresholds.`;
+      }
+
+      return `
+        <div class="predicate-inspector-strip">
+          <div class="dossier-top-badge-row">
+            <span class="dossier-target-pill"><span class="framer-emoji-icon float">🎯</span> Tuple #${emp.emp_id || emp.proj_id}: ${emp.name || emp.proj_name}</span>
+            <span class="dossier-fate-tag ${fateClass}">${fateTag}</span>
+          </div>
+          <div class="dossier-content-text">${text}</div>
+        </div>
+      `;
+    } else {
+      const dept = currentSchema.tableB.rows.find(r => (r.dept_id || r.band_code || r.emp_id) === id);
+      if (!dept) return '';
+
+      const staff = currentSchema.tableA.rows.filter(e => e.dept_id === dept.dept_id);
+      let fateTag = staff.length > 0 ? `✓ ${staff.length} STAFF ASSIGNED` : (parsed.joinType === 'right' || parsed.joinType === 'full_outer' || parsed.joinType === 'right_antijoin' ? '★ PRESERVED (0 STAFF)' : '⊘ DROPPED (0 STAFF)');
+      let fateClass = staff.length > 0 ? 'matched' : (parsed.joinType === 'right' || parsed.joinType === 'full_outer' || parsed.joinType === 'right_antijoin' ? 'null_padded' : 'dropped');
+      let text = staff.length > 0
+        ? `<strong>${dept.dept_name || dept.name} (dept_id: ${dept.dept_id})</strong> matches staff: ${staff.map(s => s.name).join(', ')}. Emits ${staff.length} paired row(s) ✨.`
+        : `<strong>${dept.dept_name || dept.name} (dept_id: ${dept.dept_id})</strong> has 0 staff assigned. ${parsed.joinType === 'right' || parsed.joinType === 'full_outer' ? 'Preserved by outer join with NULL employee attributes 🏢.' : 'Dropped by INNER / LEFT JOIN because no employee has dept_id = 40 ⊘.'}`;
+
+      return `
+        <div class="predicate-inspector-strip">
+          <div class="dossier-top-badge-row">
+            <span class="dossier-target-pill"><span class="framer-emoji-icon float">🏢</span> Division #${dept.dept_id || dept.band_code || dept.emp_id}: ${dept.dept_name || dept.name || dept.band_name}</span>
+            <span class="dossier-fate-tag ${fateClass}">${fateTag}</span>
+          </div>
+          <div class="dossier-content-text">${text}</div>
+        </div>
+      `;
+    }
+  }
+
+  // --- PHYSICAL OPTIMIZER ENGINE SIMULATOR HELPER ---
+  function renderOptimizerCockpitHTML(problem, parsed) {
+    const algo = state.activeOptimizerAlgo || 'hash';
+
+    let algoTitle = 'In-Memory Hash Join';
+    let timeCost = 'O(N + M)';
+    let ramCost = 'O(M) — Fits smaller table in RAM';
+    let card1Title = 'Build Phase (Table B)';
+    let card1Val = 'Departments (4 rows) hashed into RAM hash buckets';
+    let card2Title = 'Probe Phase (Table A)';
+    let card2Val = 'Employees (5 rows) stream and probe buckets in O(1) per row';
+    let decision = 'Database optimizers (PostgreSQL, MySQL 8.0, Oracle) pick Hash Join by default for unsorted equijoins when the smaller relation fits into the work_mem allocation.';
+
+    if (algo === 'nested') {
+      algoTitle = 'Index Nested Loop Join';
+      timeCost = 'O(N · log M)';
+      ramCost = 'O(1) — Constant memory';
+      card1Title = 'Outer Driving Loop';
+      card1Val = 'Sequential scan through Employees (N rows)';
+      card2Title = 'Inner B-Tree Probe';
+      card2Val = 'Direct B-Tree index lookup on Departments.dept_id';
+      decision = 'Optimizers choose Nested Loop when the outer dataset has high selectivity (few rows) and the inner join key has a clustered primary key or secondary index.';
+    } else if (algo === 'merge') {
+      algoTitle = 'Sort-Merge Join';
+      timeCost = 'O(N log N + M log M)';
+      ramCost = 'O(1) if indexed, O(M) if temp-table sort';
+      card1Title = 'Presort Tables';
+      card1Val = 'Sort Employees & Departments by dept_id';
+      card2Title = 'Dual Cursor Scan';
+      card2Val = 'Two synchronized advancing cursors emit matches in linear scan';
+      decision = 'Chosen when both tables are pre-sorted by clustered indexes, when joining massive datasets that exceed RAM work_mem, or for non-equi inequality joins.';
+    }
+
+    return `
+      <div class="optimizer-cockpit-box">
+        <div class="optimizer-algo-switcher">
+          <span style="font-size:10.5px;font-weight:800;color:var(--text-muted);font-family:var(--font-mono);margin-right:6px;">ALGORITHM:</span>
+          <button class="btn-optimizer-algo ${algo === 'hash' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setOptimizerAlgo('hash')">
+            <span class="framer-emoji-icon">⚡</span> Hash Join
+          </button>
+          <button class="btn-optimizer-algo ${algo === 'nested' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setOptimizerAlgo('nested')">
+            <span class="framer-emoji-icon">🔍</span> Nested Loop
+          </button>
+          <button class="btn-optimizer-algo ${algo === 'merge' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setOptimizerAlgo('merge')">
+            <span class="framer-emoji-icon">🔀</span> Sort-Merge
+          </button>
+        </div>
+
+        <div class="optimizer-flow-diagram">
+          <div class="optimizer-stage-card">
+            <div class="stage-card-title">${card1Title}</div>
+            <div class="stage-card-val">${card1Val}</div>
+          </div>
+          <div class="stage-flow-arrow">➔</div>
+          <div class="optimizer-stage-card">
+            <div class="stage-card-title">${card2Title}</div>
+            <div class="stage-card-val">${card2Val}</div>
+          </div>
+        </div>
+
+        <div class="optimizer-metrics-strip">
+          <span>Engine Time: <strong class="metric-cost-pill">${timeCost}</strong></span>
+          <span>RAM Overhead: <strong style="color:var(--text-primary)">${ramCost}</strong></span>
+        </div>
+
+        <div class="optimizer-decision-rule">
+          <strong>Optimizer Decision Heuristic:</strong> ${decision}
+        </div>
+      </div>
+    `;
+  }
+
+  // --- SHORTCUTS MODAL HELPER ---
+  function renderShortcutsModalHTML() {
+    return `
+      <div class="shortcuts-modal-backdrop" onclick="window.JoinsMasteryEngine.toggleShortcutsModal(false)">
+        <div class="shortcuts-modal-card" onclick="event.stopPropagation()">
+          <div class="shortcuts-modal-header">
+            <div class="shortcuts-modal-title">
+              <span class="framer-emoji-icon float">⌨️</span> Speed-Dojo Keyboard Shortcuts
+            </div>
+            <button class="btn-close-modal" onclick="window.JoinsMasteryEngine.toggleShortcutsModal(false)">&times;</button>
+          </div>
+          <div class="shortcuts-grid">
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Next Problem</span>
+              <span class="shortcut-key-badge">] or N</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Previous Problem</span>
+              <span class="shortcut-key-badge">[ or P</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Play / Pause Animated Probe Stepper</span>
+              <span class="shortcut-key-badge">Space</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Jump to Tuple Probe Step</span>
+              <span class="shortcut-key-badge">0 – 6</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Toggle Blueprint / Raw SQL Editor</span>
+              <span class="shortcut-key-badge">E</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Toggle Generated Table / Goal Diff Inspector</span>
+              <span class="shortcut-key-badge">D</span>
+            </div>
+            <div class="shortcut-item-row">
+              <span class="shortcut-desc-text">Toggle Keyboard Shortcuts Cheat Sheet</span>
+              <span class="shortcut-key-badge">?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderInteractiveQueryBlueprintHTML(sql, problem) {
+    const lineData = tokenizeSQLLineByLine(sql || '');
+
+    const linesHTML = lineData.map(line => {
+      if (line.tokens.length === 0) {
+        return `
+          <div class="blueprint-line">
+            <span class="blueprint-line-num">${line.lineNum}</span>
+            <span class="blueprint-line-content">&nbsp;</span>
+          </div>
+        `;
+      }
+
+      const content = line.tokens.map(t => {
+        if (t.isWhitespace) {
+          return t.text; // preserve exact user indentation and spaces
+        }
+        if (t.type === 'punct-symbol' || (t.type === 'op-symbol' && !t.dataToken)) {
+          return `<span class="sql-punct">${escapeHTML(t.text)}</span>`;
+        }
+        if (t.type === 'sql-comment') {
+          return `<span class="sql-comment">${escapeHTML(t.text)}</span>`;
+        }
+        if (t.dataToken) {
+          return `<span class="sql-blueprint-token ${t.type}" data-token="${t.dataToken}"
+                        onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('${t.dataToken}')"
+                        onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">${escapeHTML(t.text)}</span>`;
+        }
+        return `<span class="sql-token ${t.type}">${escapeHTML(t.text)}</span>`;
+      }).join('');
+
+      return `
+        <div class="blueprint-line">
+          <span class="blueprint-line-num">${line.lineNum}</span>
+          <span class="blueprint-line-content">${content}</span>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="interactive-sql-blueprint-card">
+        <div class="blueprint-code-editor-row" onclick="if(event.target === this) window.JoinsMasteryEngine.setEditorMode('code')">
+          ${linesHTML}
+        </div>
+
+        <!-- Attached Interactive Tooltip Strip with Real-Time Bidirectional Feedback -->
+        <div id="blueprintTooltipStrip" class="blueprint-tooltip-strip">
+          <div class="tooltip-badge-row">
+            <span class="tooltip-token-badge default">💡 HOVER ANY QUERY KEYWORD OR TABLE</span>
+            <span class="tooltip-system-hint">Bidirectional system links active</span>
+          </div>
+          <div class="tooltip-desc-text">Hover any keyword or table in the query above, or hover the diagram below to see real-time physical links.</div>
+        </div>
+      </div>
+    `;
+  }
+
+  // --- JOINS MASTERY ENGINE OBJECT ---
+  const JoinsMasteryEngine = {
+    init: function () {
+      const container = document.getElementById('viewVennMatrix');
+      if (!container) return;
+      this.render();
+    },
+
+    setTier: function (tier) {
+      if (state.activeTier === tier) return;
+      state.activeTier = tier;
+      if (tier === 'easy') state.currentProblemIndex = 0;
+      else if (tier === 'medium') state.currentProblemIndex = 100;
+      else if (tier === 'hard') state.currentProblemIndex = 200;
+
+      const p = PROBLEMS[state.currentProblemIndex];
+      state.userSQL = p.starterSQL;
+      state.replayStep = 0;
+      state.userFeedback = null;
+      state.activeCalloutToken = 'join';
+      this.stopAutoPlay();
+      this.render();
+      if (window.AudioFX) window.AudioFX.playClick();
+    },
+
+    jumpToProblem: function (number) {
+      const idx = number - 1;
+      if (idx < 0 || idx >= PROBLEMS.length) return;
+      state.currentProblemIndex = idx;
+      const p = PROBLEMS[idx];
+      state.activeTier = p.tier;
+      state.userSQL = p.starterSQL;
+      state.replayStep = 0;
+      state.userFeedback = null;
+      state.activeCalloutToken = 'join';
+      this.stopAutoPlay();
+      this.render();
+      if (window.AudioFX) window.AudioFX.playClick();
+    },
+
+    nextProblem: function () {
+      if (state.currentProblemIndex < PROBLEMS.length - 1) {
+        this.jumpToProblem(state.currentProblemIndex + 2);
+      }
+    },
+
+    prevProblem: function () {
+      if (state.currentProblemIndex > 0) {
+        this.jumpToProblem(state.currentProblemIndex);
+      }
+    },
+
+    setExplainerTab: function (tab) {
+      state.activeExplainerTab = tab;
+      this.render();
+      if (window.AudioFX) window.AudioFX.playClick();
+    },
+
+    setDialect: function (dialect) {
+      state.selectedDialect = dialect;
+      this.render();
+      if (window.AudioFX) window.AudioFX.playClick();
+    },
+
+    setCalloutToken: function (tokenKey) {
+      state.activeCalloutToken = tokenKey;
+      this.renderCalloutsOnly();
+      if (window.AudioFX) window.AudioFX.playClick();
+    },
+
+    onSQLEdit: function (val) {
+      state.userSQL = val;
+      clearTimeout(this._debounceTimer);
+      this._debounceTimer = setTimeout(() => {
+        this.renderStageOnly();
+        this.renderCalloutsOnly();
+      }, 80);
+    },
+
+    resetStarterSQL: function () {
+      const p = PROBLEMS[state.currentProblemIndex];
+      state.userSQL = p.starterSQL;
+      state.replayStep = 0;
+      state.userFeedback = null;
+      state.activeCalloutToken = 'join';
+      this.stopAutoPlay();
+      this.render();
+      if (window.AudioFX) window.AudioFX.playPop();
+    },
+
+    // Step Scrubber & Timeline Controls
+    stepReplay: function () {
+      state.replayStep = (state.replayStep + 1) % 6;
+      this.renderStageOnly();
+      if (window.AudioFX) window.AudioFX.playPop();
+    },
+
+    prevStepReplay: function () {
+      state.replayStep = (state.replayStep - 1 + 6) % 6;
+      this.renderStageOnly();
+      if (window.AudioFX) window.AudioFX.playPop();
+    },
+
+    resetReplay: function () {
+      state.replayStep = 0;
+      this.renderStageOnly();
+      if (window.AudioFX) window.AudioFX.playPop();
+    },
+
+    stepScrub: function (val) {
+      state.replayStep = Math.max(0, Math.min(5, val));
+      this.renderStageOnly();
+    },
+
+    toggleAutoPlay: function () {
+      if (state.isAutoPlaying) {
+        this.stopAutoPlay();
+      } else {
+        this.startAutoPlay();
+      }
+    },
+
+    startAutoPlay: function () {
+      state.isAutoPlaying = true;
+      if (state.autoPlayTimer) clearInterval(state.autoPlayTimer);
+      state.autoPlayTimer = setInterval(() => {
+        state.replayStep = (state.replayStep + 1) % 6;
+        this.renderStageOnly();
+      }, 1600);
+      this.renderStageOnly();
+      if (window.AudioFX) window.AudioFX.playClick();
+    },
+
+    stopAutoPlay: function () {
+      state.isAutoPlaying = false;
+      if (state.autoPlayTimer) {
+        clearInterval(state.autoPlayTimer);
+        state.autoPlayTimer = null;
+      }
+      this.renderStageOnly();
+    },
+
+    // Hover Synchronization
+    setHoverKey: function (side, id) {
+      state.hoveredKey = { side, id };
+      this.renderStageOnly();
+    },
+
+    clearHoverKey: function () {
+      state.hoveredKey = null;
+      this.renderStageOnly();
+    },
+
+    // Diff Inspector Toggle
+    toggleDiffView: function (val) {
+      state.diffView = val !== undefined ? val : !state.diffView;
+      this.renderStageOnly();
+      if (window.AudioFX) window.AudioFX.playClick();
+    },
+
+    // Query Run & Gamification Check
+    checkQuery: function () {
+      const p = PROBLEMS[state.currentProblemIndex];
+      const parsed = parseAndEvaluateSQL(state.userSQL, p.schema);
+      const goalEval = evaluateProblemGoal(p, parsed);
+
+      let feedbackMsg = '';
+      if (goalEval.hasFilterTrap) {
+        feedbackMsg = '⚠️ Filter Trap Detected: Your WHERE condition on Table B converted the LEFT JOIN into an INNER JOIN, dropping unassigned records! Move the condition into the ON clause.';
+      } else if (p.expectedJoin === 'left' && parsed.joinType === 'inner') {
+        feedbackMsg = '⚠️ Inner Join Dropped Unassigned Staff: The goal requires keeping all personnel. INNER JOIN discarded Evan Vance. Use LEFT JOIN instead!';
+      } else if (p.expectedJoin === 'inner' && parsed.joinType === 'left') {
+        feedbackMsg = '⚠️ Unassigned Personnel Included: The goal requires only confirmed department matches. Switch from LEFT JOIN to INNER JOIN.';
+      } else if (goalEval.isSuccess) {
+        feedbackMsg = `🎉 Perfect! Your relational query produced ${parsed.outputRows.length} rows perfectly satisfying the challenge goal.`;
+      } else {
+        feedbackMsg = '⚠️ Query criteria incomplete. Check your join keys, column names, and conditions.';
+      }
+
+      state.userFeedback = {
+        isSuccess: goalEval.isSuccess,
+        message: feedbackMsg,
+        goalEval: goalEval
+      };
+
+      if (goalEval.isSuccess) {
+        if (!state.solvedProblemIds.has(p.id)) {
+          state.solvedProblemIds.add(p.id);
+          try {
+            localStorage.setItem('sqlfoundry_joins_mastery_solved', JSON.stringify(Array.from(state.solvedProblemIds)));
+          } catch (e) {}
+
+          if (window.soundFX && typeof window.soundFX.addXP === 'function') {
+            window.soundFX.addXP(p.xp, `Joins Mastery #${p.number} Solved!`);
+          } else if (window.AudioFX) {
+            window.AudioFX.playSuccess();
+          }
+
+          // Trigger Confetti & Bloub celebration
+          if (window.BloubAvatar) {
+            if (typeof window.BloubAvatar.celebrate === 'function') window.BloubAvatar.celebrate();
+            if (typeof window.BloubAvatar.triggerConfetti === 'function') window.BloubAvatar.triggerConfetti();
+          }
+        } else if (window.AudioFX) {
+          window.AudioFX.playSuccess();
+        }
+      } else {
+        if (window.AudioFX) window.AudioFX.playError();
+      }
+
+      this.render();
+    },
+
+    // --- MAIN RENDERER ---
+    render: function () {
+      const container = document.getElementById('viewVennMatrix');
+      if (!container) return;
+
+      const p = PROBLEMS[state.currentProblemIndex];
+      const solvedCount = state.solvedProblemIds.size;
+      const totalCount = PROBLEMS.length;
+      const isSolved = state.solvedProblemIds.has(p.id);
+
+      const topoCounts = getTopologySimulationCounts(p);
+      const parsedCurrent = parseAndEvaluateSQL(state.userSQL, p.schema);
+
+      container.innerHTML = `
+        <div class="joins-arena-wrapper">
+          <!-- Top Global Arena Header -->
+          <div class="arena-header-bar">
+            <div class="arena-title-col">
+              <div class="arena-title-row">
+                <span class="arena-icon framer-emoji-icon float">🔗</span>
+                <h1 class="arena-title">Joins Mastery • 300 Problem Arena</h1>
+                <span class="arena-badge pure">100% Pure Joins Edition</span>
+              </div>
+              <p class="arena-subtitle">
+                Master the full spectrum of relational joins from foundational equijoins to complex multi-hop topology. No outside topics—strictly pure relational mechanics.
+              </p>
+            </div>
+
+            <!-- Tier Selector & Solved Tracker -->
+            <div class="arena-tier-dock">
+              <div class="tier-buttons-group">
+                <button class="tier-pill-btn ${state.activeTier === 'easy' ? 'active easy' : ''}" onclick="window.JoinsMasteryEngine.setTier('easy')">
+                  🟢 Easy (1–100)
+                </button>
+                <button class="tier-pill-btn ${state.activeTier === 'medium' ? 'active medium' : ''}" onclick="window.JoinsMasteryEngine.setTier('medium')">
+                  🟡 Medium (101–200)
+                </button>
+                <button class="tier-pill-btn ${state.activeTier === 'hard' ? 'active hard' : ''}" onclick="window.JoinsMasteryEngine.setTier('hard')">
+                  🔴 Hard (201–300)
+                </button>
+              </div>
+              <div class="arena-solved-tally">
+                <span class="tally-label">MASTERY:</span>
+                <span class="tally-count">${solvedCount} / ${totalCount}</span>
+                <span class="tally-xp">+${solvedCount * 25} XP</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Problem Navigation & Card on Top -->
+          <div class="problem-active-banner">
+            <div class="problem-top-strip">
+              <div class="problem-meta-left">
+                <span class="prob-number-pill ${p.tier}">#${p.number}</span>
+                <span class="prob-tier-pill ${p.tier}">${p.tier.toUpperCase()}</span>
+                <span class="prob-company-pill">${p.company}</span>
+                ${isSolved ? '<span class="prob-solved-pill"><span class="framer-emoji-icon">✓</span> Solved</span>' : ''}
+              </div>
+
+              <!-- Problem Navigation Controls -->
+              <div class="problem-nav-controls">
+                <button class="btn-prob-nav" onclick="window.JoinsMasteryEngine.prevProblem()" ${state.currentProblemIndex === 0 ? 'disabled' : ''}>&larr; Prev</button>
+                <select class="problem-jumper-select" onchange="window.JoinsMasteryEngine.jumpToProblem(Number(this.value))">
+                  ${PROBLEMS.map((prob) => `
+                    <option value="${prob.number}" ${prob.number === p.number ? 'selected' : ''}>
+                      #${prob.number}: ${prob.title} ${state.solvedProblemIds.has(prob.id) ? '✓' : ''}
+                    </option>
+                  `).join('')}
+                </select>
+                <button class="btn-prob-nav" onclick="window.JoinsMasteryEngine.nextProblem()" ${state.currentProblemIndex === PROBLEMS.length - 1 ? 'disabled' : ''}>Next &rarr;</button>
+                <button class="btn-prob-nav" onclick="window.JoinsMasteryEngine.toggleShortcutsModal(true)" title="Keyboard Shortcuts (?)">⌨️ Keys</button>
+              </div>
+            </div>
+
+            <!-- Problem Scenario & Goal -->
+            <div class="problem-body-strip">
+              <h2 class="problem-title-text">${p.title}</h2>
+              <p class="problem-scenario-text">${p.scenario}</p>
+              <div class="problem-goal-box">
+                <span class="goal-label"><span class="framer-emoji-icon float">🎯</span> REQUIRED GOAL:</span>
+                <span class="goal-text">${p.goal}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Interactive SQL Query Editor Box with In-Place Hoverable Tokens & System Links -->
+          <div class="arena-editor-card">
+            <!-- 1-Click Topology Quick-Diff Switcher Dock -->
+            <div class="topology-switcher-dock">
+              <div class="topo-switcher-left">
+                <span class="topo-switcher-label">
+                  <span class="framer-emoji-icon float">🔀</span> What-If Topology Diff:
+                </span>
+                <div class="topo-pills-bar">
+                  ${[
+                    { key: 'inner', label: 'INNER' },
+                    { key: 'left', label: 'LEFT' },
+                    { key: 'right', label: 'RIGHT' },
+                    { key: 'full_outer', label: 'FULL' },
+                    { key: 'left_antijoin', label: 'ANTI-JOIN' }
+                  ].map(item => `
+                    <button class="btn-topo-pill ${parsedCurrent.joinType === item.key ? 'active' : ''}"
+                            onclick="window.JoinsMasteryEngine.switchTopology('${item.key}')">
+                      ${item.label} <span class="topo-pill-count">${topoCounts[item.key]} rows</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+              <div class="topo-switcher-right">
+                <button class="btn-topo-reset" onclick="window.JoinsMasteryEngine.resetStarterSQL()" title="Revert to problem canonical solution">
+                  <span class="reset-icon">↺</span> Reset Solution
+                </button>
+              </div>
+            </div>
+
+            <div class="editor-top-bar">
+              <div class="editor-left-label">
+                <span class="editor-terminal-dot red"></span>
+                <span class="editor-terminal-dot yellow"></span>
+                <span class="editor-terminal-dot green"></span>
+                <span class="editor-title-tag">LIVE SQL QUERY BLUEPRINT</span>
+              </div>
+
+              <div class="editor-actions-dock">
+                <!-- Mode Switcher: Interactive Blueprint vs Raw SQL Editor -->
+                <div class="editor-view-mode-group">
+                  <button class="mode-pill ${state.editorMode === 'blueprint' ? 'active' : ''}"
+                          onclick="window.JoinsMasteryEngine.setEditorMode('blueprint')">
+                    <span class="mode-icon framer-emoji-icon">⚡</span> Interactive Query
+                  </button>
+                  <button class="mode-pill ${state.editorMode === 'code' ? 'active' : ''}"
+                          onclick="window.JoinsMasteryEngine.setEditorMode('code')">
+                    <span class="mode-icon framer-emoji-icon">✍️</span> Edit Raw SQL
+                  </button>
+                </div>
+
+                <!-- Dialect Toggle -->
+                <div class="editor-dialect-group">
+                  <button class="dialect-pill ${state.selectedDialect === 'mysql' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setDialect('mysql')">MySQL</button>
+                  <button class="dialect-pill ${state.selectedDialect === 'postgres' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setDialect('postgres')">Postgres</button>
+                  <button class="dialect-pill ${state.selectedDialect === 'oracle' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setDialect('oracle')">Oracle</button>
+                  <button class="dialect-pill ${state.selectedDialect === 'sqlserver' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setDialect('sqlserver')">T-SQL</button>
+                </div>
+
+                <button class="btn-editor-reset" onclick="window.JoinsMasteryEngine.resetStarterSQL()">↺ Reset</button>
+                <button class="btn-editor-run" onclick="window.JoinsMasteryEngine.checkQuery()">
+                  <span class="run-icon framer-emoji-icon">▶</span> Run &amp; Validate (+${p.xp} XP)
+                </button>
+              </div>
+            </div>
+
+            <!-- In-Place Interactive Blueprint OR Code Textarea -->
+            <div id="joinsEditorContent" class="joins-editor-content-wrap">
+              ${state.editorMode === 'blueprint' ? renderInteractiveQueryBlueprintHTML(state.userSQL, p) : `
+                <div class="query-textarea-wrap">
+                  <textarea id="joinsQueryTextarea"
+                            class="joins-live-textarea"
+                            spellcheck="false"
+                            oninput="window.JoinsMasteryEngine.onSQLEdit(this.value)">${state.userSQL}</textarea>
+                  <div class="editor-sub-hint">💡 Tip: Edit SQL freely above, then click <strong>"⚡ Interactive Query"</strong> to test hoverable keyword links.</div>
+                </div>
+              `}
+            </div>
+          </div>
+
+          <!-- Dynamic User Validation Feedback Banner with Confetti / Celebration -->
+          ${state.userFeedback ? `
+            <div class="arena-feedback-strip ${state.userFeedback.isSuccess ? 'success celebrate-pulse' : 'error'}">
+              <div class="feedback-left-wrap">
+                <span class="feedback-icon framer-emoji-icon float">${state.userFeedback.isSuccess ? '🎉' : '⚠️'}</span>
+                <span class="feedback-text">${state.userFeedback.message}</span>
+              </div>
+              ${state.userFeedback.isSuccess && state.currentProblemIndex < PROBLEMS.length - 1 ? `
+                <button class="btn-next-challenge-pulse" onclick="window.JoinsMasteryEngine.nextProblem()">
+                  Next Challenge (#${p.number + 1}) &rarr;
+                </button>
+              ` : ''}
+            </div>
+          ` : ''}
+
+          <!-- STAGE: Split Cockpit with Arrow Tracer (Left) & Result Table + 6-Layer Explainer (Right) -->
+          <div id="joinsStageContainer" class="arena-stage-grid">
+            ${this.renderStageHTML(p)}
+          </div>
+        </div>
+        ${state.showShortcutsModal ? renderShortcutsModalHTML() : ''}
+      `;
+    },
+
+    setEditorMode: function (mode) {
+      state.editorMode = mode;
+      this.render();
+      if (window.AudioFX) window.AudioFX.playClick();
+    },
+
+    setHoverQueryToken: function (tokenKey) {
+      state.hoveredQueryToken = tokenKey;
+      this.updateTokenSpotlights(tokenKey);
+    },
+
+    clearHoverQueryToken: function () {
+      state.hoveredQueryToken = null;
+      this.updateTokenSpotlights(null);
+    },
+
+    updateTokenSpotlights: function (tokenKey) {
+      // Update query token active classes
+      document.querySelectorAll('.sql-blueprint-token').forEach(el => {
+        const k = el.getAttribute('data-token');
+        if (tokenKey && (k === tokenKey || (tokenKey === 'table_a' && k === 'from') || (tokenKey === 'condition' && k === 'on'))) {
+          el.classList.add('token-active-spotlight');
+        } else {
+          el.classList.remove('token-active-spotlight');
+        }
+      });
+
+      // Update tooltip content
+      const tipEl = document.getElementById('blueprintTooltipStrip');
+      if (tipEl) {
+        if (!tokenKey) {
+          tipEl.innerHTML = `
+            <div class="tooltip-badge-row">
+              <span class="tooltip-token-badge default">💡 HOVER ANY QUERY KEYWORD OR TABLE</span>
+              <span class="tooltip-system-hint">Bidirectional system links active</span>
+            </div>
+            <div class="tooltip-desc-text">Hover any keyword or table in the query above, or hover the diagram below to see real-time physical links.</div>
+          `;
+          tipEl.style.removeProperty('--token-color');
+        } else {
+          const p = PROBLEMS[state.currentProblemIndex];
+          const meta = getTokenDescription(tokenKey, state.userSQL, p);
+          tipEl.style.setProperty('--token-color', meta.color);
+          tipEl.innerHTML = `
+            <div class="tooltip-badge-row">
+              <div class="tooltip-badge-left">
+                <span class="tooltip-token-badge" style="background: ${meta.color}15; color: ${meta.color}; border: 1px solid ${meta.color};">${meta.badge}</span>
+                ${p && p.company ? `<span class="tooltip-company-pill">${p.company}</span>` : ''}
+              </div>
+              <span class="tooltip-system-hint" style="color: ${meta.color};">${meta.systemHint}</span>
+            </div>
+            <div class="tooltip-desc-text">${meta.desc}</div>
+            ${meta.scenarioImpact ? `
+              <div class="tooltip-scenario-impact">
+                <span class="impact-icon">🎯</span>
+                <span class="impact-label">Challenge Focus:</span>
+                <span class="impact-text">${meta.scenarioImpact}</span>
+              </div>
+            ` : ''}
+          `;
+        }
+      }
+
+      // Update System Spotlights
+      const tblLeft = document.getElementById('tracer_table_left');
+      const tblRight = document.getElementById('tracer_table_right');
+      const vennHud = document.getElementById('mini_venn_hud');
+      const arrowCol = document.getElementById('tracer_arrow_canvas');
+      const resBox = document.getElementById('live_result_box');
+
+      if (tblLeft) tblLeft.classList.toggle('system-token-spotlight', tokenKey === 'table_a' || tokenKey === 'from');
+      if (tblRight) tblRight.classList.toggle('system-token-spotlight', tokenKey === 'table_b');
+      if (vennHud) vennHud.classList.toggle('system-token-spotlight', tokenKey === 'join');
+      if (arrowCol) arrowCol.classList.toggle('system-token-spotlight', tokenKey === 'on' || tokenKey === 'condition');
+      if (resBox) resBox.classList.toggle('system-token-spotlight', tokenKey === 'select' || tokenKey === 'columns');
+    },
+
+    // Render Stage Only (for live typing debounce without losing textarea focus)
+    renderStageOnly: function () {
+      const container = document.getElementById('joinsStageContainer');
+      if (!container) return;
+      const p = PROBLEMS[state.currentProblemIndex];
+      container.innerHTML = this.renderStageHTML(p);
+    },
+
+    // --- STAGE HTML GENERATOR ---
+    renderStageHTML: function (problem) {
+      const parsed = parseAndEvaluateSQL(state.userSQL, problem.schema);
+      const currentSchema = SCHEMAS[problem.schema] || SCHEMAS.standard;
+      const goalEval = evaluateProblemGoal(problem, parsed);
+
+      // Active Hover Key Check
+      const hover = state.hoveredKey;
+      let activePredicateMsg = '';
+      if (hover && hover.side === 'left') {
+        const empRow = currentSchema.tableA.rows.find(r => (r.emp_id || r.proj_id) === hover.id);
+        if (empRow) {
+          if (empRow.dept_id !== undefined) {
+            const deptMatch = currentSchema.tableB.rows.find(d => d.dept_id === empRow.dept_id);
+            if (deptMatch) {
+              activePredicateMsg = `⚡ PROBE HIT: e.dept_id (${empRow.dept_id}) == d.dept_id (${deptMatch.dept_id}) ➔ TRUE [${empRow.name} ↔ ${deptMatch.dept_name}] (Row Emitted)`;
+            } else {
+              activePredicateMsg = `⚡ PROBE MISS: e.dept_id (${empRow.dept_id === null ? 'NULL' : empRow.dept_id}) ➔ No match in Departments. Discarded in INNER JOIN, preserved in LEFT JOIN.`;
+            }
+          } else if (empRow.manager_id !== undefined) {
+            const mgrMatch = currentSchema.tableB.rows.find(m => m.emp_id === empRow.manager_id);
+            if (mgrMatch) {
+              activePredicateMsg = `⚡ SELF-JOIN PROBE: e.manager_id (${empRow.manager_id}) == m.emp_id (${mgrMatch.emp_id}) ➔ Reports to ${mgrMatch.name}`;
+            } else {
+              activePredicateMsg = `⚡ SELF-JOIN MISS: manager_id = ${empRow.manager_id === null ? 'NULL (Top Exec)' : empRow.manager_id + ' (Orphan)'}`;
+            }
+          } else if (empRow.salary_num) {
+            activePredicateMsg = `⚡ RANGE PROBE: salary $${empRow.salary_num.toLocaleString()} evaluated against continuous salary band thresholds`;
+          }
+        }
+      } else if (hover && hover.side === 'right') {
+        const deptRow = currentSchema.tableB.rows.find(r => (r.dept_id || r.band_code) === hover.id);
+        if (deptRow) {
+          const matchingEmployees = currentSchema.tableA.rows.filter(e => e.dept_id === deptRow.dept_id);
+          activePredicateMsg = `🏢 TARGET KEY: dept_id ${deptRow.dept_id} (${deptRow.dept_name}) ➔ ${matchingEmployees.length} Staff Assigned`;
+        }
+      }
+
+      // Calculate dynamic Venn region population counts
+      let aOnlyCount = 0;
+      let matchedCount = 0;
+      let bOnlyCount = 0;
+
+      if (problem.schema === 'standard') {
+        const eRows = currentSchema.tableA.rows;
+        const dRows = currentSchema.tableB.rows;
+        eRows.forEach(e => {
+          if (e.dept_id !== null && dRows.some(d => d.dept_id === e.dept_id)) {
+            matchedCount++;
+          } else {
+            aOnlyCount++;
+          }
+        });
+        dRows.forEach(d => {
+          if (!eRows.some(e => e.dept_id === d.dept_id)) {
+            bOnlyCount++;
+          }
+        });
+      } else {
+        matchedCount = parsed.outputRows.filter(r => r.status === 'matched').length || 4;
+        aOnlyCount = parsed.outputRows.filter(r => r.status === 'null_padded' || r.status === 'exclusive').length || 1;
+        bOnlyCount = 1;
+      }
+
+      const activeTarget = state.pinnedRow || state.hoveredKey;
+
+      return `
+        <!-- Left Column: Source Tables with Visual Arrow Tracer & Mini Venn HUD -->
+        <div class="arena-left-card">
+          <div class="card-title-header">
+            <div class="header-title-group">
+              <span class="header-main-title"><span class="framer-emoji-icon">🏹</span> Relational Arrow Tracer &amp; Topology</span>
+              <span class="header-sub-tag">Click any row to pin &amp; trace its ANSI 3VL vector path</span>
+            </div>
+            <!-- Live Region Pill -->
+            <span class="topo-pill ${parsed.joinType}">${parsed.joinType.toUpperCase()}</span>
+          </div>
+
+          <!-- ENLARGED CRISP MINI VENN DIAGRAM HUD WIDGET -->
+          <div class="mini-venn-hud-container" id="mini_venn_hud"
+               onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('join')"
+               onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
+            <div class="mini-venn-svg-wrapper">
+              <svg class="mini-venn-svg" viewBox="0 0 260 115" xmlns="http://www.w3.org/2000/svg">
+                <!-- Table Titles at Top -->
+                <text x="95" y="14" class="venn-circle-title">${currentSchema.tableA.name} (A)</text>
+                <text x="165" y="14" class="venn-circle-title">${currentSchema.tableB.name} (B)</text>
+
+                <!-- Left Circle Base -->
+                <circle cx="95" cy="62" r="44" class="venn-circle-base base-left" />
+                <!-- Right Circle Base -->
+                <circle cx="165" cy="62" r="44" class="venn-circle-base base-right" />
+
+                <!-- Left Crescent (Left Only: A - B) -->
+                <path d="M 130,35.3 A 44,44 0 1,0 130,88.7 A 44,44 0 0,0 130,35.3 Z"
+                      class="venn-region left-crescent ${['left', 'full_outer', 'left_antijoin'].includes(parsed.joinType) ? 'active' : ''}" />
+
+                <!-- Right Crescent (Right Only: B - A) -->
+                <path d="M 130,35.3 A 44,44 0 1,1 130,88.7 A 44,44 0 0,1 130,35.3 Z"
+                      class="venn-region right-crescent ${['right', 'full_outer', 'right_antijoin'].includes(parsed.joinType) ? 'active' : ''}" />
+
+                <!-- Overlap Lens (Intersection: A ∩ B) -->
+                <path d="M 130,35.3 A 44,44 0 0,1 130,88.7 A 44,44 0 0,1 130,35.3 Z"
+                      class="venn-region overlap-lens ${['inner', 'left', 'right', 'full_outer'].includes(parsed.joinType) ? 'active' : ''}" />
+
+                <!-- Clear, Well-Spaced Region Labels & Numbers -->
+                <text x="76" y="58" class="venn-label-tag">A only</text>
+                <text x="76" y="74" class="venn-label-val">${aOnlyCount}</text>
+
+                <text x="130" y="58" class="venn-label-tag center-tag">A ∩ B</text>
+                <text x="130" y="74" class="venn-label-val center-val">${matchedCount}</text>
+
+                <text x="184" y="58" class="venn-label-tag">B only</text>
+                <text x="184" y="74" class="venn-label-val">${bOnlyCount}</text>
+              </svg>
+            </div>
+            <div class="mini-venn-hud-info">
+              <div class="hud-top-line">
+                <span class="hud-info-tag">ACTIVE TOPOLOGY:</span>
+                <span class="topo-badge ${parsed.joinType}">${parsed.joinType.toUpperCase().replace('_', ' ')}</span>
+              </div>
+              <span class="hud-info-status">
+                ${parsed.joinType === 'inner' ? 'Intersection Only (A ∩ B) • Unmatched Rows Dropped' :
+                  parsed.joinType === 'left' ? 'Left Outer (A ∪ (A ∩ B)) • Unmatched Staff Preserved' :
+                  parsed.joinType === 'left_antijoin' ? 'Left Exclusive (A − B) • Isolating Unassigned Staff' :
+                  parsed.joinType === 'right' ? 'Right Outer ((A ∩ B) ∪ B) • All Departments Preserved' :
+                  parsed.joinType === 'full_outer' ? 'Full Bilateral Union (A ∪ B) • 360° Reconciliation' :
+                  parsed.joinType.toUpperCase()}
+              </span>
+            </div>
+          </div>
+
+          <!-- Dual Source Tables with Minimalist Relational Arrow Connectors -->
+          <div class="relational-tracer-container">
+            <!-- Left Source Table -->
+            <div class="source-mini-table table-left" id="tracer_table_left"
+                 onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('table_a')"
+                 onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
+              <div class="mini-table-header">${currentSchema.tableA.name}</div>
+              <div class="mini-table-body">
+                ${currentSchema.tableA.rows.map((r, rIdx) => {
+                  const isPinned = state.pinnedRow && state.pinnedRow.side === 'left' && (r.emp_id || r.proj_id) === state.pinnedRow.id;
+                  const isHovered = hover && hover.side === 'left' && (r.emp_id || r.proj_id) === hover.id;
+                  const isDimmed = activeTarget && !(activeTarget.side === 'left' && (r.emp_id || r.proj_id) === activeTarget.id);
+                  const isStepping = state.replayStep === (rIdx + 1);
+
+                  return `
+                    <div class="tracer-row row-left ${isPinned ? 'pinned-active' : ''} ${isHovered ? 'hover-highlight' : ''} ${isStepping ? 'step-spotlight probe-beacon-active' : ''} ${isDimmed ? 'dimmed-tracer-row' : ''}"
+                         id="row_left_${r.emp_id || r.proj_id}"
+                         onclick="window.JoinsMasteryEngine.togglePinRow('left', ${r.emp_id || r.proj_id})"
+                         onmouseenter="window.JoinsMasteryEngine.setHoverKey('left', ${r.emp_id || r.proj_id})"
+                         onmouseleave="window.JoinsMasteryEngine.clearHoverKey()">
+                      <span class="row-cell-key">#${r.emp_id || r.proj_id}</span>
+                      <span class="row-cell-name">${r.name || r.proj_name}</span>
+                      <span class="row-cell-dept">${r.dept_id !== undefined ? (r.dept_id === null ? '<span class="null-pill">NULL</span>' : `dept ${r.dept_id}`) : (r.salary_num ? `$${(r.salary_num/1000)}k` : '')}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+
+            <!-- Center Minimalist Relational Arrow Canvas (Enlarged) -->
+            <div class="tracer-arrow-canvas-col" id="tracer_arrow_canvas"
+                 onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('condition')"
+                 onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
+              <svg class="tracer-arrow-svg" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <marker id="arrowMatch" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                    <path d="M 0 0.8 L 5 3 L 0 5.2 Z" fill="#10b981" />
+                  </marker>
+                  <marker id="arrowAmber" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                    <path d="M 0 0.8 L 5 3 L 0 5.2 Z" fill="#d97706" />
+                  </marker>
+                </defs>
+
+                <!-- Render Clean Relational Connection Lines -->
+                ${parsed.arrowLinks.map((link, idx) => {
+                  const y1 = 26 + (idx % 5) * 44;
+                  const y2 = link.targetId ? (26 + ((idx * 2) % 4) * 50) : y1;
+                  const isMatch = link.status === 'match';
+                  const isNullPad = link.status === 'null_pad';
+                  const isDropped = link.status === 'dropped';
+                  const strokeColor = isMatch ? '#10b981' : (isNullPad ? '#d97706' : '#94a3b8');
+                  const marker = isMatch ? 'url(#arrowMatch)' : (isNullPad ? 'url(#arrowAmber)' : 'none');
+                  const pathData = isDropped
+                    ? `M 10,${y1} L 70,${y1}`
+                    : `M 10,${y1} C 85,${y1} 115,${y2} 190,${y2}`;
+
+                  const isLinkActive = activeTarget && ((link.sourceId && link.sourceId.includes(activeTarget.id)) || (link.targetId && link.targetId.includes(activeTarget.id)));
+                  const isLinkDimmed = activeTarget && !isLinkActive;
+                  const isLinkStepped = state.replayStep === (idx + 1);
+
+                  return `
+                    <g class="connector-arrow-group ${isLinkActive || isLinkStepped ? 'highlighted-connector' : ''} ${isLinkStepped ? 'probe-active-arrow' : ''} ${isLinkDimmed ? 'dimmed-connector' : ''}">
+                      <path id="connector_path_${idx}"
+                            d="${pathData}"
+                            stroke="${strokeColor}"
+                            stroke-width="${isLinkActive || isLinkStepped ? '2.8' : (isMatch ? '1.8' : '1.2')}"
+                            stroke-dasharray="${isNullPad ? '4,4' : (isDropped ? '3,3' : 'none')}"
+                            fill="none"
+                            marker-end="${marker}"
+                            opacity="${isLinkActive || isLinkStepped ? '1.0' : (isLinkDimmed ? '0.12' : (isMatch ? '0.75' : '0.45'))}" />
+                    </g>
+                  `;
+                }).join('')}
+              </svg>
+            </div>
+
+            <!-- Right Source Table -->
+            <div class="source-mini-table table-right" id="tracer_table_right"
+                 onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('table_b')"
+                 onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
+              <div class="mini-table-header">${currentSchema.tableB.name}</div>
+              <div class="mini-table-body">
+                ${currentSchema.tableB.rows.map(r => {
+                  const isPinned = state.pinnedRow && state.pinnedRow.side === 'right' && (r.dept_id || r.band_code || r.emp_id) === state.pinnedRow.id;
+                  const isHovered = hover && hover.side === 'right' && (r.dept_id || r.band_code || r.emp_id) === hover.id;
+                  const isDimmed = activeTarget && !(activeTarget.side === 'right' && (r.dept_id || r.band_code || r.emp_id) === activeTarget.id);
+
+                  return `
+                    <div class="tracer-row row-right ${isPinned ? 'pinned-active' : ''} ${isHovered ? 'hover-highlight' : ''} ${isDimmed ? 'dimmed-tracer-row' : ''}"
+                         id="row_right_${r.dept_id || r.emp_id || r.band_code}"
+                         onclick="window.JoinsMasteryEngine.togglePinRow('right', ${r.dept_id || r.band_code || r.emp_id})"
+                         onmouseenter="window.JoinsMasteryEngine.setHoverKey('right', ${r.dept_id || r.band_code || r.emp_id})"
+                         onmouseleave="window.JoinsMasteryEngine.clearHoverKey()">
+                      <span class="row-cell-key">#${r.dept_id || r.emp_id || r.band_code}</span>
+                      <span class="row-cell-name">${r.dept_name || r.name || r.band_name}</span>
+                      <span class="row-cell-loc">${r.location || (r.max_sal ? `$${r.min_sal/1000}k-$${r.max_sal/1000}k` : '')}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Interactive Tuple Life-Cycle Dossier -->
+          ${renderTupleDossierHTML(activeTarget, problem, currentSchema, parsed)}
+        </div>
+
+        <!-- Right Column: Live Recalculated Output & 6-Layer Explainer Engine -->
+        <div class="arena-right-card">
+          <!-- Live Result Table & Diff Inspector Toggle -->
+          <div class="live-result-box" id="live_result_box"
+               onmouseenter="window.JoinsMasteryEngine.setHoverQueryToken('select')"
+               onmouseleave="window.JoinsMasteryEngine.clearHoverQueryToken()">
+            <div class="result-header-row">
+              <div class="result-tab-switch">
+                <button class="btn-diff-toggle ${!state.diffView ? 'active' : ''}" onclick="window.JoinsMasteryEngine.toggleDiffView(false)">
+                  📊 Generated Table (${parsed.outputRows.length} Rows)
+                </button>
+                <button class="btn-diff-toggle ${state.diffView ? 'active' : ''}" onclick="window.JoinsMasteryEngine.toggleDiffView(true)">
+                  🔍 Goal Diff Inspector (${goalEval.isSuccess ? '✓ 100% Match' : '⚠ Mismatch'})
+                </button>
+              </div>
+              <span class="res-count">${parsed.outputRows.length} Rows Emitted</span>
+            </div>
+
+            ${state.diffView ? this.renderDiffInspector(problem, parsed, goalEval) : this.renderResultTable(parsed)}
+          </div>
+
+          <!-- 6-Layer Relational Explainer Tabs -->
+          <div class="arena-explainer-card">
+            <div class="explainer-tabs-nav">
+              <button class="explainer-tab-btn ${state.activeExplainerTab === 'autopsy' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setExplainerTab('autopsy')">
+                <span class="tab-icon framer-emoji-icon">🔬</span> SQL Autopsy
+              </button>
+              <button class="explainer-tab-btn ${state.activeExplainerTab === 'stepper' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setExplainerTab('stepper')">
+                <span class="tab-icon framer-emoji-icon">⏱️</span> Step Execution
+              </button>
+              <button class="explainer-tab-btn ${state.activeExplainerTab === 'english' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setExplainerTab('english')">
+                <span class="tab-icon framer-emoji-icon">💬</span> Plain English
+              </button>
+              <button class="explainer-tab-btn ${state.activeExplainerTab === 'internals' ? 'active' : ''}" onclick="window.JoinsMasteryEngine.setExplainerTab('internals')">
+                <span class="tab-icon framer-emoji-icon">⚡</span> Engine Internals
+              </button>
+            </div>
+
+            <div class="explainer-tab-body">
+              ${this.renderExplainerContent(problem, parsed)}
+            </div>
+          </div>
+        </div>
+      `;
+    },
+
+    // Render Standard Output Table
+    renderResultTable: function (parsed) {
+      return `
+        <div class="result-scrollable-table">
+          <table class="arena-data-table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                ${parsed.outputRows.length > 0 ? Object.keys(parsed.outputRows[0]).filter(k => k !== 'status' && k !== 'emp_id').map(c => `<th>${c}</th>`).join('') : '<th>Result</th>'}
+              </tr>
+            </thead>
+            <tbody>
+              ${parsed.outputRows.length > 0 ? parsed.outputRows.map((row, rIdx) => {
+                const isSteppedRow = state.replayStep > 0 && (rIdx + 1) === state.replayStep;
+                return `
+                  <tr class="arena-row status-${row.status} ${isSteppedRow ? 'row-stepped-active' : ''}">
+                    <td><span class="arena-status-badge badge-${row.status}">${this.formatStatus(row.status)}</span></td>
+                    ${Object.keys(row).filter(k => k !== 'status' && k !== 'emp_id').map(col => `
+                      <td>${row[col] === null ? '<span class="null-pill">NULL</span>' : row[col]}</td>
+                    `).join('')}
+                  </tr>
+                `;
+              }).join('') : '<tr><td colspan="4" class="empty-state">No matching rows produced. Check your join keys.</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      `;
+    },
+
+    // Render Visual Output Diff Inspector
+    renderDiffInspector: function (problem, parsed, goalEval) {
+      return `
+        <div class="diff-inspector-panel">
+          <div class="diff-score-strip ${goalEval.isSuccess ? 'pass' : 'fail'}">
+            <span class="diff-score-badge">${goalEval.isSuccess ? '✅ GOAL SATISFIED' : '⚠️ MISMATCH DETECTED'}</span>
+            <span class="diff-score-detail">
+              Expected ${goalEval.expectedRowCount} rows (${problem.expectedJoin.toUpperCase()}) | Actual: ${goalEval.actualRowCount} rows (${parsed.joinType.toUpperCase()})
+            </span>
+          </div>
+
+          <div class="diff-table-wrapper">
+            <table class="arena-data-table diff-table">
+              <thead>
+                <tr>
+                  <th>Diff Status</th>
+                  <th>Entity Name</th>
+                  <th>Expected Join</th>
+                  <th>Actual Outcome</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${goalEval.matchedRows.map(r => `
+                  <tr class="diff-row match">
+                    <td><span class="diff-pill match">✓ MATCH</span></td>
+                    <td><strong>${r.name || r.employee || r.proj_name}</strong></td>
+                    <td>Included in ${problem.expectedJoin.toUpperCase()}</td>
+                    <td>Emitted (${r.dept_name || 'Preserved'})</td>
+                  </tr>
+                `).join('')}
+
+                ${goalEval.missingRows.map(r => `
+                  <tr class="diff-row missing">
+                    <td><span class="diff-pill missing">⚠️ MISSING</span></td>
+                    <td><strong>${r.name || r.employee || r.proj_name}</strong></td>
+                    <td>Required by Goal</td>
+                    <td>Dropped by your query! (Check INNER vs LEFT JOIN)</td>
+                  </tr>
+                `).join('')}
+
+                ${goalEval.extraRows.map(r => `
+                  <tr class="diff-row extra">
+                    <td><span class="diff-pill extra">✕ UNEXPECTED</span></td>
+                    <td><strong>${r.name || r.employee || r.proj_name}</strong></td>
+                    <td>Should be excluded</td>
+                    <td>Included in your output table</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    },
+
+    // --- EXPLAINER CONTENT DISPATCHER ---
+    renderExplainerContent: function (problem, parsed) {
+      if (state.activeExplainerTab === 'autopsy') {
+        return `
+          <div class="explainer-autopsy-box">
+            <div class="autopsy-headline">
+              <span class="autopsy-tag">ANALYSIS OF YOUR SQL:</span>
+              <span class="autopsy-detected">Detected: <strong>${parsed.joinType.toUpperCase()}</strong></span>
+            </div>
+
+            ${parsed.hasFilterTrap ? `
+              <div class="autopsy-alert critical">
+                <strong>⚠️ Silent Join Conversion Detected!</strong>
+                <p>You wrote a <code>WHERE d....</code> clause on a <code>LEFT JOIN</code>. Because Table B columns are padded with NULL for unassigned staff (Evan Vance), evaluating <code>d.location = '...'</code> on NULL yields <code>UNKNOWN</code> (falsy). This silently converts your LEFT JOIN into an INNER JOIN and drops Evan!</p>
+                <div class="autopsy-fix">
+                  <span class="fix-label">💡 FIX:</span> Move the condition into the <code>ON</code> clause: <code>LEFT JOIN Departments d ON e.dept_id = d.dept_id AND d.location = '...'</code>
+                </div>
+              </div>
+            ` : parsed.joinType === 'inner' ? `
+              <div class="autopsy-alert info">
+                <strong>Relational Mechanics: Strict Key Intersection</strong>
+                <p>Only rows with matching keys in BOTH tables survive. Alice, Bob, Charlie, and Diana matched. Evan Vance (dept_id = NULL) and Research (0 employees) were silently dropped.</p>
+              </div>
+            ` : parsed.joinType === 'left' ? `
+              <div class="autopsy-alert success">
+                <strong>Relational Mechanics: Left Table Preservation</strong>
+                <p>Every single employee from Table A is guaranteed to survive. Evan Vance has no department, so his department attributes were safely padded with NULL values.</p>
+              </div>
+            ` : `
+              <div class="autopsy-alert info">
+                <strong>Relational Mechanics: ${parsed.joinType.toUpperCase()}</strong>
+                <p>Relational algebra evaluation produced ${parsed.outputRows.length} output rows according to your join predicates.</p>
+              </div>
+            `}
+          </div>
+        `;
+      } else if (state.activeExplainerTab === 'stepper') {
+        const steps = [
+          '✨ Step 1 (Overview): Dual source relations loaded. Employees (5 rows) and Departments (4 rows) ready for probe.',
+          '🔍 Step 2: Probing Alice Chen (#1, dept 10) ➔ Hash match found in Engineering (10) ➔ Predicate TRUE ➔ Emitted to output buffer ✨.',
+          '🔍 Step 3: Probing Bob Smith (#2, dept 20) ➔ Hash match found in Marketing (20) ➔ Predicate TRUE ➔ Emitted to output buffer ✨.',
+          '🔍 Step 4: Probing Charlie Kim (#3, dept 10) ➔ Hash match found in Engineering (10) ➔ Predicate TRUE ➔ Emitted to output buffer ✨.',
+          '🔍 Step 5: Probing Diana Ross (#4, dept 30) ➔ Hash match found in Sales (30) ➔ Predicate TRUE ➔ Emitted to output buffer ✨.',
+          '🤔 Step 6: Probing Evan Vance (#5, dept NULL) ➔ 3VL UNKNOWN. No matching division in Departments ➔ ' + (parsed.joinType === 'left' || parsed.joinType === 'full_outer' ? 'Preserved with NULL department attributes ✨.' : 'Silently dropped from output ⊘.'),
+          '🏢 Step 7: Scanning unreferenced divisions ➔ Research (#40, 0 staff) ➔ ' + (parsed.joinType === 'right' || parsed.joinType === 'full_outer' ? 'Preserved with NULL employee attributes 🏢.' : 'Dropped by INNER / LEFT JOIN ⊘.')
+        ];
+
+        return `
+          <div class="explainer-stepper-box">
+            <div class="stepper-controls-row">
+              <div class="stepper-left-meta">
+                <span class="stepper-step-indicator">Row Probe Execution: Step ${state.replayStep + 1} of 7</span>
+              </div>
+              <div class="stepper-btns">
+                <button class="btn-step-action" onclick="window.JoinsMasteryEngine.prevStepReplay()">⏮ Prev</button>
+                <button class="btn-step-action ${state.isAutoPlaying ? 'pause' : 'play'}" onclick="window.JoinsMasteryEngine.toggleAutoPlay()">
+                  ${state.isAutoPlaying ? '⏸ Pause' : '▶ Auto-Play'}
+                </button>
+                <button class="btn-step-action" onclick="window.JoinsMasteryEngine.stepReplay()">Next ⏭</button>
+                <button class="btn-step-action reset" onclick="window.JoinsMasteryEngine.resetReplay()">↺ Reset</button>
+              </div>
+            </div>
+
+            <!-- Execution Slider Track -->
+            <div class="stepper-scrubber-track">
+              <input type="range" min="0" max="6" value="${state.replayStep}" class="stepper-slider-input"
+                     oninput="window.JoinsMasteryEngine.stepScrub(Number(this.value))" />
+            </div>
+
+            <div class="stepper-active-desc">
+              ${steps[state.replayStep] || steps[0]}
+            </div>
+          </div>
+        `;
+      } else if (state.activeExplainerTab === 'english') {
+        return `
+          <div class="explainer-english-box">
+            <div class="english-title">Natural Language Translation:</div>
+            <p class="english-body">
+              "This query takes every employee record from the <strong>Employees</strong> table, looks up matching division records in <strong>Departments</strong> where the <code>dept_id</code> matches, and ${parsed.joinType === 'left' ? 'preserves any employee without a department by filling missing department fields with NULL.' : 'discards any employee who does not belong to a confirmed active department.'}"
+            </p>
+          </div>
+        `;
+      } else {
+        return renderOptimizerCockpitHTML(problem, parsed);
+      }
+    },
+
+    formatStatus: function (status) {
+      switch (status) {
+        case 'matched': return '✓ MATCHED';
+        case 'null_padded': return '⊘ NULL-PADDED';
+        case 'exclusive': return '★ EXCLUSIVE';
+        case 'cartesian': return '× PRODUCT';
+        default: return (status || '').toUpperCase();
+      }
+    },
+
+    // --- 1-CLICK TOPOLOGY SWITCHER ---
+    switchTopology: function (joinType) {
+      const p = PROBLEMS[state.currentProblemIndex];
+      state.userSQL = generateTopologySQL(joinType, state.userSQL, p);
+      if (window.AudioFX) window.AudioFX.playClick();
+      this.render();
+    },
+
+    // --- TUPLE PIN ROW TOGGLE ---
+    togglePinRow: function (side, id) {
+      if (state.pinnedRow && state.pinnedRow.side === side && state.pinnedRow.id === id) {
+        state.pinnedRow = null;
+      } else {
+        state.pinnedRow = { side, id };
+        if (window.AudioFX) window.AudioFX.playClick();
+      }
+      this.renderStageOnly();
+    },
+
+    // --- OPTIMIZER ALGO SWITCHER ---
+    setOptimizerAlgo: function (algo) {
+      state.activeOptimizerAlgo = algo;
+      if (window.AudioFX) window.AudioFX.playClick();
+      this.renderStageOnly();
+    },
+
+    // --- KEYBOARD SHORTCUTS MODAL ---
+    toggleShortcutsModal: function (force) {
+      state.showShortcutsModal = force !== undefined ? force : !state.showShortcutsModal;
+      this.render();
+    },
+
+    // --- STEPPER CONTROLS ---
+    stepScrub: function (val) {
+      state.replayStep = Math.max(0, Math.min(6, val));
+      this.renderStageOnly();
+    },
+
+    stepReplay: function () {
+      state.replayStep = (state.replayStep + 1) % 7;
+      if (window.AudioFX) window.AudioFX.playClick();
+      this.renderStageOnly();
+    },
+
+    prevStepReplay: function () {
+      state.replayStep = (state.replayStep - 1 + 7) % 7;
+      if (window.AudioFX) window.AudioFX.playClick();
+      this.renderStageOnly();
+    },
+
+    resetReplay: function () {
+      state.replayStep = 0;
+      if (state.isAutoPlaying) this.toggleAutoPlay();
+      if (window.AudioFX) window.AudioFX.playClick();
+      this.renderStageOnly();
+    },
+
+    toggleAutoPlay: function () {
+      state.isAutoPlaying = !state.isAutoPlaying;
+      if (state.isAutoPlaying) {
+        state.autoPlayTimer = setInterval(() => {
+          this.stepReplay();
+        }, 1300);
+      } else {
+        if (state.autoPlayTimer) clearInterval(state.autoPlayTimer);
+        state.autoPlayTimer = null;
+      }
+      this.renderStageOnly();
+    },
+
+    getTokenDescription: getTokenDescription,
+    PROBLEMS: PROBLEMS
+  };
+
+  // --- GLOBAL KEYBOARD SHORTCUTS LISTENER ---
+  if (typeof window !== 'undefined') {
+    window.addEventListener('keydown', function (e) {
+      const tag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : '';
+      if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' || e.target.isContentEditable) {
+        return;
+      }
+
+      const key = e.key.toLowerCase();
+      if (key === '[' || key === 'p') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.prevProblem();
+      } else if (key === ']' || key === 'n') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.nextProblem();
+      } else if (e.code === 'Space') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.toggleAutoPlay();
+      } else if (key >= '0' && key <= '6') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.stepScrub(Number(key));
+      } else if (key === 'e') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.setEditorMode(state.editorMode === 'blueprint' ? 'code' : 'blueprint');
+      } else if (key === 'd') {
+        e.preventDefault();
+        window.JoinsMasteryEngine.toggleDiffView(!state.diffView);
+      } else if (key === '?' || (e.shiftKey && e.key === '?')) {
+        e.preventDefault();
+        window.JoinsMasteryEngine.toggleShortcutsModal();
+      } else if (key === 'escape') {
+        if (state.showShortcutsModal) {
+          e.preventDefault();
+          window.JoinsMasteryEngine.toggleShortcutsModal(false);
+        }
+      }
+    });
+  }
+
+  // Expose globally
+  window.JoinsMasteryEngine = JoinsMasteryEngine;
+  window.VennMatrixEngine = JoinsMasteryEngine;
+})();
