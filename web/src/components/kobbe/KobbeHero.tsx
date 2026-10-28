@@ -65,7 +65,7 @@ export function KobbeHero({ onStartCourse, onOpenStudio }: KobbeHeroProps) {
               className="inline-flex cursor-pointer items-center gap-1.5 font-medium transition-colors w-fit rounded-lg px-3.5 py-2 text-xs sm:text-sm bg-surface text-foreground hover:bg-muted-surface border border-border/80 shadow-xs"
             >
               <Terminal className="size-3.5 text-muted-foreground" />
-              <span>Live SQL Studio</span>
+              <span>Section Studio</span>
               <ArrowUpRight className="size-3.5" />
             </motion.button>
           </div>

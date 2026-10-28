@@ -47,7 +47,7 @@
           <!-- 1. LEETCODE 323 ARENA (Default Active) -->
           <button class="nav-group-trigger nav-direct-link nav-tab active" id="btnNavHome" data-view="viewLandingPage" onclick="selectNavView('viewLandingPage', 'Home', null)" title="SQL Foundry Product Overview &amp; Feature Showcase">
             <span class="nav-group-lead">
-              <span class="nav-group-icon">🏠</span>
+              
               <span class="nav-group-title">Home</span>
             </span>
           </button>
@@ -55,7 +55,7 @@
           <!-- 1b. SQL MASTERY COURSE (ORDER OF EXECUTION) -->
           <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavMasteryCourse" data-view="viewMasteryCourse" onclick="selectNavView('viewMasteryCourse', 'Course', null)" title="SQL Mastery &amp; Technical Interview Course (Order of Execution)">
             <span class="nav-group-lead">
-              <span class="nav-group-icon">📖</span>
+              
               <span class="nav-group-title">Course</span>
             </span>
             <span class="nav-item-tag accent">Mastery</span>
@@ -64,19 +64,19 @@
           <!-- 1. LEETCODE 323 ARENA -->
           <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavLeetCode" data-view="viewLeetCode50" onclick="selectNavView('viewLeetCode50', 'LeetCode 323', null)" title="LeetCode 323 Official SQL Arena">
             <span class="nav-group-lead">
-              <span class="nav-group-icon">⚡</span>
+              
               <span class="nav-group-title">LeetCode</span>
             </span>
             <span class="nav-item-tag accent">323</span>
           </button>
 
           <!-- 2. STUDIO (Direct Tab) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="selectNavView('viewStudio', 'Studio', null)" title="Query Execution Studio &amp; Schema Inspector">
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="selectNavView('viewStudio', 'Section Studio', null)" title="Section Studio: Query Execution &amp; Schema Inspector">
             <span class="nav-group-lead">
               <span class="nav-group-icon">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
               </span>
-              <span class="nav-group-title">Studio</span>
+              <span class="nav-group-title">Section Studio</span>
             </span>
           </button>
 
@@ -84,7 +84,7 @@
           <div class="nav-group-dropdown" id="navGroupPractice">
             <button class="nav-group-trigger" id="btnGroupPractice" onclick="toggleNavGroupDropdown('navGroupPractice', event)">
               <span class="nav-group-lead">
-                <span class="nav-group-icon">🧠</span>
+                
                 <span class="nav-group-title">Practice</span>
               </span>
               <svg class="nav-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -93,7 +93,7 @@
             <div class="nav-dropdown-menu">
               <div class="nav-dropdown-header">Featured Interview Screens</div>
               <button class="nav-dropdown-item nav-tab" id="btnNavMockInterview" data-view="viewMockInterview" onclick="selectNavView('viewMockInterview', 'Mock Screen', 'navGroupPractice')">
-                <span class="nav-item-icon">🎯</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">FAANG &amp; Wall St Mock Screen</span>
@@ -103,7 +103,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" id="btnNavCompanyHub" data-view="viewCompanyHub" onclick="selectNavView('viewCompanyHub', 'Companies &amp; Domains', 'navGroupPractice')">
-                <span class="nav-item-icon">🏛️</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Companies &amp; Industry Domains</span>
@@ -114,7 +114,7 @@
               </button>
               <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Drill &amp; Test Vaults</div>
               <button class="nav-dropdown-item nav-tab" data-view="viewSqlTerminal" onclick="selectNavView('viewSqlTerminal', 'SQL Terminal', 'navGroupPractice')">
-                <span class="nav-item-icon">💻</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">SQL Terminal (WASM)</span>
@@ -124,7 +124,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewMcqs" onclick="selectNavView('viewMcqs', 'MCQs (2.1k)', 'navGroupPractice')">
-                <span class="nav-item-icon">🧠</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">MCQs Vault</span>
@@ -134,7 +134,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewSyntaxGym" onclick="selectNavView('viewSyntaxGym', 'Syntax Gym', 'navGroupPractice')">
-                <span class="nav-item-icon">⚡</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Syntax Gym</span>
@@ -144,7 +144,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewCases" onclick="selectNavView('viewCases', 'Case Studies', 'navGroupPractice')">
-                <span class="nav-item-icon">💼</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Case Studies</span>
@@ -154,7 +154,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewProblems" onclick="selectNavView('viewProblems', 'Problem Bank', 'navGroupPractice')">
-                <span class="nav-item-icon">🏆</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Problem Bank</span>
@@ -164,7 +164,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewCapstones" onclick="selectNavView('viewCapstones', 'Capstones (10)', 'navGroupPractice')">
-                <span class="nav-item-icon">🎓</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Guided Capstones</span>
@@ -174,7 +174,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewAmazonStory" onclick="selectNavView('viewAmazonStory', 'Amazon Analyst (30d)', 'navGroupPractice')">
-                <span class="nav-item-icon">📦</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Amazon Analyst Story</span>
@@ -184,7 +184,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewJPMorganStory" onclick="selectNavView('viewJPMorganStory', 'JPMorgan Analyst (30d)', 'navGroupPractice')">
-                <span class="nav-item-icon">🏛️</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">JPMorgan Analyst (30d)</span>
@@ -194,17 +194,17 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewTrapGym" onclick="selectNavView('viewTrapGym', 'Trap Gym (SRS)', 'navGroupPractice')">
-                <span class="nav-item-icon">🧠</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Trap Memory Gym</span>
-                    <span class="nav-item-tag accent" id="trapSrsNavBadge">🔥 36 Due</span>
+                    <span class="nav-item-tag accent" id="trapSrsNavBadge">36 Due</span>
                   </div>
                   <span class="nav-item-desc">Spaced repetition (Leitner SRS) for 36 critical production traps</span>
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Activity Heatmap', 'navGroupPractice'); setTimeout(()=>{ const el = document.getElementById('curriculumActivityHeatmap'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 120);">
-                <span class="nav-item-icon">📅</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Activity Heatmap &amp; Streaks</span>
@@ -220,7 +220,7 @@
           <div class="nav-group-dropdown" id="navGroupExplore">
             <button class="nav-group-trigger" id="btnGroupExplore" onclick="toggleNavGroupDropdown('navGroupExplore', event)">
               <span class="nav-group-lead">
-                <span class="nav-group-icon">🔬</span>
+                
                 <span class="nav-group-title">Labs</span>
               </span>
               <svg class="nav-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -228,7 +228,7 @@
             <div class="nav-dropdown-menu">
               <div class="nav-dropdown-header">Interactive Core &amp; Labs</div>
               <button class="nav-dropdown-item nav-tab" data-view="viewLearningJourney" onclick="selectNavView('viewLearningJourney', 'Learning Journey', 'navGroupExplore')">
-                <span class="nav-item-icon">🗺️</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">20-Day Learning Journey</span>
@@ -238,7 +238,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewWindowMatrix" onclick="selectNavView('viewWindowMatrix', 'Window Cockpit', 'navGroupExplore')">
-                <span class="nav-item-icon">🪟</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Window Functions Cockpit</span>
@@ -248,7 +248,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Quests', 'navGroupExplore')">
-                <span class="nav-item-icon">🎮</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Interactive Quests</span>
@@ -258,7 +258,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item" onclick="openCurriculumReader(1)">
-                <span class="nav-item-icon">📖</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Curriculum Theory Compendium</span>
@@ -268,7 +268,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewTactileEngine" onclick="selectNavView('viewTactileEngine', 'SQL Machine', 'navGroupExplore')">
-                <span class="nav-item-icon">⚙️</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Tactile SQL Machine</span>
@@ -279,7 +279,7 @@
               </button>
               <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Documentation &amp; Schema</div>
               <button class="nav-dropdown-item nav-tab" data-view="viewExplainer" onclick="selectNavView('viewExplainer', 'Study Docs', 'navGroupExplore')">
-                <span class="nav-item-icon">📚</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Study Docs</span>
@@ -289,7 +289,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewDeconstructor" onclick="selectNavView('viewDeconstructor', 'Deconstructor', 'navGroupExplore')">
-                <span class="nav-item-icon">🔍</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Query Deconstructor</span>
@@ -299,7 +299,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewEnterpriseERD" onclick="selectNavView('viewEnterpriseERD', 'ERD Map', 'navGroupExplore')">
-                <span class="nav-item-icon">🗺️</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Enterprise ERD Map</span>
@@ -309,7 +309,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewVennMatrix" onclick="selectNavView('viewVennMatrix', 'Venn Matrix', 'navGroupExplore')">
-                <span class="nav-item-icon">⭕</span>
+                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Venn &amp; Euler Matrix</span>
@@ -334,15 +334,15 @@
         <div class="header-divider"></div>
         <div class="header-stats-strip">
           <span class="header-stat-chip" id="userStreakCounter" title="Daily SQL Mastery Streak (Click to open Calendar)" style="cursor: pointer;" onclick="if(window.dailyStreak) window.dailyStreak.open();">
-            <span class="stat-icon">🔥</span>
+            
             <span class="stat-val" id="streakDaysCount">1</span><span class="stat-unit">d</span>
           </span>
           <span class="header-stat-chip" id="userXpCounter" title="Total SQL Mastery Points (Click to view 112-Day Heatmap)" style="cursor: pointer;" onclick="if(window.selectNavView) window.selectNavView('viewQuests', 'Quests', null); setTimeout(()=>{ const el = document.getElementById('curriculumActivityHeatmap'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 150);">
-            <span class="stat-icon">⚡</span>
+            
             <span class="stat-val" id="xpPointsVal">60</span><span class="stat-unit">XP</span>
           </span>
           <span class="header-stat-chip flashcard-chip" id="headerFlashcardDuePill" title="Review Due SuperMemo-2 Flashcards" onclick="if(window.openFlashcardVault) window.openFlashcardVault();">
-            <span class="stat-icon">🗂️</span>
+            
             <span class="stat-val" id="flashcardDueCount">12</span><span class="stat-unit">Due</span>
           </span>
         </div>
@@ -366,23 +366,23 @@
             <path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"></path>
           </svg>
           <select id="themeSelect" class="clean-select theme-select theme-select-overlay" title="Switch Theme">
-            <option value="kobbe-nordic" selected>🏛️ Kobbe Nordic (Warm Bone)</option>
-            <option value="saas-midnight">✨ SaaS Midnight (2026 AI-SaaS)</option>
-            <option value="active-builders">🔥 Neon Red (Light)</option>
-            <option value="active-builders-dark">🌙 Laser Neon Red (Dark)</option>
-            <option value="cyber-olive">🌿 Cyber Olive (Light)</option>
-            <option value="cyber-olive-dark">🌲 Deep Olive (Dark)</option>
-            <option value="cursor-dark">⚡ Cursor Dark</option>
-            <option value="pomegranate-powder">🍷 Pomegranate + Powder</option>
-            <option value="smoky-jade-oxblood">🌲 Smoky Jade + Oxblood</option>
-            <option value="petrol-persimmon">🌊 Petrol Teal + Persimmon</option>
-            <option value="tokyo-midnight">🌌 Tokyo Midnight</option>
-            <option value="nordic-carbon">❄️ Nordic Carbon</option>
-            <option value="warm-obsidian">🪵 Warm Obsidian</option>
-            <option value="paper-white">☀️ Paper White</option>
-            <option value="warm-cream">☕ Warm Cream</option>
-            <option value="sakura-mochi">🌸 Sakura Mochi</option>
-            <option value="matcha-latte">🍵 Matcha Latte</option>
+            <option value="kobbe-nordic" selected>Kobbe Nordic (Warm Bone)</option>
+            <option value="saas-midnight">SaaS Midnight (2026 AI-SaaS)</option>
+            <option value="active-builders">Neon Red (Light)</option>
+            <option value="active-builders-dark">Laser Neon Red (Dark)</option>
+            <option value="cyber-olive">Cyber Olive (Light)</option>
+            <option value="cyber-olive-dark">Deep Olive (Dark)</option>
+            <option value="cursor-dark">Cursor Dark</option>
+            <option value="pomegranate-powder">Pomegranate + Powder</option>
+            <option value="smoky-jade-oxblood">Smoky Jade + Oxblood</option>
+            <option value="petrol-persimmon">Petrol Teal + Persimmon</option>
+            <option value="tokyo-midnight">Tokyo Midnight</option>
+            <option value="nordic-carbon">Nordic Carbon</option>
+            <option value="warm-obsidian">Warm Obsidian</option>
+            <option value="paper-white">Paper White</option>
+            <option value="warm-cream">Warm Cream</option>
+            <option value="sakura-mochi">Sakura Mochi</option>
+            <option value="matcha-latte">Matcha Latte</option>
           </select>
         </div>
         <a href="http://localhost:3000" target="_blank" class="header-icon-btn saas-launch-pill" title="Open Next.js 15 Modern SaaS App" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:0 11px; height:32px; font-size:11.5px; font-weight:600; color:#a5b4fc; background:rgba(99,102,241,0.14); border:1px solid rgba(99,102,241,0.35); border-radius:8px; white-space:nowrap; transition:all 140ms ease;">
@@ -415,7 +415,7 @@
           <div class="pathways-title-row">
             <div>
               <h1 class="pathways-title">
-                <span>🎯 Topic-Based Curriculum &amp; Mastery Pathways</span>
+                <span>Topic-Based Curriculum &amp; Mastery Pathways</span>
                 <span class="status-pill" style="font-size: 11px; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3);">4-Stage Progression</span>
               </h1>
               <p class="pathways-subtitle">Master SQL systematically: 1. Visual Masterclass &rarr; 2. Traps &amp; Interview Secrets &rarr; 3. Topic MCQs &rarr; 4. Corporate Case Studies</p>
@@ -432,7 +432,7 @@
           <!-- Real-Time Curriculum Analytics: Collapsible Drawer -->
           <div class="analytics-drawer-bar" style="display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-default); border-radius: 8px; padding: 8px 14px; cursor: pointer; margin-top: 10px;" onclick="toggleCurriculumAnalyticsDrawer()">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 16px;">📊</span>
+              
               <span style="font-size: 12px; font-weight: 700; color: var(--text-primary);">112-Day Deliberate Practice Heatmap &amp; 6-Pillar Relational Competency Radar</span>
               <span class="status-pill" style="font-size: 10px; padding: 1px 6px;">Telemetry</span>
             </div>
@@ -443,14 +443,14 @@
             <div class="analytics-card heatmap-card">
               <div class="analytics-header">
                 <div class="analytics-title-wrap">
-                  <span class="analytics-icon">📅</span>
+                  
                   <div>
                     <span class="analytics-title">112-Day SQL Deliberate Practice Heatmap</span>
                     <span class="analytics-subtitle">Real-time persistence across 2,100 MCQs, 1,700 Drills, Case Studies &amp; Studio</span>
                   </div>
                 </div>
                 <div class="heatmap-streak-badge" id="heatmapStreakBadge" style="cursor: pointer;" onclick="if(window.dailyStreak) window.dailyStreak.open();" title="Click to view Streak Calendar">
-                  🔥 <strong>1 Day Streak</strong> &bull; 60 XP
+                  <strong>1 Day Streak</strong> &bull; 60 XP
                 </div>
               </div>
               <div class="activity-heatmap-grid" id="curriculumActivityHeatmap"></div>
@@ -459,7 +459,7 @@
             <div class="analytics-card radar-card">
               <div class="analytics-header">
                 <div class="analytics-title-wrap">
-                  <span class="analytics-icon">🎯</span>
+                  
                   <div>
                     <span class="analytics-title">6-Pillar Relational Domain Competency</span>
                     <span class="analytics-subtitle">Evaluated over AST correctness, tie-breaker Gotchas &amp; schema design</span>
@@ -474,7 +474,7 @@
           <!-- Module Selector Track Header with Carousel Controls -->
           <div class="pathway-nav-track-header">
             <div class="pathway-nav-track-title">
-              <span>🗺️ Curriculum Topic Modules</span>
+              <span>Curriculum Topic Modules</span>
               <span class="status-pill" style="font-size: 10px; padding: 1px 6px; background: rgba(56, 189, 248, 0.15); color: #38bdf8;">15 Modules Available</span>
             </div>
             <div class="pathway-nav-carousel-controls">
@@ -494,28 +494,28 @@
           <button class="pathway-stage-btn active" id="btnPathwayStage_1" data-stage="1" onclick="selectPathwayStage(1)">
             <span class="stage-num-pill">1</span>
             <div class="stage-text-block">
-              <span class="stage-title">📖 Stage 1: Visual Masterclass</span>
+              <span class="stage-title">Stage 1: Visual Masterclass</span>
               <span class="stage-desc">High-Res SVGs, AST &amp; Theory</span>
             </div>
           </button>
           <button class="pathway-stage-btn" id="btnPathwayStage_2" data-stage="2" onclick="selectPathwayStage(2)">
             <span class="stage-num-pill">2</span>
             <div class="stage-text-block">
-              <span class="stage-title">⚠️ Stage 2: Traps &amp; Secrets</span>
+              <span class="stage-title">Stage 2: Traps &amp; Secrets</span>
               <span class="stage-desc">Deadly Gotchas &amp; Spoken Answers</span>
             </div>
           </button>
           <button class="pathway-stage-btn" id="btnPathwayStage_3" data-stage="3" onclick="selectPathwayStage(3)">
             <span class="stage-num-pill">3</span>
             <div class="stage-text-block">
-              <span class="stage-title">🧠 Stage 3: Topic MCQs</span>
+              <span class="stage-title">Stage 3: Topic MCQs</span>
               <span class="stage-desc">Instant Check &amp; XP Rewards</span>
             </div>
           </button>
           <button class="pathway-stage-btn" id="btnPathwayStage_4" data-stage="4" onclick="selectPathwayStage(4)">
             <span class="stage-num-pill">4</span>
             <div class="stage-text-block">
-              <span class="stage-title">🛠️ Stage 4: Corporate Cases</span>
+              <span class="stage-title">Stage 4: Corporate Cases</span>
               <span class="stage-desc">Easy / Med / Hard Token Blanks</span>
             </div>
           </button>
@@ -570,7 +570,7 @@
               <span>Track 04: Relational JOINs</span>
             </button>
             <button class="track-btn" id="btnTrackOperators">
-              <span>⚡ Operators &amp; NULL Sandbox</span>
+              <span>Operators &amp; NULL Sandbox</span>
             </button>
           </div>
           <span class="status-pill" id="trackActiveSchemaBadge">Schema: Employees (8 rows)</span>
@@ -614,7 +614,7 @@
     </div>
 
     <!-- VIEW 2: Query Studio (Advanced Mode) -->
-    <div class="view-panel" id="viewStudio">
+    <div class="view-panel" id="viewStudio"><section id="section-studio" class="section-studio-container" style="display:contents;">
       <!-- Dynamic Case Study Table Active Banner -->
       <div id="dynamicTableBanner" class="dynamic-table-banner" style="display: none;"></div>
 
@@ -815,10 +815,10 @@
             </span>
             <div style="display: flex; align-items: center; gap: 6px;">
               <button id="btnFormatSQLInline" class="btn-format-inline" onclick="if(window.formatSQLEditorQuery) window.formatSQLEditorQuery();" title="Prettify &amp; Format SQL">
-                ✨ Prettify SQL
+                Prettify SQL
               </button>
               <button id="btnExplainPlanInline" class="btn-format-inline" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);" onclick="if(window.VISUAL_EXPLAIN_TREE_ENGINE) window.VISUAL_EXPLAIN_TREE_ENGINE.openAndFocusTree();" title="Inspect Visual EXPLAIN ANALYZE Execution Plan Tree">
-                ⚡ EXPLAIN Tree
+                EXPLAIN Tree
               </button>
             </div>
           </div>
@@ -906,7 +906,7 @@
           <div class="viewer-tabs">
             <div class="tab-group">
               <button class="tab-item active" data-tab="tabStepper">Data Grid</button>
-              <button class="tab-item" data-tab="tabExplainPlan" id="btnTabExplainPlan">🌳 Execution Plan Tree <span class="hot-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 700; margin-left: 4px;">EXPLAIN</span></button>
+              <button class="tab-item" data-tab="tabExplainPlan" id="btnTabExplainPlan">Execution Plan Tree <span class="hot-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 700; margin-left: 4px;">EXPLAIN</span></button>
               <button class="tab-item" data-tab="tabDecisionTree">Logic Flow</button>
               <button class="tab-item" data-tab="tabChart">Distribution</button>
               <button class="tab-item" data-tab="tabDiff">Input / Output Diff</button>
@@ -943,7 +943,7 @@
         </div>
       </section>
     </main>
-  </div><!-- End of viewStudio -->
+  </section></div><!-- End of viewStudio -->
 
   <!-- VIEW 2: Study Material & Docs Hub -->
   <div class="view-panel" id="viewExplainer">
@@ -962,7 +962,7 @@
         </div>
 
         <div class="study-search-box">
-          <input type="text" id="studySearchInput" class="clean-search-input" placeholder="🔍 Search topics, syntax, gotchas..." />
+          <input type="text" id="studySearchInput" class="clean-search-input" placeholder="Search topics, syntax, gotchas..." />
         </div>
         <div class="study-nav-section-title">CURRICULUM PILLARS &amp; TOPICS</div>
         <nav class="study-topics-nav" id="studyTopicsNav">
@@ -982,7 +982,7 @@
     <div class="curriculum-container">
       <div class="curriculum-header">
         <div>
-          <h2 class="view-title">🎯 Topic Mastery Hub &amp; Practice Arena</h2>
+          <h2 class="view-title">Topic Mastery Hub &amp; Practice Arena</h2>
           <p class="view-subtitle">Unified curriculum workspace: Seamlessly explore 2,100 MCQs, 2,540 Corporate Case Studies, and 3,420+ Query Problems &amp; Quests in the same topic window.</p>
         </div>
         <div class="quiz-header-right">
@@ -1007,22 +1007,22 @@
         <!-- Deck 1: Title, Solved Tally & Search -->
         <div class="toolbar-deck-top">
           <div>
-            <h2 class="view-title">🏋️ The SQL Syntax Gym (1,700 Progressive Micro-Drills)</h2>
+            <h2 class="view-title">The SQL Syntax Gym (1,700 Progressive Micro-Drills)</h2>
             <p class="view-subtitle">High-repetition punctuation &amp; clause muscle memory across 10 everyday relatable schemas. Zero corporate confusion.</p>
           </div>
           <div class="toolbar-deck-controls">
             <button id="btnToggleBlitzMode" class="btn-blitz-toggle" onclick="toggleGymBlitzMode()" title="Toggle Rapid-Fire 10-Drill Blitz Mode with keyboard shortcuts & streak multipliers">
-              ⚡ Rapid-Fire Blitz (10-Drill Sprint)
+              Rapid-Fire Blitz (10-Drill Sprint)
             </button>
             <button id="btnToggleMasteryRadar" class="btn-radar-toggle" onclick="toggleMasteryRadar()" title="View 17-pillar mastery meters, mistake frequency heatmap, and spaced repetition focus">
-              📊 Mastery &amp; Weakness Radar
+              Mastery &amp; Weakness Radar
             </button>
             <button id="btnDailyWorkout" class="btn-blitz-toggle" style="background: #4f46e5; border-color: #6366f1; color: #ffffff;" onclick="window.GYM_SPACED_REPETITION && window.GYM_SPACED_REPETITION.openDailyWorkoutModal()" title="Start Daily 5 SuperMemo-2 Spaced Repetition Flashcard Workout">
-              🗂️ Daily 5 Workout
+              Daily 5 Workout
             </button>
-            <input type="text" id="gymSearchInput" class="case-search-input" placeholder="🔍 Search 1,700 drills by keyword, table, query...">
+            <input type="text" id="gymSearchInput" class="case-search-input" placeholder="Search 1,700 drills by keyword, table, query...">
             <span id="gymCountBadge" class="status-pill">1,700 Drills</span>
-            <span id="gymSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="gymSolvedCount">0</span>/1,700 Solved</span>
+            <span id="gymSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);"><span id="gymSolvedCount">0</span>/1,700 Solved</span>
           </div>
         </div>
 
@@ -1030,23 +1030,23 @@
         <div class="toolbar-deck-bottom">
           <div class="case-section-group" id="gymPillarFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button class="case-section-btn active" data-pillar="all">All 1,700 Drills</button>
-            <button class="case-section-btn" data-pillar="select" style="border-color: #38bdf8; color: #38bdf8; font-weight: 700;">💎 Topic 1: SELECT &amp; Projections (100)</button>
-            <button class="case-section-btn" data-pillar="where" style="border-color: #f59e0b; color: #fbbf24; font-weight: 700;">🎯 Topic 2: WHERE &amp; Predicates (100)</button>
-            <button class="case-section-btn" data-pillar="order" style="border-color: #a855f7; color: #c084fc; font-weight: 700;">⚡ Topic 3: ORDER BY &amp; LIMIT Slicing (100)</button>
-            <button class="case-section-btn" data-pillar="aggregate" style="border-color: #ec4899; color: #f472b6; font-weight: 700;">📊 Topic 4: Aggregations &amp; GROUP BY (100)</button>
-            <button class="case-section-btn" data-pillar="casewhen" style="border-color: #10b981; color: #34d399; font-weight: 700;">🧩 Topic 5: CASE WHEN &amp; Conditional Logic (100)</button>
-            <button class="case-section-btn" data-pillar="string" style="border-color: #06b6d4; color: #22d3ee; font-weight: 700;">🔤 Topic 6: String Manipulation &amp; Patterns (100)</button>
-            <button class="case-section-btn" data-pillar="join_core" style="border-color: #6366f1; color: #818cf8; font-weight: 700;">🔗 Topic 7: Relational Joins Core (100)</button>
-            <button class="case-section-btn" data-pillar="join_adv" style="border-color: #e11d48; color: #fb7185; font-weight: 700;">🧬 Topic 8: Advanced Joins &amp; Structures (100)</button>
-            <button class="case-section-btn" data-pillar="join_agg" style="border-color: #d97706; color: #f59e0b; font-weight: 700;">⛓️ Topic 9: Multi-Table Chains &amp; Aggs (100)</button>
-            <button class="case-section-btn" data-pillar="date_time" style="border-color: #8b5cf6; color: #a78bfa; font-weight: 700;">⏱️ Topic 10: Date, Time &amp; Temporal (100)</button>
-            <button class="case-section-btn" data-pillar="subqueries" style="border-color: #14b8a6; color: #2dd4bf; font-weight: 700;">🧱 Topic 11: Subqueries &amp; Derived (100)</button>
-            <button class="case-section-btn" data-pillar="ctes" style="border-color: #f97316; color: #fb923c; font-weight: 700;">🏗️ Topic 12: Modular CTEs &amp; Pipelines (100)</button>
-            <button class="case-section-btn" data-pillar="window_ranking" style="border-color: #0ea5e9; color: #38bdf8; font-weight: 700;">🏆 Topic 13: Window Ranking &amp; Percentiles (100)</button>
-            <button class="case-section-btn" data-pillar="window_offsets" style="border-color: #10b981; color: #34d399; font-weight: 700;">📈 Topic 14: Value Offsets &amp; Deltas (100)</button>
-            <button class="case-section-btn" data-pillar="window_running" style="border-color: #8b5cf6; color: #a78bfa; font-weight: 700;">🌊 Topic 15: Running Balances &amp; Frames (100)</button>
-            <button class="case-section-btn" data-pillar="set_ops" style="border-color: #f43f5e; color: #fb7185; font-weight: 700;">🔀 Topic 16: Set Operations &amp; Combined (100)</button>
-            <button class="case-section-btn" data-pillar="ddl_dml" style="border-color: #eab308; color: #facc15; font-weight: 700;">⚙️ Topic 17: DDL &amp; DML Mutations (100)</button>
+            <button class="case-section-btn" data-pillar="select" style="border-color: #38bdf8; color: #38bdf8; font-weight: 700;">Topic 1: SELECT &amp; Projections (100)</button>
+            <button class="case-section-btn" data-pillar="where" style="border-color: #f59e0b; color: #fbbf24; font-weight: 700;">Topic 2: WHERE &amp; Predicates (100)</button>
+            <button class="case-section-btn" data-pillar="order" style="border-color: #a855f7; color: #c084fc; font-weight: 700;">Topic 3: ORDER BY &amp; LIMIT Slicing (100)</button>
+            <button class="case-section-btn" data-pillar="aggregate" style="border-color: #ec4899; color: #f472b6; font-weight: 700;">Topic 4: Aggregations &amp; GROUP BY (100)</button>
+            <button class="case-section-btn" data-pillar="casewhen" style="border-color: #10b981; color: #34d399; font-weight: 700;">Topic 5: CASE WHEN &amp; Conditional Logic (100)</button>
+            <button class="case-section-btn" data-pillar="string" style="border-color: #06b6d4; color: #22d3ee; font-weight: 700;">Topic 6: String Manipulation &amp; Patterns (100)</button>
+            <button class="case-section-btn" data-pillar="join_core" style="border-color: #6366f1; color: #818cf8; font-weight: 700;">Topic 7: Relational Joins Core (100)</button>
+            <button class="case-section-btn" data-pillar="join_adv" style="border-color: #e11d48; color: #fb7185; font-weight: 700;">Topic 8: Advanced Joins &amp; Structures (100)</button>
+            <button class="case-section-btn" data-pillar="join_agg" style="border-color: #d97706; color: #f59e0b; font-weight: 700;">Topic 9: Multi-Table Chains &amp; Aggs (100)</button>
+            <button class="case-section-btn" data-pillar="date_time" style="border-color: #8b5cf6; color: #a78bfa; font-weight: 700;">Topic 10: Date, Time &amp; Temporal (100)</button>
+            <button class="case-section-btn" data-pillar="subqueries" style="border-color: #14b8a6; color: #2dd4bf; font-weight: 700;">Topic 11: Subqueries &amp; Derived (100)</button>
+            <button class="case-section-btn" data-pillar="ctes" style="border-color: #f97316; color: #fb923c; font-weight: 700;">Topic 12: Modular CTEs &amp; Pipelines (100)</button>
+            <button class="case-section-btn" data-pillar="window_ranking" style="border-color: #0ea5e9; color: #38bdf8; font-weight: 700;">Topic 13: Window Ranking &amp; Percentiles (100)</button>
+            <button class="case-section-btn" data-pillar="window_offsets" style="border-color: #10b981; color: #34d399; font-weight: 700;">Topic 14: Value Offsets &amp; Deltas (100)</button>
+            <button class="case-section-btn" data-pillar="window_running" style="border-color: #8b5cf6; color: #a78bfa; font-weight: 700;">Topic 15: Running Balances &amp; Frames (100)</button>
+            <button class="case-section-btn" data-pillar="set_ops" style="border-color: #f43f5e; color: #fb7185; font-weight: 700;">Topic 16: Set Operations &amp; Combined (100)</button>
+            <button class="case-section-btn" data-pillar="ddl_dml" style="border-color: #eab308; color: #facc15; font-weight: 700;">Topic 17: DDL &amp; DML Mutations (100)</button>
           </div>
         </div>
       </div>
@@ -1061,7 +1061,7 @@
         <!-- Injected dynamically by renderMasteryRadar() -->
       </div>
 
-      <!-- Rapid-Fire Blitz Mode Arena (Hidden by default, activated on ⚡ Blitz Mode) -->
+      <!-- Rapid-Fire Blitz Mode Arena (Hidden by default, activated on Blitz Mode) -->
       <div class="blitz-arena-wrapper" id="blitzArenaWrapper" style="display: none;">
         <!-- Injected dynamically by renderBlitzArena() -->
       </div>
@@ -1085,9 +1085,9 @@
           </div>
           <div class="toolbar-deck-controls">
             <div class="mode-toggle-group">
-              <button id="btnCaseChallengeMode" class="card-nav-btn active">🧩 Token Puzzle Mode</button>
-              <button id="btnCaseStudyMode" class="card-nav-btn">👁️ Reference Mode</button>
-              <button id="btnToggleEli5Mode" class="btn-eli5-toggle" title="Switch between ELI5 Everyday English and Technical Specs">👶 ELI5 Beginner Mode</button>
+              <button id="btnCaseChallengeMode" class="card-nav-btn active">Token Puzzle Mode</button>
+              <button id="btnCaseStudyMode" class="card-nav-btn">Reference Mode</button>
+              <button id="btnToggleEli5Mode" class="btn-eli5-toggle" title="Switch between ELI5 Everyday English and Technical Specs">ELI5 Mode</button>
             </div>
             <!-- Difficulty Sort Selector -->
             <select id="caseSortSelect" class="case-sort-select">
@@ -1095,9 +1095,9 @@
               <option value="diff_desc">Sort: Hard &rarr; Medium &rarr; Easy (Challenge Order)</option>
               <option value="id_asc">Sort: Case ID #001 &rarr; #2540 (Chronological)</option>
             </select>
-            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="🔍 Search 2,540 cases by keyword, schema, query...">
+            <input type="text" id="caseSearchInput" class="case-search-input" placeholder="Search 2,540 cases by keyword, schema, query...">
             <span id="caseCountBadge" class="status-pill">2,540 Cases</span>
-            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);">⚡ <span id="casesSolvedCount">0</span>/2540 Solved</span>
+            <span id="caseSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);"><span id="casesSolvedCount">0</span>/2540 Solved</span>
           </div>
         </div>
 
@@ -1111,11 +1111,11 @@
             <button class="case-section-btn" data-section="Section 3: Filtering, Predicates &amp; Three-Valued Logic">Sec 3: Filtering &amp; 3VL (100)</button>
             <button class="case-section-btn" data-section="Section 4: String Slicing, Text Manipulation &amp; Pattern Matching">Sec 4: String Manipulation (100)</button>
             <button class="case-section-btn" data-section="Section 5: Sorting, Determinism &amp; Slicing">Sec 5: Sorting &amp; Slicing (100)</button>
-            <button class="case-section-btn section-btn-aggregations" data-section="Section 6: Aggregations, Statistical Metrics &amp; GROUP BY">🔥 Sec 6: Aggregations &amp; GROUP BY (100)</button>
-            <button class="case-section-btn section-btn-math" data-section="Section 7: Spatial Coordinates, Math Functions &amp; Medians" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">📍 Sec 7: Spatial Math &amp; Medians (50)</button>
-            <button class="case-section-btn section-btn-joins" data-section="Section 8: Relational Joins &amp; Financial Data Modeling" style="border-color: rgba(74, 222, 128, 0.4); color: #4ade80;">🔗 Sec 8: Relational Joins (FA/DA/BA) (390)</button>
-            <button class="case-section-btn section-btn-window" data-section="Section 9: Window Functions &amp; Quantitative Financial Analytics" style="border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">🪟 Sec 9: Window Functions &amp; Quant Analytics (300)</button>
-            <button class="case-section-btn section-btn-sec10" data-section="Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion &amp; Set Operations)" style="border-color: rgba(244, 114, 182, 0.4); color: #f472b6;">🗂️ Sec 10: Subqueries, CTEs &amp; Set Ops (150)</button>
+            <button class="case-section-btn section-btn-aggregations" data-section="Section 6: Aggregations, Statistical Metrics &amp; GROUP BY">Sec 6: Aggregations &amp; GROUP BY (100)</button>
+            <button class="case-section-btn section-btn-math" data-section="Section 7: Spatial Coordinates, Math Functions &amp; Medians" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">Sec 7: Spatial Math &amp; Medians (50)</button>
+            <button class="case-section-btn section-btn-joins" data-section="Section 8: Relational Joins &amp; Financial Data Modeling" style="border-color: rgba(74, 222, 128, 0.4); color: #4ade80;">Sec 8: Relational Joins (FA/DA/BA) (390)</button>
+            <button class="case-section-btn section-btn-window" data-section="Section 9: Window Functions &amp; Quantitative Financial Analytics" style="border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">Sec 9: Window Functions &amp; Quant Analytics (300)</button>
+            <button class="case-section-btn section-btn-sec10" data-section="Section 10: Advanced SQL Engine Mastery (Subqueries, CTEs, Recursion &amp; Set Operations)" style="border-color: rgba(244, 114, 182, 0.4); color: #f472b6;">Sec 10: Subqueries, CTEs &amp; Set Ops (150)</button>
           </div>
 
           <!-- Difficulty & Industry Strips -->
@@ -1123,9 +1123,9 @@
             <div class="filter-strip-row" id="caseDifficultyFilters">
               <span class="filter-strip-label">Difficulty:</span>
               <button class="case-diff-filter-btn active" data-diff="all">All Difficulties (2540)</button>
-              <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">🟢 Easy &bull; Enterprise (530)</button>
-              <button class="case-diff-filter-btn diff-pill-medium" data-diff="Medium">🟡 Medium &bull; Production Standard (530)</button>
-              <button class="case-diff-filter-btn diff-pill-hard" data-diff="Hard">🔴 Hard &bull; Senior Edge Cases (430)</button>
+              <button class="case-diff-filter-btn diff-pill-easy" data-diff="Easy">Easy &bull; Enterprise (530)</button>
+              <button class="case-diff-filter-btn diff-pill-medium" data-diff="Medium">Medium &bull; Production Standard (530)</button>
+              <button class="case-diff-filter-btn diff-pill-hard" data-diff="Hard">Hard &bull; Senior Edge Cases (430)</button>
             </div>
 
             <div class="filter-strip-row" id="caseIndustryFilters">
@@ -1160,14 +1160,14 @@
       <div class="curriculum-header" style="flex-direction: column; align-items: stretch; gap: 12px;">
         <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px;">
           <div>
-            <h2 class="view-title">🏛️ Enterprise Company Schemas &amp; Interactive ERD Map</h2>
+            <h2 class="view-title">Enterprise Company Schemas &amp; Interactive ERD Map</h2>
             <p class="view-subtitle">Inspect real-world multi-table production schemas (Stripe, Shopify, Uber) with primary/foreign keys, cardinality, and sample records.</p>
           </div>
           <!-- Company Switcher Pills -->
           <div class="mode-toggle-group" id="erdCompanySelector">
-            <button class="card-nav-btn active" data-company="stripe">💳 Stripe (Fintech)</button>
-            <button class="card-nav-btn" data-company="shopify">🛒 Shopify (E-Commerce)</button>
-            <button class="card-nav-btn" data-company="uber">🚗 Uber (Mobility)</button>
+            <button class="card-nav-btn active" data-company="stripe">Stripe (Fintech)</button>
+            <button class="card-nav-btn" data-company="shopify">Shopify (E-Commerce)</button>
+            <button class="card-nav-btn" data-company="uber">Uber (Mobility)</button>
           </div>
         </div>
       </div>
@@ -1220,7 +1220,7 @@
     <div class="quests-container quests-wide-workspace">
       <div class="quests-header">
         <div>
-          <h2 class="view-title">🎮 SQL Quests: Learn by Doing (Duolingo Style)</h2>
+          <h2 class="view-title">SQL Quests: Learn by Doing</h2>
           <p class="view-subtitle">Interactive micro-games, live threshold sliders, tap-to-assemble word banks, and bug-fixing puzzles. Zero typing required!</p>
         </div>
         <div class="quest-progress-badge" style="display: flex; align-items: center; gap: 12px;">
@@ -1344,7 +1344,7 @@
         <button class="quest-section-tab" data-section="featured" onclick="switchQuestSection('featured')" title="Original 30 Featured Boss Quests">
           <div class="section-tab-header-row">
             <span class="section-tab-badge" style="color: #f59e0b; background: rgba(245, 158, 11, 0.15);">Bonus</span>
-            <span class="section-tab-status" style="color: #f59e0b;">🏆 Boss Mode</span>
+            <span class="section-tab-status" style="color: #f59e0b;">Boss Mode</span>
           </div>
           <span class="section-tab-title">Boss Gauntlet (30)</span>
         </button>
@@ -1357,7 +1357,7 @@
           <div class="quest-sidebar-panel">
             <div class="sidebar-panel-header">
               <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 13px;">🗺️</span>
+                
                 <span class="sidebar-panel-title">100-LEVEL ROADMAP</span>
               </div>
               <span class="sidebar-pill-stat" id="sidebarProgressCount">Lvl 01 / 100</span>
@@ -1405,7 +1405,7 @@
             <!-- Leitner Mistake Vault Switcher -->
             <div class="mistake-vault-toggle-bar">
               <button class="mistake-vault-btn active" id="btnFilterAllQuests" onclick="toggleMistakeVaultFilter(false)">All Levels</button>
-              <button class="mistake-vault-btn" id="btnFilterMistakesQuests" onclick="toggleMistakeVaultFilter(true)">🔁 Mistakes (<span id="mistakeVaultCount">0</span>)</button>
+              <button class="mistake-vault-btn" id="btnFilterMistakesQuests" onclick="toggleMistakeVaultFilter(true)">Mistakes (<span id="mistakeVaultCount">0</span>)</button>
             </div>
 
             <!-- Chunk Jump Controls -->
@@ -1432,7 +1432,7 @@
           <div class="quest-level-control-hud">
             <div class="hud-left-group">
               <button class="quest-drawer-toggle-btn" id="btnToggleQuestDrawer" onclick="toggleQuestLevelDrawer()">
-                <span class="drawer-icon">🗺️</span>
+                
                 <span class="drawer-label" id="questDrawerLabel">Browse 100 Levels</span>
                 <span class="drawer-caret" id="questDrawerCaret">▾</span>
               </button>
@@ -1441,19 +1441,19 @@
 
             <div class="hud-stepper-actions">
               <button class="card-nav-btn" onclick="openExecutionOrderModal()" title="View Animated Physical Query Execution Order">
-                <span>🎬 Engine Step-Through</span>
+                <span>Engine Step-Through</span>
               </button>
               <button class="card-nav-btn" onclick="openSQLSandboxModal()" title="Open Interactive Free-Form SQL Sandbox">
-                <span>💻 SQL Sandbox</span>
+                <span>SQL Sandbox</span>
               </button>
               <button class="card-nav-btn" onclick="openStreakCalendarModal()" title="View Daily Challenge & Streak Calendar">
-                <span>🔥 Daily Streak</span>
+                <span>Daily Streak</span>
               </button>
               <button class="card-nav-btn" onclick="openSoundStudioModal()" title="Configure Soundscape Studio & Voice Synthesizer">
-                <span>🔊 Audio Studio</span>
+                <span>Audio Studio</span>
               </button>
               <button class="btn-blitz-start" onclick="startQuestBlitzSprint()" title="Start 60-Second Rapid-Fire Blitz Challenge">
-                <span>⚡ 60s Blitz</span>
+                <span>60s Blitz</span>
               </button>
               <button class="hud-nav-step-btn" id="btnQuestPrev" onclick="navigateQuestStep(-1)" title="Previous Level (Press [)">
                 &larr; Prev
@@ -1492,13 +1492,13 @@
           <div class="quest-sidebar-panel companion-box-panel">
             <div class="sidebar-panel-header">
               <div style="display: flex; align-items: center; gap: 7px;">
-                <span style="font-size: 16px;">👑</span>
+                
                 <div>
                   <div class="sidebar-panel-title" style="color: #38bdf8;">Sir Bloops-a-Lot</div>
                   <div style="font-size: 9.5px; color: var(--text-muted);">Grand Master of the Query Plan</div>
                 </div>
               </div>
-              <button class="card-nav-btn" style="padding: 2px 7px; font-size: 10px;" onclick="if(window.SQL_BUDDY) SQL_BUDDY.poke();" title="Poke Sir Bloops-a-Lot for SQL wisdom">👉 Poke</button>
+              <button class="card-nav-btn" style="padding: 2px 7px; font-size: 10px;" onclick="if(window.SQL_BUDDY) SQL_BUDDY.poke();" title="Poke Sir Bloops-a-Lot for SQL wisdom">Poke</button>
             </div>
 
             <!-- Live Reactive Speech Commentary Box -->
@@ -1511,12 +1511,12 @@
 
             <!-- Mascot Mood & Quick Shapes -->
             <div class="companion-mood-row">
-              <span class="companion-mood-pill" id="companionMoodTag">Mood: Ready ⚡</span>
+              <span class="companion-mood-pill" id="companionMoodTag">Mood: Ready</span>
               <div class="companion-quick-shapes">
                 <button class="quick-shape-icon" onclick="if(window.SQL_BUDDY) SQL_BUDDY.setShape('galet')" title="Pebble">🪨</button>
                 <button class="quick-shape-icon" onclick="if(window.SQL_BUDDY) SQL_BUDDY.setShape('squircle')" title="Squircle">⬛</button>
                 <button class="quick-shape-icon" onclick="if(window.SQL_BUDDY) SQL_BUDDY.setShape('cercle')" title="Circle">⭕</button>
-                <button class="quick-shape-icon" onclick="if(window.SQL_BUDDY) SQL_BUDDY.setShape('nuage')" title="Cloud">☁️</button>
+                <button class="quick-shape-icon" onclick="if(window.SQL_BUDDY) SQL_BUDDY.setShape('nuage')" title="Cloud">Cloud</button>
               </div>
             </div>
           </div>
@@ -1525,7 +1525,7 @@
           <div class="quest-sidebar-panel">
             <div class="sidebar-panel-header">
               <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 13px;">📋</span>
+                
                 <span class="sidebar-panel-title">TABLE SCHEMA</span>
               </div>
               <span class="sidebar-pill-stat" id="questActiveTableBadge">Books</span>
@@ -1615,7 +1615,7 @@
   <div class="view-panel" id="viewTactileEngine" style="padding: 0; min-height: 850px;">
     <div style="background: #f2efe7; border-bottom: 2px solid #231e16; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 0 rgba(35,30,22,0.06);">
       <div style="display: flex; align-items: center; gap: 12px;">
-        <span style="font-size: 26px;">⚙️</span>
+        
         <div>
           <div style="font-size: 14px; font-weight: 800; color: #231e16; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.02em;">
             FIG. 16 &bull; TABULATOR RELATIONALIS &amp; MECHANICAL QUERY FACTORY
@@ -1778,9 +1778,9 @@
     <div class="footer-right-group">
       <span class="footer-shortcut-hint">⌨️ 1-4 Pick &bull; Enter Run &bull; Esc Close</span>
       <span class="footer-sep">|</span>
-      <a href="../FOUNDATIONS_MASTER_COMPENDIUM.md" target="_blank" class="footer-link">📖 Compendium</a>
+      <a href="../FOUNDATIONS_MASTER_COMPENDIUM.md" target="_blank" class="footer-link">Compendium</a>
       <span class="footer-sep">|</span>
-      <button class="footer-mascot-btn" id="footerMascotToggle" onclick="if(window.SQL_BUDDY) window.SQL_BUDDY.toggleMinimize();" title="Toggle Assistant Mascot">🐙 Sir Bloops</button>
+      <button class="footer-mascot-btn" id="footerMascotToggle" onclick="if(window.SQL_BUDDY) window.SQL_BUDDY.toggleMinimize();" title="Toggle Assistant Mascot">Sir Bloops</button>
     </div>
   </footer>
 </div>
@@ -1890,7 +1890,7 @@
       } else       if (hash === 'guidedlab' || hash === 'guided-lab') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewGuidedLab', 'Guided Lab', 'navGroupLearn');
       } else if (hash === 'interview' || hash === 'mock' || hash === 'mockinterview') {
-        if (typeof window.selectNavView === 'function') window.selectNavView('viewMockInterview', 'Interview 🎯', null);
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewMockInterview', 'Mock Interview', null);
       } else if (hash === 'company' || hash === 'companyhub' || hash === 'companies') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewCompanyHub', 'Company Hub', null);
       } else if (hash === 'terminal' || hash === 'sqlterminal') {
@@ -1920,5 +1920,18 @@
     window.addEventListener('hashchange', routeView);
   })();
 </script>
+
+  <script>
+    function checkSectionStudioHash() {
+      var h = window.location.hash;
+      if (h === '#section-studio' || h === '#studio') {
+        if (typeof window.selectNavView === 'function') {
+          window.selectNavView('viewStudio', 'Section Studio', null);
+        }
+      }
+    }
+    window.addEventListener('hashchange', checkSectionStudioHash);
+    window.addEventListener('DOMContentLoaded', checkSectionStudioHash);
+  </script>
 </body>
 </html>

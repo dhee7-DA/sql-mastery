@@ -134,7 +134,7 @@ export function KobbeSectionWasm() {
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <span className="rounded-full bg-dark-background text-surface px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider">
-                QUERY STUDIO
+                SECTION STUDIO
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-medium tracking-tight leading-tight text-pretty text-foreground">

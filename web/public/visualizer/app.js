@@ -2200,7 +2200,7 @@ const NAV_GROUPS_MAP = {
   viewCompanyHub: { triggerId: 'btnNavCompanyHub', pillId: null, label: 'Companies & Domains' },
   viewSqlTerminal: { triggerId: 'btnGroupPractice', pillId: null, label: 'SQL Terminal' },
   viewMockInterview: { triggerId: 'btnNavMockInterview', pillId: null, label: 'Mock Screen' },
-  viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Studio' },
+  viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Section Studio' },
   viewTactileEngine: { triggerId: 'btnGroupExplore', pillId: null, label: 'SQL Machine' }
 };
 
@@ -2239,35 +2239,35 @@ function switchMainView(targetId) {
     if (window.MasteryCourseEngine && typeof window.MasteryCourseEngine.init === 'function') {
       window.MasteryCourseEngine.init();
     }
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("📖 Welcome to SQL Mastery Course! 10 execution phases with tactile SVG diagrams and interview prep ready!", 4500, 'celebrate');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("Welcome to SQL Mastery Course! 10 execution phases with tactile SVG diagrams and interview prep ready!", 4500, 'celebrate');
   }
   if (targetId === 'viewStudio') {
     if (window.StudioWorkbenchEngine && typeof window.StudioWorkbenchEngine.init === 'function') {
       window.StudioWorkbenchEngine.init();
     }
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("⚡ Welcome to SQL Query Studio! Interactive AST stepper, multi-dialect transpiler, and custom data scratchpad ready!", 4500, 'celebrate');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("Welcome to Section Studio! Interactive AST stepper, multi-dialect transpiler, and custom data scratchpad ready!", 4500, 'celebrate');
   }
   if (targetId === 'viewMockInterview') {
     if (window.MockInterviewEngine) window.MockInterviewEngine.init();
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🎯 Welcome to the FAANG & Wall Street Mock Technical Screen! 45 minutes on the clock.", 5000, 'celebrate');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("Welcome to the FAANG & Wall Street Mock Technical Screen! 45 minutes on the clock.", 5000, 'celebrate');
   }
   if (targetId === 'viewSqlTerminal') {
     if (window.SqlTerminalEngine) window.SqlTerminalEngine.init();
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("💻 Welcome to the SQLite WASM Terminal! Execute real custom SQL queries against 12 live production tables with zero latency!", 5000, 'celebrate');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("Welcome to the SQLite WASM Terminal! Execute real custom SQL queries against 12 live production tables with zero latency!", 5000, 'celebrate');
   }
   if (targetId === 'viewLearningJourney') {
     if (typeof renderLearningJourney === 'function') renderLearningJourney();
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🗺️ Welcome to your 20-Day Learning Journey! Follow the trail and complete today's quests to advance me forward!", 5000, 'happy');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("Welcome to your 20-Day Learning Journey! Follow the trail and complete today's quests to advance me forward!", 5000, 'happy');
   }
   if (targetId === 'viewPathways') renderTopicPathways();
   if (targetId === 'viewGuidedLab') {
     renderGuidedStep(currentGuidedStep);
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🔬 Welcome to the Guided Lab! Step through each physical execution phase row-by-row!", 4500, 'thinking');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("Welcome to the Guided Lab! Step through each physical execution phase row-by-row!", 4500, 'thinking');
   }
   if (targetId === 'viewQuests') {
     renderActiveQuest(currentQuestIndex);
     renderQuestStepperTrack();
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🎮 Section 01: Foundations & Projections! I'm Sir Bloops-a-Lot, your co-pilot! Fill in the blanks with 1–4!", 5000, 'happy');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("Section 01: Foundations & Projections! I'm Sir Bloops-a-Lot, your co-pilot! Fill in the blanks with 1–4!", 5000, 'happy');
   }
   if (targetId === 'viewDeconstructor') renderDeconstructedProblem(activeDeconstructorId);
   if (targetId === 'viewExplainer') {

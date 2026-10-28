@@ -307,7 +307,7 @@ window.MasteryCourseEngine = (function () {
       title: 'SELECT & FROM',
       name: 'The Starting Line: Inspecting Tables, Picking Columns, and Math',
       shortName: '01. SELECT & FROM',
-      icon: '📖',
+      icon: '01',
       execRank: 'Level 1: Foundation',
       summary: 'Learn what a table is, how to view all or specific columns, rename with AS, and do simple math.',
 
@@ -466,7 +466,7 @@ FROM Employees;`,
       title: 'Filtering Rows with WHERE',
       name: 'Finding Specific Rows: Comparisons, AND/OR, LIKE, and NULLs',
       shortName: '02. WHERE',
-      icon: '🔍',
+      icon: '02',
       execRank: 'Level 2: Row Filtering',
       summary: 'Act as a bouncer at the door: only rows that match your filter rules are allowed into the results.',
 
@@ -634,7 +634,7 @@ WHERE (department = 'Engineering' OR department = 'Analytics')
       title: 'Sorting & Limiting (ORDER BY & LIMIT)',
       name: 'Arranging Rows (ASC/DESC), Tie-Breakers, and Top-N Slicing',
       shortName: '03. ORDER BY & LIMIT',
-      icon: '📶',
+      icon: '03',
       execRank: 'Level 3: Sorting & Paging',
       summary: 'Sort your results ascending or descending, break ties, and slice top rows with LIMIT & OFFSET.',
 
@@ -772,7 +772,7 @@ LIMIT 3;`,
       title: 'Summarizing Data (Aggregates)',
       name: 'Whole-Table Statistics: Counting, Totaling, and Averaging',
       shortName: '04. Aggregates',
-      icon: '📊',
+      icon: '04',
       execRank: 'Level 4: Summary Math',
       summary: 'Answer whole-table questions like total revenue, average salary, and row counts.',
 
@@ -894,7 +894,7 @@ FROM Employees;`,
       title: 'Grouping Data (GROUP BY & HAVING)',
       name: 'Category Summaries and Filtering Aggregated Groups',
       shortName: '05. GROUP BY & HAVING',
-      icon: '📦',
+      icon: '05',
       execRank: 'Level 5: Categorization',
       summary: 'Split data into category buckets (e.g. sales per department) and filter the buckets with HAVING.',
 
@@ -1031,7 +1031,7 @@ HAVING COUNT(*) >= 2
       title: 'Combining Tables (INNER & LEFT JOIN)',
       name: 'Connecting Related Tables with Primary and Foreign Keys',
       shortName: '06. JOINs',
-      icon: '🔗',
+      icon: '06',
       execRank: 'Level 6: Multi-Table Joins',
       summary: 'Connect rows across different tables using shared ID keys like matching puzzle pieces.',
 
@@ -1171,7 +1171,7 @@ ORDER BY c.customer_id;`,
       title: 'Advanced Joins & Sets (RIGHT, FULL & UNION)',
       name: 'Outer Joins, Self-Joins, and Stacking Queries with UNION',
       shortName: '07. Advanced Joins & UNION',
-      icon: '🔄',
+      icon: '07',
       execRank: 'Level 7: Set Operations',
       summary: 'Master FULL OUTER JOIN, Self-Joins (managers & employees), and vertical query stacking with UNION ALL.',
 
@@ -1307,7 +1307,7 @@ ORDER BY city ASC;`,
       title: 'Conditional Logic & Functions (CASE WHEN)',
       name: 'IF/THEN/ELSE Logic, Cleaning Data, and NULL Handling (COALESCE)',
       shortName: '08. CASE WHEN',
-      icon: '🔀',
+      icon: '08',
       execRank: 'Level 8: Conditional Logic',
       summary: 'Add If/Else business rules to your queries and handle missing data with COALESCE.',
 
@@ -1455,7 +1455,7 @@ ORDER BY months_tenure DESC;`,
       title: 'Multi-Step Queries (CTEs & Subqueries)',
       name: 'Breaking Complex Logic into Readable Steps with the WITH Clause',
       shortName: '09. CTEs (WITH)',
-      icon: '🧱',
+      icon: '09',
       execRank: 'Level 9: Modular Pipelines',
       summary: 'Break terrifying 50-line queries into clean, readable, modular steps using Common Table Expressions.',
 
@@ -1765,7 +1765,7 @@ FROM Employees;`,
         <!-- 1. Sleek Course Top Header -->
         <header class="course-header-bar">
           <div class="course-header-left">
-            <span class="course-badge-icon">📖</span>
+            
             <div class="course-title-col">
               <h1 class="course-headline">
                 SQL Mastery &amp; Technical Interview Preparation
@@ -1788,26 +1788,26 @@ FROM Employees;`,
             <!-- Milestone Badges & Claim Cert CTA -->
             <div class="course-achievements-bar">
               <span class="milestone-badge-chip ${completedCount >= 3 ? 'unlocked' : ''}" title="Topics 01-03: Relational Foundations">
-                <span>🔰 Foundations</span>
+                <span>Foundations</span>
               </span>
               <span class="milestone-badge-chip ${completedCount >= 7 ? 'unlocked' : ''}" title="Topics 04-07: Relational Architect">
-                <span>⚔️ Architect</span>
+                <span>Architect</span>
               </span>
               <span class="milestone-badge-chip ${completedCount >= 10 ? 'unlocked' : ''}" title="Topics 08-10: Analytical Wizard">
-                <span>🧙 Wizard</span>
+                <span>Wizard</span>
               </span>
               <span class="milestone-badge-chip ${completedCount === 10 ? 'unlocked' : ''}" title="All 10 Topics Mastered: SQL Grandmaster">
-                <span>👑 Grandmaster</span>
+                <span>Grandmaster</span>
               </span>
 
               <button class="milestone-badge-chip hotkey-chip" onclick="window.MasteryCourseEngine.openShortcutsModal()" title="Keyboard Shortcuts (Press ?)">
-                <span>⌨️ Hotkeys [?]</span>
+                <span>Hotkeys [?]</span>
               </button>
               <button class="milestone-badge-chip analytics-chip" onclick="window.MasteryCourseEngine.openAnalyticsModal('stats')" title="Progress Analytics &amp; Social Share (Press A)">
-                <span>📊 Analytics &amp; Share [A]</span>
+                <span>Analytics [A]</span>
               </button>
               <button class="btn-claim-cert" onclick="window.MasteryCourseEngine.openCertificate('cert')">
-                <span>🎓 Claim Certificate &amp; Portfolio</span>
+                <span>Certificate &amp; Portfolio</span>
               </button>
             </div>
           </div>
@@ -1842,18 +1842,18 @@ FROM Employees;`,
 
           <div class="step-order-tabs">
             <button class="step-tab-btn ${state.activeStep === 'theory' ? 'active' : ''}" data-step="theory">
-              <span>📖 1. Learn &amp; Visualize</span>
+              <span>01 Learn &amp; Visualize</span>
             </button>
             <button class="step-tab-btn ${state.activeStep === 'mcqs' ? 'active' : ''}" data-step="mcqs">
-              <span>🧠 2. Quick Quiz</span>
+              <span>02 Quick Quiz</span>
               <span class="step-count-pill">${active.mcqs ? active.mcqs.length : 0}</span>
             </button>
             <button class="step-tab-btn ${state.activeStep === 'case' ? 'active' : ''}" data-step="case">
-              <span>🏢 3. Real Case</span>
+              <span>03 Real Case</span>
               <span class="step-count-pill">${active.caseStudy ? active.caseStudy.company : ''}</span>
             </button>
             <button class="step-tab-btn ${state.activeStep === 'problem' ? 'active' : ''}" data-step="problem">
-              <span>⚡ 4. Query Studio</span>
+              <span>04 Section Studio</span>
               <span class="step-count-pill">${active.problem ? active.problem.difficulty : ''}</span>
             </button>
           </div>
@@ -1949,15 +1949,15 @@ FROM Employees;`,
         <div class="interactive-simulator-card">
           <div class="visual-mode-toggle-bar">
             <div class="visual-mode-title-group">
-              <span>${visualMode === 'diagram' ? '🎨' : '✨'}</span>
+              
               <span>${visualMode === 'diagram' ? 'Visual Architecture Explainer Diagram' : 'Interactive Live Data Sandbox'}</span>
             </div>
             <div class="visual-mode-toggle-group">
               <button class="visual-toggle-btn ${visualMode === 'diagram' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setVisualMode('diagram')">
-                <span>🎨 Visual Diagram</span>
+                <span>Visual Diagram</span>
               </button>
               <button class="visual-toggle-btn ${visualMode === 'sandbox' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setVisualMode('sandbox')">
-                <span>⚡ Live Sandbox</span>
+                <span>Live Sandbox</span>
               </button>
             </div>
           </div>
@@ -1968,7 +1968,7 @@ FROM Employees;`,
         <!-- Everyday Analogy Hero Card -->
         <div class="analogy-hero-card" id="section-analogy">
           <div class="analogy-hero-header">
-            <span style="font-size: 24px;">🎯</span>
+            
             <h3 class="analogy-hero-title">Everyday Analogy: ${escapeHtml(analogy.metaphor)}</h3>
           </div>
           <div class="analogy-hero-story">
@@ -1976,7 +1976,7 @@ FROM Employees;`,
           </div>
           ${analogy.takeaway ? `
             <div class="analogy-hero-takeaway">
-              <strong>💡 Golden Takeaway:</strong> ${escapeHtml(analogy.takeaway)}
+              <strong>Golden Takeaway:</strong> ${escapeHtml(analogy.takeaway)}
             </div>
           ` : ''}
         </div>
@@ -2006,7 +2006,7 @@ FROM Employees;`,
             ${traps.length > 0 ? `
               <div class="traps-compendium-section" id="section-traps">
                 <div class="theory-card-heading" style="margin-top: 10px;">
-                  <span>⚠️ High-Yield Traps &amp; Corporate Gotchas</span>
+                  <span>High-Yield Traps &amp; Gotchas</span>
                 </div>
                 ${traps.map(trap => {
                   const encodedGood = encodeURIComponent(trap.goodSql || '');
@@ -2022,34 +2022,34 @@ FROM Employees;`,
                       <div class="trap-diff-grid">
                         <div class="diff-col bad">
                           <div class="diff-col-header">
-                            <span>❌ Common Mistake</span>
+                            <span>Common Mistake</span>
                           </div>
-                          <pre class="diff-code">${escapeHtml(trap.badSql)}</pre>
+                          <pre class="diff-code">${colorizeSql(trap.badSql)}</pre>
                         </div>
                         <div class="diff-col good">
                           <div class="diff-col-header">
-                            <span>✅ Production Standard</span>
+                            <span>Production Standard</span>
                           </div>
                           <div class="code-action-strip">
                             <span class="code-lang-tag">SQL SOLUTION</span>
                             <div class="code-action-btns">
                               <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encodedGood}')">
-                                <span>📋 Copy</span>
+                                <span>Copy</span>
                               </button>
                               <button class="code-btn-studio" onclick="window.MasteryCourseEngine.solveInStudio('${encodedGood}', 'Employees')">
-                                <span>⚡ Test in Studio</span>
+                                <span>Test in Section Studio</span>
                               </button>
                             </div>
                           </div>
-                          <pre class="diff-code">${escapeHtml(trap.goodSql)}</pre>
+                          <pre class="diff-code">${colorizeSql(trap.goodSql)}</pre>
                         </div>
                       </div>
 
                       <div class="trap-callout-why">
-                        <strong>🔍 Why It Breaks Under the Hood:</strong> ${escapeHtml(trap.whyItBreaks)}
+                        <strong>Why It Breaks Under the Hood:</strong> ${escapeHtml(trap.whyItBreaks)}
                       </div>
                       <div class="trap-callout-impact">
-                        <strong>🚨 Corporate Impact:</strong> ${escapeHtml(trap.corporateImpact)}
+                        <strong>Corporate Impact:</strong> ${escapeHtml(trap.corporateImpact)}
                       </div>
                     </div>
                   `;
@@ -2061,7 +2061,7 @@ FROM Employees;`,
             ${patterns.length > 0 ? `
               <div class="patterns-compendium-section" id="section-patterns">
                 <div class="theory-card-heading" style="margin-top: 10px;">
-                  <span>📐 Patterns to Remember &amp; Practice</span>
+                  <span>Patterns to Remember &amp; Practice</span>
                 </div>
                 ${patterns.map(pat => {
                   const encodedTemplate = encodeURIComponent(pat.sqlTemplate || '');
@@ -2072,20 +2072,20 @@ FROM Employees;`,
                         <span class="pattern-formula-tag">${escapeHtml(pat.formula)}</span>
                       </div>
                       <div class="pattern-when">
-                        <strong>📌 When to Use:</strong> ${escapeHtml(pat.whenToUse)}
+                        <strong>When to Use:</strong> ${escapeHtml(pat.whenToUse)}
                       </div>
                       <div class="code-action-strip">
                         <span class="code-lang-tag">REUSABLE PATTERN</span>
                         <div class="code-action-btns">
                           <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encodedTemplate}')">
-                            <span>📋 Copy</span>
+                            <span>Copy</span>
                           </button>
                           <button class="code-btn-studio" onclick="window.MasteryCourseEngine.solveInStudio('${encodedTemplate}', 'Employees')">
-                            <span>⚡ Test in Studio</span>
+                            <span>Test in Section Studio</span>
                           </button>
                         </div>
                       </div>
-                      <pre class="pattern-code">${escapeHtml(pat.sqlTemplate)}</pre>
+                      <pre class="pattern-code">${colorizeSql(pat.sqlTemplate)}</pre>
                       <div class="pattern-explanation">${escapeHtml(pat.explanation)}</div>
                     </div>
                   `;
@@ -2099,37 +2099,37 @@ FROM Employees;`,
             <!-- 1. Quick Navigation Outline (TOC) -->
             <div class="course-toc-card">
               <div class="course-toc-title">
-                <span>🧭</span>
+                
                 <span>Module Outline</span>
               </div>
               <div class="course-toc-list">
                 <a href="#section-analogy" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-analogy').scrollIntoView({ behavior: 'smooth' });">
-                  <span>🎯 Everyday Analogy</span>
+                  <span>Everyday Analogy</span>
                 </a>
                 <a href="#section-execution-order" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-execution-order').scrollIntoView({ behavior: 'smooth' });">
-                  <span>⚡ Logical vs Lexical Order</span>
+                  <span>Logical vs Lexical Order</span>
                 </a>
                 <a href="#section-theory" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-theory').scrollIntoView({ behavior: 'smooth' });">
-                  <span>📖 Core Theory Chapters</span>
+                  <span>Core Theory Chapters</span>
                 </a>
                 ${traps.length > 0 ? `
                   <a href="#section-traps" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-traps').scrollIntoView({ behavior: 'smooth' });">
-                    <span>⚠️ Traps &amp; Gotchas</span>
+                    <span>Traps &amp; Gotchas</span>
                   </a>
                 ` : ''}
                 ${patterns.length > 0 ? `
                   <a href="#section-patterns" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-patterns').scrollIntoView({ behavior: 'smooth' });">
-                    <span>📐 Reusable Patterns</span>
+                    <span>Reusable Patterns</span>
                   </a>
                 ` : ''}
                 ${interview ? `
                   <a href="#section-interview" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-interview').scrollIntoView({ behavior: 'smooth' });">
-                    <span>🎙️ Spoken Interview Script</span>
+                    <span>Spoken Interview Script</span>
                   </a>
                 ` : ''}
                 ${tricks.length > 0 ? `
                   <a href="#section-tricks" class="course-toc-item" onclick="event.preventDefault(); document.getElementById('section-tricks').scrollIntoView({ behavior: 'smooth' });">
-                    <span>💡 Senior FAANG Secrets</span>
+                    <span>Senior FAANG Secrets</span>
                   </a>
                 ` : ''}
               </div>
@@ -2139,18 +2139,18 @@ FROM Employees;`,
             ${interview ? `
               <div class="spoken-defense-card" id="section-interview">
                 <div class="defense-header">
-                  <span class="defense-badge">🎙️ FAANG Screening Script</span>
+                  <span class="defense-badge">FAANG Screening Script</span>
                   <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">${escapeHtml(interview.difficulty)}</span>
                 </div>
                 <h4 class="defense-question">${escapeHtml(interview.question)}</h4>
 
                 <div class="defense-intent-box">
-                  <strong>🕵️ Interviewer Intent:</strong> ${escapeHtml(interview.interviewerIntent)}
+                  <strong>Interviewer Intent:</strong> ${escapeHtml(interview.interviewerIntent)}
                 </div>
 
                 <div class="spoken-script-box">
                   <div class="spoken-script-label">
-                    <span>💬</span>
+                    
                     <span>What to Say Out Loud (30-Sec Script):</span>
                   </div>
                   "${escapeHtml(interview.spokenAnswer)}"
@@ -2161,10 +2161,10 @@ FROM Employees;`,
                     <span class="code-lang-tag">INTERVIEW PROOF</span>
                     <div class="code-action-btns">
                       <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encodeURIComponent(interview.codeSnippet)}')">
-                        <span>📋 Copy</span>
+                        <span>Copy</span>
                       </button>
                       <button class="code-btn-studio" onclick="window.MasteryCourseEngine.solveInStudio('${encodeURIComponent(interview.codeSnippet)}', 'Employees')">
-                        <span>⚡ Test in Studio</span>
+                        <span>Test in Section Studio</span>
                       </button>
                     </div>
                   </div>
@@ -2183,7 +2183,7 @@ FROM Employees;`,
                 ` : ''}
 
                 <button class="case-solve-cta" style="margin-top: 12px; width: 100%; justify-content: center;" onclick="window.MasteryCourseEngine.openMockInterview('${phase.id}')">
-                  <span>🎙️ Practice FAANG Mock Screen (45s Timer)</span>
+                  <span>Practice FAANG Mock Screen</span>
                 </button>
               </div>
             ` : ''}
@@ -2192,7 +2192,7 @@ FROM Employees;`,
             ${tricks.length > 0 ? `
               <div class="senior-tricks-section" id="section-tricks">
                 <div class="theory-card-heading">
-                  <span>💡 Senior Tricks &amp; FAANG Secrets</span>
+                  <span>Senior Tricks &amp; Secrets</span>
                 </div>
                 ${tricks.map(trick => `
                   <div class="trick-card">
@@ -2202,17 +2202,17 @@ FROM Employees;`,
                       <span class="code-lang-tag">SQL TRICK</span>
                       <div class="code-action-btns">
                         <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encodeURIComponent(trick.codeSnippet || '')}')">
-                          <span>📋 Copy</span>
+                          <span>Copy</span>
                         </button>
                         <button class="code-btn-studio" onclick="window.MasteryCourseEngine.solveInStudio('${encodeURIComponent(trick.codeSnippet || '')}', 'Employees')">
-                          <span>⚡ Test in Studio</span>
+                          <span>Test in Section Studio</span>
                         </button>
                       </div>
                     </div>
                     <pre class="trick-code">${escapeHtml(trick.codeSnippet)}</pre>
                     <div class="trick-explanation">${escapeHtml(trick.explanation)}</div>
                     <div class="trick-analyst-value">
-                      <strong>🏆 Value:</strong> ${escapeHtml(trick.analystValue)}
+                      <strong>Value:</strong> ${escapeHtml(trick.analystValue)}
                     </div>
                   </div>
                 `).join('')}
@@ -2231,7 +2231,7 @@ FROM Employees;`,
 
             <!-- 5. Next Step CTA -->
             <button class="case-solve-cta" onclick="window.MasteryCourseEngine.switchStep('mcqs')">
-              <span>Next: Quick Quiz (Step 2) ➔</span>
+              <span>Next: Quick Quiz (02) &rarr;</span>
             </button>
           </div>
         </div>
@@ -2286,7 +2286,7 @@ FROM Employees;`,
     return `
       <div class="sim-control-strip">
         <div class="sim-title-group">
-          <span>✨</span>
+          
           <span>Interactive Column Projection Simulator (Click options to see output change live)</span>
         </div>
         <div class="sim-toggle-group">
@@ -2351,7 +2351,7 @@ FROM Employees;`,
     return `
       <div class="sim-control-strip">
         <div class="sim-title-group">
-          <span>🔍</span>
+          
           <span>Interactive Filter Simulator (Click a rule to test row filtering)</span>
         </div>
         <div class="sim-toggle-group">
@@ -2383,7 +2383,7 @@ FROM Employees;`,
                       <td>$${e.salary.toLocaleString()}</td>
                       <td>${e.tenure} mos</td>
                       <td>
-                        <span class="sim-badge ${pass ? 'match' : 'drop'}">${pass ? '✓ PASSED (TRUE)' : '❌ DROPPED (FALSE)'}</span>
+                        <span class="sim-badge ${pass ? 'match' : 'drop'}">${pass ? '✓ PASSED (TRUE)' : 'DROPPED (FALSE)'}</span>
                       </td>
                     </tr>
                   `;
@@ -2430,7 +2430,7 @@ FROM Employees;`,
     return `
       <div class="sim-control-strip">
         <div class="sim-title-group">
-          <span>📶</span>
+          
           <span>Interactive Sorter &amp; Slicer</span>
         </div>
         <div class="sim-toggle-group">
@@ -2486,7 +2486,7 @@ FROM Employees;`,
     return `
       <div class="sim-control-strip">
         <div class="sim-title-group">
-          <span>📊</span>
+          
           <span>Interactive Whole-Table Aggregate Calculator</span>
         </div>
         <div class="sim-toggle-group">
@@ -2535,7 +2535,7 @@ FROM Employees;`,
     return `
       <div class="sim-control-strip">
         <div class="sim-title-group">
-          <span>📦</span>
+          
           <span>Interactive Grouping Simulator</span>
         </div>
         <div class="sim-toggle-group">
@@ -2600,7 +2600,7 @@ FROM Employees;`,
     return `
       <div class="sim-control-strip">
         <div class="sim-title-group">
-          <span>🔗</span>
+          
           <span>Interactive Join Simulator</span>
         </div>
         <div class="sim-toggle-group">
@@ -2646,7 +2646,7 @@ FROM Employees;`,
     return `
       <div class="sim-control-strip">
         <div class="sim-title-group">
-          <span>🔄</span>
+          
           <span>Interactive Set Operations (UNION vs UNION ALL)</span>
         </div>
         <div class="sim-toggle-group">
@@ -2679,7 +2679,7 @@ FROM Employees;`,
     return `
       <div class="sim-control-strip">
         <div class="sim-title-group">
-          <span>🔀</span>
+          
           <span>Interactive CASE WHEN Branching</span>
         </div>
       </div>
@@ -2710,7 +2710,7 @@ FROM Employees;`,
     return `
       <div class="sim-control-strip">
         <div class="sim-title-group">
-          <span>🧱</span>
+          
           <span>Interactive Multi-Step CTE Pipeline</span>
         </div>
       </div>
@@ -2825,15 +2825,15 @@ FROM Employees;`,
 
                 <div class="mcq-feedback-banner ${hasAnswered ? 'show' : ''} ${selectedOpt === q.correct ? 'correct' : 'incorrect'}">
                   <div class="feedback-headline">
-                    <span>${selectedOpt === q.correct ? '✅ Correct! Brilliant understanding.' : `❌ Option ${selectedOpt + 1} is a Common Trap!`}</span>
+                    <span>${selectedOpt === q.correct ? 'Correct! Brilliant understanding.' : `Option ${selectedOpt + 1} is a Common Trap!`}</span>
                   </div>
                   ${selectedOpt !== q.correct ? `
                     <div class="distractor-why">
-                      <strong>⚠️ Why this answer catches candidates:</strong>
+                      <strong>Why this answer catches candidates:</strong>
                       <p style="margin: 4px 0 0 0;">${(q.distractorExplanations && q.distractorExplanations[selectedOpt]) || 'This choice violates relational execution order.'}</p>
                     </div>
                     <div class="correct-answer-reveal">
-                      <strong>💡 Correct Solution (Option ${q.correct + 1}):</strong>
+                      <strong>Correct Solution (Option ${q.correct + 1}):</strong>
                       <p style="margin: 4px 0 0 0;">${q.explanation}</p>
                     </div>
                   ` : `
@@ -2848,7 +2848,7 @@ FROM Employees;`,
         </div>
 
         <button class="case-solve-cta" style="margin-top: 10px;" onclick="window.MasteryCourseEngine.switchStep('case')">
-          <span>Next: Real Company Case (Step 3) ➔</span>
+          <span>Next: Real Case (03) &rarr;</span>
         </button>
       </div>
     `;
@@ -2866,7 +2866,7 @@ FROM Employees;`,
         <div class="case-dossier-card">
           <div class="case-header-row">
             <div class="case-employer-chip">
-              <span style="font-size: 20px;">🏛️</span>
+              
               <span class="case-company-name">${cs.company}</span>
               <span class="case-role-pill">${cs.role}</span>
             </div>
@@ -2883,10 +2883,10 @@ FROM Employees;`,
 
           <div style="display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap;">
             <button class="case-solve-cta" onclick="window.MasteryCourseEngine.solveInStudio('${encodeURIComponent(cs.recommendedQuery)}', '${phase.problem ? phase.problem.targetTable : 'TRIANGLES'}')">
-              <span>⚡ Load &amp; Test in Query Studio ➔</span>
+              <span>Load in Section Studio &rarr;</span>
             </button>
             <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.switchStep('problem')">
-              <span>Next: Hands-on Practice (Step 4) ➔</span>
+              <span>Next: Section Studio (04) &rarr;</span>
             </button>
           </div>
         </div>
@@ -2977,7 +2977,7 @@ FROM Employees;`,
       <div class="schema-peek-card">
         <div class="schema-peek-top">
           <div class="schema-peek-title">
-            <span>🗄️ Table Schema: <code>${escapeHtml(targetTable)}</code></span>
+            <span>Table Schema: <code>${escapeHtml(targetTable)}</code></span>
             <span class="schema-count-badge">${cols.length} Columns</span>
           </div>
           <span class="schema-hint-text">Inspect columns &amp; sample values to construct accurate queries</span>
@@ -3029,8 +3029,8 @@ FROM Employees;`,
       return `
         <div class="test-verdict-card failed">
           <div class="verdict-status-row">
-            <span class="diff-status-pill badge-extra">⚠️ Execution Error</span>
-            <span class="metric-pill latency">⚡ ${latency}ms</span>
+            <span class="diff-status-pill badge-extra">Execution Error</span>
+            <span class="metric-pill latency">${latency}ms</span>
           </div>
           <div class="verdict-details">${escapeHtml(errMsg)}</div>
         </div>
@@ -3047,17 +3047,17 @@ FROM Employees;`,
       <div class="console-tab-group">
         ${isVerdict ? `
           <button class="console-tab-btn ${activeTab === 'diff' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiffTab('${key}', 'diff')">
-            <span>📊 Visual Diff</span>
+            <span>Visual Diff</span>
             <span class="console-tab-pill ${diff.isPerfectMatch ? 'pill-pass' : 'pill-fail'}">${diff.matchCount}/${diff.totalExpected}</span>
           </button>
         ` : ''}
         <button class="console-tab-btn ${activeTab === 'user' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiffTab('${key}', 'user')">
-          <span>👤 Your Output</span>
+          <span>Your Output</span>
           <span class="console-tab-pill">${uRows.length} rows</span>
         </button>
         ${isVerdict ? `
           <button class="console-tab-btn ${activeTab === 'expected' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setDiffTab('${key}', 'expected')">
-            <span>🎯 Expected Output</span>
+            <span>Expected Output</span>
             <span class="console-tab-pill">${eRows.length} rows</span>
           </button>
         ` : ''}
@@ -3067,20 +3067,20 @@ FROM Employees;`,
     let statusBadge = '';
     if (isVerdict) {
       if (isPassed) {
-        statusBadge = '<span class="status-chip chip-passed">🎉 Accepted</span>';
+        statusBadge = '<span class="status-chip chip-passed">Accepted</span>';
       } else {
-        statusBadge = '<span class="status-chip chip-failed">❌ Mismatch</span>';
+        statusBadge = '<span class="status-chip chip-failed">Mismatch</span>';
       }
     } else {
-      statusBadge = '<span class="status-chip chip-run">⚡ Executed</span>';
+      statusBadge = '<span class="status-chip chip-run">Executed</span>';
     }
 
     const metricsHud = `
       <div class="console-metrics-hud">
         ${statusBadge}
-        <span class="metric-pill latency" title="Execution Latency">⚡ ${latency}ms</span>
-        <span class="metric-pill" title="Row Count">📄 ${uRows.length} rows</span>
-        <span class="metric-pill" title="Columns">📐 ${uCols.length} cols</span>
+        <span class="metric-pill latency" title="Execution Latency">${latency}ms</span>
+        <span class="metric-pill" title="Row Count">${uRows.length} rows</span>
+        <span class="metric-pill" title="Columns">${uCols.length} cols</span>
       </div>
     `;
 
@@ -3202,10 +3202,10 @@ FROM Employees;`,
           </div>
 
           <!-- In-Place Interactive Query Verifier Engine -->
-          <div class="problem-runner-wrap">
+          <div class="problem-runner-wrap" id="section-studio">
             <div class="problem-runner-header">
               <div class="problem-runner-title">
-                <span>⚡ Interactive Query Studio (Target Table: <code>${escapeHtml(prob.targetTable)}</code>)</span>
+                <span>Section Studio: Interactive Query Console (Target Table: <code>${escapeHtml(prob.targetTable)}</code>)</span>
               </div>
               <div class="problem-runner-meta">
                 <span class="editor-shortcut-hint">Ctrl + Enter to Run &amp; Verify</span>
@@ -3223,19 +3223,19 @@ FROM Employees;`,
                 <span>▶ Run &amp; Verify (Ctrl+Enter)</span>
               </button>
               <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.runProblemQuery('${phase.id}', ${prob.tierId})">
-                <span>⚡ Run Only</span>
+                <span>Run Only</span>
               </button>
               <button class="phase-nav-btn ${state.showSchemaPeek[phase.id] ? 'active' : ''}" onclick="window.MasteryCourseEngine.toggleSchemaPeek('${phase.id}')">
-                <span>📋 Schema: ${escapeHtml(prob.targetTable)}</span>
+                <span>Schema: ${escapeHtml(prob.targetTable)}</span>
               </button>
               <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.solveInStudio(encodeURIComponent(document.getElementById('courseProblemEditor') ? document.getElementById('courseProblemEditor').value : '${encodeURIComponent(prob.starterSql)}'), '${prob.targetTable}')">
-                <span>⚡ Open Studio</span>
+                <span>Open Section Studio</span>
               </button>
               <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.toggleTierSolution('${phase.id}', ${prob.tierId})">
-                <span>${isShowingSol ? 'Hide Solution' : '👁️ Solution'}</span>
+                <span>${isShowingSol ? "Hide Solution" : "View Solution"}</span>
               </button>
               <button class="phase-nav-btn" style="margin-left: auto;" onclick="window.MasteryCourseEngine.resetProblemCode('${phase.id}', ${prob.tierId})">
-                <span>🔄 Reset</span>
+                <span>Reset</span>
               </button>
             </div>
 
@@ -3248,10 +3248,10 @@ FROM Employees;`,
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <span style="font-size: 12px; font-weight: 800; color: var(--accent);">Expected Solution SQL:</span>
                 <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encodeURIComponent(prob.expectedSolutionSql || prob.starterSql)}')">
-                  <span>📋 Copy Solution</span>
+                  <span>Copy Solution</span>
                 </button>
               </div>
-              <pre class="problem-starter-code" style="background: var(--bg-surface);">${escapeHtml(prob.expectedSolutionSql || prob.starterSql)}</pre>
+              <pre class="problem-starter-code" style="background: var(--bg-surface);">${colorizeSql(prob.expectedSolutionSql || prob.starterSql)}</pre>
             </div>
           ` : ''}
         </div>
@@ -3562,6 +3562,32 @@ FROM Employees;`,
     }, 2000);
   }
 
+  
+  function colorizeSql(rawSql) {
+    if (!rawSql) return '';
+    let escaped = escapeHtml(rawSql);
+    // Comments
+    escaped = escaped.replace(/(--[^\n]*)/g, '<span style="color:#64748b;font-style:italic;">$1</span>');
+    // Strings
+    escaped = escaped.replace(/(&#39;[^&#]*&#39;|'[^']*')/g, '<span style="color:#ea580c;">$1</span>');
+    // Numbers
+    escaped = escaped.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span style="color:#7c3aed;">$1</span>');
+    // Keywords
+    const kws = ['SELECT', 'FROM', 'WHERE', 'GROUP BY', 'HAVING', 'ORDER BY', 'LIMIT', 'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'OUTER JOIN', 'CROSS JOIN', 'FULL JOIN', 'ON', 'WITH', 'AS', 'UNION ALL', 'UNION', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'AND', 'OR', 'NOT', 'IN', 'IS NULL', 'IS NOT NULL', 'IS', 'NULL', 'OVER', 'PARTITION BY', 'DISTINCT', 'BETWEEN', 'LIKE', 'EXISTS', 'NOT EXISTS', 'ASC', 'DESC', 'OFFSET', 'COALESCE'];
+    kws.sort((a,b) => b.length - a.length);
+    for (const kw of kws) {
+      const rx = new RegExp('\\b(' + kw.replace(/ /g, '\\s+') + ')\\b', 'gi');
+      escaped = escaped.replace(rx, '<span style="color:#2563eb;font-weight:600;">$1</span>');
+    }
+    // Functions
+    const fns = ['COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'ROUND', 'ROW_NUMBER', 'DENSE_RANK', 'RANK', 'LEAD', 'LAG', 'FIRST_VALUE', 'LAST_VALUE', 'CONCAT', 'SUBSTRING', 'LENGTH', 'DATE_ADD', 'DATEDIFF', 'COALESCE'];
+    for (const fn of fns) {
+      const rx = new RegExp('\\b(' + fn + ')\\s*(?=\\()', 'gi');
+      escaped = escaped.replace(rx, '<span style="color:#0d9488;font-weight:600;">$1</span>');
+    }
+    return escaped;
+  }
+
   function escapeHtml(str) {
     return (str || '')
       .replace(/&/g, '&amp;')
@@ -3576,15 +3602,15 @@ FROM Employees;`,
     // 1. Callout blocks
     html = html.replace(/>\s*\[!TIP\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
       const cleanBody = body.replace(/^>\s*/gm, '').trim();
-      return `<div class="theory-callout tip"><div class="callout-header"><span class="callout-icon">💡</span> <span class="callout-title">${escapeHtml(title || 'Pro Tip')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
+      return `<div class="theory-callout tip"><div class="callout-header"><span class="callout-icon" style="font-size:10px;font-weight:700;opacity:0.7;">TIP</span> <span class="callout-title">${escapeHtml(title || 'Pro Tip')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
     });
     html = html.replace(/>\s*\[!WARNING\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
       const cleanBody = body.replace(/^>\s*/gm, '').trim();
-      return `<div class="theory-callout warning"><div class="callout-header"><span class="callout-icon">⚠️</span> <span class="callout-title">${escapeHtml(title || 'Common Trap')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
+      return `<div class="theory-callout warning"><div class="callout-header"><span class="callout-icon" style="font-size:10px;font-weight:700;opacity:0.7;">WARN</span> <span class="callout-title">${escapeHtml(title || 'Common Trap')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
     });
     html = html.replace(/>\s*\[!NOTE\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
       const cleanBody = body.replace(/^>\s*/gm, '').trim();
-      return `<div class="theory-callout note"><div class="callout-header"><span class="callout-icon">📌</span> <span class="callout-title">${escapeHtml(title || 'Mental Model')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
+      return `<div class="theory-callout note"><div class="callout-header"><span class="callout-icon" style="font-size:10px;font-weight:700;opacity:0.7;">NOTE</span> <span class="callout-title">${escapeHtml(title || 'Mental Model')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
     });
     html = html.replace(/>\s*\[!IMPORTANT\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
       const cleanBody = body.replace(/^>\s*/gm, '').trim();
@@ -3592,7 +3618,7 @@ FROM Employees;`,
     });
     html = html.replace(/>\s*\[!RULE\]\s*([^\n]+)\n([\s\S]*?)(?=(?:\n\s*>|\n\n|$))/gi, (m, title, body) => {
       const cleanBody = body.replace(/^>\s*/gm, '').trim();
-      return `<div class="theory-callout rule"><div class="callout-header"><span class="callout-icon">💼</span> <span class="callout-title">${escapeHtml(title || 'Production Rule of Thumb')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
+      return `<div class="theory-callout rule"><div class="callout-header"><span class="callout-icon" style="font-size:10px;font-weight:700;opacity:0.7;">PROD</span> <span class="callout-title">${escapeHtml(title || 'Production Rule of Thumb')}</span></div><div class="callout-body">${cleanBody}</div></div>`;
     });
 
     // 2. Markdown tables
@@ -3630,10 +3656,10 @@ FROM Employees;`,
               <span class="code-lang-label">SQL</span>
             </div>
             <button class="code-btn-copy" onclick="window.MasteryCourseEngine.copyCode(this, '${encoded}')">
-              <span>📋 Copy</span>
+              <span>Copy</span>
             </button>
           </div>
-          <pre class="theory-code-snippet"><code>${escapeHtml(trimmed)}</code></pre>
+          <pre class="theory-code-snippet"><code>${colorizeSql(trimmed)}</code></pre>
         </div>
       `;
     });
@@ -3983,14 +4009,14 @@ FROM Employees;`,
     state.mockInterview.score = totalScore;
 
     if (totalScore >= 80) {
-      state.mockInterview.seniority = '🏆 L6 Staff Data Engineer (Exceeds Bar)';
+      state.mockInterview.seniority = 'L6 Staff Data Engineer (Exceeds Bar)';
       state.mockInterview.feedback = 'Outstanding technical clarity! You hit core architecture keywords and delivered a structured spoken defense.';
       launchConfetti();
     } else if (totalScore >= 60) {
-      state.mockInterview.seniority = '⚡ L5 Senior Data Engineer (Strong Hire)';
+      state.mockInterview.seniority = 'L5 Senior Data Engineer (Strong Hire)';
       state.mockInterview.feedback = 'Solid spoken technical delivery. Consider articulating under-the-hood optimizer implications more explicitly.';
     } else {
-      state.mockInterview.seniority = '🌱 L4 Data Engineer (Developing)';
+      state.mockInterview.seniority = 'L4 Data Engineer (Developing)';
       state.mockInterview.feedback = 'Keep practicing the 30-second model answer. Make sure to weave in the power keywords naturally.';
     }
 
@@ -4025,7 +4051,7 @@ FROM Employees;`,
           <div class="mock-modal-body">
             <div style="background: var(--bg-card-subtle); padding: 12px 14px; border-radius: 8px; border-left: 4px solid var(--accent); margin-bottom: 12px;">
               <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--accent); margin-bottom: 4px;">
-                💼 Senior FAANG Interviewer Prompt:
+                Senior FAANG Interviewer Prompt:
               </div>
               <div style="font-size: 13.5px; font-weight: 600; color: var(--text-primary); line-height: 1.5;">
                 "${escapeHtml(def.exactQuestion || 'How would you defend this SQL design decision in production?')}"
@@ -4051,7 +4077,7 @@ FROM Employees;`,
 
             ${!isEvaluated ? `
               <button class="case-solve-cta" style="margin-top: 14px; width: 100%; justify-content: center;" onclick="window.MasteryCourseEngine.submitMockAnswer()">
-                <span>🚀 Submit for FAANG Evaluation</span>
+                <span>Submit for FAANG Evaluation</span>
               </button>
             ` : `
               <div class="mock-score-banner">
@@ -4114,7 +4140,7 @@ FROM Employees;`,
     const certId = state.certificate.certId;
     const date = state.certificate.date;
 
-    return `# 🚀 SQL Relational Engineering & Production Case Study Portfolio
+    return `# SQL Relational Engineering & Production Case Study Portfolio
 **Candidate:** ${name}
 **Credential Verification ID:** ${certId}
 **Issue Date:** ${date}
@@ -4122,7 +4148,7 @@ FROM Employees;`,
 
 ---
 
-## 🏛️ Verified Corporate Case Studies & Business Problem Solving
+## Verified Corporate Case Studies & Business Problem Solving
 ${PHASES.map((p, idx) => {
   const cs = p.caseStudy || {};
   return `### ${p.seq}. ${p.title} (${cs.company || 'Enterprise'} • ${cs.role || 'Data Engineer'})
@@ -4137,7 +4163,7 @@ ${cs.recommendedQuery || p.problem.expectedSolutionSql}
 
 ---
 
-## 🎙️ FAANG Technical Screening Readiness
+## FAANG Technical Screening Readiness
 Certified in high-speed verbal architecture defense across:
 - Sargable B-Tree index traversal vs Full Table Scans
 - Three-Valued Logic (3VL) null safety and anti-join isolation
@@ -4161,10 +4187,10 @@ Certified in high-speed verbal architecture defense across:
           <div class="mock-modal-header">
             <div style="display: flex; gap: 8px;">
               <button class="tier-tab-btn ${activeTab === 'cert' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setCertTab('cert')">
-                <span>📜 Verified Certificate</span>
+                <span>Verified Certificate</span>
               </button>
               <button class="tier-tab-btn ${activeTab === 'portfolio' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setCertTab('portfolio')">
-                <span>📁 GitHub Portfolio (README.md)</span>
+                <span>GitHub Portfolio (README.md)</span>
               </button>
             </div>
             <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.closeCertificate()">✕</button>
@@ -4173,7 +4199,7 @@ Certified in high-speed verbal architecture defense across:
           <div class="mock-modal-body" style="padding: 20px;">
             ${activeTab === 'cert' ? `
               <div class="cert-print-sheet">
-                <div class="cert-seal-badge">👑</div>
+                <div class="cert-seal-badge">VERIFIED</div>
                 <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #b45309;">
                   SQL Foundry Verified Relational Credential
                 </div>
@@ -4232,7 +4258,7 @@ Certified in high-speed verbal architecture defense across:
 
               <div style="display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end;" class="no-print">
                 <button class="case-solve-cta" onclick="window.print()">
-                  <span>🖨️ Print / Save as PDF</span>
+                  <span>Print / Save as PDF</span>
                 </button>
               </div>
             ` : `
@@ -4243,7 +4269,7 @@ Certified in high-speed verbal architecture defense across:
                     <span style="font-size: 12px; color: var(--text-secondary);">Copy this complete dossier directly into your GitHub repository or resume portfolio!</span>
                   </div>
                   <button class="case-solve-cta" onclick="window.MasteryCourseEngine.copyPortfolioMarkdown(this)">
-                    <span>📋 Copy Markdown Portfolio</span>
+                    <span>Copy Markdown Portfolio</span>
                   </button>
                 </div>
                 <pre class="problem-starter-code" style="max-height: 420px; overflow-y: auto; background: var(--bg-card-subtle); padding: 14px;">${escapeHtml(generatePortfolioMarkdownContent())}</pre>
@@ -4366,7 +4392,7 @@ Certified in high-speed verbal architecture defense across:
       <div class="interactive-simulator-card exec-sequencer-card" id="section-execution-order">
         <div class="visual-mode-toggle-bar">
           <div class="visual-mode-title-group">
-            <span style="font-size: 18px;">⚡</span>
+            
             <div>
               <span style="font-size: 13.5px; font-weight: 700;">SQL Engine Execution Order: Logical vs. Lexical</span>
               <span style="display: block; font-size: 11px; color: var(--text-muted); font-weight: 500;">
@@ -4376,13 +4402,13 @@ Certified in high-speed verbal architecture defense across:
           </div>
           <div class="visual-mode-toggle-group">
             <button class="visual-toggle-btn ${mode === 'logical' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setExecutionOrderMode('logical')">
-              <span>🔍 Engine Logical Order</span>
+              <span>Engine Logical Order</span>
             </button>
             <button class="visual-toggle-btn ${mode === 'lexical' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setExecutionOrderMode('lexical')">
-              <span>✍️ Lexical Writing Order</span>
+              <span>Lexical Writing Order</span>
             </button>
             <button class="visual-toggle-btn ${mode === 'puzzle' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setExecutionOrderMode('puzzle')">
-              <span>🧩 Execution Puzzle</span>
+              <span>Execution Puzzle</span>
             </button>
           </div>
         </div>
@@ -4421,15 +4447,15 @@ Certified in high-speed verbal architecture defense across:
 
               <div class="exec-detail-grid">
                 <div class="exec-detail-col">
-                  <div class="exec-detail-section-title">⚙️ Database Engine Action</div>
+                  <div class="exec-detail-section-title">Database Engine Action</div>
                   <p class="exec-detail-p">${escapeHtml(activeClause.action)}</p>
 
-                  <div class="exec-detail-section-title" style="margin-top: 12px;">💡 The Under-the-Hood Truth</div>
+                  <div class="exec-detail-section-title" style="margin-top: 12px;">The Under-the-Hood Truth</div>
                   <p class="exec-detail-p">${escapeHtml(activeClause.whyItMatters)}</p>
                 </div>
 
                 <div class="exec-detail-col">
-                  <div class="exec-detail-section-title">🎙️ Senior Technical Interview Takeaway</div>
+                  <div class="exec-detail-section-title">Senior Technical Interview Takeaway</div>
                   <div class="exec-interview-box">
                     ${escapeHtml(activeClause.interviewTip)}
                   </div>
@@ -4462,17 +4488,17 @@ Certified in high-speed verbal architecture defense across:
       <div class="exec-puzzle-container">
         <div class="exec-puzzle-banner">
           <div>
-            <h4 style="margin: 0 0 4px 0; font-size: 15px; font-weight: 700;">🧩 Interactive Engine Execution Sequencer</h4>
+            <h4 style="margin: 0 0 4px 0; font-size: 15px; font-weight: 700;">Interactive Engine Execution Sequencer</h4>
             <span style="font-size: 12px; color: var(--text-muted);">
               Use the ▲ Up and ▼ Down buttons to arrange the 7 clauses in the EXACT order the database engine processes them.
             </span>
           </div>
           <div style="display: flex; gap: 8px;">
             <button class="tier-tab-btn active" onclick="window.MasteryCourseEngine.verifyExecutionPuzzle()">
-              <span>🎯 Verify Sequence</span>
+              <span>Verify Sequence</span>
             </button>
             <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.resetExecutionPuzzle()">
-              <span>🔄 Reset</span>
+              <span>Reset</span>
             </button>
           </div>
         </div>
@@ -4480,12 +4506,12 @@ Certified in high-speed verbal architecture defense across:
         ${isSubmitted ? `
           <div class="exec-puzzle-feedback ${isCorrect ? 'correct' : 'incorrect'}">
             ${isCorrect ? `
-              <span style="font-size: 20px;">🎉</span>
+              
               <div>
                 <strong>PERFECT SCORE!</strong> You mastered the internal relational engine pipeline. You understand exactly why aliases are born in SELECT, why WHERE cannot see them, and why ORDER BY can!
               </div>
             ` : `
-              <span style="font-size: 20px;">⚠️</span>
+              
               <div>
                 <strong>Not quite in execution order!</strong> Remember the logical lifecycle: The engine must find the data source (FROM) before filtering rows (WHERE), group rows (GROUP BY) before evaluating group thresholds (HAVING), and calculate expressions (SELECT) before sorting (ORDER BY).
               </div>
@@ -4553,7 +4579,7 @@ Certified in high-speed verbal architecture defense across:
             <div class="shortcuts-grid">
               <!-- Card 1: Topic Speedrun -->
               <div class="shortcut-category-card">
-                <div class="shortcut-cat-title">📖 Topic Navigation</div>
+                <div class="shortcut-cat-title">Topic Navigation</div>
                 <div class="shortcut-row">
                   <span class="shortcut-desc">Previous Topic</span>
                   <div class="shortcut-keys"><kbd class="hotkey-pill">[</kbd> <span style="font-size: 10px; color: var(--text-muted);">or</span> <kbd class="hotkey-pill">←</kbd></div>
@@ -4570,7 +4596,7 @@ Certified in high-speed verbal architecture defense across:
 
               <!-- Card 2: 4-Step Jumping -->
               <div class="shortcut-category-card">
-                <div class="shortcut-cat-title">⚡ 4-Step Jumping</div>
+                <div class="shortcut-cat-title">4-Step Jumping</div>
                 <div class="shortcut-row">
                   <span class="shortcut-desc">1. Learn &amp; Visualize</span>
                   <div class="shortcut-keys"><kbd class="hotkey-pill">1</kbd></div>
@@ -4591,7 +4617,7 @@ Certified in high-speed verbal architecture defense across:
 
               <!-- Card 3: Query Studio Ergonomics -->
               <div class="shortcut-category-card">
-                <div class="shortcut-cat-title">💻 Query Studio Ergonomics</div>
+                <div class="shortcut-cat-title">Section Studio Ergonomics</div>
                 <div class="shortcut-row">
                   <span class="shortcut-desc">Verify &amp; Diff Solution</span>
                   <div class="shortcut-keys"><kbd class="hotkey-pill">Ctrl</kbd> + <kbd class="hotkey-pill">Enter</kbd></div>
@@ -4608,7 +4634,7 @@ Certified in high-speed verbal architecture defense across:
 
               <!-- Card 4: Global HUD & Dialogs -->
               <div class="shortcut-category-card">
-                <div class="shortcut-cat-title">🌐 Global Modals &amp; HUD</div>
+                <div class="shortcut-cat-title">Global Modals &amp; HUD</div>
                 <div class="shortcut-row">
                   <span class="shortcut-desc">Toggle Hotkeys HUD</span>
                   <div class="shortcut-keys"><kbd class="hotkey-pill">?</kbd> <span style="font-size: 10px; color: var(--text-muted);">or</span> <kbd class="hotkey-pill">Shift</kbd> + <kbd class="hotkey-pill">/</kbd></div>
@@ -4943,10 +4969,10 @@ Certified in high-speed verbal architecture defense across:
     });
     const mcqAccuracy = totalMcqAnswered > 0 ? Math.round((totalMcqCorrect / totalMcqAnswered) * 100) : 0;
 
-    let rankLabel = '🌱 Relational Apprentice';
-    if (completedPhasesCount >= 10) rankLabel = '👑 Staff SQL Grandmaster';
-    else if (completedPhasesCount >= 7) rankLabel = '⚔️ Production Data Architect';
-    else if (completedPhasesCount >= 3) rankLabel = '🔰 SQL Developer';
+    let rankLabel = 'Relational Apprentice';
+    if (completedPhasesCount >= 10) rankLabel = 'Staff SQL Grandmaster';
+    else if (completedPhasesCount >= 7) rankLabel = 'Production Data Architect';
+    else if (completedPhasesCount >= 3) rankLabel = 'SQL Developer';
 
     return `
       <div class="course-modal-backdrop no-print" onclick="if(event.target === this) window.MasteryCourseEngine.closeAnalyticsModal()">
@@ -4955,13 +4981,13 @@ Certified in high-speed verbal architecture defense across:
           <div class="mock-modal-header">
             <div style="display: flex; gap: 8px;">
               <button class="tier-tab-btn ${activeTab === 'stats' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setAnalyticsTab('stats')">
-                <span>📊 Mastery &amp; Stats</span>
+                <span>Mastery &amp; Stats</span>
               </button>
               <button class="tier-tab-btn ${activeTab === 'social' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setAnalyticsTab('social')">
-                <span>💼 Social Share Card (1200x630)</span>
+                <span>Social Share Card (1200x630)</span>
               </button>
               <button class="tier-tab-btn ${activeTab === 'backup' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setAnalyticsTab('backup')">
-                <span>💾 Backup &amp; Sync</span>
+                <span>Backup &amp; Sync</span>
               </button>
             </div>
             <button class="phase-nav-btn" onclick="window.MasteryCourseEngine.closeAnalyticsModal()">✕</button>
@@ -5035,10 +5061,10 @@ Certified in high-speed verbal architecture defense across:
                   </div>
                   <div style="display: flex; gap: 8px; align-items: center;">
                     <button class="case-solve-cta" onclick="window.MasteryCourseEngine.downloadSocialCardPng()">
-                      <span>📥 Download PNG</span>
+                      <span>Download PNG</span>
                     </button>
                     <button class="case-solve-cta" style="background: var(--bg-hover); color: var(--text-primary); border: 1px solid var(--border-default);" onclick="window.MasteryCourseEngine.copySocialCardImage(this)">
-                      <span>📋 Copy Image</span>
+                      <span>Copy Image</span>
                     </button>
                   </div>
                 </div>
@@ -5058,36 +5084,36 @@ Certified in high-speed verbal architecture defense across:
               <div class="backup-tab-content">
                 <div class="backup-cards-grid">
                   <div class="backup-card">
-                    <div style="font-size: 24px; margin-bottom: 8px;">📥</div>
+                    
                     <h4 style="margin: 0 0 6px 0; font-size: 15px;">Export Progress Backup</h4>
                     <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
                       Download your verified solutions, completed tiers, quiz answers, and credential record as an offline JSON snapshot.
                     </p>
                     <button class="case-solve-cta" onclick="window.MasteryCourseEngine.exportProgressJson()">
-                      <span>📥 Download JSON Backup</span>
+                      <span>Download JSON Backup</span>
                     </button>
                   </div>
 
                   <div class="backup-card">
-                    <div style="font-size: 24px; margin-bottom: 8px;">📤</div>
+                    
                     <h4 style="margin: 0 0 6px 0; font-size: 15px;">Restore from Backup</h4>
                     <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
                       Restore your learning progress from a previously saved JSON backup file.
                     </p>
                     <textarea id="importProgressTextarea" placeholder="Paste JSON backup here..." style="width: 100%; height: 75px; font-family: monospace; font-size: 11px; padding: 8px; border-radius: 6px; border: 1px solid var(--border-default); background: var(--bg-surface); margin-bottom: 10px;"></textarea>
                     <button class="case-solve-cta" onclick="const ta = document.getElementById('importProgressTextarea'); if(ta) window.MasteryCourseEngine.importProgressJson(ta.value);">
-                      <span>🔄 Apply Backup JSON</span>
+                      <span>Apply Backup JSON</span>
                     </button>
                   </div>
 
                   <div class="backup-card" style="border-color: rgba(239, 68, 68, 0.35);">
-                    <div style="font-size: 24px; margin-bottom: 8px;">⚠️</div>
+                    
                     <h4 style="margin: 0 0 6px 0; font-size: 15px; color: #ef4444;">Reset All Progress</h4>
                     <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
                       Wipe all completed topics, tiered solutions, and stored attempts to start fresh from scratch.
                     </p>
                     <button class="phase-nav-btn" style="border-color: #ef4444; color: #ef4444; font-weight: 700;" onclick="window.MasteryCourseEngine.resetAllProgress()">
-                      <span>🗑️ Reset All Progress</span>
+                      <span>Reset All Progress</span>
                     </button>
                   </div>
                 </div>

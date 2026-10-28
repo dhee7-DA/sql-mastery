@@ -9,13 +9,13 @@
   const HERO_SCENARIOS = {
     scenario1: {
       id: 'scenario1',
-      title: '🏆 LeetCode #185 (Top 3 Salaries)',
+      title: 'LeetCode #185 (Top 3 Salaries)',
       filename: 'leetcode_185_department_salaries.sql',
       dataset: 'enterprise_employees (12 production columns)',
       latency: '0.014ms',
       memory: '0.0KB',
       rowsCount: '6 rows returned',
-      statusText: '🟢 Query Executed Successfully (DENSE_RANK Tied Evaluation)',
+      statusText: 'Query Executed Successfully (DENSE_RANK Tied Evaluation)',
       codeHtml: `<span class="landing-cm">-- LeetCode #185: Top 3 Department Earners using Dense Ranking</span>
 <span class="landing-kw">WITH</span> ranked_payroll <span class="landing-kw">AS</span> (
   <span class="landing-kw">SELECT</span> 
@@ -39,17 +39,17 @@
         ['Finance', 'Alex Chen', '$180,000', '2'],
         ['Finance', 'Jordan Hayes', '$165,000', '3']
       ],
-      buddyTip: '⚡ Query executed in 0.014ms via client-side SQLite WASM! Notice how DENSE_RANK() cleanly handles ties without skipping rank numbers.'
+      buddyTip: 'Query executed in 0.014ms via client-side SQLite WASM! Notice how DENSE_RANK() cleanly handles ties without skipping rank numbers.'
     },
     scenario2: {
       id: 'scenario2',
-      title: '🕵️ Fraud Detection (Gaps & Islands)',
+      title: 'Fraud Detection (Gaps & Islands)',
       filename: 'fraud_velocity_burst_detector.sql',
       dataset: 'fraud_audit_stream (High-Frequency Ledger)',
       latency: '0.019ms',
       memory: '0.0KB',
       rowsCount: '3 suspicious bursts flagged',
-      statusText: '🚨 3 Velocity Bursts Caught (Delta < 120s & Amount >= $5,000)',
+      statusText: '3 Velocity Bursts Caught (Delta < 120s & Amount >= $5,000)',
       codeHtml: `<span class="landing-cm">-- Detect high-velocity transaction bursts (> $5,000 within 2 minutes)</span>
 <span class="landing-kw">WITH</span> numbered_tx <span class="landing-kw">AS</span> (
   <span class="landing-kw">SELECT</span> tx_id, user_id, amount, created_at,
@@ -69,17 +69,17 @@
         ['USR_9012', '$8,900', '2026-10-25 14:03:02', '51s'],
         ['USR_4401', '$12,000', '2026-10-25 16:45:10', '18s']
       ],
-      buddyTip: '🚨 Fraud autopsy triggered! LAG() offset vectors detect rapid bursts without expensive self-joins.'
+      buddyTip: 'Fraud autopsy triggered! LAG() offset vectors detect rapid bursts without expensive self-joins.'
     },
     scenario3: {
       id: 'scenario3',
-      title: '📈 7-Day Rolling Revenue (Sliding Frames)',
+      title: '7-Day Rolling Revenue (Sliding Frames)',
       filename: 'stripe_rolling_metric_cockpit.sql',
       dataset: 'stripe_billing_metrics (Daily ARR Stream)',
       latency: '0.011ms',
       memory: '0.0KB',
       rowsCount: '5 rows returned',
-      statusText: '🟢 Sliding Window Aggregation Calculated (Rows Preceding Frame)',
+      statusText: 'Sliding Window Aggregation Calculated (Rows Preceding Frame)',
       codeHtml: `<span class="landing-cm">-- 7-Day Moving Average & Cumulative Revenue Run-Rate</span>
 <span class="landing-kw">SELECT</span> 
   order_date, daily_revenue,
@@ -100,17 +100,17 @@
         ['2026-10-21', '$41,900', '$41,900.00', '$1,112,400'],
         ['2026-10-20', '$46,300', '$41,200.00', '$1,070,500']
       ],
-      buddyTip: '📈 Moving frame verified! ROWS BETWEEN 6 PRECEDING smooths out daily revenue spikes.'
+      buddyTip: 'Moving frame verified! ROWS BETWEEN 6 PRECEDING smooths out daily revenue spikes.'
     },
     scenario4: {
       id: 'scenario4',
-      title: '🛒 Amazon Prime Day (Anti-Join Churn)',
+      title: 'Amazon Prime Day (Anti-Join Churn)',
       filename: 'amazon_churn_detector.sql',
       dataset: 'amazon_prime_orders (2.4M Historical Orders)',
       latency: '0.016ms',
       memory: '0.0KB',
       rowsCount: '4 churned customer accounts',
-      statusText: '🟢 Anti-Join Completed: Found Day-1 Buyers with Zero 30-Day Activity',
+      statusText: 'Anti-Join Completed: Found Day-1 Buyers with Zero 30-Day Activity',
       codeHtml: `<span class="landing-cm">-- Find customers who made a Day-1 purchase but 0 purchases in 30 days</span>
 <span class="landing-kw">SELECT DISTINCT</span> o1.customer_id, o1.purchase_date, o1.product_id
 <span class="landing-kw">FROM</span> amazon_prime_orders o1
@@ -126,7 +126,7 @@
         ['CUST_89104', '2026-09-02', 'PROD_FIRE_TV_STICK_4K'],
         ['CUST_89311', '2026-09-03', 'PROD_RING_VIDEO_DOORBELL']
       ],
-      buddyTip: '🎯 Anti-Join mastered! Using LEFT JOIN ... WHERE right.key IS NULL is sargable and outperforms NOT IN.'
+      buddyTip: 'Anti-Join mastered! Using LEFT JOIN ... WHERE right.key IS NULL is sargable and outperforms NOT IN.'
     }
   };
 
@@ -163,19 +163,22 @@
 
             <div class="landing-cta-strip">
               <button class="landing-cta-primary" id="btnHeroLaunchCourse" onclick="if(window.selectNavView) window.selectNavView('viewMasteryCourse', 'Course', null)">
-                <span>📖 10-Phase SQL Mastery Course</span>
+                <span>10-Phase SQL Mastery Course</span>
               </button>
               <button class="landing-cta-secondary" id="btnHeroLaunchLeetCode" onclick="if(window.selectNavView) window.selectNavView('viewLeetCode50', 'LeetCode 323', null)">
-                <span>⚡ LeetCode 323 Arena</span>
+                <span>LeetCode 323 Arena</span>
               </button>
               <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewCompanyHub', 'Companies &amp; Domains', null)">
-                <span>🏛️ 70+ Company Tracks</span>
+                <span>70+ Company Tracks</span>
               </button>
               <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewMockInterview', 'Mock Screen', null)">
-                <span>🎯 45m Mock Screen</span>
+                <span>45m Mock Screen</span>
+              </button>
+              <button class="landing-cta-secondary" id="btnHeroLaunchStudio" onclick="if(window.selectNavView) window.selectNavView('viewStudio', 'Section Studio', null)">
+                <span>Section Studio</span>
               </button>
               <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewSqlTerminal', 'SQL Terminal', null)">
-                <span>💻 SQLite WASM Terminal</span>
+                <span>SQLite WASM Terminal</span>
               </button>
             </div>
 
@@ -197,16 +200,16 @@
               <!-- Multi-Scenario Switcher Tabs -->
               <div class="landing-scenario-tabs" id="heroScenarioTabs">
                 <button class="landing-scenario-btn ${activeScenarioId === 'scenario1' ? 'active' : ''}" data-scenario="scenario1">
-                  <span>🏆 LeetCode #185</span>
+                  <span>LeetCode #185</span>
                 </button>
                 <button class="landing-scenario-btn ${activeScenarioId === 'scenario2' ? 'active' : ''}" data-scenario="scenario2">
-                  <span>🕵️ Fraud Detection</span>
+                  <span>Fraud Detection</span>
                 </button>
                 <button class="landing-scenario-btn ${activeScenarioId === 'scenario3' ? 'active' : ''}" data-scenario="scenario3">
-                  <span>📈 7-Day Rolling Revenue</span>
+                  <span>7-Day Rolling Revenue</span>
                 </button>
                 <button class="landing-scenario-btn ${activeScenarioId === 'scenario4' ? 'active' : ''}" data-scenario="scenario4">
-                  <span>🛒 Amazon Churn Anti-Join</span>
+                  <span>Amazon Churn Anti-Join</span>
                 </button>
               </div>
 
@@ -220,10 +223,10 @@
                 </div>
                 <div style="display: flex; gap: 8px;">
                   <button class="landing-run-btn" id="btnHeroRunQuery">
-                    <span>▶ Run Query Live</span>
+                    <span>Run Query Live</span>
                   </button>
                   <button class="landing-cta-secondary" style="padding: 5px 12px; font-size: 11px;" id="btnHeroReset">
-                    <span>↺ Reset</span>
+                    <span>Reset</span>
                   </button>
                 </div>
               </div>
@@ -279,11 +282,11 @@
           <section style="text-align: center; margin-bottom: 48px;">
             <span class="landing-section-tag">Universal Dialect Support</span>
             <div class="landing-dialect-matrix">
-              <div class="landing-dialect-chip">🐬 <span>MySQL 8.0</span></div>
-              <div class="landing-dialect-chip">🐘 <span>PostgreSQL 16</span></div>
+              <div class="landing-dialect-chip"><span>MySQL 8.0</span></div>
+              <div class="landing-dialect-chip"><span>PostgreSQL 16</span></div>
               <div class="landing-dialect-chip">🪶 <span>SQLite WASM 3.45</span></div>
-              <div class="landing-dialect-chip">❄️ <span>Snowflake SQL</span></div>
-              <div class="landing-dialect-chip">📊 <span>Google BigQuery</span></div>
+              <div class="landing-dialect-chip"><span>Snowflake SQL</span></div>
+              <div class="landing-dialect-chip"><span>Google BigQuery</span></div>
             </div>
           </section>
 
@@ -302,7 +305,7 @@
               <div class="landing-bento-card span-2">
                 <div>
                   <span class="landing-bento-badge">Execution Engine</span>
-                  <div class="landing-bento-icon">⚡</div>
+                  <div class="landing-bento-icon" style="display:none;"></div>
                   <h3 class="landing-bento-title">In-Browser SQLite WASM Virtual Machine</h3>
                   <p class="landing-bento-desc">
                     True relational database runtime compiled to WebAssembly. Execute full queries locally inside your browser with zero remote latency, no Docker daemon, and 100% offline capability. Ships with 12 loaded enterprise schema tables.
@@ -317,7 +320,7 @@
               <div class="landing-bento-card">
                 <div>
                   <span class="landing-bento-badge">Interview Vault</span>
-                  <div class="landing-bento-icon">🏆</div>
+                  <div class="landing-bento-icon" style="display:none;"></div>
                   <h3 class="landing-bento-title">323 LeetCode Problems</h3>
                   <p class="landing-bento-desc">
                     Every official SQL challenge categorized by 11 conceptual pillars. Includes golden canonical solutions, line-by-line clause explanations, and automated test-case evaluation.
@@ -332,7 +335,7 @@
               <div class="landing-bento-card">
                 <div>
                   <span class="landing-bento-badge">Institutional Prep</span>
-                  <div class="landing-bento-icon">🏛️</div>
+                  <div class="landing-bento-icon" style="display:none;"></div>
                   <h3 class="landing-bento-title">70+ Employer Mastery Hub</h3>
                   <p class="landing-bento-desc">
                     10 core business domains (FinTech, Quant, E-Commerce, Social, Streaming, Cloud, HealthTech) with company-specific screening formats and interview defense notes.
@@ -347,7 +350,7 @@
               <div class="landing-bento-card">
                 <div>
                   <span class="landing-bento-badge">Simulation</span>
-                  <div class="landing-bento-icon">🎯</div>
+                  <div class="landing-bento-icon" style="display:none;"></div>
                   <h3 class="landing-bento-title">45-Minute Timed Technical Screen</h3>
                   <p class="landing-bento-desc">
                     Real-time technical interview simulator with countdown clock, randomized problem sets, hidden edge-case traps, and automated scoring rubrics.
@@ -362,13 +365,13 @@
               <div class="landing-bento-card">
                 <div>
                   <span class="landing-bento-badge">AI Co-Pilot</span>
-                  <div class="landing-bento-icon">🐙</div>
+                  <div class="landing-bento-icon" style="display:none;"></div>
                   <h3 class="landing-bento-title">Sir Bloops Diagnostic Autopsy</h3>
                   <p class="landing-bento-desc">
                     Intelligent diagnostic companion that analyzes query execution plans. Catches Three-Valued Logic NULL gotchas, Cartesian explosions, and non-sargable WHERE filters.
                   </p>
                 </div>
-                <button class="landing-bento-action-link" onclick="if(window.SQL_BUDDY) window.SQL_BUDDY.say('🐙 Greetings! I am Sir Bloops, your relational co-pilot. I am ready to inspect any query you write!', 5000, 'celebrate');">
+                <button class="landing-bento-action-link" onclick="if(window.SQL_BUDDY) window.SQL_BUDDY.say('Greetings! I am Sir Bloops, your relational co-pilot. I am ready to inspect any query you write!', 5000, 'celebrate');">
                   <span>Summon Sir Bloops &rarr;</span>
                 </button>
               </div>
@@ -396,8 +399,8 @@
                   If the subquery returns even a single NULL, <code>NOT IN</code> evaluates to UNKNOWN and returns 0 rows! Always use <code>NOT EXISTS</code>.
                 </p>
                 <div class="landing-trap-code-snip">
-                  <span style="color:#ef4444;">-- ❌ FAILS:</span> WHERE id NOT IN (SELECT id FROM t)<br>
-                  <span style="color:#10b981;">-- ✅ SAFE:</span> WHERE NOT EXISTS (...)
+                  <span style="color:#ef4444;">-- FAILS:</span> WHERE id NOT IN (SELECT id FROM t)<br>
+                  <span style="color:#10b981;">-- SAFE:</span> WHERE NOT EXISTS (...)
                 </div>
               </div>
 
@@ -411,8 +414,8 @@
                   <code>COUNT(*)</code> counts all rows including NULLs. <code>COUNT(col)</code> strictly excludes NULLs, silently skewing ratios.
                 </p>
                 <div class="landing-trap-code-snip">
-                  <span style="color:#ef4444;">-- ❌ WRONG RATIO:</span> COUNT(bonus) / COUNT(*)<br>
-                  <span style="color:#10b981;">-- ✅ CORRECT:</span> AVG(COALESCE(bonus, 0))
+                  <span style="color:#ef4444;">-- WRONG RATIO:</span> COUNT(bonus) / COUNT(*)<br>
+                  <span style="color:#10b981;">-- CORRECT:</span> AVG(COALESCE(bonus, 0))
                 </div>
               </div>
 
@@ -426,8 +429,8 @@
                   <code>RANK()</code> skips numbers after ties (1, 2, 2, 4), causing <code>WHERE rank = 3</code> to return 0 rows! Use <code>DENSE_RANK()</code>.
                 </p>
                 <div class="landing-trap-code-snip">
-                  <span style="color:#ef4444;">-- ❌ SKIPS:</span> 1, 2, 2, 4 (No 3rd place!)<br>
-                  <span style="color:#10b981;">-- ✅ CONTINUOUS:</span> 1, 2, 2, 3 (Clean top-3)
+                  <span style="color:#ef4444;">-- SKIPS:</span> 1, 2, 2, 4 (No 3rd place!)<br>
+                  <span style="color:#10b981;">-- CONTINUOUS:</span> 1, 2, 2, 3 (Clean top-3)
                 </div>
               </div>
 
@@ -441,8 +444,8 @@
                   Wrapping indexed columns in functions (like <code>YEAR(created_at)</code>) breaks B-Tree index seeks, forcing a 10M row table scan.
                 </p>
                 <div class="landing-trap-code-snip">
-                  <span style="color:#ef4444;">-- ❌ FULL SCAN:</span> WHERE YEAR(dt) = 2026<br>
-                  <span style="color:#10b981;">-- ✅ INDEX SEEK:</span> WHERE dt &gt;= '2026-01-01'
+                  <span style="color:#ef4444;">-- FULL SCAN:</span> WHERE YEAR(dt) = 2026<br>
+                  <span style="color:#10b981;">-- INDEX SEEK:</span> WHERE dt &gt;= '2026-01-01'
                 </div>
               </div>
 
@@ -456,8 +459,8 @@
                   Joining on non-unique foreign keys without a secondary qualifier blows up row counts exponentially, freezing production servers.
                 </p>
                 <div class="landing-trap-code-snip">
-                  <span style="color:#ef4444;">-- ❌ 10k &times; 10k =</span> 100,000,000 rows!<br>
-                  <span style="color:#10b981;">-- ✅ SAFE:</span> Pre-aggregate via modular CTE
+                  <span style="color:#ef4444;">-- 10k &times; 10k =</span> 100,000,000 rows!<br>
+                  <span style="color:#10b981;">-- SAFE:</span> Pre-aggregate via modular CTE
                 </div>
               </div>
             </div>
@@ -475,7 +478,7 @@
 
             <div class="landing-launch-grid">
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewLeetCode50', 'LeetCode 323', null)">
-                <span class="landing-launch-icon">⚡</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">LeetCode 323 Arena</div>
                   <div class="landing-launch-tag">323 Problems &bull; Split IDE</div>
@@ -483,7 +486,7 @@
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewStudio', 'Studio', null)">
-                <span class="landing-launch-icon">💻</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">Query Execution Studio</div>
                   <div class="landing-launch-tag">Monaco &bull; Schema Inspector</div>
@@ -491,7 +494,7 @@
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewSqlTerminal', 'SQL Terminal', null)">
-                <span class="landing-launch-icon">🖥️</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">SQLite WASM Terminal</div>
                   <div class="landing-launch-tag">12 Enterprise Tables</div>
@@ -499,7 +502,7 @@
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewMcqs', 'MCQs', 'navGroupPractice')">
-                <span class="landing-launch-icon">🧠</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">MCQs Vault (2.1k)</div>
                   <div class="landing-launch-tag">Interview Traps &bull; Flashcards</div>
@@ -507,7 +510,7 @@
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewSyntaxGym', 'Syntax Gym', 'navGroupPractice')">
-                <span class="landing-launch-icon">⚡</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">Syntax Gym (1.7k)</div>
                   <div class="landing-launch-tag">Muscle Memory Drills</div>
@@ -515,7 +518,7 @@
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewCases', 'Case Studies', 'navGroupPractice')">
-                <span class="landing-launch-icon">💼</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">Case Studies (2,540)</div>
                   <div class="landing-launch-tag">Real Production Incidents</div>
@@ -523,7 +526,7 @@
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewQuests', 'Quests', 'navGroupExplore')">
-                <span class="landing-launch-icon">🎮</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">Interactive Quests</div>
                   <div class="landing-launch-tag">1,850 Puzzles &bull; Token Trays</div>
@@ -531,7 +534,7 @@
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewWindowMatrix', 'Window Cockpit', 'navGroupExplore')">
-                <span class="landing-launch-icon">🪟</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">Window Functions Cockpit</div>
                   <div class="landing-launch-tag">Sliding Frames &bull; Offsets</div>
@@ -539,7 +542,7 @@
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewTactileEngine', 'SQL Machine', 'navGroupExplore')">
-                <span class="landing-launch-icon">⚙️</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">Tactile SQL Machine</div>
                   <div class="landing-launch-tag">Fig. 16 Physical Engine</div>
@@ -547,7 +550,7 @@
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.openCurriculumReader) window.openCurriculumReader(1)">
-                <span class="landing-launch-icon">📖</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">Theory Compendium</div>
                   <div class="landing-launch-tag">21 In-Depth Modules</div>
@@ -555,7 +558,7 @@
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewLearningJourney', 'Learning Journey', 'navGroupExplore')">
-                <span class="landing-launch-icon">🗺️</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">20-Day Learning Journey</div>
                   <div class="landing-launch-tag">Systematic Daily Curriculum</div>
@@ -563,7 +566,7 @@
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.openFlashcardVault) window.openFlashcardVault()">
-                <span class="landing-launch-icon">🗂️</span>
+                <span class="landing-launch-icon" style="opacity:0.4;">&bull;</span>
                 <div class="landing-launch-meta">
                   <div class="landing-launch-name">SRS Trap Memory Gym</div>
                   <div class="landing-launch-tag">Leitner Spaced Repetition</div>

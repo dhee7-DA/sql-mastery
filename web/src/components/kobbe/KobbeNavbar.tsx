@@ -26,7 +26,7 @@ export function KobbeNavbar({
     { id: 'pipeline', label: 'Execution Order' },
     { id: 'diff', label: 'Visual Diff' },
     { id: 'traps', label: 'Traps & Radar' },
-    { id: 'studio', label: 'Query Studio' },
+    { id: 'studio', label: 'Section Studio' },
     { id: 'faq', label: 'FAQ' },
   ];
 
