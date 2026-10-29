@@ -396,7 +396,7 @@ window.StudioWorkbenchEngine = (function() {
         </section>
 
         <!-- Collapsible Problem & Topic Tiles Drawer -->
-        <section class="studio-tiles-drawer ${state.tilesOpen ? 'open' : 'collapsed'}" id="studioProblemTilesDrawer">
+        <section class="studio-tiles-drawer ${state.tilesOpen ? 'open' : 'collapsed'}" id="studioProblemTilesDrawer" style="display: ${state.tilesOpen ? 'block' : 'none'};">
           <div class="tiles-drawer-header">
             <div class="tiles-filter-group">
               <span class="tiles-filter-label">Filter:</span>
@@ -735,6 +735,7 @@ window.StudioWorkbenchEngine = (function() {
   // ---------------------------------------------------------------------------
 
   // -------------------------------------------------------------------------  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
   // RENDER ALL 10 TOPIC TILES & 30 PROBLEMS (COLLAPSIBLE DRAWER)
   // ---------------------------------------------------------------------------
   function renderAllTopicTilesHtml(allProblems, topicsList) {
@@ -745,57 +746,47 @@ window.StudioWorkbenchEngine = (function() {
       const topicProblems = allProblems.filter(p => p.topicSeq === t.seq);
       const isTopicActive = t.seq === state.activeTopicSeq;
 
-      return `
-        <div class="topic-tile-accordion ${isTopicActive ? 'active-topic' : ''}" id="topicTile_${t.seq}">
-          <div class="topic-tile-header">
-            <div class="topic-tile-meta">
-              <span class="topic-tile-seq">TOPIC ${t.seq}</span>
-              <h3 class="topic-tile-title">${t.title}</h3>
-            </div>
-            <div class="topic-tile-badges">
-              <span class="topic-tile-count">${topicProblems.length} Problems</span>
-              ${isTopicActive ? '<span class="topic-active-badge">ACTIVE TOPIC</span>' : ''}
-            </div>
-          </div>
+      let problemsHtml = '';
+      topicProblems.forEach(p => {
+        const isSelected = p.id === state.activeProblemId;
+        const matchesDiff = diff === 'all' || p.difficulty === diff;
+        const matchesSearch = !q ||
+          p.title.toLowerCase().includes(q) ||
+          p.spec.toLowerCase().includes(q) ||
+          p.targetTable.toLowerCase().includes(q) ||
+          t.title.toLowerCase().includes(q);
+        const isHidden = !matchesDiff || !matchesSearch;
 
-                    <div class="topic-tile-problems-grid">
-            ${topicProblems.map((p, idx) => {
-              const isSelected = p.id === state.activeProblemId;
-              const matchesDiff = diff === 'all' || p.difficulty === diff;
-              const matchesSearch = !q || 
-                p.title.toLowerCase().includes(q) || 
-                p.spec.toLowerCase().includes(q) || 
-                p.targetTable.toLowerCase().includes(q) ||
-                t.title.toLowerCase().includes(q);
-              const isHidden = !matchesDiff || !matchesSearch;
+        problemsHtml += '<div class="problem-tile-card ' + (isSelected ? 'selected-problem' : '') + ' ' + p.difficulty + ' ' + (isHidden ? 'filtered-out' : '') + '" data-problemid="' + p.id + '" title="Click to load: ' + p.title + '">' +
+          '<div class="tile-card-top">' +
+            '<span class="tile-card-diff-badge ' + p.difficulty + '">' + p.difficulty.toUpperCase() + '</span>' +
+            '<span class="tile-card-tier">' + p.tierName + '</span>' +
+            '<span class="tile-card-table">Target: <strong>' + p.targetTable + '</strong></span>' +
+          '</div>' +
+          '<h4 class="tile-card-heading">' + p.title + '</h4>' +
+          '<p class="tile-card-summary">' + p.spec + '</p>' +
+          '<div class="tile-card-footer">' +
+            '<span class="tile-card-status">' + (isSelected ? '&#9679; ACTIVE IN WORKBENCH' : 'Click to Load &amp; Solve &rarr;') + '</span>' +
+            (p.expectedRowCount !== null ? '<span class="tile-card-rows">' + p.expectedRowCount + ' tuples expected</span>' : '') +
+          '</div>' +
+        '</div>';
+      });
 
-              return '<div class="problem-tile-card ' + (isSelected ? 'selected-problem' : '') + ' ' + p.difficulty + ' ' + (isHidden ? 'filtered-out' : '') + '" data-problemid="' + p.id + '" title="Click to load problem: ' + p.title + '">' +
-                '<div class="tile-card-top">' +
-                  '<span class="tile-card-diff-badge ' + p.difficulty + '">' + p.difficulty.toUpperCase() + '</span>' +
-                  '<span class="tile-card-tier">' + p.tierName + '</span>' +
-                  '<span class="tile-card-table">Target: <strong>' + p.targetTable + '</strong></span>' +
-                '</div>' +
-                '<h4 class="tile-card-heading">' + p.title + '</h4>' +
-                '<p class="tile-card-summary">' + p.spec + '</p>' +
-                '<div class="tile-card-footer">' +
-                  '<span class="tile-card-status">' + (isSelected ? '&#9679; ACTIVE IN WORKBENCH' : 'Click to Load &amp; Solve &rarr;') + '</span>' +
-                  (p.expectedRowCount !== null ? '<span class="tile-card-rows">' + p.expectedRowCount + ' tuples expected</span>' : '') +
-                '</div>' +
-              '</div>';
-            }).join('')}
-          </div>
-                  <h4 class="tile-card-heading">\${p.title}</h4>
-                  <p class="tile-card-summary">\${p.spec}</p>
-                  <div class="tile-card-footer">
-                    <span class="tile-card-status">\${isSelected ? '● ACTIVE IN WORKBENCH' : 'Click to Load &amp; Solve &rarr;'}</span>
-                    \${p.expectedRowCount !== null ? '<span class="tile-card-rows">' + p.expectedRowCount + ' tuples expected</span>' : ''}
-                  </div>
-                </div>
-              \`;
-            }).join('')}
-          </div>
-        </div>
-      `;
+      return '<div class="topic-tile-accordion ' + (isTopicActive ? 'active-topic' : '') + '" id="topicTile_' + t.seq + '">' +
+        '<div class="topic-tile-header">' +
+          '<div class="topic-tile-meta">' +
+            '<span class="topic-tile-seq">TOPIC ' + t.seq + '</span>' +
+            '<h3 class="topic-tile-title">' + t.title + '</h3>' +
+          '</div>' +
+          '<div class="topic-tile-badges">' +
+            '<span class="topic-tile-count">' + topicProblems.length + ' Problems</span>' +
+            (isTopicActive ? '<span class="topic-active-badge">ACTIVE TOPIC</span>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div class="topic-tile-problems-grid">' +
+          problemsHtml +
+        '</div>' +
+      '</div>';
     }).join('');
   }
 
@@ -1876,6 +1867,7 @@ window.StudioWorkbenchEngine = (function() {
         state.tilesOpen = !state.tilesOpen;
         const drawer = document.getElementById('studioProblemTilesDrawer');
         if (drawer) {
+          drawer.style.display = state.tilesOpen ? 'block' : 'none';
           drawer.classList.toggle('open', state.tilesOpen);
           drawer.classList.toggle('collapsed', !state.tilesOpen);
         }
@@ -1891,6 +1883,7 @@ window.StudioWorkbenchEngine = (function() {
         state.tilesOpen = false;
         const drawer = document.getElementById('studioProblemTilesDrawer');
         if (drawer) {
+          drawer.style.display = 'none';
           drawer.classList.remove('open');
           drawer.classList.add('collapsed');
         }
