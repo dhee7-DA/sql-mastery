@@ -21,6 +21,7 @@ import { useSqlWasm, QueryPlanAnalysis, TableSchema } from '@/lib/useSqlWasm';
 import { TOPIC_PHASES } from '@/data/masteryCourseData';
 import { KobbeSchemaExplorer } from './KobbeSchemaExplorer';
 import { KobbeQueryPlanVisualizer } from './KobbeQueryPlanVisualizer';
+import { EditorialDiagramSvg } from './EditorialDiagramSvg';
 
 interface FlatProblem {
   id: string;
@@ -123,8 +124,8 @@ export function KobbeSectionWasm() {
     latencyMs: number;
   } | null>(null);
 
-  // Tabs: output | diff | plan | schema
-  const [activeTab, setActiveTab] = useState<'output' | 'diff' | 'plan' | 'schema'>('output');
+  // Tabs: diagram | output | diff | plan | schema
+  const [activeTab, setActiveTab] = useState<'diagram' | 'output' | 'diff' | 'plan' | 'schema'>('diagram');
   const [queryPlan, setQueryPlan] = useState<QueryPlanAnalysis | null>(null);
   const [schemas, setSchemas] = useState<TableSchema[]>([]);
   const [previewData, setPreviewData] = useState<{ table: string; columns: string[]; values: any[][] } | null>(null);
@@ -591,6 +592,7 @@ export function KobbeSectionWasm() {
               <div className="flex items-center justify-between px-3 py-1.5 bg-muted-surface border-b border-border text-[11px] font-mono">
                 <div className="flex items-center gap-1">
                   {[
+                    { id: 'diagram', label: 'Editorial Diagram (SVG)' },
                     { id: 'output', label: `Output (${rows.length})` },
                     {
                       id: 'diff',
@@ -620,6 +622,19 @@ export function KobbeSectionWasm() {
 
               {/* Tab Panels */}
               <div className="min-h-56">
+                
+                {/* 0. Editorial Architecture Diagram (Cathryn Lavery SVG) */}
+                {activeTab === 'diagram' && (
+                  <div className="p-2">
+                    <EditorialDiagramSvg
+                      topicSeq={activeProblem?.topicSeq || '01'}
+                      problemTitle={activeProblem?.title || ''}
+                      tierName={activeProblem?.tierName || 'Standard'}
+                      targetTable={activeProblem?.targetTable || 'CITY'}
+                      expectedRowCount={activeProblem?.expectedRowCount}
+                    />
+                  </div>
+                )}
                 
                 {/* 1. Raw Output Grid */}
                 {activeTab === 'output' && (

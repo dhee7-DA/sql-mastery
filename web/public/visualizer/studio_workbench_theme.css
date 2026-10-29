@@ -2135,3 +2135,212 @@
   background: #dc2626;
   color: #ffffff;
 }
+
+
+/* =============================================================================
+   9. COMPACT ERGONOMIC STUDIO ARENA & CATHRYN LAVERY DIAGRAM EXTENSIONS
+   Streamlined UI Layout (No Vertical Bloat) + Full Natural Scrolling
+   ============================================================================= */
+
+#viewStudio,
+#viewStudio.active {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.studio-workbench-wrapper {
+  overflow: visible !important;
+  height: auto !important;
+  min-height: 100%;
+  padding-bottom: 60px;
+}
+
+/* Compact Problem Hub (2 Rows Only) */
+.studio-problem-hub-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #d4d4d8);
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.studio-topic-rail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Problem Tier Chips Row (Tier 1, Tier 2, Tier 3) */
+.studio-problem-tier-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-top: 4px;
+  border-top: 1px solid var(--border-subtle, #f4f4f5);
+}
+
+.tier-chips-label {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-muted, #71717a);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.studio-tier-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 5px;
+  background: var(--bg-card-subtle, #f8f8f9);
+  border: 1px solid var(--border-default, #e4e4e7);
+  color: var(--text-primary, #18181b);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.12s ease;
+}
+
+.studio-tier-chip:hover {
+  background: var(--bg-surface, #ffffff);
+  border-color: #2563eb;
+}
+
+.studio-tier-chip.active {
+  background: var(--bg-surface, #ffffff);
+  border-color: #2563eb;
+  border-width: 1.5px;
+  box-shadow: 0 0 0 1px #2563eb;
+}
+
+.tier-chip-badge {
+  font-size: 9px;
+  font-weight: 800;
+  font-family: var(--font-mono, monospace);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.studio-tier-chip.easy .tier-chip-badge {
+  background: rgba(22, 163, 74, 0.12);
+  color: #16a34a;
+}
+
+.studio-tier-chip.medium .tier-chip-badge {
+  background: rgba(217, 119, 6, 0.12);
+  color: #d97706;
+}
+
+.studio-tier-chip.hard .tier-chip-badge {
+  background: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
+}
+
+.tier-chip-title {
+  font-weight: 600;
+}
+
+/* Active Problem Brief Banner (Sleek, Compact) */
+.studio-active-brief-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #d4d4d8);
+  border-radius: 8px;
+  padding: 8px 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  flex-wrap: wrap;
+}
+
+.brief-banner-left {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 280px;
+}
+
+.brief-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.brief-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary, #18181b);
+  margin: 0;
+}
+
+.brief-spec-text {
+  font-size: 11.5px;
+  color: var(--text-secondary, #52525b);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.brief-banner-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.dossier-micro-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 1px solid var(--border-default, #d4d4d8);
+  background: var(--bg-card-subtle, #f4f4f5);
+  color: var(--text-primary, #18181b);
+  cursor: pointer;
+  transition: all 0.12s ease;
+  white-space: nowrap;
+}
+
+.dossier-micro-btn:hover {
+  background: var(--bg-surface, #ffffff);
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.studio-solution-popdown {
+  padding: 8px 12px;
+  background: rgba(37, 99, 235, 0.05);
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  border-radius: 6px;
+}
+
+/* Editorial Diagram Container */
+.editorial-diagram-container {
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+  background: var(--bg-surface, #ffffff);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

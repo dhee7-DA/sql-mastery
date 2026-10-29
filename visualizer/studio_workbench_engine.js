@@ -2,7 +2,8 @@
  * =============================================================================
  * STUDIO WORKBENCH ENGINE (CURRICULUM PROBLEM ARENA & RELATIONAL LAB)
  * 30 Graded Problems Organized by Topic (01-10 in order) & Difficulty (Easy/Med/Hard)
- * Interactive Schema Table Inspector · Live Sample Data Preview
+ * Cathryn Lavery Editorial Diagram Engine (Bespoke SVGs for Every Question)
+ * Compact Ergonomic 50/50 Layout · Smooth Natural Scrolling
  * SQLite WASM In-Memory Engine · Visual Output Diff (✓ MATCH / + EXTRA / - MISSING)
  * 6-Stage Execution Pipeline Stepper · EXPLAIN Plan Tree · Deep Engine Explainer
  * =============================================================================
@@ -21,9 +22,8 @@ window.StudioWorkbenchEngine = (function() {
     layoutMode: 'split',    // 'split' | 'editor' | 'results'
     editorMode: 'raw',      // 'raw' | 'builder'
     zenMode: false,
-    activeTab: 'tabStepper', // 'tabStepper' | 'tabDiff' | 'tabExplainPlan' | 'tabExplainer' | 'tabChart'
+    activeTab: 'tabDiagram', // 'tabDiagram' | 'tabStepper' | 'tabDiff' | 'tabSchema' | 'tabExplainPlan' | 'tabExplainer'
     showSolution: false,
-    showSchemaDock: true,
     testResult: null,
     isPlaying: false,
     playTimer: null
@@ -32,31 +32,27 @@ window.StudioWorkbenchEngine = (function() {
   const DIALECT_SPECS = {
     mysql: {
       name: 'MySQL 8.0',
-      icon: '',
       features: ['CTE Support', 'Window Functions', 'REGEXP_LIKE', 'JSON_TABLE', 'IFNULL()'],
       guidance: 'Default MySQL 8.0 engine with recursive CTEs, window frames, and JSON operators.'
     },
     postgres: {
       name: 'PostgreSQL 16',
-      icon: '',
       features: ['ILIKE', 'STRING_AGG()', 'DISTINCT ON', 'GENERATE_SERIES', 'NULLS LAST'],
       guidance: 'PostgreSQL features ILIKE for case-insensitive matching and STRING_AGG() for concats.'
     },
     snowflake: {
       name: 'Snowflake',
-      icon: '',
       features: ['QUALIFY Clause', 'FLATTEN()', 'IFF()', 'ZEROIFNULL', 'TRY_TO_NUMBER'],
       guidance: 'Snowflake supports QUALIFY to filter directly after window functions without wrapping CTEs!'
     },
     ansi: {
       name: 'ANSI SQL:2016',
-      icon: '',
       features: ['COALESCE()', 'FETCH FIRST N ROWS', 'CASE WHEN', 'STANDARD JOINS'],
       guidance: 'Strict portable ANSI standard compliant across all modern cloud warehouses.'
     }
   };
 
-  // Comprehensive Relational Schema Map for Inspector & Live Previews
+  // Comprehensive Relational Schema Map
   const TABLE_SCHEMAS = {
     CITY: {
       name: 'CITY',
@@ -241,7 +237,6 @@ window.StudioWorkbenchEngine = (function() {
     renderWorkbenchShell(container);
     bindStudioEvents();
     syncEditorLineNumbers();
-    initSqlSyntaxHighlighter();
 
     // Run initial query
     const sqlInput = document.getElementById('sqlInput');
@@ -251,7 +246,7 @@ window.StudioWorkbenchEngine = (function() {
   }
 
   // ---------------------------------------------------------------------------
-  // RENDER WORKBENCH SHELL
+  // RENDER WORKBENCH SHELL (COMPACT & ERGONOMIC)
   // ---------------------------------------------------------------------------
   function renderWorkbenchShell(container) {
     const allProblems = getAllProblems();
@@ -268,23 +263,22 @@ window.StudioWorkbenchEngine = (function() {
     });
     const topicsList = Array.from(topicsMap.values());
 
-    // Filter problems
-    const filteredProblems = allProblems.filter(p => {
-      const matchTopic = state.activeDifficulty === 'all' ? (p.topicSeq === state.activeTopicSeq) : true;
+    // Problems for active topic
+    const topicProblems = allProblems.filter(p => {
+      const matchTopic = (p.topicSeq === state.activeTopicSeq);
       const matchDiff = state.activeDifficulty === 'all' ? true : (p.difficulty === state.activeDifficulty);
       return matchTopic && matchDiff;
     });
 
-    // Schema preview data
     const schema = TABLE_SCHEMAS[currentTable] || { name: currentTable, description: 'Table schema', columns: [] };
     const rawRows = (window.DATABASE && window.DATABASE[currentTable]) || [];
-    const sampleRows = rawRows.slice(0, 6);
+    const sampleRows = rawRows.slice(0, 8);
 
     container.innerHTML = `
       <section id="section-studio" class="section-studio-workspace" style="display:contents;">
       <div class="studio-workbench-wrapper ${state.zenMode ? 'zen-mode' : ''}">
         
-        <!-- Topbar Header -->
+        <!-- 1. Sleek 44px Topbar Header -->
         <header class="studio-topbar">
           <div class="studio-topbar-left">
             <div class="studio-brand">
@@ -324,8 +318,19 @@ window.StudioWorkbenchEngine = (function() {
             }).join('')}
           </div>
 
-          <!-- Layout & Zen Controls -->
+          <!-- Action Controls & Layout -->
           <div class="studio-topbar-right">
+            <button id="btnStudioRunProblem" class="dossier-btn primary" title="Execute Query (Ctrl + Enter)">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Run</span>
+            </button>
+            <button id="btnStudioVerifyProblem" class="dossier-btn verify" title="Compare against expected solution">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Verify</span>
+            </button>
+
+            <div class="studio-bar-sep"></div>
+
             <div class="studio-layout-group">
               <button class="studio-layout-btn ${state.layoutMode === 'split' ? 'active' : ''}" data-layout="split" title="50/50 Split View">
                 <span>◧ Split</span>
@@ -344,174 +349,87 @@ window.StudioWorkbenchEngine = (function() {
           </div>
         </header>
 
-        <!-- PROBLEM ARENA & TOPIC NAVIGATOR -->
-        <section class="studio-problem-hub">
-          <div class="studio-problem-hub-top">
-            <div class="studio-hub-title-wrap">
-              <span class="studio-hub-badge">Query Problem Arena</span>
-              <span class="studio-hub-title">Curriculum Topics &amp; Graded Problem Tiers</span>
-              <span class="studio-hub-meta">(30 Graded Problems across 10 Topics in Sequential Order)</span>
+        <!-- 2. Streamlined Problem Navigator Strip -->
+        <section class="studio-problem-hub-compact">
+          <!-- Row 1: Topics 01-10 Rail + Difficulty Filter -->
+          <div class="studio-topic-rail-row">
+            <div class="studio-topic-rail" id="studioTopicRail">
+              ${topicsList.map(t => {
+                const isActive = t.seq === state.activeTopicSeq;
+                return `
+                  <button class="studio-topic-pill ${isActive ? 'active' : ''}" data-topic="${t.seq}" title="${t.title}">
+                    <span class="studio-topic-num">${t.seq}</span>
+                    <span>${t.title}</span>
+                  </button>
+                `;
+              }).join('')}
             </div>
 
             <!-- Difficulty Segment Filters -->
             <div class="studio-diff-tabs">
               <button class="diff-filter-btn ${state.activeDifficulty === 'all' ? 'active' : ''}" data-diff="all">All (30)</button>
               <button class="diff-filter-btn easy ${state.activeDifficulty === 'easy' ? 'active' : ''}" data-diff="easy">Easy (10)</button>
-              <button class="diff-filter-btn medium ${state.activeDifficulty === 'medium' ? 'active' : ''}" data-diff="medium">Medium (10)</button>
+              <button class="diff-filter-btn medium ${state.activeDifficulty === 'medium' ? 'active' : ''}" data-diff="medium">Med (10)</button>
               <button class="diff-filter-btn hard ${state.activeDifficulty === 'hard' ? 'active' : ''}" data-diff="hard">Hard (10)</button>
             </div>
           </div>
 
-          <!-- Topic Selector Sequential Rail (Topics 01-10 in Order) -->
-          <div class="studio-topic-rail" id="studioTopicRail">
-            ${topicsList.map(t => {
-              const isActive = t.seq === state.activeTopicSeq;
-              return `
-                <button class="studio-topic-pill ${isActive ? 'active' : ''}" data-topic="${t.seq}" title="${t.title}">
-                  <span class="studio-topic-num">${t.seq}</span>
-                  <span>${t.title}</span>
-                </button>
-              `;
-            }).join('')}
-          </div>
-
-          <!-- Problem Cards Carousel / Grid -->
-          <div class="studio-problems-track" id="studioProblemsTrack">
-            ${filteredProblems.map(p => {
+          <!-- Row 2: Problem Tier Selection Chips & Active Problem Brief -->
+          <div class="studio-problem-tier-chips">
+            <span class="tier-chips-label">Topic ${state.activeTopicSeq} Tiers:</span>
+            ${topicProblems.map(p => {
               const isSelected = p.id === state.activeProblemId;
               return `
-                <div class="studio-problem-card ${isSelected ? 'active' : ''}" data-problemid="${p.id}">
-                  <div class="problem-card-top">
-                    <span class="problem-topic-tag">Topic ${p.topicSeq} · Tier ${p.tierId}</span>
-                    <span class="problem-tier-badge ${p.difficulty}">${p.difficulty}</span>
-                  </div>
-                  <h3 class="problem-card-title" title="${p.title}">${p.title}</h3>
-                  <div class="problem-card-footer">
-                    <span>Target: <strong class="problem-card-table">${p.targetTable}</strong></span>
-                    <span>${p.expectedRowCount !== null ? (p.expectedRowCount + ' rows') : ''}</span>
-                  </div>
-                </div>
+                <button class="studio-tier-chip ${isSelected ? 'active' : ''} ${p.difficulty}" data-problemid="${p.id}" title="${p.spec}">
+                  <span class="tier-chip-badge">${p.difficulty.toUpperCase()}</span>
+                  <span class="tier-chip-title">${p.tierName}: ${p.title}</span>
+                </button>
               `;
             }).join('')}
           </div>
         </section>
 
-        <!-- ACTIVE PROBLEM DOSSIER & SPEC CARD -->
-        <section class="studio-active-dossier" id="studioActiveDossier">
-          <div class="dossier-headline-row">
-            <div class="dossier-title-area">
-              <div class="dossier-meta-tags">
-                <span class="status-pill status-pill-accent">Topic ${currentProb.topicSeq}: ${currentProb.topicTitle}</span>
-                <span class="problem-tier-badge ${currentProb.difficulty}">${currentProb.tierName} (${currentProb.difficulty.toUpperCase()})</span>
-                <span class="status-pill" style="font-family:var(--font-mono, monospace);">Target Table: <strong>${currentProb.targetTable}</strong></span>
-                ${currentProb.expectedRowCount !== null ? `<span class="status-pill" style="background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.3);">Expected: ${currentProb.expectedRowCount} Rows</span>` : ''}
-              </div>
-              <h2 style="font-size:15px; font-weight:700; margin:4px 0 0 0; color:var(--text-primary);">${currentProb.title}</h2>
+        <!-- 3. Active Problem Context & Task Banner -->
+        <section class="studio-active-brief-banner">
+          <div class="brief-banner-left">
+            <div class="brief-title-row">
+              <span class="problem-tier-badge ${currentProb.difficulty}">${currentProb.difficulty.toUpperCase()}</span>
+              <h2 class="brief-title">${currentProb.title}</h2>
+              <span class="status-pill">Target: <strong>${currentProb.targetTable}</strong></span>
+              ${currentProb.expectedRowCount !== null ? `<span class="status-pill status-pill-accent">${currentProb.expectedRowCount} Tuples Expected</span>` : ''}
             </div>
-
-            <!-- Action Controls -->
-            <div class="dossier-actions-row">
-              <button id="btnStudioRunProblem" class="dossier-btn primary" title="Execute Query (Ctrl + Enter)">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                <span>Run Query</span>
-              </button>
-              <button id="btnStudioVerifyProblem" class="dossier-btn verify" title="Compare against expected solution">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Verify Solution</span>
-              </button>
-              <button id="btnStudioToggleSolution" class="dossier-btn" title="Toggle Expected SQL Solution">
-                <span>${state.showSolution ? 'Hide Solution' : 'Show Solution'}</span>
-              </button>
-              <button id="btnStudioResetProblem" class="dossier-btn" title="Reset to Starter SQL">
-                <span>Reset Starter</span>
-              </button>
-              <button id="btnStudioToggleSchema" class="dossier-btn" title="Toggle Schema Inspector">
-                <span>${state.showSchemaDock ? 'Hide Schema' : 'Inspect Schema'}</span>
-              </button>
-            </div>
+            <p class="brief-spec-text">${currentProb.spec}</p>
           </div>
 
-          <!-- Problem Spec Description -->
-          <div class="dossier-spec-text">
-            <strong>Task:</strong> ${currentProb.spec}
+          <div class="brief-banner-right">
+            <button id="btnStudioToggleSolution" class="dossier-micro-btn" title="Toggle Expected SQL Solution">
+              <span>${state.showSolution ? 'Hide Solution' : 'Solution'}</span>
+            </button>
+            <button id="btnStudioResetProblem" class="dossier-micro-btn" title="Reset Starter SQL">
+              <span>Reset</span>
+            </button>
+            <button id="btnStudioShowSchemaTab" class="dossier-micro-btn" onclick="window.StudioWorkbenchEngine.setStageTab('tabSchema');" title="Inspect Target Table Schema &amp; Data">
+              <span>Schema Peek</span>
+            </button>
           </div>
-
-          <!-- Optional Expected Solution Box -->
-          ${state.showSolution ? `
-            <div style="margin-top:10px; padding:10px 14px; background:rgba(37,99,235,0.06); border:1px solid rgba(37,99,235,0.25); border-radius:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <span style="font-size:11px; font-weight:700; color:#2563eb; text-transform:uppercase;">Canonical Expected Solution:</span>
-                <button id="btnLoadSolutionToEditor" class="micro-text-btn" style="color:#2563eb; font-weight:600; cursor:pointer; background:none; border:none;">Load into Editor &rarr;</button>
-              </div>
-              <pre style="margin:0; font-size:11.5px; font-family:var(--font-mono, monospace); color:var(--text-primary); white-space:pre-wrap;">${currentProb.expectedSolutionSql}</pre>
-            </div>
-          ` : ''}
         </section>
 
-        <!-- INTERACTIVE REAL SCHEMA TABLES INSPECTOR DOCK -->
-        ${state.showSchemaDock ? `
-          <section class="studio-schema-dock" id="studioSchemaDock">
-            <div class="schema-dock-header">
-              <div class="schema-dock-title">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                <span>Database Schema: <strong>${schema.name}</strong></span>
-                <span class="status-pill" style="font-size:10px;">${schema.columns.length} Columns · ${rawRows.length} Total Tuples</span>
-              </div>
-              <span style="font-size:11px; color:var(--text-muted);">Click column pills to insert into editor at cursor position</span>
+        ${state.showSolution ? `
+          <div class="studio-solution-popdown">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-size:10.5px; font-weight:700; color:#2563eb; text-transform:uppercase; font-family:var(--font-mono, monospace);">Canonical Solution:</span>
+              <button id="btnLoadSolutionToEditor" class="micro-text-btn" style="color:#2563eb; font-weight:600; cursor:pointer; background:none; border:none;">Load into Editor &rarr;</button>
             </div>
-
-            <!-- Columns Grid -->
-            <div class="schema-cols-grid">
-              ${schema.columns.map(c => `
-                <button class="schema-col-card" onclick="window.StudioWorkbenchEngine.insertColumnName('${c.name}')" title="Click to insert ${c.name} into editor">
-                  <span class="col-name">+ ${c.name}</span>
-                  <span class="col-type">${c.type} ${c.key ? ('[' + c.key + ']') : ''}</span>
-                </button>
-              `).join('')}
-            </div>
-
-            <!-- Live Sample Data Preview Table -->
-            <div class="schema-sample-preview">
-              <table class="schema-sample-table">
-                <thead>
-                  <tr>
-                    ${schema.columns.map(c => `<th>${c.name}</th>`).join('')}
-                  </tr>
-                </thead>
-                <tbody>
-                  ${sampleRows.map(r => `
-                    <tr>
-                      ${schema.columns.map(c => `<td>${r[c.name] !== undefined ? String(r[c.name]) : 'NULL'}</td>`).join('')}
-                    </tr>
-                  `).join('')}
-                </tbody>
-              </table>
-            </div>
-          </section>
+            <pre style="margin:0; font-size:11px; font-family:var(--font-mono, monospace); color:var(--text-primary); white-space:pre-wrap;">${currentProb.expectedSolutionSql}</pre>
+          </div>
         ` : ''}
 
-        <!-- MAIN 50/50 WORKSPACE GRID -->
+        <!-- 4. Main 50/50 Workspace Grid (Immediately Visible!) -->
         <main class="studio-workspace-grid layout-${state.layoutMode}">
           
-          <!-- Left Column: Code Editor -->
+          <!-- Left Column: Code Editor & Telemetry -->
           <section class="studio-editor-column">
-            <div class="studio-pane-header">
-              <div class="studio-mode-toggle">
-                <button class="mode-toggle-btn active">
-                  <span>SQL Editor</span>
-                </button>
-              </div>
-
-              <div class="studio-editor-tools">
-                <button id="btnStudioFormatSQL" class="studio-micro-btn" title="Prettify &amp; format SQL (Alt+Shift+F)">
-                  <span>Format</span>
-                </button>
-                <button id="btnStudioClearSQL" class="studio-micro-btn" title="Clear editor">
-                  <span>✕ Clear</span>
-                </button>
-              </div>
-            </div>
-
+            
             <!-- Quick Column Inserter Strip -->
             <div class="studio-column-pills-bar" id="studioColumnPillsBar">
               <span class="col-pill-label">Insert Column:</span>
@@ -522,29 +440,29 @@ window.StudioWorkbenchEngine = (function() {
               </div>
             </div>
 
-            <!-- Raw SQL Editor Body -->
-            <div class="studio-editor-body" id="rawSqlContainer" style="display: flex;">
+            <!-- Monaco-Style Code Editor -->
+            <div class="studio-editor-body" id="rawSqlContainer">
               <div class="code-editor-wrapper">
                 <div class="editor-gutter" id="studioLineNumbers">1</div>
                 <textarea id="sqlInput" class="studio-code-textarea" spellcheck="false" wrap="off" placeholder="-- Write SQL query here...">${(currentProb.starterSql || 'SELECT * FROM ' + currentTable + ';').trim()}</textarea>
               </div>
             </div>
 
-            <!-- Physical Query Execution Telemetry -->
+            <!-- Telemetry Bar -->
             <div class="query-telemetry-bar" id="queryTelemetryBar">
-              <div class="telemetry-chip plan-chip" id="telemetryPlanChip" title="Click to view interactive Execution Plan Tree" style="cursor: pointer;" onclick="window.StudioWorkbenchEngine.setStageTab('tabExplainPlan');">
+              <div class="telemetry-chip plan-chip" id="telemetryPlanChip" title="Click to view Execution Plan Tree" style="cursor: pointer;" onclick="window.StudioWorkbenchEngine.setStageTab('tabExplainPlan');">
                 <span class="telemetry-label">PLAN:</span>
                 <span class="telemetry-val" id="telemetryPlanVal">INDEX RANGE SEEK</span>
               </div>
-              <div class="telemetry-chip latency-chip" id="telemetryLatencyChip" title="Estimated Engine Execution Latency">
+              <div class="telemetry-chip latency-chip" id="telemetryLatencyChip" title="Execution Latency">
                 <span class="telemetry-label">LATENCY:</span>
                 <span class="telemetry-val" id="telemetryLatencyVal">0.8 ms</span>
               </div>
               <div class="telemetry-chip buffer-chip" id="telemetryBufferChip" title="Buffer Pool Hit Ratio">
-                <span class="telemetry-label">BUFFER HIT:</span>
+                <span class="telemetry-label">BUFFER:</span>
                 <span class="telemetry-val" id="telemetryBufferVal">100% (RAM)</span>
               </div>
-              <div class="telemetry-chip select-chip" id="telemetrySelectChip" title="Row Filter Selectivity Ratio">
+              <div class="telemetry-chip select-chip" id="telemetrySelectChip" title="Row Selectivity">
                 <span class="telemetry-label">ROWS:</span>
                 <span class="telemetry-val" id="telemetrySelectVal">${sampleRows.length} Rows</span>
               </div>
@@ -559,121 +477,164 @@ window.StudioWorkbenchEngine = (function() {
                 <button id="btnFormatSQLInline" class="btn-format-inline" onclick="window.StudioWorkbenchEngine.formatCurrentSql();" title="Prettify SQL">
                   Prettify SQL
                 </button>
-                <button id="btnExplainPlanInline" class="btn-format-inline" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);" onclick="window.StudioWorkbenchEngine.setStageTab('tabExplainPlan');" title="Inspect EXPLAIN Tree">
-                  EXPLAIN Tree
-                </button>
               </div>
             </div>
           </section>
 
-          <!-- Right Column: Execution Lifecycle & Visualization Panels -->
+          <!-- Right Column: Visualizer Stage with Cathryn Lavery Editorial Diagrams -->
           <section class="studio-stage-column">
             
-            <!-- 6-Stage Pipeline Stepper Track -->
-            <div class="card stepper-card">
-              <div class="stepper-top">
-                <div class="stepper-meta">
-                  <span class="step-counter" id="stepCounterLabel">STEP 1 OF 6</span>
-                  <h2 class="step-heading" id="stepHeadingLabel">FROM Clause: Table Scan</h2>
-                </div>
-
-                <div class="stepper-controls">
-                  <button id="btnPrevStep" class="icon-btn" title="Previous Step">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-                  </button>
-                  <button id="btnPlayPause" class="play-btn">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" id="playIcon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                    <span id="playBtnText">Play</span>
-                  </button>
-                  <button id="btnNextStep" class="icon-btn" title="Next Step">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-                  </button>
-                  <button id="btnResetStep" class="icon-btn" title="Reset Step">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Linear Track Steps -->
-              <div class="stepper-track" id="stepperTrack">
-                <button class="track-node active" data-step="0">
-                  <span class="node-num">01</span>
-                  <span class="node-name">FROM</span>
-                </button>
-                <div class="track-line"></div>
-                <button class="track-node" data-step="1">
-                  <span class="node-num">02</span>
-                  <span class="node-name">WHERE</span>
-                </button>
-                <div class="track-line"></div>
-                <button class="track-node" data-step="2">
-                  <span class="node-num">03</span>
-                  <span class="node-name">GROUP BY</span>
-                </button>
-                <div class="track-line"></div>
-                <button class="track-node" data-step="3">
-                  <span class="node-num">04</span>
-                  <span class="node-name">HAVING</span>
-                </button>
-                <div class="track-line"></div>
-                <button class="track-node" data-step="4">
-                  <span class="node-num">05</span>
-                  <span class="node-name">SELECT</span>
-                </button>
-                <div class="track-line"></div>
-                <button class="track-node" data-step="5">
-                  <span class="node-num">06</span>
-                  <span class="node-name">ORDER/LIMIT</span>
-                </button>
-              </div>
-
-              <div class="step-explanation" id="stepExplanationText">
-                Loading table buffer into memory.
-              </div>
-            </div>
-
-            <!-- Stage Viewer Tabs -->
             <div class="card viewer-card">
+              <!-- Stage Tabs Bar -->
               <div class="viewer-tabs">
                 <div class="tab-group">
+                  <button class="tab-item ${state.activeTab === 'tabDiagram' ? 'active' : ''}" data-tab="tabDiagram">
+                    Editorial Diagram (SVG)
+                    <span class="hot-badge" style="background: rgba(37, 99, 235, 0.12); color: #2563eb; font-size: 8.5px; padding: 1px 4px; border-radius: 3px; font-weight: 700; margin-left: 3px;">DESIGN</span>
+                  </button>
                   <button class="tab-item ${state.activeTab === 'tabStepper' ? 'active' : ''}" data-tab="tabStepper">Data Grid</button>
                   <button class="tab-item ${state.activeTab === 'tabDiff' ? 'active' : ''}" data-tab="tabDiff">
                     Visual Diff
-                    ${state.testResult ? (`<span class="hot-badge" style="background:${state.testResult.passed ? 'rgba(22,163,74,0.15)' : 'rgba(220,38,38,0.15)'}; color:${state.testResult.passed ? '#16a34a' : '#dc2626'}; font-size:9px; padding:1px 5px; border-radius:4px; font-weight:700; margin-left:4px;">${state.testResult.passed ? 'PASSED' : 'DIFF'}</span>`) : ''}
+                    ${state.testResult ? (`<span class="hot-badge" style="background:${state.testResult.passed ? 'rgba(22,163,74,0.15)' : 'rgba(220,38,38,0.15)'}; color:${state.testResult.passed ? '#16a34a' : '#dc2626'}; font-size:8.5px; padding:1px 4px; border-radius:3px; font-weight:700; margin-left:3px;">${state.testResult.passed ? 'PASS' : 'DIFF'}</span>`) : ''}
                   </button>
-                  <button class="tab-item ${state.activeTab === 'tabExplainPlan' ? 'active' : ''}" data-tab="tabExplainPlan">
-                    Execution Plan Tree
-                    <span class="hot-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 9px; padding: 1px 5px; border-radius: 4px; font-weight: 700; margin-left: 4px;">EXPLAIN</span>
-                  </button>
-                  <button class="tab-item ${state.activeTab === 'tabExplainer' ? 'active' : ''}" data-tab="tabExplainer">Engine &amp; Traps Explainer</button>
+                  <button class="tab-item ${state.activeTab === 'tabPipeline' ? 'active' : ''}" data-tab="tabPipeline">6-Stage Stepper</button>
+                  <button class="tab-item ${state.activeTab === 'tabSchema' ? 'active' : ''}" data-tab="tabSchema">Schema &amp; Tuples</button>
+                  <button class="tab-item ${state.activeTab === 'tabExplainPlan' ? 'active' : ''}" data-tab="tabExplainPlan">EXPLAIN Plan</button>
+                  <button class="tab-item ${state.activeTab === 'tabExplainer' ? 'active' : ''}" data-tab="tabExplainer">Engine Explainer</button>
                 </div>
                 <div class="row-count-tag" id="rowCounterBadge">0 rows</div>
               </div>
 
+              <!-- Stage Tab Panels -->
               <div class="viewer-content">
-                <!-- Tab 1: Live Stepper Data Grid -->
+                
+                <!-- Tab 1: Cathryn Lavery Editorial Vector Diagram -->
+                <div class="tab-pane ${state.activeTab === 'tabDiagram' ? 'active' : ''}" id="tabDiagram">
+                  <div class="editorial-diagram-container" id="editorialDiagramContainer">
+                    ${renderEditorialDiagramSvg(currentProb)}
+                  </div>
+                </div>
+
+                <!-- Tab 2: Live Output Data Grid -->
                 <div class="tab-pane ${state.activeTab === 'tabStepper' ? 'active' : ''}" id="tabStepper">
                   <div class="table-scroll-wrapper" id="stepperTableContainer"></div>
                 </div>
 
-                <!-- Tab 2: Visual Relational Output Diff Grid -->
+                <!-- Tab 3: Visual Relational Output Diff Grid -->
                 <div class="tab-pane ${state.activeTab === 'tabDiff' ? 'active' : ''}" id="tabDiff">
                   <div id="studioDiffContainer" class="studio-diff-container">
                     ${renderDiffContentHtml()}
                   </div>
                 </div>
 
-                <!-- Tab 3: Visual Execution Plan Tree -->
+                <!-- Tab 4: 6-Stage Physical Pipeline Stepper -->
+                <div class="tab-pane ${state.activeTab === 'tabPipeline' ? 'active' : ''}" id="tabPipeline">
+                  <div class="stepper-top" style="padding: 10px 14px 6px 14px;">
+                    <div class="stepper-meta">
+                      <span class="step-counter" id="stepCounterLabel">STEP 1 OF 6</span>
+                      <h3 class="step-heading" id="stepHeadingLabel" style="font-size: 13px;">FROM Clause: Table Scan</h3>
+                    </div>
+                    <div class="stepper-controls">
+                      <button id="btnPrevStep" class="icon-btn" title="Previous Step">◀</button>
+                      <button id="btnPlayPause" class="play-btn"><span id="playBtnText">Play</span></button>
+                      <button id="btnNextStep" class="icon-btn" title="Next Step">▶</button>
+                      <button id="btnResetStep" class="icon-btn" title="Reset Step">↺</button>
+                    </div>
+                  </div>
+
+                  <div class="stepper-track" id="stepperTrack" style="padding: 4px 14px;">
+                    <button class="track-node active" data-step="0"><span class="node-num">01</span><span class="node-name">FROM</span></button>
+                    <div class="track-line"></div>
+                    <button class="track-node" data-step="1"><span class="node-num">02</span><span class="node-name">WHERE</span></button>
+                    <div class="track-line"></div>
+                    <button class="track-node" data-step="2"><span class="node-num">03</span><span class="node-name">GROUP BY</span></button>
+                    <div class="track-line"></div>
+                    <button class="track-node" data-step="3"><span class="node-num">04</span><span class="node-name">HAVING</span></button>
+                    <div class="track-line"></div>
+                    <button class="track-node" data-step="4"><span class="node-num">05</span><span class="node-name">SELECT</span></button>
+                    <div class="track-line"></div>
+                    <button class="track-node" data-step="5"><span class="node-num">06</span><span class="node-name">ORDER/LIMIT</span></button>
+                  </div>
+
+                  <div class="step-explanation" id="stepExplanationText" style="margin: 0 14px 10px 14px; font-size: 11.5px;">
+                    Loading table buffer into memory.
+                  </div>
+
+                  <div id="pipelineStepResultsGrid" style="overflow-x: auto; max-height: 240px; padding: 0 14px 14px 14px;"></div>
+                </div>
+
+                <!-- Tab 5: Real Schema Tables & Live Sample Tuples -->
+                <div class="tab-pane ${state.activeTab === 'tabSchema' ? 'active' : ''}" id="tabSchema">
+                  <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 6px;">
+                      <div>
+                        <strong style="font-size: 13px; color: var(--text-primary);">Table: ${schema.name}</strong>
+                        <span style="font-size: 11px; color: var(--text-muted); margin-left: 8px;">${schema.description}</span>
+                      </div>
+                      <span class="status-pill" style="font-size: 10px;">${rawRows.length} Total Tuples</span>
+                    </div>
+
+                    <!-- Column definitions table -->
+                    <div style="overflow-x: auto; border: 1px solid var(--border-default); border-radius: 6px;">
+                      <table class="studio-diff-table" style="font-size: 11px;">
+                        <thead>
+                          <tr>
+                            <th>Column Name</th>
+                            <th>Data Type</th>
+                            <th>Key Constraint</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${schema.columns.map(c => `
+                            <tr>
+                              <td><strong>${c.name}</strong></td>
+                              <td><span class="status-pill" style="font-size: 10px;">${c.type}</span></td>
+                              <td>${c.key ? (`<span class="status-pill status-pill-accent" style="font-size: 10px;">${c.key}</span>`) : '<span style="color:var(--text-muted);">-</span>'}</td>
+                              <td>
+                                <button class="col-pill-btn" onclick="window.StudioWorkbenchEngine.insertColumnName('${c.name}')">+ Insert</button>
+                              </td>
+                            </tr>
+                          `).join('')}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <!-- Live Sample Tuples Grid -->
+                    <div>
+                      <div style="font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 4px;">Live Sample Tuples (${sampleRows.length} of ${rawRows.length} rows):</div>
+                      <div style="overflow-x: auto; border: 1px solid var(--border-default); border-radius: 6px; max-height: 220px;">
+                        <table class="studio-diff-table" style="font-size: 10.5px;">
+                          <thead>
+                            <tr>
+                              ${schema.columns.map(c => `<th>${c.name}</th>`).join('')}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            ${sampleRows.map(r => `
+                              <tr>
+                                ${schema.columns.map(c => `<td>${r[c.name] !== undefined ? String(r[c.name]) : '<em style="color:#a1a1aa">NULL</em>'}</td>`).join('')}
+                              </tr>
+                            `).join('')}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tab 6: Visual Execution Plan Tree -->
                 <div class="tab-pane ${state.activeTab === 'tabExplainPlan' ? 'active' : ''}" id="tabExplainPlan">
                   <div class="explain-plan-tree-container" id="explainPlanTreeContainer"></div>
                 </div>
 
-                <!-- Tab 4: Deep Under-the-Hood Engine Explainer -->
+                <!-- Tab 7: Deep Engine Explainer -->
                 <div class="tab-pane ${state.activeTab === 'tabExplainer' ? 'active' : ''}" id="tabExplainer">
-                  <div id="studioExplainerContainer" style="padding: 16px; overflow-y: auto; max-height: 480px;">
+                  <div id="studioExplainerContainer" style="padding: 14px; overflow-y: auto; max-height: 480px;">
                     ${renderEngineExplainerHtml(currentProb)}
                   </div>
                 </div>
+
               </div>
             </div>
 
@@ -686,6 +647,939 @@ window.StudioWorkbenchEngine = (function() {
   }
 
   // ---------------------------------------------------------------------------
+  // CATHRYN LAVERY EDITORIAL DIAGRAM ENGINE (10 BESPOKE TOPIC ARCHITECTURES)
+  // Strict 4px Grid · Hairlines #e4e4e7 · Single Focal Accent · Orthogonal Vectors
+  // Zero Emojis · Zero Drop Shadows · Zero Mermaid Slop · High Typographic Contrast
+  // ---------------------------------------------------------------------------
+  function renderEditorialDiagramSvg(prob) {
+    var seq = prob.topicSeq || '01';
+    var accentColor = 
+      seq === '01' ? '#2563eb' :
+      seq === '02' ? '#dc2626' :
+      seq === '03' ? '#d97706' :
+      seq === '04' ? '#7c3aed' :
+      seq === '05' ? '#0284c7' :
+      seq === '06' ? '#059669' :
+      seq === '07' ? '#4f46e5' :
+      seq === '08' ? '#ea580c' :
+      seq === '09' ? '#0891b2' : '#9333ea';
+
+    var inner = '';
+    var footerNote = '';
+
+    if (seq === '01') {
+      inner = getTopic01Svg(prob, accentColor);
+      footerNote = 'Physical projection isolates required column vectors directly into CPU registers, pruning unreferenced fields to eliminate disk/bus bandwidth overhead.';
+    } else if (seq === '02') {
+      inner = getTopic02Svg(prob, accentColor);
+      footerNote = 'SARGable predicates enable B-Tree index traversal (O(log N)), cutting off full heap scans before memory allocation.';
+    } else if (seq === '03') {
+      inner = getTopic03Svg(prob, accentColor);
+      footerNote = 'Top-N heap optimization maintains a bounded in-memory priority queue of size K, avoiding expensive disk-based external merge sorts.';
+    } else if (seq === '04') {
+      inner = getTopic04Svg(prob, accentColor);
+      footerNote = 'Vector aggregators condense N relational tuples down to 1 scalar summary row in a single sequential pass over columnar memory.';
+    } else if (seq === '05') {
+      inner = getTopic05Svg(prob, accentColor);
+      footerNote = 'GROUP BY constructs in-memory hash buckets; HAVING executes post-aggregation filtering on bucket aggregates before emission.';
+    } else if (seq === '06') {
+      inner = getTopic06Svg(prob, accentColor);
+      footerNote = 'Hash joins hash the smaller relation into an in-memory hash table, then probe it with the outer relation in linear O(N + M) time.';
+    } else if (seq === '07') {
+      inner = getTopic07Svg(prob, accentColor);
+      footerNote = 'Self-joins project a table against itself; directional inequality predicates (A.id < B.id) eliminate duplicate symmetric permutations.';
+    } else if (seq === '08') {
+      inner = getTopic08Svg(prob, accentColor);
+      footerNote = 'CASE expressions evaluate conditions in strict sequential order; the first branch evaluating to TRUE short-circuits remaining evaluations.';
+    } else if (seq === '09') {
+      inner = getTopic09Svg(prob, accentColor);
+      footerNote = 'Common Table Expressions provide clean modular DAG composition, materialized in ephemeral memory buffers or inlined by modern cost-based optimizers.';
+    } else {
+      inner = getTopic10Svg(prob, accentColor);
+      footerNote = 'Window functions calculate peer aggregations over defined row frames without collapsing the underlying relational tuples.';
+    }
+
+    return `
+      <div style="width: 100%; height: 100%; display: flex; flex-direction: column; background: var(--bg-surface, #ffffff); border-radius: 6px; overflow: hidden;">
+        
+        <!-- Editorial Header Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border-default, #e4e4e7); background: var(--bg-card-subtle, #fcfcfb);">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; color: ${accentColor}; text-transform: uppercase; letter-spacing: 0.5px;">
+              TOPIC ${prob.topicSeq} ARCHITECTURE // ${prob.tierName ? prob.tierName.toUpperCase() : 'STANDARD'}
+            </span>
+            <span style="color: var(--border-default);">&bull;</span>
+            <span style="font-size: 11px; font-weight: 600; color: var(--text-primary);">${prob.title}</span>
+          </div>
+          <span style="font-size: 9.5px; font-family: var(--font-mono, monospace); color: var(--text-muted); text-transform: uppercase;">
+            CATHRYN LAVERY EDITORIAL DESIGN SYSTEM
+          </span>
+        </div>
+
+        <!-- Inline Responsive SVG Vector -->
+        <div style="flex: 1; padding: 12px; display: flex; align-items: center; justify-content: center; min-height: 330px;">
+          <svg viewBox="0 0 740 330" style="width: 100%; height: auto; max-height: 370px;" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrowHead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="${accentColor}" />
+              </marker>
+              <marker id="arrowMuted" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#71717a" />
+              </marker>
+              <marker id="arrowGreen" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#059669" />
+              </marker>
+              <marker id="arrowRed" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#dc2626" />
+              </marker>
+              <pattern id="diagGridDots" width="20" height="20" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1" fill="#e4e4e7" opacity="0.6" />
+              </pattern>
+            </defs>
+
+            <!-- Grid Backdrop -->
+            <rect width="740" height="330" fill="url(#diagGridDots)" rx="6" />
+
+            ${inner}
+          </svg>
+        </div>
+
+        <!-- Editorial Caption Footer -->
+        <div style="padding: 8px 14px; border-top: 1px solid var(--border-default, #e4e4e7); background: var(--bg-card-subtle, #fcfcfb); font-size: 11px; color: var(--text-secondary); display: flex; justify-content: space-between; align-items: center;">
+          <span><strong>Physical Execution:</strong> ${footerNote}</span>
+          <span style="font-family: var(--font-mono, monospace); font-size: 10px; color: var(--text-muted);">LATENCY ~0.8ms</span>
+        </div>
+      </div>
+    `;
+  }
+
+  // ---------------------------------------------------------------------------
+  // BESPOKE TOPIC SVG GENERATORS
+  // ---------------------------------------------------------------------------
+  
+  // Topic 01: SELECT & FROM - Column Pruning & Projection Funnel
+  function getTopic01Svg(prob, accent) {
+    var table = prob.targetTable || 'CITY';
+    var cols = table === 'CITY' 
+      ? ['ID (PK)', 'NAME', 'COUNTRYCODE', 'DISTRICT', 'POPULATION']
+      : ['id (PK)', 'first_name', 'department', 'salary', 'hire_date'];
+    
+    var colPills = cols.map(function(c, i) {
+      var isSelected = i === 1 || i === 4;
+      return `
+        <rect x="12" y="${62 + i * 36}" width="176" height="28" rx="4" fill="${isSelected ? 'rgba(37,99,235,0.06)' : '#fafafa'}" stroke="${isSelected ? accent : '#e4e4e7'}" stroke-width="${isSelected ? '1.4' : '1'}" />
+        <text x="20" y="${80 + i * 36}" font-family="ui-monospace, monospace" font-size="9.5" font-weight="${isSelected ? '700' : '500'}" fill="${isSelected ? accent : '#18181b'}">
+          ${c} ${isSelected ? '★' : ''}
+        </text>
+      `;
+    }).join('');
+
+    return `
+      <!-- Card 1: Source Table Column Vectors -->
+      <g transform="translate(24, 28)">
+        <rect width="200" height="274" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
+        <rect width="200" height="30" rx="6" fill="#f4f4f5" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#18181b">TABLE: ${table}</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#71717a">COLUMN SCAN // DISK</text>
+        ${colPills}
+        <text x="100" y="260" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">5 Column Vectors In-Memory</text>
+      </g>
+
+      <!-- Connectors: Selected Columns to Projection Funnel -->
+      <path d="M 224 112 H 264" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+      <path d="M 224 220 H 264" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+      <path d="M 224 76 H 248 V 60 H 264" fill="none" stroke="#a1a1aa" stroke-dasharray="3 3" stroke-width="1" />
+      <path d="M 224 148 H 248 V 160 H 264" fill="none" stroke="#a1a1aa" stroke-dasharray="3 3" stroke-width="1" />
+
+      <!-- Card 2: Column Projection Gate -->
+      <g transform="translate(268, 48)">
+        <rect width="192" height="234" rx="6" fill="#ffffff" stroke="${accent}" stroke-width="1.5" />
+        <rect width="192" height="30" rx="6" fill="${accent}" />
+        <text x="96" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#ffffff">PROJECTION FUNNEL</text>
+        <text x="14" y="52" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="${accent}">SELECT CLAUSE FILTER</text>
+        
+        <rect x="12" y="62" width="168" height="46" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="20" y="80" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="#18181b">ACTIVE REGISTERS</text>
+        <text x="20" y="96" font-family="ui-monospace, monospace" font-size="8.5" fill="${accent}">${cols[1]}, ${cols[4]}</text>
+
+        <rect x="12" y="118" width="168" height="46" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="20" y="136" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="#71717a">PRUNED COLUMNS</text>
+        <text x="20" y="152" font-family="ui-monospace, monospace" font-size="8.5" fill="#a1a1aa">Bypassed (Zero CPU Copy)</text>
+
+        <rect x="12" y="176" width="168" height="36" rx="4" fill="rgba(37,99,235,0.06)" />
+        <text x="96" y="198" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="${accent}">FAST-PATH EMISSION</text>
+      </g>
+
+      <!-- Connector: Projection to Result -->
+      <path d="M 460 165 H 496" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 3: Materialized Result Relation -->
+      <g transform="translate(500, 28)">
+        <rect width="216" height="274" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.4" />
+        <rect width="216" height="30" rx="6" fill="rgba(16,185,129,0.12)" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">RESULT SET (EMITTED)</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#059669">${prob.expectedRowCount || 5} TUPLES PROJECTED</text>
+        
+        <rect x="12" y="62" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
+        <text x="20" y="79" font-family="ui-monospace, monospace" font-size="9" font-weight="600" fill="#047857">1 &bull; Scottsdale | 202,705</text>
+
+        <rect x="12" y="96" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
+        <text x="20" y="113" font-family="ui-monospace, monospace" font-size="9" font-weight="600" fill="#047857">2 &bull; Corona | 124,966</text>
+
+        <rect x="12" y="130" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
+        <text x="20" y="147" font-family="ui-monospace, monospace" font-size="9" font-weight="600" fill="#047857">3 &bull; Concord | 121,780</text>
+
+        <rect x="12" y="164" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
+        <text x="20" y="181" font-family="ui-monospace, monospace" font-size="9" font-weight="600" fill="#047857">4 &bull; Cedar Rapids | 120,758</text>
+
+        <rect x="12" y="198" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
+        <text x="20" y="215" font-family="ui-monospace, monospace" font-size="9" font-weight="600" fill="#047857">5 &bull; Coral Springs | 117,549</text>
+
+        <rect x="12" y="234" width="192" height="28" rx="4" fill="#f4f4f5" />
+        <text x="108" y="252" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="#059669">✓ 100% RELATIONAL MATCH</text>
+      </g>
+    `;
+  }
+
+  // Topic 02: WHERE - SARGable Predicate Barrier Gate
+  function getTopic02Svg(prob, accent) {
+    return `
+      <!-- Card 1: Input Tuples Stream -->
+      <g transform="translate(24, 28)">
+        <rect width="190" height="274" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
+        <rect width="190" height="30" rx="6" fill="#f4f4f5" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#18181b">INPUT TUPLE STREAM</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#71717a">PHYSICAL HEAP SCAN</text>
+        
+        <rect x="10" y="62" width="170" height="34" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="78" font-family="ui-monospace, monospace" font-size="9.5" font-weight="600" fill="#18181b">Tuple 1: pop = 202,705</text>
+        <text x="18" y="90" font-family="ui-monospace, monospace" font-size="8" fill="#059669">Satisfies &gt; 100k</text>
+
+        <rect x="10" y="106" width="170" height="34" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="122" font-family="ui-monospace, monospace" font-size="9.5" font-weight="600" fill="#18181b">Tuple 2: pop = 85,000</text>
+        <text x="18" y="134" font-family="ui-monospace, monospace" font-size="8" fill="#dc2626">Fails Predicate</text>
+
+        <rect x="10" y="150" width="170" height="34" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="166" font-family="ui-monospace, monospace" font-size="9.5" font-weight="600" fill="#18181b">Tuple 3: pop = 124,966</text>
+        <text x="18" y="178" font-family="ui-monospace, monospace" font-size="8" fill="#059669">Satisfies &gt; 100k</text>
+
+        <rect x="10" y="194" width="170" height="34" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="210" font-family="ui-monospace, monospace" font-size="9.5" font-weight="600" fill="#18181b">Tuple 4: pop = 42,100</text>
+        <text x="18" y="222" font-family="ui-monospace, monospace" font-size="8" fill="#dc2626">Fails Predicate</text>
+
+        <text x="95" y="260" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">Unfiltered Tuple Buffer</text>
+      </g>
+
+      <path d="M 214 165 H 244" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 2: Predicate Evaluator Gate -->
+      <g transform="translate(248, 28)">
+        <rect width="216" height="274" rx="6" fill="#ffffff" stroke="${accent}" stroke-width="1.5" />
+        <rect width="216" height="30" rx="6" fill="${accent}" />
+        <text x="108" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#ffffff">WHERE PREDICATE GATE</text>
+        <text x="14" y="48" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="${accent}">BOOLEAN EVALUATION // 3VL</text>
+        
+        <rect x="12" y="62" width="192" height="42" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="20" y="78" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="#18181b">SARGABLE CONDITION</text>
+        <text x="20" y="94" font-family="ui-monospace, monospace" font-size="8.5" fill="${accent}">POPULATION &gt; 100,000</text>
+
+        <rect x="12" y="114" width="192" height="64" rx="4" fill="rgba(5,150,105,0.06)" stroke="rgba(5,150,105,0.3)" stroke-width="1" />
+        <text x="20" y="132" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="#047857">TRUE CHANNEL &rarr; PASS</text>
+        <text x="20" y="148" font-family="ui-monospace, monospace" font-size="8.5" fill="#059669">Streamed to Result Buffer</text>
+        <text x="20" y="164" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Index Seek: O(log N)</text>
+
+        <rect x="12" y="188" width="192" height="52" rx="4" fill="rgba(220,38,38,0.06)" stroke="rgba(220,38,38,0.3)" stroke-width="1" />
+        <text x="20" y="206" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="#dc2626">FALSE/NULL &rarr; SINK</text>
+        <text x="20" y="222" font-family="ui-monospace, monospace" font-size="8.5" fill="#dc2626">Zero Memory Spill</text>
+
+        <text x="108" y="260" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">Three-Valued Logic Engine</text>
+      </g>
+
+      <path d="M 464 146 H 496" fill="none" stroke="#059669" stroke-width="1.8" marker-end="url(#arrowGreen)" />
+      <path d="M 464 214 H 496" fill="none" stroke="#dc2626" stroke-width="1.8" marker-end="url(#arrowRed)" />
+
+      <!-- Card 3a: Qualifying Output Buffer -->
+      <g transform="translate(500, 28)">
+        <rect width="216" height="136" rx="6" fill="#ffffff" stroke="#059669" stroke-width="1.4" />
+        <rect width="216" height="28" rx="6" fill="rgba(5,150,105,0.12)" />
+        <text x="12" y="19" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#047857">QUALIFYING BUFFER</text>
+        <text x="12" y="44" font-family="ui-monospace, monospace" font-size="8.5" fill="#059669">TUPLES PASSED (5)</text>
+        
+        <rect x="10" y="52" width="196" height="22" rx="3" fill="rgba(5,150,105,0.05)" />
+        <text x="16" y="67" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">1813 &bull; Scottsdale (202k)</text>
+
+        <rect x="10" y="78" width="196" height="22" rx="3" fill="rgba(5,150,105,0.05)" />
+        <text x="16" y="93" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">1814 &bull; Corona (124k)</text>
+
+        <text x="108" y="122" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#059669">✓ 100% SELECTIVITY MATCH</text>
+      </g>
+
+      <!-- Card 3b: Pruned Discard Sink -->
+      <g transform="translate(500, 176)">
+        <rect width="216" height="126" rx="6" fill="#ffffff" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="3 3" />
+        <rect width="216" height="28" rx="6" fill="rgba(220,38,38,0.08)" />
+        <text x="12" y="19" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#dc2626">DISCARDED SINK</text>
+        <text x="12" y="44" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">REJECTED TUPLES (3)</text>
+        
+        <rect x="10" y="52" width="196" height="22" rx="3" fill="#fcfcfb" />
+        <text x="16" y="67" font-family="ui-monospace, monospace" font-size="8.5" fill="#a1a1aa">1888 &bull; Small Town (85k)</text>
+
+        <text x="108" y="106" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#dc2626">PRUNED FROM PIPELINE</text>
+      </g>
+    `;
+  }
+
+  // Topic 03: ORDER BY & LIMIT - Top-N Priority Queue Heap & Keyset Fence
+  function getTopic03Svg(prob, accent) {
+    return `
+      <!-- Card 1: Unsorted Tuple Stream -->
+      <g transform="translate(24, 28)">
+        <rect width="190" height="274" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
+        <rect width="190" height="30" rx="6" fill="#f4f4f5" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#18181b">UNSORTED STREAM</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#71717a">ARBITRARY HEAP ORDER</text>
+        
+        <rect x="10" y="62" width="170" height="26" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="79" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">R1: Val = 82,000</text>
+
+        <rect x="10" y="94" width="170" height="26" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="111" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">R2: Val = 195,000</text>
+
+        <rect x="10" y="126" width="170" height="26" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="143" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">R3: Val = 61,000</text>
+
+        <rect x="10" y="158" width="170" height="26" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="175" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">R4: Val = 142,000</text>
+
+        <rect x="10" y="190" width="170" height="26" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="207" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">R5: Val = 110,000</text>
+
+        <text x="95" y="260" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">N Tuples In Stream</text>
+      </g>
+
+      <path d="M 214 165 H 244" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 2: Top-N Heap Comparator Engine -->
+      <g transform="translate(248, 28)">
+        <rect width="216" height="274" rx="6" fill="#ffffff" stroke="${accent}" stroke-width="1.5" />
+        <rect width="216" height="30" rx="6" fill="${accent}" />
+        <text x="108" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#ffffff">TOP-N PRIORITY QUEUE</text>
+        <text x="14" y="48" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="${accent}">QUICKSORT &amp; HEAP FENCE</text>
+        
+        <rect x="12" y="62" width="192" height="42" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="20" y="78" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="#18181b">PRIMARY COMPARATOR</text>
+        <text x="20" y="94" font-family="ui-monospace, monospace" font-size="8.5" fill="${accent}">ORDER BY val DESC</text>
+
+        <rect x="12" y="112" width="192" height="38" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="20" y="128" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="#18181b">TIE-BREAKER KEY</text>
+        <text x="20" y="142" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">id ASC (Deterministic)</text>
+
+        <rect x="12" y="158" width="192" height="52" rx="4" fill="rgba(217,119,6,0.08)" stroke="${accent}" stroke-width="1.4" stroke-dasharray="4 3" />
+        <text x="108" y="178" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="${accent}">KEYSET FENCE: LIMIT 5</text>
+        <text x="108" y="194" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Discarding Rank &gt; 5 Immediately</text>
+
+        <rect x="12" y="220" width="192" height="28" rx="4" fill="#f4f4f5" />
+        <text x="108" y="238" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#18181b">ZERO DISK SPILL // RAM</text>
+      </g>
+
+      <path d="M 464 165 H 496" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 3: Top-K Ordered Result -->
+      <g transform="translate(500, 28)">
+        <rect width="216" height="274" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.4" />
+        <rect width="216" height="30" rx="6" fill="rgba(16,185,129,0.12)" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">BOUNDED TOP-K RESULT</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#059669">5 ORDERED TUPLES</text>
+        
+        <rect x="10" y="62" width="196" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="18" y="79" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">1 &bull; 195,000 (Rank #1)</text>
+
+        <rect x="10" y="94" width="196" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="18" y="111" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">2 &bull; 142,000 (Rank #2)</text>
+
+        <rect x="10" y="126" width="196" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="18" y="143" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">3 &bull; 110,000 (Rank #3)</text>
+
+        <rect x="10" y="158" width="196" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="18" y="175" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">4 &bull; 82,000 (Rank #4)</text>
+
+        <rect x="10" y="190" width="196" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="18" y="207" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">5 &bull; 61,000 (Rank #5)</text>
+
+        <rect x="10" y="230" width="196" height="28" rx="4" fill="#f4f4f5" />
+        <text x="108" y="248" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#059669">✓ PERFECT OFFSET ALIGNMENT</text>
+      </g>
+    `;
+  }
+
+  // Topic 04: AGGREGATES - Multi-Row Vector Reducer Condenser
+  function getTopic04Svg(prob, accent) {
+    return `
+      <!-- Card 1: Multi-Row Column Vector -->
+      <g transform="translate(24, 28)">
+        <rect width="190" height="274" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
+        <rect width="190" height="30" rx="6" fill="#f4f4f5" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#18181b">COLUMN VECTORS (N)</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#71717a">N TUPLES IN COLUMN</text>
+        
+        <rect x="10" y="62" width="170" height="24" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="78" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">Row 1: 90,000</text>
+
+        <rect x="10" y="92" width="170" height="24" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="108" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">Row 2: 120,000</text>
+
+        <rect x="10" y="122" width="170" height="24" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="138" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">Row 3: 75,000</text>
+
+        <rect x="10" y="152" width="170" height="24" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="168" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">Row 4: 110,000</text>
+
+        <rect x="10" y="182" width="170" height="24" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="198" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">Row 5: 95,000</text>
+
+        <text x="95" y="260" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">Streaming to Accumulator</text>
+      </g>
+
+      <path d="M 214 74 H 234 V 140 H 250" fill="none" stroke="${accent}" stroke-width="1.4" />
+      <path d="M 214 104 H 242 V 150 H 250" fill="none" stroke="${accent}" stroke-width="1.4" />
+      <path d="M 214 134 H 250" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+      <path d="M 214 164 H 242 V 154 H 250" fill="none" stroke="${accent}" stroke-width="1.4" />
+      <path d="M 214 194 H 234 V 160 H 250" fill="none" stroke="${accent}" stroke-width="1.4" />
+
+      <!-- Card 2: Reduction Kernel -->
+      <g transform="translate(254, 48)">
+        <rect width="210" height="234" rx="6" fill="#ffffff" stroke="${accent}" stroke-width="1.5" />
+        <rect width="210" height="30" rx="6" fill="${accent}" />
+        <text x="105" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#ffffff">VECTOR REDUCTION KERNEL</text>
+        <text x="14" y="52" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="${accent}">MATHEMATICAL ACCUMULATORS</text>
+        
+        <rect x="12" y="62" width="186" height="36" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="20" y="78" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#18181b">COUNT(*) &rarr; Σ 1</text>
+        <text x="20" y="90" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">N = 5 Tuples</text>
+
+        <rect x="12" y="104" width="186" height="36" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="20" y="120" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#18181b">SUM(col) &rarr; Σ x_i</text>
+        <text x="20" y="132" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Total = 490,000</text>
+
+        <rect x="12" y="146" width="186" height="36" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="20" y="162" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#18181b">AVG(col) &rarr; Σ x_i / N</text>
+        <text x="20" y="174" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Mean = 98,000.00</text>
+
+        <text x="105" y="210" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="${accent}">1 PASS // CONDENSED TO 1 ROW</text>
+      </g>
+
+      <path d="M 464 165 H 496" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 3: 1-Row Summary Vector -->
+      <g transform="translate(500, 74)">
+        <rect width="216" height="182" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.4" />
+        <rect width="216" height="30" rx="6" fill="rgba(16,185,129,0.12)" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">SCALAR RESULT (1 ROW)</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#059669">N &rarr; 1 CONDENSATION</text>
+        
+        <rect x="10" y="60" width="196" height="28" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="18" y="78" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="#047857">COUNT: 5</text>
+
+        <rect x="10" y="94" width="196" height="28" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="18" y="112" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700" fill="#047857">AVG: 98,000.00</text>
+
+        <rect x="10" y="132" width="196" height="28" rx="4" fill="#f4f4f5" />
+        <text x="108" y="150" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#059669">✓ SINGLE TUPLE EMISSION</text>
+      </g>
+    `;
+  }
+
+  // Topic 05: GROUP BY & HAVING - Hash Bucketing & HAVING Barrier Gate
+  function getTopic05Svg(prob, accent) {
+    return `
+      <!-- Card 1: Input Tuples with Keys -->
+      <g transform="translate(24, 28)">
+        <rect width="180" height="274" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
+        <rect width="180" height="30" rx="6" fill="#f4f4f5" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#18181b">UNGROUPED STREAM</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#71717a">STREAMING TUPLES</text>
+        
+        <rect x="10" y="62" width="160" height="26" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="16" y="79" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">T1 &bull; Dept: Eng</text>
+
+        <rect x="10" y="94" width="160" height="26" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="16" y="111" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">T2 &bull; Dept: Sales</text>
+
+        <rect x="10" y="126" width="160" height="26" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="16" y="143" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">T3 &bull; Dept: Eng</text>
+
+        <rect x="10" y="158" width="160" height="26" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="16" y="175" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">T4 &bull; Dept: HR</text>
+
+        <rect x="10" y="190" width="160" height="26" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="16" y="207" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">T5 &bull; Dept: Sales</text>
+
+        <text x="90" y="260" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">Routed by Hash Key</text>
+      </g>
+
+      <path d="M 204 165 H 234" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 2: Hash Partitioning & HAVING Gate -->
+      <g transform="translate(238, 28)">
+        <rect width="230" height="274" rx="6" fill="#ffffff" stroke="${accent}" stroke-width="1.5" />
+        <rect width="230" height="30" rx="6" fill="${accent}" />
+        <text x="115" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#ffffff">HASH BUCKET PARTITIONS</text>
+        <text x="14" y="48" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="${accent}">GROUP BY + HAVING GATE</text>
+        
+        <rect x="10" y="58" width="210" height="42" rx="4" fill="rgba(2,132,199,0.06)" stroke="${accent}" stroke-width="1.2" />
+        <text x="18" y="74" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#0369a1">BUCKET A // 'Engineering'</text>
+        <text x="18" y="90" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Count: 2 | Sum: 210,000</text>
+
+        <rect x="10" y="106" width="210" height="42" rx="4" fill="rgba(2,132,199,0.06)" stroke="${accent}" stroke-width="1.2" />
+        <text x="18" y="122" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#0369a1">BUCKET B // 'Sales'</text>
+        <text x="18" y="138" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Count: 2 | Sum: 185,000</text>
+
+        <rect x="10" y="154" width="210" height="38" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="170" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#71717a">BUCKET C // 'HR'</text>
+        <text x="18" y="184" font-family="ui-monospace, monospace" font-size="8" fill="#dc2626">Count: 1 &rarr; Fails HAVING &gt; 1</text>
+
+        <rect x="10" y="198" width="210" height="36" rx="4" fill="rgba(220,38,38,0.06)" stroke="#dc2626" stroke-width="1" stroke-dasharray="3 3" />
+        <text x="115" y="215" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#dc2626">HAVING COUNT(*) &gt; 1 BARRIER</text>
+        <text x="115" y="227" text-anchor="middle" font-family="ui-monospace, monospace" font-size="7.5" fill="#71717a">Bucket C Dropped Post-Aggregate</text>
+
+        <text x="115" y="258" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">In-Memory Hash Buckets</text>
+      </g>
+
+      <path d="M 468 128 H 500" fill="none" stroke="#059669" stroke-width="1.8" marker-end="url(#arrowGreen)" />
+
+      <!-- Card 3: Qualified Emitted Groups -->
+      <g transform="translate(504, 50)">
+        <rect width="212" height="230" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.4" />
+        <rect width="212" height="30" rx="6" fill="rgba(16,185,129,0.12)" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">EMITTED GROUPS</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#059669">2 GROUPS QUALIFIED</text>
+        
+        <rect x="10" y="60" width="192" height="36" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="18" y="77" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">1 &bull; Engineering</text>
+        <text x="18" y="89" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Count: 2 | Sum: 210k</text>
+
+        <rect x="10" y="104" width="192" height="36" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="18" y="121" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">2 &bull; Sales</text>
+        <text x="18" y="133" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Count: 2 | Sum: 185k</text>
+
+        <rect x="10" y="152" width="192" height="28" rx="4" fill="#f4f4f5" />
+        <text x="106" y="170" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#059669">✓ 100% GROUP ALIGNMENT</text>
+      </g>
+    `;
+  }
+
+  // Topic 06: JOINS - Relational Hash Join Matrix & NULL Padding
+  function getTopic06Svg(prob, accent) {
+    return `
+      <!-- Card 1a: Build Table -->
+      <g transform="translate(24, 28)">
+        <rect width="180" height="120" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
+        <rect width="180" height="26" rx="6" fill="#f4f4f5" />
+        <text x="10" y="18" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#18181b">BUILD TABLE: Orders (R)</text>
+        
+        <rect x="8" y="34" width="164" height="20" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="48" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">O101 &bull; CustID: 1</text>
+
+        <rect x="8" y="58" width="164" height="20" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="72" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">O102 &bull; CustID: 2</text>
+
+        <rect x="8" y="82" width="164" height="20" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="96" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">O103 &bull; CustID: 1</text>
+      </g>
+
+      <!-- Card 1b: Probe Table -->
+      <g transform="translate(24, 164)">
+        <rect width="180" height="138" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
+        <rect width="180" height="26" rx="6" fill="#f4f4f5" />
+        <text x="10" y="18" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#18181b">PROBE: Customers (S)</text>
+        
+        <rect x="8" y="34" width="164" height="20" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="48" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">C1 &bull; Alice (Match)</text>
+
+        <rect x="8" y="58" width="164" height="20" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="72" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">C2 &bull; Bob (Match)</text>
+
+        <rect x="8" y="82" width="164" height="20" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="96" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">C3 &bull; Carol (No Orders)</text>
+
+        <text x="90" y="126" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Probes Build Hash Table</text>
+      </g>
+
+      <path d="M 204 88 H 234" fill="none" stroke="${accent}" stroke-width="1.4" marker-end="url(#arrowHead)" />
+      <path d="M 204 220 H 234" fill="none" stroke="${accent}" stroke-width="1.4" marker-end="url(#arrowHead)" />
+
+      <!-- Card 2: Hash Match & Join Operator -->
+      <g transform="translate(238, 28)">
+        <rect width="230" height="274" rx="6" fill="#ffffff" stroke="${accent}" stroke-width="1.5" />
+        <rect width="230" height="30" rx="6" fill="${accent}" />
+        <text x="115" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#ffffff">RELATIONAL HASH MATCH</text>
+        <text x="14" y="48" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="${accent}">ON R.customer_id = S.id</text>
+        
+        <rect x="10" y="58" width="210" height="48" rx="4" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="1.2" />
+        <text x="18" y="76" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">MATCH: C1 &harr; O101, O103</text>
+        <text x="18" y="92" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Hash Key Match &rarr; Emitted</text>
+
+        <rect x="10" y="114" width="210" height="48" rx="4" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="1.2" />
+        <text x="18" y="132" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">MATCH: C2 &harr; O102</text>
+        <text x="18" y="148" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Hash Key Match &rarr; Emitted</text>
+
+        <rect x="10" y="170" width="210" height="48" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="188" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#dc2626">UNMATCHED: C3 &harr; NULL</text>
+        <text x="18" y="204" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">LEFT JOIN Padded / INNER Dropped</text>
+
+        <text x="115" y="258" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">Linear Time: O(N + M)</text>
+      </g>
+
+      <path d="M 468 165 H 500" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 3: Combined Relational Output -->
+      <g transform="translate(504, 28)">
+        <rect width="212" height="274" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.4" />
+        <rect width="212" height="30" rx="6" fill="rgba(16,185,129,0.12)" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">JOINED RELATION</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#059669">COMPOSITE TUPLES</text>
+        
+        <rect x="10" y="60" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="77" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">O101 | C1 (Alice)</text>
+
+        <rect x="10" y="94" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="111" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">O102 | C2 (Bob)</text>
+
+        <rect x="10" y="128" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="145" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">O103 | C1 (Alice)</text>
+
+        <rect x="10" y="162" width="192" height="26" rx="4" fill="#fafafa" />
+        <text x="16" y="179" font-family="ui-monospace, monospace" font-size="8.5" fill="#a1a1aa">NULL | C3 (Carol)</text>
+
+        <rect x="10" y="230" width="192" height="28" rx="4" fill="#f4f4f5" />
+        <text x="106" y="248" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#059669">✓ 100% TUPLE JOINED</text>
+      </g>
+    `;
+  }
+
+  // Topic 07: ADVANCED JOINS - Self-Join Coordinate Matrix & Reflection
+  function getTopic07Svg(prob, accent) {
+    return `
+      <!-- Card 1: Self Relation Inputs -->
+      <g transform="translate(24, 28)">
+        <rect width="180" height="274" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
+        <rect width="180" height="30" rx="6" fill="#f4f4f5" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#18181b">SELF RELATION (T &times; T)</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#71717a">CARTESIAN PRODUCT</text>
+        
+        <rect x="10" y="62" width="160" height="42" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="80" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#18181b">ALIAS A</text>
+        <text x="18" y="94" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Tuples {1, 2, 3, 4}</text>
+
+        <rect x="10" y="118" width="160" height="42" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="136" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#18181b">ALIAS B</text>
+        <text x="18" y="150" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Tuples {1, 2, 3, 4}</text>
+
+        <text x="90" y="260" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">N &times; N Permutations</text>
+      </g>
+
+      <path d="M 204 165 H 234" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 2: Symmetric Reflection Matrix -->
+      <g transform="translate(238, 28)">
+        <rect width="230" height="274" rx="6" fill="#ffffff" stroke="${accent}" stroke-width="1.5" />
+        <rect width="230" height="30" rx="6" fill="${accent}" />
+        <text x="115" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#ffffff">COORDINATE MATRIX (X &le; Y)</text>
+        <text x="14" y="48" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="${accent}">REFLECTION PRUNING</text>
+        
+        <g transform="translate(30, 64)">
+          <rect x="0" y="0" width="48" height="38" fill="rgba(79,70,229,0.12)" stroke="#e4e4e7" />
+          <text x="24" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#4f46e5">(1,1)</text>
+
+          <rect x="54" y="0" width="48" height="38" fill="rgba(79,70,229,0.12)" stroke="#e4e4e7" />
+          <text x="78" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#4f46e5">(1,2)</text>
+
+          <rect x="108" y="0" width="48" height="38" fill="rgba(79,70,229,0.12)" stroke="#e4e4e7" />
+          <text x="132" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#4f46e5">(1,3)</text>
+
+          <rect x="0" y="44" width="48" height="38" fill="#f4f4f5" stroke="#e4e4e7" stroke-dasharray="2 2" />
+          <text x="24" y="68" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#a1a1aa">Pruned</text>
+
+          <rect x="54" y="44" width="48" height="38" fill="rgba(79,70,229,0.12)" stroke="#e4e4e7" />
+          <text x="78" y="68" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#4f46e5">(2,2)</text>
+
+          <rect x="108" y="44" width="48" height="38" fill="rgba(79,70,229,0.12)" stroke="#e4e4e7" />
+          <text x="132" y="68" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#4f46e5">(2,3)</text>
+
+          <rect x="0" y="88" width="48" height="38" fill="#f4f4f5" stroke="#e4e4e7" stroke-dasharray="2 2" />
+          <text x="24" y="112" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#a1a1aa">Pruned</text>
+
+          <rect x="54" y="88" width="48" height="38" fill="#f4f4f5" stroke="#e4e4e7" stroke-dasharray="2 2" />
+          <text x="78" y="112" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#a1a1aa">Pruned</text>
+
+          <rect x="108" y="88" width="48" height="38" fill="rgba(79,70,229,0.12)" stroke="#e4e4e7" />
+          <text x="132" y="112" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#4f46e5">(3,3)</text>
+        </g>
+
+        <text x="115" y="240" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" font-weight="700" fill="#4f46e5">PREDICATE: A.id &le; B.id</text>
+        <text x="115" y="258" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Lower Triangle Pruned</text>
+      </g>
+
+      <path d="M 468 165 H 500" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 3: Deduplicated Canonical Pairs -->
+      <g transform="translate(504, 28)">
+        <rect width="212" height="274" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.4" />
+        <rect width="212" height="30" rx="6" fill="rgba(16,185,129,0.12)" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">CANONICAL PAIRS</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#059669">ZERO MIRROR DUPLICATES</text>
+        
+        <rect x="10" y="60" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="77" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">Pair (1, 1): Self-Match</text>
+
+        <rect x="10" y="94" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="111" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">Pair (1, 2): Unique</text>
+
+        <rect x="10" y="128" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="145" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">Pair (1, 3): Unique</text>
+
+        <rect x="10" y="162" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="179" font-family="ui-monospace, monospace" font-size="8.5" fill="#047857">Pair (2, 3): Unique</text>
+
+        <rect x="10" y="230" width="192" height="28" rx="4" fill="#f4f4f5" />
+        <text x="106" y="248" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#059669">✓ DEDUPLICATED RELATIONS</text>
+      </g>
+    `;
+  }
+
+  // Topic 08: CASE WHEN - Orthogonal Multiplexer Decision Gate
+  function getTopic08Svg(prob, accent) {
+    return `
+      <!-- Card 1: Input Attributes -->
+      <g transform="translate(24, 28)">
+        <rect width="180" height="274" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
+        <rect width="180" height="30" rx="6" fill="#f4f4f5" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#18181b">INPUT ATTRIBUTES</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#71717a">COLUMN TUPLE VALUES</text>
+        
+        <rect x="10" y="62" width="160" height="34" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="16" y="78" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">T1: score = 94</text>
+        <text x="16" y="90" font-family="ui-monospace, monospace" font-size="8" fill="#ea580c">Evaluates to Branch 1</text>
+
+        <rect x="10" y="106" width="160" height="34" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="16" y="122" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">T2: score = 78</text>
+        <text x="16" y="134" font-family="ui-monospace, monospace" font-size="8" fill="#ea580c">Evaluates to Branch 2</text>
+
+        <rect x="10" y="150" width="160" height="34" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="16" y="166" font-family="ui-monospace, monospace" font-size="9" fill="#18181b">T3: score = 52</text>
+        <text x="16" y="178" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Evaluates to ELSE</text>
+
+        <text x="90" y="260" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">Short-Circuit Execution</text>
+      </g>
+
+      <path d="M 204 165 H 234" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 2: Decision Ladder Multiplexer -->
+      <g transform="translate(238, 28)">
+        <rect width="230" height="274" rx="6" fill="#ffffff" stroke="${accent}" stroke-width="1.5" />
+        <rect width="230" height="30" rx="6" fill="${accent}" />
+        <text x="115" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#ffffff">DECISION MULTIPLEXER</text>
+        <text x="14" y="48" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="${accent}">SHORT-CIRCUIT CASCADE</text>
+        
+        <rect x="10" y="58" width="210" height="42" rx="4" fill="rgba(234,88,12,0.06)" stroke="${accent}" stroke-width="1.2" />
+        <text x="18" y="74" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#c2410c">WHEN score &ge; 90 THEN 'A'</text>
+        <text x="18" y="90" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Matches T1 &rarr; Short-Circuits</text>
+
+        <rect x="10" y="106" width="210" height="42" rx="4" fill="rgba(234,88,12,0.06)" stroke="${accent}" stroke-width="1.2" />
+        <text x="18" y="122" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#c2410c">WHEN score &ge; 75 THEN 'B'</text>
+        <text x="18" y="138" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Matches T2 &rarr; Short-Circuits</text>
+
+        <rect x="10" y="154" width="210" height="42" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="170" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#71717a">ELSE 'C' (Default)</text>
+        <text x="18" y="186" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Fallback for Remaining Tuples</text>
+
+        <rect x="10" y="210" width="210" height="32" rx="4" fill="#f4f4f5" />
+        <text x="115" y="230" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#18181b">SYNTHESIZED COLUMN OUTPUT</text>
+      </g>
+
+      <path d="M 468 165 H 500" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 3: Synthesized Output Column -->
+      <g transform="translate(504, 28)">
+        <rect width="212" height="274" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.4" />
+        <rect width="212" height="30" rx="6" fill="rgba(16,185,129,0.12)" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">EMITTED ATTRIBUTES</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#059669">EVALUATED COLUMN</text>
+        
+        <rect x="10" y="60" width="192" height="32" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="80" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">T1: score=94 &rarr; 'A'</text>
+
+        <rect x="10" y="100" width="192" height="32" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="120" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">T2: score=78 &rarr; 'B'</text>
+
+        <rect x="10" y="140" width="192" height="32" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="160" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#047857">T3: score=52 &rarr; 'C'</text>
+
+        <rect x="10" y="230" width="192" height="28" rx="4" fill="#f4f4f5" />
+        <text x="106" y="248" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#059669">✓ 100% BRANCH FIDELITY</text>
+      </g>
+    `;
+  }
+
+  // Topic 09: SUBQUERIES & CTES - Ephemeral CTE Buffer DAG
+  function getTopic09Svg(prob, accent) {
+    return `
+      <!-- Card 1a: CTE Definition -->
+      <g transform="translate(24, 28)">
+        <rect width="190" height="126" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
+        <rect width="190" height="28" rx="6" fill="#f4f4f5" />
+        <text x="10" y="18" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#18181b">WITH cte_name AS (...)</text>
+        
+        <rect x="8" y="36" width="174" height="22" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="51" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">SELECT dept, AVG(salary)</text>
+
+        <rect x="8" y="62" width="174" height="22" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="77" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">FROM Employees</text>
+
+        <text x="95" y="112" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Materialized in RAM Buffer</text>
+      </g>
+
+      <!-- Card 1b: Ephemeral Buffer -->
+      <g transform="translate(24, 168)">
+        <rect width="190" height="134" rx="6" fill="#ffffff" stroke="${accent}" stroke-width="1.4" />
+        <rect width="190" height="28" rx="6" fill="rgba(8,145,178,0.12)" />
+        <text x="10" y="18" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#0e7490">RAM BUFFER // EPHEMERAL</text>
+        
+        <rect x="8" y="36" width="174" height="20" rx="3" fill="rgba(8,145,178,0.05)" />
+        <text x="14" y="50" font-family="ui-monospace, monospace" font-size="8" font-weight="600" fill="#0e7490">Eng: 105,000</text>
+
+        <rect x="8" y="60" width="174" height="20" rx="3" fill="rgba(8,145,178,0.05)" />
+        <text x="14" y="74" font-family="ui-monospace, monospace" font-size="8" font-weight="600" fill="#0e7490">Sales: 92,500</text>
+
+        <text x="95" y="114" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Inlined or Spooled in Memory</text>
+      </g>
+
+      <path d="M 214 220 H 244" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 2: Outer Query DAG Planner -->
+      <g transform="translate(248, 28)">
+        <rect width="216" height="274" rx="6" fill="#ffffff" stroke="${accent}" stroke-width="1.5" />
+        <rect width="216" height="30" rx="6" fill="${accent}" />
+        <text x="108" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#ffffff">OUTER QUERY DAG PLANNER</text>
+        <text x="14" y="48" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="${accent}">RELATIONAL COMPOSITION</text>
+        
+        <rect x="10" y="60" width="196" height="48" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="78" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#18181b">OUTER FROM / JOIN</text>
+        <text x="18" y="94" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">References CTE buffer</text>
+
+        <rect x="10" y="116" width="196" height="48" rx="4" fill="rgba(8,145,178,0.06)" stroke="${accent}" stroke-width="1" />
+        <text x="18" y="134" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#0e7490">CORRELATION EVALUATOR</text>
+        <text x="18" y="150" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">Subquery inlined if cheap</text>
+
+        <rect x="10" y="172" width="196" height="42" rx="4" fill="#f4f4f5" />
+        <text x="108" y="196" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#18181b">COST-BASED OPTIMIZATION</text>
+
+        <text x="108" y="258" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">DAG Acyclic Execution</text>
+      </g>
+
+      <path d="M 464 165 H 496" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 3: Final Output -->
+      <g transform="translate(500, 28)">
+        <rect width="216" height="274" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.4" />
+        <rect width="216" height="30" rx="6" fill="rgba(16,185,129,0.12)" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">FINAL DAG RESULT</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#059669">EMITTED TUPLES</text>
+        
+        <rect x="10" y="60" width="196" height="28" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="18" y="78" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">Alice &bull; Salary &gt; Avg (Eng)</text>
+
+        <rect x="10" y="96" width="196" height="28" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="18" y="114" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">Bob &bull; Salary &gt; Avg (Sales)</text>
+
+        <rect x="10" y="230" width="196" height="28" rx="4" fill="#f4f4f5" />
+        <text x="108" y="248" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#059669">✓ ZERO UNNECESSARY PASSES</text>
+      </g>
+    `;
+  }
+
+  // Topic 10: WINDOW FUNCTIONS - Partitioned Sliding Frame & Accumulator
+  function getTopic10Svg(prob, accent) {
+    return `
+      <!-- Card 1: Partitioned Tuples -->
+      <g transform="translate(24, 28)">
+        <rect width="180" height="274" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
+        <rect width="180" height="30" rx="6" fill="#f4f4f5" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#18181b">PARTITIONED ROWS</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#71717a">PARTITION BY dept</text>
+        
+        <rect x="8" y="60" width="164" height="24" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="76" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">Row 1: Eng (80k)</text>
+
+        <rect x="8" y="88" width="164" height="24" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="104" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">Row 2: Eng (95k)</text>
+
+        <rect x="8" y="116" width="164" height="24" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="132" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">Row 3: Eng (110k)</text>
+
+        <line x1="8" y1="148" x2="172" y2="148" stroke="${accent}" stroke-dasharray="3 3" stroke-width="1.4" />
+        <text x="90" y="160" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8" fill="${accent}">--- PARTITION BOUNDARY ---</text>
+
+        <rect x="8" y="170" width="164" height="24" rx="3" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="14" y="186" font-family="ui-monospace, monospace" font-size="8.5" fill="#18181b">Row 4: Sales (70k)</text>
+
+        <text x="90" y="260" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">Preserving All Tuples</text>
+      </g>
+
+      <path d="M 204 165 H 234" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 2: Sliding Frame Accumulator -->
+      <g transform="translate(238, 28)">
+        <rect width="230" height="274" rx="6" fill="#ffffff" stroke="${accent}" stroke-width="1.5" />
+        <rect width="230" height="30" rx="6" fill="${accent}" />
+        <text x="115" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#ffffff">SLIDING WINDOW FRAME</text>
+        <text x="14" y="48" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="${accent}">OVER (ORDER BY hire_date)</text>
+        
+        <rect x="10" y="58" width="210" height="42" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="74" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#18181b">ORDER WITHIN PARTITION</text>
+        <text x="18" y="88" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">hire_date ASC / salary ASC</text>
+
+        <rect x="10" y="108" width="210" height="64" rx="4" fill="rgba(147,51,234,0.08)" stroke="${accent}" stroke-width="1.2" />
+        <text x="18" y="126" font-family="ui-monospace, monospace" font-size="9" font-weight="700" fill="#7e22ce">FRAME ACCUMULATOR</text>
+        <text x="18" y="142" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">ROWS BETWEEN UNBOUNDED</text>
+        <text x="18" y="156" font-family="ui-monospace, monospace" font-size="8" fill="#71717a">PRECEDING AND CURRENT ROW</text>
+
+        <rect x="10" y="180" width="210" height="38" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
+        <text x="18" y="196" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#18181b">FUNCTIONS SUPPORTED</text>
+        <text x="18" y="210" font-family="ui-monospace, monospace" font-size="8" fill="#7e22ce">ROW_NUMBER, RANK, DENSE_RANK, SUM</text>
+
+        <text x="115" y="258" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" fill="#71717a">Zero Row Collapsing</text>
+      </g>
+
+      <path d="M 468 165 H 500" fill="none" stroke="${accent}" stroke-width="1.6" marker-end="url(#arrowHead)" />
+
+      <!-- Card 3: Preserved Tuples with Analytics -->
+      <g transform="translate(504, 28)">
+        <rect width="212" height="274" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.4" />
+        <rect width="212" height="30" rx="6" fill="rgba(16,185,129,0.12)" />
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">PRESERVED ROWS + METRIC</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#059669">INDIVIDUAL TUPLES INTACT</text>
+        
+        <rect x="10" y="60" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="77" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">Eng: 80k &bull; Rank #1 (Running 80k)</text>
+
+        <rect x="10" y="94" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="111" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">Eng: 95k &bull; Rank #2 (Running 175k)</text>
+
+        <rect x="10" y="128" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="145" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">Eng: 110k &bull; Rank #3 (Running 285k)</text>
+
+        <rect x="10" y="162" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" />
+        <text x="16" y="179" font-family="ui-monospace, monospace" font-size="8.5" font-weight="600" fill="#047857">Sales: 70k &bull; Rank #1 (Running 70k)</text>
+
+        <rect x="10" y="230" width="192" height="28" rx="4" fill="#f4f4f5" />
+        <text x="106" y="248" text-anchor="middle" font-family="ui-monospace, monospace" font-size="8.5" font-weight="700" fill="#059669">✓ 100% RELATIONAL PRESERVATION</text>
+      </g>
+    `;
+  }
+
+
+  // ---------------------------------------------------------------------------
   // DIFF & EXPLAINER HTML GENERATORS
   // ---------------------------------------------------------------------------
   function renderDiffContentHtml() {
@@ -693,8 +1587,8 @@ window.StudioWorkbenchEngine = (function() {
       return `
         <div style="padding: 32px; text-align: center; color: var(--text-muted);">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 10px auto; opacity: 0.5;"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
-          <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); margin-bottom: 4px;">Click 'Verify Solution' to run differential test</div>
-          <p style="font-size: 11.5px; max-width: 360px; margin: 0 auto;">Evaluates your SQL output against the canonical solution and marks matches, missing rows, and extra unexpected tuples.</p>
+          <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); margin-bottom: 4px;">Click 'Verify' to test your SQL against expected output</div>
+          <p style="font-size: 11.5px; max-width: 360px; margin: 0 auto;">Evaluates your result tuples against canonical expected answers and color-codes matched, extra, and missing rows.</p>
         </div>
       `;
     }
@@ -752,7 +1646,7 @@ window.StudioWorkbenchEngine = (function() {
         <div style="background: var(--bg-card-subtle, #f8f8f9); padding: 14px; border-radius: 8px; border: 1px solid var(--border-subtle, #e4e4e7);">
           <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: var(--text-primary);">Physical Execution Lifecycle for Topic ${prob.topicSeq}</h4>
           <p style="margin: 0 0 8px 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
-            SQL is declarative: written syntax starts with <code>SELECT</code>, but physical relational engines (MySQL, PostgreSQL, SQLite, Snowflake) execute in strict order:
+            SQL is declarative: written syntax starts with <code>SELECT</code>, but physical relational engines execute in strict order:
           </p>
           <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-family: var(--font-mono, monospace); font-size: 11px;">
             <span style="padding: 2px 7px; background: #e0e7ff; color: #3730a3; border-radius: 4px; font-weight: 700;">1. FROM</span> &rarr;
@@ -831,16 +1725,13 @@ window.StudioWorkbenchEngine = (function() {
       });
     });
 
-    // Problem Card Click
-    const problemsTrack = document.getElementById('studioProblemsTrack');
-    if (problemsTrack) {
-      problemsTrack.addEventListener('click', (e) => {
-        const card = e.target.closest('.studio-problem-card');
-        if (!card) return;
-        const probId = card.dataset.problemid;
+    // Tier Chip Click
+    document.querySelectorAll('.studio-tier-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const probId = chip.dataset.problemid;
         if (probId) selectProblem(probId);
       });
-    }
+    });
 
     // Run Problem Button
     const btnRun = document.getElementById('btnStudioRunProblem');
@@ -897,15 +1788,6 @@ window.StudioWorkbenchEngine = (function() {
       });
     }
 
-    // Toggle Schema Dock Button
-    const btnToggleSchema = document.getElementById('btnStudioToggleSchema');
-    if (btnToggleSchema) {
-      btnToggleSchema.addEventListener('click', () => {
-        state.showSchemaDock = !state.showSchemaDock;
-        init();
-      });
-    }
-
     // Table Selector Change
     const tableSelect = document.getElementById('studioTableSelect');
     if (tableSelect) {
@@ -946,24 +1828,6 @@ window.StudioWorkbenchEngine = (function() {
         const wrap = document.querySelector('.studio-workbench-wrapper');
         if (wrap) wrap.classList.toggle('zen-mode', state.zenMode);
         btnZen.classList.toggle('active', state.zenMode);
-      });
-    }
-
-    // Format SQL Tool
-    const btnFormat = document.getElementById('btnStudioFormatSQL');
-    if (btnFormat) {
-      btnFormat.addEventListener('click', () => formatCurrentSql());
-    }
-
-    // Clear SQL Tool
-    const btnClear = document.getElementById('btnStudioClearSQL');
-    if (btnClear) {
-      btnClear.addEventListener('click', () => {
-        const sqlInput = document.getElementById('sqlInput');
-        if (sqlInput) {
-          sqlInput.value = '';
-          syncEditorLineNumbers();
-        }
       });
     }
 
@@ -1019,7 +1883,6 @@ window.StudioWorkbenchEngine = (function() {
     }
   }
 
-  // Select problem helper
   function selectProblem(probId) {
     state.activeProblemId = probId;
     state.testResult = null;
@@ -1064,6 +1927,7 @@ window.StudioWorkbenchEngine = (function() {
         window.renderCurrentStep();
       }
 
+      // If user is on diagram tab, switch to Data Grid tab so they see results, or stay if they want
       // Update EXPLAIN tree if engine available
       if (window.VISUAL_EXPLAIN_TREE_ENGINE && typeof window.VISUAL_EXPLAIN_TREE_ENGINE.updateTree === 'function') {
         window.VISUAL_EXPLAIN_TREE_ENGINE.updateTree(sql);
@@ -1212,7 +2076,10 @@ window.StudioWorkbenchEngine = (function() {
       p.classList.toggle('active', p.id === tabKey);
     });
 
-    if (tabKey === 'tabDiff') {
+    if (tabKey === 'tabDiagram') {
+      const box = document.getElementById('editorialDiagramContainer');
+      if (box) box.innerHTML = renderEditorialDiagramSvg(getProblemById(state.activeProblemId));
+    } else if (tabKey === 'tabDiff') {
       const diffBox = document.getElementById('studioDiffContainer');
       if (diffBox) diffBox.innerHTML = renderDiffContentHtml();
     } else if (tabKey === 'tabExplainer') {
@@ -1238,7 +2105,6 @@ window.StudioWorkbenchEngine = (function() {
     if (!sqlInput || !sqlInput.value) return;
     const val = sqlInput.value.trim();
 
-    // Standard SQL keyword uppercase formatter
     const keywords = ['SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'NOT', 'GROUP BY', 'HAVING', 'ORDER BY', 'LIMIT', 'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'FULL JOIN', 'ON', 'AS', 'DISTINCT', 'WITH', 'UNION', 'UNION ALL', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'OVER', 'PARTITION BY', 'ROWS BETWEEN', 'UNBOUNDED PRECEDING', 'CURRENT ROW'];
 
     let formatted = val;
@@ -1263,20 +2129,14 @@ window.StudioWorkbenchEngine = (function() {
     gutter.innerHTML = html;
   }
 
-  function initSqlSyntaxHighlighter() {
-    // Basic setup if present
-  }
-
   function togglePlayStepper() {
     state.isPlaying = !state.isPlaying;
     const playBtn = document.getElementById('btnPlayPause');
-    const playIcon = document.getElementById('playIcon');
     const playText = document.getElementById('playBtnText');
 
     if (state.isPlaying) {
       if (playBtn) playBtn.classList.add('playing');
       if (playText) playText.textContent = 'Pause';
-      if (playIcon) playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
 
       state.playTimer = setInterval(() => {
         const curStep = (window.EngineState && window.EngineState.currentStep) || 0;
@@ -1290,7 +2150,6 @@ window.StudioWorkbenchEngine = (function() {
     } else {
       if (playBtn) playBtn.classList.remove('playing');
       if (playText) playText.textContent = 'Play';
-      if (playIcon) playIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
       if (state.playTimer) clearInterval(state.playTimer);
     }
   }
