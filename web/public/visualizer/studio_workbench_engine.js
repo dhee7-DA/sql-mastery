@@ -13,6 +13,10 @@ window.StudioWorkbenchEngine = (function() {
   'use strict';
 
   // State
+  function getStudioSqlInputElement() {
+    return document.getElementById('studioSqlInput') || document.querySelector('.studio-code-textarea') || document.querySelector('#viewStudio textarea');
+  }
+
   let state = {
     activeTopicSeq: '01',
     activeDifficulty: 'all', // 'all' | 'easy' | 'medium' | 'hard'
@@ -28,7 +32,9 @@ window.StudioWorkbenchEngine = (function() {
     isPlaying: false,
     playTimer: null,
     splitPercent: 50,
-    currentStepIndex: 0
+    currentStepIndex: 0,
+    tilesOpen: false,        // Collapsible problem tiles drawer state
+    filterSearch: ''         // Filter search keyword
   };
 
   const DIALECT_SPECS = {
@@ -231,6 +237,7 @@ window.StudioWorkbenchEngine = (function() {
     }
 
     const currentProb = getProblemById(state.activeProblemId);
+    const curProbIndex = Math.max(0, allProblems.findIndex(p => p.id === state.activeProblemId));
     if (currentProb) {
       state.activeTable = currentProb.targetTable;
       state.activeTopicSeq = currentProb.topicSeq;
@@ -242,7 +249,7 @@ window.StudioWorkbenchEngine = (function() {
     syncEditorLineNumbers();
 
     // Run initial query
-    const sqlInput = document.getElementById('sqlInput');
+    const sqlInput = getStudioSqlInputElement();
     if (sqlInput && sqlInput.value && sqlInput.value.trim()) {
       runStudioQuery(sqlInput.value);
     }
@@ -355,43 +362,66 @@ window.StudioWorkbenchEngine = (function() {
           </div>
         </header>
 
-        <!-- 2. Streamlined Problem Navigator Strip -->
-        <section class="studio-problem-hub-compact">
-          <!-- Row 1: Topics 01-10 Rail + Difficulty Filter -->
-          <div class="studio-topic-rail-row">
-            <div class="studio-topic-rail" id="studioTopicRail">
-              ${topicsList.map(t => {
-                const isActive = t.seq === state.activeTopicSeq;
-                return `
-                  <button class="studio-topic-pill ${isActive ? 'active' : ''}" data-topic="${t.seq}" title="${t.title}">
-                    <span class="studio-topic-num">${t.seq}</span>
-                    <span>${t.title}</span>
-                  </button>
-                `;
-              }).join('')}
+                        <!-- 2. Problem Carousel & Range Slider Bar + Collapsible All-Topics Tiles Hub -->
+        <section class="studio-carousel-bar">
+          <!-- Active Problem Pill Left -->
+          <div class="carousel-active-pill">
+            <span class="carousel-topic-badge">TOPIC ${state.activeTopicSeq}</span>
+            <span class="carousel-prob-title">${currentProb.title}</span>
+            <span class="carousel-tier-badge ${currentProb.difficulty}">${currentProb.difficulty.toUpperCase()}</span>
+            <span class="carousel-table-badge">Target: <strong>${currentProb.targetTable}</strong></span>
+          </div>
+
+          <!-- Problem Carousel Range Slider Scrubber Center -->
+          <div class="carousel-slider-controller">
+            <button type="button" id="btnPrevProblemSlider" class="carousel-nav-btn prev" title="Previous Problem (Arrow Left)">
+              &#9664; Prev
+            </button>
+            <div class="carousel-range-wrapper">
+              <input type="range" id="problemCarouselRange" min="1" max="30" value="${curProbIndex + 1}" step="1" class="carousel-range-input" title="Problem Slider: Slide across all 30 problems">
+              <span class="carousel-range-indicator">Problem <strong>${curProbIndex + 1}</strong> of 30</span>
+            </div>
+            <button type="button" id="btnNextProblemSlider" class="carousel-nav-btn next" title="Next Problem (Arrow Right)">
+              Next &#9654;
+            </button>
+          </div>
+
+          <!-- Browse All 10 Topics & 30 Problems Collapsible Button Right -->
+          <button type="button" id="btnToggleProblemTiles" class="btn-toggle-tiles ${state.tilesOpen ? 'active' : ''}" title="View and search all 30 problems across 10 topics">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Browse All 10 Topics &amp; 30 Problems</span>
+            <span class="tiles-badge-count">30</span>
+            <span class="tiles-state-chevron">${state.tilesOpen ? '&#9650; Collapse' : '&#9660; Expand Tiles'}</span>
+          </button>
+        </section>
+
+        <!-- Collapsible Problem & Topic Tiles Drawer -->
+        <section class="studio-tiles-drawer ${state.tilesOpen ? 'open' : 'collapsed'}" id="studioProblemTilesDrawer">
+          <div class="tiles-drawer-header">
+            <div class="tiles-filter-group">
+              <span class="tiles-filter-label">Filter:</span>
+              <button type="button" class="tiles-filter-btn ${state.activeDifficulty === 'all' ? 'active' : ''}" data-diff="all">All (30)</button>
+              <button type="button" class="tiles-filter-btn easy ${state.activeDifficulty === 'easy' ? 'active' : ''}" data-diff="easy">Easy (10)</button>
+              <button type="button" class="tiles-filter-btn medium ${state.activeDifficulty === 'medium' ? 'active' : ''}" data-diff="medium">Med (10)</button>
+              <button type="button" class="tiles-filter-btn hard ${state.activeDifficulty === 'hard' ? 'active' : ''}" data-diff="hard">Hard (10)</button>
             </div>
 
-            <!-- Difficulty Segment Filters -->
-            <div class="studio-diff-tabs">
-              <button class="diff-filter-btn ${state.activeDifficulty === 'all' ? 'active' : ''}" data-diff="all">All (30)</button>
-              <button class="diff-filter-btn easy ${state.activeDifficulty === 'easy' ? 'active' : ''}" data-diff="easy">Easy (10)</button>
-              <button class="diff-filter-btn medium ${state.activeDifficulty === 'medium' ? 'active' : ''}" data-diff="medium">Med (10)</button>
-              <button class="diff-filter-btn hard ${state.activeDifficulty === 'hard' ? 'active' : ''}" data-diff="hard">Hard (10)</button>
+            <div class="tiles-topic-jumps">
+              <span class="tiles-filter-label">Jump to Topic:</span>
+              ${topicsList.map(t => `
+                <button type="button" class="tiles-jump-chip ${t.seq === state.activeTopicSeq ? 'active' : ''}" data-jumptopic="${t.seq}" title="${t.title}">T${t.seq}</button>
+              `).join('')}
+            </div>
+
+            <div class="tiles-search-box">
+              <input type="text" id="tilesSearchInput" placeholder="Quick search 30 problems..." value="${state.filterSearch || ''}">
+              <button type="button" id="btnCloseTilesDrawer" class="tiles-close-btn" title="Close Drawer">&#10005; Close</button>
             </div>
           </div>
 
-          <!-- Row 2: Problem Tier Selection Chips & Active Problem Brief -->
-          <div class="studio-problem-tier-chips">
-            <span class="tier-chips-label">Topic ${state.activeTopicSeq} Tiers:</span>
-            ${topicProblems.map(p => {
-              const isSelected = p.id === state.activeProblemId;
-              return `
-                <button class="studio-tier-chip ${isSelected ? 'active' : ''} ${p.difficulty}" data-problemid="${p.id}" title="${p.spec}">
-                  <span class="tier-chip-badge">${p.difficulty.toUpperCase()}</span>
-                  <span class="tier-chip-title">${p.tierName}: ${p.title}</span>
-                </button>
-              `;
-            }).join('')}
+          <!-- All 10 Topics & 30 Problems Grid -->
+          <div class="tiles-grid-content" id="tilesGridContent">
+            ${renderAllTopicTilesHtml(allProblems, topicsList)}
           </div>
         </section>
 
@@ -472,10 +502,10 @@ window.StudioWorkbenchEngine = (function() {
             </div>
 
             <!-- Monaco-Style Code Editor -->
-            <div class="studio-editor-body" id="rawSqlContainer">
+            <div class="studio-editor-body" id="studioRawSqlContainer">
               <div class="code-editor-wrapper">
                 <div class="editor-gutter" id="studioLineNumbers">1</div>
-                <textarea id="sqlInput" class="studio-code-textarea" spellcheck="false" wrap="off" placeholder="-- Write SQL query here...">${(currentProb.starterSql || 'SELECT * FROM ' + currentTable + ';').trim()}</textarea>
+                <textarea id="studioSqlInput" class="studio-code-textarea" spellcheck="false" wrap="off" placeholder="-- Write SQL query here...">${(currentProb.starterSql || 'SELECT * FROM ' + currentTable + ';').trim()}</textarea>
               </div>
             </div>
 
@@ -513,10 +543,15 @@ window.StudioWorkbenchEngine = (function() {
           </section>
 
           <!-- Interactive Split Resizer Slider Divider (Drag or Double-Click) -->
-          <div class="studio-split-slider" id="studioSplitSlider" title="Drag slider to resize panes · Double click to reset 50/50">
+                    <!-- Interactive Split Resizer Slider Divider (Drag, Double-Click, or Snap) -->
+          <div class="studio-split-slider" id="studioSplitSlider" title="Drag slider to resize panes &bull; Double click to reset 50/50">
             <div class="split-slider-knob">
-              <div class="split-slider-dots"></div>
+              <div class="split-slider-grip">
+                <span></span><span></span><span></span>
+              </div>
+              <span class="split-slider-tag">SLIDER</span>
             </div>
+          </div>
           </div>
 
           <!-- Right Column: Visualizer Stage with Cathryn Lavery Editorial Diagrams -->
@@ -698,6 +733,72 @@ window.StudioWorkbenchEngine = (function() {
   // Strict 4px Grid · Hairlines #e4e4e7 · Single Focal Accent · Orthogonal Vectors
   // Zero Emojis · Zero Drop Shadows · Zero Mermaid Slop · High Typographic Contrast
   // ---------------------------------------------------------------------------
+
+  // -------------------------------------------------------------------------  // ---------------------------------------------------------------------------
+  // RENDER ALL 10 TOPIC TILES & 30 PROBLEMS (COLLAPSIBLE DRAWER)
+  // ---------------------------------------------------------------------------
+  function renderAllTopicTilesHtml(allProblems, topicsList) {
+    const q = (state.filterSearch || '').toLowerCase().trim();
+    const diff = state.activeDifficulty || 'all';
+
+    return topicsList.map(t => {
+      const topicProblems = allProblems.filter(p => p.topicSeq === t.seq);
+      const isTopicActive = t.seq === state.activeTopicSeq;
+
+      return `
+        <div class="topic-tile-accordion ${isTopicActive ? 'active-topic' : ''}" id="topicTile_${t.seq}">
+          <div class="topic-tile-header">
+            <div class="topic-tile-meta">
+              <span class="topic-tile-seq">TOPIC ${t.seq}</span>
+              <h3 class="topic-tile-title">${t.title}</h3>
+            </div>
+            <div class="topic-tile-badges">
+              <span class="topic-tile-count">${topicProblems.length} Problems</span>
+              ${isTopicActive ? '<span class="topic-active-badge">ACTIVE TOPIC</span>' : ''}
+            </div>
+          </div>
+
+                    <div class="topic-tile-problems-grid">
+            ${topicProblems.map((p, idx) => {
+              const isSelected = p.id === state.activeProblemId;
+              const matchesDiff = diff === 'all' || p.difficulty === diff;
+              const matchesSearch = !q || 
+                p.title.toLowerCase().includes(q) || 
+                p.spec.toLowerCase().includes(q) || 
+                p.targetTable.toLowerCase().includes(q) ||
+                t.title.toLowerCase().includes(q);
+              const isHidden = !matchesDiff || !matchesSearch;
+
+              return '<div class="problem-tile-card ' + (isSelected ? 'selected-problem' : '') + ' ' + p.difficulty + ' ' + (isHidden ? 'filtered-out' : '') + '" data-problemid="' + p.id + '" title="Click to load problem: ' + p.title + '">' +
+                '<div class="tile-card-top">' +
+                  '<span class="tile-card-diff-badge ' + p.difficulty + '">' + p.difficulty.toUpperCase() + '</span>' +
+                  '<span class="tile-card-tier">' + p.tierName + '</span>' +
+                  '<span class="tile-card-table">Target: <strong>' + p.targetTable + '</strong></span>' +
+                '</div>' +
+                '<h4 class="tile-card-heading">' + p.title + '</h4>' +
+                '<p class="tile-card-summary">' + p.spec + '</p>' +
+                '<div class="tile-card-footer">' +
+                  '<span class="tile-card-status">' + (isSelected ? '&#9679; ACTIVE IN WORKBENCH' : 'Click to Load &amp; Solve &rarr;') + '</span>' +
+                  (p.expectedRowCount !== null ? '<span class="tile-card-rows">' + p.expectedRowCount + ' tuples expected</span>' : '') +
+                '</div>' +
+              '</div>';
+            }).join('')}
+          </div>
+                  <h4 class="tile-card-heading">\${p.title}</h4>
+                  <p class="tile-card-summary">\${p.spec}</p>
+                  <div class="tile-card-footer">
+                    <span class="tile-card-status">\${isSelected ? '● ACTIVE IN WORKBENCH' : 'Click to Load &amp; Solve &rarr;'}</span>
+                    \${p.expectedRowCount !== null ? '<span class="tile-card-rows">' + p.expectedRowCount + ' tuples expected</span>' : ''}
+                  </div>
+                </div>
+              \`;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
   function renderEditorialDiagramSvg(prob) {
     var seq = prob.topicSeq || '01';
     var accentColor = 
@@ -1735,48 +1836,147 @@ window.StudioWorkbenchEngine = (function() {
   // EVENT BINDINGS
   // ---------------------------------------------------------------------------
   function bindStudioEvents() {
-    // Topic Pill Click
-    const topicRail = document.getElementById('studioTopicRail');
-    if (topicRail) {
-      topicRail.addEventListener('click', (e) => {
-        const btn = e.target.closest('.studio-topic-pill');
-        if (!btn) return;
-        const topicSeq = btn.dataset.topic;
-        if (topicSeq) {
-          state.activeTopicSeq = topicSeq;
-          const all = getAllProblems();
-          const firstProb = all.find(p => p.topicSeq === topicSeq && (state.activeDifficulty === 'all' || p.difficulty === state.activeDifficulty));
-          if (firstProb) {
-            selectProblem(firstProb.id);
-          } else {
-            init();
-          }
+    // 1. Problem Carousel Range Slider Scrubber
+    const carouselRange = document.getElementById('problemCarouselRange');
+    if (carouselRange) {
+      carouselRange.addEventListener('input', (e) => {
+        const idx = parseInt(e.target.value, 10) - 1;
+        const all = getAllProblems();
+        if (all[idx]) {
+          selectProblem(all[idx].id);
         }
       });
     }
 
-    // Difficulty Filter Click
-    document.querySelectorAll('.diff-filter-btn').forEach(btn => {
+    // 2. Carousel Prev & Next Slider Buttons
+    const btnPrevProb = document.getElementById('btnPrevProblemSlider');
+    if (btnPrevProb) {
+      btnPrevProb.addEventListener('click', () => {
+        const all = getAllProblems();
+        const curIdx = all.findIndex(p => p.id === state.activeProblemId);
+        const targetIdx = curIdx > 0 ? curIdx - 1 : all.length - 1;
+        selectProblem(all[targetIdx].id);
+      });
+    }
+
+    const btnNextProb = document.getElementById('btnNextProblemSlider');
+    if (btnNextProb) {
+      btnNextProb.addEventListener('click', () => {
+        const all = getAllProblems();
+        const curIdx = all.findIndex(p => p.id === state.activeProblemId);
+        const targetIdx = curIdx < all.length - 1 ? curIdx + 1 : 0;
+        selectProblem(all[targetIdx].id);
+      });
+    }
+
+    // 3. Toggle Collapsible All-Topics & Problems Tiles Drawer
+    const btnToggleTiles = document.getElementById('btnToggleProblemTiles');
+    if (btnToggleTiles) {
+      btnToggleTiles.addEventListener('click', () => {
+        state.tilesOpen = !state.tilesOpen;
+        const drawer = document.getElementById('studioProblemTilesDrawer');
+        if (drawer) {
+          drawer.classList.toggle('open', state.tilesOpen);
+          drawer.classList.toggle('collapsed', !state.tilesOpen);
+        }
+        btnToggleTiles.classList.toggle('active', state.tilesOpen);
+        const chevron = btnToggleTiles.querySelector('.tiles-state-chevron');
+        if (chevron) chevron.innerHTML = state.tilesOpen ? '&#9650; Collapse' : '&#9660; Expand Tiles';
+      });
+    }
+
+    const btnCloseDrawer = document.getElementById('btnCloseTilesDrawer');
+    if (btnCloseDrawer) {
+      btnCloseDrawer.addEventListener('click', () => {
+        state.tilesOpen = false;
+        const drawer = document.getElementById('studioProblemTilesDrawer');
+        if (drawer) {
+          drawer.classList.remove('open');
+          drawer.classList.add('collapsed');
+        }
+        if (btnToggleTiles) {
+          btnToggleTiles.classList.remove('active');
+          const chevron = btnToggleTiles.querySelector('.tiles-state-chevron');
+          if (chevron) chevron.innerHTML = '&#9660; Expand Tiles';
+        }
+      });
+    }
+
+    // 4. Click on Problem Tile Card in Drawer
+    document.querySelectorAll('.problem-tile-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const probId = card.dataset.problemid;
+        if (probId) {
+          selectProblem(probId);
+        }
+      });
+    });
+
+    // 5. Drawer Difficulty Filter Buttons
+    document.querySelectorAll('.tiles-filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const diff = btn.dataset.diff;
-        if (diff) {
-          state.activeDifficulty = diff;
-          const all = getAllProblems();
-          const matchProb = all.find(p => (diff === 'all' || p.difficulty === diff) && (diff === 'all' ? p.topicSeq === state.activeTopicSeq : true));
-          if (matchProb) {
-            selectProblem(matchProb.id);
-          } else {
-            init();
+        const diff = btn.dataset.diff || 'all';
+        state.activeDifficulty = diff;
+        document.querySelectorAll('.tiles-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+        applyTilesFilter();
+      });
+    });
+
+    // 6. Drawer Live Keyword Search
+    const searchInput = document.getElementById('tilesSearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        state.filterSearch = e.target.value.toLowerCase().trim();
+        applyTilesFilter();
+      });
+    }
+
+    function applyTilesFilter() {
+      const q = (state.filterSearch || '').toLowerCase().trim();
+      const diff = state.activeDifficulty || 'all';
+      document.querySelectorAll('.problem-tile-card').forEach(card => {
+        const pId = card.dataset.problemid;
+        const prob = getProblemById(pId);
+        if (!prob) return;
+        const matchesDiff = diff === 'all' || prob.difficulty === diff;
+        const matchesSearch = !q ||
+          prob.title.toLowerCase().includes(q) ||
+          prob.spec.toLowerCase().includes(q) ||
+          prob.targetTable.toLowerCase().includes(q) ||
+          prob.topicTitle.toLowerCase().includes(q);
+        card.classList.toggle('filtered-out', !(matchesDiff && matchesSearch));
+      });
+    }
+
+    // 7. Drawer Jump to Topic Chips
+    document.querySelectorAll('.tiles-jump-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const seq = chip.dataset.jumptopic;
+        if (seq) {
+          const targetTile = document.getElementById('topicTile_' + seq);
+          if (targetTile) {
+            targetTile.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            targetTile.style.boxShadow = '0 0 0 3px #2563eb';
+            setTimeout(() => { targetTile.style.boxShadow = ''; }, 1200);
           }
         }
       });
     });
 
-    // Tier Chip Click
-    document.querySelectorAll('.studio-tier-chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        const probId = chip.dataset.problemid;
-        if (probId) selectProblem(probId);
+    // 8. Layout Split Preset Buttons (70% Editor, 50/50, 70% Stage)
+    document.querySelectorAll('[data-layout-pct]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pct = parseInt(btn.dataset.layoutPct, 10);
+        if (!isNaN(pct)) {
+          state.splitPercent = pct;
+          state.layoutMode = 'split';
+          const grid = document.getElementById('studioWorkspaceGrid');
+          if (grid) {
+            grid.className = 'studio-workspace-grid layout-split';
+            grid.style.gridTemplateColumns = pct + '% 14px calc(' + (100 - pct) + '% - 14px)';
+          }
+          document.querySelectorAll('[data-layout-pct]').forEach(b => b.classList.toggle('active', b === btn));
+        }
       });
     });
 
@@ -1784,7 +1984,7 @@ window.StudioWorkbenchEngine = (function() {
     const btnRun = document.getElementById('btnStudioRunProblem');
     if (btnRun) {
       btnRun.addEventListener('click', () => {
-        const sqlInput = document.getElementById('sqlInput');
+        const sqlInput = getStudioSqlInputElement();
         if (sqlInput) runStudioQuery(sqlInput.value);
       });
     }
@@ -1811,7 +2011,7 @@ window.StudioWorkbenchEngine = (function() {
     if (btnLoadSol) {
       btnLoadSol.addEventListener('click', () => {
         const prob = getProblemById(state.activeProblemId);
-        const sqlInput = document.getElementById('sqlInput');
+        const sqlInput = getStudioSqlInputElement();
         if (prob && sqlInput) {
           sqlInput.value = prob.expectedSolutionSql;
           syncEditorLineNumbers();
@@ -1825,7 +2025,7 @@ window.StudioWorkbenchEngine = (function() {
     if (btnReset) {
       btnReset.addEventListener('click', () => {
         const prob = getProblemById(state.activeProblemId);
-        const sqlInput = document.getElementById('sqlInput');
+        const sqlInput = getStudioSqlInputElement();
         if (prob && sqlInput) {
           sqlInput.value = prob.starterSql;
           state.testResult = null;
@@ -1939,7 +2139,7 @@ window.StudioWorkbenchEngine = (function() {
     const btnEdRun = document.getElementById('btnEditorRun');
     if (btnEdRun) {
       btnEdRun.addEventListener('click', () => {
-        const sqlInput = document.getElementById('sqlInput');
+        const sqlInput = getStudioSqlInputElement();
         if (sqlInput) runStudioQuery(sqlInput.value);
       });
     }
@@ -2031,7 +2231,7 @@ window.StudioWorkbenchEngine = (function() {
     }
 
     // SQL Textarea Shortcuts
-    const sqlInput = document.getElementById('sqlInput');
+    const sqlInput = getStudioSqlInputElement();
     if (sqlInput) {
       sqlInput.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
@@ -2053,6 +2253,7 @@ window.StudioWorkbenchEngine = (function() {
   function selectProblem(probId) {
     state.activeProblemId = probId;
     state.testResult = null;
+    state.tilesOpen = false;
     const prob = getProblemById(probId);
     if (prob) {
       state.activeTable = prob.targetTable;
@@ -2108,7 +2309,7 @@ window.StudioWorkbenchEngine = (function() {
     const prob = getProblemById(state.activeProblemId);
     if (!prob) return;
 
-    const sqlInput = document.getElementById('sqlInput');
+    const sqlInput = getStudioSqlInputElement();
     const userSql = (sqlInput && sqlInput.value && sqlInput.value.trim()) || prob.starterSql;
     const expSql = prob.expectedSolutionSql || prob.starterSql;
 
@@ -2256,7 +2457,7 @@ window.StudioWorkbenchEngine = (function() {
   }
 
   function insertColumnName(colName) {
-    const sqlInput = document.getElementById('sqlInput');
+    const sqlInput = getStudioSqlInputElement();
     if (!sqlInput) return;
     const start = sqlInput.selectionStart || 0;
     const end = sqlInput.selectionEnd || 0;
@@ -2268,7 +2469,7 @@ window.StudioWorkbenchEngine = (function() {
   }
 
   function formatCurrentSql() {
-    const sqlInput = document.getElementById('sqlInput');
+    const sqlInput = getStudioSqlInputElement();
     if (!sqlInput || !sqlInput.value) return;
     const val = sqlInput.value.trim();
 
@@ -2285,7 +2486,7 @@ window.StudioWorkbenchEngine = (function() {
   }
 
   function syncEditorLineNumbers() {
-    const sqlInput = document.getElementById('sqlInput');
+    const sqlInput = getStudioSqlInputElement();
     const gutter = document.getElementById('studioLineNumbers');
     if (!sqlInput || !gutter) return;
     const lines = (sqlInput.value || '').split('\n').length;
