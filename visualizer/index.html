@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="sql_terminal_theme.css?v=105">
   <link rel="stylesheet" href="mock_interview_theme.css?v=106">
   <link rel="stylesheet" href="company_mastery_theme.css?v=13">
-  <link rel="stylesheet" href="studio_workbench_theme.css?v=20261029_editorial">
+  <link rel="stylesheet" href="studio_workbench_theme.css?v=20261029_collapsible_v3">
   <link rel="stylesheet" href="mastery_course_theme.css?v=10">
   <link rel="stylesheet" href="command_palette.css?v=6">
   <link rel="stylesheet" href="tactile_tiles_theme.css?v=10">
@@ -74,7 +74,7 @@
           </button>
 
           <!-- 2. STUDIO (Direct Tab) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="selectNavView('viewStudio', 'Section Studio', null)" title="Section Studio: Query Execution &amp; Schema Inspector">
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="try{window.location.hash='#section-studio';}catch(e){} selectNavView('viewStudio', 'Section Studio', null)" title="Section Studio: Query Execution &amp; Schema Inspector">
             <span class="nav-group-lead">
               <span class="nav-group-icon">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
@@ -1878,7 +1878,7 @@
 <script src="curriculum_reader_engine.js"></script>
 <script src="command_palette.js?v=2"></script>
 <script src="landing_page_engine.js?v=12"></script>
-  <script src="studio_workbench_engine.js?v=20261029_editorial"></script>
+  <script src="studio_workbench_engine.js?v=20261029_collapsible_v3"></script>
   <script src="mastery_course_data.js?v=10"></script>
   <script src="mastery_course_svg_engine.js?v=10"></script>
   <script src="mastery_course_engine.js?v=10"></script>
@@ -1928,9 +1928,11 @@
     function checkSectionStudioHash() {
       var h = window.location.hash;
       if (h === '#section-studio' || h === '#studio') {
-        if (typeof window.selectNavView === 'function') {
-          window.selectNavView('viewStudio', 'Section Studio', null);
-        }
+        setTimeout(function() {
+          if (typeof window.selectNavView === 'function') {
+            window.selectNavView('viewStudio', 'Section Studio', null);
+          }
+        }, 80);
       }
     }
     window.addEventListener('hashchange', checkSectionStudioHash);

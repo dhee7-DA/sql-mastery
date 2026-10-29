@@ -1248,6 +1248,7 @@ function renderDiffView() {
 
 function renderSchemaExplorer() {
   const tree = document.getElementById('schemaTree');
+  if (!tree) return;
   let html = '';
 
   Object.keys(DATABASE).forEach(tbl => {

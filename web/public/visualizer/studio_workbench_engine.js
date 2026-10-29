@@ -237,7 +237,6 @@ window.StudioWorkbenchEngine = (function() {
     }
 
     const currentProb = getProblemById(state.activeProblemId);
-    const curProbIndex = Math.max(0, allProblems.findIndex(p => p.id === state.activeProblemId));
     if (currentProb) {
       state.activeTable = currentProb.targetTable;
       state.activeTopicSeq = currentProb.topicSeq;
@@ -261,6 +260,7 @@ window.StudioWorkbenchEngine = (function() {
   function renderWorkbenchShell(container) {
     const allProblems = getAllProblems();
     const currentProb = getProblemById(state.activeProblemId);
+    const curProbIndex = Math.max(0, allProblems.findIndex(p => p.id === state.activeProblemId));
     const dbTables = Object.keys(TABLE_SCHEMAS);
     const currentTable = state.activeTable || currentProb.targetTable || 'CITY';
 
