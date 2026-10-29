@@ -2303,6 +2303,7 @@ function switchMainView(targetId) {
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("Welcome to SQL Mastery Course! 10 execution phases with tactile SVG diagrams and interview prep ready!", 4500, 'celebrate');
   }
   if (targetId === 'viewStudio') {
+    if (targetView) targetView.scrollTop = 0;
     if (window.StudioWorkbenchEngine && typeof window.StudioWorkbenchEngine.init === 'function') {
       window.StudioWorkbenchEngine.init();
     }

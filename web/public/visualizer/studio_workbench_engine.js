@@ -26,7 +26,9 @@ window.StudioWorkbenchEngine = (function() {
     showSolution: false,
     testResult: null,
     isPlaying: false,
-    playTimer: null
+    playTimer: null,
+    splitPercent: 50,
+    currentStepIndex: 0
   };
 
   const DIALECT_SPECS = {
@@ -234,6 +236,7 @@ window.StudioWorkbenchEngine = (function() {
       state.activeTopicSeq = currentProb.topicSeq;
     }
 
+    container.scrollTop = 0;
     renderWorkbenchShell(container);
     bindStudioEvents();
     syncEditorLineNumbers();
@@ -277,6 +280,9 @@ window.StudioWorkbenchEngine = (function() {
     container.innerHTML = `
       <section id="section-studio" class="section-studio-workspace" style="display:contents;">
       <div class="studio-workbench-wrapper ${state.zenMode ? 'zen-mode' : ''}">
+        
+        <!-- Pinned Sticky Top Controls Dock (Never Scrolls Away) -->
+        <div class="studio-header-dock" id="studioHeaderDock">
         
         <!-- 1. Sleek 44px Topbar Header -->
         <header class="studio-topbar">
@@ -424,19 +430,44 @@ window.StudioWorkbenchEngine = (function() {
           </div>
         ` : ''}
 
-        <!-- 4. Main 50/50 Workspace Grid (Immediately Visible!) -->
-        <main class="studio-workspace-grid layout-${state.layoutMode}">
+        </div><!-- End of studio-header-dock -->
+
+        <!-- 4. Main Resizable Split Workspace Grid -->
+        <main class="studio-workspace-grid layout-${state.layoutMode}" id="studioWorkspaceGrid" style="${state.layoutMode === 'split' ? 'grid-template-columns: ' + state.splitPercent + '% 12px calc(' + (100 - state.splitPercent) + '% - 12px);' : ''}">
           
-          <!-- Left Column: Code Editor & Telemetry -->
-          <section class="studio-editor-column">
+          <!-- Left Column: Code Editor & Action Strip & Telemetry -->
+          <section class="studio-editor-column" id="studioEditorCol">
             
-            <!-- Quick Column Inserter Strip -->
-            <div class="studio-column-pills-bar" id="studioColumnPillsBar">
-              <span class="col-pill-label">Insert Column:</span>
-              <div class="col-pill-list" id="studioColPillsList">
-                ${schema.columns.map(c => `
-                  <button type="button" class="col-pill-btn" onclick="window.StudioWorkbenchEngine.insertColumnName('${c.name}')" title="Insert ${c.name}">+ ${c.name}</button>
-                `).join('')}
+            <!-- Prominent Primary Actions & Column Inserter Toolbar -->
+            <div class="studio-editor-toolbar-header">
+              <div class="editor-action-strip">
+                <button type="button" id="btnEditorRun" class="studio-btn-action primary" title="Run Query (Ctrl + Enter)">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <span>Run Query</span>
+                  <kbd>Ctrl+↵</kbd>
+                </button>
+                <button type="button" id="btnEditorVerify" class="studio-btn-action verify" title="Compare against expected solution">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Verify</span>
+                </button>
+                <button type="button" id="btnEditorFormat" class="studio-btn-action subtle" title="Prettify &amp; Format SQL">
+                  <span>Format</span>
+                </button>
+                <div class="editor-slider-modes">
+                  <button type="button" class="mode-slider-btn ${state.layoutMode === 'editor' ? 'active' : ''}" data-layout="editor" title="Full Editor">◨ Editor</button>
+                  <button type="button" class="mode-slider-btn ${state.layoutMode === 'split' ? 'active' : ''}" data-layout="split" title="50/50 Split Slider">◧ Split</button>
+                  <button type="button" class="mode-slider-btn ${state.layoutMode === 'results' ? 'active' : ''}" data-layout="results" title="Full Diagram">◩ Diagram</button>
+                </div>
+              </div>
+
+              <!-- Quick Column Inserters -->
+              <div class="studio-column-pills-bar" id="studioColumnPillsBar">
+                <span class="col-pill-label">Insert:</span>
+                <div class="col-pill-list" id="studioColPillsList">
+                  ${schema.columns.map(c => `
+                    <button type="button" class="col-pill-btn" onclick="window.StudioWorkbenchEngine.insertColumnName('${c.name}')" title="Insert ${c.name}">+ ${c.name}</button>
+                  `).join('')}
+                </div>
               </div>
             </div>
 
@@ -481,8 +512,15 @@ window.StudioWorkbenchEngine = (function() {
             </div>
           </section>
 
+          <!-- Interactive Split Resizer Slider Divider (Drag or Double-Click) -->
+          <div class="studio-split-slider" id="studioSplitSlider" title="Drag slider to resize panes · Double click to reset 50/50">
+            <div class="split-slider-knob">
+              <div class="split-slider-dots"></div>
+            </div>
+          </div>
+
           <!-- Right Column: Visualizer Stage with Cathryn Lavery Editorial Diagrams -->
-          <section class="studio-stage-column">
+          <section class="studio-stage-column" id="studioStageCol">
             
             <div class="card viewer-card">
               <!-- Stage Tabs Bar -->
@@ -531,15 +569,24 @@ window.StudioWorkbenchEngine = (function() {
                 <div class="tab-pane ${state.activeTab === 'tabPipeline' ? 'active' : ''}" id="tabPipeline">
                   <div class="stepper-top" style="padding: 10px 14px 6px 14px;">
                     <div class="stepper-meta">
-                      <span class="step-counter" id="stepCounterLabel">STEP 1 OF 6</span>
+                      <span class="step-counter" id="stepCounterLabel">STEP ${(state.currentStepIndex || 0) + 1} OF 6</span>
                       <h3 class="step-heading" id="stepHeadingLabel" style="font-size: 13px;">FROM Clause: Table Scan</h3>
                     </div>
                     <div class="stepper-controls">
                       <button id="btnPrevStep" class="icon-btn" title="Previous Step">◀</button>
-                      <button id="btnPlayPause" class="play-btn"><span id="playBtnText">Play</span></button>
+                      <button id="btnPlayPause" class="play-btn"><span id="playBtnText">${state.isPlaying ? 'Pause' : 'Play'}</span></button>
                       <button id="btnNextStep" class="icon-btn" title="Next Step">▶</button>
                       <button id="btnResetStep" class="icon-btn" title="Reset Step">↺</button>
                     </div>
+                  </div>
+
+                  <!-- Interactive 6-Stage Execution Slider Track -->
+                  <div class="stepper-slider-panel">
+                    <span class="stepper-slider-label">STAGE SLIDER:</span>
+                    <button class="stepper-slider-arrow" id="btnSliderPrev" title="Previous Stage (◀)">◀</button>
+                    <input type="range" min="0" max="5" value="${state.currentStepIndex || 0}" step="1" id="stepperRangeSlider" class="stepper-range-slider" title="Drag to scrub through physical execution phases">
+                    <button class="stepper-slider-arrow" id="btnSliderNext" title="Next Stage (▶)">▶</button>
+                    <span class="stepper-slider-val" id="stepperSliderVal">01 FROM</span>
                   </div>
 
                   <div class="stepper-track" id="stepperTrack" style="padding: 4px 14px;">
@@ -1839,23 +1886,143 @@ window.StudioWorkbenchEngine = (function() {
       });
     });
 
+    // Draggable Split Pane Slider
+    const splitSlider = document.getElementById('studioSplitSlider');
+    const grid = document.getElementById('studioWorkspaceGrid');
+    if (splitSlider && grid) {
+      let isDragging = false;
+
+      const onStart = (e) => {
+        isDragging = true;
+        splitSlider.classList.add('dragging');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+      };
+
+      const onMove = (e) => {
+        if (!isDragging) return;
+        const rect = grid.getBoundingClientRect();
+        const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0].clientX);
+        if (clientX === undefined) return;
+        const offset = clientX - rect.left;
+        let pct = Math.round((offset / rect.width) * 100);
+        pct = Math.max(20, Math.min(80, pct));
+        state.splitPercent = pct;
+        grid.style.gridTemplateColumns = pct + '% 12px calc(' + (100 - pct) + '% - 12px)';
+      };
+
+      const onEnd = () => {
+        if (isDragging) {
+          isDragging = false;
+          splitSlider.classList.remove('dragging');
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+        }
+      };
+
+      splitSlider.addEventListener('mousedown', onStart);
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onEnd);
+
+      splitSlider.addEventListener('touchstart', onStart, { passive: true });
+      window.addEventListener('touchmove', onMove, { passive: true });
+      window.addEventListener('touchend', onEnd);
+
+      // Double-click to reset 50/50
+      splitSlider.addEventListener('dblclick', () => {
+        state.splitPercent = 50;
+        grid.style.gridTemplateColumns = '50% 12px calc(50% - 12px)';
+      });
+    }
+
+    // Editor Action Buttons
+    const btnEdRun = document.getElementById('btnEditorRun');
+    if (btnEdRun) {
+      btnEdRun.addEventListener('click', () => {
+        const sqlInput = document.getElementById('sqlInput');
+        if (sqlInput) runStudioQuery(sqlInput.value);
+      });
+    }
+
+    const btnEdVerify = document.getElementById('btnEditorVerify');
+    if (btnEdVerify) {
+      btnEdVerify.addEventListener('click', () => {
+        verifyCurrentProblem();
+      });
+    }
+
+    const btnEdFmt = document.getElementById('btnEditorFormat');
+    if (btnEdFmt) {
+      btnEdFmt.addEventListener('click', () => {
+        formatCurrentSql();
+      });
+    }
+
+    // Layout Mode Buttons (both header and editor toolbar)
+    document.querySelectorAll('.studio-layout-btn, .mode-slider-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        const lm = b.dataset.layout;
+        if (lm) {
+          state.layoutMode = lm;
+          init();
+        }
+      });
+    });
+
+    // 6-Stage Range Slider & Controls
+    const rangeSlider = document.getElementById('stepperRangeSlider');
+    if (rangeSlider) {
+      rangeSlider.addEventListener('input', (e) => {
+        const idx = parseInt(e.target.value, 10);
+        goToStep(idx);
+      });
+    }
+
+    const btnSlPrev = document.getElementById('btnSliderPrev');
+    if (btnSlPrev) {
+      btnSlPrev.addEventListener('click', () => {
+        const cur = (window.EngineState && window.EngineState.currentStepIndex) || 0;
+        if (cur > 0) goToStep(cur - 1);
+      });
+    }
+
+    const btnSlNext = document.getElementById('btnSliderNext');
+    if (btnSlNext) {
+      btnSlNext.addEventListener('click', () => {
+        const cur = (window.EngineState && window.EngineState.currentStepIndex) || 0;
+        const max = (window.EngineState && window.EngineState.steps && window.EngineState.steps.length) || 6;
+        if (cur < max - 1) goToStep(cur + 1);
+      });
+    }
+
+    // Track Node Click
+    document.querySelectorAll('.track-node').forEach(node => {
+      node.addEventListener('click', () => {
+        const stepIdx = parseInt(node.dataset.step, 10);
+        if (!isNaN(stepIdx)) goToStep(stepIdx);
+      });
+    });
+
     // Stepper Controls
     const btnNext = document.getElementById('btnNextStep');
     if (btnNext) {
       btnNext.addEventListener('click', () => {
-        if (typeof window.nextStep === 'function') window.nextStep();
+        const cur = (window.EngineState && window.EngineState.currentStepIndex) || 0;
+        const max = (window.EngineState && window.EngineState.steps && window.EngineState.steps.length) || 6;
+        if (cur < max - 1) goToStep(cur + 1);
       });
     }
     const btnPrev = document.getElementById('btnPrevStep');
     if (btnPrev) {
       btnPrev.addEventListener('click', () => {
-        if (typeof window.prevStep === 'function') window.prevStep();
+        const cur = (window.EngineState && window.EngineState.currentStepIndex) || 0;
+        if (cur > 0) goToStep(cur - 1);
       });
     }
     const btnResetStep = document.getElementById('btnResetStep');
     if (btnResetStep) {
       btnResetStep.addEventListener('click', () => {
-        if (typeof window.setStep === 'function') window.setStep(0);
+        goToStep(0);
       });
     }
     const btnPlay = document.getElementById('btnPlayPause');
@@ -2128,6 +2295,81 @@ window.StudioWorkbenchEngine = (function() {
     }
     gutter.innerHTML = html;
   }
+
+  function goToStep(idx) {
+    state.currentStepIndex = idx;
+    if (typeof window.renderStep === 'function') {
+      window.renderStep(idx);
+    }
+    const sl = document.getElementById('stepperRangeSlider');
+    if (sl) sl.value = idx;
+    const names = ['01 FROM', '02 WHERE', '03 GROUP BY', '04 HAVING', '05 SELECT', '06 LIMIT'];
+    const lbl = document.getElementById('stepperSliderVal');
+    if (lbl) lbl.textContent = names[idx] || ('STEP ' + (idx + 1));
+
+    // Update active track node in studio
+    const nodes = document.querySelectorAll('.track-node');
+    nodes.forEach((el, i) => {
+      el.classList.remove('active', 'completed');
+      if (i === idx) el.classList.add('active');
+      else if (i < idx) el.classList.add('completed');
+    });
+
+    // Render pipelineStepResultsGrid
+    const step = (window.EngineState && window.EngineState.steps && window.EngineState.steps[idx]);
+    if (step) {
+      renderPipelineGrid(step);
+    }
+  }
+
+  function renderPipelineGrid(step) {
+    const grid = document.getElementById('pipelineStepResultsGrid');
+    if (!grid) return;
+    const rows = step.rows || [];
+    const cols = step.columns || (rows[0] ? Object.keys(rows[0]) : []);
+
+    if (!rows.length) {
+      grid.innerHTML = '<div style="padding:16px; font-size:11px; color:var(--text-muted); font-family:var(--font-mono, monospace);">0 rows at this execution stage.</div>';
+      return;
+    }
+
+    let h = '<div style="font-size:10.5px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">Stage Tuples Buffer (' + rows.length + ' rows):</div>';
+    h += '<table class="studio-diff-table" style="font-size:10.5px;"><thead><tr>';
+    cols.forEach(c => { h += '<th>' + c + '</th>'; });
+    if (step.isWhereEvaluation) h += '<th>Filter Verdict</th>';
+    h += '</tr></thead><tbody>';
+
+    rows.slice(0, 10).forEach(r => {
+      let trStyle = '';
+      if (step.isWhereEvaluation) {
+        trStyle = r._passed ? 'background:rgba(22,163,74,0.06);' : 'background:rgba(220,38,38,0.06); color:#71717a;';
+      }
+      h += '<tr style="' + trStyle + '">';
+      cols.forEach(c => {
+        const val = r[c] !== undefined ? String(r[c]) : '<em style="color:#a1a1aa">NULL</em>';
+        h += '<td>' + val + '</td>';
+      });
+      if (step.isWhereEvaluation) {
+        h += '<td>' + (r._passed ? '<span class="status-pill status-pill-accent" style="font-size:9.5px; background:rgba(22,163,74,0.15); color:#16a34a;">PASS</span>' : '<span class="status-pill" style="font-size:9.5px; background:rgba(220,38,38,0.15); color:#dc2626;">FILTERED</span>') + '</td>';
+      }
+      h += '</tr>';
+    });
+    h += '</tbody></table>';
+    grid.innerHTML = h;
+  }
+
+  // Globally wire step helpers
+  window.goToStep = goToStep;
+  window.setStep = goToStep;
+  window.nextStep = () => {
+    const cur = (window.EngineState && window.EngineState.currentStepIndex) || 0;
+    const max = (window.EngineState && window.EngineState.steps && window.EngineState.steps.length) || 6;
+    if (cur < max - 1) goToStep(cur + 1);
+  };
+  window.prevStep = () => {
+    const cur = (window.EngineState && window.EngineState.currentStepIndex) || 0;
+    if (cur > 0) goToStep(cur - 1);
+  };
 
   function togglePlayStepper() {
     state.isPlaying = !state.isPlaying;
