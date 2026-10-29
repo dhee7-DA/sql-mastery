@@ -1331,3 +1331,245 @@
     min-height: 400px;
   }
 }
+
+/* =============================================================================
+   7. GUIDED ONBOARDING & PRESET DOSSIER EXTENSIONS
+   ============================================================================= */
+
+/* Onboarding Strip */
+.studio-onboarding-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #d4d4d8);
+  border-radius: 8px;
+  padding: 8px 14px;
+  gap: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.onboarding-guide-badge {
+  font-size: 9.5px;
+  font-weight: 800;
+  font-family: var(--font-mono, monospace);
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  white-space: nowrap;
+}
+
+.onboarding-steps-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  overflow-x: auto;
+}
+
+.onboarding-step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.onboarding-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg-card-subtle, #f4f4f5);
+  border: 1px solid var(--border-default, #d4d4d8);
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-primary, #18181b);
+  flex-shrink: 0;
+}
+
+.onboarding-step-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.onboarding-step-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary, #18181b);
+  line-height: 1.2;
+}
+
+.onboarding-step-desc {
+  font-size: 10.5px;
+  color: var(--text-muted, #71717a);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.onboarding-step-desc code {
+  font-family: var(--font-mono, monospace);
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0 3px;
+  border-radius: 3px;
+}
+
+.onboarding-step-arrow {
+  color: var(--text-muted, #a1a1aa);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.onboarding-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted, #a1a1aa);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+
+.onboarding-close-btn:hover {
+  color: var(--text-primary, #18181b);
+}
+
+/* Preset Scenario Dossier Card */
+.studio-preset-dossier {
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #d4d4d8);
+  border-left: 3px solid #2563eb;
+  border-radius: 8px;
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.dossier-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dossier-tag {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
+  font-family: var(--font-mono, monospace);
+}
+
+.dossier-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-primary, #18181b);
+}
+
+.dossier-table-pill {
+  font-size: 10px;
+  font-family: var(--font-mono, monospace);
+  background: var(--bg-card-subtle, #f4f4f5);
+  border: 1px solid var(--border-subtle, #e4e4e7);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--text-secondary, #52525b);
+  margin-left: auto;
+}
+
+.dossier-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dossier-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.dossier-item.gotcha {
+  color: #b45309;
+}
+
+.dossier-label {
+  font-size: 9.5px;
+  font-weight: 800;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-muted, #71717a);
+  flex-shrink: 0;
+}
+
+.dossier-item.gotcha .dossier-label {
+  color: #d97706;
+}
+
+.dossier-text {
+  color: var(--text-secondary, #52525b);
+  line-height: 1.35;
+}
+
+.dossier-item.gotcha .dossier-text {
+  color: #92400e;
+  font-weight: 500;
+}
+
+/* Quick Column Inserter Strip */
+.studio-column-pills-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--bg-card-subtle, #f8f8f9);
+  border-bottom: 1px solid var(--border-subtle, #e4e4e7);
+  overflow-x: auto;
+}
+
+.col-pill-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted, #71717a);
+  white-space: nowrap;
+}
+
+.col-pill-list {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: nowrap;
+}
+
+.col-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 7px;
+  font-size: 10.5px;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-secondary, #52525b);
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-default, #d4d4d8);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  white-space: nowrap;
+}
+
+.col-pill-btn:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.04);
+}

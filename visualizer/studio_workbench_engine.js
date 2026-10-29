@@ -27,27 +27,101 @@ window.StudioWorkbenchEngine = (function() {
   const DIALECT_SPECS = {
     mysql: {
       name: 'MySQL 8.0',
-      icon: '🐬',
+      icon: '',
       features: ['CTE Support', 'Window Functions', 'REGEXP_LIKE', 'JSON_TABLE', 'IFNULL()'],
       guidance: 'Default MySQL 8.0 engine with full recursive CTE, window frames, and JSON operators.'
     },
     postgres: {
       name: 'PostgreSQL 16',
-      icon: '🐘',
+      icon: '',
       features: ['ILIKE', 'STRING_AGG()', 'DISTINCT ON', 'GENERATE_SERIES', 'NULLS LAST'],
       guidance: 'Postgres features ILIKE for case-insensitive matching and STRING_AGG() for concats.'
     },
     snowflake: {
       name: 'Snowflake',
-      icon: '❄️',
+      icon: '',
       features: ['QUALIFY Clause', 'FLATTEN()', 'IFF()', 'ZEROIFNULL', 'TRY_TO_NUMBER'],
       guidance: 'Snowflake supports QUALIFY to filter directly after window functions without wrapping CTEs!'
     },
     ansi: {
       name: 'ANSI SQL:2016',
-      icon: '📜',
+      icon: '',
       features: ['COALESCE()', 'FETCH FIRST N ROWS', 'CASE WHEN', 'STANDARD JOINS'],
       guidance: 'Strict portable ANSI standard compliant across all modern cloud warehouses.'
+    }
+  };
+
+  
+  const PRESET_DOSSIERS = {
+    preset_case_triangle: {
+      title: "Type of Triangle Classification",
+      source: "HackerRank & LeetCode",
+      table: "TRIANGLES",
+      challenge: "Classify triangles into Equilateral, Isosceles, or Scalene using CASE WHEN.",
+      gotcha: "Inequality test (A + B <= C OR A + C <= B OR B + C <= A) MUST evaluate before checking A = B, otherwise degenerate non-triangles get misclassified as Isosceles!"
+    },
+    preset_case_credit: {
+      title: "Credit Risk Scoring Tiers",
+      source: "Fintech & Capital Markets",
+      table: "Customers",
+      challenge: "Segment customers into Prime (>=750), Near Prime (>=670), and Subprime.",
+      gotcha: "Evaluated in sequential order; first matching WHEN branch halts evaluation. Null credit scores drop to ELSE."
+    },
+    preset_station5_tiebreak: {
+      title: "Shortest & Longest City Tie-Breaker",
+      source: "HackerRank Classic",
+      table: "Customers",
+      challenge: "Find shortest and longest city names using LENGTH(city).",
+      gotcha: "When two cities share identical string lengths, secondary alphabetical sorting (city ASC) is required for deterministic ordering."
+    },
+    preset_students_right: {
+      title: "Suffix-Based Sorting with RIGHT()",
+      source: "String Manipulation",
+      table: "STUDENTS",
+      challenge: "Order candidates by the last 3 characters of their name.",
+      gotcha: "Ties in suffix are broken by unique primary key (ID ASC) to prevent nondeterministic pagination drift."
+    },
+    preset_employees_salaries: {
+      title: "Compound Filter Precedence",
+      source: "FAANG Engineering Interview",
+      table: "Employees",
+      challenge: "Filter salary > 85k AND tenure < 24 months.",
+      gotcha: "AND operator binds tighter than OR. Without explicit parentheses, compound conditions silently return incorrect candidate tuples."
+    },
+    preset_regex_vowels: {
+      title: "Regex Boundary Anchors (^ and $)",
+      source: "Data Quality & Text Analytics",
+      table: "Customers",
+      challenge: "Find distinct cities starting and ending with a vowel.",
+      gotcha: "^ anchors start of string, $ anchors end. In MySQL 8.0, use REGEXP or REGEXP_LIKE with case-insensitivity."
+    },
+    preset_distinct_cities: {
+      title: "Multi-Column Tuple Deduplication",
+      source: "Relational Set Semantics",
+      table: "Customers",
+      challenge: "Extract unique pairs of (city, state).",
+      gotcha: "DISTINCT operates on the entire row tuple, not just the first column. It builds an in-memory hash set in RAM."
+    },
+    preset_top_earners: {
+      title: "Calculated Expression Aggregation",
+      source: "Quantitative Payroll Analysis",
+      table: "Employees",
+      challenge: "Find the maximum total earnings (months * salary) and employee headcount.",
+      gotcha: "Grouping by an un-aliased expression requires repeating the expression or using a derived table/CTE in strict ANSI SQL."
+    },
+    preset_dept_payroll: {
+      title: "Departmental Rollup Metrics",
+      source: "Executive Management Dashboard",
+      table: "Employees",
+      challenge: "Compute COUNT(*), SUM(salary), and AVG(salary) per department.",
+      gotcha: "Any non-aggregated column appearing in SELECT must be included in the GROUP BY clause."
+    },
+    preset_trade_recon: {
+      title: "Prime Broker Trade Settlement Break Recon",
+      source: "Wall Street Grand Capstone",
+      table: "Trades",
+      challenge: "Reconcile internal blotter trades against prime broker clearing custody records.",
+      gotcha: "Uses COALESCE across outer joins to catch settlement breaks and un-cleared executions."
     }
   };
 
@@ -104,6 +178,7 @@ INSERT INTO RiskBuckets VALUES
     bindStudioEvents();
     syncEditorLineNumbers();
     initSqlSyntaxHighlighter();
+    updateDossierCard(state.activePreset);
 
     // Run initial query
     const sqlInput = document.getElementById('sqlInput');
@@ -115,21 +190,61 @@ INSERT INTO RiskBuckets VALUES
   // ---------------------------------------------------------------------------
   // RENDER SHELL
   // ---------------------------------------------------------------------------
+  
+  function renderColumnPillsHtml(tableName) {
+    const db = window.DATABASE || {};
+    const rows = db[tableName] || [];
+    if (!rows.length) return '<span style="font-size:10px;color:var(--text-muted);">No schema available</span>';
+    const cols = Object.keys(rows[0]);
+    return cols.map(c => '<button type="button" class="col-pill-btn" onclick="window.StudioWorkbenchEngine.insertColumnName(\'' + c + '\')" title="Insert ' + c + ' into SQL editor">+ ' + c + '</button>').join('');
+  }
+
+  function updateDossierCard(presetKey) {
+    const dossier = PRESET_DOSSIERS[presetKey];
+    const dossierBox = document.getElementById('studioPresetDossier');
+    if (!dossierBox || !dossier) return;
+    
+    const tagEl = document.getElementById('dossierSourceTag');
+    const titleEl = document.getElementById('dossierTitle');
+    const tableEl = document.getElementById('dossierTablePill');
+    const challengeEl = document.getElementById('dossierChallenge');
+    const gotchaEl = document.getElementById('dossierGotcha');
+    
+    if (tagEl) tagEl.textContent = dossier.source;
+    if (titleEl) titleEl.textContent = dossier.title;
+    if (tableEl) tableEl.textContent = 'Target: ' + dossier.table;
+    if (challengeEl) challengeEl.textContent = dossier.challenge;
+    if (gotchaEl) gotchaEl.textContent = dossier.gotcha;
+  }
+
+  function insertColumnName(colName) {
+    const sqlInput = document.getElementById('sqlInput');
+    if (!sqlInput) return;
+    const start = sqlInput.selectionStart || 0;
+    const end = sqlInput.selectionEnd || 0;
+    const val = sqlInput.value;
+    sqlInput.value = val.substring(0, start) + colName + val.substring(end);
+    sqlInput.selectionStart = sqlInput.selectionEnd = start + colName.length;
+    sqlInput.focus();
+    syncEditorLineNumbers();
+  }
+
   function renderWorkbenchShell(container) {
     const dbTables = Object.keys(window.DATABASE || {});
     const currentTable = state.activeTable || (dbTables.length ? dbTables[0] : 'TRIANGLES');
     const presets = window.PRESETS || {};
 
     container.innerHTML = `
+      <section id="section-studio" class="section-studio-workspace" style="display:contents;">
       <div class="studio-workbench-wrapper ${state.zenMode ? 'zen-mode' : ''}">
         <!-- Sleek Studio 48px Header Bar -->
         <header class="studio-topbar">
           <div class="studio-topbar-left">
             <div class="studio-brand">
-              <span class="studio-brand-icon">⚡</span>
+              <span class="studio-brand-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></span>
               <div>
-                <h1 class="studio-brand-title">SQL Query Studio</h1>
-                <span class="studio-brand-pill">WASM Relational Engine</span>
+                <h1 class="studio-brand-title">Section Studio</h1>
+                <span class="studio-brand-pill">SQLite WASM 3.45 Engine</span>
               </div>
             </div>
 
@@ -195,7 +310,7 @@ INSERT INTO RiskBuckets VALUES
 
             <!-- Data Import Button -->
             <button class="studio-import-btn" id="btnOpenImportModal" title="Import CSV, JSON, or SQL DDL to query your own data">
-              <span>📥 Import Data</span>
+              <span>Import Data</span>
             </button>
 
             <!-- Zen Mode Toggle -->
@@ -203,7 +318,59 @@ INSERT INTO RiskBuckets VALUES
               <span>⛶ Zen</span>
             </button>
           </div>
+        
         </header>
+
+        <!-- 3-Step Guided Onboarding Strip -->
+        <div class="studio-onboarding-strip" id="studioOnboardingStrip">
+          <div class="onboarding-guide-badge">HOW TO USE STUDIO</div>
+          <div class="onboarding-steps-container">
+            <div class="onboarding-step-item">
+              <span class="onboarding-step-num">01</span>
+              <div class="onboarding-step-content">
+                <div class="onboarding-step-title">Pick or Write SQL</div>
+                <div class="onboarding-step-desc">Select an interview scenario preset above or compose custom SQL.</div>
+              </div>
+            </div>
+            <div class="onboarding-step-arrow">&rarr;</div>
+            <div class="onboarding-step-item">
+              <span class="onboarding-step-num">02</span>
+              <div class="onboarding-step-content">
+                <div class="onboarding-step-title">Run Live (Ctrl+Enter)</div>
+                <div class="onboarding-step-desc">Compile and execute in SQLite WASM with sub-millisecond local latency.</div>
+              </div>
+            </div>
+            <div class="onboarding-step-arrow">&rarr;</div>
+            <div class="onboarding-step-item">
+              <span class="onboarding-step-num">03</span>
+              <div class="onboarding-step-content">
+                <div class="onboarding-step-title">Inspect RAM &amp; Plans</div>
+                <div class="onboarding-step-desc">Step 01 FROM &rarr; 06 LIMIT to watch rows filter, or click EXPLAIN Tree.</div>
+              </div>
+            </div>
+          </div>
+          <button class="onboarding-close-btn" onclick="document.getElementById('studioOnboardingStrip').style.display='none'" title="Dismiss Guide">&times;</button>
+        </div>
+
+        <!-- Scenario Preset Context Dossier -->
+        <div class="studio-preset-dossier" id="studioPresetDossier">
+          <div class="dossier-header">
+            <span class="dossier-tag" id="dossierSourceTag">HackerRank &amp; LeetCode</span>
+            <span class="dossier-title" id="dossierTitle">Type of Triangle Classification</span>
+            <span class="dossier-table-pill" id="dossierTablePill">Target Table: TRIANGLES</span>
+          </div>
+          <div class="dossier-body">
+            <div class="dossier-item">
+              <span class="dossier-label">CHALLENGE:</span>
+              <span class="dossier-text" id="dossierChallenge">Classify triangles into Equilateral, Isosceles, or Scalene using CASE WHEN.</span>
+            </div>
+            <div class="dossier-item gotcha">
+              <span class="dossier-label">INTERVIEW GOTCHA:</span>
+              <span class="dossier-text" id="dossierGotcha">Inequality test (A + B &le; C OR A + C &le; B OR B + C &le; A) MUST evaluate before checking A = B, otherwise degenerate non-triangles get misclassified as Isosceles!</span>
+            </div>
+          </div>
+        </div>
+
 
         <!-- Main 50/50 Workspace Grid -->
         <main class="studio-workspace-grid layout-${state.layoutMode}">
@@ -213,22 +380,22 @@ INSERT INTO RiskBuckets VALUES
             <div class="studio-pane-header">
               <div class="studio-mode-toggle">
                 <button id="btnModeRaw" class="mode-toggle-btn ${state.editorMode === 'raw' ? 'active' : ''}">
-                  <span>💻 Raw SQL Editor</span>
+                  <span>SQL Editor</span>
                 </button>
                 <button id="btnModeBuilder" class="mode-toggle-btn ${state.editorMode === 'builder' ? 'active' : ''}">
-                  <span>🧩 Visual Builder</span>
+                  <span>Clause Assistant</span>
                 </button>
               </div>
 
               <div class="studio-editor-tools">
                 <button id="btnStudioFormatSQL" class="studio-micro-btn" title="Prettify &amp; format SQL (Alt+Shift+F)">
-                  <span>✨ Format</span>
+                  <span>Format</span>
                 </button>
                 <button id="btnStudioAskBloops" class="studio-micro-btn accent" title="Ask Sir Bloops to inspect for NULL traps &amp; optimize">
-                  <span>🤖 Ask Bloops</span>
+                  <span>Ask Bloops</span>
                 </button>
                 <button id="btnStudioTranspile" class="studio-micro-btn" title="Transpile syntax to active dialect">
-                  <span>🔄 Transpile</span>
+                  <span>Transpile</span>
                 </button>
                 <button id="btnStudioClearSQL" class="studio-micro-btn" title="Clear editor">
                   <span>✕ Clear</span>
@@ -236,7 +403,16 @@ INSERT INTO RiskBuckets VALUES
               </div>
             </div>
 
+            
+            <!-- Schema Column Inserter Strip -->
+            <div class="studio-column-pills-bar" id="studioColumnPillsBar">
+              <span class="col-pill-label">Insert Column:</span>
+              <div class="col-pill-list" id="studioColPillsList">
+                ${renderColumnPillsHtml(currentTable)}
+              </div>
+            </div>
             <!-- Raw SQL Editor Pane -->
+
             <div class="studio-editor-body" id="rawSqlContainer" style="${state.editorMode === 'raw' ? 'display: flex;' : 'display: none;'}">
               <div class="code-editor-wrapper">
                 <div class="editor-gutter" id="studioLineNumbers">1</div>
@@ -267,7 +443,7 @@ INSERT INTO RiskBuckets VALUES
                 <div class="preview-header">
                   <span class="preview-title">Generated SQL Preview</span>
                   <button id="btnCopyGeneratedSQL" class="copy-sql-btn" title="Copy SQL">
-                    <span>📋 Copy</span>
+                    <span>Copy</span>
                   </button>
                 </div>
                 <pre class="live-sql-code" id="liveSqlPreview">SELECT * FROM ${currentTable};</pre>
@@ -350,17 +526,17 @@ INSERT INTO RiskBuckets VALUES
               <div class="viewer-tabs-bar">
                 <div class="viewer-tabs-group">
                   <button class="viewer-tab-btn ${state.activeTab === 'tabStepper' ? 'active' : ''}" data-tab="tabStepper">
-                    <span>📊 Data Grid</span>
+                    <span>Data Grid</span>
                   </button>
                   <button class="viewer-tab-btn ${state.activeTab === 'tabExplainPlan' ? 'active' : ''}" data-tab="tabExplainPlan" id="btnTabExplainPlan">
-                    <span>🌳 EXPLAIN Plan Tree</span>
+                    <span>EXPLAIN Plan Tree</span>
                     <span class="tab-badge-hot">COST</span>
                   </button>
                   <button class="viewer-tab-btn ${state.activeTab === 'tabChart' ? 'active' : ''}" data-tab="tabChart">
-                    <span>📈 Distribution</span>
+                    <span>Distribution</span>
                   </button>
                   <button class="viewer-tab-btn ${state.activeTab === 'tabDiff' ? 'active' : ''}" data-tab="tabDiff">
-                    <span>🔍 Input/Output Diff</span>
+                    <span>Input / Output Diff</span>
                   </button>
                 </div>
 
@@ -369,17 +545,17 @@ INSERT INTO RiskBuckets VALUES
                   <span class="row-count-badge" id="rowCounterBadge">15 rows</span>
                   <div class="export-dropdown-wrapper">
                     <button class="studio-export-btn" id="btnExportMenu" title="Export Query Results">
-                      <span>📤 Export ▾</span>
+                      <span>Export ▾</span>
                     </button>
                     <div class="export-menu-dropdown" id="exportMenuDropdown">
                       <button class="export-opt-btn" onclick="window.StudioWorkbenchEngine.copyAsMarkdown()">
-                        <span>📋 Copy Markdown Table</span>
+                        <span>Copy Markdown</span>
                       </button>
                       <button class="export-opt-btn" onclick="window.StudioWorkbenchEngine.exportAsCSV()">
-                        <span>📄 Download CSV (.csv)</span>
+                        <span>Download CSV</span>
                       </button>
                       <button class="export-opt-btn" onclick="window.StudioWorkbenchEngine.exportAsJSON()">
-                        <span>📦 Download JSON (.json)</span>
+                        <span>Download JSON</span>
                       </button>
                     </div>
                   </div>
@@ -418,7 +594,7 @@ INSERT INTO RiskBuckets VALUES
         <div class="studio-modal-dialog">
           <div class="studio-modal-header">
             <div class="modal-title-group">
-              <span class="modal-icon">📥</span>
+              <span class="modal-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></span>
               <div>
                 <h3 class="modal-title">Custom Data Importer &amp; Scratchpad</h3>
                 <p class="modal-sub">Import CSV, JSON, or SQL DDL to query your own datasets in Query Studio</p>
@@ -428,9 +604,9 @@ INSERT INTO RiskBuckets VALUES
           </div>
 
           <div class="studio-modal-tabs">
-            <button class="import-tab-btn active" data-itype="csv" onclick="window.StudioWorkbenchEngine.switchImportTab('csv')">📄 Paste CSV</button>
-            <button class="import-tab-btn" data-itype="json" onclick="window.StudioWorkbenchEngine.switchImportTab('json')">📦 Paste JSON</button>
-            <button class="import-tab-btn" data-itype="ddl" onclick="window.StudioWorkbenchEngine.switchImportTab('ddl')">📜 SQL DDL / INSERT</button>
+            <button class="import-tab-btn active" data-itype="csv" onclick="window.StudioWorkbenchEngine.switchImportTab('csv')">Paste CSV</button>
+            <button class="import-tab-btn" data-itype="json" onclick="window.StudioWorkbenchEngine.switchImportTab('json')">Paste JSON</button>
+            <button class="import-tab-btn" data-itype="ddl" onclick="window.StudioWorkbenchEngine.switchImportTab('ddl')">SQL DDL / INSERT</button>
           </div>
 
           <div class="studio-modal-body">
@@ -442,7 +618,7 @@ INSERT INTO RiskBuckets VALUES
             <div class="import-field-group">
               <div class="import-label-row">
                 <label id="importContentLabel">Paste CSV Data (with headers):</label>
-                <button class="sample-load-link" onclick="window.StudioWorkbenchEngine.loadSampleData()">⚡ Load Sample</button>
+                <button class="sample-load-link" onclick="window.StudioWorkbenchEngine.loadSampleData()">Load Sample</button>
               </div>
               <textarea id="importTextarea" class="import-textarea" placeholder="Paste dataset here..."></textarea>
             </div>
@@ -450,10 +626,11 @@ INSERT INTO RiskBuckets VALUES
 
           <div class="studio-modal-footer">
             <button class="studio-btn secondary" onclick="window.StudioWorkbenchEngine.closeImportModal()">Cancel</button>
-            <button class="studio-btn primary" onclick="window.StudioWorkbenchEngine.submitImport()">🚀 Import &amp; Load into Studio</button>
+            <button class="studio-btn primary" onclick="window.StudioWorkbenchEngine.submitImport()">Import &amp; Load into Studio</button>
           </div>
         </div>
       </div>
+      </section>
     `;
   }
 
@@ -547,7 +724,18 @@ INSERT INTO RiskBuckets VALUES
     if (presetSelect) {
       presetSelect.addEventListener('change', (e) => {
         const key = e.target.value;
+        
         state.activePreset = key;
+        updateDossierCard(key);
+        const dossier = PRESET_DOSSIERS[key];
+        if (dossier && dossier.table) {
+          state.activeTable = dossier.table;
+          const tableSel = document.getElementById('studioTableSelect');
+          if (tableSel) tableSel.value = dossier.table;
+          const pillsList = document.getElementById('studioColPillsList');
+          if (pillsList) pillsList.innerHTML = renderColumnPillsHtml(dossier.table);
+        }
+
         const presets = window.PRESETS || {};
         if (presets[key]) {
           const sqlInput = document.getElementById('sqlInput');
@@ -565,7 +753,11 @@ INSERT INTO RiskBuckets VALUES
     if (tableSelect) {
       tableSelect.addEventListener('change', (e) => {
         const table = e.target.value;
+        
         state.activeTable = table;
+        const pillsList = document.getElementById('studioColPillsList');
+        if (pillsList) pillsList.innerHTML = renderColumnPillsHtml(table);
+
         const sql = `SELECT * FROM ${table} LIMIT 10;`;
         const sqlInput = document.getElementById('sqlInput');
         if (sqlInput) {
@@ -786,36 +978,36 @@ INSERT INTO RiskBuckets VALUES
     const clean = (sql || '').trim().toUpperCase();
 
     if (!clean) {
-      window.SQL_BUDDY.say("🤖 Write or load a query first, and I will inspect it for NULL traps and performance bottlenecks!", 3500, 'thinking');
+      window.SQL_BUDDY.say("Write or load a query first, and I will inspect it for NULL traps and performance bottlenecks!", 3500, 'thinking');
       return;
     }
 
     // 1. Check for != without NULL guard
     if (clean.includes('!=') || clean.includes('<>')) {
-      window.SQL_BUDDY.say("⚠️ Three-Valued Logic Alert: Inequalities like '!=' or '<>' will SILENTLY discard NULL rows! Use 'OR column IS NULL' or COALESCE() to retain them.", 5500, 'warning');
+      window.SQL_BUDDY.say("Three-Valued Logic Alert: Inequalities like '!=' or '<>' will SILENTLY discard NULL rows! Use 'OR column IS NULL' or COALESCE() to retain them.", 5500, 'warning');
       return;
     }
 
     // 2. Check for NOT IN with potential NULL subquery
     if (clean.includes('NOT IN')) {
-      window.SQL_BUDDY.say("🚨 Classic Interview Trap: If the subquery in 'NOT IN (SELECT...)' returns even a SINGLE NULL row, the entire predicate evaluates to UNKNOWN and yields 0 rows! Prefer 'NOT EXISTS'.", 5500, 'thinking');
+      window.SQL_BUDDY.say("Classic Interview Trap: If the subquery in 'NOT IN (SELECT...)' returns even a SINGLE NULL row, the entire predicate evaluates to UNKNOWN and yields 0 rows! Prefer 'NOT EXISTS'.", 5500, 'thinking');
       return;
     }
 
     // 3. Check for SARGability (wrapping indexed column in function)
     if (clean.includes('YEAR(') || clean.includes('MONTH(') || clean.includes('UPPER(') || clean.includes('LOWER(')) {
-      window.SQL_BUDDY.say("⚡ SARGability Tip: Wrapping columns inside functions like YEAR(date_col) prevents B-Tree index seeks and forces an expensive full table scan. Use range bounds like 'date_col >= ... AND date_col < ...' instead!", 5500, 'happy');
+      window.SQL_BUDDY.say("SARGability Tip: Wrapping columns inside functions like YEAR(date_col) prevents B-Tree index seeks and forces an expensive full table scan. Use range bounds like 'date_col >= ... AND date_col < ...' instead!", 5500, 'happy');
       return;
     }
 
     // 4. Check for Window Function partition order
     if (clean.includes('OVER') && clean.includes('ORDER BY') && (clean.includes('SUM(') || clean.includes('AVG('))) {
-      window.SQL_BUDDY.say("💡 Window Mechanics: SUM() with an ORDER BY inside OVER() creates an implicit 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW' running total. Add ROWS BETWEEN if ties occur!", 5500, 'celebrate');
+      window.SQL_BUDDY.say("Window Mechanics: SUM() with an ORDER BY inside OVER() creates an implicit 'RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW' running total. Add ROWS BETWEEN if ties occur!", 5500, 'celebrate');
       return;
     }
 
     // 5. Clean query praise
-    window.SQL_BUDDY.say("🎯 Clean Relational Form! Your query predicates are SARGable and follow standard relational execution order. Ready for production verification!", 4000, 'celebrate');
+    window.SQL_BUDDY.say("Clean Relational Form! Your query predicates are SARGable and follow standard relational execution order. Ready for production verification!", 4000, 'celebrate');
   }
 
   // ---------------------------------------------------------------------------
@@ -842,7 +1034,7 @@ INSERT INTO RiskBuckets VALUES
     sqlInput.value = sql;
     syncEditorLineNumbers();
     if (window.SQL_BUDDY) {
-      window.SQL_BUDDY.say(`🔄 Transpiled query syntax to ${DIALECT_SPECS[dialect].name} standards!`, 3000, 'happy');
+      window.SQL_BUDDY.say(`Transpiled query syntax to ${DIALECT_SPECS[dialect].name} standards!`, 3000, 'happy');
     }
   }
 
@@ -904,7 +1096,7 @@ INSERT INTO RiskBuckets VALUES
 
     navigator.clipboard.writeText(md).then(() => {
       if (window.SQL_BUDDY) {
-        window.SQL_BUDDY.say("📋 Copied result table as Markdown!", 3000, 'celebrate');
+        window.SQL_BUDDY.say("Copied result table as Markdown!", 3000, 'celebrate');
       }
     });
   }
@@ -941,7 +1133,7 @@ INSERT INTO RiskBuckets VALUES
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     if (window.SQL_BUDDY) {
-      window.SQL_BUDDY.say(`💾 Downloaded ${fileName} successfully!`, 3000, 'happy');
+      window.SQL_BUDDY.say(`Downloaded ${fileName} successfully!`, 3000, 'happy');
     }
   }
 
@@ -1051,7 +1243,7 @@ INSERT INTO RiskBuckets VALUES
       }
 
       if (window.SQL_BUDDY) {
-        window.SQL_BUDDY.say(`🎉 Table '${tableName}' loaded with ${parsedRows.length} rows! Query ready!`, 4500, 'celebrate');
+        window.SQL_BUDDY.say(`Table '${tableName}' loaded with ${parsedRows.length} rows! Query ready!`, 4500, 'celebrate');
       }
     } catch (err) {
       alert('Import failed: ' + err.message);
@@ -1106,6 +1298,9 @@ INSERT INTO RiskBuckets VALUES
     init,
     loadQuery,
     runStudioQuery,
+    insertColumnName,
+    updateDossierCard,
+    renderColumnPillsHtml,
     diagnoseWithBloops,
     copyAsMarkdown,
     exportAsCSV,
