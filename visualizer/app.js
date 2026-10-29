@@ -27,18 +27,79 @@ const DATABASE = {
   ],
 
   Employees: [
-    { emp_id: 101, first_name: 'Ashley', last_name: 'Miller', department: 'Analytics', salary: 115000, months_tenure: 14 },
-    { emp_id: 102, first_name: 'David', last_name: 'Chen', department: 'Engineering', salary: 125000, months_tenure: 36 },
-    { emp_id: 103, first_name: 'Julia', last_name: 'Smith', department: 'Analytics', salary: 92000, months_tenure: 8 },
-    { emp_id: 104, first_name: 'Kevin', last_name: 'Brown', department: 'Finance', salary: 88000, months_tenure: 22 },
-    { emp_id: 105, first_name: 'Samantha', last_name: 'Davis', department: 'Engineering', salary: 145000, months_tenure: 48 },
-    { emp_id: 106, first_name: 'Patrick', last_name: 'Wilson', department: 'Sales', salary: 62000, months_tenure: 6 },
-    { emp_id: 107, first_name: 'Rose', last_name: 'Taylor', department: 'Finance', salary: 108000, months_tenure: 19 },
-    { emp_id: 108, first_name: 'Belvet', last_name: 'Anderson', department: 'Analytics', salary: 97000, months_tenure: 11 },
-    { emp_id: 109, first_name: 'Angela', last_name: 'Thomas', department: 'Marketing', salary: 74000, months_tenure: 15 },
-    { emp_id: 110, first_name: 'Frank', last_name: 'Jackson', department: 'Finance', salary: 95000, months_tenure: 26 },
-    { emp_id: 111, first_name: 'Lisa', last_name: 'White', department: 'Engineering', salary: 130000, months_tenure: 9 },
-    { emp_id: 112, first_name: 'Amy', last_name: 'Harris', department: 'Analytics', salary: 89000, months_tenure: 4 }
+    { id: 101, emp_id: 101, first_name: 'Ashley', last_name: 'Miller', department: 'Analytics', salary: 115000, tenure: 14, months_tenure: 14, bonus: 5000 },
+    { id: 102, emp_id: 102, first_name: 'David', last_name: 'Chen', department: 'Engineering', salary: 125000, tenure: 36, months_tenure: 36, bonus: 8000 },
+    { id: 103, emp_id: 103, first_name: 'Julia', last_name: 'Smith', department: 'Analytics', salary: 92000, tenure: 8, months_tenure: 8, bonus: null },
+    { id: 104, emp_id: 104, first_name: 'Kevin', last_name: 'Brown', department: 'Finance', salary: 88000, tenure: 22, months_tenure: 22, bonus: 3000 },
+    { id: 105, emp_id: 105, first_name: 'Samantha', last_name: 'Davis', department: 'Engineering', salary: 145000, tenure: 48, months_tenure: 48, bonus: 12000 },
+    { id: 106, emp_id: 106, first_name: 'Patrick', last_name: 'Wilson', department: 'Sales', salary: 62000, tenure: 6, months_tenure: 6, bonus: 2000 },
+    { id: 107, emp_id: 107, first_name: 'Rose', last_name: 'Taylor', department: 'Finance', salary: 108000, tenure: 19, months_tenure: 19, bonus: 4500 },
+    { id: 108, emp_id: 108, first_name: 'Belvet', last_name: 'Anderson', department: 'Analytics', salary: 97000, tenure: 11, months_tenure: 11, bonus: null },
+    { id: 109, emp_id: 109, first_name: 'Angela', last_name: 'Thomas', department: 'Marketing', salary: 74000, tenure: 15, months_tenure: 15, bonus: 1500 },
+    { id: 110, emp_id: 110, first_name: 'Frank', last_name: 'Jackson', department: 'Finance', salary: 95000, tenure: 26, months_tenure: 26, bonus: 3800 },
+    { id: 111, emp_id: 111, first_name: 'Lisa', last_name: 'White', department: 'Engineering', salary: 130000, tenure: 9, months_tenure: 9, bonus: 6000 },
+    { id: 112, emp_id: 112, first_name: 'Amy', last_name: 'Harris', department: 'Analytics', salary: 89000, tenure: 4, months_tenure: 4, bonus: null }
+  ],
+
+  CITY: [
+    { ID: 1613, NAME: 'Scottsdale', COUNTRYCODE: 'USA', DISTRICT: 'Arizona', POPULATION: 202705 },
+    { ID: 1614, NAME: 'Corona', COUNTRYCODE: 'USA', DISTRICT: 'California', POPULATION: 124966 },
+    { ID: 1661, NAME: 'Concord', COUNTRYCODE: 'USA', DISTRICT: 'California', POPULATION: 121780 },
+    { ID: 1682, NAME: 'Cedar Rapids', COUNTRYCODE: 'USA', DISTRICT: 'Iowa', POPULATION: 120758 },
+    { ID: 1699, NAME: 'Sunnyvale', COUNTRYCODE: 'USA', DISTRICT: 'California', POPULATION: 131760 },
+    { ID: 3878, NAME: 'Tokyo', COUNTRYCODE: 'JPN', DISTRICT: 'Tokyo-to', POPULATION: 7980230 },
+    { ID: 3965, NAME: 'Yokohama', COUNTRYCODE: 'JPN', DISTRICT: 'Kanagawa', POPULATION: 3339594 },
+    { ID: 4079, NAME: 'Rafah', COUNTRYCODE: 'PSE', DISTRICT: 'Rafah', POPULATION: 92020 }
+  ],
+
+  STATION: [
+    { ID: 101, CITY: 'Amo', STATE: 'IN', LAT_N: 39.69, LONG_W: 86.61 },
+    { ID: 794, CITY: 'Kissee Mills', STATE: 'MO', LAT_N: 139.65, LONG_W: 73.45 },
+    { ID: 824, CITY: 'Loma Mar', STATE: 'CA', LAT_N: 48.71, LONG_W: 130.56 },
+    { ID: 630, CITY: 'Sandy Hook', STATE: 'CT', LAT_N: 72.11, LONG_W: 148.24 },
+    { ID: 502, CITY: 'Marine On Saint Croix', STATE: 'MN', LAT_N: 45.19, LONG_W: 92.77 },
+    { ID: 503, CITY: 'Kissee Mills', STATE: 'MO', LAT_N: 139.65, LONG_W: 73.45 }
+  ],
+
+  Employee: [
+    { employee_id: 12228, name: 'Rose', months: 15, salary: 1968 },
+    { employee_id: 33645, name: 'Angela', months: 1, salary: 3443 },
+    { employee_id: 45692, name: 'Frank', months: 17, salary: 1608 },
+    { employee_id: 56113, name: 'Patrick', months: 11, salary: 2000 },
+    { employee_id: 59725, name: 'Lisa', months: 11, salary: 2000 }
+  ],
+
+  Hackers: [
+    { hacker_id: 5580, name: 'Rose' },
+    { hacker_id: 8439, name: 'Angela' },
+    { hacker_id: 27205, name: 'Frank' },
+    { hacker_id: 52243, name: 'Patrick' },
+    { hacker_id: 52348, name: 'Lisa' }
+  ],
+
+  Challenges: [
+    { challenge_id: 1, hacker_id: 5580 },
+    { challenge_id: 2, hacker_id: 5580 },
+    { challenge_id: 3, hacker_id: 5580 },
+    { challenge_id: 4, hacker_id: 8439 },
+    { challenge_id: 5, hacker_id: 8439 },
+    { challenge_id: 6, hacker_id: 27205 }
+  ],
+
+  Functions: [
+    { X: 20, Y: 20 },
+    { X: 20, Y: 20 },
+    { X: 20, Y: 21 },
+    { X: 21, Y: 20 },
+    { X: 22, Y: 23 },
+    { X: 23, Y: 22 }
+  ],
+
+  Country: [
+    { CODE: 'USA', NAME: 'United States', CONTINENT: 'North America' },
+    { CODE: 'JPN', NAME: 'Japan', CONTINENT: 'Asia' },
+    { CODE: 'CHN', NAME: 'China', CONTINENT: 'Asia' },
+    { CODE: 'GBR', NAME: 'United Kingdom', CONTINENT: 'Europe' }
   ],
 
   Customers: [
