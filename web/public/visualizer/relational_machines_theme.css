@@ -179,8 +179,9 @@
   background: rgba(56, 189, 248, 0.08);
 }
 
-/* Canvas Card */
+/* Canvas Card (Position relative to anchor Tooltip & Drawer) */
 .machines-canvas-card {
+  position: relative;
   background: #07080c;
   border: 1px solid #1a1e2b;
   border-radius: 10px;
@@ -210,12 +211,396 @@
   display: block;
 }
 
+/* Interactive Rows in SVG */
+.machine-interactive-row {
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.machine-interactive-row:hover rect {
+  stroke: #38bdf8 !important;
+  stroke-width: 1.2 !important;
+}
+
+.machine-interactive-row.active-row rect {
+  stroke: #38bdf8 !important;
+  stroke-width: 1.5 !important;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.45));
+}
+
 .machine-node-chip {
   transition: all 0.15s ease;
 }
 
 .machine-node-chip:hover circle {
-  r: 10;
+  r: 9;
   stroke: #ffffff;
   stroke-width: 1.5;
+}
+
+/* =============================================================================
+   FEATURE 5: HOVER MICRO-TOOLTIP
+   ============================================================================= */
+.machines-micro-tooltip {
+  position: absolute;
+  pointer-events: none;
+  z-index: 120;
+  background: rgba(13, 17, 24, 0.96);
+  backdrop-filter: blur(10px);
+  border: 1px solid #222938;
+  border-left: 3px solid #38bdf8;
+  border-radius: 6px;
+  padding: 8px 12px;
+  max-width: 320px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  font-family: 'Geist', -apple-system, sans-serif;
+}
+
+.theme-light .machines-micro-tooltip {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.machines-micro-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.machines-tooltip-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #f8fafc;
+  font-family: 'Geist Mono', monospace;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.theme-light .machines-tooltip-title {
+  color: #0f172a;
+}
+
+.machines-tooltip-grain {
+  font-size: 9.5px;
+  color: #94a3b8;
+  font-family: 'Geist Mono', monospace;
+  margin-bottom: 5px;
+}
+
+.theme-light .machines-tooltip-grain {
+  color: #475569;
+}
+
+.machines-tooltip-audit {
+  font-size: 9px;
+  color: #34d399;
+  font-family: 'Geist Mono', monospace;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.machines-tooltip-edge {
+  font-size: 9px;
+  color: #fbbf24;
+  border-top: 1px solid #1e2433;
+  padding-top: 4px;
+  margin-top: 4px;
+  line-height: 1.35;
+}
+
+.theme-light .machines-tooltip-edge {
+  border-top-color: #e2e8f0;
+  color: #d97706;
+}
+
+.machines-tooltip-hint {
+  font-size: 8.5px;
+  color: #64748b;
+  text-align: right;
+  margin-top: 4px;
+  font-family: 'Geist Mono', monospace;
+}
+
+/* =============================================================================
+   FEATURE 3: PRODUCTION SQL INSPECTOR DRAWER
+   ============================================================================= */
+.machines-inspector-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 440px;
+  max-width: 90%;
+  background: #090c13;
+  border-left: 1px solid #1c2233;
+  z-index: 110;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -14px 0 36px rgba(0, 0, 0, 0.75);
+  transform: translateX(100%);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow: hidden;
+}
+
+.theme-light .machines-inspector-drawer {
+  background: #ffffff;
+  border-left-color: #cbd5e1;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.12);
+}
+
+.machines-inspector-drawer.open {
+  transform: translateX(0);
+}
+
+.machines-drawer-header {
+  padding: 12px 14px;
+  background: #0e121b;
+  border-bottom: 1px solid #1c2233;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.theme-light .machines-drawer-header {
+  background: #f8fafc;
+  border-bottom-color: #e2e8f0;
+}
+
+.machines-drawer-title-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.machines-drawer-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.machines-drawer-pin {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.machines-drawer-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.theme-light .machines-drawer-title {
+  color: #0f172a;
+}
+
+.machines-drawer-subtitle {
+  font-size: 9.5px;
+  color: #94a3b8;
+  font-family: 'Geist Mono', monospace;
+}
+
+.machines-drawer-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.machines-drawer-close-btn:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.theme-light .machines-drawer-close-btn:hover {
+  color: #0f172a;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.machines-drawer-body {
+  padding: 12px 14px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.machines-dialect-tabs {
+  display: flex;
+  gap: 3px;
+  background: #121622;
+  padding: 3px;
+  border-radius: 6px;
+  border: 1px solid #1e2538;
+}
+
+.theme-light .machines-dialect-tabs {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.machines-dialect-tab {
+  flex: 1;
+  padding: 4px 6px;
+  font-size: 9.5px;
+  font-weight: 600;
+  font-family: 'Geist Mono', monospace;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.machines-dialect-tab:hover {
+  color: #f8fafc;
+}
+
+.theme-light .machines-dialect-tab:hover {
+  color: #0f172a;
+}
+
+.machines-dialect-tab.active {
+  background: #0284c7;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.machines-code-card {
+  background: #05070c;
+  border: 1px solid #181e2e;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-light .machines-code-card {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.machines-code-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  background: #0c1018;
+  border-bottom: 1px solid #181e2e;
+  font-size: 9px;
+  color: #64748b;
+  font-family: 'Geist Mono', monospace;
+}
+
+.theme-light .machines-code-toolbar {
+  background: #f1f5f9;
+  border-bottom-color: #e2e8f0;
+}
+
+.machines-copy-code-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  font-family: 'Geist Mono', monospace;
+  background: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 2px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.machines-copy-code-btn:hover {
+  background: #38bdf8;
+  color: #07090f;
+}
+
+.machines-code-pre {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 10px;
+  line-height: 1.48;
+  color: #e2e8f0;
+  font-family: 'Geist Mono', 'SF Mono', monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+
+.theme-light .machines-code-pre {
+  color: #0f172a;
+}
+
+.machines-dossier-card {
+  background: #0b0e16;
+  border: 1px solid #1a2030;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.theme-light .machines-dossier-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.machines-dossier-card.accent-insight {
+  border-left: 3px solid #10b981;
+}
+
+.machines-dossier-card.accent-interview {
+  border-left: 3px solid #38bdf8;
+}
+
+.machines-dossier-card.accent-pitfall {
+  border-left: 3px solid #f43f5e;
+}
+
+.machines-dossier-label {
+  font-size: 9px;
+  font-weight: 800;
+  font-family: 'Geist Mono', monospace;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.machines-dossier-text {
+  font-size: 10px;
+  line-height: 1.45;
+  color: #cbd5e1;
+}
+
+.theme-light .machines-dossier-text {
+  color: #334155;
 }
