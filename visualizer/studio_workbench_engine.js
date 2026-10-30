@@ -565,6 +565,10 @@ window.StudioWorkbenchEngine = (function() {
                     Editorial Diagram (SVG)
                     <span class="hot-badge" style="background: rgba(37, 99, 235, 0.12); color: #2563eb; font-size: 8.5px; padding: 1px 4px; border-radius: 3px; font-weight: 700; margin-left: 3px;">DESIGN</span>
                   </button>
+                  <button type="button" class="tab-item tab-machines-direct-btn" onclick="if(typeof selectNavView==='function'){selectNavView('viewRelationalMachines', 'Relational Machines', null);}else if(typeof switchMainView==='function'){switchMainView('viewRelationalMachines');}else{window.location.hash='#machines';}" title="View Obsidian 3-Gauge Relational Machines &amp; Explainer SVGs" style="color: #0284c7; font-weight: 700; cursor: pointer;">
+                    Relational Machines
+                    <span class="hot-badge" style="background: rgba(14, 165, 233, 0.18); color: #0284c7; font-size: 8.5px; padding: 1px 5px; border-radius: 3px; font-weight: 800; margin-left: 3px; border: 1px solid rgba(14, 165, 233, 0.3);">3 GAUGES</span>
+                  </button>
                   <button class="tab-item ${state.activeTab === 'tabStepper' ? 'active' : ''}" data-tab="tabStepper">Data Grid</button>
                   <button class="tab-item ${state.activeTab === 'tabDiff' ? 'active' : ''}" data-tab="tabDiff">
                     Visual Diff
@@ -583,6 +587,16 @@ window.StudioWorkbenchEngine = (function() {
                 
                 <!-- Tab 1: Cathryn Lavery Editorial Vector Diagram -->
                 <div class="tab-pane ${state.activeTab === 'tabDiagram' ? 'active' : ''}" id="tabDiagram">
+                  <div class="machines-quick-jump-banner" style="margin-bottom: 12px; padding: 8px 12px; background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.22); border-radius: 6px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#0ea5e9; box-shadow: 0 0 6px rgba(14, 165, 233, 0.6);"></span>
+                      <span style="font-size:11.5px; font-weight:700; color:var(--text-primary, #0f172a);">Looking for the 3-Gauge Relational Machines &amp; Data Analysis Explainer SVGs?</span>
+                    </div>
+                    <button type="button" onclick="if(typeof selectNavView==='function'){selectNavView('viewRelationalMachines', 'Relational Machines', null);}else{window.location.hash='#machines';}" style="background: #0284c7; color: #ffffff; border: none; padding: 4px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; box-shadow: 0 1px 3px rgba(2, 132, 199, 0.3);">
+                      <span>Open Relational Machines</span>
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                  </div>
                   <div class="editorial-diagram-container" id="editorialDiagramContainer">
                     ${renderEditorialDiagramSvg(currentProb)}
                   </div>
