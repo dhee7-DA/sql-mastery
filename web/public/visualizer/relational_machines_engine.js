@@ -1,9 +1,9 @@
 /**
  * =============================================================================
- * RELATIONAL MACHINES ENGINE (BESPOKE EDITORIAL EXPLAINER SVGS)
- * Inspired by High-End Financial Statement Engineering & Cathryn Lavery Diagram System
- * Deep Obsidian Black Canvas (#090d16), Glowing Numbered Relational Pins,
- * Curved Cubic Bézier Connecting Vectors, Clause Deconstruction & Health/Danger Audits
+ * RELATIONAL MACHINES ENGINE (DATA ANALYSIS & BUSINESS INTELLIGENCE EXPLAINERS)
+ * Pure Data Analysis Mastery: Raw Data Events -> SQL Transformations -> Business Metrics
+ * Obsidian Dark Canvas (#090d16), Glowing Numbered Data-Flow Pins,
+ * Curved Bézier Transformation Arcs, Metric Deconstructions & Analyst Business Insights
  * =============================================================================
  */
 
@@ -18,7 +18,8 @@ window.RelationalMachinesEngine = (function() {
   };
 
   // ---------------------------------------------------------------------------
-  // DRAFT 1: ONE QUERY, THREE GAUGES (STORAGE -> TRANSFORM -> EMISSION)
+  // DRAFT 1: THE METRIC MACHINE // RAW TRANSACTIONS -> AGGREGATION -> EXECUTIVE KPIS
+  // E-Commerce Revenue, AOV (Average Order Value) & Repeat Customer Rate
   // ---------------------------------------------------------------------------
   function getDraft1Svg() {
     const isDark = state.canvasTheme === 'dark';
@@ -59,159 +60,157 @@ window.RelationalMachinesEngine = (function() {
           </filter>
         </defs>
 
-        <!-- TOP HEADLINE STRIP -->
-        <text x="36" y="38" font-size="20" font-weight="800" fill="${textPrimary}" letter-spacing="-0.5">One query, three physical realms</text>
-        <text x="36" y="58" font-size="11.5" fill="${textMuted}">Every tuple moves through physical RAM &mdash; SQL Foundry draws the vector path, then proves each clause both ways.</text>
+        <!-- TOP HEADLINE -->
+        <text x="36" y="38" font-size="20" font-weight="800" fill="${textPrimary}" letter-spacing="-0.5">The Revenue &amp; Basket Size Engine</text>
+        <text x="36" y="58" font-size="11.5" fill="${textMuted}">How transactional log entries transform into executive commercial metrics: Gross Revenue, AOV, and Active Customers.</text>
 
         <!-- ================================================================= -->
-        <!-- GAUGE 1: STORAGE // BUFFER POOL (DISK & MEMORY)                   -->
+        <!-- GAUGE 1: RAW TRANSACTION DATA (Orders & Customers)                -->
         <!-- ================================================================= -->
         <g transform="translate(36, 80)">
           <rect width="260" height="290" rx="10" fill="${bgCard}" stroke="${border}" stroke-width="1.2"/>
-          <text x="18" y="26" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">01 STORAGE // BUFFER POOL</text>
+          <text x="18" y="26" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">01 RAW TRANSACTIONS // GRAIN</text>
           <line x1="18" y1="36" x2="242" y2="36" stroke="${border}" stroke-width="1"/>
           
-          <text x="18" y="58" font-size="11.5" font-weight="600" fill="${textSecondary}">Employees (Outer Stream)</text>
-          <text x="242" y="58" font-size="11" fill="${textMuted}" text-anchor="end" font-family="'Geist Mono', monospace">12 tuples</text>
+          <text x="18" y="58" font-size="11.5" font-weight="600" fill="${textSecondary}">Orders Table (Row = 1 Checkout)</text>
+          <text x="242" y="58" font-size="11" fill="${textMuted}" text-anchor="end" font-family="'Geist Mono', monospace">14,280 rows</text>
           
+          <!-- Order Total Box -->
           <rect x="18" y="70" width="224" height="32" rx="5" fill="${bgSubtle}" stroke="${borderSubtle}" stroke-width="1"/>
-          <text x="28" y="90" font-size="11" fill="#38bdf8" font-family="'Geist Mono', monospace">dept_id (FK Key)</text>
+          <text x="28" y="90" font-size="11" fill="#38bdf8" font-family="'Geist Mono', monospace">order_amount ($)</text>
           
-          <!-- Numbered Node 1 -->
           <g class="machine-node-chip" style="cursor:pointer;" onclick="window.RelationalMachinesEngine.highlightNode(1)" opacity="${opac1}">
             <circle cx="228" cy="86" r="9" fill="#0284c7" filter="url(#glow-cyan)"/>
             <text x="228" y="90" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
           </g>
 
-          <text x="18" y="128" font-size="11.5" font-weight="600" fill="${textSecondary}">Departments (Hash Build)</text>
-          <text x="242" y="128" font-size="11" fill="${textMuted}" text-anchor="end" font-family="'Geist Mono', monospace">4 tuples</text>
+          <!-- Customer ID Box -->
+          <text x="18" y="128" font-size="11.5" font-weight="600" fill="${textSecondary}">customer_id (Dimension Key)</text>
+          <text x="242" y="128" font-size="11" fill="${textMuted}" text-anchor="end" font-family="'Geist Mono', monospace">3,410 users</text>
           
           <rect x="18" y="140" width="224" height="32" rx="5" fill="${bgSubtle}" stroke="${borderSubtle}" stroke-width="1"/>
-          <text x="28" y="160" font-size="11" fill="#f59e0b" font-family="'Geist Mono', monospace">id (PK Hash Table)</text>
+          <text x="28" y="160" font-size="11" fill="#f59e0b" font-family="'Geist Mono', monospace">user_id &bull; order_timestamp</text>
           
-          <!-- Numbered Node 2 -->
           <g class="machine-node-chip" style="cursor:pointer;" onclick="window.RelationalMachinesEngine.highlightNode(2)" opacity="${opac2}">
             <circle cx="228" cy="156" r="9" fill="#d97706" filter="url(#glow-amber)"/>
             <text x="228" y="160" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle">2</text>
           </g>
 
-          <!-- Cache Stat Box -->
+          <!-- Clean Data Quality Check -->
           <rect x="18" y="194" width="224" height="74" rx="6" fill="${bgSubtle}" stroke="${borderSubtle}" stroke-width="1"/>
-          <text x="28" y="214" font-size="9.5" font-weight="700" fill="#38bdf8" font-family="'Geist Mono', monospace">PAGE BUFFER HIT RATIO</text>
-          <text x="28" y="234" font-size="14" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">100% IN-MEMORY RAM</text>
-          <text x="28" y="252" font-size="10" fill="${textMuted}" font-family="'Geist Mono', monospace">0 Disk Seeks &bull; Zero Disk Stall</text>
+          <text x="28" y="214" font-size="9.5" font-weight="700" fill="#38bdf8" font-family="'Geist Mono', monospace">DATA SANITY AUDIT</text>
+          <text x="28" y="234" font-size="13" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">0 NULL CHECKOUTS</text>
+          <text x="28" y="252" font-size="10" fill="${textMuted}" font-family="'Geist Mono', monospace">Refund status &ne; 'CANCELLED' filtered</text>
         </g>
 
         <!-- ================================================================= -->
-        <!-- GAUGE 2: RELATIONAL TRANSFORM (HASH JOIN & PREDICATE FILTER)      -->
+        <!-- GAUGE 2: ANALYTICAL AGGREGATION & ROLLUP (GROUP BY & AGGREGATES)  -->
         <!-- ================================================================= -->
         <g transform="translate(330, 80)">
           <rect width="280" height="290" rx="10" fill="${bgCard}" stroke="${border}" stroke-width="1.2"/>
-          <text x="18" y="26" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">02 TRANSFORM // HASH JOIN</text>
+          <text x="18" y="26" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">02 ANALYTICAL SQL LOGIC</text>
           <line x1="18" y1="36" x2="262" y2="36" stroke="${border}" stroke-width="1"/>
 
-          <!-- Hash Bucket Build Box -->
+          <!-- Sum & Avg Math -->
           <rect x="18" y="52" width="244" height="70" rx="6" fill="${bgSubtle}" stroke="#0284c7" stroke-width="1.4"/>
-          <text x="28" y="72" font-size="10.5" font-weight="800" fill="#38bdf8" font-family="'Geist Mono', monospace">HASH TABLE PROBE BUCKET</text>
-          <text x="28" y="90" font-size="10" fill="${textSecondary}" font-family="'Geist Mono', monospace">Bucket[hash(dept_id)] &larr;&rarr; id</text>
-          <text x="28" y="106" font-size="10.5" font-weight="700" fill="#10b981">Matched 11 tuples (1 unmatched)</text>
+          <text x="28" y="72" font-size="10.5" font-weight="800" fill="#38bdf8" font-family="'Geist Mono', monospace">REVENUE &amp; TICKET ROLLUP</text>
+          <text x="28" y="90" font-size="10" fill="${textSecondary}" font-family="'Geist Mono', monospace">SUM(order_amount) AS total_gmv</text>
+          <text x="28" y="106" font-size="10.5" font-weight="700" fill="#10b981">AVG(order_amount) AS aov</text>
 
-          <!-- Numbered Node 3 -->
           <g class="machine-node-chip" style="cursor:pointer;" onclick="window.RelationalMachinesEngine.highlightNode(3)" opacity="${opac3}">
             <circle cx="250" cy="87" r="9" fill="#10b981" filter="url(#glow-emerald)"/>
             <text x="250" y="91" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle">3</text>
           </g>
 
-          <!-- Predicate WHERE Filter Box -->
-          <rect x="18" y="136" width="244" height="66" rx="6" fill="${bgSubtle}" stroke="#ef4444" stroke-width="1.4"/>
-          <text x="28" y="156" font-size="10.5" font-weight="800" fill="#f87171" font-family="'Geist Mono', monospace">WHERE salary &gt;= 100,000</text>
-          <text x="28" y="174" font-size="10" fill="${textMuted}" font-family="'Geist Mono', monospace">CPU Register evaluation</text>
-          <text x="28" y="190" font-size="10" font-weight="700" fill="#ef4444">&minus; 4 Tuples Pruned (Zero-Copy Drop)</text>
+          <!-- Unique Customer Deduplication -->
+          <rect x="18" y="136" width="244" height="66" rx="6" fill="${bgSubtle}" stroke="#f59e0b" stroke-width="1.4"/>
+          <text x="28" y="156" font-size="10.5" font-weight="800" fill="#f59e0b" font-family="'Geist Mono', monospace">COUNT(DISTINCT customer_id)</text>
+          <text x="28" y="174" font-size="10" fill="${textMuted}" font-family="'Geist Mono', monospace">Deduplicates multi-order shoppers</text>
+          <text x="28" y="190" font-size="10" font-weight="700" fill="#f59e0b">3,410 Unique Buyers Identified</text>
 
-          <!-- Execution Specs -->
+          <!-- Granularity Dimension -->
           <rect x="18" y="216" width="244" height="52" rx="6" fill="${bgSubtle}" stroke="${borderSubtle}"/>
-          <text x="28" y="234" font-size="9.5" font-weight="700" fill="${textMuted}" font-family="'Geist Mono', monospace">ALGORITHM &bull; TIME COMPLEXITY</text>
-          <text x="28" y="254" font-size="12" font-weight="800" fill="${textPrimary}" font-family="'Geist Mono', monospace">HYBRID HASH JOIN &bull; O(N + M)</text>
+          <text x="28" y="234" font-size="9.5" font-weight="700" fill="${textMuted}" font-family="'Geist Mono', monospace">DIMENSIONAL DRILLDOWN</text>
+          <text x="28" y="254" font-size="12" font-weight="800" fill="${textPrimary}" font-family="'Geist Mono', monospace">GROUP BY DATE_TRUNC('month', date)</text>
         </g>
 
         <!-- ================================================================= -->
-        <!-- GAUGE 3: CLIENT EMISSION // RESULT STREAM                         -->
+        <!-- GAUGE 3: EXECUTIVE BUSINESS KPIS (THE NUMBERS LEADERSHIP LOOKS AT) -->
         <!-- ================================================================= -->
         <g transform="translate(644, 80)">
           <rect width="280" height="290" rx="10" fill="${bgCard}" stroke="${border}" stroke-width="1.2"/>
-          <text x="18" y="26" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">03 EMISSION // CLIENT STREAM</text>
+          <text x="18" y="26" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">03 BUSINESS INSIGHTS // KPIS</text>
           <line x1="18" y1="36" x2="262" y2="36" stroke="${border}" stroke-width="1"/>
 
-          <text x="18" y="58" font-size="10.5" font-weight="700" fill="${textMuted}" font-family="'Geist Mono', monospace">EMITTED COLUMNS:</text>
-          <rect x="18" y="68" width="244" height="28" rx="4" fill="${bgSubtle}" stroke="${borderSubtle}"/>
-          <text x="28" y="86" font-size="10.5" font-weight="600" fill="#38bdf8" font-family="'Geist Mono', monospace">first_name &bull; dept_name &bull; salary</text>
+          <!-- GMV Metric -->
+          <rect x="18" y="52" width="244" height="60" rx="6" fill="${bgSubtle}" stroke="#38bdf8" stroke-width="1.3"/>
+          <text x="28" y="70" font-size="9.5" font-weight="700" fill="#38bdf8" font-family="'Geist Mono', monospace">TOTAL MONTHLY GMV</text>
+          <text x="28" y="96" font-size="20" font-weight="800" fill="${textPrimary}" font-family="'Geist Mono', monospace">$1,428,950</text>
+          <text x="250" y="96" font-size="10.5" font-weight="700" fill="#10b981" text-anchor="end" font-family="'Geist Mono', monospace">+14.2% MoM</text>
 
-          <!-- Final Tuples Card -->
-          <rect x="18" y="108" width="244" height="110" rx="6" fill="${bgSubtle}" stroke="#10b981" stroke-width="1.4"/>
-          <text x="28" y="128" font-size="10" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">CLIENT OUTPUT BUFFER (STREAMING)</text>
-          
-          <text x="28" y="148" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">1. Ashley &bull; Analytics &bull; $115,000</text>
-          <text x="28" y="166" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">2. David &bull; Engineering &bull; $125,000</text>
-          <text x="28" y="184" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">3. Michael &bull; Executive &bull; $160,000</text>
-          <text x="28" y="202" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">4. Carlos &bull; Engineering &bull; $145,000</text>
+          <!-- AOV Metric -->
+          <rect x="18" y="122" width="244" height="60" rx="6" fill="${bgSubtle}" stroke="#10b981" stroke-width="1.3"/>
+          <text x="28" y="140" font-size="9.5" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">AVERAGE ORDER VALUE (AOV)</text>
+          <text x="28" y="166" font-size="20" font-weight="800" fill="${textPrimary}" font-family="'Geist Mono', monospace">$100.07</text>
+          <text x="250" y="166" font-size="10.5" font-weight="700" fill="#10b981" text-anchor="end" font-family="'Geist Mono', monospace">Healthy Basket</text>
 
-          <!-- Numbered Node 4 -->
+          <!-- Order Frequency -->
+          <rect x="18" y="192" width="244" height="74" rx="6" fill="${bgSubtle}" stroke="#f43f5e" stroke-width="1.3"/>
+          <text x="28" y="210" font-size="9.5" font-weight="700" fill="#f43f5e" font-family="'Geist Mono', monospace">PURCHASE FREQUENCY</text>
+          <text x="28" y="234" font-size="18" font-weight="800" fill="${textPrimary}" font-family="'Geist Mono', monospace">4.18 Orders / Buyer</text>
+          <text x="28" y="254" font-size="10" fill="#f43f5e" font-family="'Geist Mono', monospace">&bull; Strong Repeat Customer Stickiness</text>
+
           <g class="machine-node-chip" style="cursor:pointer;" onclick="window.RelationalMachinesEngine.highlightNode(4)" opacity="${opac4}">
-            <circle cx="250" cy="163" r="9" fill="#f43f5e" filter="url(#glow-rose)"/>
-            <text x="250" y="167" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle">4</text>
+            <circle cx="250" cy="226" r="9" fill="#f43f5e" filter="url(#glow-rose)"/>
+            <text x="250" y="230" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle">4</text>
           </g>
-
-          <!-- Slicing Window Info -->
-          <rect x="18" y="230" width="244" height="38" rx="5" fill="${bgSubtle}" stroke="${borderSubtle}"/>
-          <text x="28" y="248" font-size="9.5" fill="${textMuted}" font-family="'Geist Mono', monospace">LIMIT 4 OFFSET 0 &bull; Network Packet Buffer</text>
-          <text x="28" y="260" font-size="9.5" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">&radic; 100% RECONCILED TUPLES</text>
         </g>
 
         <!-- ================================================================= -->
-        <!-- GLOWING CURVED BÉZIER FLOW ARCS                                   -->
+        <!-- GLOWING CURVED BÉZIER DATA FLOW ARCS                              -->
         <!-- ================================================================= -->
-        <!-- Arc 1: Dept ID to Hash Probe -->
+        <!-- Arc 1: order_amount into SUM / AVG -->
         <path d="M 272 166 C 298 166, 310 167, 348 167" fill="none" stroke="#0284c7" stroke-width="${hNode === 1 ? '3.5' : '2'}" opacity="${opac1}" filter="${hNode === 1 ? 'url(#glow-cyan)' : 'none'}"/>
         
-        <!-- Arc 2: PK ID to Hash Table Build -->
-        <path d="M 272 236 C 300 236, 315 150, 348 150" fill="none" stroke="#f59e0b" stroke-width="${hNode === 2 ? '3.5' : '2'}" stroke-dasharray="4 3" opacity="${opac2}" filter="${hNode === 2 ? 'url(#glow-amber)' : 'none'}"/>
+        <!-- Arc 2: customer_id into COUNT(DISTINCT) -->
+        <path d="M 272 236 C 300 236, 315 220, 348 220" fill="none" stroke="#f59e0b" stroke-width="${hNode === 2 ? '3.5' : '2'}" stroke-dasharray="4 3" opacity="${opac2}" filter="${hNode === 2 ? 'url(#glow-amber)' : 'none'}"/>
         
-        <!-- Arc 3: Hash Match to Output Emission -->
-        <path d="M 610 167 C 625 167, 630 243, 662 243" fill="none" stroke="#10b981" stroke-width="${hNode === 3 ? '3.5' : '2'}" opacity="${opac3}" filter="${hNode === 3 ? 'url(#glow-emerald)' : 'none'}"/>
+        <!-- Arc 3: SUM / AVG into Executive GMV -->
+        <path d="M 610 167 C 625 167, 630 140, 662 140" fill="none" stroke="#10b981" stroke-width="${hNode === 3 ? '3.5' : '2'}" opacity="${opac3}" filter="${hNode === 3 ? 'url(#glow-emerald)' : 'none'}"/>
 
-        <!-- Arc 4: Emission to Output Buffer -->
-        <path d="M 610 216 C 626 216, 632 243, 662 243" fill="none" stroke="#f43f5e" stroke-width="${hNode === 4 ? '3.5' : '2'}" stroke-dasharray="3 3" opacity="${opac4}" filter="${hNode === 4 ? 'url(#glow-rose)' : 'none'}"/>
+        <!-- Arc 4: Distinct Ratio into Purchase Frequency -->
+        <path d="M 610 220 C 626 220, 632 270, 662 270" fill="none" stroke="#f43f5e" stroke-width="${hNode === 4 ? '3.5' : '2'}" stroke-dasharray="3 3" opacity="${opac4}" filter="${hNode === 4 ? 'url(#glow-rose)' : 'none'}"/>
 
         <!-- ================================================================= -->
-        <!-- INTERVIEW DEFENSE: READS AS HEALTHY VS READS AS DANGER            -->
+        <!-- DATA ANALYST INSIGHT & PITFALL AUDIT PANELS                       -->
         <!-- ================================================================= -->
         <g transform="translate(36, 390)">
-          <!-- Healthy Card -->
-          <rect width="425" height="96" rx="8" fill="${bgCard}" stroke="#10b981" stroke-width="1.3"/>
-          <text x="18" y="24" font-size="10.5" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">&bull; READS AS HEALTHY // STAFF-LEVEL RELATIONAL PATTERN</text>
-          <text x="18" y="44" font-size="11" fill="${textSecondary}">Smaller table (Departments) built entirely in CPU L2 cache memory.</text>
-          <text x="18" y="60" font-size="11" fill="${textSecondary}">Outer relation streams in O(N) linear time with 0 disk swap overhead.</text>
-          <text x="18" y="80" font-size="10" fill="${textMuted}" font-family="'Geist Mono', monospace">Latency: 0.18ms &bull; Memory Footprint: 4.2 KB RAM &bull; 0 Page Faults</text>
+          <!-- Analyst Commercial Takeaway -->
+          <rect width="425" height="96" rx="8" fill="${bgCard}" stroke="#0284c7" stroke-width="1.3"/>
+          <text x="18" y="24" font-size="10.5" font-weight="800" fill="#38bdf8" font-family="'Geist Mono', monospace">&bull; WHAT THIS SAYS TO A DATA ANALYST // COMMERCIAL INSIGHT</text>
+          <text x="18" y="44" font-size="11" fill="${textSecondary}">Revenue growth (+14.2% MoM) is driven by repeat buyer frequency (4.18x),</text>
+          <text x="18" y="60" font-size="11" fill="${textSecondary}">not just top-of-funnel customer acquisition. Basket size ($100) remains stable.</text>
+          <text x="18" y="80" font-size="10" fill="#10b981" font-family="'Geist Mono', monospace">Business Action: Increase retention marketing budget over paid ads.</text>
 
-          <!-- Danger Card -->
-          <rect x="460" width="428" height="96" rx="8" fill="${bgCard}" stroke="#ef4444" stroke-width="1.3"/>
-          <text x="478" y="24" font-size="10.5" font-weight="800" fill="#ef4444" font-family="'Geist Mono', monospace">&bull; READS AS DANGER // PRODUCTION GOTCHA &amp; SPILL</text>
-          <text x="478" y="44" font-size="11" fill="${textSecondary}">If inner relation exceeds work_mem, hash table spills to TempDB disk.</text>
-          <text x="478" y="60" font-size="11" fill="${textSecondary}">Optimizer fallback from Hash Join to Nested Loops causes 100x latency cliff.</text>
-          <text x="478" y="80" font-size="10" fill="#ef4444" font-family="'Geist Mono', monospace">Risk: Unbounded Disk I/O Bottleneck &bull; High tail p99 latency</text>
+          <!-- Common Analyst Pitfall -->
+          <rect x="460" width="428" height="96" rx="8" fill="${bgCard}" stroke="#f59e0b" stroke-width="1.3"/>
+          <text x="478" y="24" font-size="10.5" font-weight="800" fill="#f59e0b" font-family="'Geist Mono', monospace">&bull; ANALYST PITFALL // DOUBLE-COUNTING TRAP</text>
+          <text x="478" y="44" font-size="11" fill="${textSecondary}">Joining Orders to Order_Items before summing order_amount multiplies</text>
+          <text x="478" y="60" font-size="11" fill="${textSecondary}">order totals by the number of line items (1-to-many fan-out bias!).</text>
+          <text x="478" y="80" font-size="10" fill="#f59e0b" font-family="'Geist Mono', monospace">Fix: Aggregate items at order grain first before joining to customer dimensions.</text>
         </g>
 
         <!-- FOOTER SUMMARY STRIP -->
         <text x="36" y="512" font-size="10.5" fill="${textMuted}" font-family="'Geist Mono', monospace">
-          1 foreign key hashes into bucket &bull; 2 salary predicate filters in CPU &bull; 3 hash match pairs relations &bull; 4 zero-copy projection streams to client socket
+          1 raw orders stream into aggregation &bull; 2 unique customer IDs deduplicate buyers &bull; 3 revenue &amp; ticket size rollup &bull; 4 executive business metrics empower decisions
         </text>
       </svg>
     `;
   }
 
   // ---------------------------------------------------------------------------
-  // DRAFT 2: ELEMENT DECONSTRUCTED // THE ANATOMY OF A WINDOW CLAUSE
-  // Inspired by "WHAT FEEDS IT" -> "THE ELEMENT" -> "WHERE IT GOES"
+  // DRAFT 2: METRIC DECONSTRUCTED // 7-DAY ROLLING AVERAGE & TREND SMOOTHING
+  // Eliminating Weekend Noise from Daily Active Users & Sales
   // ---------------------------------------------------------------------------
   function getDraft2Svg() {
     const isDark = state.canvasTheme === 'dark';
@@ -234,113 +233,109 @@ window.RelationalMachinesEngine = (function() {
         </defs>
 
         <!-- TOP HEADLINE -->
-        <text x="36" y="38" font-size="18" font-weight="800" fill="${textPrimary}" letter-spacing="-0.4">DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC)</text>
-        <text x="36" y="58" font-size="11.5" fill="${textMuted}">The analytic podium frame &mdash; every rank assigned without collapsing underlying relational tuples.</text>
+        <text x="36" y="38" font-size="18" font-weight="800" fill="${textPrimary}" letter-spacing="-0.4">AVG(daily_sales) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)</text>
+        <text x="36" y="58" font-size="11.5" fill="${textMuted}">The 7-Day Rolling Moving Window &mdash; smoothing daily volatility and weekend dips to reveal genuine business trajectory.</text>
 
-        <!-- ================================================================= -->
-        <!-- 3-COLUMN FLOW: WHAT FEEDS IT -> THE ELEMENT -> WHERE IT GOES      -->
-        <!-- ================================================================= -->
+        <!-- 3-COLUMN FLOW: WHAT FEEDS IT -> THE ELEMENT -> WHERE IT GOES -->
         
         <!-- LEFT: WHAT FEEDS IT -->
         <g transform="translate(36, 80)">
-          <text x="0" y="14" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">WHAT FEEDS IT</text>
+          <text x="0" y="14" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">WHAT FEEDS IT // DAILY NOISE</text>
           
           <rect y="26" width="230" height="42" rx="6" fill="${bgCard}" stroke="#0284c7" stroke-width="1.2"/>
-          <text x="14" y="44" font-size="11" font-weight="700" fill="#38bdf8" font-family="'Geist Mono', monospace">Department ID Vector</text>
-          <text x="14" y="58" font-size="9.5" fill="${textMuted}">Hash partition boundary separator</text>
+          <text x="14" y="44" font-size="11" font-weight="700" fill="#38bdf8" font-family="'Geist Mono', monospace">Daily Fluctuation Spikes</text>
+          <text x="14" y="58" font-size="9.5" fill="${textMuted}">Monday surge vs Saturday quiet period</text>
 
           <rect y="80" width="230" height="42" rx="6" fill="${bgCard}" stroke="#d97706" stroke-width="1.2"/>
-          <text x="14" y="98" font-size="11" font-weight="700" fill="#f59e0b" font-family="'Geist Mono', monospace">Salary Integer Comparator</text>
-          <text x="14" y="112" font-size="9.5" fill="${textMuted}">Quicksort comparator for rank tie-breaking</text>
+          <text x="14" y="98" font-size="11" font-weight="700" fill="#f59e0b" font-family="'Geist Mono', monospace">Calendar Day Gaps</text>
+          <text x="14" y="112" font-size="9.5" fill="${textMuted}">Dates with zero transactions (Missing rows)</text>
 
           <rect y="134" width="230" height="42" rx="6" fill="${bgCard}" stroke="${borderSubtle}" stroke-width="1"/>
-          <text x="14" y="152" font-size="11" font-weight="700" fill="${textSecondary}" font-family="'Geist Mono', monospace">Active Cursor Frame</text>
-          <text x="14" y="166" font-size="9.5" fill="${textMuted}">Memory window frame (UNBOUNDED PRECEDING)</text>
+          <text x="14" y="152" font-size="11" font-weight="700" fill="${textSecondary}" font-family="'Geist Mono', monospace">One-Off Flash Sales</text>
+          <text x="14" y="166" font-size="9.5" fill="${textMuted}">Black Friday / Cyber Monday anomalies</text>
         </g>
 
         <!-- CENTER: THE ELEMENT (HERO GLOWING CARD) -->
         <g transform="translate(320, 80)">
-          <text x="0" y="14" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">THE PHYSICAL OPERATOR</text>
+          <text x="0" y="14" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">ANALYTICAL SLIDING FRAME</text>
           
           <rect y="26" width="310" height="150" rx="8" fill="${bgCard}" stroke="#f59e0b" stroke-width="1.8" filter="url(#glow-gold)"/>
-          <text x="18" y="54" font-size="10" font-weight="800" fill="#f59e0b" font-family="'Geist Mono', monospace" letter-spacing="0.5">WINDOW OPERATOR REGISTER</text>
+          <text x="18" y="54" font-size="10" font-weight="800" fill="#f59e0b" font-family="'Geist Mono', monospace" letter-spacing="0.5">WINDOW FRAME SPECIFICATION</text>
           
-          <text x="18" y="90" font-size="28" font-weight="800" fill="${textPrimary}" font-family="'Geist Mono', monospace">DENSE_RANK()</text>
-          <text x="18" y="114" font-size="11" fill="${textSecondary}">1 &bull; 2 &bull; 2 &bull; 3 (Zero Gap Ties)</text>
+          <text x="18" y="90" font-size="28" font-weight="800" fill="${textPrimary}" font-family="'Geist Mono', monospace">7-DAY ROLLING</text>
+          <text x="18" y="114" font-size="11" fill="${textSecondary}">6 Preceding + Current Row = 7 Row Buffer</text>
           <line x1="18" y1="126" x2="292" y2="126" stroke="${border}" stroke-width="1"/>
-          <text x="18" y="146" font-size="10" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">&bull; PASS: BOUNDED MEMORY ALLOCATION</text>
-          <text x="292" y="146" font-size="10" fill="${textMuted}" text-anchor="end" font-family="'Geist Mono', monospace">L2 CACHE</text>
+          <text x="18" y="146" font-size="10" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">&bull; NOISE ELIMINATED: ZERO-COLLAPSE CURSOR</text>
+          <text x="292" y="146" font-size="10" fill="${textMuted}" text-anchor="end" font-family="'Geist Mono', monospace">SLIDING L7D</text>
         </g>
 
         <!-- RIGHT: WHERE IT GOES -->
         <g transform="translate(684, 80)">
-          <text x="0" y="14" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">WHERE IT GOES</text>
+          <text x="0" y="14" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace" letter-spacing="1">WHERE IT GOES // DECISIONS</text>
           
           <rect y="26" width="240" height="42" rx="6" fill="${bgCard}" stroke="#10b981" stroke-width="1.2"/>
-          <text x="14" y="44" font-size="11" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">QUALIFY / WHERE rank &le; 3</text>
-          <text x="14" y="58" font-size="9.5" fill="${textMuted}">Pruning non-podium salaries</text>
+          <text x="14" y="44" font-size="11" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">Executive Trendline Chart</text>
+          <text x="14" y="58" font-size="9.5" fill="${textMuted}">Smooth curve on board pitch deck</text>
 
           <rect y="80" width="240" height="42" rx="6" fill="${bgCard}" stroke="#0284c7" stroke-width="1.2"/>
-          <text x="14" y="98" font-size="11" font-weight="700" fill="#38bdf8" font-family="'Geist Mono', monospace">Top-N Heap Accumulator</text>
-          <text x="14" y="112" font-size="9.5" fill="${textMuted}">Sorted priority buffer for final return</text>
+          <text x="14" y="98" font-size="11" font-weight="700" fill="#38bdf8" font-family="'Geist Mono', monospace">Outlier Anomaly Detection</text>
+          <text x="14" y="112" font-size="9.5" fill="${textMuted}">Flags when actual sales drift &plusmn;3 std dev</text>
 
           <rect y="134" width="240" height="42" rx="6" fill="${bgCard}" stroke="${borderSubtle}" stroke-width="1"/>
-          <text x="14" y="152" font-size="11" font-weight="700" fill="${textSecondary}" font-family="'Geist Mono', monospace">Client Stream Socket</text>
-          <text x="14" y="166" font-size="9.5" fill="${textMuted}">Zero-copy serialized JSON/Wire tuples</text>
+          <text x="14" y="152" font-size="11" font-weight="700" fill="${textSecondary}" font-family="'Geist Mono', monospace">Inventory Re-order Trigger</text>
+          <text x="14" y="166" font-size="9.5" fill="${textMuted}">Warehouse supply safety calculations</text>
         </g>
 
         <!-- CURVED CONNECTING VECTORS -->
-        <!-- Inflows -->
         <path d="M 266 127 C 285 127, 295 155, 320 155" fill="none" stroke="#0284c7" stroke-width="2"/>
         <path d="M 266 181 C 285 181, 295 155, 320 155" fill="none" stroke="#d97706" stroke-width="2"/>
         
-        <!-- Outflows -->
         <path d="M 630 155 C 655 155, 665 127, 684 127" fill="none" stroke="#10b981" stroke-width="2"/>
         <path d="M 630 155 C 655 155, 665 181, 684 181" fill="none" stroke="#0284c7" stroke-width="2"/>
 
         <!-- GAUGE RISK METER -->
         <g transform="translate(36, 275)">
           <rect width="888" height="68" rx="8" fill="${bgCard}" stroke="${border}" stroke-width="1.2"/>
-          <text x="18" y="24" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace">STAFF ENGINEER CODE REVIEW VERDICT</text>
+          <text x="18" y="24" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace">TREND INTERPRETATION // MOVING AVERAGE CONFIDENCE</text>
           
-          <!-- Meter Segments -->
           <rect x="18" y="34" width="270" height="10" rx="3" fill="#ef4444" opacity="0.4"/>
-          <text x="18" y="56" font-size="9.5" font-weight="700" fill="#ef4444" font-family="'Geist Mono', monospace">CONCERN: UNINDEXED FULL SCAN</text>
+          <text x="18" y="56" font-size="9.5" font-weight="700" fill="#ef4444" font-family="'Geist Mono', monospace">RAW DAILY: HIGH VOLATILITY NOISE</text>
           
           <rect x="296" y="34" width="270" height="10" rx="3" fill="#f59e0b" opacity="0.4"/>
-          <text x="296" y="56" font-size="9.5" font-weight="700" fill="#f59e0b" font-family="'Geist Mono', monospace">WATCH: SKEWED PARTITION SIZES</text>
+          <text x="296" y="56" font-size="9.5" font-weight="700" fill="#f59e0b" font-family="'Geist Mono', monospace">3-DAY: RESIDUAL WEEKEND SKEW</text>
 
           <rect x="574" y="34" width="296" height="10" rx="3" fill="#10b981" opacity="0.9"/>
-          <text x="574" y="56" font-size="9.5" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">&bull; ACTIVE: PARTITIONED L2 CACHE SEEK</text>
+          <text x="574" y="56" font-size="9.5" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">&bull; 7-DAY: ROBUST CYCLICAL SMOOTHING</text>
         </g>
 
         <!-- BOTTOM DUAL COMPARISON CARDS -->
         <g transform="translate(36, 360)">
-          <!-- Healthy -->
+          <!-- Commercial Insight -->
           <rect width="425" height="100" rx="8" fill="${bgCard}" stroke="#10b981" stroke-width="1.3"/>
-          <text x="18" y="24" font-size="10.5" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">&bull; READS AS HEALTHY // STAFF-LEVEL PATTERN</text>
-          <text x="18" y="44" font-size="11" fill="${textSecondary}">DENSE_RANK preserves continuous ordinal sequence on salary ties (1, 1, 2).</text>
-          <text x="18" y="60" font-size="11" fill="${textSecondary}">PARTITION BY department isolates state; memory overhead stays bounded.</text>
-          <text x="18" y="82" font-size="10" fill="${textMuted}" font-family="'Geist Mono', monospace">Time: O(N log K) with Top-N Heap &bull; Space: O(K) in RAM</text>
+          <text x="18" y="24" font-size="10.5" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">&bull; WHAT THIS SAYS TO A DATA ANALYST // BUSINESS INSIGHT</text>
+          <text x="18" y="44" font-size="11" fill="${textSecondary}">Never let stakeholders panic over Sunday sales dips. By reporting</text>
+          <text x="18" y="60" font-size="11" fill="${textSecondary}">the 7-day rolling average, day-of-week seasonality is naturally neutralised.</text>
+          <text x="18" y="82" font-size="10" fill="#10b981" font-family="'Geist Mono', monospace">KPI Target: When 7-Day MA crosses above 30-Day MA &rarr; Positive momentum.</text>
 
-          <!-- Danger -->
+          <!-- Analyst Pitfall -->
           <rect x="460" width="428" height="100" rx="8" fill="${bgCard}" stroke="#ef4444" stroke-width="1.3"/>
-          <text x="478" y="24" font-size="10.5" font-weight="800" fill="#ef4444" font-family="'Geist Mono', monospace">&bull; READS AS DANGER // PRODUCTION GOTCHA</text>
-          <text x="478" y="44" font-size="11" fill="${textSecondary}">Omission of PARTITION BY forces single-threaded quicksort over whole table.</text>
-          <text x="478" y="60" font-size="11" fill="${textSecondary}">RANK() skips numbers on ties (1, 1, 3), accidentally dropping podium spots!</text>
-          <text x="478" y="82" font-size="10" fill="#ef4444" font-family="'Geist Mono', monospace">Risk: Wrong interview answer &bull; Accidental O(N log N) full table sort</text>
+          <text x="478" y="24" font-size="10.5" font-weight="800" fill="#ef4444" font-family="'Geist Mono', monospace">&bull; ANALYST PITFALL // THE MISSING DATE GAP TRAP</text>
+          <text x="478" y="44" font-size="11" fill="${textSecondary}">ROWS BETWEEN 6 PRECEDING takes 7 recorded rows, NOT 7 calendar days!</text>
+          <text x="478" y="60" font-size="11" fill="${textSecondary}">If Tuesday had 0 sales and has no row, it silently pulls data from 8 days ago!</text>
+          <text x="478" y="82" font-size="10" fill="#ef4444" font-family="'Geist Mono', monospace">Fix: Cross join with calendar table or use RANGE BETWEEN INTERVAL '6' DAY.</text>
         </g>
 
         <!-- FOOTER QUOTE -->
         <text x="36" y="488" font-size="11" fill="${textMuted}" font-family="'Geist Mono', monospace">
-          "To a database optimizer, a window function is not syntax &mdash; it is a cursor over a segmented memory window."
+          "A great data analyst does not present raw numbers &mdash; they strip away the noise so leadership can see the real signal."
         </text>
       </svg>
     `;
   }
 
   // ---------------------------------------------------------------------------
-  // DRAFT 3: SARGABLE PREDICATE FUNNEL // B-TREE SEEK VS FULL TABLE SCAN
+  // DRAFT 3: COHORT RETENTION & CHURN ANALYSIS
+  // Tracking Customer Lifespan Month-over-Month
   // ---------------------------------------------------------------------------
   function getDraft3Svg() {
     const isDark = state.canvasTheme === 'dark';
@@ -356,73 +351,73 @@ window.RelationalMachinesEngine = (function() {
     return `
       <svg id="relationalMachineSvg" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" style="background:${bgCanvas}; font-family:'Geist', -apple-system, sans-serif; width:100%; height:auto;">
         <defs>
-          <filter id="glow-crimson" x="-20%" y="-20%" width="140%" height="140%">
+          <filter id="glow-emerald" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="3.5" result="blur" />
             <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
         </defs>
 
         <!-- TOP HEADLINE -->
-        <text x="36" y="38" font-size="18" font-weight="800" fill="${textPrimary}" letter-spacing="-0.4">WHERE POPULATION &gt; 100,000 (SARGable Index Seek)</text>
-        <text x="36" y="58" font-size="11.5" fill="${textMuted}">SARGable predicates enable B-Tree index traversal (O(log N)), cutting off full heap scans before memory allocation.</text>
+        <text x="36" y="38" font-size="18" font-weight="800" fill="${textPrimary}" letter-spacing="-0.4">User Retention Cohort Matrix (MoM Activity Join)</text>
+        <text x="36" y="58" font-size="11.5" fill="${textMuted}">Measuring how many users acquired in Cohort Month M return in Month M+1, M+2, and beyond to prove Product-Market Fit.</text>
 
         <!-- 3-STAGE FUNNEL -->
         <g transform="translate(36, 80)">
-          <!-- LEFT: B-TREE ROOT -->
+          <!-- LEFT: COHORT BASE -->
           <rect width="250" height="260" rx="8" fill="${bgCard}" stroke="${border}" stroke-width="1.2"/>
-          <text x="18" y="26" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace">01 B-TREE INDEX TRAVERSAL</text>
+          <text x="18" y="26" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace">01 ACQUISITION COHORT</text>
           <line x1="18" y1="36" x2="232" y2="36" stroke="${border}" stroke-width="1"/>
 
           <rect x="18" y="52" width="214" height="34" rx="4" fill="${bgSubtle}" stroke="#0284c7"/>
-          <text x="28" y="72" font-size="11" font-weight="700" fill="#38bdf8" font-family="'Geist Mono', monospace">Index Root Node #401</text>
+          <text x="28" y="72" font-size="11" font-weight="700" fill="#38bdf8" font-family="'Geist Mono', monospace">Jan 2026 Cohort (100%)</text>
 
           <rect x="18" y="96" width="214" height="34" rx="4" fill="${bgSubtle}" stroke="#d97706"/>
-          <text x="28" y="116" font-size="11" font-weight="700" fill="#f59e0b" font-family="'Geist Mono', monospace">Branch Node #812</text>
+          <text x="28" y="116" font-size="11" font-weight="700" fill="#f59e0b" font-family="'Geist Mono', monospace">Total Signups: 1,000 Users</text>
 
           <rect x="18" y="140" width="214" height="42" rx="4" fill="${bgSubtle}" stroke="#10b981" stroke-width="1.5"/>
-          <text x="28" y="160" font-size="11" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">Leaf Key &ge; 100,000</text>
-          <text x="28" y="174" font-size="9.5" fill="${textMuted}" font-family="'Geist Mono', monospace">Direct Pointer to Disk Offset</text>
+          <text x="28" y="160" font-size="11" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">First Purchase Verified</text>
+          <text x="28" y="174" font-size="9.5" fill="${textMuted}" font-family="'Geist Mono', monospace">Activated in Customer Database</text>
 
-          <text x="18" y="210" font-size="10" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">TRAVERSAL: 3 I/O HOPS ONLY</text>
-          <text x="18" y="226" font-size="9.5" fill="${textMuted}">Bypasses 96% of table heap rows</text>
+          <text x="18" y="210" font-size="10" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">BASELINE: 1,000 INITIAL USERS</text>
+          <text x="18" y="226" font-size="9.5" fill="${textMuted}">Customer acquisition cost (CAC) sunk</text>
         </g>
 
-        <!-- CENTER: CPU REGISTERS -->
+        <!-- CENTER: JOIN & RETENTION DECAY -->
         <g transform="translate(316, 80)">
-          <rect width="320" height="260" rx="8" fill="${bgCard}" stroke="#ef4444" stroke-width="1.8" filter="url(#glow-crimson)"/>
-          <text x="18" y="26" font-size="10.5" font-weight="800" fill="#f87171" font-family="'Geist Mono', monospace">02 CPU REGISTER FUNNEL</text>
+          <rect width="320" height="260" rx="8" fill="${bgCard}" stroke="#10b981" stroke-width="1.8" filter="url(#glow-emerald)"/>
+          <text x="18" y="26" font-size="10.5" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">02 MONTH-OVER-MONTH SELF-JOIN</text>
           <line x1="18" y1="36" x2="302" y2="36" stroke="${border}" stroke-width="1"/>
 
-          <rect x="18" y="52" width="284" height="40" rx="4" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981"/>
-          <text x="28" y="70" font-size="10.5" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">124,966 &gt; 100,000 &rarr; TRUE</text>
-          <text x="28" y="84" font-size="9.5" fill="${textSecondary}">Scottsdale, USA &bull; EMITTED TO RAM</text>
+          <rect x="18" y="52" width="284" height="40" rx="4" fill="rgba(16, 185, 129, 0.12)" stroke="#10b981"/>
+          <text x="28" y="70" font-size="10.5" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">Month 1 (Feb): 640 Active &rarr; 64.0%</text>
+          <text x="28" y="84" font-size="9.5" fill="${textSecondary}">Initial activation drop-off stabilized</text>
 
-          <rect x="18" y="102" width="284" height="40" rx="4" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981"/>
-          <text x="28" y="120" font-size="10.5" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">121,780 &gt; 100,000 &rarr; TRUE</text>
-          <text x="28" y="134" font-size="9.5" fill="${textSecondary}">Corona, USA &bull; EMITTED TO RAM</text>
+          <rect x="18" y="102" width="284" height="40" rx="4" fill="rgba(16, 185, 129, 0.12)" stroke="#10b981"/>
+          <text x="28" y="120" font-size="10.5" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">Month 2 (Mar): 520 Active &rarr; 52.0%</text>
+          <text x="28" y="134" font-size="9.5" fill="${textSecondary}">Core habituated customer segment</text>
 
-          <rect x="18" y="152" width="284" height="40" rx="4" fill="rgba(239, 68, 68, 0.1)" stroke="#ef4444"/>
-          <text x="28" y="170" font-size="10.5" font-weight="700" fill="#ef4444" font-family="'Geist Mono', monospace">91,200 &gt; 100,000 &rarr; FALSE</text>
-          <text x="28" y="184" font-size="9.5" fill="${textMuted}">Zero CPU Allocation &bull; PRUNED IN CACHE</text>
+          <rect x="18" y="152" width="284" height="40" rx="4" fill="rgba(56, 189, 248, 0.12)" stroke="#38bdf8"/>
+          <text x="28" y="170" font-size="10.5" font-weight="700" fill="#38bdf8" font-family="'Geist Mono', monospace">Month 3 (Apr): 490 Active &rarr; 49.0%</text>
+          <text x="28" y="184" font-size="9.5" fill="${textMuted}">Retention curve flattens into baseline!</text>
 
-          <text x="18" y="222" font-size="10.5" font-weight="800" fill="#38bdf8" font-family="'Geist Mono', monospace">REGISTERS: XMM0 &bull; BITWISE COMPARE</text>
+          <text x="18" y="222" font-size="10.5" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">LONG-TERM ASYMPTOTE: ~48% SMILE CURVE</text>
         </g>
 
-        <!-- RIGHT: EMISSION BUFFER -->
+        <!-- RIGHT: EMISSION / BUSINESS IMPACT -->
         <g transform="translate(666, 80)">
           <rect width="258" height="260" rx="8" fill="${bgCard}" stroke="${border}" stroke-width="1.2"/>
-          <text x="18" y="26" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace">03 EMITTED RECORD BUFFER</text>
+          <text x="18" y="26" font-size="10.5" font-weight="800" fill="${textMuted}" font-family="'Geist Mono', monospace">03 UNIT ECONOMICS IMPACT</text>
           <line x1="18" y1="36" x2="240" y2="36" stroke="${border}" stroke-width="1"/>
 
           <rect x="18" y="52" width="222" height="120" rx="6" fill="${bgSubtle}" stroke="#10b981" stroke-width="1.2"/>
-          <text x="28" y="74" font-size="10" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">5 QUALIFIED MUNICIPAL TUPLES</text>
-          <text x="28" y="94" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">1. Scottsdale (1813)</text>
-          <text x="28" y="112" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">2. Corona (1814)</text>
-          <text x="28" y="130" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">3. Concord (1661)</text>
-          <text x="28" y="148" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">4. Cedar Rapids (1662)</text>
+          <text x="28" y="74" font-size="10" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">LTV / CAC HEALTH INDICATORS</text>
+          <text x="28" y="94" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">Customer Lifetime Value: $480</text>
+          <text x="28" y="112" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">Payback Period: 3.2 Months</text>
+          <text x="28" y="130" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">Net Revenue Retention: 114%</text>
+          <text x="28" y="148" font-size="10" fill="${textPrimary}" font-family="'Geist Mono', monospace">Annual Churn Rate: 12%</text>
 
-          <text x="18" y="200" font-size="10" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">&radic; SARGABILITY HIT: 100%</text>
-          <text x="18" y="218" font-size="9.5" fill="${textMuted}" font-family="'Geist Mono', monospace">Selectivity: 62.5% of dataset</text>
+          <text x="18" y="200" font-size="10" font-weight="700" fill="#10b981" font-family="'Geist Mono', monospace">&radic; PRODUCT-MARKET FIT CONFIRMED</text>
+          <text x="18" y="218" font-size="9.5" fill="${textMuted}" font-family="'Geist Mono', monospace">Retention curve is asymptotic (not zero)</text>
         </g>
 
         <!-- CONNECTORS -->
@@ -431,24 +426,24 @@ window.RelationalMachinesEngine = (function() {
 
         <!-- BOTTOM COMPARISON -->
         <g transform="translate(36, 360)">
-          <!-- Healthy -->
+          <!-- Commercial Insight -->
           <rect width="425" height="100" rx="8" fill="${bgCard}" stroke="#10b981" stroke-width="1.3"/>
-          <text x="18" y="24" font-size="10.5" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">&bull; READS AS HEALTHY // SARGABLE PREDICATE</text>
-          <text x="18" y="44" font-size="11" fill="${textSecondary}">Raw column directly compared against literal constant: col &gt; 100,000.</text>
-          <text x="18" y="60" font-size="11" fill="${textSecondary}">B-Tree range seek pinpoints start leaf node in O(log N) operations.</text>
-          <text x="18" y="82" font-size="10" fill="${textMuted}" font-family="'Geist Mono', monospace">Cost: 3 page reads &bull; 0 Table Scans &bull; Index Range Seek</text>
+          <text x="18" y="24" font-size="10.5" font-weight="800" fill="#10b981" font-family="'Geist Mono', monospace">&bull; WHAT THIS SAYS TO A DATA ANALYST // BUSINESS INSIGHT</text>
+          <text x="18" y="44" font-size="11" fill="${textSecondary}">A retention curve that flattens parallel to the x-axis proves product-market</text>
+          <text x="18" y="60" font-size="11" fill="${textSecondary}">fit. When older cohorts retain at 49%, each new user added expands revenue.</text>
+          <text x="18" y="82" font-size="10" fill="#10b981" font-family="'Geist Mono', monospace">Analyst Tip: Check if Jan 2026 cohort is higher than Nov 2025 (Product improvement!).</text>
 
-          <!-- Danger -->
+          <!-- Analyst Pitfall -->
           <rect x="460" width="428" height="100" rx="8" fill="${bgCard}" stroke="#ef4444" stroke-width="1.3"/>
-          <text x="478" y="24" font-size="10.5" font-weight="800" fill="#ef4444" font-family="'Geist Mono', monospace">&bull; READS AS DANGER // FUNCTION WRAPPER ANTI-PATTERN</text>
-          <text x="478" y="44" font-size="11" fill="${textSecondary}">Wrapping column: WHERE ROUND(population/1000) &gt; 100 destroys B-Tree!</text>
-          <text x="478" y="60" font-size="11" fill="${textSecondary}">Forces engine into Full Table Scan O(N), reading all 100M rows off disk.</text>
-          <text x="478" y="82" font-size="10" fill="#ef4444" font-family="'Geist Mono', monospace">Risk: 1,000x slower on large tables &bull; CPU saturation</text>
+          <text x="478" y="24" font-size="10.5" font-weight="800" fill="#ef4444" font-family="'Geist Mono', monospace">&bull; ANALYST PITFALL // SURVIVORSHIP BIAS IN CHURN</text>
+          <text x="478" y="44" font-size="11" fill="${textSecondary}">Only counting users who visited in the last 30 days ignores deactivated</text>
+          <text x="478" y="60" font-size="11" fill="${textSecondary}">users, creating an illusion of high engagement by selecting only survivors!</text>
+          <text x="478" y="82" font-size="10" fill="#ef4444" font-family="'Geist Mono', monospace">Fix: Denominator must always be the original cohort size (1,000), never the active subset.</text>
         </g>
 
         <!-- FOOTER -->
         <text x="36" y="488" font-size="11" fill="${textMuted}" font-family="'Geist Mono', monospace">
-          "A query is only as fast as its most non-SARGable predicate."
+          "If retention does not flatten, growth is just water pouring into a leaking bucket."
         </text>
       </svg>
     `;
@@ -478,24 +473,24 @@ window.RelationalMachinesEngine = (function() {
           <div class="machines-topbar-left">
             <div class="machines-brand">
               <span class="machines-brand-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
               </span>
               <div>
-                <h2 class="machines-title">The Relational Machine</h2>
-                <span class="machines-subtitle">Obsidian Explainer SVGs &bull; Architectural Vector Machines</span>
+                <h2 class="machines-title">SQL for Data Analysis &amp; Business Intelligence</h2>
+                <span class="machines-subtitle">Raw Data &bull; SQL Transformations &bull; Commercial Insights</span>
               </div>
             </div>
 
             <!-- Draft Switcher Buttons -->
             <div class="machines-tabs-group">
               <button class="machine-tab-btn ${state.activeDraft === 'machine01' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.switchDraft('machine01')">
-                <span>01 Three Gauges (Storage &bull; Join &bull; Output)</span>
+                <span>01 Metric Engine (Revenue, AOV &amp; Frequency)</span>
               </button>
               <button class="machine-tab-btn ${state.activeDraft === 'machine02' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.switchDraft('machine02')">
-                <span>02 Element Deconstructed (DENSE_RANK)</span>
+                <span>02 Metric Deconstructed (7-Day Rolling Trend)</span>
               </button>
               <button class="machine-tab-btn ${state.activeDraft === 'machine03' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.switchDraft('machine03')">
-                <span>03 SARGable Funnel (Index Seek &bull; WHERE)</span>
+                <span>03 Cohort Retention &amp; Churn Matrix</span>
               </button>
             </div>
           </div>
@@ -555,12 +550,12 @@ window.RelationalMachinesEngine = (function() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = state.activeDraft + '_relational_machine.svg';
+    a.download = state.activeDraft + '_data_analysis_machine.svg';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say("Exported pristine " + state.activeDraft + ".svg vector graphic!", 4000, 'celebrate');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("Exported pristine " + state.activeDraft + ".svg data analysis machine!", 4000, 'celebrate');
   }
 
   function copySvgCode() {
@@ -570,7 +565,7 @@ window.RelationalMachinesEngine = (function() {
     const source = serializer.serializeToString(svgEl);
     if (navigator.clipboard) {
       navigator.clipboard.writeText(source).then(() => {
-        if (window.SQL_BUDDY) window.SQL_BUDDY.say("Raw SVG vector code copied to clipboard!", 3500, 'happy');
+        if (window.SQL_BUDDY) window.SQL_BUDDY.say("Data Analysis SVG code copied to clipboard!", 3500, 'happy');
       });
     }
   }
