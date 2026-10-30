@@ -15,13 +15,42 @@ window.RelationalMachinesEngine = (function() {
   'use strict';
 
   let state = {
-    activeDraft: 'machine01',   // 'machine01' | 'machine02' | 'machine03'
+    activeDraft: 'machine01',   // 'machine01' | 'machine02' | 'machine03' | 'machine04'
     activeHighlightNode: null, // null or number
     canvasTheme: 'dark',        // 'dark' | 'light'
     zoomLevel: 1.0,
     selectedMetricId: null,    // null or string (e.g. 'order_amount')
     selectedDialect: 'postgres',// 'postgres' | 'snowflake' | 'bigquery' | 'duckdb'
-    isDrawerOpen: false
+    isDrawerOpen: false,
+    synthesizerSql: 'SELECT name, population, area FROM World WHERE area >= 3000000 OR population >= 25000000;',
+    synthesizerPreset: 'lc595'
+  };
+
+  const SYNTHESIZER_PRESETS = {
+    'lc595': {
+      label: 'LeetCode #595: Big Countries (3 Chambers Filter)',
+      sql: 'SELECT name, population, area FROM World WHERE area >= 3000000 OR population >= 25000000;'
+    },
+    'lc175': {
+      label: 'LeetCode #175: Combine Two Tables (3 Chambers Left Join)',
+      sql: 'SELECT p.firstName, p.lastName, a.city, a.state FROM Person p LEFT JOIN Address a ON p.personId = a.personId;'
+    },
+    'lc586': {
+      label: 'LeetCode #586: Customer Orders (4 Chambers Rollup + Limit)',
+      sql: 'SELECT customer_number FROM orders GROUP BY customer_number ORDER BY COUNT(order_number) DESC LIMIT 1;'
+    },
+    'lc596': {
+      label: 'LeetCode #596: Classes More Than 5 (4 Chambers Having Filter)',
+      sql: 'SELECT class FROM Courses GROUP BY class HAVING COUNT(student) >= 5;'
+    },
+    'lc185': {
+      label: 'LeetCode #185: Top 3 Department Salaries (5 Chambers Window Analytics)',
+      sql: 'SELECT d.name AS Department, e.name AS Employee, e.salary AS Salary FROM (SELECT departmentId, name, salary, DENSE_RANK() OVER (PARTITION BY departmentId ORDER BY salary DESC) as rnk FROM Employee) e JOIN Department d ON e.departmentId = d.id WHERE rnk <= 3;'
+    },
+    'cte_retention': {
+      label: 'Cohort Activity Multi-Stage CTE (5 Chambers Complex)',
+      sql: 'WITH first_touch AS (SELECT user_id, MIN(activity_date) AS cohort_date FROM events GROUP BY user_id) SELECT f.cohort_date, COUNT(DISTINCT e.user_id) AS active_users FROM events e JOIN first_touch f ON e.user_id = f.user_id WHERE e.activity_date >= f.cohort_date + INTERVAL 7 DAY GROUP BY f.cohort_date;'
+    }
   };
 
   // ===========================================================================
@@ -1219,7 +1248,7 @@ ORDER BY 1, 2;`
   // INTERACTION HANDLERS: TOOLTIP & DRAWER
   // ---------------------------------------------------------------------------
   function handleRowHover(evt, metricId) {
-    const meta = METRIC_CATALOG[metricId];
+    const meta = METRIC_CATALOG[metricId] || (window.AdaptivePipelineCompiler && window.AdaptivePipelineCompiler.getDynamicMetric(metricId));
     if (!meta) return;
 
     const tooltip = document.getElementById('machinesMicroTooltip');
@@ -1252,7 +1281,7 @@ ORDER BY 1, 2;`
 
   function openDrawer(metricId, dialect) {
     handleRowLeave();
-    const meta = METRIC_CATALOG[metricId];
+    const meta = METRIC_CATALOG[metricId] || (window.AdaptivePipelineCompiler && window.AdaptivePipelineCompiler.getDynamicMetric(metricId));
     if (!meta) return;
 
     state.selectedMetricId = metricId;
@@ -1285,7 +1314,7 @@ ORDER BY 1, 2;`
     const drawer = document.getElementById('machinesInspectorDrawer');
     if (!drawer || !state.selectedMetricId) return;
 
-    const meta = METRIC_CATALOG[state.selectedMetricId];
+    const meta = METRIC_CATALOG[state.selectedMetricId] || (window.AdaptivePipelineCompiler && window.AdaptivePipelineCompiler.getDynamicMetric(state.selectedMetricId));
     if (!meta) return;
 
     const dialect = state.selectedDialect;
@@ -1390,12 +1419,42 @@ ORDER BY 1, 2;`
     if (!container) return;
 
     let svgHtml = '';
+    let synthesizerBannerHtml = '';
     if (state.activeDraft === 'machine01') {
       svgHtml = getDraft1Svg();
     } else if (state.activeDraft === 'machine02') {
       svgHtml = getDraft2Svg();
-    } else {
+    } else if (state.activeDraft === 'machine03') {
       svgHtml = getDraft3Svg();
+    } else if (state.activeDraft === 'machine04') {
+      if (window.AdaptivePipelineCompiler) {
+        const compiled = window.AdaptivePipelineCompiler.compileAndRender(state.synthesizerSql);
+        svgHtml = compiled ? compiled.svg : '<div style="padding:40px; color:#f43f5e; font-family:monospace;">Error parsing SQL query</div>';
+      } else {
+        svgHtml = '<div style="padding:40px; color:#f43f5e; font-family:monospace;">AdaptivePipelineCompiler not loaded</div>';
+      }
+
+      synthesizerBannerHtml = `
+        <div class="machines-synthesizer-card" style="margin-bottom: 16px; background: #0c1017; border: 1px solid #1e293b; border-radius: 8px; padding: 14px 18px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: #38bdf8; font-size: 14px;">&#9889;</span>
+              <strong style="font-size: 11px; letter-spacing: 0.5px; color: #f8fafc; font-family: 'JetBrains Mono', monospace;">CUSTOM QUERY RELATIONAL SYNTHESIZER</strong>
+              <span style="font-size: 9px; padding: 2px 6px; border-radius: 3px; background: #38bdf818; color: #38bdf8; border: 1px solid #38bdf844; font-family: 'JetBrains Mono', monospace;">3 TO 6 CHAMBERS ADAPTIVE</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label style="font-size: 10px; color: #94a3b8; font-family: 'JetBrains Mono', monospace;">Preset:</label>
+              <select id="synthPresetSelect" onchange="window.RelationalMachinesEngine.loadPreset(this.value)" style="background: #111723; color: #e2e8f0; border: 1px solid #1e293b; border-radius: 4px; padding: 4px 8px; font-size: 10px; font-family: 'JetBrains Mono', monospace;">
+                ${Object.entries(SYNTHESIZER_PRESETS).map(([k, v]) => `<option value="${k}" ${state.synthesizerPreset === k ? 'selected' : ''}>${v.label}</option>`).join('')}
+              </select>
+              <button onclick="window.RelationalMachinesEngine.synthesizeCustomQuery()" style="background: #0284c7; color: #ffffff; border: none; border-radius: 4px; padding: 5px 12px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace;">
+                <span>&#9654; Synthesize Machine</span>
+              </button>
+            </div>
+          </div>
+          <textarea id="synthSqlInput" rows="3" style="width: 100%; box-sizing: border-box; background: #07090e; color: #38bdf8; border: 1px solid #1e293b; border-radius: 6px; padding: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.5; resize: vertical;">${escapeHtml(state.synthesizerSql)}</textarea>
+        </div>
+      `;
     }
 
     container.innerHTML = `
@@ -1425,6 +1484,9 @@ ORDER BY 1, 2;`
               <button class="machine-tab-btn ${state.activeDraft === 'machine03' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.switchDraft('machine03')">
                 <span>03 Cohort Retention &amp; Churn Matrix</span>
               </button>
+              <button class="machine-tab-btn ${state.activeDraft === 'machine04' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.switchDraft('machine04')">
+                <span style="color:#38bdf8;">04 &#9889; Query Synthesizer (Adaptive SVG)</span>
+              </button>
             </div>
           </div>
 
@@ -1444,6 +1506,7 @@ ORDER BY 1, 2;`
           </div>
         </header>
 
+        ${synthesizerBannerHtml}
         <!-- Main SVG Viewer Stage with Anchored Overlays -->
         <main class="machines-canvas-card">
           <div class="machines-svg-viewport" id="machinesSvgViewport" style="transform: scale(${state.zoomLevel}); transform-origin: top center; transition: transform 0.2s ease;">
@@ -1531,6 +1594,23 @@ ORDER BY 1, 2;`
     renderView();
   }
 
+  function loadPreset(presetKey) {
+    if (SYNTHESIZER_PRESETS[presetKey]) {
+      state.synthesizerPreset = presetKey;
+      state.synthesizerSql = SYNTHESIZER_PRESETS[presetKey].sql;
+      renderView();
+    }
+  }
+
+  function synthesizeCustomQuery() {
+    const input = document.getElementById('synthSqlInput');
+    if (input && input.value.trim()) {
+      state.synthesizerSql = input.value.trim();
+      renderView();
+      if (window.SQL_BUDDY) window.SQL_BUDDY.say("Adaptive Relational Machine synthesized successfully!", 3500, 'celebrate');
+    }
+  }
+
   return {
     init,
     switchDraft,
@@ -1543,6 +1623,8 @@ ORDER BY 1, 2;`
     openDrawer,
     closeDrawer,
     switchDialect,
-    copyDrawerSql
+    copyDrawerSql,
+    loadPreset,
+    synthesizeCustomQuery
   };
 })();

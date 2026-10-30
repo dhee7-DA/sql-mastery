@@ -604,3 +604,52 @@
 .theme-light .machines-dossier-text {
   color: #334155;
 }
+
+/* -------------------------------------------------------------------------- */
+/* ADAPTIVE PIPELINE & SYNTHESIZER EXTENSIONS                                 */
+/* -------------------------------------------------------------------------- */
+.machines-synthesizer-card textarea:focus {
+  outline: none;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.machines-svg-viewport::-webkit-scrollbar,
+.lc-machine-svg-viewport::-webkit-scrollbar {
+  height: 6px;
+  background: #07090e;
+}
+
+.machines-svg-viewport::-webkit-scrollbar-thumb,
+.lc-machine-svg-viewport::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+
+.machines-svg-viewport::-webkit-scrollbar-thumb:hover,
+.lc-machine-svg-viewport::-webkit-scrollbar-thumb:hover {
+  background: #38bdf8;
+}
+
+.lc-machine-toggle-btn {
+  transition: all 0.15s ease;
+}
+
+.lc-machine-toggle-btn:hover {
+  background: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+.lc-machine-toggle-btn.active {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+}
+
+.machine-interactive-row:hover rect {
+  fill: #162032 !important;
+  stroke: #38bdf8 !important;
+  stroke-width: 1.2px !important;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.25));
+}

@@ -149,6 +149,7 @@ window.LEETCODE_ARENA = (() => {
     layoutMode: 'split', // 'split' | 'editor' | 'problem'
     zenMode: false,
     activeSchemaView: 'data', // 'data' | 'target' | 'diagram'
+    lcMachineSource: 'canonical', // 'canonical' | 'editor'
     userCode: {},
     revealedSolutions: {},
     schemaDockCollapsed: true, // Collapsed by default so editor has room
@@ -1999,10 +2000,51 @@ WHERE ;`;
           </div>
         `;
       }
-      if (view === 'diagram' && svgContent) {
+      if (view === 'diagram') {
+        const sourceMode = state.lcMachineSource || 'canonical';
+        let queryToCompile = activeProb.solutionSQL || activeProb.targetQuery || defaultStarterSql;
+        if (sourceMode === 'editor' && state.userCode[activeProb.id]) {
+          queryToCompile = state.userCode[activeProb.id];
+        }
+
+        let machineSvg = '';
+        let chamberCount = 3;
+        if (window.AdaptivePipelineCompiler) {
+          const compiled = window.AdaptivePipelineCompiler.compileAndRender(queryToCompile, activeProb);
+          if (compiled) {
+            machineSvg = compiled.svg;
+            chamberCount = compiled.chamberCount;
+          }
+        } else if (svgContent) {
+          machineSvg = svgContent;
+        }
+
         return `
-          <div class="lc-prob-svg-wrap">
-            ${svgContent}
+          <div class="lc-prob-machine-container" style="background:#07080c; border:1px solid #1e293b; border-radius:8px; overflow:hidden;">
+            <!-- Adaptive Machine Sub-Toolbar -->
+            <div class="lc-machine-subbar" style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#0d111a; border-bottom:1px solid #1e293b; flex-wrap:wrap; gap:8px;">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span style="font-size:12px; color:#38bdf8;">&#x2B21;</span>
+                <span style="font-size:10px; font-weight:700; color:#f8fafc; font-family:'JetBrains Mono', monospace;">ADAPTIVE PIPELINE (${chamberCount} CHAMBERS)</span>
+                <span style="font-size:8.5px; padding:1px 5px; border-radius:3px; background:#10b98118; color:#10b981; border:1px solid #10b98144; font-family:'JetBrains Mono', monospace;">LIVE AST</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <button class="lc-machine-toggle-btn" id="btnMachineSourceCanonical" style="background:${sourceMode !== 'editor' ? '#0284c7' : '#111723'}; color:#f8fafc; border:1px solid #1e293b; border-radius:4px; padding:3px 8px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;">
+                  &#128142; Canonical Solution
+                </button>
+                <button class="lc-machine-toggle-btn" id="btnMachineSourceEditor" style="background:${sourceMode === 'editor' ? '#0284c7' : '#111723'}; color:#f8fafc; border:1px solid #1e293b; border-radius:4px; padding:3px 8px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;">
+                  &#9997; My Editor Code
+                </button>
+                <button id="btnSynthesizeEditorCode" style="background:#1e293b; color:#38bdf8; border:1px solid #38bdf855; border-radius:4px; padding:3px 8px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;" title="Recompile diagram from code editor">
+                  &#9889; Synthesize
+                </button>
+              </div>
+            </div>
+
+            <!-- Scrollable SVG Viewport -->
+            <div class="lc-machine-svg-viewport" style="overflow-x:auto; padding:10px; text-align:center;">
+              ${machineSvg || '<div style="padding:30px; color:#64748b; font-family:monospace; font-size:11px;">No relational diagram available for this query.</div>'}
+            </div>
           </div>
         `;
       }
@@ -2059,7 +2101,7 @@ WHERE ;`;
                   <div class="lc-inspector-tabs" id="lcInspectorTabs">
                     <button class="lc-insp-tab ${currentSchemaView === 'data' ? 'active' : ''}" data-view="data">📊 Sample Data</button>
                     <button class="lc-insp-tab ${currentSchemaView === 'target' ? 'active' : ''}" data-view="target">🎯 Expected (${expRows.length})</button>
-                    ${svgContent ? `<button class="lc-insp-tab ${currentSchemaView === 'diagram' ? 'active' : ''}" data-view="diagram">📐 Flowchart</button>` : ''}
+                    <button class="lc-insp-tab ${currentSchemaView === 'diagram' ? 'active' : ''}" data-view="diagram">&#x2B21; Relational Machine (SVG)</button>
                   </div>
                 </div>
                 <div class="lc-inspector-body" id="lcInspectorBody">
@@ -2221,6 +2263,48 @@ WHERE ;`;
     // -------------------------------------------------------------------------
 
     // 1. Inspector Tab Switching (Sample Data | Target Output | Flowchart Diagram)
+    function wireMachineSubbarHandlers() {
+      const btnCanonical = canvas.querySelector('#btnMachineSourceCanonical');
+      const btnEditor = canvas.querySelector('#btnMachineSourceEditor');
+      const btnSynth = canvas.querySelector('#btnSynthesizeEditorCode');
+      const editorEl = canvas.querySelector('#lcProbEditor');
+
+      if (btnCanonical) {
+        btnCanonical.addEventListener('click', () => {
+          state.lcMachineSource = 'canonical';
+          if (inspBody) {
+            inspBody.innerHTML = getInspectorBodyHtml('diagram');
+            wireMachineSubbarHandlers();
+          }
+        });
+      }
+
+      if (btnEditor) {
+        btnEditor.addEventListener('click', () => {
+          if (editorEl) state.userCode[activeProb.id] = editorEl.value;
+          state.lcMachineSource = 'editor';
+          if (inspBody) {
+            inspBody.innerHTML = getInspectorBodyHtml('diagram');
+            wireMachineSubbarHandlers();
+          }
+        });
+      }
+
+      if (btnSynth) {
+        btnSynth.addEventListener('click', () => {
+          if (editorEl) state.userCode[activeProb.id] = editorEl.value;
+          state.lcMachineSource = 'editor';
+          if (inspBody) {
+            inspBody.innerHTML = getInspectorBodyHtml('diagram');
+            wireMachineSubbarHandlers();
+          }
+          if (window.SQL_BUDDY) {
+            window.SQL_BUDDY.say("Synthesized your custom query into an adaptive Relational Machine!", 3500, 'celebrate');
+          }
+        });
+      }
+    }
+
     const inspTabs = canvas.querySelectorAll('#lcInspectorTabs .lc-insp-tab');
     const inspBody = canvas.querySelector('#lcInspectorBody');
     inspTabs.forEach(tab => {
@@ -2230,9 +2314,16 @@ WHERE ;`;
         inspTabs.forEach(t => t.classList.toggle('active', t.dataset.view === view));
         if (inspBody) {
           inspBody.innerHTML = getInspectorBodyHtml(view);
+          if (view === 'diagram') {
+            wireMachineSubbarHandlers();
+          }
         }
       });
     });
+
+    if (currentSchemaView === 'diagram') {
+      wireMachineSubbarHandlers();
+    }
 
     // 2. Unlock Canonical Solution Button
     const btnUnlock = canvas.querySelector('#btnUnlockCanonical');
