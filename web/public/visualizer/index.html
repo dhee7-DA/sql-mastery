@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="mock_interview_theme.css?v=106">
   <link rel="stylesheet" href="company_mastery_theme.css?v=13">
   <link rel="stylesheet" href="studio_workbench_theme.css?v=20261029_clean_v4">
+  <link rel="stylesheet" href="relational_machines_theme.css?v=20261030_v1">
   <link rel="stylesheet" href="mastery_course_theme.css?v=10">
   <link rel="stylesheet" href="command_palette.css?v=6">
   <link rel="stylesheet" href="tactile_tiles_theme.css?v=10">
@@ -81,6 +82,17 @@
               </span>
               <span class="nav-group-title">Section Studio</span>
             </span>
+          </button>
+
+          <!-- 2b. RELATIONAL MACHINES (EXPLAINER SVGS) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavRelationalMachines" data-view="viewRelationalMachines" onclick="try{window.location.hash='#machines';}catch(e){} selectNavView('viewRelationalMachines', 'Relational Machines', null)" title="The Relational Machine: Obsidian Architectural Explainer SVGs">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 16 12 12 8"></polygon></svg>
+              </span>
+              <span class="nav-group-title">Relational Machines</span>
+            </span>
+            <span class="nav-item-tag accent" style="background:rgba(56,189,248,0.15); color:#38bdf8; border-color:rgba(56,189,248,0.3);">SVG</span>
           </button>
 
           <!-- PRACTICE DROPDOWN -->
@@ -406,6 +418,7 @@
 
     <!-- VIEW: SQL Mastery & Interview Prep Course (Order of Execution) -->
     <div class="view-panel" id="viewMasteryCourse"></div>
+    <div class="view-panel" id="viewRelationalMachines"></div>
 
     <!-- VIEW: 20-Day Learning Journey & Adventure Roadmap Hub -->
     <div class="view-panel" id="viewLearningJourney"></div>
@@ -1879,6 +1892,7 @@
 <script src="command_palette.js?v=2"></script>
 <script src="landing_page_engine.js?v=12"></script>
   <script src="studio_workbench_engine.js?v=20261029_clean_v4"></script>
+  <script src="relational_machines_engine.js?v=20261030_v1"></script>
   <script src="mastery_course_data.js?v=10"></script>
   <script src="mastery_course_svg_engine.js?v=10"></script>
   <script src="mastery_course_engine.js?v=10"></script>
@@ -1898,6 +1912,8 @@
         if (typeof window.selectNavView === 'function') window.selectNavView('viewCompanyHub', 'Company Hub', null);
       } else if (hash === 'terminal' || hash === 'sqlterminal') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewSqlTerminal', 'SQL Terminal', null);
+      } else if (hash === 'machines' || hash === 'svg' || hash === 'machine') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewRelationalMachines', 'Relational Machines', null);
       } else if (hash === 'studio') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewStudio', 'Studio', null);
       } else if (hash === 'journey') {

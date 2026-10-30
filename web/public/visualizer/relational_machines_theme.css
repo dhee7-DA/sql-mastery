@@ -1,0 +1,213 @@
+/* =============================================================================
+   RELATIONAL MACHINES THEME (OBSIDIAN VECTOR STUDIO)
+   Inspired by GLM-5 Financial Statements Aesthetic
+   ============================================================================= */
+
+#viewRelationalMachines.active {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 0 !important;
+  background: #090d16;
+  color: #f8fafc;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 48px);
+}
+
+#viewRelationalMachines:not(.active) {
+  display: none !important;
+}
+
+.machines-studio-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 24px 80px 24px;
+  max-width: 1480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.machines-studio-wrapper.theme-light {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+/* Topbar Header */
+.machines-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 8px 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.theme-light .machines-topbar {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.machines-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.machines-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.machines-brand-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.machines-title {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  color: #f8fafc;
+}
+
+.theme-light .machines-title {
+  color: #0f172a;
+}
+
+.machines-subtitle {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--font-mono, monospace);
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Draft Tabs Group */
+.machines-tabs-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #161b22;
+  padding: 3px;
+  border-radius: 6px;
+  border: 1px solid #30363d;
+  flex-wrap: wrap;
+}
+
+.theme-light .machines-tabs-group {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.machine-tab-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  white-space: nowrap;
+}
+
+.machine-tab-btn:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.theme-light .machine-tab-btn:hover {
+  color: #0f172a;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.machine-tab-btn.active {
+  background: #0284c7;
+  color: #ffffff;
+  font-weight: 700;
+  border-color: #38bdf8;
+  box-shadow: 0 1px 4px rgba(2, 132, 199, 0.4);
+}
+
+/* Right Actions */
+.machines-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.machine-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 5px;
+  border: 1px solid #30363d;
+  background: #161b22;
+  color: #f8fafc;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.theme-light .machine-action-btn {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.machine-action-btn:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.08);
+}
+
+/* Canvas Card */
+.machines-canvas-card {
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+}
+
+.theme-light .machines-canvas-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.machines-svg-viewport {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.machine-node-chip {
+  transition: all 0.15s ease;
+}
+
+.machine-node-chip:hover circle {
+  r: 11;
+  stroke: #ffffff;
+  stroke-width: 1.5;
+}

@@ -2263,6 +2263,7 @@ const NAV_GROUPS_MAP = {
   viewSqlTerminal: { triggerId: 'btnGroupPractice', pillId: null, label: 'SQL Terminal' },
   viewMockInterview: { triggerId: 'btnNavMockInterview', pillId: null, label: 'Mock Screen' },
   viewStudio: { triggerId: 'btnNavStudio', pillId: null, label: 'Section Studio' },
+  viewRelationalMachines: { triggerId: 'btnNavRelationalMachines', pillId: null, label: 'Relational Machines' },
   viewTactileEngine: { triggerId: 'btnGroupExplore', pillId: null, label: 'SQL Machine' }
 };
 
@@ -2309,6 +2310,13 @@ function switchMainView(targetId) {
       window.StudioWorkbenchEngine.init();
     }
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("Welcome to Section Studio! Interactive AST stepper, multi-dialect transpiler, and custom data scratchpad ready!", 4500, 'celebrate');
+  }
+  if (targetId === 'viewRelationalMachines') {
+    if (targetView) targetView.scrollTop = 0;
+    if (window.RelationalMachinesEngine && typeof window.RelationalMachinesEngine.init === 'function') {
+      window.RelationalMachinesEngine.init();
+    }
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("Welcome to The Relational Machine! High-end obsidian architectural explainer SVGs ready!", 4500, 'celebrate');
   }
   if (targetId === 'viewMockInterview') {
     if (window.MockInterviewEngine) window.MockInterviewEngine.init();
