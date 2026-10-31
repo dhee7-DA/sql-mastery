@@ -577,8 +577,29 @@
     const chamberWidth = 196;
     const gap = 52;
     const paddingX = 36;
-    const totalWidth = Math.max(760, paddingX * 2 + n * chamberWidth + (n - 1) * gap);
+    const totalWidth = Math.max(780, paddingX * 2 + n * chamberWidth + (n - 1) * gap);
     const totalHeight = 520;
+
+    const activeTheme = (options && options.theme) || (typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme')) || 'monochrome';
+    let canvasBg = '#000000';
+    let frameFill = '#09090b';
+    let frameStroke = 'rgba(255, 255, 255, 0.08)';
+    let headerText = '#ffffff';
+    let subText = '#71717a';
+
+    if (activeTheme === 'ink') {
+      canvasBg = '#070a0f';
+      frameFill = '#0d1117';
+      frameStroke = '#1e293b';
+      headerText = '#f1f5f9';
+      subText = '#64748b';
+    } else if (activeTheme === 'carbon') {
+      canvasBg = '#090a0c';
+      frameFill = '#111215';
+      frameStroke = '#22262e';
+      headerText = '#f3f4f6';
+      subText = '#6b7280';
+    }
 
     // SVG Filters and Gradients definitions
     let defsHtml = `
@@ -772,7 +793,7 @@
       <!-- Canvas Top Blueprint Header -->
       <g>
         <!-- Outer Border Frame -->
-        <rect x="${paddingX}" y="14" width="${totalWidth - paddingX * 2}" height="48" rx="6" fill="#0d111a" stroke="#1e293b" stroke-width="1" />
+        <rect x="${paddingX}" y="14" width="${totalWidth - paddingX * 2}" height="48" rx="6" fill="${frameFill}" stroke="${frameStroke}" stroke-width="1" />
         
         <!-- Left Title & Subtitle (Clean & Collision-Free) -->
         <text x="${paddingX + 16}" y="33" fill="#f8fafc" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" letter-spacing="0.4">RELATIONAL PIPELINE // ${n} EXECUTION CHAMBERS</text>
@@ -809,7 +830,7 @@
       <!-- Bottom Dual Inspection Panels with Auto-Wrapping foreignObject -->
       <g>
         <!-- Panel 1: Logical Execution Plan & Cardinality Graph -->
-        <rect x="${p1X}" y="${bottomY}" width="${splitW1}" height="${bottomH}" rx="6" fill="#0d111a" stroke="#1e293b" stroke-width="1" />
+        <rect x="${p1X}" y="${bottomY}" width="${splitW1}" height="${bottomH}" rx="6" fill="${frameFill}" stroke="${frameStroke}" stroke-width="1" />
         <line x1="${p1X + 2}" y1="${bottomY}" x2="${p1X + splitW1 - 2}" y2="${bottomY}" stroke="#38bdf8" stroke-width="2" />
         
         <text x="${p1X + 14}" y="${bottomY + 20}" fill="#38bdf8" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700" letter-spacing="0.4">LOGICAL EXECUTION PLAN &amp; CARDINALITY PIPELINE</text>
@@ -825,7 +846,7 @@
         </foreignObject>
 
         <!-- Panel 2: Senior Relational Architect & Interview Dossier -->
-        <rect x="${p2X}" y="${bottomY}" width="${splitW2}" height="${bottomH}" rx="6" fill="#0d111a" stroke="#1e293b" stroke-width="1" />
+        <rect x="${p2X}" y="${bottomY}" width="${splitW2}" height="${bottomH}" rx="6" fill="${frameFill}" stroke="${frameStroke}" stroke-width="1" />
         <line x1="${p2X + 2}" y1="${bottomY}" x2="${p2X + splitW2 - 2}" y2="${bottomY}" stroke="#fbbf24" stroke-width="2" />
         
         <text x="${p2X + 14}" y="${bottomY + 20}" fill="#fbbf24" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700" letter-spacing="0.4">STAFF DATA ARCHITECT // PERFORMANCE &amp; DEFENSE</text>
@@ -848,7 +869,7 @@
         ${defsHtml}
         
         <!-- Canvas Background -->
-        <rect x="0" y="0" width="${totalWidth}" height="${totalHeight}" fill="#07080c" />
+        <rect x="0" y="0" width="${totalWidth}" height="${totalHeight}" fill="${canvasBg}" />
         <rect x="0" y="0" width="${totalWidth}" height="${totalHeight}" fill="url(#adaptive-obsidian-grid)" />
         
         ${topHeaderSvg}

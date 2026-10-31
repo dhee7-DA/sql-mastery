@@ -2654,7 +2654,7 @@ body.lc-zen-mode .lc-arena-shell {
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   transition: all 0.15s ease;
 }
 
@@ -3330,23 +3330,31 @@ body.lc-zen-mode .lc-arena-shell {
 }
 
 .lc-btn-primary {
-  background: var(--accent, #e11d48);
-  color: #ffffff;
-  font-weight: 700;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 8px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  background: var(--btn-primary-bg, #fafafa) !important;
+  color: var(--btn-primary-color, #09090b) !important;
+  font-weight: 600 !important;
+  border: 1px solid var(--btn-primary-border, rgba(255, 255, 255, 0.2)) !important;
+  padding: 7px 16px !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+}
+
+.lc-btn-primary:hover {
+  background: var(--btn-primary-hover, #ffffff) !important;
+  color: var(--btn-primary-hover-color, #000000) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
 }
 
 .lc-btn-primary:hover {
   filter: brightness(1.08);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .lc-btn-secondary {
@@ -4114,4 +4122,435 @@ body.lc-zen-mode .lc-arena-shell {
 [data-theme="carbon"] .lc-insp-tab.active {
   background: #064e3b !important;
   color: #34d399 !important;
+}
+
+
+/* =============================================================================
+   LEETCODE ARENA - MONOCHROME, INK & CARBON COMPLETE SYSTEM STYLING
+   Minimalist, calm, high-craft aesthetics (Linear / Vercel design language)
+   ============================================================================= */
+
+/* --- 1. MONOCHROME THEME (High-Contrast Obsidian Noir) --- */
+[data-theme="monochrome"] .lc-canvas-body,
+[data-theme="monochrome"] .lc-arena-shell {
+  background: #000000 !important;
+  color: #f4f4f5 !important;
+}
+
+[data-theme="monochrome"] .lc-topbar,
+[data-theme="monochrome"] .lc-hub-topbar {
+  background: #09090b !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="monochrome"] .lc-card,
+[data-theme="monochrome"] .lc-spec-card,
+[data-theme="monochrome"] .lc-editor-card,
+[data-theme="monochrome"] .lc-sidebar,
+[data-theme="monochrome"] .lc-workspace-studio,
+[data-theme="monochrome"] .lc-machine-studio-card {
+  background: #0d0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+  color: #f4f4f5 !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="monochrome"] .lc-card:hover {
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+[data-theme="monochrome"] .lc-textarea-editor {
+  background: #050507 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  font-family: 'Geist Mono', 'JetBrains Mono', monospace !important;
+}
+
+[data-theme="monochrome"] .lc-textarea-editor:focus {
+  border-color: #ffffff !important;
+  box-shadow: 0 0 0 1px #ffffff !important;
+  outline: none !important;
+}
+
+[data-theme="monochrome"] .lc-schema-inspector-card,
+[data-theme="monochrome"] .lc-drawer-body,
+[data-theme="monochrome"] .lc-learning-drawer,
+[data-theme="monochrome"] .lc-prob-machine-container {
+  background: #09090b !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #f4f4f5 !important;
+}
+
+[data-theme="monochrome"] .lc-drawer-summary,
+[data-theme="monochrome"] .lc-inspector-header,
+[data-theme="monochrome"] .lc-machine-subbar {
+  background: #111114 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #f4f4f5 !important;
+}
+
+[data-theme="monochrome"] .lc-insp-tab {
+  background: transparent !important;
+  color: #a1a1aa !important;
+  border: 1px solid transparent !important;
+}
+
+[data-theme="monochrome"] .lc-insp-tab.active {
+  background: #1c1c22 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 5px !important;
+}
+
+[data-theme="monochrome"] .lc-prob-title {
+  color: #ffffff !important;
+}
+
+[data-theme="monochrome"] .lc-prob-desc,
+[data-theme="monochrome"] .lc-p {
+  color: #a1a1aa !important;
+}
+
+[data-theme="monochrome"] .lc-btn-primary {
+  background: #f4f4f5 !important;
+  color: #09090b !important;
+  border: 1px solid #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="monochrome"] .lc-btn-primary:hover {
+  background: #ffffff !important;
+  color: #000000 !important;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="monochrome"] .lc-btn-secondary {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #f4f4f5 !important;
+}
+
+[data-theme="monochrome"] .lc-btn-secondary:hover {
+  background: #202026 !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+}
+
+[data-theme="monochrome"] .lc-btn-ghost,
+[data-theme="monochrome"] .lc-tool-btn,
+[data-theme="monochrome"] .lc-arrow-btn,
+[data-theme="monochrome"] .lc-hub-back-btn,
+[data-theme="monochrome"] .lc-problems-drawer-btn {
+  background: #111115 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+}
+
+[data-theme="monochrome"] .lc-btn-ghost:hover,
+[data-theme="monochrome"] .lc-tool-btn:hover,
+[data-theme="monochrome"] .lc-arrow-btn:hover,
+[data-theme="monochrome"] .lc-hub-back-btn:hover,
+[data-theme="monochrome"] .lc-problems-drawer-btn:hover {
+  background: #1c1c22 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+[data-theme="monochrome"] .lc-layout-pill-group {
+  background: #111115 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="monochrome"] .lc-layout-btn {
+  color: #71717a !important;
+}
+
+[data-theme="monochrome"] .lc-layout-btn.active {
+  background: #202026 !important;
+  color: #ffffff !important;
+}
+
+
+/* --- 2. INK THEME (Minimalist Deep Midnight Navy) --- */
+[data-theme="ink"] .lc-canvas-body,
+[data-theme="ink"] .lc-arena-shell {
+  background: #070a0f !important;
+  color: #f1f5f9 !important;
+}
+
+[data-theme="ink"] .lc-topbar,
+[data-theme="ink"] .lc-hub-topbar {
+  background: #0d1117 !important;
+  border-bottom: 1px solid #1e293b !important;
+}
+
+[data-theme="ink"] .lc-card,
+[data-theme="ink"] .lc-spec-card,
+[data-theme="ink"] .lc-editor-card,
+[data-theme="ink"] .lc-sidebar,
+[data-theme="ink"] .lc-workspace-studio,
+[data-theme="ink"] .lc-machine-studio-card {
+  background: #0f141d !important;
+  border: 1px solid #1e293b !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+  color: #f1f5f9 !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="ink"] .lc-card:hover {
+  border-color: #334155 !important;
+}
+
+[data-theme="ink"] .lc-textarea-editor {
+  background: #080b11 !important;
+  border: 1px solid #1e293b !important;
+  color: #f8fafc !important;
+  font-family: 'Geist Mono', 'JetBrains Mono', monospace !important;
+}
+
+[data-theme="ink"] .lc-textarea-editor:focus {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 0 1px #38bdf8 !important;
+  outline: none !important;
+}
+
+[data-theme="ink"] .lc-schema-inspector-card,
+[data-theme="ink"] .lc-drawer-body,
+[data-theme="ink"] .lc-learning-drawer,
+[data-theme="ink"] .lc-prob-machine-container {
+  background: #0d1117 !important;
+  border: 1px solid #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+[data-theme="ink"] .lc-drawer-summary,
+[data-theme="ink"] .lc-inspector-header,
+[data-theme="ink"] .lc-machine-subbar {
+  background: #141a24 !important;
+  border-bottom: 1px solid #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+[data-theme="ink"] .lc-insp-tab {
+  background: transparent !important;
+  color: #94a3b8 !important;
+  border: 1px solid transparent !important;
+}
+
+[data-theme="ink"] .lc-insp-tab.active {
+  background: #1e293b !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  border-radius: 5px !important;
+}
+
+[data-theme="ink"] .lc-prob-title {
+  color: #f8fafc !important;
+}
+
+[data-theme="ink"] .lc-prob-desc,
+[data-theme="ink"] .lc-p {
+  color: #94a3b8 !important;
+}
+
+[data-theme="ink"] .lc-btn-primary {
+  background: #38bdf8 !important;
+  color: #070a0f !important;
+  border: 1px solid #38bdf8 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="ink"] .lc-btn-primary:hover {
+  background: #7dd3fc !important;
+  color: #070a0f !important;
+  box-shadow: 0 2px 10px rgba(56, 189, 248, 0.35) !important;
+}
+
+[data-theme="ink"] .lc-btn-secondary {
+  background: #141a24 !important;
+  border: 1px solid #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+[data-theme="ink"] .lc-btn-secondary:hover {
+  background: #1e2837 !important;
+  border-color: #334155 !important;
+}
+
+[data-theme="ink"] .lc-btn-ghost,
+[data-theme="ink"] .lc-tool-btn,
+[data-theme="ink"] .lc-arrow-btn,
+[data-theme="ink"] .lc-hub-back-btn,
+[data-theme="ink"] .lc-problems-drawer-btn {
+  background: #101620 !important;
+  border: 1px solid #1e293b !important;
+  color: #94a3b8 !important;
+}
+
+[data-theme="ink"] .lc-btn-ghost:hover,
+[data-theme="ink"] .lc-tool-btn:hover,
+[data-theme="ink"] .lc-arrow-btn:hover,
+[data-theme="ink"] .lc-hub-back-btn:hover,
+[data-theme="ink"] .lc-problems-drawer-btn:hover {
+  background: #1e293b !important;
+  color: #ffffff !important;
+  border-color: #38bdf855 !important;
+}
+
+[data-theme="ink"] .lc-layout-pill-group {
+  background: #101620 !important;
+  border: 1px solid #1e293b !important;
+}
+
+[data-theme="ink"] .lc-layout-btn {
+  color: #64748b !important;
+}
+
+[data-theme="ink"] .lc-layout-btn.active {
+  background: #1e293b !important;
+  color: #38bdf8 !important;
+}
+
+
+/* --- 3. CARBON THEME (Stealth Matte Graphite & Emerald) --- */
+[data-theme="carbon"] .lc-canvas-body,
+[data-theme="carbon"] .lc-arena-shell {
+  background: #090a0c !important;
+  color: #e6edf3 !important;
+}
+
+[data-theme="carbon"] .lc-topbar,
+[data-theme="carbon"] .lc-hub-topbar {
+  background: #0f1115 !important;
+  border-bottom: 1px solid #22262e !important;
+}
+
+[data-theme="carbon"] .lc-card,
+[data-theme="carbon"] .lc-spec-card,
+[data-theme="carbon"] .lc-editor-card,
+[data-theme="carbon"] .lc-sidebar,
+[data-theme="carbon"] .lc-workspace-studio,
+[data-theme="carbon"] .lc-machine-studio-card {
+  background: #121418 !important;
+  border: 1px solid #22262e !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+  color: #e6edf3 !important;
+  border-radius: 8px !important;
+}
+
+[data-theme="carbon"] .lc-card:hover {
+  border-color: #333a46 !important;
+}
+
+[data-theme="carbon"] .lc-textarea-editor {
+  background: #0a0b0d !important;
+  border: 1px solid #22262e !important;
+  color: #f0f6fc !important;
+  font-family: 'Geist Mono', 'JetBrains Mono', monospace !important;
+}
+
+[data-theme="carbon"] .lc-textarea-editor:focus {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 1px #10b981 !important;
+  outline: none !important;
+}
+
+[data-theme="carbon"] .lc-schema-inspector-card,
+[data-theme="carbon"] .lc-drawer-body,
+[data-theme="carbon"] .lc-learning-drawer,
+[data-theme="carbon"] .lc-prob-machine-container {
+  background: #0f1115 !important;
+  border: 1px solid #22262e !important;
+  color: #e6edf3 !important;
+}
+
+[data-theme="carbon"] .lc-drawer-summary,
+[data-theme="carbon"] .lc-inspector-header,
+[data-theme="carbon"] .lc-machine-subbar {
+  background: #16191f !important;
+  border-bottom: 1px solid #22262e !important;
+  color: #e6edf3 !important;
+}
+
+[data-theme="carbon"] .lc-insp-tab {
+  background: transparent !important;
+  color: #8b949e !important;
+  border: 1px solid transparent !important;
+}
+
+[data-theme="carbon"] .lc-insp-tab.active {
+  background: #1e242d !important;
+  color: #10b981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  border-radius: 5px !important;
+}
+
+[data-theme="carbon"] .lc-prob-title {
+  color: #f0f6fc !important;
+}
+
+[data-theme="carbon"] .lc-prob-desc,
+[data-theme="carbon"] .lc-p {
+  color: #8b949e !important;
+}
+
+[data-theme="carbon"] .lc-btn-primary {
+  background: #10b981 !important;
+  color: #041e15 !important;
+  border: 1px solid #10b981 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="carbon"] .lc-btn-primary:hover {
+  background: #34d399 !important;
+  color: #041e15 !important;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35) !important;
+}
+
+[data-theme="carbon"] .lc-btn-secondary {
+  background: #16191f !important;
+  border: 1px solid #22262e !important;
+  color: #e6edf3 !important;
+}
+
+[data-theme="carbon"] .lc-btn-secondary:hover {
+  background: #20252e !important;
+  border-color: #363c48 !important;
+}
+
+[data-theme="carbon"] .lc-btn-ghost,
+[data-theme="carbon"] .lc-tool-btn,
+[data-theme="carbon"] .lc-arrow-btn,
+[data-theme="carbon"] .lc-hub-back-btn,
+[data-theme="carbon"] .lc-problems-drawer-btn {
+  background: #121418 !important;
+  border: 1px solid #22262e !important;
+  color: #8b949e !important;
+}
+
+[data-theme="carbon"] .lc-btn-ghost:hover,
+[data-theme="carbon"] .lc-tool-btn:hover,
+[data-theme="carbon"] .lc-arrow-btn:hover,
+[data-theme="carbon"] .lc-hub-back-btn:hover,
+[data-theme="carbon"] .lc-problems-drawer-btn:hover {
+  background: #1e242d !important;
+  color: #ffffff !important;
+  border-color: #10b98155 !important;
+}
+
+[data-theme="carbon"] .lc-layout-pill-group {
+  background: #121418 !important;
+  border: 1px solid #22262e !important;
+}
+
+[data-theme="carbon"] .lc-layout-btn {
+  color: #64748b !important;
+}
+
+[data-theme="carbon"] .lc-layout-btn.active {
+  background: #1e242d !important;
+  color: #10b981 !important;
 }

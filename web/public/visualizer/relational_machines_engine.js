@@ -1591,7 +1591,20 @@ ORDER BY 1, 2;`
   }
 
   function init() {
+    const currentTheme = (typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme')) || 'monochrome';
+    state.canvasTheme = (currentTheme === 'kobbe-nordic' || currentTheme === 'paper-white' || currentTheme === 'warm-cream') ? 'light' : 'dark';
     renderView();
+  }
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('sql-theme-changed', (e) => {
+      const t = e.detail && e.detail.theme;
+      state.canvasTheme = (t === 'kobbe-nordic' || t === 'paper-white' || t === 'warm-cream') ? 'light' : 'dark';
+      const container = document.getElementById('viewRelationalMachines');
+      if (container && container.classList.contains('active')) {
+        renderView();
+      }
+    });
   }
 
   function loadPreset(presetKey) {

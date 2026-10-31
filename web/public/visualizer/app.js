@@ -1799,38 +1799,63 @@ function generateSqlFromBuilder() {
 (function applyEarlyTheme() {
   try {
     let savedTheme = localStorage.getItem('sql_visualizer_theme');
-    if (!savedTheme || savedTheme === 'zinc-pitch' || savedTheme === 'cursor-dark' || savedTheme === 'active-builders') {
-      savedTheme = 'kobbe-nordic';
+    if (!savedTheme || savedTheme === 'zinc-pitch' || savedTheme === 'kobbe-nordic') {
+      savedTheme = 'monochrome';
     }
     document.documentElement.setAttribute('data-theme', savedTheme);
+    if (document.body) document.body.setAttribute('data-theme', savedTheme);
   } catch (e) {}
 })();
 
 function initThemeController() {
   const themeSelect = document.getElementById('themeSelect');
-  let savedTheme = 'kobbe-nordic';
+  let savedTheme = 'monochrome';
   try {
     const stored = localStorage.getItem('sql_visualizer_theme');
-    if (stored && stored !== 'zinc-pitch' && stored !== 'cursor-dark' && stored !== 'active-builders') {
+    if (stored && stored !== 'zinc-pitch' && stored !== 'kobbe-nordic') {
       savedTheme = stored;
     } else {
-      savedTheme = 'kobbe-nordic';
-      localStorage.setItem('sql_visualizer_theme', 'kobbe-nordic');
+      savedTheme = 'monochrome';
+      localStorage.setItem('sql_visualizer_theme', 'monochrome');
     }
   } catch (e) {}
 
   document.documentElement.setAttribute('data-theme', savedTheme);
+  if (document.body) document.body.setAttribute('data-theme', savedTheme);
+
   if (themeSelect) {
     themeSelect.value = savedTheme;
     themeSelect.addEventListener('change', (e) => {
       const newTheme = e.target.value;
       document.documentElement.setAttribute('data-theme', newTheme);
+      if (document.body) document.body.setAttribute('data-theme', newTheme);
       try {
         localStorage.setItem('sql_visualizer_theme', newTheme);
       } catch (err) {}
       if (window.AudioFX) window.AudioFX.playClick();
-      renderActivityHeatmap(); // Re-render heatmap cells to pick up active theme colors
+      if (typeof renderActivityHeatmap === 'function') renderActivityHeatmap();
+      window.dispatchEvent(new CustomEvent('sql-theme-changed', { detail: { theme: newTheme } }));
     });
+  }
+
+  // Hash route support for direct links (#machines, #leetcode, #studio, etc.)
+  function handleHashRoute() {
+    const hash = (window.location.hash || '').toLowerCase();
+    if (hash === '#machines' || hash === '#relational-machines') {
+      if (typeof selectNavView === 'function') selectNavView('viewRelationalMachines', 'Relational Machines', null);
+    } else if (hash === '#leetcode' || hash === '#leetcode323' || hash === '#arena') {
+      if (typeof selectNavView === 'function') selectNavView('viewLeetCode50', 'LeetCode 323', null);
+    } else if (hash === '#studio' || hash === '#section-studio') {
+      if (typeof selectNavView === 'function') selectNavView('viewStudio', 'Section Studio', null);
+    } else if (hash === '#course' || hash === '#mastery') {
+      if (typeof selectNavView === 'function') selectNavView('viewMasteryCourse', 'Course', null);
+    } else if (hash === '#home') {
+      if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Home', null);
+    }
+  }
+  window.addEventListener('hashchange', handleHashRoute);
+  if (window.location.hash) {
+    setTimeout(handleHashRoute, 120);
   }
 }
 

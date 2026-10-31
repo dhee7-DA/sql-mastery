@@ -2024,22 +2024,17 @@ WHERE ;`;
 
         return `
           <div class="lc-prob-machine-container" style="background:#07080c; border:1px solid #1e293b; border-radius:8px; overflow:hidden;">
-            <!-- Adaptive Machine Sub-Toolbar -->
-            <div class="lc-machine-subbar" style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#0d111a; border-bottom:1px solid #1e293b; flex-wrap:wrap; gap:8px;">
+            <!-- Adaptive Machine Sub-Toolbar (Minimalist) -->
+            <div class="lc-machine-subbar" style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:var(--bg-surface-elevated, #111114); border-bottom:1px solid var(--border-subtle, rgba(255,255,255,0.08)); flex-wrap:wrap; gap:8px;">
               <div style="display:flex; align-items:center; gap:6px;">
-                <span style="font-size:12px; color:#38bdf8;">&#x2B21;</span>
-                <span style="font-size:10px; font-weight:700; color:#f8fafc; font-family:'JetBrains Mono', monospace;">ADAPTIVE PIPELINE (${chamberCount} CHAMBERS)</span>
-                <span style="font-size:8.5px; padding:1px 5px; border-radius:3px; background:#10b98118; color:#10b981; border:1px solid #10b98144; font-family:'JetBrains Mono', monospace;">LIVE AST</span>
+                <span style="font-size:11px; font-weight:600; color:var(--text-secondary, #a1a1aa); font-family:var(--font-mono, monospace); letter-spacing:0.02em;">PIPELINE (${chamberCount} CHAMBERS)</span>
               </div>
-              <div style="display:flex; align-items:center; gap:6px;">
-                <button class="lc-machine-toggle-btn" id="btnMachineSourceCanonical" style="background:${sourceMode !== 'editor' ? '#0284c7' : '#111723'}; color:#f8fafc; border:1px solid #1e293b; border-radius:4px; padding:3px 9px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;" title="View official golden solution pipeline">
-                  &#128142; Golden Solution
+              <div style="display:inline-flex; align-items:center; background:var(--bg-canvas, #09090b); border:1px solid var(--border-subtle, rgba(255,255,255,0.1)); border-radius:5px; padding:2px; gap:2px;">
+                <button class="lc-machine-toggle-btn" id="btnMachineSourceCanonical" style="background:${sourceMode !== 'editor' ? 'var(--bg-hover, #202026)' : 'transparent'}; color:${sourceMode !== 'editor' ? 'var(--text-primary, #ffffff)' : 'var(--text-secondary, #888888)'}; border:none; border-radius:4px; padding:3px 10px; font-size:10px; font-family:var(--font-mono, monospace); cursor:pointer;" title="View official golden solution pipeline">
+                  Canonical
                 </button>
-                <button class="lc-machine-toggle-btn" id="btnMachineSourceEditor" style="background:${sourceMode === 'editor' ? '#0284c7' : '#111723'}; color:#f8fafc; border:1px solid #1e293b; border-radius:4px; padding:3px 9px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;" title="View execution pipeline for the code in your editor">
-                  &#9997; My Query
-                </button>
-                <button id="btnSynthesizeEditorCode" style="background:#111723; color:#38bdf8; border:1px solid #38bdf855; border-radius:4px; padding:3px 8px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;" title="Refresh diagram to match your current editor code">
-                  &#8634; Refresh
+                <button class="lc-machine-toggle-btn" id="btnMachineSourceEditor" style="background:${sourceMode === 'editor' ? 'var(--bg-hover, #202026)' : 'transparent'}; color:${sourceMode === 'editor' ? 'var(--text-primary, #ffffff)' : 'var(--text-secondary, #888888)'}; border:none; border-radius:4px; padding:3px 10px; font-size:10px; font-family:var(--font-mono, monospace); cursor:pointer;" title="View execution pipeline for your editor query">
+                  My Query
                 </button>
               </div>
             </div>
@@ -2135,15 +2130,12 @@ WHERE ;`;
                   <span style="font-size:13px; color:#38bdf8;">&#x2B21;</span>
                   <strong style="font-size:10.5px; color:#f8fafc; font-family:'JetBrains Mono', monospace;">TOPOLOGICAL EXECUTION PIPELINE</strong>
                 </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <button class="lc-machine-toggle-btn ${sourceMode !== 'editor' ? 'active' : ''}" id="btnMachineStageCanonical" style="padding:4px 10px; font-size:10px; font-family:'JetBrains Mono', monospace; border-radius:4px; cursor:pointer;">
-                    💎 Canonical Solution
+                <div style="display:inline-flex; align-items:center; background:var(--bg-canvas, #09090b); border:1px solid var(--border-subtle, rgba(255,255,255,0.1)); border-radius:5px; padding:2px; gap:2px;">
+                  <button class="lc-machine-toggle-btn ${sourceMode !== 'editor' ? 'active' : ''}" id="btnMachineStageCanonical" style="background:${sourceMode !== 'editor' ? 'var(--bg-hover, #202026)' : 'transparent'}; color:${sourceMode !== 'editor' ? 'var(--text-primary, #ffffff)' : 'var(--text-secondary, #888888)'}; border:none; border-radius:4px; padding:4px 12px; font-size:10px; font-family:var(--font-mono, monospace); cursor:pointer;">
+                    Canonical
                   </button>
-                  <button class="lc-machine-toggle-btn ${sourceMode === 'editor' ? 'active' : ''}" id="btnMachineStageEditor" style="padding:4px 10px; font-size:10px; font-family:'JetBrains Mono', monospace; border-radius:4px; cursor:pointer;">
-                    ✍ My Editor Code
-                  </button>
-                  <button id="btnMachineStageSynthesize" style="background:#0284c7; color:#ffffff; border:none; border-radius:4px; padding:5px 12px; font-size:10px; font-weight:700; cursor:pointer; font-family:'JetBrains Mono', monospace;">
-                    ⚡ Synthesize
+                  <button class="lc-machine-toggle-btn ${sourceMode === 'editor' ? 'active' : ''}" id="btnMachineStageEditor" style="background:${sourceMode === 'editor' ? 'var(--bg-hover, #202026)' : 'transparent'}; color:${sourceMode === 'editor' ? 'var(--text-primary, #ffffff)' : 'var(--text-secondary, #888888)'}; border:none; border-radius:4px; padding:4px 12px; font-size:10px; font-family:var(--font-mono, monospace); cursor:pointer;">
+                    My Query
                   </button>
                 </div>
               </div>
@@ -2257,10 +2249,6 @@ WHERE ;`;
                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                   <span class="lc-prob-id-badge">LEETCODE #${activeProb.id}</span>
                   <span class="lc-diff-badge lc-diff-${diffClass}">${activeProb.difficulty}</span>
-                  <span class="lc-prob-acceptance">• ${escapeHtml(freqText)}</span>
-                </div>
-                <div class="lc-company-row">
-                  ${companiesList.slice(0, 3).map(c => `<span class="lc-company-pill">${c}</span>`).join('')}
                 </div>
               </div>
 
@@ -2277,12 +2265,12 @@ WHERE ;`;
                   </div>
                   <div style="display:flex; align-items:center; gap:8px;">
                     <div class="lc-inspector-tabs" id="lcInspectorTabs">
-                      <button class="lc-insp-tab ${currentSchemaView === 'data' ? 'active' : ''}" data-view="data">📊 Sample Data</button>
-                      <button class="lc-insp-tab ${currentSchemaView === 'target' ? 'active' : ''}" data-view="target">🎯 Expected (${expRows.length})</button>
-                      <button class="lc-insp-tab ${currentSchemaView === 'diagram' ? 'active' : ''}" data-view="diagram">&#x2B21; Relational Machine (SVG)</button>
+                      <button class="lc-insp-tab ${currentSchemaView === 'data' ? 'active' : ''}" data-view="data">Sample Data</button>
+                      <button class="lc-insp-tab ${currentSchemaView === 'target' ? 'active' : ''}" data-view="target">Expected (${expRows.length})</button>
+                      <button class="lc-insp-tab ${currentSchemaView === 'diagram' ? 'active' : ''}" data-view="diagram">⬡ Machine</button>
                     </div>
-                    <button class="lc-insp-expand-btn" id="btnHeaderExpandMachine" title="Open Full-Width Machine Stage" style="background:#111723; color:#38bdf8; border:1px solid #38bdf855; border-radius:4px; padding:4px 9px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;">
-                      &#x2922; Full View
+                    <button class="lc-insp-expand-btn" id="btnHeaderExpandMachine" title="Open Full-Width Machine Stage" style="background:var(--bg-surface-elevated, #111115); color:var(--text-secondary, #a1a1aa); border:1px solid var(--border-subtle, rgba(255,255,255,0.1)); border-radius:4px; padding:3px 8px; font-size:10px; font-family:var(--font-mono, monospace); cursor:pointer;">
+                      Full View
                     </button>
                   </div>
                 </div>
@@ -2298,7 +2286,7 @@ WHERE ;`;
                   <summary class="lc-drawer-summary">
                     <div class="lc-drawer-summary-left">
                       <span class="lc-drawer-icon">💡</span>
-                      <strong>Need a Hint? (Sir Bloops Strategy Guide)</strong>
+                      <strong>Strategy Guide & Hints</strong>
                     </div>
                     <span class="lc-drawer-toggle-badge">Socratic Guide ▾</span>
                   </summary>
@@ -2312,7 +2300,7 @@ WHERE ;`;
                   <summary class="lc-drawer-summary">
                     <div class="lc-drawer-summary-left">
                       <span class="lc-drawer-icon">🚨</span>
-                      <strong>Critical Interview Traps &amp; Edge Cases</strong>
+                      <strong>Interview Edge Cases & Traps</strong>
                       <span class="lc-drawer-count-badge">${trapsList.length} Traps</span>
                     </div>
                     <span class="lc-drawer-toggle-badge">Inspect Pitfalls ▾</span>
@@ -2419,12 +2407,12 @@ WHERE ;`;
                     <span class="lc-shortcut-hint">Ctrl+↵</span>
                   </button>
                   <button class="lc-btn lc-btn-primary" id="btnSubmitJudge" title="Submit solution and verify against test cases">
-                    <span>🎯 Submit Solution</span>
+                    <span>Submit Solution</span>
                   </button>
                 </div>
                 <div class="lc-action-secondary-group">
                   <button class="lc-btn lc-btn-ghost" id="btnAskBloopsAutopsy" title="Get instant AI guidance or diagnosis">
-                    <span>🤖 Ask Bloops</span>
+                    <span>Ask Bloops</span>
                   </button>
                   <button class="lc-btn lc-btn-ghost" id="btnOpenStudio" title="Open schema and query in full Visual Studio">
                     <span>🔬 Studio</span>

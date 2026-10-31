@@ -26808,3 +26808,125 @@ button:active .framer-emoji-icon {
   --btn-primary-hover: linear-gradient(135deg, #10b981 0%, #059669 100%);
   --btn-primary-hover-color: #041c14;
 }
+
+
+/* =============================================================================
+   UNIVERSAL THEME ENGINE EXTENSION FOR MONOCHROME, INK, CARBON
+   Guarantees 100% complete coverage across layout, body, header, cards, and text
+   ============================================================================= */
+:root {
+  --bg-canvas: #09090b;
+  --bg-surface: #0f0f12;
+  --bg-surface-elevated: #16161a;
+  --bg-card: #121215;
+  --bg-card-subtle: #18181c;
+  --bg-hover: #222228;
+  --bg-active: #2a2a32;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-default: rgba(255, 255, 255, 0.14);
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --accent: #ffffff;
+  --accent-soft: rgba(255, 255, 255, 0.08);
+  --accent-border: rgba(255, 255, 255, 0.2);
+  --btn-primary-bg: #fafafa;
+  --btn-primary-color: #09090b;
+  --btn-primary-hover: #ffffff;
+  --btn-primary-hover-color: #000000;
+  color-scheme: dark;
+}
+
+[data-theme="monochrome"] body,
+[data-theme="ink"] body,
+[data-theme="carbon"] body,
+body[data-theme="monochrome"],
+body[data-theme="ink"],
+body[data-theme="carbon"] {
+  background: var(--bg-canvas) !important;
+  background-color: var(--bg-canvas) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="monochrome"] .app-layout,
+[data-theme="ink"] .app-layout,
+[data-theme="carbon"] .app-layout,
+[data-theme="monochrome"] .main-viewport,
+[data-theme="ink"] .main-viewport,
+[data-theme="carbon"] .main-viewport,
+[data-theme="monochrome"] .view-panel,
+[data-theme="ink"] .view-panel,
+[data-theme="carbon"] .view-panel {
+  background: var(--bg-canvas) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="monochrome"] .app-header,
+[data-theme="ink"] .app-header,
+[data-theme="carbon"] .app-header {
+  background: var(--bg-surface) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="monochrome"] .nav-groups-container,
+[data-theme="ink"] .nav-groups-container,
+[data-theme="carbon"] .nav-groups-container {
+  background: var(--bg-surface-elevated) !important;
+  border: 1px solid var(--border-subtle) !important;
+}
+
+[data-theme="monochrome"] .nav-group-trigger,
+[data-theme="ink"] .nav-group-trigger,
+[data-theme="carbon"] .nav-group-trigger {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="monochrome"] .nav-group-trigger:hover,
+[data-theme="ink"] .nav-group-trigger:hover,
+[data-theme="carbon"] .nav-group-trigger:hover {
+  background: var(--bg-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="monochrome"] .nav-group-trigger.active,
+[data-theme="ink"] .nav-group-trigger.active,
+[data-theme="carbon"] .nav-group-trigger.active {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-subtle) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="monochrome"] .brand-name,
+[data-theme="ink"] .brand-name,
+[data-theme="carbon"] .brand-name {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="monochrome"] .brand-badge,
+[data-theme="ink"] .brand-badge,
+[data-theme="carbon"] .brand-badge {
+  background: var(--bg-surface-elevated) !important;
+  border: 1px solid var(--border-subtle) !important;
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="monochrome"] .header-icon-btn,
+[data-theme="ink"] .header-icon-btn,
+[data-theme="carbon"] .header-icon-btn,
+[data-theme="monochrome"] .theme-select-wrapper,
+[data-theme="ink"] .theme-select-wrapper,
+[data-theme="carbon"] .theme-select-wrapper {
+  background: var(--bg-surface-elevated) !important;
+  border: 1px solid var(--border-subtle) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="monochrome"] .header-stat-chip,
+[data-theme="ink"] .header-stat-chip,
+[data-theme="carbon"] .header-stat-chip {
+  background: var(--bg-surface-elevated) !important;
+  border: 1px solid var(--border-subtle) !important;
+  color: var(--text-secondary) !important;
+}
