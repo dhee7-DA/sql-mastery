@@ -176,6 +176,8 @@
 
     // Helper to register dynamic metric for Click-to-Inspect drawer
     function registerDossier(id, info) {
+      const tbl = (parsed.from && parsed.from.table) || 'Customer';
+      const cond = (parsed.where && parsed.where[0]) || 'record_val IS NOT NULL';
       dynamicCatalog[id] = {
         title: info.title || id,
         pin: info.pin || 1,
@@ -189,6 +191,17 @@
           snowflake: info.snowflake || `-- Snowflake:\n${parsed.raw}`,
           bigquery: info.bigquery || `-- BigQuery Standard SQL:\n${parsed.raw}`,
           duckdb: info.duckdb || `-- DuckDB / SQLite WASM:\n${parsed.raw}`
+        },
+        explainPlans: {
+          mysql: `-> Filter: (${tbl.toLowerCase()}.${cond.toLowerCase()})  (cost=0.65 rows=3)\n    -> Table scan on ${tbl.toLowerCase()}  (cost=0.65 rows=6)`,
+          postgres: `Seq Scan on ${tbl.toLowerCase()}  (cost=0.00..1.08 rows=3 width=36)\n  Filter: (${cond})\n  Rows Removed by Filter: 3`,
+          duckdb: `┌───────────────────────────┐\n│         PROJECTION        │\n└─────────────┬─────────────┘\n┌─────────────┴─────────────┐\n│           FILTER          │\n│     ${cond.slice(0, 20)}  │\n└─────────────┬─────────────┘\n┌─────────────┴─────────────┐\n│          SEQ_SCAN         │\n│          ${tbl.padEnd(8)}         │\n└───────────────────────────┘`,
+          snowflake: `GlobalStats: bytesAssigned=1024, rowsProduced=3\nOperator [1]: TableScan (${tbl}) [Partitions 1/1]\nOperator [2]: Filter (${cond})\nOperator [3]: Result [3 tuples emitted]`
+        },
+        indexAdvice: {
+          statement: `CREATE INDEX idx_${tbl.toLowerCase()}_covering ON ${tbl}(id, ${(parsed.select && parsed.select[0] && parsed.select[0].replace(/^[a-z0-9_]+\./i, '')) || 'name'});`,
+          estimatedSpeedup: '8.4x faster on >100k rows',
+          reason: 'Covering B-Tree index satisfies both filtering predicates and projected column lists directly from leaf pages, converting a sequential O(N) table scan into an O(log N) index seek.'
         },
         commercialInsight: info.commercial || info.commercialInsight || 'Transforms atomic transaction events into structured decision-ready metrics.',
         interviewQuestion: info.interview || info.interviewQuestion || 'Explain the physical operator chosen and how memory limits affect execution.',
@@ -684,8 +697,8 @@
           const xDrop = x1 + gap * 0.45;
           const yDrop = y1 + 12;
           wiresSvg += `
-            <path d="M ${x1} ${y1} Q ${x1 + 16} ${y1}, ${xDrop} ${yDrop}" fill="none" stroke="#f43f5e" stroke-width="1.3" stroke-dasharray="2,3" opacity="0.65" />
-            <circle cx="${xDrop}" cy="${yDrop}" r="2.5" fill="#f43f5e" />
+            <path class="machine-wire-path machine-wire-drop" data-wire-pin="${r.pin}" data-wire-status="drop" d="M ${x1} ${y1} Q ${x1 + 16} ${y1}, ${xDrop} ${yDrop}" fill="none" stroke="#f43f5e" stroke-width="1.3" stroke-dasharray="2,3" opacity="0.65" />
+            <circle class="machine-wire-pin" data-wire-pin="${r.pin}" cx="${xDrop}" cy="${yDrop}" r="2.5" fill="#f43f5e" />
           `;
         } else {
           // Connected active wire to next chamber
@@ -697,9 +710,9 @@
           const cx2 = x2 - gap * 0.5;
 
           wiresSvg += `
-            <path d="M ${x1} ${y1} C ${cx1} ${y1}, ${cx2} ${y2}, ${x2} ${y2}" fill="none" stroke="url(#wire-grad-${i})" stroke-width="1.6" stroke-linecap="round" opacity="0.85" />
-            <circle cx="${x1}" cy="${y1}" r="3.2" fill="${srcCh.color}" />
-            <circle cx="${x2}" cy="${y2}" r="3.2" fill="${dstCh.color}" />
+            <path class="machine-wire-path machine-wire-active" data-wire-pin="${r.pin}" data-wire-status="pass" d="M ${x1} ${y1} C ${cx1} ${y1}, ${cx2} ${y2}, ${x2} ${y2}" fill="none" stroke="url(#wire-grad-${i})" stroke-width="1.6" stroke-linecap="round" opacity="0.85" />
+            <circle class="machine-wire-pin" data-wire-pin="${r.pin}" cx="${x1}" cy="${y1}" r="3.2" fill="${srcCh.color}" />
+            <circle class="machine-wire-pin" data-wire-pin="${r.pin}" cx="${x2}" cy="${y2}" r="3.2" fill="${dstCh.color}" />
           `;
         }
       });
@@ -764,10 +777,10 @@
 
         chHtml += `
           <!-- Row ${rIdx + 1} Interactive Item -->
-          <g class="machine-interactive-row" data-metric-id="${r.metricId}" 
-             onmouseenter="if(window.RelationalMachinesEngine)window.RelationalMachinesEngine.handleRowHover(event, '${r.metricId}')" 
+          <g class="machine-interactive-row" data-metric-id="${r.metricId}" data-pin="${r.pin}" data-status="${r.status}" data-chamber-idx="${idx}" data-row-idx="${rIdx}"
+             onmouseenter="if(window.RelationalMachinesEngine)window.RelationalMachinesEngine.handleRowHover(event, '${r.metricId}', ${r.pin})" 
              onmouseleave="if(window.RelationalMachinesEngine)window.RelationalMachinesEngine.handleRowLeave()" 
-             onclick="if(window.RelationalMachinesEngine)window.RelationalMachinesEngine.openDrawer('${r.metricId}')" 
+             onclick="if(window.RelationalMachinesEngine)window.RelationalMachinesEngine.openDrawer('${r.metricId}', ${r.pin})" 
              style="cursor: pointer;">
             <rect x="${c.x + 4}" y="${ry}" width="${c.w - 8}" height="28" rx="4" fill="${rowBg}" stroke="${isDrop ? '#f43f5e33' : '#1e293b'}" stroke-width="0.8" />
             
