@@ -577,7 +577,7 @@
     const chamberWidth = 196;
     const gap = 52;
     const paddingX = 36;
-    const totalWidth = paddingX * 2 + n * chamberWidth + (n - 1) * gap;
+    const totalWidth = Math.max(760, paddingX * 2 + n * chamberWidth + (n - 1) * gap);
     const totalHeight = 520;
 
     // SVG Filters and Gradients definitions
@@ -774,16 +774,13 @@
         <!-- Outer Border Frame -->
         <rect x="${paddingX}" y="14" width="${totalWidth - paddingX * 2}" height="48" rx="6" fill="#0d111a" stroke="#1e293b" stroke-width="1" />
         
-        <!-- Left Title & Subtitle -->
-        <text x="${paddingX + 16}" y="33" fill="#f8fafc" font-family="JetBrains Mono, monospace" font-size="11.5" font-weight="700" letter-spacing="0.5">ADAPTIVE RELATIONAL MACHINE // ${n} TOPOLOGICAL EXECUTION CHAMBERS</text>
+        <!-- Left Title & Subtitle (Clean & Collision-Free) -->
+        <text x="${paddingX + 16}" y="33" fill="#f8fafc" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" letter-spacing="0.4">RELATIONAL PIPELINE // ${n} EXECUTION CHAMBERS</text>
         <text x="${paddingX + 16}" y="48" fill="#64748b" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="600">${pipelineFlow}</text>
         
         <!-- Right Status Pills -->
-        <rect x="${totalWidth - paddingX - 100}" y="24" width="86" height="20" rx="3" fill="#10b98118" stroke="#10b981" stroke-width="0.8" />
-        <text x="${totalWidth - paddingX - 57}" y="37" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="700" text-anchor="middle">AST VERIFIED &#10003;</text>
-        
-        <rect x="${totalWidth - paddingX - 224}" y="24" width="114" height="20" rx="3" fill="#38bdf818" stroke="#38bdf8" stroke-width="0.8" />
-        <text x="${totalWidth - paddingX - 167}" y="37" fill="#38bdf8" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="700" text-anchor="middle">STREAMING PIPELINE</text>
+        <rect x="${totalWidth - paddingX - 90}" y="24" width="80" height="20" rx="3" fill="#10b98118" stroke="#10b981" stroke-width="0.8" />
+        <text x="${totalWidth - paddingX - 50}" y="37" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="700" text-anchor="middle">LIVE AST &#10003;</text>
       </g>
     `;
 
@@ -878,7 +875,7 @@
       chambers: chambers,
       catalog: dynamicCatalog,
       chamberCount: chambers.length,
-      viewBoxWidth: 36 * 2 + chambers.length * 196 + (chambers.length - 1) * 52,
+      viewBoxWidth: Math.max(760, 36 * 2 + chambers.length * 196 + (chambers.length - 1) * 52),
       viewBoxHeight: 520
     };
   }

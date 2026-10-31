@@ -2032,14 +2032,14 @@ WHERE ;`;
                 <span style="font-size:8.5px; padding:1px 5px; border-radius:3px; background:#10b98118; color:#10b981; border:1px solid #10b98144; font-family:'JetBrains Mono', monospace;">LIVE AST</span>
               </div>
               <div style="display:flex; align-items:center; gap:6px;">
-                <button class="lc-machine-toggle-btn" id="btnMachineSourceCanonical" style="background:${sourceMode !== 'editor' ? '#0284c7' : '#111723'}; color:#f8fafc; border:1px solid #1e293b; border-radius:4px; padding:3px 8px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;">
-                  &#128142; Canonical Solution
+                <button class="lc-machine-toggle-btn" id="btnMachineSourceCanonical" style="background:${sourceMode !== 'editor' ? '#0284c7' : '#111723'}; color:#f8fafc; border:1px solid #1e293b; border-radius:4px; padding:3px 9px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;" title="View official golden solution pipeline">
+                  &#128142; Golden Solution
                 </button>
-                <button class="lc-machine-toggle-btn" id="btnMachineSourceEditor" style="background:${sourceMode === 'editor' ? '#0284c7' : '#111723'}; color:#f8fafc; border:1px solid #1e293b; border-radius:4px; padding:3px 8px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;">
-                  &#9997; My Editor Code
+                <button class="lc-machine-toggle-btn" id="btnMachineSourceEditor" style="background:${sourceMode === 'editor' ? '#0284c7' : '#111723'}; color:#f8fafc; border:1px solid #1e293b; border-radius:4px; padding:3px 9px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;" title="View execution pipeline for the code in your editor">
+                  &#9997; My Query
                 </button>
-                <button id="btnSynthesizeEditorCode" style="background:#1e293b; color:#38bdf8; border:1px solid #38bdf855; border-radius:4px; padding:3px 8px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;" title="Recompile diagram from code editor">
-                  &#9889; Synthesize
+                <button id="btnSynthesizeEditorCode" style="background:#111723; color:#38bdf8; border:1px solid #38bdf855; border-radius:4px; padding:3px 8px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;" title="Refresh diagram to match your current editor code">
+                  &#8634; Refresh
                 </button>
               </div>
             </div>
