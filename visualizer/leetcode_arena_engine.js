@@ -605,6 +605,9 @@ window.LEETCODE_ARENA = (() => {
                 <button class="lc-layout-btn ${state.layoutMode === 'problem' ? 'active' : ''}" data-layout="problem" title="Full Spec">
                   <span>◩ Spec</span>
                 </button>
+                <button class="lc-layout-btn ${state.layoutMode === 'machine' ? 'active' : ''}" data-layout="machine" title="Relational Machine Visualizer Stage">
+                  <span style="color:#38bdf8;">&#x2B21; Machine</span>
+                </button>
               </div>
 
               <button class="lc-bar-nav-btn" id="btnToggleZen" title="Zen Focus Mode">
@@ -2061,6 +2064,180 @@ WHERE ;`;
       `;
     }
 
+    // DEDICATED FULL-STAGE RELATIONAL MACHINE VIEW
+    if (state.layoutMode === 'machine') {
+      const sourceMode = state.lcMachineSource || 'canonical';
+      let queryToCompile = activeProb.solutionSQL || activeProb.targetQuery || defaultStarterSql;
+      if (sourceMode === 'editor' && state.userCode[activeProb.id]) {
+        queryToCompile = state.userCode[activeProb.id];
+      }
+
+      let machineSvg = '';
+      let chamberCount = 3;
+      if (window.AdaptivePipelineCompiler) {
+        const compiled = window.AdaptivePipelineCompiler.compileAndRender(queryToCompile, activeProb);
+        if (compiled) {
+          machineSvg = compiled.svg;
+          chamberCount = compiled.chamberCount;
+        }
+      }
+
+      canvas.innerHTML = `
+        <div class="lc-canvas-inner">
+          <div class="lc-machine-studio-view">
+            <!-- Top Control Bar -->
+            <div class="lc-machine-view-header">
+              <div class="lc-machine-view-header-left">
+                <span class="lc-prob-id-badge">LEETCODE #${activeProb.id}</span>
+                <span class="lc-diff-badge lc-diff-${diffClass}">${activeProb.difficulty}</span>
+                <h2 style="margin:0; font-size:15px; font-weight:700; color:#f8fafc;">${escapeHtml(activeProb.title)}</h2>
+                <span style="font-size:10px; padding:2px 8px; border-radius:4px; background:#38bdf818; color:#38bdf8; border:1px solid #38bdf844; font-family:'JetBrains Mono', monospace;">
+                  &#x2B21; ${chamberCount} CHAMBERS ADAPTIVE
+                </span>
+              </div>
+              <div class="lc-machine-view-header-right">
+                <button class="lc-btn lc-btn-secondary" id="btnMachineToggleEditor" style="font-size:10.5px; padding:6px 12px;">
+                  <span>📝 Toggle Editor</span>
+                </button>
+                <button class="lc-btn lc-btn-primary" id="btnMachineRunLive" style="font-size:10.5px; padding:6px 14px;">
+                  <span>▶ Run &amp; Synthesize</span>
+                </button>
+                <button class="lc-layout-restore-btn" id="btnRestoreSplitFromMachine" style="font-size:10.5px;">
+                  ◀ Restore Split View
+                </button>
+              </div>
+            </div>
+
+            <!-- Problem Prompt Strip -->
+            <div style="padding:10px 14px; background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; font-size:12px; color:#94a3b8; line-height:1.45;">
+              ${promptText}
+            </div>
+
+            <!-- Collapsible Mini Code Editor -->
+            <div class="lc-card" id="lcMachineEditorDrawer" style="padding: 12px 16px; background:#0b0f17; border:1px solid #1e293b; border-radius:8px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="lc-engine-dot"></span>
+                  <span style="font-size:10.5px; font-weight:700; color:#cbd5e1; font-family:'JetBrains Mono', monospace;">SQL QUERY EDITOR // LIVE SYNTHESIZER</span>
+                </div>
+                <div style="display:flex; gap:6px;">
+                  <button class="lc-tool-btn" id="btnMachineFillCanonical">⚡ Fill Golden Code</button>
+                  <button class="lc-tool-btn" id="btnMachineReset">↺ Reset</button>
+                </div>
+              </div>
+              <textarea class="lc-textarea-editor" id="lcMachineTextEditor" rows="3" style="width:100%; box-sizing:border-box; height:80px; font-size:11.5px; font-family:'JetBrains Mono', monospace; background:#07090e; color:#38bdf8; border:1px solid #1e293b; border-radius:6px; padding:10px; line-height:1.45;">${escapeHtml(userOrStarterSql)}</textarea>
+            </div>
+
+            <!-- Full-Width Spacious Obsidian Dark Canvas Card -->
+            <div class="lc-card" style="padding: 14px; background:#07080c; border:1px solid #1e293b; border-radius:10px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 14px; background:#0d111a; border-radius:8px; border:1px solid #1e293b; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:13px; color:#38bdf8;">&#x2B21;</span>
+                  <strong style="font-size:10.5px; color:#f8fafc; font-family:'JetBrains Mono', monospace;">TOPOLOGICAL EXECUTION PIPELINE</strong>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <button class="lc-machine-toggle-btn ${sourceMode !== 'editor' ? 'active' : ''}" id="btnMachineStageCanonical" style="padding:4px 10px; font-size:10px; font-family:'JetBrains Mono', monospace; border-radius:4px; cursor:pointer;">
+                    💎 Canonical Solution
+                  </button>
+                  <button class="lc-machine-toggle-btn ${sourceMode === 'editor' ? 'active' : ''}" id="btnMachineStageEditor" style="padding:4px 10px; font-size:10px; font-family:'JetBrains Mono', monospace; border-radius:4px; cursor:pointer;">
+                    ✍ My Editor Code
+                  </button>
+                  <button id="btnMachineStageSynthesize" style="background:#0284c7; color:#ffffff; border:none; border-radius:4px; padding:5px 12px; font-size:10px; font-weight:700; cursor:pointer; font-family:'JetBrains Mono', monospace;">
+                    ⚡ Synthesize
+                  </button>
+                </div>
+              </div>
+
+              <!-- Unclipped Full Height SVG Viewport -->
+              <div class="lc-machine-full-viewport" style="overflow-x:auto; padding:6px 0; text-align:center;">
+                ${machineSvg || '<div style="padding:30px; color:#64748b; font-family:monospace; font-size:11px;">No relational diagram available for this query.</div>'}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Wire machine layout listeners
+      const btnRestore = canvas.querySelector('#btnRestoreSplitFromMachine');
+      if (btnRestore) {
+        btnRestore.addEventListener('click', () => {
+          state.layoutMode = 'split';
+          renderShell();
+          renderActiveStage();
+        });
+      }
+
+      const btnStageCanonical = canvas.querySelector('#btnMachineStageCanonical');
+      const btnStageEditor = canvas.querySelector('#btnMachineStageEditor');
+      const btnStageSynth = canvas.querySelector('#btnMachineStageSynthesize');
+      const txtEditor = canvas.querySelector('#lcMachineTextEditor');
+
+      if (btnStageCanonical) {
+        btnStageCanonical.addEventListener('click', () => {
+          state.lcMachineSource = 'canonical';
+          renderProblems();
+        });
+      }
+
+      if (btnStageEditor) {
+        btnStageEditor.addEventListener('click', () => {
+          if (txtEditor) state.userCode[activeProb.id] = txtEditor.value;
+          state.lcMachineSource = 'editor';
+          renderProblems();
+        });
+      }
+
+      if (btnStageSynth) {
+        btnStageSynth.addEventListener('click', () => {
+          if (txtEditor) state.userCode[activeProb.id] = txtEditor.value;
+          state.lcMachineSource = 'editor';
+          renderProblems();
+          if (window.SQL_BUDDY) window.SQL_BUDDY.say("Synthesized fresh Relational Machine!", 3000, 'celebrate');
+        });
+      }
+
+      const btnToggleEd = canvas.querySelector('#btnMachineToggleEditor');
+      const drawerEd = canvas.querySelector('#lcMachineEditorDrawer');
+      if (btnToggleEd && drawerEd) {
+        btnToggleEd.addEventListener('click', () => {
+          drawerEd.style.display = drawerEd.style.display === 'none' ? 'block' : 'none';
+        });
+      }
+
+      const btnFill = canvas.querySelector('#btnMachineFillCanonical');
+      if (btnFill && txtEditor) {
+        btnFill.addEventListener('click', () => {
+          txtEditor.value = activeProb.solutionSQL || '';
+          state.userCode[activeProb.id] = txtEditor.value;
+          state.lcMachineSource = 'editor';
+          renderProblems();
+        });
+      }
+
+      const btnReset = canvas.querySelector('#btnMachineReset');
+      if (btnReset && txtEditor) {
+        btnReset.addEventListener('click', () => {
+          txtEditor.value = defaultStarterSql;
+          state.userCode[activeProb.id] = defaultStarterSql;
+          state.lcMachineSource = 'editor';
+          renderProblems();
+        });
+      }
+
+      const btnRunLive = canvas.querySelector('#btnMachineRunLive');
+      if (btnRunLive) {
+        btnRunLive.addEventListener('click', () => {
+          if (txtEditor) state.userCode[activeProb.id] = txtEditor.value;
+          state.lcMachineSource = 'editor';
+          renderProblems();
+          const btnRunCodeActual = document.getElementById('btnRunCode');
+          if (btnRunCodeActual) btnRunCodeActual.click();
+        });
+      }
+
+      return;
+    }
+
     canvas.innerHTML = `
       <div class="lc-canvas-inner">
         <!-- 2-Column Split Studio Grid -->
@@ -2098,13 +2275,18 @@ WHERE ;`;
                     <strong>${escapeHtml(sampleTable)}</strong>
                     <span class="lc-inspector-badge">${sampleRows.length} rows</span>
                   </div>
-                  <div class="lc-inspector-tabs" id="lcInspectorTabs">
-                    <button class="lc-insp-tab ${currentSchemaView === 'data' ? 'active' : ''}" data-view="data">📊 Sample Data</button>
-                    <button class="lc-insp-tab ${currentSchemaView === 'target' ? 'active' : ''}" data-view="target">🎯 Expected (${expRows.length})</button>
-                    <button class="lc-insp-tab ${currentSchemaView === 'diagram' ? 'active' : ''}" data-view="diagram">&#x2B21; Relational Machine (SVG)</button>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <div class="lc-inspector-tabs" id="lcInspectorTabs">
+                      <button class="lc-insp-tab ${currentSchemaView === 'data' ? 'active' : ''}" data-view="data">📊 Sample Data</button>
+                      <button class="lc-insp-tab ${currentSchemaView === 'target' ? 'active' : ''}" data-view="target">🎯 Expected (${expRows.length})</button>
+                      <button class="lc-insp-tab ${currentSchemaView === 'diagram' ? 'active' : ''}" data-view="diagram">&#x2B21; Relational Machine (SVG)</button>
+                    </div>
+                    <button class="lc-insp-expand-btn" id="btnHeaderExpandMachine" title="Open Full-Width Machine Stage" style="background:#111723; color:#38bdf8; border:1px solid #38bdf855; border-radius:4px; padding:4px 9px; font-size:9.5px; font-family:'JetBrains Mono', monospace; cursor:pointer;">
+                      &#x2922; Full View
+                    </button>
                   </div>
                 </div>
-                <div class="lc-inspector-body" id="lcInspectorBody">
+                <div class="lc-inspector-body ${currentSchemaView === 'diagram' ? 'is-diagram-active' : ''}" id="lcInspectorBody">
                   ${getInspectorBodyHtml(currentSchemaView)}
                 </div>
               </div>
@@ -2247,6 +2429,9 @@ WHERE ;`;
                   <button class="lc-btn lc-btn-ghost" id="btnOpenStudio" title="Open schema and query in full Visual Studio">
                     <span>🔬 Studio</span>
                   </button>
+                  <button class="lc-btn lc-btn-ghost" id="btnOpenMachineLayout" title="Open full-width Relational Machine visualizer" style="color:#38bdf8; border:1px solid #38bdf844;">
+                    <span>&#x2B21; Machine</span>
+                  </button>
                 </div>
               </div>
 
@@ -2314,12 +2499,33 @@ WHERE ;`;
         inspTabs.forEach(t => t.classList.toggle('active', t.dataset.view === view));
         if (inspBody) {
           inspBody.innerHTML = getInspectorBodyHtml(view);
+          inspBody.classList.toggle('is-diagram-active', view === 'diagram');
           if (view === 'diagram') {
             wireMachineSubbarHandlers();
           }
         }
       });
     });
+
+    const btnHeaderExpand = canvas.querySelector('#btnHeaderExpandMachine');
+    if (btnHeaderExpand) {
+      btnHeaderExpand.addEventListener('click', () => {
+        state.layoutMode = 'machine';
+        renderShell();
+        renderActiveStage();
+      });
+    }
+
+    const btnOpenMach = canvas.querySelector('#btnOpenMachineLayout');
+    if (btnOpenMach) {
+      btnOpenMach.addEventListener('click', () => {
+        const editorEl = canvas.querySelector('#lcProbEditor');
+        if (editorEl) state.userCode[activeProb.id] = editorEl.value;
+        state.layoutMode = 'machine';
+        renderShell();
+        renderActiveStage();
+      });
+    }
 
     if (currentSchemaView === 'diagram') {
       wireMachineSubbarHandlers();

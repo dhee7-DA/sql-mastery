@@ -4018,3 +4018,48 @@ body.lc-zen-mode .lc-arena-shell {
     font-size: 11px !important;
   }
 }
+
+/* Dedicated Relational Machine Full Stage Layout */
+.lc-machine-studio-view {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.lc-machine-view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: var(--bg-surface, #0d111a);
+  border: 1px solid var(--border-subtle, #1e293b);
+  border-radius: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.lc-machine-view-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.lc-machine-view-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lc-inspector-body.is-diagram-active {
+  max-height: 580px !important;
+  padding: 6px !important;
+}
+
+.lc-insp-expand-btn:hover {
+  background: #1e293b !important;
+  border-color: #38bdf8 !important;
+}
