@@ -37,6 +37,13 @@
       .replace(/'/g, '&apos;');
   }
 
+  // Safe truncation to avoid SVG horizontal text collision
+  function trunc(str, maxLen) {
+    if (str === null || str === undefined) return '';
+    const s = String(str);
+    return s.length > maxLen ? s.slice(0, maxLen - 1) + '…' : s;
+  }
+
   // ---------------------------------------------------------------------------
   // 1. SQL LEXER & AST EXTRACTOR
   // ---------------------------------------------------------------------------
@@ -697,13 +704,13 @@
           <text x="${c.x + 21}" y="${c.y + 22}" fill="${ch.color}" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700" text-anchor="middle">${ch.chip}</text>
           
           <text x="${c.x + 38}" y="${c.y + 23}" fill="#f1f5f9" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" letter-spacing="0.3">${ch.title}</text>
-          <text x="${c.x + 10}" y="${c.y + 39}" fill="${ch.color}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">${escapeXml(ch.subtitle)}</text>
+          <text x="${c.x + 10}" y="${c.y + 39}" fill="${ch.color}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">${escapeXml(trunc(ch.subtitle, 25))}</text>
           
           <line x1="${c.x}" y1="${c.y + 48}" x2="${c.x + c.w}" y2="${c.y + 48}" stroke="#1e293b" stroke-width="1" />
           
           <!-- Micro-Stat Substrip -->
           <rect x="${c.x + 1}" y="${c.y + 49}" width="${c.w - 2}" height="20" fill="#070a10" />
-          <text x="${c.x + 10}" y="${c.y + 62}" fill="#64748b" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">IN: ${ch.stats.inCount} &bull; PASS: ${ch.stats.passCount} &bull; ${escapeXml(ch.badge)}</text>
+          <text x="${c.x + 10}" y="${c.y + 62}" fill="#64748b" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">IN: ${ch.stats.inCount} &bull; PASS: ${ch.stats.passCount} &bull; ${escapeXml(trunc(ch.badge, 12))}</text>
           
           <line x1="${c.x}" y1="${c.y + 69}" x2="${c.x + c.w}" y2="${c.y + 69}" stroke="#1e293b" stroke-width="1" />
           
@@ -712,15 +719,17 @@
           <text x="${c.x + 10}" y="${c.y + 83}" fill="#475569" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">#</text>
       `;
 
-      // Spacing for 2 or 3 columns
+      // Spacing for 2 or 3 columns with bounded widths
       const cols = ch.headers.slice(0, 3);
+      const is3Col = cols.length >= 3;
       const colX1 = c.x + 28;
-      const colX2 = c.x + 92;
-      const colX3 = c.x + 144;
+      const colX2 = is3Col ? c.x + 78 : c.x + 104;
+      const colX3 = is3Col ? c.x + 130 : c.x + 144;
+      const maxColLen = is3Col ? 6 : 9;
 
-      if (cols[0]) chHtml += `<text x="${colX1}" y="${c.y + 83}" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">${escapeXml(cols[0])}</text>`;
-      if (cols[1]) chHtml += `<text x="${colX2}" y="${c.y + 83}" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">${escapeXml(cols[1])}</text>`;
-      if (cols[2]) chHtml += `<text x="${colX3}" y="${c.y + 83}" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">${escapeXml(cols[2])}</text>`;
+      if (cols[0]) chHtml += `<text x="${colX1}" y="${c.y + 83}" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">${escapeXml(trunc(cols[0], maxColLen))}</text>`;
+      if (cols[1]) chHtml += `<text x="${colX2}" y="${c.y + 83}" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">${escapeXml(trunc(cols[1], maxColLen))}</text>`;
+      if (is3Col && cols[2]) chHtml += `<text x="${colX3}" y="${c.y + 83}" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">${escapeXml(trunc(cols[2], maxColLen))}</text>`;
 
       chHtml += `<line x1="${c.x}" y1="${c.y + 90}" x2="${c.x + c.w}" y2="${c.y + 90}" stroke="#1e293b" stroke-width="1" />`;
 
@@ -746,9 +755,9 @@
             <text x="${c.x + 14}" y="${ry + 17}" fill="${isDrop ? '#f43f5e' : ch.color}" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="700" text-anchor="middle">${isDrop ? '&times;' : r.pin}</text>
             
             <!-- Cell Text Values -->
-            <text x="${colX1}" y="${ry + 17}" fill="${textFill}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="500">${escapeXml(r.cells[0] || '')}</text>
-            <text x="${colX2}" y="${ry + 17}" fill="${textFill}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="500">${escapeXml(r.cells[1] || '')}</text>
-            <text x="${colX3}" y="${ry + 17}" fill="${isDrop ? '#f43f5e' : (r.cells[2] && r.cells[2].includes('PASS') ? '#10b981' : textFill)}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">${escapeXml(r.cells[2] || '')}</text>
+            <text x="${colX1}" y="${ry + 17}" fill="${textFill}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="500">${escapeXml(trunc(r.cells[0], maxColLen))}</text>
+            <text x="${colX2}" y="${ry + 17}" fill="${textFill}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="500">${escapeXml(trunc(r.cells[1], maxColLen))}</text>
+            ${is3Col ? `<text x="${colX3}" y="${ry + 17}" fill="${isDrop ? '#f43f5e' : (r.cells[2] && r.cells[2].includes('PASS') ? '#10b981' : textFill)}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">${escapeXml(trunc(r.cells[2], maxColLen))}</text>` : ''}
           </g>
         `;
       });
@@ -796,40 +805,43 @@
       architectInsight = `Hash aggregate allocates memory buckets for ${parsed.groupBy.join(', ')}. If cardinality exceeds work_mem, engine spills to disk temporary partitions.`;
     }
 
+    const opsSummary = chambers.slice(1, -1).map(c => c.title.replace('SOURCE ', '').replace('RELATIONAL ', '').replace('PREDICATE ', '')).join(' &#10140; ') || 'Direct Projection';
+    const scanTbl = (parsed.from && parsed.from.table) || 'SourceTable';
+
     const bottomPanelsSvg = `
-      <!-- Bottom Dual Inspection Panels -->
+      <!-- Bottom Dual Inspection Panels with Auto-Wrapping foreignObject -->
       <g>
         <!-- Panel 1: Logical Execution Plan & Cardinality Graph -->
         <rect x="${p1X}" y="${bottomY}" width="${splitW1}" height="${bottomH}" rx="6" fill="#0d111a" stroke="#1e293b" stroke-width="1" />
         <line x1="${p1X + 2}" y1="${bottomY}" x2="${p1X + splitW1 - 2}" y2="${bottomY}" stroke="#38bdf8" stroke-width="2" />
         
-        <text x="${p1X + 16}" y="${bottomY + 22}" fill="#38bdf8" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" letter-spacing="0.4">LOGICAL EXECUTION PLAN &amp; CARDINALITY PIPELINE</text>
-        <line x1="${p1X + 1}" y1="${bottomY + 32}" x2="${p1X + splitW1 - 1}" y2="${bottomY + 32}" stroke="#1e293b" stroke-width="1" />
+        <text x="${p1X + 14}" y="${bottomY + 20}" fill="#38bdf8" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700" letter-spacing="0.4">LOGICAL EXECUTION PLAN &amp; CARDINALITY PIPELINE</text>
+        <line x1="${p1X + 1}" y1="${bottomY + 28}" x2="${p1X + splitW1 - 1}" y2="${bottomY + 28}" stroke="#1e293b" stroke-width="1" />
         
-        <text x="${p1X + 16}" y="${bottomY + 52}" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">1. SOURCE SCAN:</text>
-        <text x="${p1X + 110}" y="${bottomY + 52}" fill="#f1f5f9" font-family="JetBrains Mono, monospace" font-size="8">${escapeXml((parsed.from && parsed.from.table) || 'SourceTable')} (${chambers[0].stats.inCount} input tuples scanned)</text>
-        
-        <text x="${p1X + 16}" y="${bottomY + 74}" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">2. OPERATORS:</text>
-        <text x="${p1X + 110}" y="${bottomY + 74}" fill="#f1f5f9" font-family="JetBrains Mono, monospace" font-size="8">${chambers.slice(1, -1).map(c => c.title).join(' &#10140; ') || 'Direct Projection'}</text>
-        
-        <text x="${p1X + 16}" y="${bottomY + 96}" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">3. TARGET SINK:</text>
-        <text x="${p1X + 110}" y="${bottomY + 96}" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">${chambers[n-1].stats.passCount} projected tuples emitted to client</text>
-        
-        <text x="${p1X + 16}" y="${bottomY + 124}" fill="#64748b" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="500">Pipeline Execution: Volcano Pull-Stream Model &bull; Volatility: STABLE</text>
+        <foreignObject x="${p1X + 12}" y="${bottomY + 34}" width="${splitW1 - 24}" height="${bottomH - 40}">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'JetBrains Mono',monospace; font-size:8px; line-height:1.55; color:#cbd5e1; word-wrap:break-word; overflow:hidden;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span style="color:#94a3b8; font-weight:600;">1. SCAN:</span> <span style="color:#f1f5f9;">${escapeXml(scanTbl)} (${chambers[0].stats.inCount} tuples)</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span style="color:#94a3b8; font-weight:600;">2. OPS:</span> <span style="color:#f1f5f9;">${escapeXml(opsSummary)}</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="color:#94a3b8; font-weight:600;">3. SINK:</span> <span style="color:#10b981; font-weight:600;">${chambers[n-1].stats.passCount} tuples emitted</span></div>
+            <div style="color:#64748b; font-size:7.5px; border-top:1px solid #1e293b; padding-top:4px; margin-top:2px;">Model: Volcano Pull-Stream &bull; Volatility: STABLE</div>
+          </div>
+        </foreignObject>
 
         <!-- Panel 2: Senior Relational Architect & Interview Dossier -->
         <rect x="${p2X}" y="${bottomY}" width="${splitW2}" height="${bottomH}" rx="6" fill="#0d111a" stroke="#1e293b" stroke-width="1" />
         <line x1="${p2X + 2}" y1="${bottomY}" x2="${p2X + splitW2 - 2}" y2="${bottomY}" stroke="#fbbf24" stroke-width="2" />
         
-        <text x="${p2X + 16}" y="${bottomY + 22}" fill="#fbbf24" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" letter-spacing="0.4">STAFF DATA ARCHITECT // PERFORMANCE &amp; DEFENSE DOSSIER</text>
-        <line x1="${p2X + 1}" y1="${bottomY + 32}" x2="${p2X + splitW2 - 1}" y2="${bottomY + 32}" stroke="#1e293b" stroke-width="1" />
+        <text x="${p2X + 14}" y="${bottomY + 20}" fill="#fbbf24" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700" letter-spacing="0.4">STAFF DATA ARCHITECT // PERFORMANCE &amp; DEFENSE</text>
+        <line x1="${p2X + 1}" y1="${bottomY + 28}" x2="${p2X + splitW2 - 1}" y2="${bottomY + 28}" stroke="#1e293b" stroke-width="1" />
         
-        <text x="${p2X + 16}" y="${bottomY + 54}" fill="#e2e8f0" font-family="JetBrains Mono, monospace" font-size="8" font-weight="500">&#9889; ${escapeXml(architectInsight)}</text>
-        
-        <text x="${p2X + 16}" y="${bottomY + 84}" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">INTERVIEW TALKING POINT:</text>
-        <text x="${p2X + 16}" y="${bottomY + 102}" fill="#cbd5e1" font-family="JetBrains Mono, monospace" font-size="7.8" font-style="italic">"Always explain the trade-offs between Hash Join and Nested Loop joins to interviewers."</text>
-        
-        <text x="${p2X + 16}" y="${bottomY + 128}" fill="#64748b" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="500">Click any row node in the diagram above to inspect full multi-dialect code &rarr;</text>
+        <foreignObject x="${p2X + 12}" y="${bottomY + 34}" width="${splitW2 - 24}" height="${bottomH - 40}">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'JetBrains Mono',monospace; font-size:8px; line-height:1.45; color:#cbd5e1; word-wrap:break-word; overflow:hidden;">
+            <div style="color:#e2e8f0; margin-bottom:4px;">&#9889; ${escapeXml(architectInsight)}</div>
+            <div style="color:#94a3b8; font-weight:700; margin-top:3px;">TALKING POINT:</div>
+            <div style="color:#93c5fd; font-style:italic;">"Always explain the trade-offs between Hash Join and Nested Loop joins to interviewers."</div>
+            <div style="color:#64748b; font-size:7.5px; margin-top:4px;">Click any row node above for multi-dialect SQL &rarr;</div>
+          </div>
+        </foreignObject>
       </g>
     `;
 
