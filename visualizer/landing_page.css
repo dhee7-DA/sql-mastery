@@ -96,47 +96,50 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--accent, #e11d48);
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ffffff !important;
   border-radius: 8px;
   padding: 11px 22px;
   font-family: var(--font-sans, inherit);
   font-size: 13.5px;
-  font-weight: 700;
+  font-weight: 700 !important;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(225, 29, 72, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
 }
 
 .landing-cta-primary:hover {
-  background: var(--accent-hover, #be123c);
-  box-shadow: 0 6px 24px rgba(225, 29, 72, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  transform: translateY(-2px);
+  background: #e4e4e7 !important;
+  color: #000000 !important;
+  border-color: #e4e4e7 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transform: translateY(-1.5px);
 }
 
 .landing-cta-secondary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--bg-card, #ffffff);
-  color: var(--text-primary, #18181b);
-  border: 1px solid var(--border-default, #d4d4d8);
+  background: #141418 !important;
+  color: #f4f4f5 !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
   border-radius: 8px;
   padding: 11px 20px;
   font-family: var(--font-sans, inherit);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   transition: all 0.15s ease;
   text-decoration: none;
 }
 
 .landing-cta-secondary:hover {
-  background: var(--bg-hover, #f4f4f5);
-  border-color: var(--border-hover, #a1a1aa);
+  background: #1c1c22 !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  color: #ffffff !important;
   transform: translateY(-1px);
 }
 

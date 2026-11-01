@@ -1198,12 +1198,12 @@
 }
 
 .visual-toggle-btn.active {
-  background: var(--accent, #e11d48);
-  color: #ffffff;
-  border-color: var(--accent, #e11d48);
-  font-weight: 700;
-  box-shadow: 0 2px 8px -1px rgba(225, 29, 72, 0.35);
-  transform: translateY(-0.5px);
+  background: #27272a !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 /* SVG Explainer Diagram Card */
@@ -1508,17 +1508,17 @@
 }
 
 .diagram-step-btn {
-  height: 30px;
-  padding: 0 14px;
+  height: 28px;
+  padding: 0 12px;
   font-size: 11.5px;
-  font-weight: 600;
-  border-radius: var(--course-radius-pill, 9999px);
-  border: 1px solid var(--border-default, #e4e4e7);
-  background: var(--bg-surface, #ffffff);
-  color: var(--text-secondary, #52525b);
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #121215;
+  color: #a1a1aa;
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-  transition: transform 140ms ease, border-color 140ms ease, background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+  box-shadow: none;
+  transition: all 120ms ease;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1536,12 +1536,12 @@
 }
 
 .diagram-step-btn.active {
-  background: var(--accent, #e11d48);
-  color: #ffffff;
-  border-color: var(--accent, #e11d48);
-  font-weight: 700;
-  box-shadow: 0 3px 10px -2px rgba(225, 29, 72, 0.35);
-  transform: translateY(-0.5px);
+  background: #27272a !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 /* Code Action Strip */
@@ -3958,4 +3958,97 @@
   background: rgba(245, 158, 11, 0.12) !important;
   border-color: rgba(245, 158, 11, 0.3) !important;
   color: #fef3c7 !important;
+}
+
+
+/* Comprehensive Dark & Monochrome Theme Overrides for SVGs */
+[data-theme="monochrome"] .course-explainer-svg .svg-canvas-bg,
+[data-theme="ink"] .course-explainer-svg .svg-canvas-bg,
+[data-theme="carbon"] .course-explainer-svg .svg-canvas-bg,
+[data-theme="cursor-dark"] .course-explainer-svg .svg-canvas-bg,
+body[data-theme="monochrome"] .course-explainer-svg .svg-canvas-bg,
+body[data-theme="ink"] .course-explainer-svg .svg-canvas-bg,
+body[data-theme="carbon"] .course-explainer-svg .svg-canvas-bg {
+  fill: #09090b !important;
+  stroke: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="monochrome"] .course-explainer-svg .svg-panel-bg,
+[data-theme="ink"] .course-explainer-svg .svg-panel-bg,
+[data-theme="carbon"] .course-explainer-svg .svg-panel-bg,
+[data-theme="cursor-dark"] .course-explainer-svg .svg-panel-bg,
+body[data-theme="monochrome"] .course-explainer-svg .svg-panel-bg,
+body[data-theme="ink"] .course-explainer-svg .svg-panel-bg,
+body[data-theme="carbon"] .course-explainer-svg .svg-panel-bg {
+  fill: #0e1117 !important;
+  stroke: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="monochrome"] .course-explainer-svg .svg-panel-header,
+[data-theme="ink"] .course-explainer-svg .svg-panel-header,
+[data-theme="carbon"] .course-explainer-svg .svg-panel-header,
+body[data-theme="monochrome"] .course-explainer-svg .svg-panel-header {
+  fill: #161b22 !important;
+}
+
+[data-theme="monochrome"] .course-explainer-svg .svg-row-even,
+[data-theme="ink"] .course-explainer-svg .svg-row-even,
+[data-theme="carbon"] .course-explainer-svg .svg-row-even,
+body[data-theme="monochrome"] .course-explainer-svg .svg-row-even {
+  fill: #0e1117 !important;
+}
+
+[data-theme="monochrome"] .course-explainer-svg .svg-row-odd,
+[data-theme="ink"] .course-explainer-svg .svg-row-odd,
+[data-theme="carbon"] .course-explainer-svg .svg-row-odd,
+body[data-theme="monochrome"] .course-explainer-svg .svg-row-odd {
+  fill: #13171f !important;
+}
+
+[data-theme="monochrome"] .course-explainer-svg .svg-row-match,
+[data-theme="ink"] .course-explainer-svg .svg-row-match,
+[data-theme="carbon"] .course-explainer-svg .svg-row-match {
+  fill: rgba(255, 255, 255, 0.05) !important;
+  stroke: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="monochrome"] .course-explainer-svg .svg-row-discard,
+[data-theme="ink"] .course-explainer-svg .svg-row-discard,
+[data-theme="carbon"] .course-explainer-svg .svg-row-discard {
+  fill: rgba(255, 255, 255, 0.01) !important;
+  stroke: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="monochrome"] .course-explainer-svg .svg-text-title,
+[data-theme="ink"] .course-explainer-svg .svg-text-title,
+[data-theme="carbon"] .course-explainer-svg .svg-text-title,
+body[data-theme="monochrome"] .course-explainer-svg .svg-text-title {
+  fill: #f0f6fc !important;
+}
+
+[data-theme="monochrome"] .course-explainer-svg .svg-text-col,
+[data-theme="ink"] .course-explainer-svg .svg-text-col,
+[data-theme="carbon"] .course-explainer-svg .svg-text-col,
+body[data-theme="monochrome"] .course-explainer-svg .svg-text-col {
+  fill: #8b949e !important;
+}
+
+[data-theme="monochrome"] .course-explainer-svg .svg-text-cell,
+[data-theme="ink"] .course-explainer-svg .svg-text-cell,
+[data-theme="carbon"] .course-explainer-svg .svg-text-cell,
+body[data-theme="monochrome"] .course-explainer-svg .svg-text-cell {
+  fill: #c9d1d9 !important;
+}
+
+[data-theme="monochrome"] .course-explainer-svg .svg-text-cell-match,
+[data-theme="ink"] .course-explainer-svg .svg-text-cell-match,
+[data-theme="carbon"] .course-explainer-svg .svg-text-cell-match {
+  fill: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="monochrome"] .course-explainer-svg .svg-text-cell-discard,
+[data-theme="ink"] .course-explainer-svg .svg-text-cell-discard,
+[data-theme="carbon"] .course-explainer-svg .svg-text-cell-discard {
+  fill: #6e7681 !important;
 }

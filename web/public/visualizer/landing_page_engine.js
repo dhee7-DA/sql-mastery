@@ -165,8 +165,8 @@ lagged <span class="landing-kw">AS</span> (
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 3v18h18"></path><rect x="7" y="10" width="3" height="8"></rect><rect x="14" y="5" width="3" height="13"></rect></svg>
                 <span>Launch Analytics Track (Amazon 30d)</span>
               </button>
-              <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewJPMorganStory', 'Finance', null); try{window.location.hash='#finance';}catch(e){}" style="border-color:rgba(16,185,129,0.4); color:#10b981;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><path d="M9 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v11H9V10z"></path></svg>
+              <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewJPMorganStory', 'Finance', null); try{window.location.hash='#finance';}catch(e){}">
+                <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow:0 0 6px rgba(16,185,129,0.5);"></span>
                 <span>Launch Finance Track (JPMorgan 30d)</span>
               </button>
               <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewRelationalMachines', 'Relational Machines', null); try{window.location.hash='#machines';}catch(e){}">
@@ -255,12 +255,12 @@ lagged <span class="landing-kw">AS</span> (
               <span class="landing-metric-desc">100% Client-side AST test suites</span>
             </div>
             <div class="landing-metric-card">
-              <span class="landing-metric-val" style="color:#f59e0b;">30-Day</span>
+              <span class="landing-metric-val">30-Day</span>
               <span class="landing-metric-label">Amazon BI Simulation</span>
               <span class="landing-metric-desc">L4/L5 Business Analyst onboarding</span>
             </div>
             <div class="landing-metric-card">
-              <span class="landing-metric-val" style="color:#10b981;">30-Day</span>
+              <span class="landing-metric-val">30-Day</span>
               <span class="landing-metric-label">JPMorgan Quant Risk</span>
               <span class="landing-metric-desc">Basel III, CCAR &amp; Core Ledgers</span>
             </div>
@@ -270,7 +270,7 @@ lagged <span class="landing-kw">AS</span> (
               <span class="landing-metric-desc">SEC T+1, MRR Waterfall, Hospital</span>
             </div>
             <div class="landing-metric-card">
-              <span class="landing-metric-val" style="color:#38bdf8;">1-Click</span>
+              <span class="landing-metric-val">1-Click</span>
               <span class="landing-metric-label">dbt Model Exporter</span>
               <span class="landing-metric-desc">Contracts, YAML tests &amp; Semantic Layer</span>
             </div>
@@ -281,7 +281,7 @@ lagged <span class="landing-kw">AS</span> (
           <!-- ================================================================= -->
           <section style="margin-bottom: 72px;">
             <div class="landing-section-header">
-              <span class="landing-section-tag" style="background:rgba(245,158,11,0.12); color:#f59e0b; border-color:rgba(245,158,11,0.3);">Track 01 // Modern Analytics &amp; Growth</span>
+              <span class="landing-section-tag" >Track 01 // Modern Analytics &amp; Growth</span>
               <h2 class="landing-section-title">Enterprise Data Analytics &amp; Analytics Engineering</h2>
               <p class="landing-section-subtitle">
                 Engineered for Senior BI Analysts, Product Analytics, and Analytics Engineers scaling with dbt, Snowflake, BigQuery, and DuckDB.
@@ -291,21 +291,21 @@ lagged <span class="landing-kw">AS</span> (
             <div class="landing-bento-grid">
               
               <!-- Card 1: Amazon BI Simulation (Span 2) -->
-              <div class="landing-bento-card span-2" style="border-color:rgba(245,158,11,0.25);">
+              <div class="landing-bento-card span-2" >
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <span class="landing-bento-badge" style="background:rgba(245,158,11,0.15); color:#f59e0b; border:1px solid rgba(245,158,11,0.3);">30-Day Interactive Career Simulator</span>
-                  <span style="font-size:10px; font-family:monospace; color:#f59e0b; font-weight:700;">AMAZON SCOT &bull; L4/L5 ROTATION</span>
+                  <span class="landing-bento-badge" >30-Day Interactive Career Simulator</span>
+                  <span style="font-size:10px; font-family:monospace; color:var(--text-muted); font-weight:600;">AMAZON SCOT &bull; L4/L5 ROTATION</span>
                 </div>
                 <h3 class="landing-bento-title" style="margin-top:10px;">Amazon SCOT &amp; Prime Day War Room Simulation</h3>
                 <p class="landing-bento-desc">
                   Step into the shoes of an Amazon L4/L5 Business Intelligence Analyst: audit cart abandonment, diagnose fulfillment center dock-to-ship latency bottlenecks, calculate carrier SLA delivery penalties, execute emergency regional warehouse reroutes via <code>SELF JOIN</code>, and track Prime Day hourly cumulative revenue velocity.
                 </p>
                 <div style="display:flex; gap:8px; margin: 14px 0; flex-wrap:wrap;">
-                  <span class="dbt-tag-pill" style="color:#f59e0b; border-color:rgba(245,158,11,0.3); background:rgba(245,158,11,0.08);">30 Daily Missions</span>
-                  <span class="dbt-tag-pill" style="color:#f59e0b; border-color:rgba(245,158,11,0.3); background:rgba(245,158,11,0.08);">Prime Day War Room</span>
-                  <span class="dbt-tag-pill" style="color:#f59e0b; border-color:rgba(245,158,11,0.3); background:rgba(245,158,11,0.08);">L8 VP Capstone</span>
+                  <span class="dbt-tag-pill" >30 Daily Missions</span>
+                  <span class="dbt-tag-pill" >Prime Day War Room</span>
+                  <span class="dbt-tag-pill" >L8 VP Capstone</span>
                 </div>
-                <button class="landing-bento-action-link" onclick="if(window.selectNavView) window.selectNavView('viewAmazonStory', 'Analytics', null); try{window.location.hash='#analytics';}catch(e){}" style="color:#f59e0b;">
+                <button class="landing-bento-action-link" onclick="if(window.selectNavView) window.selectNavView('viewAmazonStory', 'Analytics', null); try{window.location.hash='#analytics';}catch(e){}" >
                   <span>Launch Amazon 30-Day Analytics Simulator &rarr;</span>
                 </button>
               </div>
@@ -335,10 +335,10 @@ lagged <span class="landing-kw">AS</span> (
               </div>
 
               <!-- Card 4: 1-Click dbt Core Exporter -->
-              <div class="landing-bento-card span-2" style="border-color:rgba(56,189,248,0.25);">
+              <div class="landing-bento-card span-2" >
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <span class="landing-bento-badge" style="background:rgba(56,189,248,0.12); color:#38bdf8; border:1px solid rgba(56,189,248,0.3);">Modern Data Stack Integration</span>
-                  <span style="font-size:10px; font-family:monospace; color:#38bdf8; font-weight:700;">DBT CORE &bull; METRICFLOW &bull; LOOKML</span>
+                  <span class="landing-bento-badge" >Modern Data Stack Integration</span>
+                  <span style="font-size:10px; font-family:monospace; color:var(--text-muted); font-weight:600;">DBT CORE &bull; METRICFLOW &bull; LOOKML</span>
                 </div>
                 <h3 class="landing-bento-title" style="margin-top:10px;">1-Click Production dbt Model &amp; Semantic Layer Exporter</h3>
                 <p class="landing-bento-desc">
@@ -357,7 +357,7 @@ lagged <span class="landing-kw">AS</span> (
           <!-- ================================================================= -->
           <section style="margin-bottom: 72px;">
             <div class="landing-section-header">
-              <span class="landing-section-tag" style="background:rgba(16,185,129,0.12); color:#10b981; border-color:rgba(16,185,129,0.3);">Track 02 // Institutional Banking &amp; Risk</span>
+              <span class="landing-section-tag" >Track 02 // Institutional Banking &amp; Risk</span>
               <h2 class="landing-section-title">Quantitative Finance, Wall Street Ledgers &amp; Basel III Risk</h2>
               <p class="landing-section-subtitle">
                 Engineered for Investment Banking, Treasury Operations, Algorithmic Trading Desks, and Quantitative Risk Analysts.
@@ -367,21 +367,21 @@ lagged <span class="landing-kw">AS</span> (
             <div class="landing-bento-grid">
               
               <!-- Card 1: JPMorgan Quant Risk Simulation (Span 2) -->
-              <div class="landing-bento-card span-2" style="border-color:rgba(16,185,129,0.25);">
+              <div class="landing-bento-card span-2" >
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <span class="landing-bento-badge" style="background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.3);">30-Day Wall Street Simulation</span>
-                  <span style="font-size:10px; font-family:monospace; color:#10b981; font-weight:700;">JPMORGAN CHASE &bull; 270 PARK AVENUE</span>
+                  <span class="landing-bento-badge" >30-Day Wall Street Simulation</span>
+                  <span style="font-size:10px; font-family:monospace; color:var(--text-muted); font-weight:600;">JPMORGAN CHASE &bull; 270 PARK AVENUE</span>
                 </div>
                 <h3 class="landing-bento-title" style="margin-top:10px;">JPMorgan Chase Quantitative Risk &amp; Treasury Simulation</h3>
                 <p class="landing-bento-desc">
                   Rotate across 4 premier institutional desks: <strong>Core Banking Ledgers</strong> (Nostro/Vostro recon, SWIFT MT103 wire breaks), <strong>Financial Crimes &amp; AML</strong> (smurfing, OFAC sanctions with SOUNDEX), <strong>Asset Management</strong> (portfolio drawdowns, high-water marks), and <strong>Quantitative Risk</strong> (historical 99% VaR, Basel III LCR buffers, CCAR credit losses).
                 </p>
                 <div style="display:flex; gap:8px; margin: 14px 0; flex-wrap:wrap;">
-                  <span class="dbt-tag-pill" style="color:#10b981; border-color:rgba(16,185,129,0.3); background:rgba(16,185,129,0.08);">30 Mock Ledgers</span>
-                  <span class="dbt-tag-pill" style="color:#10b981; border-color:rgba(16,185,129,0.3); background:rgba(16,185,129,0.08);">Symphony Terminal UI</span>
-                  <span class="dbt-tag-pill" style="color:#10b981; border-color:rgba(16,185,129,0.3); background:rgba(16,185,129,0.08);">MD Career Ladder</span>
+                  <span class="dbt-tag-pill" >30 Mock Ledgers</span>
+                  <span class="dbt-tag-pill" >Symphony Terminal UI</span>
+                  <span class="dbt-tag-pill" >MD Career Ladder</span>
                 </div>
-                <button class="landing-bento-action-link" onclick="if(window.selectNavView) window.selectNavView('viewJPMorganStory', 'Finance', null); try{window.location.hash='#finance';}catch(e){}" style="color:#10b981;">
+                <button class="landing-bento-action-link" onclick="if(window.selectNavView) window.selectNavView('viewJPMorganStory', 'Finance', null); try{window.location.hash='#finance';}catch(e){}" >
                   <span>Launch JPMorgan 30-Day Risk Simulator &rarr;</span>
                 </button>
               </div>
@@ -411,16 +411,16 @@ lagged <span class="landing-kw">AS</span> (
               </div>
 
               <!-- Card 4: Portfolio Risk, Drawdown & 99% VaR -->
-              <div class="landing-bento-card span-2" style="border-color:rgba(244,63,94,0.25);">
+              <div class="landing-bento-card span-2" >
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <span class="landing-bento-badge" style="background:rgba(244,63,94,0.12); color:#f43f5e; border:1px solid rgba(244,63,94,0.3);">Capital Markets Risk</span>
-                  <span style="font-size:10px; font-family:monospace; color:#f43f5e; font-weight:700;">VALUE-AT-RISK &bull; HIGH-WATER MARKS &bull; BASEL III</span>
+                  <span class="landing-bento-badge" >Capital Markets Risk</span>
+                  <span style="font-size:10px; font-family:monospace; color:var(--text-muted); font-weight:600;">VALUE-AT-RISK &bull; HIGH-WATER MARKS &bull; BASEL III</span>
                 </div>
                 <h3 class="landing-bento-title" style="margin-top:10px;">Portfolio Downside Risk, High-Water Marks &amp; 99% 1-Day VaR</h3>
                 <p class="landing-bento-desc">
                   Model institutional market risk using percentile ranking on swap books: calculate peak-to-trough underwater drawdown curves, cumulative high-water mark peaks, and 99% 1-Day Value-at-Risk ($-\$1.85	ext{M}$) loss thresholds to stress test capital adequacy under Fed CCAR guidelines.
                 </p>
-                <button class="landing-bento-action-link" onclick="if(window.selectNavView) window.selectNavView('viewRelationalMachines', 'Relational Machines', null); try{window.location.hash='#machines';}catch(e){}" style="color:#f43f5e;">
+                <button class="landing-bento-action-link" onclick="if(window.selectNavView) window.selectNavView('viewRelationalMachines', 'Relational Machines', null); try{window.location.hash='#machines';}catch(e){}" >
                   <span>Inspect Risk &amp; Drawdown Blueprints &rarr;</span>
                 </button>
               </div>
@@ -444,7 +444,7 @@ lagged <span class="landing-kw">AS</span> (
           <!-- 6. 5 SILENT SQL TRAPS CAUGHT BY THE ENGINE -->
           <section style="margin-bottom: 64px;">
             <div class="landing-section-header">
-              <span class="landing-section-tag" style="background:rgba(244,63,94,0.12); color:#f43f5e; border-color:rgba(244,63,94,0.3);">Defensive Engineering</span>
+              <span class="landing-section-tag" >Defensive Engineering</span>
               <h2 class="landing-section-title">5 Silent SQL Traps Caught by the Engine</h2>
               <p class="landing-section-subtitle">
                 Screening traps that silently return incorrect rows, corrupt financial ledgers, or crash in production.
@@ -518,16 +518,16 @@ lagged <span class="landing-kw">AS</span> (
               
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewAmazonStory', 'Analytics', null); try{window.location.hash='#analytics';}catch(e){}" style="border-color:rgba(245,158,11,0.3);">
                 <div class="landing-launch-meta">
-                  <span class="landing-launch-name" style="color:#f59e0b;">Analytics Track</span>
-                  <span class="landing-launch-tag" style="color:#f59e0b; background:rgba(245,158,11,0.12);">30-Day Sim</span>
+                  <span class="landing-launch-name" >Analytics Track</span>
+                  <span class="landing-launch-tag">30-Day Sim</span>
                 </div>
                 <span class="landing-launch-desc">Amazon SCOT Business Analyst Day-in-the-Life &amp; Prime Day War Room</span>
               </div>
 
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewJPMorganStory', 'Finance', null); try{window.location.hash='#finance';}catch(e){}" style="border-color:rgba(16,185,129,0.3);">
                 <div class="landing-launch-meta">
-                  <span class="landing-launch-name" style="color:#10b981;">Finance Track</span>
-                  <span class="landing-launch-tag" style="color:#10b981; background:rgba(16,185,129,0.12);">Wall St</span>
+                  <span class="landing-launch-name" >Finance Track</span>
+                  <span class="landing-launch-tag">Wall St</span>
                 </div>
                 <span class="landing-launch-desc">JPMorgan Quant Risk, Core Banking Ledgers, AML &amp; Treasury</span>
               </div>
