@@ -1,3 +1,385 @@
+
+// =============================================================================
+// DBT MODEL & SEMANTIC LAYER EXPORTER ENGINE
+// Transforms raw SQL queries into production-grade dbt models with YAML contracts,
+// tests (not_null, unique), MetricFlow semantic models, and LookML views.
+// =============================================================================
+
+window.DbtModelGenerator = (function() {
+  'use strict';
+
+  function sanitizeModelName(name) {
+    if (!name) return 'mart_analytics_model';
+    return name.toLowerCase().replace(/[^a-z0-9_]/g, '_').replace(/^_+|_+$/g, '');
+  }
+
+  function generate(rawSql, options = {}) {
+    const rawName = options.modelName || 'mart_sql_foundry';
+    const modelName = sanitizeModelName(rawName);
+    const materialization = options.materialization || 'table';
+    const schema = options.schema || 'marts';
+    const tags = options.tags || ['analytics', 'bi_reporting', 'daily_refresh'];
+
+    // Identify source tables
+    const fromMatches = [...rawSql.matchAll(/\bFROM\s+([a-zA-Z0-9_]+)/gi)].map(m => m[1]);
+    const joinMatches = [...rawSql.matchAll(/\bJOIN\s+([a-zA-Z0-9_]+)/gi)].map(m => m[1]);
+    const sourceTables = Array.from(new Set([...fromMatches, ...joinMatches]))
+      .filter(t => t.toUpperCase() !== 'SELECT' && t.toUpperCase() !== 'WHERE');
+
+    // Replace raw table names with {{ ref('stg_...') }}
+    let dbtSql = rawSql;
+    sourceTables.forEach(tbl => {
+      const regFrom = new RegExp(`\\bFROM\\s+${tbl}\\b`, 'gi');
+      dbtSql = dbtSql.replace(regFrom, `FROM {{ ref('stg_${tbl.toLowerCase()}') }}`);
+      const regJoin = new RegExp(`\\bJOIN\\s+${tbl}\\b`, 'gi');
+      dbtSql = dbtSql.replace(regJoin, `JOIN {{ ref('stg_${tbl.toLowerCase()}') }}`);
+    });
+
+    // 1. Generate model.sql
+    const sqlFile = `{{ config(
+    materialized = '${materialization}',
+    schema = '${schema}',
+    tags = ${JSON.stringify(tags)},
+    contract = { 'enforced': true }
+) }}
+
+/*
+================================================================================
+  DBT PRODUCTION MART: ${modelName}
+  Lineage Source: SQL Foundry Relational Machine
+  Target Engine: Snowflake / BigQuery / Databricks / PostgreSQL / DuckDB
+================================================================================
+*/
+
+WITH source_data AS (
+    -- Upstream staging references
+${sourceTables.map(t => `    SELECT * FROM {{ ref('stg_${t.toLowerCase()}') }}`).join('\n') || "    -- Direct relational inputs"}
+),
+
+transformed_mart AS (
+${dbtSql.split('\n').map(l => '    ' + l).join('\n')}
+)
+
+SELECT *
+FROM transformed_mart;
+`;
+
+    // Extract columns
+    const selectMatch = rawSql.match(/SELECT\s+([\s\S]+?)\s+FROM/i);
+    let columns = [];
+    if (selectMatch) {
+      const colStr = selectMatch[1];
+      const parts = colStr.split(/,(?![^()]*\))/);
+      parts.forEach(p => {
+        const clean = p.trim();
+        const asMatch = clean.match(/\bAS\s+([a-zA-Z0-9_]+)/i);
+        if (asMatch) {
+          columns.push(asMatch[1]);
+        } else {
+          const directMatch = clean.match(/([a-zA-Z0-9_]+)$/);
+          if (directMatch && directMatch[1].toUpperCase() !== 'DISTINCT') {
+            columns.push(directMatch[1]);
+          }
+        }
+      });
+    }
+    if (columns.length === 0) {
+      columns = ['id', 'dimension_key', 'metric_value', 'updated_at'];
+    }
+
+    // 2. Generate schema.yml
+    const yamlFile = `version: 2
+
+models:
+  - name: ${modelName}
+    description: >
+      Production analytical model synthesized from SQL Foundry.
+      Maintains validated business logic, execution constraints, and automated data quality tests.
+    config:
+      contract:
+        enforced: true
+    columns:
+${columns.map((col, idx) => {
+  const isKey = idx === 0 || col.toLowerCase().includes('id') || col.toLowerCase().includes('month') || col.toLowerCase().includes('date') || col.toLowerCase().includes('code');
+  const isMetric = col.toLowerCase().includes('amount') || col.toLowerCase().includes('revenue') || col.toLowerCase().includes('avg') || col.toLowerCase().includes('count') || col.toLowerCase().includes('mrr') || col.toLowerCase().includes('salary') || col.toLowerCase().includes('variance');
+  return `      - name: ${col}
+        description: "${isKey ? 'Primary dimensional key or partitioning grain.' : isMetric ? 'Quantitative aggregate business metric.' : 'Relational projection attribute.'}"
+        data_type: ${isKey ? (col.includes('id') ? 'integer' : 'string') : isMetric ? 'numeric' : 'string'}
+        tests:
+          - not_null${isKey && idx === 0 ? '\n          - unique' : ''}${isMetric ? '\n          - dbt_expectations.expect_column_values_to_be_between:\n              min_value: 0' : ''}`;
+}).join('\n')}
+`;
+
+    // 3. Generate semantic_layer.yml (MetricFlow / dbt Semantic Layer)
+    const metricCols = columns.filter(c => c.toLowerCase().includes('amount') || c.toLowerCase().includes('revenue') || c.toLowerCase().includes('mrr') || c.toLowerCase().includes('order') || c.toLowerCase().includes('user') || c.toLowerCase().includes('count') || c.toLowerCase().includes('salary'));
+    const semanticFile = `version: 2
+
+semantic_models:
+  - name: ${modelName}_semantic
+    model: ref('${modelName}')
+    description: "Semantic layer model powering downstream Looker, Tableau, and BI dashboards."
+    entities:
+      - name: ${columns[0] || 'id'}
+        type: primary
+    dimensions:
+      - name: report_timestamp
+        type: time
+        type_params:
+          time_granularity: day
+    measures:
+${metricCols.map(c => `      - name: sum_${c}
+        description: "Cumulative sum of ${c}"
+        agg: sum
+        expr: ${c}`).join('\n') || `      - name: total_records\n        description: "Total record count"\n        agg: count`}
+
+metrics:
+  - name: primary_kpi
+    label: "Topline ${columns[1] || 'Metric'}"
+    type: simple
+    type_params:
+      measure: ${metricCols[0] ? `sum_${metricCols[0]}` : 'total_records'}
+`;
+
+    // 4. Generate LookML View
+    const lookmlFile = `view: ${modelName} {
+  sql_table_name: \`analytics.${schema}.${modelName}\` ;;
+
+  dimension: ${columns[0] || 'id'} {
+    primary_key: yes
+    type: ${columns[0] && columns[0].includes('id') ? 'number' : 'string'}
+    sql: \${TABLE}.${columns[0] || 'id'} ;;
+  }
+
+${columns.slice(1).map(c => {
+  const isNum = c.toLowerCase().includes('amount') || c.toLowerCase().includes('revenue') || c.toLowerCase().includes('mrr') || c.toLowerCase().includes('orders') || c.toLowerCase().includes('salary');
+  if (isNum) {
+    return `  measure: total_${c} {
+    type: sum
+    sql: \${TABLE}.${c} ;;
+    value_format_name: usd
+  }`;
+  } else {
+    return `  dimension: ${c} {
+    type: string
+    sql: \${TABLE}.${c} ;;
+  }`;
+  }
+}).join('\n\n')}
+}
+`;
+
+    
+  function openDbtModal() {
+    if (window.DbtModelGenerator) {
+      let modelName = 'mart_analytics_query';
+      if (state.catalogMode === 'blueprints') {
+        modelName = `mart_${state.selectedBlueprint.replace('bp_', '')}`;
+      } else if (state.catalogMode === 'leetcode') {
+        modelName = `mart_leetcode_${state.selectedProblemId}`;
+      }
+      window.DbtModelGenerator.openModal(state.editorSql, {
+        modelName: modelName,
+        materialization: 'table',
+        schema: 'marts'
+      });
+    }
+  }
+
+  return {
+      modelName,
+      sqlFile,
+      yamlFile,
+      semanticFile,
+      lookmlFile
+    };
+  }
+
+  let activeModalTab = 'sql';
+  let cachedArtifacts = null;
+
+  function openModal(rawSql, options = {}) {
+    cachedArtifacts = generate(rawSql, options);
+    activeModalTab = 'sql';
+
+    let container = document.getElementById('dbtExportModalContainer');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'dbtExportModalContainer';
+      document.body.appendChild(container);
+    }
+
+    renderModalContent(container);
+  }
+
+  function switchTab(tabKey) {
+    activeModalTab = tabKey;
+    const container = document.getElementById('dbtExportModalContainer');
+    if (container) renderModalContent(container);
+  }
+
+  function closeModal() {
+    const container = document.getElementById('dbtExportModalContainer');
+    if (container) {
+      container.innerHTML = '';
+      container.remove();
+    }
+  }
+
+  function getActiveContent() {
+    if (!cachedArtifacts) return '';
+    if (activeModalTab === 'sql') return cachedArtifacts.sqlFile;
+    if (activeModalTab === 'yaml') return cachedArtifacts.yamlFile;
+    if (activeModalTab === 'semantic') return cachedArtifacts.semanticFile;
+    if (activeModalTab === 'lookml') return cachedArtifacts.lookmlFile;
+    return '';
+  }
+
+  function copyActiveContent() {
+    const content = getActiveContent();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(content).then(() => {
+        if (window.soundFX && typeof window.soundFX.playSuccess === 'function') window.soundFX.playSuccess();
+        if (window.SQL_BUDDY && typeof window.SQL_BUDDY.say === 'function') {
+          window.SQL_BUDDY.say("Copied dbt artifact to clipboard!", 2500, 'celebrate');
+        }
+      });
+    }
+  }
+
+  function downloadActiveFile() {
+    const content = getActiveContent();
+    let filename = `${cachedArtifacts.modelName}.sql`;
+    if (activeModalTab === 'yaml') filename = `schema.yml`;
+    if (activeModalTab === 'semantic') filename = `semantic_metrics.yml`;
+    if (activeModalTab === 'lookml') filename = `${cachedArtifacts.modelName}.view.lkml`;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function renderModalContent(container) {
+    if (!cachedArtifacts) return;
+    const { modelName, sqlFile, yamlFile, semanticFile, lookmlFile } = cachedArtifacts;
+
+    let activeCode = sqlFile;
+    let activePath = `models/marts/${modelName}.sql`;
+    if (activeModalTab === 'yaml') {
+      activeCode = yamlFile;
+      activePath = `models/marts/schema.yml`;
+    } else if (activeModalTab === 'semantic') {
+      activeCode = semanticFile;
+      activePath = `models/metrics/semantic_layer.yml`;
+    } else if (activeModalTab === 'lookml') {
+      activeCode = lookmlFile;
+      activePath = `views/${modelName}.view.lkml`;
+    }
+
+    container.innerHTML = `
+      <div class="dbt-modal-backdrop" onclick="if(event.target === this) window.DbtModelGenerator.closeModal()">
+        <div class="dbt-modal-dialog">
+          
+          <!-- Header -->
+          <div class="dbt-modal-header">
+            <div class="dbt-modal-header-left">
+              <span class="dbt-modal-badge">dbt Core &amp; Semantic Layer</span>
+              <h2 class="dbt-modal-title">Export as Production dbt Model</h2>
+              <span class="dbt-modal-subtitle">Auto-generated contract specifications, tests &amp; metric semantics for ${modelName}</span>
+            </div>
+            <button class="dbt-modal-close" onclick="window.DbtModelGenerator.closeModal()" title="Close dialog (Esc)">&times;</button>
+          </div>
+
+          <!-- File Selector Tabs -->
+          <div class="dbt-modal-tabs">
+            <button class="dbt-tab-btn ${activeModalTab === 'sql' ? 'active' : ''}" onclick="window.DbtModelGenerator.switchTab('sql')">
+              <span class="dbt-tab-dot" style="background:#f43f5e;"></span>
+              <span>models/marts/${modelName}.sql</span>
+            </button>
+            <button class="dbt-tab-btn ${activeModalTab === 'yaml' ? 'active' : ''}" onclick="window.DbtModelGenerator.switchTab('yaml')">
+              <span class="dbt-tab-dot" style="background:#fbbf24;"></span>
+              <span>schema.yml (Contracts &amp; Tests)</span>
+            </button>
+            <button class="dbt-tab-btn ${activeModalTab === 'semantic' ? 'active' : ''}" onclick="window.DbtModelGenerator.switchTab('semantic')">
+              <span class="dbt-tab-dot" style="background:#10b981;"></span>
+              <span>semantic_layer.yml (MetricFlow)</span>
+            </button>
+            <button class="dbt-tab-btn ${activeModalTab === 'lookml' ? 'active' : ''}" onclick="window.DbtModelGenerator.switchTab('lookml')">
+              <span class="dbt-tab-dot" style="background:#38bdf8;"></span>
+              <span>${modelName}.view.lkml</span>
+            </button>
+          </div>
+
+          <!-- Active File Path Banner -->
+          <div class="dbt-filepath-banner">
+            <span style="color:var(--text-muted); font-size:11px; font-family:var(--font-mono, monospace);">File Path:</span>
+            <span style="color:#38bdf8; font-size:11px; font-family:var(--font-mono, monospace); font-weight:600;">${activePath}</span>
+            <span class="dbt-tag-pill">Enforced Contract</span>
+            <span class="dbt-tag-pill" style="color:#10b981; border-color:rgba(16,185,129,0.3); background:rgba(16,185,129,0.1);">Automated Tests Ready</span>
+          </div>
+
+          <!-- Code Viewport -->
+          <div class="dbt-modal-body">
+            <pre class="dbt-code-pre"><code>${escapeHtml(activeCode)}</code></pre>
+          </div>
+
+          <!-- Footer Actions -->
+          <div class="dbt-modal-footer">
+            <div style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono, monospace);">
+              Ready to commit directly into your git repository
+            </div>
+            <div class="dbt-modal-actions">
+              <button class="dbt-action-btn primary" onclick="window.DbtModelGenerator.copyActiveContent()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copy Current File</span>
+              </button>
+              <button class="dbt-action-btn secondary" onclick="window.DbtModelGenerator.downloadActiveFile()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>Download</span>
+              </button>
+              <button class="dbt-action-btn secondary" onclick="window.DbtModelGenerator.closeModal()">
+                <span>Close</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+
+    document.addEventListener('keydown', function escHandler(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+        document.removeEventListener('keydown', escHandler);
+      }
+    });
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  return {
+    generate,
+    openModal,
+    switchTab,
+    closeModal,
+    copyActiveContent,
+    downloadActiveFile
+  };
+})();
+
 /**
  * =============================================================================
  * RELATIONAL MACHINES ENGINE (DATA ANALYSIS & BUSINESS INTELLIGENCE EXPLAINERS)
@@ -2275,6 +2657,9 @@ function renderView() {
 
             <!-- Export Tools -->
             <div class="machines-tools-group" style="display:flex; align-items:center; gap:6px;">
+              <button class="machine-action-btn" onclick="window.RelationalMachinesEngine.openDbtModal()" title="Export as dbt Model, Tests & Semantic YAML" style="border-color:rgba(244,63,94,0.35); color:#fb7185; background:rgba(244,63,94,0.08);">
+                <span>📦 Export dbt</span>
+              </button>
               <button class="machine-action-btn" onclick="window.RelationalMachinesEngine.downloadSvg()" title="Download Standalone SVG">
                 <span>⤓ SVG</span>
               </button>

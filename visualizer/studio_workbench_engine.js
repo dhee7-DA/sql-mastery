@@ -341,6 +341,10 @@ window.StudioWorkbenchEngine = (function() {
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
               <span>Verify</span>
             </button>
+            <button id="btnStudioExportDbt" class="dossier-btn" title="Export as dbt Model & YAML Schema" onclick="window.StudioWorkbenchEngine.openDbtExport()" style="border-color:rgba(244,63,94,0.3); color:#fb7185; background:rgba(244,63,94,0.08);">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              <span>dbt Export</span>
+            </button>
 
             <div class="studio-bar-sep"></div>
 
@@ -2369,7 +2373,24 @@ window.StudioWorkbenchEngine = (function() {
           const last = steps[steps.length - 1];
           const t1 = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
           const latencyMs = Math.max(0.1, Math.round((t1 - t0) * 100) / 100);
-          return {
+          
+  function openDbtExport() {
+    const editor = document.getElementById('studioSqlTextarea');
+    const sql = editor ? editor.value : (state.currentProblem && state.currentProblem.starterSql) || 'SELECT 1;';
+    const prob = state.currentProblem || {};
+    const probId = prob.id || 'query';
+    const modelName = `mart_section_${probId}`;
+
+    if (window.DbtModelGenerator) {
+      window.DbtModelGenerator.openModal(sql, {
+        modelName: modelName,
+        materialization: 'table',
+        schema: 'marts'
+      });
+    }
+  }
+
+  return {
             columns: last.columns || Object.keys((last.rows && last.rows[0]) || {}),
             rows: (last.rows || []).map(r => {
               const c = { ...r };
