@@ -1852,9 +1852,9 @@ function initThemeController() {
     } else if (hash === '#home') {
       if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Home', null);
     } else if (hash === '#jpmorgan' || hash === '#finance' || hash === '#wallstreet') {
-      if (typeof selectNavView === 'function') selectNavView('viewJPMorganStory', 'JPMorgan Analyst (30d)', 'navGroupPractice');
+      if (typeof selectNavView === 'function') selectNavView('viewJPMorganStory', 'Finance', null);
     } else if (hash === '#amazon' || hash === '#analytics' || hash === '#bi') {
-      if (typeof selectNavView === 'function') selectNavView('viewAmazonStory', 'Amazon Analyst (30d)', 'navGroupPractice');
+      if (typeof selectNavView === 'function') selectNavView('viewAmazonStory', 'Analytics', null);
     } else if (hash === '#capstones' || hash === '#capstone') {
       if (typeof selectNavView === 'function') selectNavView('viewCapstones', 'Guided Capstones', 'navGroupPractice');
     } else if (hash === '#terminal' || hash === '#sqlite' || hash === '#wasm') {
@@ -2282,9 +2282,9 @@ const NAV_GROUPS_MAP = {
   viewCases: { triggerId: 'btnGroupPractice', pillId: null, label: 'Case Studies' },
   viewProblems: { triggerId: 'btnGroupPractice', pillId: null, label: 'Problem Bank' },
   viewCapstones: { triggerId: 'btnGroupPractice', pillId: null, label: 'Capstones (10)' },
-  viewAmazonStory: { triggerId: 'btnGroupPractice', pillId: null, label: 'Amazon Analyst (30d)' },
+  viewAmazonStory: { triggerId: 'btnNavAnalytics', pillId: null, label: 'Analytics' },
   viewTrapGym: { triggerId: 'btnGroupPractice', pillId: null, label: 'Trap Gym (SRS)' },
-  viewJPMorganStory: { triggerId: 'btnGroupPractice', pillId: null, label: 'JPMorgan (30d)' },
+  viewJPMorganStory: { triggerId: 'btnNavFinance', pillId: null, label: 'Finance' },
 
   viewExplainer: { triggerId: 'btnGroupExplore', pillId: null, label: 'Study Docs' },
   viewDeconstructor: { triggerId: 'btnGroupExplore', pillId: null, label: 'Deconstructor' },
