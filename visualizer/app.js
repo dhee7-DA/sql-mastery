@@ -1851,6 +1851,18 @@ function initThemeController() {
       if (typeof selectNavView === 'function') selectNavView('viewMasteryCourse', 'Course', null);
     } else if (hash === '#home') {
       if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Home', null);
+    } else if (hash === '#jpmorgan' || hash === '#finance' || hash === '#wallstreet') {
+      if (typeof selectNavView === 'function') selectNavView('viewJPMorganStory', 'JPMorgan Analyst (30d)', 'navGroupPractice');
+    } else if (hash === '#amazon' || hash === '#analytics' || hash === '#bi') {
+      if (typeof selectNavView === 'function') selectNavView('viewAmazonStory', 'Amazon Analyst (30d)', 'navGroupPractice');
+    } else if (hash === '#capstones' || hash === '#capstone') {
+      if (typeof selectNavView === 'function') selectNavView('viewCapstones', 'Guided Capstones', 'navGroupPractice');
+    } else if (hash === '#terminal' || hash === '#sqlite' || hash === '#wasm') {
+      if (typeof selectNavView === 'function') selectNavView('viewSqlTerminal', 'SQL Terminal', 'navGroupPractice');
+    } else if (hash === '#mock' || hash === '#interview') {
+      if (typeof selectNavView === 'function') selectNavView('viewMockInterview', 'Mock Screen', 'navGroupPractice');
+    } else if (hash === '#companies' || hash === '#domains') {
+      if (typeof selectNavView === 'function') selectNavView('viewCompanyHub', 'Companies & Domains', 'navGroupPractice');
     }
   }
   window.addEventListener('hashchange', handleHashRoute);

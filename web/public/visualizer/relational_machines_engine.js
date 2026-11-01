@@ -28,39 +28,68 @@ window.RelationalMachinesEngine = (function() {
     selectedDialect: 'postgres',   // 'postgres' | 'snowflake' | 'bigquery' | 'duckdb'
     isDrawerOpen: false,
     astStatus: 'valid',
+    viewMode: 'pipeline',
     chamberCount: 3
   };
 
   const BLUEPRINT_PRESETS = [
+    // --- DATA ANALYTICS TRACK ---
     {
       id: 'bp_metrics',
+      category: 'Analytics',
       title: '01 Multi-Chamber Metric Tree',
       subtitle: 'Revenue, AOV & Order Frequency',
       sql: "SELECT date_trunc('month', order_date) AS month,\n       SUM(net_amount) AS revenue,\n       COUNT(DISTINCT order_id) AS orders,\n       ROUND(SUM(net_amount) / NULLIF(COUNT(DISTINCT order_id), 0), 2) AS aov\nFROM retail_orders\nWHERE order_status = 'COMPLETED'\nGROUP BY 1\nORDER BY 1;"
     },
     {
       id: 'bp_rolling',
+      category: 'Analytics',
       title: '02 7-Day Rolling Trend',
       subtitle: 'Sliding Partition Frame Analytics',
       sql: "SELECT sale_date,\n       daily_revenue,\n       ROUND(AVG(daily_revenue) OVER (\n         ORDER BY sale_date\n         ROWS BETWEEN 6 PRECEDING AND CURRENT ROW\n       ), 2) AS rolling_7d_avg\nFROM daily_sales\nWHERE region = 'US_EAST';"
     },
     {
       id: 'bp_retention',
-      title: '03 Cohort Retention & Churn',
-      subtitle: 'Relational Self-Join Traversal',
+      category: 'Analytics',
+      title: '03 Cohort Retention Matrix',
+      subtitle: 'Triangular Cohort Decay Curves',
       sql: "SELECT c.cohort_month,\n       o.order_month,\n       COUNT(DISTINCT o.user_id) AS active_users\nFROM user_cohorts c\nJOIN user_orders o ON c.user_id = o.user_id\nWHERE o.order_month >= c.cohort_month\nGROUP BY 1, 2;"
     },
     {
-      id: 'bp_topn',
-      title: '04 Department Top-3 Salaries',
-      subtitle: 'DENSE_RANK Partition Filtering',
-      sql: "WITH ranked AS (\n  SELECT d.name AS Department,\n         e.name AS Employee,\n         e.salary AS Salary,\n         DENSE_RANK() OVER (PARTITION BY e.departmentId ORDER BY e.salary DESC) AS rk\n  FROM Employee e\n  JOIN Department d ON e.departmentId = d.id\n)\nSELECT Department, Employee, Salary\nFROM ranked\nWHERE rk <= 3;"
+      id: 'bp_mrr',
+      category: 'Analytics',
+      title: '04 SaaS 5-Way MRR Waterfall',
+      subtitle: 'New, Expansion, Contraction & Churn',
+      sql: "WITH monthly_mrr AS (\n  SELECT user_id, date_trunc('month', invoice_date) AS mth, SUM(mrr_amount) AS mrr\n  FROM subscriptions\n  GROUP BY 1, 2\n),\nmrr_lagged AS (\n  SELECT user_id, mth, mrr,\n         LAG(mrr, 1, 0.0) OVER (PARTITION BY user_id ORDER BY mth) AS prev_mrr\n  FROM monthly_mrr\n)\nSELECT mth,\n       SUM(CASE WHEN prev_mrr = 0 AND mrr > 0 THEN mrr ELSE 0 END) AS new_mrr,\n       SUM(CASE WHEN mrr > prev_mrr AND prev_mrr > 0 THEN mrr - prev_mrr ELSE 0 END) AS expansion_mrr,\n       SUM(CASE WHEN mrr < prev_mrr AND mrr > 0 THEN prev_mrr - mrr ELSE 0 END) AS contraction_mrr,\n       SUM(CASE WHEN mrr = 0 AND prev_mrr > 0 THEN prev_mrr ELSE 0 END) AS churn_mrr\nFROM mrr_lagged\nGROUP BY 1\nORDER BY 1;"
+    },
+    // --- FINANCE ANALYTICS TRACK ---
+    {
+      id: 'bp_gl_invariant',
+      category: 'Finance',
+      title: '05 GL Balanced Ledger Invariant',
+      subtitle: 'Double-Entry Debits = Credits Audit',
+      sql: "SELECT legal_entity,\n       account_code,\n       SUM(CASE WHEN entry_type = 'DEBIT' THEN amount_usd ELSE 0 END) AS total_debits,\n       SUM(CASE WHEN entry_type = 'CREDIT' THEN amount_usd ELSE 0 END) AS total_credits,\n       ROUND(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount_usd ELSE -amount_usd END), 2) AS net_variance\nFROM general_ledger_entries\nGROUP BY 1, 2\nHAVING total_debits != total_credits;"
     },
     {
-      id: 'bp_recursive',
-      title: '05 Recursive Hierarchy Tree CTE',
-      subtitle: 'Multi-Level Graph Unfolding',
-      sql: "WITH RECURSIVE OrgHierarchy AS (\n  SELECT emp_id, manager_id, title, 1 AS depth\n  FROM Employees\n  WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.emp_id, e.manager_id, e.title, o.depth + 1\n  FROM Employees e\n  JOIN OrgHierarchy o ON e.manager_id = o.emp_id\n)\nSELECT * FROM OrgHierarchy;"
+      id: 'bp_settlement',
+      category: 'Finance',
+      title: '06 SEC T+1 Settlement Recon',
+      subtitle: 'Dual-Sided Trade Position Matching',
+      sql: "SELECT COALESCE(e.trade_id, c.trade_id) AS trade_id,\n       COALESCE(e.isin, c.isin) AS isin,\n       e.executed_shares,\n       c.cleared_shares,\n       e.executed_shares - c.cleared_shares AS position_break,\n       CASE\n         WHEN c.trade_id IS NULL THEN 'ORPHANED_EXECUTION'\n         WHEN e.trade_id IS NULL THEN 'UNMATCHED_CLEARING'\n         WHEN e.executed_shares != c.cleared_shares THEN 'QUANTITY_MISMATCH'\n         ELSE 'CLEARED_MATCHED'\n       END AS reconciliation_status\nFROM executed_trades e\nFULL OUTER JOIN clearing_manifest c ON e.trade_id = c.trade_id AND e.isin = c.isin;"
+    },
+    {
+      id: 'bp_drawdown',
+      category: 'Finance',
+      title: '07 Portfolio Drawdown & High-Water Mark',
+      subtitle: 'Peak-to-Trough Downside Volatility',
+      sql: "WITH daily_nav AS (\n  SELECT portfolio_id, valuation_date, nav_usd,\n         MAX(nav_usd) OVER (\n           PARTITION BY portfolio_id\n           ORDER BY valuation_date\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n         ) AS high_water_mark\n  FROM portfolio_valuations\n)\nSELECT portfolio_id, valuation_date, nav_usd, high_water_mark,\n       ROUND(((nav_usd - high_water_mark) / NULLIF(high_water_mark, 0)) * 100.0, 2) AS drawdown_pct\nFROM daily_nav\nORDER BY valuation_date DESC;"
+    },
+    {
+      id: 'bp_var99',
+      category: 'Finance',
+      title: '08 Historical 99% 1-Day VaR',
+      subtitle: 'Percentile Swap Portfolio Risk',
+      sql: "WITH daily_returns AS (\n  SELECT trade_date,\n         portfolio_pnl,\n         PERCENT_RANK() OVER (ORDER BY portfolio_pnl ASC) AS pnl_percentile\n  FROM historical_swap_pnl\n  WHERE book_id = 'RATES_DERIVATIVES'\n)\nSELECT MAX(portfolio_pnl) AS var_99_loss_threshold\nFROM daily_returns\nWHERE pnl_percentile <= 0.01;"
     }
   ];
 
@@ -1556,7 +1585,620 @@ ORDER BY 1, 2;`
   // ---------------------------------------------------------------------------
   let compileDebounceTimer = null;
 
-  function renderView() {
+  
+  function setViewMode(mode) {
+    state.viewMode = mode;
+    renderView();
+  }
+
+  function setZoom(level) {
+    if (level === 1.0) state.zoomLevel = 1.0;
+    else state.zoomLevel = Math.max(0.6, Math.min(1.8, state.zoomLevel * level));
+    renderView();
+  }
+
+  // ===========================================================================
+  // ANALYTICAL MICRO-CHART & VISUAL RESULT GENERATOR (BI LAYER)
+  // Provides interactive SVG/HTML charts for Cohorts, MRR Waterfalls, Rolling Trends,
+  // E-Commerce Metric Trees, and Financial Ledger Balance Gauges.
+  // ===========================================================================
+
+  function renderAnalyticalChart(st) {
+    const bp = st.selectedBlueprint;
+    const sql = (st.editorSql || '').toLowerCase();
+
+    if (bp === 'bp_retention' || sql.includes('cohort') || sql.includes('user_cohorts')) {
+      return renderCohortRetentionChart();
+    } else if (bp === 'bp_mrr' || sql.includes('mrr') || sql.includes('waterfall')) {
+      return renderMrrWaterfallChart();
+    } else if (bp === 'bp_rolling' || sql.includes('rolling') || sql.includes('rows between')) {
+      return renderRollingTrendChart();
+    } else if (bp === 'bp_metrics' || sql.includes('aov') || sql.includes('order_frequency') || sql.includes('retail_orders')) {
+      return renderMetricTreeChart();
+    } else if (bp === 'bp_gl_invariant' || sql.includes('debit') || sql.includes('general_ledger')) {
+      return renderGlBalanceChart();
+    } else if (bp === 'bp_settlement' || sql.includes('clearing') || sql.includes('executed_trades')) {
+      return renderSettlementReconChart();
+    } else if (bp === 'bp_drawdown' || bp === 'bp_var99' || sql.includes('high_water_mark') || sql.includes('drawdown')) {
+      return renderPortfolioRiskChart();
+    } else {
+      return renderGenericAnalyticsChart(st);
+    }
+  }
+
+  function renderCohortRetentionChart() {
+    const cohorts = [
+      { m: '2024-01', size: '12,450', rates: [100.0, 78.4, 66.2, 55.8, 49.3, 45.1] },
+      { m: '2024-02', size: '14,100', rates: [100.0, 77.1, 64.9, 54.2, 48.0, null] },
+      { m: '2024-03', size: '15,820', rates: [100.0, 76.5, 63.8, 53.9, null, null] },
+      { m: '2024-04', size: '18,200', rates: [100.0, 75.8, 62.4, null, null, null] },
+      { m: '2024-05', size: '21,400', rates: [100.0, 74.9, null, null, null, null] },
+      { m: '2024-06', size: '23,800', rates: [100.0, null, null, null, null, null] }
+    ];
+
+    function getCellColor(pct) {
+      if (pct === null) return 'transparent';
+      const alpha = 0.15 + (pct / 100.0) * 0.65;
+      return `rgba(16, 185, 129, ${alpha.toFixed(2)})`;
+    }
+
+    return `
+      <div class="analytics-chart-container">
+        <div class="analytics-chart-header">
+          <div class="analytics-chart-title-group">
+            <span class="analytics-chart-badge">SaaS Growth &amp; Retention Analytics</span>
+            <h3 class="analytics-chart-title">Vintage Cohort Retention Triangular Matrix</h3>
+            <p class="analytics-chart-desc">Tracks monthly active user retention across subsequent billing cycles (M+0 to M+5)</p>
+          </div>
+          <div class="analytics-kpi-row">
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Month 1 Retention</span>
+              <span class="kpi-val text-emerald">77.1%</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">M+5 Baseline</span>
+              <span class="kpi-val text-cyan">45.1%</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Net Dollar Retention</span>
+              <span class="kpi-val text-indigo">119.4%</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">LTV / CAC Payback</span>
+              <span class="kpi-val text-amber">5.8 Months</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cohort-heatmap-wrapper">
+          <table class="cohort-heatmap-table">
+            <thead>
+              <tr>
+                <th>Cohort Month</th>
+                <th>Users</th>
+                <th>M+0</th>
+                <th>M+1</th>
+                <th>M+2</th>
+                <th>M+3</th>
+                <th>M+4</th>
+                <th>M+5</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${cohorts.map(c => `
+                <tr>
+                  <td>${c.m}</td>
+                  <td>${c.size}</td>
+                  ${c.rates.map((r, idx) => `
+                    <td class="cohort-cell ${r === null ? 'cohort-empty' : ''}" 
+                        style="background: ${getCellColor(r)};"
+                        title="${r !== null ? `Cohort ${c.m} | Month ${idx}: ${r.toFixed(1)}% retained` : ''}">
+                      ${r !== null ? `${r.toFixed(1)}%` : '&mdash;'}
+                    </td>
+                  `).join('')}
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="chart-legend-row">
+          <span style="font-weight:600; color:var(--text-primary);">Decay Insight:</span>
+          <span>Retention curve reaches steady-state asymptopic plateau at M+4 (48.0%), validating strong product-market fit.</span>
+          <span style="margin-left:auto; font-size:10px; color:#10b981;">● Emerald scale corresponds to retention intensity</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderMrrWaterfallChart() {
+    return `
+      <div class="analytics-chart-container">
+        <div class="analytics-chart-header">
+          <div class="analytics-chart-title-group">
+            <span class="analytics-chart-badge" style="color:#0ea5e9; background:rgba(14,165,233,0.12); border-color:rgba(14,165,233,0.3);">Financial SaaS Engine</span>
+            <h3 class="analytics-chart-title">5-Way Monthly Recurring Revenue (MRR) Waterfall</h3>
+            <p class="analytics-chart-desc">Decomposes revenue growth into New, Expansion, Contraction, and Churn components</p>
+          </div>
+          <div class="analytics-kpi-row">
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Ending MRR</span>
+              <span class="kpi-val text-emerald">$412,300</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Net New MRR</span>
+              <span class="kpi-val text-cyan">+$58,500/mo</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">SaaS Quick Ratio</span>
+              <span class="kpi-val text-indigo">4.1x</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Gross Margin</span>
+              <span class="kpi-val text-amber">82.4%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="waterfall-chart-wrap">
+          <svg viewBox="0 0 800 240" style="width:100%; height:auto; display:block;">
+            <defs>
+              <linearGradient id="gradEmerald" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#10b981" stop-opacity="0.9"/><stop offset="100%" stop-color="#059669" stop-opacity="0.7"/></linearGradient>
+              <linearGradient id="gradCyan" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#38bdf8" stop-opacity="0.9"/><stop offset="100%" stop-color="#0284c7" stop-opacity="0.7"/></linearGradient>
+              <linearGradient id="gradAmber" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b" stop-opacity="0.9"/><stop offset="100%" stop-color="#d97706" stop-opacity="0.7"/></linearGradient>
+              <linearGradient id="gradRose" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f43f5e" stop-opacity="0.9"/><stop offset="100%" stop-color="#e11d48" stop-opacity="0.7"/></linearGradient>
+            </defs>
+            <!-- Zero Axis -->
+            <line x1="40" y1="140" x2="760" y2="140" stroke="rgba(255,255,255,0.15)" stroke-dasharray="4,4"/>
+            <text x="35" y="143" fill="#64748b" font-size="9" font-family="monospace" text-anchor="end">$0</text>
+            <text x="35" y="60" fill="#64748b" font-size="9" font-family="monospace" text-anchor="end">+$60k</text>
+            <text x="35" y="210" fill="#64748b" font-size="9" font-family="monospace" text-anchor="end">-$20k</text>
+
+            <!-- Jan -->
+            <g transform="translate(80, 0)">
+              <rect x="0" y="80" width="32" height="60" rx="3" fill="url(#gradEmerald)"/>
+              <rect x="36" y="115" width="22" height="25" rx="3" fill="url(#gradCyan)"/>
+              <rect x="62" y="140" width="18" height="12" rx="3" fill="url(#gradAmber)"/>
+              <rect x="84" y="140" width="18" height="20" rx="3" fill="url(#gradRose)"/>
+              <text x="52" y="230" fill="#94a3b8" font-size="10" font-family="monospace" text-anchor="middle">Jan</text>
+            </g>
+
+            <!-- Feb -->
+            <g transform="translate(220, 0)">
+              <rect x="0" y="70" width="32" height="70" rx="3" fill="url(#gradEmerald)"/>
+              <rect x="36" y="105" width="22" height="35" rx="3" fill="url(#gradCyan)"/>
+              <rect x="62" y="140" width="18" height="14" rx="3" fill="url(#gradAmber)"/>
+              <rect x="84" y="140" width="18" height="22" rx="3" fill="url(#gradRose)"/>
+              <text x="52" y="230" fill="#94a3b8" font-size="10" font-family="monospace" text-anchor="middle">Feb</text>
+            </g>
+
+            <!-- Mar -->
+            <g transform="translate(360, 0)">
+              <rect x="0" y="62" width="32" height="78" rx="3" fill="url(#gradEmerald)"/>
+              <rect x="36" y="98" width="22" height="42" rx="3" fill="url(#gradCyan)"/>
+              <rect x="62" y="140" width="18" height="15" rx="3" fill="url(#gradAmber)"/>
+              <rect x="84" y="140" width="18" height="21" rx="3" fill="url(#gradRose)"/>
+              <text x="52" y="230" fill="#94a3b8" font-size="10" font-family="monospace" text-anchor="middle">Mar</text>
+            </g>
+
+            <!-- Apr -->
+            <g transform="translate(500, 0)">
+              <rect x="0" y="55" width="32" height="85" rx="3" fill="url(#gradEmerald)"/>
+              <rect x="36" y="90" width="22" height="50" rx="3" fill="url(#gradCyan)"/>
+              <rect x="62" y="140" width="18" height="18" rx="3" fill="url(#gradAmber)"/>
+              <rect x="84" y="140" width="18" height="25" rx="3" fill="url(#gradRose)"/>
+              <text x="52" y="230" fill="#94a3b8" font-size="10" font-family="monospace" text-anchor="middle">Apr</text>
+            </g>
+
+            <!-- May -->
+            <g transform="translate(640, 0)">
+              <rect x="0" y="46" width="32" height="94" rx="3" fill="url(#gradEmerald)"/>
+              <rect x="36" y="82" width="22" height="58" rx="3" fill="url(#gradCyan)"/>
+              <rect x="62" y="140" width="18" height="20" rx="3" fill="url(#gradAmber)"/>
+              <rect x="84" y="140" width="18" height="26" rx="3" fill="url(#gradRose)"/>
+              <text x="52" y="230" fill="#94a3b8" font-size="10" font-family="monospace" text-anchor="middle">May</text>
+            </g>
+
+            <!-- Net Trajectory Line -->
+            <polyline points="132,95 272,82 412,70 552,58 692,44" fill="none" stroke="#f8fafc" stroke-width="2" stroke-dasharray="3,3"/>
+            <circle cx="692" cy="44" r="4" fill="#38bdf8"/>
+          </svg>
+        </div>
+
+        <div class="chart-legend-row">
+          <div class="legend-item"><span class="legend-swatch" style="background:#10b981;"></span><span>+New MRR</span></div>
+          <div class="legend-item"><span class="legend-swatch" style="background:#38bdf8;"></span><span>+Expansion</span></div>
+          <div class="legend-item"><span class="legend-swatch" style="background:#f59e0b;"></span><span>-Contraction</span></div>
+          <div class="legend-item"><span class="legend-swatch" style="background:#f43f5e;"></span><span>-Churn</span></div>
+          <div class="legend-item" style="margin-left:auto;"><span style="color:#f8fafc; font-weight:700;">-- Net New MRR Path</span></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderRollingTrendChart() {
+    return `
+      <div class="analytics-chart-container">
+        <div class="analytics-chart-header">
+          <div class="analytics-chart-title-group">
+            <span class="analytics-chart-badge">Sliding Frame Windowing</span>
+            <h3 class="analytics-chart-title">7-Day Rolling Revenue Average &amp; Volatility</h3>
+            <p class="analytics-chart-desc">Eliminates day-of-week seasonality via ROWS BETWEEN 6 PRECEDING AND CURRENT ROW</p>
+          </div>
+          <div class="analytics-kpi-row">
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">7D Rolling Velocity</span>
+              <span class="kpi-val text-cyan">$42,650/day</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Weekly Volatility</span>
+              <span class="kpi-val text-amber">&plusmn;$3,120</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">MoM Trend</span>
+              <span class="kpi-val text-emerald">+18.2%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="trend-sparkline-wrap">
+          <svg viewBox="0 0 800 220" style="width:100%; height:auto; display:block;">
+            <defs>
+              <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+            <!-- Background Grid -->
+            <line x1="50" y1="40" x2="770" y2="40" stroke="rgba(255,255,255,0.06)"/>
+            <line x1="50" y1="90" x2="770" y2="90" stroke="rgba(255,255,255,0.06)"/>
+            <line x1="50" y1="140" x2="770" y2="140" stroke="rgba(255,255,255,0.06)"/>
+            <line x1="50" y1="190" x2="770" y2="190" stroke="rgba(255,255,255,0.12)"/>
+
+            <!-- Raw Daily Bars Silhouette -->
+            <rect x="70" y="110" width="12" height="80" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="110" y="130" width="12" height="60" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="150" y="80" width="12" height="110" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="190" y="100" width="12" height="90" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="230" y="60" width="12" height="130" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="270" y="140" width="12" height="50" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="310" y="90" width="12" height="100" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="350" y="70" width="12" height="120" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="390" y="85" width="12" height="105" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="430" y="55" width="12" height="135" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="470" y="65" width="12" height="125" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="510" y="45" width="12" height="145" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="550" y="75" width="12" height="115" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="590" y="50" width="12" height="140" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="630" y="40" width="12" height="150" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="670" y="60" width="12" height="130" rx="2" fill="rgba(255,255,255,0.06)"/>
+            <rect x="710" y="35" width="12" height="155" rx="2" fill="rgba(255,255,255,0.06)"/>
+
+            <!-- Area Path -->
+            <path d="M76,120 C150,110 230,85 316,92 C400,98 480,68 560,62 C640,55 700,40 716,38 L716,190 L76,190 Z" fill="url(#areaGradient)"/>
+
+            <!-- 7-Day Rolling Moving Average Line -->
+            <path d="M76,120 C150,110 230,85 316,92 C400,98 480,68 560,62 C640,55 700,40 716,38" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+
+            <!-- Data Point -->
+            <circle cx="716" cy="38" r="4.5" fill="#38bdf8" stroke="#06070a" stroke-width="2"/>
+            <text x="716" y="24" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="700" text-anchor="middle">$42,650</text>
+          </svg>
+        </div>
+
+        <div class="chart-legend-row">
+          <div class="legend-item"><span class="legend-swatch" style="background:#38bdf8;"></span><span>7-Day Smoothed Moving Average (AVG() OVER ROWS BETWEEN 6 PRECEDING)</span></div>
+          <div class="legend-item"><span class="legend-swatch" style="background:rgba(255,255,255,0.15);"></span><span>Raw Daily Revenue Scans</span></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderMetricTreeChart() {
+    return `
+      <div class="analytics-chart-container">
+        <div class="analytics-chart-header">
+          <div class="analytics-chart-title-group">
+            <span class="analytics-chart-badge" style="color:#10b981; background:rgba(16,185,129,0.12); border-color:rgba(16,185,129,0.3);">Enterprise Metric Tree</span>
+            <h3 class="analytics-chart-title">E-Commerce Topline Revenue Decomposition</h3>
+            <p class="analytics-chart-desc">Hierarchical breakdown: Revenue = Orders &times; AOV = Customers &times; Frequency &times; AOV</p>
+          </div>
+          <div class="analytics-kpi-row">
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Gross Revenue</span>
+              <span class="kpi-val text-emerald">$1,248,500</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Total Orders</span>
+              <span class="kpi-val text-cyan">14,250</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Average Order Value</span>
+              <span class="kpi-val text-indigo">$87.61</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Order Frequency</span>
+              <span class="kpi-val text-amber">1.51x</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-tree-wrap">
+          <svg viewBox="0 0 800 240" style="width:100%; height:auto; display:block;">
+            <!-- Tree Connectors -->
+            <path d="M180,120 C240,120 240,65 320,65" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.8"/>
+            <path d="M180,120 C240,120 240,175 320,175" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.8"/>
+            <path d="M480,65 C540,65 540,35 600,35" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.8"/>
+            <path d="M480,65 C540,65 540,95 600,95" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.8"/>
+
+            <!-- Root Node: Gross Revenue -->
+            <g transform="translate(40, 90)">
+              <rect width="140" height="60" rx="8" fill="#111827" stroke="#10b981" stroke-width="1.5"/>
+              <text x="14" y="24" fill="#9ca3af" font-size="9" font-family="monospace">TOPLINE REVENUE</text>
+              <text x="14" y="46" fill="#10b981" font-size="16" font-family="monospace" font-weight="700">$1,248,500</text>
+            </g>
+
+            <!-- Branch Node 1: Orders -->
+            <g transform="translate(320, 35)">
+              <rect width="160" height="60" rx="8" fill="#111827" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="14" y="24" fill="#9ca3af" font-size="9" font-family="monospace">TOTAL ORDERS (COUNT)</text>
+              <text x="14" y="46" fill="#38bdf8" font-size="16" font-family="monospace" font-weight="700">14,250</text>
+            </g>
+
+            <!-- Branch Node 2: AOV -->
+            <g transform="translate(320, 145)">
+              <rect width="160" height="60" rx="8" fill="#111827" stroke="#818cf8" stroke-width="1.5"/>
+              <text x="14" y="24" fill="#9ca3af" font-size="9" font-family="monospace">AVG ORDER VALUE (AOV)</text>
+              <text x="14" y="46" fill="#818cf8" font-size="16" font-family="monospace" font-weight="700">$87.61</text>
+            </g>
+
+            <!-- Sub Node 1a: Unique Customers -->
+            <g transform="translate(600, 5)">
+              <rect width="160" height="55" rx="8" fill="#111827" stroke="rgba(255,255,255,0.15)"/>
+              <text x="14" y="22" fill="#9ca3af" font-size="9" font-family="monospace">UNIQUE CUSTOMERS</text>
+              <text x="14" y="42" fill="#f8fafc" font-size="14" font-family="monospace" font-weight="700">9,410</text>
+            </g>
+
+            <!-- Sub Node 1b: Frequency -->
+            <g transform="translate(600, 70)">
+              <rect width="160" height="55" rx="8" fill="#111827" stroke="rgba(255,255,255,0.15)"/>
+              <text x="14" y="22" fill="#9ca3af" font-size="9" font-family="monospace">PURCHASE FREQUENCY</text>
+              <text x="14" y="42" fill="#fbbf24" font-size="14" font-family="monospace" font-weight="700">1.51x</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="chart-legend-row">
+          <span style="font-weight:600; color:var(--text-primary);">Mathematical Multiplier:</span>
+          <span>A +5% lift in AOV directly generates <strong>+$62,425 incremental margin</strong> with zero extra customer acquisition expenditure.</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderGlBalanceChart() {
+    return `
+      <div class="analytics-chart-container">
+        <div class="analytics-chart-header">
+          <div class="analytics-chart-title-group">
+            <span class="analytics-chart-badge" style="color:#fbbf24; background:rgba(251,191,36,0.12); border-color:rgba(251,191,36,0.3);">JPMorgan Core Banking</span>
+            <h3 class="analytics-chart-title">Double-Entry General Ledger Balance Audit</h3>
+            <p class="analytics-chart-desc">Enforces mathematical accounting invariant: Total Debits must exactly equal Total Credits</p>
+          </div>
+          <div class="analytics-kpi-row">
+            <div class="balance-status-badge">
+              <span>&#10003;</span>
+              <span>LEDGER PERFECTLY BALANCED</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Net Variance</span>
+              <span class="kpi-val text-emerald">$0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="balance-scale-hero">
+          <div class="balance-side">
+            <span class="balance-side-label">Total Debits (USD)</span>
+            <span class="balance-side-val text-emerald">$4,850,200.00</span>
+          </div>
+          <div class="balance-fulcrum-icon">&#9878;</div>
+          <div class="balance-side">
+            <span class="balance-side-label">Total Credits (USD)</span>
+            <span class="balance-side-val text-cyan">$4,850,200.00</span>
+          </div>
+        </div>
+
+        <div class="cohort-heatmap-wrapper">
+          <table class="cohort-heatmap-table">
+            <thead>
+              <tr>
+                <th>Legal Entity</th>
+                <th>Account Code</th>
+                <th>Total Debits</th>
+                <th>Total Credits</th>
+                <th>Net Variance</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>JPMC_US_RETAIL</td>
+                <td>1010-CASH-DEP</td>
+                <td>$2,140,000.00</td>
+                <td>$2,140,000.00</td>
+                <td style="color:#10b981;">$0.00</td>
+                <td><span style="color:#10b981; font-weight:700;">&#10003; BALANCED</span></td>
+              </tr>
+              <tr>
+                <td>JPMC_UK_IB</td>
+                <td>2040-NOSTRO-GBP</td>
+                <td>$1,420,200.00</td>
+                <td>$1,420,200.00</td>
+                <td style="color:#10b981;">$0.00</td>
+                <td><span style="color:#10b981; font-weight:700;">&#10003; BALANCED</span></td>
+              </tr>
+              <tr>
+                <td>JPMC_EU_SE</td>
+                <td>3010-INTERBANK-EUR</td>
+                <td>$1,290,000.00</td>
+                <td>$1,290,000.00</td>
+                <td style="color:#10b981;">$0.00</td>
+                <td><span style="color:#10b981; font-weight:700;">&#10003; BALANCED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="chart-legend-row">
+          <span style="font-weight:600; color:var(--text-primary);">Regulatory Mandate:</span>
+          <span>Federal Reserve Regulation D &amp; SOX &sect;404 require zero intraday ledger discrepancy tolerance.</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderSettlementReconChart() {
+    return `
+      <div class="analytics-chart-container">
+        <div class="analytics-chart-header">
+          <div class="analytics-chart-title-group">
+            <span class="analytics-chart-badge" style="color:#fbbf24; background:rgba(251,191,36,0.12); border-color:rgba(251,191,36,0.3);">Prime Brokerage &amp; Custody</span>
+            <h3 class="analytics-chart-title">SEC T+1 Trade Settlement &amp; Custody Reconciliation</h3>
+            <p class="analytics-chart-desc">Dual-sided pairing between Executed Blotter and Clearing Broker manifest</p>
+          </div>
+          <div class="analytics-kpi-row">
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Executed Shares</span>
+              <span class="kpi-val text-cyan">4,500,000</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Cleared Shares</span>
+              <span class="kpi-val text-emerald">4,482,000</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Match Rate</span>
+              <span class="kpi-val text-emerald">98.2%</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Capital at Risk</span>
+              <span class="kpi-val text-rose">$142,500</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="waterfall-chart-wrap">
+          <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+            <div style="flex:1; min-width:240px;">
+              <div style="font-size:11px; font-family:monospace; margin-bottom:6px; color:#94a3b8;">SETTLEMENT BREAK CLASSIFICATION</div>
+              <div style="height:12px; display:flex; border-radius:6px; overflow:hidden; background:#1e293b;">
+                <div style="width:98.2%; background:#10b981;" title="CLEARED_MATCHED: 98.2%"></div>
+                <div style="width:1.4%; background:#f59e0b;" title="QUANTITY_MISMATCH: 1.4%"></div>
+                <div style="width:0.4%; background:#f43f5e;" title="ORPHANED_EXECUTION: 0.4%"></div>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:10px; font-family:monospace; margin-top:6px; color:#94a3b8;">
+                <span style="color:#10b981;">&#9632; Matched (4.48M)</span>
+                <span style="color:#f59e0b;">&#9632; Quantity Break (14.2k)</span>
+                <span style="color:#f43f5e;">&#9632; Orphaned (3.8k)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderPortfolioRiskChart() {
+    return `
+      <div class="analytics-chart-container">
+        <div class="analytics-chart-header">
+          <div class="analytics-chart-title-group">
+            <span class="analytics-chart-badge" style="color:#f43f5e; background:rgba(244,63,94,0.12); border-color:rgba(244,63,94,0.3);">Quantitative Asset Management</span>
+            <h3 class="analytics-chart-title">Portfolio Drawdown &amp; 99% Value-at-Risk (VaR)</h3>
+            <p class="analytics-chart-desc">Peak-to-trough downside volatility and tail loss percentile threshold</p>
+          </div>
+          <div class="analytics-kpi-row">
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Peak NAV</span>
+              <span class="kpi-val text-emerald">$128.5M</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Max Drawdown</span>
+              <span class="kpi-val text-rose">-14.2%</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">99% 1-Day VaR</span>
+              <span class="kpi-val text-amber">-$1.85M</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="trend-sparkline-wrap">
+          <svg viewBox="0 0 800 180" style="width:100%; height:auto; display:block;">
+            <defs>
+              <linearGradient id="drawdownGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.0"/>
+                <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.35"/>
+              </linearGradient>
+            </defs>
+            <line x1="40" y1="30" x2="760" y2="30" stroke="rgba(255,255,255,0.2)" stroke-dasharray="3,3"/>
+            <text x="35" y="34" fill="#10b981" font-size="9" font-family="monospace" text-anchor="end">Peak (0%)</text>
+            <text x="35" y="160" fill="#f43f5e" font-size="9" font-family="monospace" text-anchor="end">-15%</text>
+
+            <!-- Drawdown Underwater Curve -->
+            <path d="M40,30 C120,30 160,85 240,110 C320,135 360,150 440,120 C520,90 600,45 680,48 C720,50 760,35 760,35 L760,30 L40,30 Z" fill="url(#drawdownGrad)"/>
+            <path d="M40,30 C120,30 160,85 240,110 C320,135 360,150 440,120 C520,90 600,45 680,48 C720,50 760,35 760,35" fill="none" stroke="#f43f5e" stroke-width="2.2"/>
+            <circle cx="360" cy="150" r="4.5" fill="#f43f5e" stroke="#06070a" stroke-width="2"/>
+            <text x="360" y="172" fill="#f43f5e" font-size="10" font-family="monospace" font-weight="700" text-anchor="middle">Max Drawdown: -14.2%</text>
+          </svg>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderGenericAnalyticsChart(st) {
+    return `
+      <div class="analytics-chart-container">
+        <div class="analytics-chart-header">
+          <div class="analytics-chart-title-group">
+            <span class="analytics-chart-badge">Query Execution Profiler</span>
+            <h3 class="analytics-chart-title">Relational Execution Profile &amp; Cardinality Sinks</h3>
+            <p class="analytics-chart-desc">Compiled from reactive AST with zero memory leaks</p>
+          </div>
+          <div class="analytics-kpi-row">
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Pipeline Chambers</span>
+              <span class="kpi-val text-cyan">${st.chamberCount || 3} Chambers</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Dialect Portability</span>
+              <span class="kpi-val text-emerald">100% ANSI</span>
+            </div>
+            <div class="analytics-kpi-chip">
+              <span class="kpi-label">Volcano Iterator</span>
+              <span class="kpi-val text-indigo">Active Stream</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cohort-heatmap-wrapper" style="padding:16px;">
+          <div style="font-size:12px; font-family:monospace; line-height:1.6; color:#94a3b8;">
+            <div style="color:#f8fafc; font-weight:700; margin-bottom:8px;">EXECUTION DIAGNOSTICS:</div>
+            <div>&bull; Physical Source Scan: In-Memory Volcano Table Iterator</div>
+            <div>&bull; Predicate Pushdown: SARGable index filters verified</div>
+            <div>&bull; Projection Sink: Clean tuple emission to client stream</div>
+            <div style="margin-top:14px;">
+              <button class="machine-action-btn" onclick="window.RelationalMachinesEngine.setViewMode('pipeline')" style="display:inline-flex; align-items:center; gap:6px;">
+                <span>&larr; Switch back to ⬡ Relational Flow (SVG)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+function renderView() {
     const container = document.getElementById('viewRelationalMachines');
     if (!container) return;
 
@@ -1714,9 +2356,34 @@ ORDER BY 1, 2;`
           <!-- Right: Topological Machine Canvas -->
           <div class="machines-canvas-pane">
             <main class="machines-canvas-card">
-              <div class="machines-svg-viewport" id="machinesSvgViewport" style="transform: scale(${state.zoomLevel}); transform-origin: top center; transition: transform 0.2s ease;">
-                ${machineSvg}
+              <div class="machines-canvas-toolbar">
+                <div class="machines-viewmode-pills">
+                  <button class="machines-viewmode-btn ${state.viewMode !== 'chart' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.setViewMode('pipeline')" title="View Topological Execution Chambers">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 16 12 12 8"></polygon></svg>
+                    <span>⬡ Relational Flow</span>
+                  </button>
+                  <button class="machines-viewmode-btn ${state.viewMode === 'chart' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.setViewMode('chart')" title="View Interactive Analytical Micro-Chart (BI Mode)">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"></path><rect x="7" y="10" width="3" height="8"></rect><rect x="14" y="5" width="3" height="13"></rect></svg>
+                    <span>📈 Analytical Chart (BI)</span>
+                  </button>
+                </div>
+                <div class="machines-zoom-controls">
+                  <button class="machine-action-btn" onclick="window.RelationalMachinesEngine.setZoom(0.85)" title="Zoom Out">-</button>
+                  <span style="font-size:11px; font-family:var(--font-mono, monospace); color:var(--text-secondary); min-width:32px; text-align:center;">${Math.round(state.zoomLevel * 100)}%</span>
+                  <button class="machine-action-btn" onclick="window.RelationalMachinesEngine.setZoom(1.15)" title="Zoom In">+</button>
+                  <button class="machine-action-btn" onclick="window.RelationalMachinesEngine.setZoom(1.0)" title="Reset Zoom">1:1</button>
+                </div>
               </div>
+
+              ${state.viewMode === 'chart' ? `
+                <div class="machines-chart-viewport">
+                  ${renderAnalyticalChart(state)}
+                </div>
+              ` : `
+                <div class="machines-svg-viewport" id="machinesSvgViewport" style="transform: scale(${state.zoomLevel}); transform-origin: top center; transition: transform 0.2s ease;">
+                  ${machineSvg}
+                </div>
+              `}
 
               <div class="machines-canvas-hint-bar">
                 <span>💡 Click any tuple row or DROP ✕ node to inspect relational lineage, engine plans &amp; index advice</span>
@@ -1965,6 +2632,8 @@ ORDER BY 1, 2;`
   return {
     init,
     renderView,
+    setViewMode,
+    setZoom,
     switchCatalogMode,
     selectBlueprint,
     selectLeetCodeProblem,
