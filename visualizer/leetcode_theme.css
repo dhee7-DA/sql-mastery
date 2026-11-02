@@ -1509,14 +1509,18 @@ code.lc-code-pill {
 [data-theme="active-builders-dark"] .lc-btn-primary,
 [data-theme="cursor-dark"] .lc-btn-primary,
 [data-theme="zinc-pitch"] .lc-btn-primary {
-  background: #f4f4f5 !important;
-  color: #09090b !important;
+  background: #27272a !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  font-weight: 600 !important;
 }
 
 [data-theme="active-builders-dark"] .lc-btn-primary:hover,
 [data-theme="cursor-dark"] .lc-btn-primary:hover,
 [data-theme="zinc-pitch"] .lc-btn-primary:hover {
-  background: #ffffff !important;
+  background: #3f3f46 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
 }
 
 [data-theme="active-builders-dark"] .lc-focus-nav-btn.lc-focus-nav-primary,
@@ -4079,15 +4083,17 @@ body.lc-zen-mode .lc-arena-shell {
 /* THEMES: MONOCHROME, INK, CARBON                                            */
 /* -------------------------------------------------------------------------- */
 [data-theme="monochrome"] .lc-btn-primary {
-  background: #ffffff !important;
-  color: #09090b !important;
-  border: 1px solid rgba(255, 255, 255, 0.8) !important;
-  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.18) !important;
+  background: #27272a !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
+  font-weight: 600 !important;
 }
 [data-theme="monochrome"] .lc-btn-primary:hover {
-  background: #e4e4e7 !important;
-  color: #000000 !important;
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.32) !important;
+  background: #3f3f46 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
 }
 [data-theme="monochrome"] .lc-insp-tab.active {
   background: #27272a !important;
@@ -4215,17 +4221,18 @@ body.lc-zen-mode .lc-arena-shell {
 }
 
 [data-theme="monochrome"] .lc-btn-primary {
-  background: #f4f4f5 !important;
-  color: #09090b !important;
-  border: 1px solid #ffffff !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  background: #27272a !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
   font-weight: 600 !important;
 }
 
 [data-theme="monochrome"] .lc-btn-primary:hover {
-  background: #ffffff !important;
-  color: #000000 !important;
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2) !important;
+  background: #3f3f46 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
 }
 
 [data-theme="monochrome"] .lc-btn-secondary {
@@ -4555,4 +4562,250 @@ body.lc-zen-mode .lc-arena-shell {
 [data-theme="carbon"] .lc-layout-btn.active {
   background: #1e242d !important;
   color: #10b981 !important;
+}
+
+/* =============================================================================
+   LEETCODE 323 VAULT: OPTION 4 ENHANCEMENTS (TIMER, COMPANY PILLS & 3-WAY DIFF)
+   ============================================================================= */
+
+/* 1. FAANG / Quant Mock Countdown Timer Widget */
+.lc-interview-timer-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 6px !important;
+  padding: 3px 8px !important;
+  height: 28px !important;
+  box-sizing: border-box !important;
+  transition: all 0.2s ease !important;
+}
+
+.lc-interview-timer-pill .timer-display {
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  color: #38bdf8 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.lc-interview-timer-pill.urgent {
+  border-color: rgba(239, 68, 68, 0.45) !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+
+.lc-interview-timer-pill.urgent .timer-display {
+  color: #ef4444 !important;
+  animation: lc-timer-pulse 1s infinite alternate !important;
+}
+
+@keyframes lc-timer-pulse {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.6; transform: scale(0.98); }
+}
+
+.lc-interview-timer-pill .timer-control-btn {
+  background: transparent !important;
+  border: none !important;
+  color: #a1a1aa !important;
+  cursor: pointer !important;
+  padding: 1px 4px !important;
+  border-radius: 3px !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.12s ease !important;
+}
+
+.lc-interview-timer-pill .timer-control-btn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+}
+
+/* 2. Target Company & Difficulty Filter Strips in Directory Hub */
+.lc-hub-filter-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin-top: 14px !important;
+  padding-top: 12px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+
+.lc-hub-filter-strip {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-wrap: wrap !important;
+}
+
+.lc-filter-label {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #a1a1aa !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  margin-right: 4px !important;
+}
+
+.lc-comp-tab-btn {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: #141418 !important;
+  color: #a1a1aa !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: all 0.14s ease !important;
+}
+
+.lc-comp-tab-btn:hover {
+  background: #202026 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.lc-comp-tab-btn.active {
+  background: #27272a !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35) !important;
+}
+
+.lc-diff-tab-btn {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: #141418 !important;
+  color: #a1a1aa !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: all 0.14s ease !important;
+}
+
+.lc-diff-tab-btn:hover {
+  background: #202026 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.lc-diff-tab-btn.active {
+  background: #27272a !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35) !important;
+}
+
+.lc-diff-tab-btn.diff-easy.active {
+  color: #34d399 !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+}
+
+.lc-diff-tab-btn.diff-medium.active {
+  color: #fbbf24 !important;
+  border-color: rgba(245, 158, 11, 0.45) !important;
+  background: rgba(245, 158, 11, 0.12) !important;
+}
+
+.lc-diff-tab-btn.diff-hard.active {
+  color: #f87171 !important;
+  border-color: rgba(239, 68, 68, 0.45) !important;
+  background: rgba(239, 68, 68, 0.12) !important;
+}
+
+/* 3. Company Badges in Problem Header */
+.lc-prob-companies-strip {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  margin-left: 6px !important;
+  flex-wrap: wrap !important;
+}
+
+.lc-comp-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #e4e4e7 !important;
+}
+
+/* 4. 3-Way Output Diff Grid Tabs */
+.lc-diff-nav-tabs {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding-bottom: 6px !important;
+  margin-bottom: 8px !important;
+}
+
+.lc-diff-nav-tab {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 4px 10px !important;
+  border-radius: 5px !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: #a1a1aa !important;
+  cursor: pointer !important;
+  transition: all 0.14s ease !important;
+}
+
+.lc-diff-nav-tab:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.lc-diff-nav-tab.active {
+  background: #27272a !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  font-weight: 700 !important;
+}
+
+.lc-diff-row-match {
+  background: rgba(16, 185, 129, 0.08) !important;
+}
+
+.lc-diff-row-mismatch {
+  background: rgba(239, 68, 68, 0.12) !important;
+}
+
+.lc-diff-row-extra {
+  background: rgba(245, 158, 11, 0.1) !important;
+}
+
+.lc-diff-badge-match {
+  display: inline-block !important;
+  padding: 1px 5px !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  border-radius: 3px !important;
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+}
+
+.lc-diff-badge-mismatch {
+  display: inline-block !important;
+  padding: 1px 5px !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  border-radius: 3px !important;
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #f87171 !important;
 }

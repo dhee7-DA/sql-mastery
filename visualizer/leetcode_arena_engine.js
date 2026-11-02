@@ -446,6 +446,68 @@ window.LEETCODE_ARENA = (() => {
   // ---------------------------------------------------------------------------
   // RENDER SHELL & CONTAINER
   // ---------------------------------------------------------------------------
+  
+  // FAANG Technical Phone Screen Mock Timer
+  state.interviewTimer = state.interviewTimer || {
+    remainingSeconds: 25 * 60,
+    isRunning: false,
+    intervalId: null
+  };
+
+  function updateTimerDisplay() {
+    const display = document.getElementById('lcTimerDisplay');
+    const timerPill = document.getElementById('lcInterviewTimer');
+    const toggleBtn = document.getElementById('btnToggleTimer');
+    if (!display) return;
+    const rem = state.interviewTimer.remainingSeconds;
+    const m = Math.floor(rem / 60).toString().padStart(2, '0');
+    const s = (rem % 60).toString().padStart(2, '0');
+    display.textContent = '⏱️ ' + m + ':' + s;
+    if (timerPill) {
+      if (rem <= 300 && state.interviewTimer.isRunning) {
+        timerPill.classList.add('urgent');
+      } else {
+        timerPill.classList.remove('urgent');
+      }
+    }
+    if (toggleBtn) {
+      toggleBtn.textContent = state.interviewTimer.isRunning ? '⏸' : '▶';
+    }
+  }
+
+  function toggleInterviewTimer() {
+    const t = state.interviewTimer;
+    if (t.isRunning) {
+      clearInterval(t.intervalId);
+      t.isRunning = false;
+      t.intervalId = null;
+    } else {
+      t.isRunning = true;
+      t.intervalId = setInterval(() => {
+        if (t.remainingSeconds > 0) {
+          t.remainingSeconds--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(t.intervalId);
+          t.isRunning = false;
+          t.intervalId = null;
+          updateTimerDisplay();
+          if (window.AudioFX && typeof window.AudioFX.playError === 'function') window.AudioFX.playError();
+        }
+      }, 1000);
+    }
+    updateTimerDisplay();
+  }
+
+  function resetInterviewTimer() {
+    const t = state.interviewTimer;
+    if (t.intervalId) clearInterval(t.intervalId);
+    t.isRunning = false;
+    t.intervalId = null;
+    t.remainingSeconds = 25 * 60;
+    updateTimerDisplay();
+  }
+
   function renderShell() {
     const container = document.getElementById('viewLeetCode50');
     if (!container) return;
@@ -589,6 +651,13 @@ window.LEETCODE_ARENA = (() => {
             </div>
 
             <div class="lc-studio-bar-right">
+              <!-- FAANG Technical Interview Mock Timer -->
+              <div class="lc-interview-timer-pill" id="lcInterviewTimer" title="FAANG Technical Phone Screen Mock Timer">
+                <span class="timer-display" id="lcTimerDisplay">⏱️ 25:00</span>
+                <button class="timer-control-btn" id="btnToggleTimer" title="Start / Pause Timer">▶</button>
+                <button class="timer-control-btn" id="btnResetTimer" title="Reset to 25m">↺</button>
+              </div>
+
               <button class="lc-catalog-drawer-btn" id="btnOpenCatalogDrawer" title="Browse problem catalog (Ctrl+B)">
                 <span style="font-size: 13px;">📋</span>
                 <span>Problem Catalog</span>
@@ -627,6 +696,12 @@ window.LEETCODE_ARENA = (() => {
       // Hook up Catalog Drawer
       const btnOpenDrawer = container.querySelector('#btnOpenCatalogDrawer');
       if (btnOpenDrawer) btnOpenDrawer.addEventListener('click', () => toggleCatalogDrawer());
+
+      const btnToggleTimer = container.querySelector('#btnToggleTimer');
+      if (btnToggleTimer) btnToggleTimer.addEventListener('click', toggleInterviewTimer);
+      const btnResetTimer = container.querySelector('#btnResetTimer');
+      if (btnResetTimer) btnResetTimer.addEventListener('click', resetInterviewTimer);
+      updateTimerDisplay();
 
       const btnCloseDrawer = container.querySelector('#btnCloseCatalogDrawer');
       if (btnCloseDrawer) btnCloseDrawer.addEventListener('click', () => toggleCatalogDrawer(false));
@@ -1293,6 +1368,33 @@ window.LEETCODE_ARENA = (() => {
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               <input type="text" class="lc-topics-search-input" id="lcTopicsSearchInput" placeholder="Filter topics or concepts..." value="${escapeHtml(state.topicsSearch)}">
               ${state.topicsSearch ? `<button class="lc-topics-search-clear" id="btnTopicsSearchClear">✕</button>` : ''}
+            </div>
+          </div>
+
+          <!-- Target Company & Difficulty Filter Strips -->
+          <div class="lc-hub-filter-container" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.07);">
+            <!-- Company Filter Strip -->
+            <div class="lc-hub-filter-strip" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+              <span class="lc-filter-label" style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-right: 4px;">🏢 Company:</span>
+              ${['all', 'Amazon', 'Meta', 'Google', 'Citadel', 'Stripe', 'Apple', 'Netflix', 'Uber', 'Goldman Sachs', 'Bloomberg'].map(comp => `
+                <button class="lc-comp-tab-btn ${selectedComp.toLowerCase() === comp.toLowerCase() ? 'active' : ''}" data-comp-id="${comp}">
+                  ${comp === 'all' ? 'All Companies' : comp}
+                </button>
+              `).join('')}
+            </div>
+            <!-- Difficulty Filter Strip -->
+            <div class="lc-hub-filter-strip" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+              <span class="lc-filter-label" style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-right: 4px;">⚡ Difficulty:</span>
+              ${[
+                { id: 'all', label: 'All Levels' },
+                { id: 'easy', label: 'Easy' },
+                { id: 'medium', label: 'Medium' },
+                { id: 'hard', label: 'Hard' }
+              ].map(d => `
+                <button class="lc-diff-tab-btn diff-${d.id} ${selectedDiff.toLowerCase() === d.id.toLowerCase() ? 'active' : ''}" data-diff-id="${d.id}">
+                  ${d.label}
+                </button>
+              `).join('')}
             </div>
           </div>
         </header>
@@ -2249,6 +2351,12 @@ WHERE ;`;
                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                   <span class="lc-prob-id-badge">LEETCODE #${activeProb.id}</span>
                   <span class="lc-diff-badge lc-diff-${diffClass}">${activeProb.difficulty}</span>
+                  <div class="lc-prob-companies-strip" style="display: inline-flex; align-items: center; gap: 5px; margin-left: 6px; flex-wrap: wrap;">
+                    <span style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em;">🏢 Asked at:</span>
+                    ${((activeProb.companies && activeProb.companies.length > 0) ? activeProb.companies : ['Meta', 'Amazon', 'Google']).map(c => `
+                      <span class="lc-comp-badge" style="display: inline-flex; align-items: center; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 4px; background: #18181b; border: 1px solid rgba(255, 255, 255, 0.14); color: #e4e4e7;">${escapeHtml(c)}</span>
+                    `).join('')}
+                  </div>
                 </div>
               </div>
 
@@ -2777,6 +2885,145 @@ WHERE ;`;
     }
   }
 
+  
+  function render3WayDiff(res, isAccepted) {
+    const userRows = res.values || [];
+    const userCols = res.columns || [];
+    const expRows = res.expectedValues || [];
+    const expCols = res.expectedColumns || (res.columns || []);
+
+    const maxRows = Math.max(userRows.length, expRows.length);
+    let matchedCount = 0;
+    const diffRows = [];
+
+    for (let i = 0; i < maxRows; i++) {
+      const uRow = userRows[i] || null;
+      const eRow = expRows[i] || null;
+
+      if (uRow && eRow) {
+        const match = JSON.stringify(uRow) === JSON.stringify(eRow);
+        if (match) matchedCount++;
+        diffRows.push({
+          status: match ? 'match' : 'mismatch',
+          user: uRow,
+          expected: eRow
+        });
+      } else if (uRow && !eRow) {
+        diffRows.push({
+          status: 'extra',
+          user: uRow,
+          expected: null
+        });
+      } else if (!uRow && eRow) {
+        diffRows.push({
+          status: 'missing',
+          user: null,
+          expected: eRow
+        });
+      }
+    }
+
+    const matchPercent = expRows.length > 0 ? Math.round((matchedCount / expRows.length) * 100) : (userRows.length === 0 ? 100 : 0);
+
+    return `
+      <div class="lc-diff-nav-tabs" id="lcDiffTabs">
+        <button class="lc-diff-nav-tab active" data-diff-view="diff">
+          📊 Visual Diff (${matchedCount}/${expRows.length || userRows.length} Rows Matched &bull; ${matchPercent}%)
+        </button>
+        <button class="lc-diff-nav-tab" data-diff-view="user">
+          👤 Your Output (${userRows.length} rows)
+        </button>
+        <button class="lc-diff-nav-tab" data-diff-view="expected">
+          🎯 Expected Benchmark (${expRows.length} rows)
+        </button>
+      </div>
+
+      <!-- TAB 1: VISUAL DIFF -->
+      <div class="lc-diff-view-pane active" id="paneDiffVisual" style="overflow-x: auto; max-height: 200px;">
+        <table class="lc-diff-table" style="width: 100%;">
+          <thead>
+            <tr>
+              <th style="width: 85px;">Verdict</th>
+              <th>Your Query Row</th>
+              <th>Expected Benchmark Row</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${diffRows.length > 0 ? diffRows.map((dr) => {
+              let rowClass = 'lc-diff-row-match';
+              let badge = '<span class="lc-diff-badge-match">✓ MATCH</span>';
+              if (dr.status === 'mismatch') {
+                rowClass = 'lc-diff-row-mismatch';
+                badge = '<span class="lc-diff-badge-mismatch">≠ DIFF</span>';
+              } else if (dr.status === 'extra') {
+                rowClass = 'lc-diff-row-extra';
+                badge = '<span class="lc-diff-badge-mismatch">+ EXTRA</span>';
+              } else if (dr.status === 'missing') {
+                rowClass = 'lc-diff-row-mismatch';
+                badge = '<span class="lc-diff-badge-mismatch">- MISSING</span>';
+              }
+
+              const uStr = dr.user ? dr.user.map(v => v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))).join(' | ') : '<em style="color:#ef4444;">(None)</em>';
+              const eStr = dr.expected ? dr.expected.map(v => v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))).join(' | ') : '<em style="color:#71717a;">(None)</em>';
+
+              return `
+                <tr class="${rowClass}">
+                  <td style="font-family: var(--font-mono); font-size: 10px;">${badge}</td>
+                  <td style="font-family: var(--font-mono); font-size: 11px;">${uStr}</td>
+                  <td style="font-family: var(--font-mono); font-size: 11px; color: #a1a1aa;">${eStr}</td>
+                </tr>
+              `;
+            }).join('') : '<tr><td colspan="3" style="text-align:center;color:var(--text-muted);">No relational data returned</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TAB 2: USER OUTPUT TABLE -->
+      <div class="lc-diff-view-pane" id="paneDiffUser" style="display: none; overflow-x: auto; max-height: 200px;">
+        <table class="lc-diff-table" style="width: 100%;">
+          <thead>
+            <tr>${userCols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr>
+          </thead>
+          <tbody>
+            ${userRows.length > 0 ? userRows.map(r => `
+              <tr>${r.map(v => `<td>${v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>
+            `).join('') : '<tr><td colspan="' + (userCols.length || 1) + '" style="text-align:center;color:var(--text-muted);">No rows returned</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TAB 3: EXPECTED BENCHMARK TABLE -->
+      <div class="lc-diff-view-pane" id="paneDiffExpected" style="display: none; overflow-x: auto; max-height: 200px;">
+        <table class="lc-diff-table" style="width: 100%;">
+          <thead>
+            <tr>${expCols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr>
+          </thead>
+          <tbody>
+            ${expRows.length > 0 ? expRows.map(r => `
+              <tr>${r.map(v => `<td>${v === null ? '<span style="color:#ef4444;font-style:italic;">NULL</span>' : escapeHtml(String(v))}</td>`).join('')}</tr>
+            `).join('') : '<tr><td colspan="' + (expCols.length || 1) + '" style="text-align:center;color:var(--text-muted);">No benchmark assertions</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  function bindDiffTabEvents(judgeBox) {
+    judgeBox.querySelectorAll('.lc-diff-nav-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        judgeBox.querySelectorAll('.lc-diff-nav-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const view = tab.dataset.diffView;
+        const pVis = judgeBox.querySelector('#paneDiffVisual');
+        const pUsr = judgeBox.querySelector('#paneDiffUser');
+        const pExp = judgeBox.querySelector('#paneDiffExpected');
+        if (pVis) pVis.style.display = view === 'diff' ? 'block' : 'none';
+        if (pUsr) pUsr.style.display = view === 'user' ? 'block' : 'none';
+        if (pExp) pExp.style.display = view === 'expected' ? 'block' : 'none';
+      });
+    });
+  }
+
   async function handleRunCode(prob) {
     const editor = document.getElementById('lcProbEditor');
     const judgeBox = document.getElementById('lcJudgeBox');
@@ -2834,17 +3081,13 @@ WHERE ;`;
           ⏱️ Latency: ${res.durationMs} ms
         </span>
       </div>
-      <div style="overflow-x: auto; max-height: 180px; margin-bottom: 8px;">
-        <table class="lc-diff-table">
-          <thead><tr>${res.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
-          <tbody>${rowsHtml || '<tr><td colspan="' + (res.columns.length || 1) + '" style="text-align:center;color:var(--text-muted);">No rows returned</td></tr>'}</tbody>
-        </table>
-      </div>
+      ${render3WayDiff(res, isMatch)}
       <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
         <span>Click <strong>🎯 Submit Solution</strong> to grade against official test cases.</span>
         ${res.values.length > 8 ? `<span>Showing first 8 of ${res.values.length} rows</span>` : ''}
       </div>
     `;
+    bindDiffTabEvents(judgeBox);
     if (window.AudioFX && typeof window.AudioFX.playSuccess === 'function') window.AudioFX.playSuccess();
   }
 
@@ -2879,6 +3122,7 @@ WHERE ;`;
           ${diagnoseQueryError(prob, userSql, res)}
         </div>
       `;
+      bindDiffTabEvents(judgeBox);
       if (window.AudioFX && typeof window.AudioFX.playError === 'function') window.AudioFX.playError();
       return;
     }
@@ -2910,12 +3154,7 @@ WHERE ;`;
         <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
           100% of relational assertions passed against table <code>${escapeHtml(res.tableName)}</code>.
         </div>
-        <div style="overflow-x: auto; max-height: 160px;">
-          <table class="lc-diff-table">
-            <thead><tr>${res.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
-            <tbody>${rowsHtml}</tbody>
-          </table>
-        </div>
+        ${render3WayDiff(res, true)}
         <div class="lc-bloops-autopsy-box" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.3); color: #065f46; margin-top: 10px;">
           🎉 <strong>Sir Bloops says:</strong> Flawless relational logic! Problem #${prob.id} marked solved. Keep up the streak!
         </div>
@@ -2946,6 +3185,7 @@ WHERE ;`;
         });
       }
 
+      bindDiffTabEvents(judgeBox);
       if (window.AudioFX && typeof window.AudioFX.playSuccess === 'function') window.AudioFX.playSuccess();
     } else {
       let userRowsHtml = '';
@@ -2967,30 +3207,12 @@ WHERE ;`;
         <div style="font-size: 12px; color: #991b1b; margin-bottom: 8px;">
           Your query output did not match the expected test case rows.
         </div>
-        <div class="lc-diff-comparison-grid">
-          <div>
-            <div style="font-size: 11px; font-weight: 700; color: #dc2626; margin-bottom: 4px;">Your Output (${res.values.length} rows):</div>
-            <div style="overflow-x: auto; max-height: 130px;">
-              <table class="lc-diff-table">
-                <thead><tr>${res.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
-                <tbody>${userRowsHtml || '<tr><td colspan="' + (res.columns.length || 1) + '" style="color:var(--text-muted);text-align:center;">Empty Set</td></tr>'}</tbody>
-              </table>
-            </div>
-          </div>
-          <div>
-            <div style="font-size: 11px; font-weight: 700; color: #10b981; margin-bottom: 4px;">Expected Output (${res.expectedValues.length} rows):</div>
-            <div style="overflow-x: auto; max-height: 130px;">
-              <table class="lc-diff-table">
-                <thead><tr>${res.expectedColumns.map(c => `<th style="background: rgba(16,185,129,0.08); color: #10b981;">${escapeHtml(c)}</th>`).join('')}</tr></thead>
-                <tbody>${expRowsHtml}</tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        ${render3WayDiff(res, false)}
         <div class="lc-bloops-autopsy-box">
           ${diagnoseQueryError(prob, userSql, res)}
         </div>
       `;
+      bindDiffTabEvents(judgeBox);
       if (window.AudioFX && typeof window.AudioFX.playError === 'function') window.AudioFX.playError();
     }
   }

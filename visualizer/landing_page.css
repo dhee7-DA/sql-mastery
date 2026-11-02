@@ -219,22 +219,25 @@
 }
 
 /* Multi-Scenario Switcher Tabs inside Hero Sandbox */
-.landing-scenario-tabs {
+.landing-scenario-tabs,
+.landing-widget-tabs {
   display: flex;
-  background: var(--bg-surface-elevated, #f4f4f5);
-  border-bottom: 1px solid var(--border-subtle, #e4e4e7);
+  background: #111115 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   overflow-x: auto;
   padding: 4px 8px;
   gap: 4px;
 }
 
 [data-theme="active-builders-dark"] .landing-scenario-tabs,
-[data-theme="cursor-dark"] .landing-scenario-tabs {
-  background: #14141a;
-  border-bottom-color: rgba(255, 255, 255, 0.06);
+[data-theme="cursor-dark"] .landing-scenario-tabs,
+[data-theme="monochrome"] .landing-scenario-tabs {
+  background: #111115 !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-.landing-scenario-btn {
+.landing-scenario-btn,
+.landing-scenario-tab {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -242,26 +245,28 @@
   font-family: var(--font-mono, monospace);
   font-size: 11px;
   font-weight: 500;
-  color: var(--text-muted, #71717a);
-  background: transparent;
-  border: 1px solid transparent;
+  color: #a1a1aa !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
   border-radius: 6px;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s ease;
 }
 
-.landing-scenario-btn:hover {
-  color: var(--text-primary, #18181b);
-  background: var(--bg-hover, #e4e4e7);
+.landing-scenario-btn:hover,
+.landing-scenario-tab:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
 }
 
-.landing-scenario-btn.active {
-  color: var(--text-primary, #18181b);
-  background: var(--bg-surface, #ffffff);
-  border-color: var(--border-subtle, #d4d4d8);
-  font-weight: 700;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+.landing-scenario-btn.active,
+.landing-scenario-tab.active {
+  color: #ffffff !important;
+  background: #27272a !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
 }
 
 [data-theme="active-builders-dark"] .landing-scenario-btn.active,
