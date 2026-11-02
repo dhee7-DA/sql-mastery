@@ -2235,6 +2235,11 @@ FROM Employees;`,
             </button>
           </div>
         </div>
+
+        <!-- End-of-Section Architectural Cheatsheet Download Banner -->
+        ${(typeof window !== 'undefined' && window.CheatsheetPdfEngine && typeof window.CheatsheetPdfEngine.renderDownloadBanner === 'function')
+          ? window.CheatsheetPdfEngine.renderDownloadBanner(phase.id)
+          : ''}
       </div>
     `;
   }
@@ -2890,6 +2895,11 @@ FROM Employees;`,
             </button>
           </div>
         </div>
+
+        <!-- End-of-Section Architectural Cheatsheet Download Banner -->
+        ${(typeof window !== 'undefined' && window.CheatsheetPdfEngine && typeof window.CheatsheetPdfEngine.renderDownloadBanner === 'function')
+          ? window.CheatsheetPdfEngine.renderDownloadBanner(phase.id)
+          : ''}
       </div>
     `;
   }

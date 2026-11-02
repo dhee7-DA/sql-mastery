@@ -26936,20 +26936,20 @@ body[data-theme="carbon"] {
    HIGH-CONTRAST MONOCHROME / CARBON / INK BUTTONS & HEADER SQUEEZE PREVENTION
    ============================================================================= */
 
-/* Universal Primary Action Button - Never Bleach White-on-White */
+/* Universal Primary Action Button - Clean Obsidian Flat Styling */
 .action-btn-primary, #btnRunQuery {
-  background: #f4f4f5 !important;
-  color: #09090b !important;
-  border: 1px solid rgba(255, 255, 255, 0.6) !important;
-  font-weight: 700 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+  background: #27272a !important;
+  color: #f4f4f5 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
 }
 
 .action-btn-primary:hover, #btnRunQuery:hover {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border-color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+  background: #3f3f46 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
   transform: translateY(-0.5px);
 }
 
@@ -26962,10 +26962,10 @@ body[data-theme="carbon"] {
 [data-theme="monochrome"] #btnRunQuery,
 body[data-theme="monochrome"] .action-btn-primary,
 body[data-theme="monochrome"] #btnRunQuery {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border-color: #ffffff !important;
-  font-weight: 700 !important;
+  background: #27272a !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  font-weight: 600 !important;
 }
 
 [data-theme="carbon"] .action-btn-primary,

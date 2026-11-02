@@ -355,13 +355,13 @@
 
 .header-cta-btn {
   height: 28px !important;
-  padding: 0 10px !important;
+  padding: 0 12px !important;
   border-radius: var(--radius-xs, 4px) !important;
   font-size: 11.5px !important;
   font-weight: 600 !important;
-  background: var(--accent, #e11d48) !important;
+  background: #27272a !important;
   color: #ffffff !important;
-  border: 1px solid var(--accent, #e11d48) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
   cursor: pointer !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -370,7 +370,9 @@
 }
 
 .header-cta-btn:hover {
-  opacity: 0.92 !important;
+  background: #3f3f46 !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  opacity: 1 !important;
 }
 
 /* Container Reset for Edge-to-Edge Studio Workspace */
