@@ -3,8 +3,14 @@ import os, subprocess, json, urllib.request, time
 def build_cheatsheet_pdfs():
     out_dir = os.path.abspath("sql-mastery/dist/pdf/cheatsheets")
     os.makedirs(out_dir, exist_ok=True)
+    web_pdf_dir = os.path.abspath("sql-mastery/web/public/pdf/cheatsheets")
+    os.makedirs(web_pdf_dir, exist_ok=True)
     temp_dir = os.path.abspath("sql-mastery/scratch/pdf_html_temp")
     os.makedirs(temp_dir, exist_ok=True)
+
+    # Ensure CSS is present in temp_dir for local file rendering
+    import shutil
+    shutil.copy2("sql-mastery/visualizer/cheatsheet_book.css", os.path.join(temp_dir, "cheatsheet_book.css"))
 
     chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
     if not os.path.exists(chrome_path):
@@ -79,11 +85,14 @@ def build_cheatsheet_pdfs():
         ]
         res = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
         size = os.path.getsize(pdf_path) if os.path.exists(pdf_path) else 0
+        if os.path.exists(pdf_path) and size > 10000:
+            web_pdf_path = os.path.join(web_pdf_dir, os.path.basename(pdf_path))
+            shutil.copy2(pdf_path, web_pdf_path)
         status = "SUCCESS" if os.path.exists(pdf_path) and size > 10000 else "FAILED"
         print(f"[{status}] {kw_id.upper()} ({edition}): {os.path.basename(pdf_path)} ({size:,} bytes)")
         results.append((kw_id, edition, pdf_path, size, status))
 
-    print(f"\n[DONE] All {len(results)} cheatsheet PDFs compiled successfully in {out_dir}")
+    print(f"\n[DONE] All {len(results)} cheatsheet PDFs compiled successfully in {out_dir} and mirrored to {web_pdf_dir}")
 
 if __name__ == "__main__":
     build_cheatsheet_pdfs()

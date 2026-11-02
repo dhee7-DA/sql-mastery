@@ -97,15 +97,17 @@
 }
 
 .cheatsheet-dl-btn.primary {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid #ffffff !important;
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
   font-weight: 700 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
 .cheatsheet-dl-btn.primary:hover {
-  background: #e4e4e7 !important;
+  background: #27272a !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
   transform: translateY(-1px);
 }
 
@@ -433,6 +435,162 @@
 .edition-print .pdf-mcq-answer {
   border-top-color: #cbd5e1;
   color: #334155;
+}
+
+/* -----------------------------------------------------------------------------
+   3. 13-PILLAR MASTER ENCYCLOPEDIA EXTENSION CLASSES
+   ----------------------------------------------------------------------------- */
+.pdf-math-box {
+  background: #0d0d12;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 3px solid #6366f1;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin: 6px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: #e0e7ff;
+  line-height: 1.5;
+}
+
+.edition-print .pdf-math-box {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  border-left-color: #4f46e5;
+  color: #1e1b4b;
+}
+
+.pdf-explain-tree {
+  background: #08080a;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin: 6px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  color: #a7f3d0;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.edition-print .pdf-explain-tree {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #064e3b;
+}
+
+.pdf-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.pdf-compare-col {
+  background: #141418;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.pdf-compare-col.bad {
+  border-top: 3px solid #f43f5e;
+}
+
+.pdf-compare-col.good {
+  border-top: 3px solid #10b981;
+}
+
+.edition-print .pdf-compare-col {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.edition-print .pdf-compare-col.bad {
+  border-top-color: #e11d48;
+}
+
+.edition-print .pdf-compare-col.good {
+  border-top-color: #059669;
+}
+
+.pdf-dialect-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.5px;
+  margin: 6px 0;
+}
+
+.pdf-dialect-table th {
+  background: #18181e;
+  color: #f4f4f5;
+  padding: 6px 10px;
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.pdf-dialect-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  vertical-align: top;
+}
+
+.edition-print .pdf-dialect-table th {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-bottom-color: #cbd5e1;
+}
+
+.edition-print .pdf-dialect-table td {
+  border-bottom-color: #e2e8f0;
+  color: #334155;
+}
+
+.pdf-leetcode-card {
+  background: #121215;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  page-break-inside: avoid;
+}
+
+.edition-print .pdf-leetcode-card {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+.pdf-lc-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.pdf-lc-badge.easy { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.pdf-lc-badge.medium { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+.pdf-lc-badge.hard { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+
+.edition-print .pdf-lc-badge.easy { background: #d1fae5; color: #047857; }
+.edition-print .pdf-lc-badge.medium { background: #fef3c7; color: #b45309; }
+.edition-print .pdf-lc-badge.hard { background: #fee2e2; color: #b91c1c; }
+
+.pdf-mcq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+@media (max-width: 600px) {
+  .pdf-mcq-grid,
+  .pdf-compare-grid,
+  .pdf-schema-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Print Overrides */

@@ -779,11 +779,14 @@
 
 [data-theme="dark"] .phase-node-btn.active,
 .theme-dark .phase-node-btn.active,
-[data-theme="active-builders-dark"] .phase-node-btn.active {
-  background: var(--accent, #ff2a51) !important;
-  border-color: var(--accent, #ff2a51) !important;
+[data-theme="active-builders-dark"] .phase-node-btn.active,
+[data-theme="monochrome"] .phase-node-btn.active,
+[data-theme="ink"] .phase-node-btn.active,
+[data-theme="carbon"] .phase-node-btn.active {
+  background: #27272a !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
   color: #ffffff !important;
-  box-shadow: 0 3px 12px -2px rgba(255, 42, 81, 0.4) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
 }
 
 [data-theme="dark"] .step-order-tabs,
@@ -823,6 +826,34 @@
   border: 1px solid rgba(255, 255, 255, 0.32) !important;
   color: #ffffff !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Next Step Case Solve CTA tactile styling */
+.case-solve-cta,
+[data-theme="dark"] .case-solve-cta,
+.theme-dark .case-solve-cta,
+[data-theme="active-builders-dark"] .case-solve-cta,
+[data-theme="monochrome"] .case-solve-cta,
+[data-theme="ink"] .case-solve-cta,
+[data-theme="carbon"] .case-solve-cta {
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
+}
+
+.case-solve-cta:hover,
+[data-theme="dark"] .case-solve-cta:hover,
+.theme-dark .case-solve-cta:hover,
+[data-theme="active-builders-dark"] .case-solve-cta:hover,
+[data-theme="monochrome"] .case-solve-cta:hover,
+[data-theme="ink"] .case-solve-cta:hover,
+[data-theme="carbon"] .case-solve-cta:hover {
+  background: #27272a !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.38) !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* =============================================================================
