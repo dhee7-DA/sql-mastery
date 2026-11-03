@@ -1,0 +1,262 @@
+/* =============================================================================
+   STRIPE FINTECH & PAYMENT INFRASTRUCTURE SIMULATION WORKSPACE
+   THEME: Dark Obsidian (#07080d) with Stripe Blurple (#635bff) & Cyan Accents
+   Zero Bleached Buttons - High Contrast Dark Mode Ergonomics
+   ============================================================================= */
+
+.stripe-sim-theme {
+  background: var(--bg-canvas, #07080d) !important;
+  color: var(--text-primary, #f8fafc) !important;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif) !important;
+}
+
+/* Header Banner */
+.stripe-sim-theme .amazon-sim-header {
+  background: #0a0b14 !important;
+  border-bottom: 1px solid #1a1c2c !important;
+  padding: 12px 24px !important;
+}
+
+.stripe-sim-theme .stripe-brand-badge {
+  font-family: var(--font-sans, sans-serif) !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  color: #ffffff !important;
+  background: #635bff !important;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  box-shadow: 0 0 16px rgba(99, 91, 255, 0.4) !important;
+}
+
+/* Left Sidebar - Tickets */
+.stripe-sim-theme .ticket-item-card {
+  background: #0f111c !important;
+  border: 1px solid #1c1f30 !important;
+  border-radius: 8px !important;
+  padding: 12px 14px !important;
+  margin-bottom: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.stripe-sim-theme .ticket-item-card:hover {
+  background: #151826 !important;
+  border-color: rgba(99, 91, 255, 0.4) !important;
+  transform: translateX(2px) !important;
+}
+
+.stripe-sim-theme .ticket-item-card.active {
+  background: #141729 !important;
+  border-color: #635bff !important;
+  border-left: 3px solid #635bff !important;
+  box-shadow: 0 2px 12px rgba(99, 91, 255, 0.15) !important;
+}
+
+/* Priority Badges */
+.stripe-sim-theme .p0-badge {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #f87171 !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+}
+.stripe-sim-theme .p1-badge {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+.stripe-sim-theme .p2-badge {
+  background: rgba(99, 91, 255, 0.15) !important;
+  color: #a5b4fc !important;
+  border: 1px solid rgba(99, 91, 255, 0.35) !important;
+}
+
+/* Stage Navigation Tabs */
+.stripe-sim-theme .sim-stage-tab {
+  background: #10121d !important;
+  color: #94a3b8 !important;
+  border: 1px solid #1c1f30 !important;
+  padding: 8px 16px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.stripe-sim-theme .sim-stage-tab:hover {
+  background: #181b2a !important;
+  color: #f8fafc !important;
+  border-color: rgba(99, 91, 255, 0.3) !important;
+}
+
+.stripe-sim-theme .sim-stage-tab.active {
+  background: #635bff !important;
+  color: #ffffff !important;
+  border-color: #635bff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 0 12px rgba(99, 91, 255, 0.35) !important;
+}
+
+/* Context / Slack Card */
+.stripe-sim-theme .sim-briefing-card {
+  background: #0f111c !important;
+  border: 1px solid #1c1f30 !important;
+  border-radius: 10px !important;
+  padding: 18px 22px !important;
+  margin-bottom: 16px !important;
+}
+
+.stripe-sim-theme .sim-slack-message {
+  background: #141724 !important;
+  border-left: 3px solid #635bff !important;
+  border-radius: 0 8px 8px 0 !important;
+  padding: 14px 18px !important;
+  color: #e2e8f0 !important;
+  line-height: 1.6 !important;
+}
+
+/* Challenge Workspace */
+.stripe-sim-theme .challenge-workstation {
+  background: #0c0e17 !important;
+  border: 1px solid #1c1f30 !important;
+  border-radius: 10px !important;
+  padding: 20px !important;
+}
+
+.stripe-sim-theme .sql-code-editor-box {
+  background: #07080d !important;
+  border: 1px solid #202438 !important;
+  border-radius: 8px !important;
+  padding: 16px !important;
+  font-family: var(--font-mono, "SF Mono", Consolas, monospace) !important;
+  font-size: 13.5px !important;
+  color: #f8fafc !important;
+  line-height: 1.65 !important;
+}
+
+/* Interactive Blanks Dropdowns */
+.stripe-sim-theme .token-blank-select {
+  background: #1a1e30 !important;
+  color: #38bdf8 !important;
+  border: 1px solid #635bff !important;
+  border-radius: 5px !important;
+  padding: 3px 8px !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  outline: none !important;
+  box-shadow: 0 0 8px rgba(99, 91, 255, 0.25) !important;
+}
+
+.stripe-sim-theme .token-blank-select:focus {
+  border-color: #00d4ff !important;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.4) !important;
+}
+
+/* Action Buttons - NO BLEACHED BUTTONS */
+.stripe-sim-theme .btn-run-challenge {
+  background: #635bff !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 10px 20px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  transition: all 0.15s ease !important;
+  box-shadow: 0 2px 10px rgba(99, 91, 255, 0.3) !important;
+}
+
+.stripe-sim-theme .btn-run-challenge:hover {
+  background: #7a73ff !important;
+  box-shadow: 0 4px 16px rgba(99, 91, 255, 0.45) !important;
+  transform: translateY(-1px) !important;
+}
+
+.stripe-sim-theme .btn-toggle-mode {
+  background: #141724 !important;
+  color: #cbd5e1 !important;
+  border: 1px solid #23273c !important;
+  border-radius: 6px !important;
+  padding: 8px 14px !important;
+  font-size: 12.5px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.stripe-sim-theme .btn-toggle-mode:hover {
+  background: #1c2134 !important;
+  color: #ffffff !important;
+  border-color: rgba(99, 91, 255, 0.3) !important;
+}
+
+/* Evaluation Success Card */
+.stripe-sim-theme .evaluation-card.success {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  border-left: 4px solid #10b981 !important;
+  border-radius: 8px !important;
+  padding: 16px 20px !important;
+  margin-top: 16px !important;
+  color: #e2e8f0 !important;
+}
+
+.stripe-sim-theme .evaluation-card.failure {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  border-left: 4px solid #ef4444 !important;
+  border-radius: 8px !important;
+  padding: 16px 20px !important;
+  margin-top: 16px !important;
+  color: #e2e8f0 !important;
+}
+
+/* Telemetry Table */
+.stripe-sim-theme .telemetry-table-wrapper {
+  background: #090a10 !important;
+  border: 1px solid #1c1f30 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.stripe-sim-theme .telemetry-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 12.5px !important;
+}
+
+.stripe-sim-theme .telemetry-table th {
+  background: #101320 !important;
+  color: #94a3b8 !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+  padding: 10px 14px !important;
+  border-bottom: 1px solid #1c1f30 !important;
+}
+
+.stripe-sim-theme .telemetry-table td {
+  padding: 8px 14px !important;
+  border-bottom: 1px solid #141724 !important;
+  color: #f1f5f9 !important;
+}
+
+.stripe-sim-theme .telemetry-table tr:hover td {
+  background: #141728 !important;
+}
+
+/* Career Progression Meter */
+.stripe-sim-theme .career-progress-fill {
+  background: linear-gradient(90deg, #635bff, #00d4ff) !important;
+  height: 6px !important;
+  border-radius: 3px !important;
+  transition: width 0.3s ease !important;
+}

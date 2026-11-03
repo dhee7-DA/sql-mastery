@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="carbon">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,23 +12,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/vqa3wut.css">
-  <link rel="stylesheet" href="style.css?v=20261103_opt4">
-  <link rel="stylesheet" href="landing_page.css?v=20261103_opt4">
-  <link rel="stylesheet" href="jpmorgan_theme.css?v=20261103_opt4">
-  <link rel="stylesheet" href="leetcode_theme.css?v=20261103_opt4">
-  <link rel="stylesheet" href="sql_terminal_theme.css?v=20261103_opt4">
-  <link rel="stylesheet" href="mock_interview_theme.css?v=20261103_opt4">
-  <link rel="stylesheet" href="company_mastery_theme.css?v=20261103_opt4">
-  <link rel="stylesheet" href="studio_workbench_theme.css?v=20261103_opt4">
-  <link rel="stylesheet" href="relational_machines_theme.css?v=20261103_opt4">
-  <link rel="stylesheet" href="mastery_course_theme.css?v=20261103_opt4">
-  <link rel="stylesheet" href="command_palette.css?v=20261103_opt4">
-  <link rel="stylesheet" href="tactile_tiles_theme.css?v=20261103_opt4">
-  <link rel="stylesheet" href="new_age_saas_theme.css?v=20261103_opt4">
-  <link rel="stylesheet" href="kobbe_theme.css?v=20261103_opt4">
-  <link rel="stylesheet" href="cheatsheet_book.css?v=20261103_opt4">
+  <link rel="stylesheet" href="style.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="mastery_course_theme.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="leetcode_theme.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="studio_workbench_theme.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="relational_machines_theme.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="company_mastery_theme.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="sql_terminal_theme.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="mock_interview_theme.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="landing_page.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="command_palette.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="cheatsheet_book.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="carbon_theme.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="ovio_motion.css?v=20261103_carbon_ovio">
 </head>
-<body>
+<body data-theme="carbon">
   <div class="app-layout">
     <!-- Unified Minimalist Header Bar -->
     <header class="app-header">
@@ -105,6 +103,61 @@
               <span class="nav-group-title">Analytics</span>
             </span>
             <span class="nav-item-tag accent" style="background:rgba(245,158,11,0.15); color:#f59e0b; border-color:rgba(245,158,11,0.3);">30d</span>
+          </button>
+
+          <!-- 3b. NETFLIX STREAMING ANALYTICS TRACK (NETFLIX QOE 30D) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavNetflix" data-view="viewNetflixStory" onclick="try{window.location.hash='#netflix';}catch(e){} selectNavView('viewNetflixStory', 'Netflix', null)" title="Netflix Track: 30-Day Streaming Telemetry, A/B Testing &amp; Retention Simulation">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+              </span>
+              <span class="nav-group-title">Netflix</span>
+            </span>
+            <span class="nav-item-tag accent" style="background:rgba(229,9,20,0.15); color:#e50914; border-color:rgba(229,9,20,0.3);">30d</span>
+          </button>
+
+          <!-- 3c. UBER MOBILITY & LOGISTICS TRACK (UBER 30D) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavUber" data-view="viewUberStory" onclick="try{window.location.hash='#uber';}catch(e){} selectNavView('viewUberStory', 'Uber', null)" title="Uber Track: 30-Day Marketplace Dynamics, Real-Time Surge &amp; H3 Logistics Simulation">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+              </span>
+              <span class="nav-group-title">Uber</span>
+            </span>
+            <span class="nav-item-tag accent" style="background:rgba(6,193,103,0.15); color:#06c167; border-color:rgba(6,193,103,0.3);">30d</span>
+          </button>
+
+          <!-- 3d. STRIPE FINTECH & PAYMENTS TRACK (STRIPE 30D) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStripe" data-view="viewStripeStory" onclick="try{window.location.hash='#stripe';}catch(e){} selectNavView('viewStripeStory', 'Stripe', null)" title="Stripe Track: 30-Day FinTech, Authorization Engine &amp; Radar ML Simulation">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+              </span>
+              <span class="nav-group-title">Stripe</span>
+            </span>
+            <span class="nav-item-tag accent" style="background:rgba(99,91,255,0.15); color:#818cf8; border-color:rgba(99,91,255,0.3);">30d</span>
+          </button>
+
+          <!-- 3e. AIRBNB TRAVEL MARKETPLACE TRACK (AIRBNB 30D) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavAirbnb" data-view="viewAirbnbStory" onclick="try{window.location.hash='#airbnb';}catch(e){} selectNavView('viewAirbnbStory', 'Airbnb', null)" title="Airbnb Track: 30-Day Marketplace Liquidity, Dynamic Pricing &amp; Calendar Gaps">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              </span>
+              <span class="nav-group-title">Airbnb</span>
+            </span>
+            <span class="nav-item-tag accent" style="background:rgba(255,56,92,0.15); color:#ff385c; border-color:rgba(255,56,92,0.3);">30d</span>
+          </button>
+
+          <!-- 3f. SPOTIFY AUDIO STREAMING TRACK (SPOTIFY 30D) -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavSpotify" data-view="viewSpotifyStory" onclick="try{window.location.hash='#spotify';}catch(e){} selectNavView('viewSpotifyStory', 'Spotify', null)" title="Spotify Track: 30-Day Audio Streaming Telemetry, Discover Weekly &amp; Creator Royalties">
+            <span class="nav-group-lead">
+              <span class="nav-group-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11.5c3.5-1 7-1 9.5.5"></path><path d="M9 15c2.5-.7 5.5-.7 7.5.5"></path></svg>
+              </span>
+              <span class="nav-group-title">Spotify</span>
+            </span>
+            <span class="nav-item-tag accent" style="background:rgba(30,215,96,0.15); color:#1ed760; border-color:rgba(30,215,96,0.3);">30d</span>
           </button>
 
           <!-- 4. FINANCE ANALYTICS TRACK (JPMORGAN QUANT RISK 30D) -->
@@ -418,33 +471,11 @@
             <path d="M9 14.5c1 .8 2 1 3 1s2-.2 3-1"></path>
           </svg>
         </button>
-        <div class="theme-select-wrapper header-icon-btn" title="Switch Theme" style="position: relative;">
+        <div class="header-icon-btn carbon-theme-locked" title="Active Theme: Carbon (High-Contrast Black &amp; White)" style="cursor: default;" aria-label="Theme: Carbon">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="9"></circle>
             <path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"></path>
           </svg>
-          <select id="themeSelect" class="clean-select theme-select theme-select-overlay" title="Switch Theme">
-            <option value="monochrome">Monochrome (High-Contrast Noir)</option>
-            <option value="ink">Ink (Minimalist Deep Navy)</option>
-            <option value="carbon">Carbon (Stealth Graphite &amp; Emerald)</option>
-            <option value="kobbe-nordic">Kobbe Nordic (Warm Bone)</option>
-            <option value="saas-midnight">SaaS Midnight (2026 AI-SaaS)</option>
-            <option value="active-builders">Neon Red (Light)</option>
-            <option value="active-builders-dark">Laser Neon Red (Dark)</option>
-            <option value="cyber-olive">Cyber Olive (Light)</option>
-            <option value="cyber-olive-dark">Deep Olive (Dark)</option>
-            <option value="cursor-dark">Cursor Dark</option>
-            <option value="pomegranate-powder">Pomegranate + Powder</option>
-            <option value="smoky-jade-oxblood">Smoky Jade + Oxblood</option>
-            <option value="petrol-persimmon">Petrol Teal + Persimmon</option>
-            <option value="tokyo-midnight">Tokyo Midnight</option>
-            <option value="nordic-carbon">Nordic Carbon</option>
-            <option value="warm-obsidian">Warm Obsidian</option>
-            <option value="paper-white">Paper White</option>
-            <option value="warm-cream">Warm Cream</option>
-            <option value="sakura-mochi">Sakura Mochi</option>
-            <option value="matcha-latte">Matcha Latte</option>
-          </select>
         </div>
         <a href="http://localhost:3000" target="_blank" class="saas-launch-pill" title="Open Next.js 15 Modern SaaS App" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:0 10px; height:28px; width:auto !important; min-width:auto !important; max-width:none !important; font-size:11px; font-weight:600; color:var(--text-secondary); background:#141418; border:1px solid rgba(255, 255, 255, 0.16); border-radius:6px; white-space:nowrap; transition:all 140ms ease;">
           <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow:0 0 6px #10b981;"></span>
@@ -1655,6 +1686,41 @@
     </div>
   </div>
 
+  <!-- VIEW: Netflix Streaming Analytics & Data Platform 30-Day Simulator -->
+  <div class="view-panel" id="viewNetflixStory">
+    <div id="netflixStoryContentRoot" class="amazon-story-workspace-wrap">
+      <!-- Dynamically populated by netflix_story_engine.js -->
+    </div>
+  </div>
+
+  <!-- VIEW: Uber Marketplace Dynamics & H3 Logistics 30-Day Simulator -->
+  <div class="view-panel" id="viewUberStory">
+    <div id="uberStoryContentRoot" class="amazon-story-workspace-wrap">
+      <!-- Dynamically populated by uber_story_engine.js -->
+    </div>
+  </div>
+
+    <!-- VIEW: Stripe FinTech & Global Payment Infrastructure 30-Day Simulator -->
+    <div class="view-panel" id="viewStripeStory">
+      <div id="stripeStoryContentRoot" class="amazon-story-workspace-wrap">
+        <!-- Dynamically populated by stripe_story_engine.js -->
+      </div>
+    </div>
+
+    <!-- VIEW: Airbnb Marketplace & Travel Infrastructure 30-Day Simulator -->
+    <div class="view-panel" id="viewAirbnbStory">
+      <div id="airbnbStoryContentRoot" class="amazon-story-workspace-wrap">
+        <!-- Dynamically populated by airbnb_story_engine.js -->
+      </div>
+    </div>
+
+    <!-- VIEW: Spotify Audio Streaming & Creator Economy 30-Day Simulator -->
+    <div class="view-panel" id="viewSpotifyStory">
+      <div id="spotifyStoryContentRoot" class="amazon-story-workspace-wrap">
+        <!-- Dynamically populated by spotify_story_engine.js -->
+      </div>
+    </div>
+
   <!-- VIEW: LeetCode 50 SQL Arena -->
   <div class="view-panel" id="viewLeetCode50">
     <!-- Dynamically populated by leetcode_arena_engine.js -->
@@ -1912,6 +1978,21 @@
 <script src="jpmorgan_sample_data.js"></script>
 <script src="jpmorgan_story_data.js"></script>
 <script src="jpmorgan_story_engine.js"></script>
+<script src="netflix_story_data.js?v=20261103_opt4"></script>
+<script src="netflix_sql_runner.js?v=20261103_opt4"></script>
+<script src="netflix_story_engine.js?v=20261103_opt4"></script>
+<script src="uber_story_data.js?v=20261103_opt4"></script>
+<script src="uber_sql_runner.js?v=20261103_opt4"></script>
+<script src="uber_story_engine.js?v=20261103_opt4"></script>
+  <script src="stripe_story_data.js?v=20261103_opt4"></script>
+  <script src="stripe_sql_runner.js?v=20261103_opt4"></script>
+  <script src="stripe_story_engine.js?v=20261103_opt4"></script>
+  <script src="airbnb_story_data.js?v=20261103_opt4"></script>
+  <script src="airbnb_sql_runner.js?v=20261103_opt4"></script>
+  <script src="airbnb_story_engine.js?v=20261103_opt4"></script>
+  <script src="spotify_story_data.js?v=20261103_opt4"></script>
+  <script src="spotify_sql_runner.js?v=20261103_opt4"></script>
+  <script src="spotify_story_engine.js?v=20261103_opt4"></script>
 <script src="trap_flashcards_data.js"></script>
 <script src="trap_memory_engine.js"></script>
 <script src="leetcode_section1_data.js?v=8"></script>
@@ -1945,7 +2026,8 @@
   <script src="keyword_encyclopedia_data.js?v=1"></script>
   <script src="cheatsheet_pdf_engine.js?v=1"></script>
   <script src="mastery_course_engine.js?v=10"></script>
-  <script src="app.js?v=101"></script>
+  <script src="ovio_motion_engine.js?v=20261103_carbon_ovio"></script>
+  <script src="app.js?v=20261103_carbon"></script>
 <script>
   // Automatic Hash & Default View Router
   (function() {
@@ -1971,6 +2053,20 @@
         if (typeof window.selectNavView === 'function') window.selectNavView('viewMcqs', 'MCQs', 'navGroupPractice');
       } else if (hash === 'cases') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewCases', 'Case Studies', 'navGroupPractice');
+      } else if (hash === 'amazon' || hash === 'analytics') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewAmazonStory', 'Analytics', null);
+      } else if (hash === 'jpmorgan' || hash === 'finance') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewJPMorganStory', 'Finance', null);
+      } else if (hash === 'netflix' || hash === 'streaming' || hash === 'qoe') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewNetflixStory', 'Netflix', null);
+      } else if (hash === 'uber' || hash === 'mobility' || hash === 'marketplace') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewUberStory', 'Uber', null);
+      } else if (hash === 'stripe' || hash === 'fintech' || hash === 'payments') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewStripeStory', 'Stripe', null);
+      } else if (hash === 'airbnb' || hash === 'travel' || hash === 'hospitality') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewAirbnbStory', 'Airbnb', null);
+      } else if (hash === 'spotify' || hash === 'audio' || hash === 'music') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewSpotifyStory', 'Spotify', null);
       } else {
         // Default to Product Landing Page & Features Showcase
         if (typeof window.selectNavView === 'function') {

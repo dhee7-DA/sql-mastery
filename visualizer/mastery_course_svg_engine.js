@@ -75,7 +75,7 @@ window.MasterySvgEngine = (function() {
 
         <rect x="354" y="94" width="260" height="190" rx="12" class="svg-panel-bg" stroke="${step === 2 ? 'rgba(255,255,255,0.45)' : 'var(--border-default)'}" stroke-width="${step === 2 ? '2' : '1'}" filter="url(#svgSoftShadow)"/>
         <rect x="366" y="106" width="140" height="22" rx="6" fill="var(--accent-soft)"/>
-        <text x="372" y="121" font-size="10.5" font-weight="800" fill="var(--accent)">💡 Arithmetic In-Flight</text>
+        <text x="372" y="121" font-size="11" font-weight="700" letter-spacing="0.04em" fill="var(--accent)">💡 Arithmetic In-Flight</text>
         <text x="368" y="148" font-size="11.5" class="svg-text-cell">Expressions evaluate per tuple:</text>
         <rect x="366" y="156" width="236" height="36" rx="6" fill="var(--bg-card-subtle)" stroke="var(--border-subtle)" stroke-width="1"/>
         <text x="374" y="179" class="svg-mono" font-size="11" fill="var(--accent)">salary * 1.10 AS projected_comp</text>

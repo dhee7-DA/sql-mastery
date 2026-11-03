@@ -169,6 +169,26 @@ lagged <span class="landing-kw">AS</span> (
                 <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow:0 0 6px rgba(16,185,129,0.5);"></span>
                 <span>Launch Finance Track (JPMorgan 30d)</span>
               </button>
+              <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewNetflixStory', 'Netflix', null); try{window.location.hash='#netflix';}catch(e){}">
+                <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#e50914; box-shadow:0 0 6px rgba(229,9,20,0.5);"></span>
+                <span>Launch Streaming Track (Netflix 30d)</span>
+              </button>
+              <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewUberStory', 'Uber', null); try{window.location.hash='#uber';}catch(e){}">
+                <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#06c167; box-shadow:0 0 6px rgba(6,193,103,0.5);"></span>
+                <span>Launch Mobility Track (Uber 30d)</span>
+              </button>
+              <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewStripeStory', 'Stripe', null); try{window.location.hash='#stripe';}catch(e){}">
+                <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#635bff; box-shadow:0 0 6px rgba(99,91,255,0.5);"></span>
+                <span>Launch FinTech Track (Stripe 30d)</span>
+              </button>
+              <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewAirbnbStory', 'Airbnb', null); try{window.location.hash='#airbnb';}catch(e){}">
+                <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#ff385c; box-shadow:0 0 6px rgba(255,56,92,0.5);"></span>
+                <span>Launch Travel Track (Airbnb 30d)</span>
+              </button>
+              <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewSpotifyStory', 'Spotify', null); try{window.location.hash='#spotify';}catch(e){}">
+                <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#1ed760; box-shadow:0 0 6px rgba(30,215,96,0.5);"></span>
+                <span>Launch Audio Track (Spotify 30d)</span>
+              </button>
               <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewRelationalMachines', 'Relational Machines', null); try{window.location.hash='#machines';}catch(e){}">
                 <span>⬡ Relational Machines</span>
               </button>
@@ -290,6 +310,142 @@ lagged <span class="landing-kw">AS</span> (
 
             <div class="landing-bento-grid">
               
+              <!-- Card: Airbnb Travel Marketplace (Span 2) -->
+              <div class="landing-bento-card bento-span-2">
+                <div class="landing-bento-glow" style="background: radial-gradient(circle at 80% 20%, rgba(255, 56, 92, 0.12), transparent 70%);"></div>
+                <div class="landing-bento-content">
+                  <div class="landing-bento-tag-row">
+                    <span style="font-size:10px; font-family:monospace; color:#fda4af; font-weight:600;">AIRBNB &bull; L4-L6 TRAVEL TRACK</span>
+                    <span class="landing-bento-badge" style="background:rgba(255,56,92,0.15); color:#f87171; border-color:rgba(255,56,92,0.3);">30 DAYS</span>
+                  </div>
+                  <h3 class="landing-bento-title" style="margin-top:10px;">Airbnb Marketplace &amp; Dynamic Pricing Simulator</h3>
+                  <p class="landing-bento-desc">
+                    Step into the shoes of an Airbnb Marketplace Data Scientist: master search CTRs, dynamic pricing elasticity, calendar island gap identification, host tax withholding, and Olympic peak travel war room events.
+                  </p>
+                  <div class="landing-bento-footer">
+                    <div class="landing-bento-stat">
+                      <span class="landing-bento-stat-val" style="color:#f87171;">30</span>
+                      <span class="landing-bento-stat-lbl">Tickets (P0-P2)</span>
+                    </div>
+                    <div class="landing-bento-stat">
+                      <span class="landing-bento-stat-val" style="color:#ffb400;">$18B+</span>
+                      <span class="landing-bento-stat-lbl">Booking Volume</span>
+                    </div>
+                    <div class="landing-bento-stat">
+                      <span class="landing-bento-stat-val" style="color:#00d4ff;">Smart Pricing</span>
+                      <span class="landing-bento-stat-lbl">Elasticity Models</span>
+                    </div>
+                    <button class="landing-bento-action-link" onclick="if(window.selectNavView) window.selectNavView('viewAirbnbStory', 'Airbnb', null); try{window.location.hash='#airbnb';}catch(e){}">
+                      <span>Launch Airbnb 30-Day Travel Simulator &rarr;</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card: Spotify Audio Streaming (Span 2) -->
+              <div class="landing-bento-card bento-span-2">
+                <div class="landing-bento-glow" style="background: radial-gradient(circle at 80% 20%, rgba(30, 215, 96, 0.12), transparent 70%);"></div>
+                <div class="landing-bento-content">
+                  <div class="landing-bento-tag-row">
+                    <span style="font-size:10px; font-family:monospace; color:#86efac; font-weight:600;">SPOTIFY &bull; L4-L6 AUDIO TRACK</span>
+                    <span class="landing-bento-badge" style="background:rgba(30,215,96,0.15); color:#22c55e; border-color:rgba(30,215,96,0.3);">30 DAYS</span>
+                  </div>
+                  <h3 class="landing-bento-title" style="margin-top:10px;">Spotify Audio Streaming &amp; Royalty Simulator</h3>
+                  <p class="landing-bento-desc">
+                    Step into the shoes of a Spotify Audio Telemetry Engineer: analyze 30s qualifying playback rates, collaborative filtering in Discover Weekly, pro-rata label royalty waterfalls, and midnight album drop traffic spikes.
+                  </p>
+                  <div class="landing-bento-footer">
+                    <div class="landing-bento-stat">
+                      <span class="landing-bento-stat-val" style="color:#22c55e;">30</span>
+                      <span class="landing-bento-stat-lbl">Tickets (P0-P2)</span>
+                    </div>
+                    <div class="landing-bento-stat">
+                      <span class="landing-bento-stat-val" style="color:#38bdf8;">100B+</span>
+                      <span class="landing-bento-stat-lbl">Stream Sessions</span>
+                    </div>
+                    <div class="landing-bento-stat">
+                      <span class="landing-bento-stat-val" style="color:#a855f7;">Pro-Rata</span>
+                      <span class="landing-bento-stat-lbl">Royalty Engine</span>
+                    </div>
+                    <button class="landing-bento-action-link" onclick="if(window.selectNavView) window.selectNavView('viewSpotifyStory', 'Spotify', null); try{window.location.hash='#spotify';}catch(e){}">
+                      <span>Launch Spotify 30-Day Audio Simulator &rarr;</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card: Stripe FinTech Simulation (Span 2) -->
+              <div class="landing-bento-card bento-span-2">
+                <div class="landing-bento-glow" style="background: radial-gradient(circle at 80% 20%, rgba(99, 91, 255, 0.12), transparent 70%);"></div>
+                <div class="landing-bento-content">
+                  <div class="landing-bento-tag-row">
+                    <span style="font-size:10px; font-family:monospace; color:#818cf8; font-weight:600;">STRIPE &bull; L4-L6 FINTECH TRACK</span>
+                    <span class="landing-bento-badge" style="background:rgba(99,91,255,0.15); color:#a5b4fc; border-color:rgba(99,91,255,0.3);">30 DAYS</span>
+                  </div>
+                  <h3 class="landing-bento-title" style="margin-top:10px;">Stripe FinTech, Radar ML &amp; Global Treasury Simulator</h3>
+                  <p class="landing-bento-desc">
+                    Step into the shoes of a Stripe FinTech Infrastructure Engineer: optimize card authorization routing, combat card-testing attacks with Radar ML features, orchestrate 3D-Secure drop-off funnels, and balance multi-currency treasury cash liquidity.
+                  </p>
+                  <div class="landing-bento-footer">
+                    <div class="landing-bento-stat">
+                      <span class="landing-bento-stat-val" style="color:#818cf8;">30</span>
+                      <span class="landing-bento-stat-lbl">Tickets (P0-P2)</span>
+                    </div>
+                    <div class="landing-bento-stat">
+                      <span class="landing-bento-stat-val" style="color:#38bdf8;">$45B+</span>
+                      <span class="landing-bento-stat-lbl">Payment Ledger</span>
+                    </div>
+                    <div class="landing-bento-stat">
+                      <span class="landing-bento-stat-val" style="color:#10b981;">Radar ML</span>
+                      <span class="landing-bento-stat-lbl">Fraud Defense</span>
+                    </div>
+                    <button class="landing-bento-action-link" onclick="if(window.selectNavView) window.selectNavView('viewStripeStory', 'Stripe', null); try{window.location.hash='#stripe';}catch(e){}">
+                      <span>Launch Stripe 30-Day FinTech Simulator &rarr;</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card: Uber Marketplace Simulation (Span 2) -->
+              <div class="landing-bento-card span-2" style="border-left: 3px solid #06c167;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span class="landing-bento-badge" style="background:rgba(6,193,103,0.12); color:#06c167; border-color:rgba(6,193,103,0.3);">30-Day Mobility Operations Simulator</span>
+                  <span style="font-size:10px; font-family:monospace; color:#34d399; font-weight:600;">UBER &bull; L4-L6 ROTATION</span>
+                </div>
+                <h3 class="landing-bento-title" style="margin-top:10px;">Uber Marketplace Dynamics &amp; H3 Logistics Simulation</h3>
+                <p class="landing-bento-desc">
+                  Step into the shoes of an Uber Marketplace Data Scientist &amp; Operations Quant: calculate real-time driver liquidity ratios, aggregate geospatial demand into resolution-8 H3 hexagons, detect GPS spoofing fraud, reconcile airport FIFO virtual staging dwell times, audit California Prop 22 minimum wage guarantees, and manage a live New Year's Eve 85,000 RPM surge war room.
+                </p>
+                <div style="display:flex; gap:8px; margin: 14px 0; flex-wrap:wrap;">
+                  <span class="dbt-tag-pill" style="border-color:rgba(6,193,103,0.3); color:#6ee7b7;">30 Dispatch Missions</span>
+                  <span class="dbt-tag-pill" style="border-color:rgba(6,193,103,0.3); color:#6ee7b7;">H3 Spatial Indexing</span>
+                  <span class="dbt-tag-pill" style="border-color:rgba(6,193,103,0.3); color:#6ee7b7;">New Year's Eve War Room</span>
+                </div>
+                <button class="landing-bento-action-link" onclick="if(window.selectNavView) window.selectNavView('viewUberStory', 'Uber', null); try{window.location.hash='#uber';}catch(e){}" >
+                  <span>Launch Uber 30-Day Mobility Simulator &rarr;</span>
+                </button>
+              </div>
+
+              <!-- Card 0: Netflix Streaming Simulation (Span 2) -->
+              <div class="landing-bento-card span-2" style="border-left: 3px solid #e50914;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span class="landing-bento-badge" style="background:rgba(229,9,20,0.12); color:#e50914; border-color:rgba(229,9,20,0.3);">30-Day Streaming Telemetry Simulator</span>
+                  <span style="font-size:10px; font-family:monospace; color:#f87171; font-weight:600;">NETFLIX &bull; L4-L6 ROTATION</span>
+                </div>
+                <h3 class="landing-bento-title" style="margin-top:10px;">Netflix Streaming &amp; QoE Telemetry Simulation</h3>
+                <p class="landing-bento-desc">
+                  Step into the shoes of a Netflix Analytics Engineer on the Core Playback and Content Platform: diagnose P99 Time-To-First-Frame (TTFF) latency, calculate adaptive bitrate rebuffering ratios across ISP peering backbones, audit household account sharing, evaluate A/B thumbnail experiments with chi-square SRM diagnostics, and navigate a live P0 premiere war room.
+                </p>
+                <div style="display:flex; gap:8px; margin: 14px 0; flex-wrap:wrap;">
+                  <span class="dbt-tag-pill" style="border-color:rgba(229,9,20,0.3); color:#fca5a5;">30 Telemetry Days</span>
+                  <span class="dbt-tag-pill" style="border-color:rgba(229,9,20,0.3); color:#fca5a5;">A/B Experimentation Engine</span>
+                  <span class="dbt-tag-pill" style="border-color:rgba(229,9,20,0.3); color:#fca5a5;">Premiere P0 War Room</span>
+                </div>
+                <button class="landing-bento-action-link" onclick="if(window.selectNavView) window.selectNavView('viewNetflixStory', 'Netflix', null); try{window.location.hash='#netflix';}catch(e){}" >
+                  <span>Launch Netflix 30-Day Streaming Simulator &rarr;</span>
+                </button>
+              </div>
+
               <!-- Card 1: Amazon BI Simulation (Span 2) -->
               <div class="landing-bento-card span-2" >
                 <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -516,6 +672,22 @@ lagged <span class="landing-kw">AS</span> (
 
             <div class="landing-launch-grid">
               
+              <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewUberStory', 'Uber', null); try{window.location.hash='#uber';}catch(e){}" style="border-color:rgba(6,193,103,0.4);">
+                <div class="landing-launch-meta">
+                  <span class="landing-launch-name" style="color:#34d399;">Mobility Track</span>
+                  <span class="landing-launch-tag" style="background:rgba(6,193,103,0.15); color:#06c167; border-color:rgba(6,193,103,0.3);">Uber 30d</span>
+                </div>
+                <span class="landing-launch-desc">Surge Multipliers, H3 Spatial Hexagons, Airport Queues &amp; NYE War Room</span>
+              </div>
+
+              <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewNetflixStory', 'Netflix', null); try{window.location.hash='#netflix';}catch(e){}" style="border-color:rgba(229,9,20,0.4);">
+                <div class="landing-launch-meta">
+                  <span class="landing-launch-name" style="color:#f87171;">Streaming Track</span>
+                  <span class="landing-launch-tag" style="background:rgba(229,9,20,0.15); color:#e50914; border-color:rgba(229,9,20,0.3);">Netflix 30d</span>
+                </div>
+                <span class="landing-launch-desc">Playback QoE, A/B Testing, Cohort Churn &amp; Stranger Things War Room</span>
+              </div>
+
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewAmazonStory', 'Analytics', null); try{window.location.hash='#analytics';}catch(e){}" style="border-color:rgba(245,158,11,0.3);">
                 <div class="landing-launch-meta">
                   <span class="landing-launch-name" >Analytics Track</span>

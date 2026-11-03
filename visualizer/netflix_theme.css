@@ -1,0 +1,280 @@
+/* =============================================================================
+   NETFLIX STREAMING ANALYTICS & DATA PLATFORM WORKSPACE
+   THEME: Cinematic Dark Obsidian with Netflix Signature Red (#e50914)
+   ============================================================================= */
+
+.netflix-sim-theme {
+  background: var(--bg-canvas, #090a0f) !important;
+  color: var(--text-primary, #f4f4f5) !important;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif) !important;
+}
+
+/* Header Banner */
+.netflix-sim-theme .amazon-sim-header {
+  background: #0d0e14 !important;
+  border-bottom: 1px solid #1e202c !important;
+  padding: 12px 24px !important;
+}
+
+.netflix-sim-theme .netflix-brand-badge {
+  font-family: var(--font-mono, monospace) !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.1em !important;
+  color: #e50914 !important;
+  font-size: 16px !important;
+  background: rgba(229, 9, 20, 0.12);
+  border: 1px solid rgba(229, 9, 20, 0.4);
+  padding: 4px 12px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(229, 9, 20, 0.4);
+}
+
+.netflix-sim-theme .amazon-team-tag {
+  background: rgba(229, 9, 20, 0.1) !important;
+  color: #f87171 !important;
+  border: 1px solid rgba(229, 9, 20, 0.3) !important;
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
+  font-size: 11.5px !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-weight: 600 !important;
+}
+
+.netflix-sim-theme .career-role-title {
+  color: #f4f4f5 !important;
+  font-family: var(--font-sans, sans-serif) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+.netflix-sim-theme .career-progress-sub {
+  color: #a1a1aa !important;
+  font-size: 11px !important;
+}
+
+/* Sidebar Tickets */
+.netflix-sim-theme .ticket-item-card {
+  background: #111219 !important;
+  border: 1px solid #1e202c !important;
+  border-radius: 6px !important;
+  padding: 10px 12px !important;
+  margin-bottom: 8px !important;
+  transition: all 0.15s ease !important;
+  cursor: pointer !important;
+}
+
+.netflix-sim-theme .ticket-item-card:hover {
+  background: #161822 !important;
+  border-color: rgba(229, 9, 20, 0.5) !important;
+  transform: translateX(2px);
+}
+
+.netflix-sim-theme .ticket-item-card.active {
+  background: #1c1518 !important;
+  border-color: #e50914 !important;
+  box-shadow: inset 3px 0 0 #e50914, 0 4px 12px rgba(229, 9, 20, 0.15) !important;
+}
+
+.netflix-sim-theme .ticket-item-card.solved .ticket-day-num {
+  color: #10b981 !important;
+}
+
+.netflix-sim-theme .ticket-item-card.solved {
+  border-left: 3px solid #10b981 !important;
+}
+
+/* Stage Tabs */
+.netflix-sim-theme .stage-nav-tabs {
+  display: flex;
+  gap: 8px;
+  background: #0d0e14;
+  padding: 8px 16px;
+  border-bottom: 1px solid #1e202c;
+}
+
+.netflix-sim-theme .stage-tab-btn {
+  background: #141620 !important;
+  color: #a1a1aa !important;
+  border: 1px solid #232638 !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.netflix-sim-theme .stage-tab-btn:hover {
+  background: #1a1d2c !important;
+  color: #f4f4f5 !important;
+  border-color: #3b3f5c !important;
+}
+
+.netflix-sim-theme .stage-tab-btn.active {
+  background: rgba(229, 9, 20, 0.15) !important;
+  color: #f4f4f5 !important;
+  border-color: #e50914 !important;
+  box-shadow: 0 0 10px rgba(229, 9, 20, 0.2) !important;
+}
+
+/* Chat Message Bubble */
+.netflix-sim-theme .chime-message-bubble {
+  background: #12131c !important;
+  border: 1px solid #202334 !important;
+  border-left: 4px solid #e50914 !important;
+  border-radius: 8px !important;
+  padding: 14px 18px !important;
+  margin: 16px 0 !important;
+}
+
+.netflix-sim-theme .bubble-message-text {
+  color: #e4e4e7 !important;
+  font-size: 13.5px !important;
+  line-height: 1.55 !important;
+}
+
+/* Code & SQL Workstation */
+.netflix-sim-theme .sql-template-code-box,
+.netflix-sim-theme #netflixLiveSqlEditor {
+  background: #0a0a0f !important;
+  color: #f4f4f5 !important;
+  border: 1px solid #27272a !important;
+  border-radius: 8px !important;
+  font-family: var(--font-mono, "SF Mono", Consolas, "Liberation Mono", Menlo, Courier, monospace) !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  padding: 16px !important;
+}
+
+.netflix-sim-theme #netflixLiveSqlEditor:focus {
+  outline: none !important;
+  border-color: #e50914 !important;
+  box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.25) !important;
+}
+
+/* Interactive Blanks Dropdowns */
+.netflix-sim-theme .blank-select-dropdown {
+  background: #18181b !important;
+  color: #e50914 !important;
+  border: 1px solid #e50914 !important;
+  border-radius: 4px !important;
+  padding: 4px 10px !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-weight: 700 !important;
+  font-size: 12.5px !important;
+  cursor: pointer !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  margin: 0 3px !important;
+}
+
+.netflix-sim-theme .blank-select-dropdown:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.4) !important;
+}
+
+/* Action Buttons (Strictly Non-Bleached) */
+.netflix-sim-theme .btn-run-check {
+  background: #e50914 !important;
+  color: #ffffff !important;
+  border: 1px solid #b20710 !important;
+  font-weight: 700 !important;
+  border-radius: 6px !important;
+  padding: 10px 22px !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3) !important;
+}
+
+.netflix-sim-theme .btn-run-check:hover {
+  background: #f40612 !important;
+  box-shadow: 0 4px 14px rgba(229, 9, 20, 0.5) !important;
+  transform: translateY(-1px);
+}
+
+.netflix-sim-theme .btn-reset-challenge {
+  background: #18181b !important;
+  color: #d4d4d8 !important;
+  border: 1px solid #3f3f46 !important;
+  border-radius: 6px !important;
+  padding: 10px 18px !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.netflix-sim-theme .btn-reset-challenge:hover {
+  background: #27272a !important;
+  color: #ffffff !important;
+  border-color: #52525b !important;
+}
+
+.netflix-sim-theme .btn-next-day {
+  background: #18181b !important;
+  color: #f4f4f5 !important;
+  border: 1px solid #e50914 !important;
+  font-weight: 700 !important;
+  border-radius: 6px !important;
+  padding: 9px 20px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.netflix-sim-theme .btn-next-day:hover {
+  background: #e50914 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4) !important;
+}
+
+/* Evaluation Cards */
+.netflix-sim-theme .evaluation-card.success {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  border-radius: 8px !important;
+  padding: 18px !important;
+  margin-top: 20px !important;
+}
+
+.netflix-sim-theme .evaluation-card.error {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+  border-radius: 8px !important;
+  padding: 18px !important;
+  margin-top: 20px !important;
+}
+
+/* Schema & Sample Table */
+.netflix-sim-theme .telemetry-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  background: #0d0e14;
+  border: 1px solid #202334;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.netflix-sim-theme .telemetry-table th {
+  background: #141622;
+  color: #f87171;
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid #202334;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.netflix-sim-theme .telemetry-table td {
+  padding: 8px 14px;
+  border-bottom: 1px solid #191c2b;
+  color: #d4d4d8;
+}
+
+.netflix-sim-theme .telemetry-table tr:hover td {
+  background: #191c2c;
+  color: #ffffff;
+}

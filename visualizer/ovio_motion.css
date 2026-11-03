@@ -1,0 +1,497 @@
+/* =============================================================================
+   OVIO UI FLUID MOTION ENGINE - MASTER CSS
+   Inspired by ovoui.vercel.app ("The motion layer for developer websites")
+   Crafted in Carbon High-Contrast Monochrome (Pure Pitch Black & Crisp White)
+   Components:
+   1. Liquid Tabs (Fluid sliding indicator with liquid stretch & status dot)
+   2. Dial Menu (Radial circular context menu blooming around pointer)
+   3. Scratch to Reveal (Interactive scratch canvas with particle sparkles)
+   4. Liquid Magnifier (Optical zoom lens with fluid velocity squash)
+   5. Interactive 3D Card Tilt & Cursor Spotlight
+   6. Contribution Graph Fluid Cells
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   SPRING EASING CURVES & MOTION TOKENS
+   ----------------------------------------------------------------------------- */
+:root {
+  --ovio-spring-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+  --ovio-spring-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ovio-spring-soft: cubic-bezier(0.25, 1, 0.5, 1);
+  --ovio-duration-fast: 180ms;
+  --ovio-duration-normal: 320ms;
+  --ovio-duration-spring: 450ms;
+}
+
+/* =============================================================================
+   1. LIQUID TABS COMPONENT
+   ============================================================================= */
+.ovio-tabs-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* The liquid sliding indicator */
+.ovio-liquid-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 6px;
+  background: #ffffff;
+  pointer-events: none;
+  z-index: 1;
+  transition: transform var(--ovio-duration-spring) var(--ovio-spring-snappy),
+              width var(--ovio-duration-spring) var(--ovio-spring-snappy),
+              opacity var(--ovio-duration-fast) ease;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+  transform-origin: center center;
+  will-change: transform, width;
+}
+
+/* Variant for dark tabs on light / dark backdrop */
+.ovio-liquid-indicator.dark-pill {
+  background: #ffffff;
+  color: #000000;
+}
+
+.ovio-liquid-indicator.ghost-pill {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* Liquid stretch effect when in transit */
+.ovio-liquid-indicator.stretching-right {
+  transform: scaleX(1.18);
+  transform-origin: left center;
+}
+
+.ovio-liquid-indicator.stretching-left {
+  transform: scaleX(1.18);
+  transform-origin: right center;
+}
+
+/* Tab button styling when managed by Liquid Tabs */
+.ovio-tab-item {
+  position: relative;
+  z-index: 2;
+  transition: color var(--ovio-duration-fast) ease, opacity var(--ovio-duration-fast) ease;
+}
+
+.ovio-tab-item.active {
+  color: #000000 !important;
+  font-weight: 700;
+}
+
+/* Deploy status dot inside tab bar */
+.ovio-status-dot-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: #a1a1aa;
+}
+
+.ovio-status-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.ovio-status-dot::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+  animation: ovio-pulse-ring 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+@keyframes ovio-pulse-ring {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* =============================================================================
+   2. DIAL MENU COMPONENT (RADIAL POINTER-ANCHORED QUICK MENU)
+   ============================================================================= */
+.ovio-dial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: none;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.ovio-dial-overlay.open {
+  display: block;
+  opacity: 1;
+}
+
+.ovio-dial-menu {
+  position: fixed;
+  width: 260px;
+  height: 260px;
+  margin-left: -130px;
+  margin-top: -130px;
+  pointer-events: auto;
+  user-select: none;
+  transform: scale(0.5);
+  opacity: 0;
+  transition: transform var(--ovio-duration-spring) var(--ovio-spring-elastic),
+              opacity var(--ovio-duration-fast) ease;
+  will-change: transform, opacity;
+}
+
+.ovio-dial-overlay.open .ovio-dial-menu {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Dial Outer Compass Rings */
+.ovio-dial-compass {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+  animation: ovio-dial-spin 60s linear infinite;
+}
+
+@keyframes ovio-dial-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.ovio-dial-crosshair {
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+/* Central Anchor Hub */
+.ovio-dial-center-hub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 52px;
+  height: 52px;
+  margin-top: -26px;
+  margin-left: -26px;
+  border-radius: 50%;
+  background: #000000;
+  border: 1px solid #3f3f46;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.9), 0 0 16px rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 18px;
+  z-index: 10;
+  cursor: pointer;
+  transition: transform var(--ovio-duration-fast) var(--ovio-spring-elastic),
+              border-color var(--ovio-duration-fast) ease;
+}
+
+.ovio-dial-center-hub:hover {
+  transform: scale(1.1);
+  border-color: #ffffff;
+}
+
+/* Radial Menu Items */
+.ovio-dial-item {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  margin-left: -22px;
+  border-radius: 50%;
+  background: #09090b;
+  border: 1px solid #27272a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
+  transition: transform var(--ovio-duration-spring) var(--ovio-spring-elastic),
+              background var(--ovio-duration-fast) ease,
+              border-color var(--ovio-duration-fast) ease,
+              box-shadow var(--ovio-duration-fast) ease;
+  z-index: 5;
+  outline: none;
+}
+
+.ovio-dial-item:hover,
+.ovio-dial-item:focus {
+  transform: scale(1.28);
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+  z-index: 20;
+}
+
+/* Tooltip label appearing on hover */
+.ovio-dial-tooltip {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #3f3f46;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 140ms ease, transform 140ms ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+.ovio-dial-item:hover .ovio-dial-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Persistent Quick Floating Dial Trigger (Bottom Right) */
+.ovio-dial-floating-trigger {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #000000;
+  border: 1px solid #3f3f46;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  z-index: 9998;
+  transition: transform var(--ovio-duration-fast) var(--ovio-spring-elastic),
+              background var(--ovio-duration-fast) ease,
+              border-color var(--ovio-duration-fast) ease;
+}
+
+.ovio-dial-floating-trigger:hover {
+  transform: scale(1.12);
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+/* =============================================================================
+   3. SCRATCH TO REVEAL COMPONENT
+   ============================================================================= */
+.ovio-scratch-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid #27272a;
+  background: #09090b;
+  user-select: none;
+}
+
+.ovio-scratch-content {
+  padding: 14px 16px;
+  opacity: 0.15;
+  transition: opacity var(--ovio-duration-spring) var(--ovio-spring-snappy),
+              filter var(--ovio-duration-spring) var(--ovio-spring-snappy);
+  filter: blur(4px);
+}
+
+.ovio-scratch-card.revealed .ovio-scratch-content {
+  opacity: 1;
+  filter: blur(0px);
+}
+
+.ovio-scratch-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  z-index: 3;
+  transition: opacity var(--ovio-duration-spring) ease;
+}
+
+.ovio-scratch-card.revealed .ovio-scratch-canvas {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ovio-scratch-banner {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 4;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  background: #000000;
+  border: 1px solid #3f3f46;
+  color: #d4d4d8;
+  padding: 2px 8px;
+  border-radius: 4px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 200ms ease;
+}
+
+.ovio-scratch-card.revealed .ovio-scratch-banner {
+  opacity: 0;
+}
+
+/* =============================================================================
+   4. LIQUID MAGNIFIER COMPONENT
+   ============================================================================= */
+.ovio-magnifier-lens {
+  position: fixed;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  background: #000000;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 99998;
+  display: none;
+  box-shadow: 0 0 28px rgba(0, 0, 0, 0.95),
+              0 0 16px rgba(255, 255, 255, 0.35),
+              inset 0 0 20px rgba(255, 255, 255, 0.15);
+  transform: translate(-50%, -50%);
+  will-change: transform, left, top;
+}
+
+.ovio-magnifier-lens.active {
+  display: block;
+}
+
+.ovio-magnifier-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.ovio-magnifier-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  margin-left: -8px;
+  pointer-events: none;
+}
+
+.ovio-magnifier-crosshair::before,
+.ovio-magnifier-crosshair::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.ovio-magnifier-crosshair::before {
+  top: 7px;
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+
+.ovio-magnifier-crosshair::after {
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.ovio-magnifier-zoom-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000000;
+  border: 1px solid #3f3f46;
+  color: #ffffff;
+  font-family: var(--font-mono, monospace);
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+/* =============================================================================
+   5. 3D PERSPECTIVE TILT CARDS & SPOTLIGHT
+   ============================================================================= */
+.ovio-tilt-card {
+  transition: transform 240ms var(--ovio-spring-snappy),
+              box-shadow 240ms ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.ovio-tilt-card.in-tilt {
+  transition: transform 60ms linear, box-shadow 60ms linear;
+}
+
+.ovio-spotlight-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  z-index: 2;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                              rgba(255, 255, 255, 0.08) 0%,
+                              transparent 65%);
+}
+
+.ovio-tilt-card:hover .ovio-spotlight-overlay {
+  opacity: 1;
+}
+
+/* =============================================================================
+   6. CONTRIBUTION ACTIVITY GRAPH FLUID CELLS
+   ============================================================================= */
+.ovio-heat-cell {
+  transition: transform var(--ovio-duration-spring) var(--ovio-spring-elastic),
+              background var(--ovio-duration-fast) ease,
+              border-color var(--ovio-duration-fast) ease;
+  will-change: transform;
+}
+
+.ovio-heat-cell:hover {
+  transform: scale(1.4) !important;
+  z-index: 10 !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4) !important;
+}

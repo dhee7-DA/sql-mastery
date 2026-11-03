@@ -1798,44 +1798,24 @@ function generateSqlFromBuilder() {
 // Immediate theme application to prevent FOUC
 (function applyEarlyTheme() {
   try {
-    let savedTheme = localStorage.getItem('sql_visualizer_theme');
-    if (!savedTheme || savedTheme === 'zinc-pitch' || savedTheme === 'kobbe-nordic') {
-      savedTheme = 'monochrome';
-    }
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    if (document.body) document.body.setAttribute('data-theme', savedTheme);
+    localStorage.setItem('sql_visualizer_theme', 'carbon');
+    document.documentElement.setAttribute('data-theme', 'carbon');
+    if (document.body) document.body.setAttribute('data-theme', 'carbon');
   } catch (e) {}
 })();
 
 function initThemeController() {
-  const themeSelect = document.getElementById('themeSelect');
-  let savedTheme = 'monochrome';
   try {
-    const stored = localStorage.getItem('sql_visualizer_theme');
-    if (stored && stored !== 'zinc-pitch' && stored !== 'kobbe-nordic') {
-      savedTheme = stored;
-    } else {
-      savedTheme = 'monochrome';
-      localStorage.setItem('sql_visualizer_theme', 'monochrome');
-    }
+    localStorage.setItem('sql_visualizer_theme', 'carbon');
   } catch (e) {}
 
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  if (document.body) document.body.setAttribute('data-theme', savedTheme);
+  document.documentElement.setAttribute('data-theme', 'carbon');
+  if (document.body) document.body.setAttribute('data-theme', 'carbon');
 
+  const themeSelect = document.getElementById('themeSelect');
   if (themeSelect) {
-    themeSelect.value = savedTheme;
-    themeSelect.addEventListener('change', (e) => {
-      const newTheme = e.target.value;
-      document.documentElement.setAttribute('data-theme', newTheme);
-      if (document.body) document.body.setAttribute('data-theme', newTheme);
-      try {
-        localStorage.setItem('sql_visualizer_theme', newTheme);
-      } catch (err) {}
-      if (window.AudioFX) window.AudioFX.playClick();
-      if (typeof renderActivityHeatmap === 'function') renderActivityHeatmap();
-      window.dispatchEvent(new CustomEvent('sql-theme-changed', { detail: { theme: newTheme } }));
-    });
+    themeSelect.value = 'carbon';
+    themeSelect.style.display = 'none';
   }
 
   // Hash route support for direct links (#machines, #leetcode, #studio, etc.)
@@ -1851,6 +1831,16 @@ function initThemeController() {
       if (typeof selectNavView === 'function') selectNavView('viewMasteryCourse', 'Course', null);
     } else if (hash === '#home') {
       if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Home', null);
+    } else if (hash === '#uber' || hash === '#mobility' || hash === '#marketplace') {
+      if (typeof selectNavView === 'function') selectNavView('viewUberStory', 'Uber', null);
+    } else if (hash === '#stripe' || hash === '#fintech' || hash === '#payments') {
+      if (typeof selectNavView === 'function') selectNavView('viewStripeStory', 'Stripe', null);
+    } else if (hash === '#airbnb' || hash === '#travel' || hash === '#hospitality') {
+      if (typeof selectNavView === 'function') selectNavView('viewAirbnbStory', 'Airbnb', null);
+    } else if (hash === '#spotify' || hash === '#audio' || hash === '#music') {
+      if (typeof selectNavView === 'function') selectNavView('viewSpotifyStory', 'Spotify', null);
+    } else if (hash === '#netflix' || hash === '#streaming' || hash === '#qoe') {
+      if (typeof selectNavView === 'function') selectNavView('viewNetflixStory', 'Netflix', null);
     } else if (hash === '#jpmorgan' || hash === '#finance' || hash === '#wallstreet') {
       if (typeof selectNavView === 'function') selectNavView('viewJPMorganStory', 'Finance', null);
     } else if (hash === '#amazon' || hash === '#analytics' || hash === '#bi') {
@@ -2285,6 +2275,11 @@ const NAV_GROUPS_MAP = {
   viewAmazonStory: { triggerId: 'btnNavAnalytics', pillId: null, label: 'Analytics' },
   viewTrapGym: { triggerId: 'btnGroupPractice', pillId: null, label: 'Trap Gym (SRS)' },
   viewJPMorganStory: { triggerId: 'btnNavFinance', pillId: null, label: 'Finance' },
+  viewNetflixStory: { triggerId: 'btnNavNetflix', pillId: null, label: 'Netflix' },
+  viewUberStory: { triggerId: 'btnNavUber', pillId: null, label: 'Uber' },
+      viewStripeStory: { triggerId: 'btnNavStripe', pillId: null, label: 'Stripe' },
+      viewAirbnbStory: { triggerId: 'btnNavAirbnb', pillId: null, label: 'Airbnb' },
+      viewSpotifyStory: { triggerId: 'btnNavSpotify', pillId: null, label: 'Spotify' },
 
   viewExplainer: { triggerId: 'btnGroupExplore', pillId: null, label: 'Study Docs' },
   viewDeconstructor: { triggerId: 'btnGroupExplore', pillId: null, label: 'Deconstructor' },
@@ -2417,6 +2412,26 @@ function switchMainView(targetId) {
       window.trapSRS.renderView();
     }
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🧠 Welcome to the Trap Memory Gym! Train your muscle memory against 36 high-frequency production traps!", 4500, 'thinking');
+  }
+  if (targetId === 'viewUberStory') {
+    if (window.initUberStoryEngine) window.initUberStoryEngine();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🚗 Welcome to Uber Marketplace Dynamics! 30-Day Real-Time Dispatch & H3 Simulation loaded!", 5000, 'celebrate');
+  }
+  if (targetId === 'viewNetflixStory') {
+    if (window.initNetflixStoryEngine) window.initNetflixStoryEngine();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🍿 Welcome to Netflix Data Platform! 30-Day Streaming Telemetry & Retention Simulation loaded!", 5000, 'celebrate');
+  }
+  if (targetId === 'viewStripeStory') {
+    if (window.initStripeStoryEngine) window.initStripeStoryEngine();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("💳 Welcome to Stripe FinTech & Global Payment Infrastructure! 30-Day Authorization, Radar ML & Treasury Simulation loaded!", 5000, 'celebrate');
+  }
+  if (targetId === 'viewAirbnbStory') {
+    if (window.initAirbnbStoryEngine) window.initAirbnbStoryEngine();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏡 Welcome to Airbnb Marketplace & Travel Infrastructure! 30-Day Dynamic Pricing & Calendar Gap Simulation loaded!", 5000, 'celebrate');
+  }
+  if (targetId === 'viewSpotifyStory') {
+    if (window.initSpotifyStoryEngine) window.initSpotifyStoryEngine();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("🎧 Welcome to Spotify Audio Streaming Platform! 30-Day 30s Monetization & Royalty Waterfall Simulation loaded!", 5000, 'celebrate');
   }
   if (targetId === 'viewJPMorganStory') {
     if (window.initJPMorganStoryEngine) window.initJPMorganStoryEngine();

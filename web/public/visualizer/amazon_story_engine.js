@@ -161,7 +161,7 @@
                 <span class="career-role-title">${career.title}</span>
                 <span class="career-progress-sub">Solved ${solvedDays.size} of 30 Work Days</span>
               </div>
-              <span class="career-pill" style="color: ${career.color}; border-color: ${career.color}44; background: ${career.color}15;">
+              <span class="career-pill">
                 ${career.badge}
               </span>
             </div>
@@ -231,6 +231,7 @@
     `;
 
     renderAmazonMainStage();
+    if (window.OvioMotion && typeof window.OvioMotion.refresh === "function") setTimeout(() => window.OvioMotion.refresh(), 30);
   }
 
   function renderAmazonMainStage() {
@@ -278,6 +279,7 @@
         ${activeTab === 'context' ? renderContextReportHtml(day) : renderChallengeHtml(day)}
       </div>
     `;
+    if (window.OvioMotion && typeof window.OvioMotion.refresh === "function") setTimeout(() => window.OvioMotion.refresh(), 30);
   }
 
   function renderContextReportHtml(day) {
@@ -306,10 +308,10 @@
         <div class="report-dual-grid">
           <!-- PITFALLS & TRAPS -->
           <div class="report-box trap-box">
-            <div class="report-box-title" style="color: #f59e0b;">
+            <div class="report-box-title">
               <span>⚠️ Real-World Traps &amp; Silent Gotchas</span>
             </div>
-            <p class="report-box-text" style="color: #fde68a;">${report.realWorldTrap}</p>
+            <p class="report-box-text">${report.realWorldTrap}</p>
             <div class="interview-note">
               <strong>💼 Interview Relevance:</strong> ${report.interviewRelevance}
             </div>
@@ -317,7 +319,7 @@
 
           <!-- TARGET SCHEMA -->
           <div class="report-box schema-box">
-            <div class="report-box-title" style="color: #38bdf8;">
+            <div class="report-box-title">
               <span>🗄️ Amazon Redshift Sample Table Schema</span>
             </div>
             <pre class="schema-code-block"><code>${report.sampleSchema}</code></pre>

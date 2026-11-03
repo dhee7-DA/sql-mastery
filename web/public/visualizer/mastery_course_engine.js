@@ -307,7 +307,7 @@ window.MasteryCourseEngine = (function () {
       title: 'SELECT & FROM',
       name: 'The Starting Line: Inspecting Tables, Picking Columns, and Math',
       shortName: '01. SELECT & FROM',
-      icon: '01',
+      icon: '🗄️',
       execRank: 'Level 1: Foundation',
       summary: 'Learn what a table is, how to view all or specific columns, rename with AS, and do simple math.',
 
@@ -1753,6 +1753,9 @@ FROM Employees;`,
 
     renderCourseShell(container);
     bindCourseEvents(container);
+    if (window.OvioMotion && typeof window.OvioMotion.refresh === 'function') {
+      setTimeout(() => window.OvioMotion.refresh(), 30);
+    }
   }
 
   function renderCourseShell(container) {
@@ -1813,19 +1816,18 @@ FROM Employees;`,
           </div>
         </header>
 
-        <!-- 2. The 10-Topic Progressive Navigation Rail -->
-        <nav class="phase-execution-rail" id="phaseExecutionRail">
+        <!-- 2. The 10-Topic Progressive Navigation Rail (Ovio Liquid Tabs) -->
+        <nav class="phase-execution-rail ovio-tabs-wrapper" id="phaseExecutionRail">
           ${PHASES.map((p, idx) => {
             const isActive = p.id === state.activePhaseId;
             const isDone = state.completedPhases.has(p.id);
-            const sep = idx < PHASES.length - 1 ? '<span class="phase-rail-sep">›</span>' : '';
+            const cleanName = p.shortName.replace(/^\d+\.\s*/, '');
             return `
-              <button class="phase-node-btn ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" data-phase="${p.id}">
+              <button class="phase-node-btn ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" data-phase="${p.id}" title="Topic ${p.seq}: ${p.title}">
                 <span class="phase-seq-tag">${p.seq}</span>
-                <span class="phase-name-tag">${p.shortName}</span>
-                ${isDone ? '<span style="font-size: 10px;">✓</span>' : ''}
+                <span class="phase-name-tag">${cleanName}</span>
+                ${isDone ? '<span class="phase-done-icon">✓</span>' : ''}
               </button>
-              ${sep}
             `;
           }).join('')}
         </nav>

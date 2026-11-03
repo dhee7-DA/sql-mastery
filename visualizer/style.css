@@ -23992,9 +23992,9 @@ button:active .framer-emoji-icon {
 }
 
 .priority-p1 {
-  background: #451a03;
-  color: rgba(225, 29, 72, 0.25);
-  border: 1px solid #78350f;
+  background: #18181b;
+  color: #f4f4f5;
+  border: 1px solid #3f3f46;
 }
 
 .priority-p2 {
@@ -24293,13 +24293,13 @@ button:active .framer-emoji-icon {
 
 .interview-note {
   margin-top: 6px;
-  padding: 7px 9px;
-  background: #1c1408;
+  padding: 8px 12px;
+  background: #141416;
   border-radius: 4px;
   font-size: 11.5px;
-  color: rgba(225, 29, 72, 0.25);
-  line-height: 1.45;
-  border: 1px solid #451a03;
+  color: #f4f4f5;
+  line-height: 1.55;
+  border: 1px solid #3f3f46;
 }
 
 .schema-box {
@@ -26786,27 +26786,28 @@ button:active .framer-emoji-icon {
 }
 
 [data-theme="carbon"] {
-  --bg-canvas: #090a0c;
-  --bg-surface: #0f1115;
-  --bg-surface-elevated: #16191f;
-  --bg-card: #121418;
-  --bg-card-subtle: #191c22;
-  --bg-hover: #21252e;
-  --bg-active: #2b303c;
-  --border-subtle: #22262e;
-  --border-default: #363c48;
-  --text-primary: #e6edf3;
-  --text-secondary: #8b949e;
-  --text-muted: #57606a;
-  --accent: #10b981;
-  --accent-soft: rgba(16, 185, 129, 0.12);
-  --accent-border: rgba(16, 185, 129, 0.3);
-  --btn-primary-bg: linear-gradient(135deg, #059669 0%, #047857 100%);
-  --btn-primary-color: #ffffff;
-  --btn-primary-border: rgba(16, 185, 129, 0.35);
-  --btn-primary-shadow: 0 2px 10px rgba(16, 185, 129, 0.25);
-  --btn-primary-hover: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  --btn-primary-hover-color: #041c14;
+  --bg-canvas: #000000;
+  --bg-surface: #0a0a0a;
+  --bg-surface-elevated: #121212;
+  --bg-card: #0d0d0f;
+  --bg-card-subtle: #141416;
+  --bg-hover: #1c1c20;
+  --bg-active: #242428;
+  --border-subtle: #222225;
+  --border-default: #2e2e33;
+  --border-strong: #44444a;
+  --text-primary: #ffffff;
+  --text-secondary: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --accent: #ffffff;
+  --accent-soft: rgba(255, 255, 255, 0.08);
+  --accent-border: rgba(255, 255, 255, 0.25);
+  --btn-primary-bg: #ffffff;
+  --btn-primary-color: #000000;
+  --btn-primary-border: #ffffff;
+  --btn-primary-shadow: 0 1px 4px rgba(255, 255, 255, 0.15);
+  --btn-primary-hover: #e4e4e7;
+  --btn-primary-hover-color: #000000;
 }
 
 
@@ -27078,4 +27079,1700 @@ body[data-theme="ink"] #btnRunQuery {
     padding: 0 !important;
     justify-content: center !important;
   }
+}
+
+
+/* =============================================================================
+   CARBON DESIGN SYSTEM - PURE HIGH-CONTRAST BLACK & WHITE MASTER THEME
+   Strict monochrome styling: Pitch black surfaces, pure white typography,
+   silver secondary hierarchy, razor-sharp borders, zero bleached buttons.
+   ============================================================================= */
+
+:root,
+[data-theme="carbon"],
+body[data-theme="carbon"],
+html[data-theme="carbon"] {
+  --bg-canvas: #000000 !important;
+  --bg-surface: #0a0a0a !important;
+  --bg-surface-elevated: #121212 !important;
+  --bg-card: #0d0d0f !important;
+  --bg-card-subtle: #141416 !important;
+  --bg-hover: #1c1c20 !important;
+  --bg-active: #242428 !important;
+  
+  --border-subtle: #222225 !important;
+  --border-default: #2e2e33 !important;
+  --border-strong: #44444a !important;
+  
+  --text-primary: #ffffff !important;
+  --text-secondary: #d4d4d8 !important;
+  --text-muted: #a1a1aa !important;
+  
+  --accent: #ffffff !important;
+  --accent-soft: rgba(255, 255, 255, 0.08) !important;
+  --accent-border: rgba(255, 255, 255, 0.25) !important;
+  
+  --btn-primary-bg: #ffffff !important;
+  --btn-primary-color: #000000 !important;
+  --btn-primary-border: #ffffff !important;
+  --btn-primary-hover: #e4e4e7 !important;
+  --btn-primary-hover-color: #000000 !important;
+  
+  color-scheme: dark !important;
+}
+
+/* =============================================================================
+   1. GLOBAL CANVAS & LAYOUT RESET
+   ============================================================================= */
+html, body, .app-layout, .main-viewport, .view-panel {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #f4f4f5 !important;
+}
+
+/* =============================================================================
+   2. HEADER & NAVIGATION (PURE MONOCHROME)
+   ============================================================================= */
+.app-header {
+  background: #000000 !important;
+  border-bottom: 1px solid #222225 !important;
+}
+
+.brand-icon {
+  background: #141416 !important;
+  border: 1px solid #2e2e33 !important;
+  color: #ffffff !important;
+}
+
+.brand-name {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.brand-badge {
+  background: #121214 !important;
+  border: 1px solid #27272a !important;
+  color: #a1a1aa !important;
+}
+
+.nav-groups-container {
+  background: #0a0a0a !important;
+  border: 1px solid #222225 !important;
+}
+
+.nav-group-trigger {
+  color: #a1a1aa !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+}
+
+.nav-group-trigger:hover {
+  background: #161618 !important;
+  color: #ffffff !important;
+  border-color: #27272a !important;
+}
+
+.nav-group-trigger.active {
+  background: #1c1c20 !important;
+  color: #ffffff !important;
+  border: 1px solid #3f3f46 !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+
+.header-icon-btn,
+.header-stat-chip,
+.theme-select-wrapper {
+  background: #0d0d0f !important;
+  border: 1px solid #26262a !important;
+  color: #d4d4d8 !important;
+}
+
+.header-icon-btn:hover {
+  background: #1c1c20 !important;
+  color: #ffffff !important;
+  border-color: #3f3f46 !important;
+}
+
+.saas-launch-pill {
+  background: #0d0d0f !important;
+  border: 1px solid #26262a !important;
+  color: #d4d4d8 !important;
+}
+
+.saas-launch-pill span:first-child {
+  background: #ffffff !important;
+  box-shadow: 0 0 4px #ffffff !important;
+}
+
+/* Primary Topbar Run Button */
+.action-btn-primary,
+#btnRunQuery,
+.header-cta-btn {
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  border: 1px solid #ffffff !important;
+  box-shadow: 0 1px 4px rgba(255, 255, 255, 0.15) !important;
+}
+
+.action-btn-primary:hover,
+#btnRunQuery:hover,
+.header-cta-btn:hover {
+  background: #e4e4e7 !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+.action-btn-primary svg,
+#btnRunQuery svg {
+  fill: #000000 !important;
+  stroke: #000000 !important;
+}
+
+/* =============================================================================
+   3. UNIVERSAL CARBON BUTTONS & INTERACTIVE ELEMENTS
+   ============================================================================= */
+/* White Primary Buttons */
+.btn-primary,
+.btn-run-check,
+.btn-launch-challenge,
+.btn-verify-query,
+.btn-next-day,
+.lc-btn-primary,
+.landing-cta-primary {
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  border: 1px solid #ffffff !important;
+  border-radius: 6px !important;
+  transition: all 0.12s ease !important;
+  cursor: pointer !important;
+}
+
+.btn-primary:hover,
+.btn-run-check:hover,
+.btn-launch-challenge:hover,
+.btn-verify-query:hover,
+.btn-next-day:hover,
+.lc-btn-primary:hover,
+.landing-cta-primary:hover {
+  background: #e4e4e7 !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  transform: translateY(-0.5px) !important;
+}
+
+/* Secondary Monochrome Buttons */
+.btn-secondary,
+.btn-reset-challenge,
+.btn-reset-query,
+.card-nav-btn {
+  background: #141416 !important;
+  color: #f4f4f5 !important;
+  border: 1px solid #2e2e33 !important;
+  border-radius: 6px !important;
+}
+
+.btn-secondary:hover,
+.btn-reset-challenge:hover,
+.btn-reset-query:hover,
+.card-nav-btn:hover {
+  background: #202024 !important;
+  color: #ffffff !important;
+  border-color: #44444a !important;
+}
+
+/* =============================================================================
+   4. AMAZON 30-DAY ANALYTICS WORKSPACE (#analytics)
+   Fixes low contrast, broken opacity, blue tabs, and bleached schema boxes
+   ============================================================================= */
+.amazon-story-workspace-wrap,
+#amazonStoryContentRoot {
+  background: #000000 !important;
+  color: #f4f4f5 !important;
+}
+
+.amazon-sim-header {
+  background: #080808 !important;
+  border-bottom: 1px solid #222225 !important;
+}
+
+.amazon-prime-badge {
+  background: #161618 !important;
+  color: #ffffff !important;
+  border: 1px solid #333338 !important;
+}
+
+.amazon-team-tag {
+  color: #a1a1aa !important;
+  border-left: 1px solid #27272a !important;
+}
+
+.career-role-title {
+  color: #ffffff !important;
+}
+
+.career-progress-sub {
+  color: #a1a1aa !important;
+}
+
+.career-pill {
+  background: #161618 !important;
+  color: #ffffff !important;
+  border: 1px solid #3f3f46 !important;
+}
+
+/* Left Sidebar Tickets */
+.amazon-tickets-sidebar {
+  background: #050505 !important;
+  border-right: 1px solid #222225 !important;
+}
+
+.sidebar-header-box {
+  background: #0a0a0a !important;
+  border-bottom: 1px solid #222225 !important;
+}
+
+.sidebar-title-row {
+  color: #ffffff !important;
+}
+
+.inbox-count-pill {
+  background: #161618 !important;
+  color: #d4d4d8 !important;
+  border: 1px solid #2e2e33 !important;
+}
+
+.phase-pill-btn {
+  background: #111113 !important;
+  border: 1px solid #222225 !important;
+  color: #a1a1aa !important;
+}
+
+.phase-pill-btn:hover {
+  background: #1a1a1e !important;
+  color: #ffffff !important;
+}
+
+.phase-pill-btn.active {
+  background: #242428 !important;
+  border-color: #525258 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.amazon-ticket-card {
+  background: #0a0a0c !important;
+  border: 1px solid #1f1f23 !important;
+  color: inherit !important;
+}
+
+.amazon-ticket-card:hover {
+  background: #141418 !important;
+  border-color: #38383f !important;
+}
+
+.amazon-ticket-card.active {
+  background: #18181c !important;
+  border-color: #ffffff !important;
+}
+
+.amazon-ticket-card.completed {
+  border-left: 3px solid #ffffff !important;
+}
+
+.ticket-day-badge {
+  background: #161618 !important;
+  color: #d4d4d8 !important;
+  border: 1px solid #2a2a2e !important;
+}
+
+.ticket-day-badge.done {
+  background: #222225 !important;
+  color: #ffffff !important;
+  border-color: #44444a !important;
+}
+
+/* High Contrast Priority Pills */
+.ticket-priority-pill,
+.priority-p0,
+.priority-p1,
+.priority-p2,
+.chime-priority-badge {
+  background: #18181b !important;
+  color: #ffffff !important;
+  border: 1px solid #3f3f46 !important;
+  font-weight: 700 !important;
+}
+
+.ticket-sender-name,
+.chime-name {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.ticket-dept-text,
+.chime-dept-label,
+.chime-timestamp {
+  color: #a1a1aa !important;
+}
+
+.ticket-subject-title {
+  color: #d4d4d8 !important;
+}
+
+/* Main Stage & Chime Memo */
+.amazon-main-stage {
+  background: #000000 !important;
+}
+
+.chime-memo-card {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-left: 3px solid #ffffff !important;
+}
+
+.chime-avatar-large {
+  background: #161618 !important;
+  border: 1px solid #2e2e33 !important;
+  color: #ffffff !important;
+}
+
+.chime-role-badge {
+  background: #161618 !important;
+  border: 1px solid #2e2e33 !important;
+  color: #d4d4d8 !important;
+}
+
+.chime-speech-bubble {
+  background: #000000 !important;
+  border: 1px solid #222225 !important;
+}
+
+.chime-message-text {
+  color: #ffffff !important;
+  line-height: 1.6 !important;
+}
+
+/* Stage Navigation Tabs */
+.amazon-tabs-bar,
+.stage-nav-tabs {
+  background: transparent !important;
+  border-bottom: 1px solid #222225 !important;
+}
+
+.amazon-tab-btn,
+.stage-tab-btn {
+  background: #0d0d0f !important;
+  border: 1px solid #222225 !important;
+  color: #a1a1aa !important;
+}
+
+.amazon-tab-btn:hover,
+.stage-tab-btn:hover {
+  background: #18181c !important;
+  color: #ffffff !important;
+  border-color: #38383f !important;
+}
+
+.amazon-tab-btn.active,
+.stage-tab-btn.active {
+  background: #202026 !important;
+  border: 1px solid #44444a !important;
+  border-bottom: 2px solid #ffffff !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Context Report Boxes */
+.report-box,
+.context-box {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  color: #f4f4f5 !important;
+}
+
+.report-box-title,
+.box-label {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.report-box-text,
+.box-text,
+.report-bullets-list {
+  color: #d4d4d8 !important;
+  line-height: 1.6 !important;
+}
+
+.report-bullets-list li,
+.focus-bullets li {
+  color: #d4d4d8 !important;
+}
+
+.report-bullets-list code,
+.focus-bullets code {
+  background: #141416 !important;
+  color: #ffffff !important;
+  border: 1px solid #2e2e33 !important;
+}
+
+/* Pitfalls, Traps & Interview Notes */
+.trap-box,
+.context-box.warning {
+  border-left: 3px solid #71717a !important;
+}
+
+.trap-box .report-box-title {
+  color: #ffffff !important;
+}
+
+.trap-box .report-box-text {
+  color: #e4e4e7 !important;
+}
+
+.interview-note,
+.context-box.info {
+  background: #121214 !important;
+  border: 1px solid #333338 !important;
+  color: #f4f4f5 !important;
+  border-radius: 4px !important;
+  padding: 10px 12px !important;
+  margin-top: 8px !important;
+  line-height: 1.55 !important;
+}
+
+.interview-note strong,
+.context-box.info strong {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Redshift Schema & Monospaced Code Blocks (NO WHITE BACKGROUND) */
+.schema-box {
+  border-left: 3px solid #71717a !important;
+}
+
+.schema-box .report-box-title {
+  color: #ffffff !important;
+}
+
+.schema-code-block,
+.sample-schema-box pre,
+.schema-pre,
+pre.terminal-editor-body,
+pre.terminal-code-block {
+  background: #000000 !important;
+  color: #f4f4f5 !important;
+  border: 1px solid #222225 !important;
+  border-radius: 6px !important;
+  padding: 12px 14px !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 11.5px !important;
+  line-height: 1.6 !important;
+  overflow-x: auto !important;
+}
+
+.schema-code-block code,
+pre code {
+  color: #f4f4f5 !important;
+  background: transparent !important;
+}
+
+/* Challenge Terminal & Blank Selectors */
+.challenge-instruction-card {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-left: 3px solid #ffffff !important;
+  color: #f4f4f5 !important;
+}
+
+.instruction-lead {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.amazon-code-terminal,
+.sql-terminal-box {
+  background: #000000 !important;
+  border: 1px solid #222225 !important;
+}
+
+.terminal-bar {
+  background: #0a0a0a !important;
+  border-bottom: 1px solid #222225 !important;
+}
+
+.terminal-title {
+  color: #a1a1aa !important;
+}
+
+.terminal-dots .dot {
+  background: #3f3f46 !important;
+}
+
+/* Blank Drop-Zones */
+.code-blank-slot {
+  background: #141416 !important;
+  border: 1px dashed #3f3f46 !important;
+  color: #a1a1aa !important;
+}
+
+.code-blank-slot.filled {
+  background: #1c1c20 !important;
+  border: 1px solid #71717a !important;
+  color: #ffffff !important;
+}
+
+.code-blank-slot.correct {
+  background: #242428 !important;
+  border: 1px solid #ffffff !important;
+  color: #ffffff !important;
+}
+
+.code-blank-slot.wrong {
+  background: #18181c !important;
+  border: 1px dashed #71717a !important;
+  color: #d4d4d8 !important;
+}
+
+.blank-options-tray-section {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+}
+
+.tray-label,
+.blank-card-title {
+  color: #a1a1aa !important;
+}
+
+.blank-selector-card {
+  background: #050505 !important;
+  border: 1px solid #1f1f23 !important;
+}
+
+.blank-choice-pill {
+  background: #121214 !important;
+  border: 1px solid #27272a !important;
+  color: #d4d4d8 !important;
+}
+
+.blank-choice-pill:hover {
+  background: #1c1c20 !important;
+  color: #ffffff !important;
+  border-color: #3f3f46 !important;
+}
+
+.blank-choice-pill.active {
+  background: #242428 !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Guided Dropdowns (for other tracks) */
+.blank-select-dropdown {
+  background: #121214 !important;
+  border: 1px solid #333338 !important;
+  color: #ffffff !important;
+}
+
+.blank-select-dropdown.correct {
+  background: #1c1c20 !important;
+  border-color: #ffffff !important;
+}
+
+.blank-select-dropdown.wrong {
+  background: #18181b !important;
+  border-color: #71717a !important;
+}
+
+/* Evaluation Feedback Cards */
+.evaluation-card.success {
+  background: #0a0a0c !important;
+  border: 1px solid #ffffff !important;
+  border-left: 4px solid #ffffff !important;
+  color: #ffffff !important;
+}
+
+.evaluation-card.error {
+  background: #121214 !important;
+  border: 1px solid #525258 !important;
+  border-left: 4px solid #71717a !important;
+  color: #ffffff !important;
+}
+
+.manager-review-box {
+  background: #141416 !important;
+  border: 1px solid #27272a !important;
+}
+
+.review-title {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.review-comment {
+  color: #d4d4d8 !important;
+}
+
+/* Telemetry Sample Tables & Results */
+.telemetry-table {
+  background: #000000 !important;
+  border: 1px solid #222225 !important;
+  color: #f4f4f5 !important;
+}
+
+.telemetry-table th {
+  background: #0a0a0a !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #222225 !important;
+}
+
+.telemetry-table td {
+  border-bottom: 1px solid #1a1a1c !important;
+  color: #d4d4d8 !important;
+}
+
+.table-preview-wrap {
+  border: 1px solid #222225 !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+}
+
+.table-preview-header {
+  background: #0a0a0a !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #222225 !important;
+}
+
+/* =============================================================================
+   5. ALL OTHER 6 INDUSTRY TRACKS OVERRIDES (JPMORGAN, NETFLIX, UBER, STRIPE, AIRBNB, SPOTIFY)
+   Ensures uniform Carbon Black & White styling across all 7 tracks
+   ============================================================================= */
+.jpmorgan-sim-header,
+.netflix-sim-header,
+.uber-sim-header,
+.stripe-sim-header,
+.airbnb-sim-header,
+.spotify-sim-header {
+  background: #080808 !important;
+  border-bottom: 1px solid #222225 !important;
+}
+
+.jpmorgan-brand-badge,
+.netflix-brand-badge,
+.uber-brand-badge,
+.stripe-brand-badge,
+.airbnb-brand-badge,
+.spotify-brand-badge {
+  background: #161618 !important;
+  color: #ffffff !important;
+  border: 1px solid #333338 !important;
+}
+
+.ticket-banner-strip {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+}
+
+.ticket-banner-title {
+  color: #ffffff !important;
+}
+
+.ticket-phase-tag {
+  background: #141416 !important;
+  border: 1px solid #27272a !important;
+  color: #d4d4d8 !important;
+}
+
+.chime-message-bubble {
+  background: #000000 !important;
+  border: 1px solid #222225 !important;
+}
+
+.bubble-sender-name {
+  color: #ffffff !important;
+}
+
+.bubble-sender-role {
+  color: #a1a1aa !important;
+}
+
+.bubble-message-text {
+  color: #f4f4f5 !important;
+}
+
+/* =============================================================================
+   6. LEETCODE 323, MACHINES, STUDIO, COURSE & LANDING HUB
+   ============================================================================= */
+.lc-arena-shell,
+.lc-canvas-body,
+.studio-workbench,
+.machines-container,
+.course-catalog-wrap,
+.landing-shell {
+  background: #000000 !important;
+  color: #f4f4f5 !important;
+}
+
+.lc-card,
+.lc-editor-card,
+.lc-schema-inspector-card,
+.machine-card,
+.studio-card,
+.landing-bento-card {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  color: #f4f4f5 !important;
+}
+
+.lc-card:hover,
+.machine-card:hover,
+.landing-bento-card:hover {
+  border-color: #3f3f46 !important;
+}
+
+.lc-prob-title,
+.machine-card-title,
+.landing-hero-headline {
+  color: #ffffff !important;
+}
+
+.lc-prob-desc,
+.machine-card-desc,
+.landing-hero-sub {
+  color: #d4d4d8 !important;
+}
+
+.code-editor,
+.lc-textarea-editor,
+#airbnbLiveSqlEditor,
+#spotifyLiveSqlEditor,
+#stripeLiveSqlEditor,
+#uberLiveSqlEditor,
+#netflixLiveSqlEditor,
+#jpmorganLiveSqlEditor {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #26262a !important;
+  font-family: var(--font-mono, monospace) !important;
+}
+
+/* Code Mirror & Syntax Highlights in Carbon B&W */
+.cm-editor,
+.CodeMirror {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+.cm-content {
+  color: #ffffff !important;
+}
+
+/* Bottom Status Bar */
+.app-footer,
+.status-bar {
+  background: #000000 !important;
+  border-top: 1px solid #222225 !important;
+  color: #a1a1aa !important;
+}
+
+.status-indicator-dot {
+  background: #ffffff !important;
+}
+
+
+/* =============================================================================
+   7. INDUSTRY TRACKS & ANALYTICS COMPLETE CARBON OVERHAUL (ZERO COLOR BLEED)
+   ============================================================================= */
+
+/* Header Nav Truncation Fix */
+.nav-group-trigger,
+.nav-tab,
+#btnNavAmazonStory {
+  white-space: nowrap !important;
+  min-width: max-content !important;
+  padding: 5px 12px !important;
+  overflow: visible !important;
+}
+
+.nav-group-title {
+  white-space: nowrap !important;
+  display: inline-block !important;
+}
+
+/* Amazon & Industry Track Simulator Root */
+.amazon-sim-container,
+.jpmorgan-sim-container,
+.netflix-sim-container,
+.uber-sim-container,
+.stripe-sim-container,
+.airbnb-sim-container,
+.spotify-sim-container {
+  background: #000000 !important;
+  color: #f4f4f5 !important;
+}
+
+.amazon-sim-header,
+.jpmorgan-sim-header,
+.netflix-sim-header,
+.uber-sim-header,
+.stripe-sim-header,
+.airbnb-sim-header,
+.spotify-sim-header {
+  background: #000000 !important;
+  border-bottom: 1px solid #222225 !important;
+}
+
+.amazon-prime-badge,
+.track-brand-badge {
+  background: #121214 !important;
+  color: #ffffff !important;
+  border: 1px solid #27272a !important;
+}
+
+.amazon-team-tag {
+  color: #a1a1aa !important;
+  border-left-color: #27272a !important;
+}
+
+.career-role-title {
+  color: #ffffff !important;
+}
+
+.career-progress-sub {
+  color: #a1a1aa !important;
+}
+
+.career-pill {
+  background: #141416 !important;
+  border: 1px solid #3f3f46 !important;
+  color: #ffffff !important;
+}
+
+/* Left Sidebar & Chime Inbox */
+.amazon-tickets-sidebar,
+.track-tickets-sidebar {
+  background: #09090b !important;
+  border-right: 1px solid #222225 !important;
+}
+
+.sidebar-header-box {
+  background: #09090b !important;
+  border-bottom: 1px solid #222225 !important;
+}
+
+.sidebar-title-row {
+  color: #ffffff !important;
+}
+
+.inbox-count-pill {
+  background: #141416 !important;
+  border: 1px solid #27272a !important;
+  color: #d4d4d8 !important;
+}
+
+/* Phase Filter Tabs (All, Wk 1, Wk 2, Wk 3, Wk 4) */
+.amazon-phase-filter-tabs {
+  background: #000000 !important;
+  border: 1px solid #222225 !important;
+  border-radius: 6px !important;
+  padding: 3px !important;
+  gap: 3px !important;
+}
+
+.phase-pill-btn {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: #a1a1aa !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.phase-pill-btn:hover {
+  background: #18181c !important;
+  color: #ffffff !important;
+}
+
+.phase-pill-btn.active,
+.phase-pill-btn.ovio-tab-active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Ticket Cards in Sidebar */
+.amazon-ticket-card {
+  background: #0d0d0f !important;
+  border: 1px solid #222225 !important;
+  color: #f4f4f5 !important;
+}
+
+.amazon-ticket-card:hover {
+  background: #141418 !important;
+  border-color: #3f3f46 !important;
+}
+
+.amazon-ticket-card.active {
+  background: #18181c !important;
+  border: 1px solid #ffffff !important;
+}
+
+.amazon-ticket-card.completed {
+  border-left: 3px solid #ffffff !important;
+}
+
+.ticket-day-badge {
+  background: #141416 !important;
+  color: #d4d4d8 !important;
+  border: 1px solid #27272a !important;
+}
+
+.ticket-day-badge.done {
+  background: #1f1f23 !important;
+  color: #ffffff !important;
+  border-color: #52525b !important;
+}
+
+.ticket-priority-pill {
+  background: #141416 !important;
+  color: #d4d4d8 !important;
+  border: 1px solid #27272a !important;
+}
+
+.priority-p0 {
+  background: #1c1c20 !important;
+  color: #ffffff !important;
+  border: 1px solid #52525b !important;
+  font-weight: 700 !important;
+}
+
+.priority-p1 {
+  background: #141416 !important;
+  color: #e4e4e7 !important;
+  border: 1px solid #3f3f46 !important;
+}
+
+.priority-p2 {
+  background: #0e0e10 !important;
+  color: #a1a1aa !important;
+  border: 1px solid #27272a !important;
+}
+
+.ticket-sender-name {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.ticket-dept-text {
+  color: #a1a1aa !important;
+}
+
+.ticket-subject-title {
+  color: #d4d4d8 !important;
+}
+
+/* Main Stage */
+.amazon-main-stage,
+.track-main-stage {
+  background: #000000 !important;
+  color: #f4f4f5 !important;
+}
+
+/* Active Ticket Hero Memo Card */
+.chime-memo-card {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-left: 3px solid #ffffff !important;
+}
+
+.chime-avatar-large {
+  background: #121214 !important;
+  border: 1px solid #27272a !important;
+  color: #ffffff !important;
+}
+
+.chime-name {
+  color: #ffffff !important;
+}
+
+.chime-role-badge {
+  background: #141416 !important;
+  border: 1px solid #27272a !important;
+  color: #d4d4d8 !important;
+}
+
+.chime-timestamp {
+  color: #71717a !important;
+}
+
+.chime-dept-label {
+  color: #a1a1aa !important;
+}
+
+.chime-dept-label strong {
+  color: #ffffff !important;
+}
+
+.chime-priority-badge {
+  background: #141416 !important;
+  border: 1px solid #3f3f46 !important;
+  color: #ffffff !important;
+}
+
+.chime-speech-bubble {
+  background: #000000 !important;
+  border: 1px solid #222225 !important;
+  border-radius: 6px !important;
+}
+
+.chime-message-text {
+  color: #f4f4f5 !important;
+}
+
+/* Navigation Stage Tabs (Context Report vs Interactive Challenge) */
+.amazon-tabs-bar {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-radius: 6px !important;
+  padding: 4px !important;
+  gap: 6px !important;
+}
+
+.amazon-tab-btn {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: #a1a1aa !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.amazon-tab-btn:hover {
+  background: #141416 !important;
+  color: #ffffff !important;
+}
+
+.amazon-tab-btn.active,
+.amazon-tab-btn.ovio-tab-active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Report Boxes (Why matters, Focus, Traps, Schema) */
+.report-box {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-radius: 6px !important;
+}
+
+.why-box {
+  border-left: 3px solid #ffffff !important;
+}
+
+.focus-box {
+  border-left: 3px solid #a1a1aa !important;
+}
+
+.trap-box {
+  border-left: 3px solid #ffffff !important;
+}
+
+.schema-box {
+  border-left: 3px solid #d4d4d8 !important;
+}
+
+.report-box-title {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.report-box-text {
+  color: #d4d4d8 !important;
+  line-height: 1.6 !important;
+}
+
+.report-bullets-list li {
+  color: #d4d4d8 !important;
+}
+
+/* INTERVIEW NOTE - ABSOLUTE CRYSTAL CLEAR HIGH CONTRAST */
+.interview-note {
+  background: #141416 !important;
+  border: 1px solid #3f3f46 !important;
+  border-radius: 6px !important;
+  padding: 12px 14px !important;
+  color: #f4f4f5 !important;
+  line-height: 1.6 !important;
+}
+
+.interview-note strong {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* SCHEMA CODE BLOCK - DARK MATTE PITCH BLACK (ZERO WHITE RECTANGLE) */
+.schema-code-block {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border: 1px solid #222225 !important;
+  border-radius: 6px !important;
+  color: #f4f4f5 !important;
+  font-family: var(--font-mono, monospace) !important;
+  padding: 12px 14px !important;
+}
+
+.schema-code-block code {
+  background: transparent !important;
+  color: #ffffff !important;
+}
+
+/* CTA Launch Challenge Button */
+.btn-launch-challenge {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25) !important;
+}
+
+.btn-launch-challenge:hover {
+  background: #e4e4e7 !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+.btn-launch-challenge span {
+  color: #000000 !important;
+}
+
+/* Evaluation & Success Card */
+.evaluation-card {
+  background: #09090b !important;
+  border: 1px solid #27272a !important;
+  border-left: 3px solid #ffffff !important;
+}
+
+.evaluation-card.success {
+  background: #09090b !important;
+  border-color: #ffffff !important;
+}
+
+.manager-review-box {
+  background: #141416 !important;
+  border: 1px solid #2e2e33 !important;
+  color: #f4f4f5 !important;
+}
+
+.review-title {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.review-comment {
+  color: #d4d4d8 !important;
+}
+
+.btn-next-day {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.btn-next-day:hover {
+  background: #e4e4e7 !important;
+}
+
+
+/* =============================================================================
+   8. SQL MASTERY & TECHNICAL INTERVIEW PREPARATION (COURSE VIEW OVERHAUL)
+   ============================================================================= */
+#viewMasteryCourse {
+  background: #000000 !important;
+  color: #f4f4f5 !important;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif) !important;
+}
+
+.mastery-course-wrapper {
+  max-width: 1440px !important;
+  margin: 0 auto !important;
+  padding: 16px 24px 96px 24px !important;
+  gap: 16px !important;
+}
+
+/* 1. Header Bar */
+.course-header-bar {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-radius: 8px !important;
+  padding: 12px 18px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+}
+
+.course-headline {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  font-family: var(--font-sans, sans-serif) !important;
+}
+
+.course-pill-tag {
+  background: #141416 !important;
+  border: 1px solid #3f3f46 !important;
+  color: #ffffff !important;
+  border-radius: 4px !important;
+}
+
+.course-subline {
+  color: #a1a1aa !important;
+  font-size: 11.5px !important;
+}
+
+.milestone-badge-chip {
+  background: #121214 !important;
+  border: 1px solid #27272a !important;
+  color: #d4d4d8 !important;
+  border-radius: 4px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 140ms ease !important;
+}
+
+.milestone-badge-chip:hover {
+  background: #1c1c20 !important;
+  color: #ffffff !important;
+  border-color: #3f3f46 !important;
+}
+
+.btn-claim-cert {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2) !important;
+}
+
+.btn-claim-cert:hover {
+  background: #e4e4e7 !important;
+  color: #000000 !important;
+}
+
+.course-progress-track {
+  background: #18181c !important;
+  border-radius: 2px !important;
+}
+
+.course-progress-fill {
+  background: #ffffff !important;
+}
+
+/* 2. Topic Progressive Navigation Rail (Sleek Horizontal Track) */
+.phase-execution-rail {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-radius: 8px !important;
+  padding: 6px !important;
+  display: flex !important;
+  gap: 5px !important;
+  overflow-x: auto !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #27272a transparent !important;
+}
+
+.phase-execution-rail::-webkit-scrollbar {
+  height: 4px !important;
+}
+
+.phase-execution-rail::-webkit-scrollbar-thumb {
+  background: #27272a !important;
+  border-radius: 2px !important;
+}
+
+.phase-node-btn {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 6px !important;
+  color: #a1a1aa !important;
+  padding: 6px 12px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.phase-seq-tag {
+  background: #141416 !important;
+  color: #d4d4d8 !important;
+  border: 1px solid #27272a !important;
+  padding: 1px 5px !important;
+  border-radius: 3px !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+}
+
+.phase-node-btn:hover {
+  background: #141418 !important;
+  color: #ffffff !important;
+  border-color: #27272a !important;
+}
+
+.phase-node-btn.active,
+.phase-node-btn.ovio-tab-active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.25) !important;
+}
+
+.phase-node-btn.active .phase-seq-tag,
+.phase-node-btn.ovio-tab-active .phase-seq-tag {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+.phase-done-icon {
+  color: #ffffff !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+}
+
+/* 3. Active Topic Card & 4-Step Navigation Tabs */
+.active-phase-card {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-radius: 8px !important;
+  padding: 18px 20px !important;
+}
+
+.phase-hero-info h2 {
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  font-family: var(--font-sans, sans-serif) !important;
+}
+
+.phase-hero-info p {
+  color: #a1a1aa !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+}
+
+.step-order-tabs {
+  background: #000000 !important;
+  border: 1px solid #222225 !important;
+  border-radius: 6px !important;
+  padding: 4px !important;
+  display: flex !important;
+  gap: 4px !important;
+  margin-top: 14px !important;
+}
+
+.step-tab-btn {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 4px !important;
+  color: #a1a1aa !important;
+  padding: 6px 14px !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  transition: all 140ms ease !important;
+}
+
+.step-tab-btn:hover {
+  background: #141416 !important;
+  color: #ffffff !important;
+}
+
+.step-tab-btn.active,
+.step-tab-btn.ovio-tab-active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2) !important;
+}
+
+.step-count-pill {
+  background: #141416 !important;
+  color: #d4d4d8 !important;
+  border: 1px solid #27272a !important;
+  font-size: 9.5px !important;
+  padding: 1px 5px !important;
+  border-radius: 3px !important;
+}
+
+.step-tab-btn.active .step-count-pill,
+.step-tab-btn.ovio-tab-active .step-count-pill {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+/* 4. Interactive Simulator & Architecture Explainer */
+.interactive-simulator-card {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-radius: 8px !important;
+  padding: 16px 20px !important;
+}
+
+.visual-mode-toggle-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 14px !important;
+}
+
+.visual-mode-title-group span {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 13.5px !important;
+}
+
+.visual-toggle-btn {
+  background: #141416 !important;
+  border: 1px solid #27272a !important;
+  color: #a1a1aa !important;
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+
+.visual-toggle-btn:hover {
+  background: #1c1c20 !important;
+  color: #ffffff !important;
+}
+
+.visual-toggle-btn.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.course-explainer-svg {
+  width: 100% !important;
+  max-width: 980px !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  display: block !important;
+  background: #000000 !important;
+  border: 1px solid #222225 !important;
+  border-radius: 6px !important;
+}
+
+/* 5. Everyday Analogy Hero Card */
+.analogy-hero-card {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-left: 3px solid #ffffff !important;
+  border-radius: 6px !important;
+  padding: 14px 18px !important;
+}
+
+.analogy-hero-title {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 13.5px !important;
+}
+
+.analogy-hero-story {
+  color: #d4d4d8 !important;
+  font-size: 12.5px !important;
+  line-height: 1.6 !important;
+}
+
+.analogy-hero-takeaway {
+  background: #141416 !important;
+  border: 1px solid #3f3f46 !important;
+  color: #ffffff !important;
+  border-radius: 4px !important;
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+  margin-top: 10px !important;
+}
+
+/* 6. Theory Content & Lessons */
+.theory-text-card {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-radius: 6px !important;
+  padding: 14px 18px !important;
+}
+
+.theory-card-heading {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+}
+
+.theory-card-body {
+  color: #d4d4d8 !important;
+  line-height: 1.6 !important;
+}
+
+.theory-card-body pre,
+.theory-card-body code {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #27272a !important;
+  font-family: var(--font-mono, monospace) !important;
+}
+
+/* Bottom Nav Controls */
+.course-footer-nav {
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-radius: 8px !important;
+  padding: 12px 18px !important;
+}
+
+.phase-nav-btn {
+  background: #141416 !important;
+  border: 1px solid #27272a !important;
+  color: #ffffff !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.phase-nav-btn:hover {
+  background: #1c1c20 !important;
+  border-color: #3f3f46 !important;
+}
+
+/* Sir Bloops Toast */
+#sqlBuddyToast,
+.buddy-toast {
+  background: #09090b !important;
+  border: 1px solid #3f3f46 !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9) !important;
+}
+
+
+/* Phase Node Button Active Text Contrast Fix */
+.phase-execution-rail {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+  gap: 8px !important;
+  padding: 8px 12px !important;
+  background: #09090b !important;
+  border: 1px solid #222225 !important;
+  border-radius: 8px !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #3f3f46 transparent !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.phase-execution-rail::-webkit-scrollbar {
+  height: 4px !important;
+}
+
+.phase-execution-rail::-webkit-scrollbar-thumb {
+  background: #3f3f46 !important;
+  border-radius: 2px !important;
+}
+
+.phase-node-btn {
+  flex-shrink: 0 !important;
+  background: #121214 !important;
+  border: 1px solid #27272a !important;
+  border-radius: 6px !important;
+  color: #d4d4d8 !important;
+  padding: 6px 14px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.phase-node-btn .phase-seq-tag {
+  background: #1c1c20 !important;
+  color: #a1a1aa !important;
+  border: 1px solid #333338 !important;
+  padding: 2px 6px !important;
+  border-radius: 3px !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+}
+
+.phase-node-btn .phase-name-tag {
+  color: #d4d4d8 !important;
+  font-weight: 600 !important;
+}
+
+.phase-node-btn:hover {
+  background: #1a1a1e !important;
+  color: #ffffff !important;
+  border-color: #3f3f46 !important;
+}
+
+.phase-node-btn:hover .phase-name-tag {
+  color: #ffffff !important;
+}
+
+.phase-node-btn.active,
+.phase-node-btn.ovio-tab-active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3) !important;
+}
+
+.phase-node-btn.active .phase-seq-tag,
+.phase-node-btn.ovio-tab-active .phase-seq-tag {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #000000 !important;
+}
+
+.phase-node-btn.active .phase-name-tag,
+.phase-node-btn.ovio-tab-active .phase-name-tag {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+/* Phase Hero Icon Badge */
+.phase-hero-badge {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 8px !important;
+  background: #141416 !important;
+  border: 1px solid #2e2e33 !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 18px !important;
+  flex-shrink: 0 !important;
 }
