@@ -4273,3 +4273,540 @@ body.theme-carbon .terminal-index-item {
   font-family: 'JetBrains Mono', monospace !important;
   font-weight: 700 !important;
 }
+
+
+/* =============================================================================
+   CARBON MONOCHROME OVERHAUL: FAANG & WALL STREET MOCK TECHNICAL SCREEN
+   Pure obsidian (#000000, #0c0d10, #141418, #18181b), solid white primary CTA,
+   crisp hairlines (rgba(255,255,255,0.12)), monospace telemetry, zero candy colors
+   ============================================================================= */
+
+html[data-theme="carbon"] #viewMockInterview,
+body[data-theme="carbon"] #viewMockInterview,
+body.theme-carbon #viewMockInterview {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-hero,
+body[data-theme="carbon"] .interview-hero,
+body.theme-carbon .interview-hero {
+  background: #0c0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="carbon"] .interview-hero-icon,
+body[data-theme="carbon"] .interview-hero-icon,
+body.theme-carbon .interview-hero-icon {
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-hero-title,
+body[data-theme="carbon"] .interview-hero-title,
+body.theme-carbon .interview-hero-title {
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-hero-desc,
+body[data-theme="carbon"] .interview-hero-desc,
+body.theme-carbon .interview-hero-desc {
+  color: #a1a1aa !important;
+}
+
+html[data-theme="carbon"] .interview-timer-badge,
+body[data-theme="carbon"] .interview-timer-badge,
+body.theme-carbon .interview-timer-badge {
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+html[data-theme="carbon"] .interview-badge-dot,
+body[data-theme="carbon"] .interview-badge-dot,
+body.theme-carbon .interview-badge-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff !important;
+  margin-right: 7px;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.7) !important;
+}
+
+html[data-theme="carbon"] .interview-rule-card,
+body[data-theme="carbon"] .interview-rule-card,
+body.theme-carbon .interview-rule-card {
+  background: #0c0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="carbon"] .interview-rule-icon,
+body[data-theme="carbon"] .interview-rule-icon,
+body.theme-carbon .interview-rule-icon {
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html[data-theme="carbon"] .interview-rule-title,
+body[data-theme="carbon"] .interview-rule-title,
+body.theme-carbon .interview-rule-title {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+html[data-theme="carbon"] .interview-rule-text,
+body[data-theme="carbon"] .interview-rule-text,
+body.theme-carbon .interview-rule-text {
+  color: #71717a !important;
+}
+
+html[data-theme="carbon"] .interview-filter-pill,
+body[data-theme="carbon"] .interview-filter-pill,
+body.theme-carbon .interview-filter-pill {
+  background: #0c0d10 !important;
+  color: #71717a !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-theme="carbon"] .interview-filter-pill:hover,
+body[data-theme="carbon"] .interview-filter-pill:hover,
+body.theme-carbon .interview-filter-pill:hover {
+  background: #18181b !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-filter-pill.active,
+body[data-theme="carbon"] .interview-filter-pill.active,
+body.theme-carbon .interview-filter-pill.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.2) !important;
+}
+
+html[data-theme="carbon"] .interview-track-card,
+body[data-theme="carbon"] .interview-track-card,
+body.theme-carbon .interview-track-card {
+  background: #0c0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="carbon"] .interview-track-card:hover,
+body[data-theme="carbon"] .interview-track-card:hover,
+body.theme-carbon .interview-track-card:hover {
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  background: #111116 !important;
+}
+
+html[data-theme="carbon"] .interview-track-icon,
+body[data-theme="carbon"] .interview-track-icon,
+body.theme-carbon .interview-track-icon {
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html[data-theme="carbon"] .interview-track-company,
+body[data-theme="carbon"] .interview-track-company,
+body.theme-carbon .interview-track-company {
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-track-role,
+body[data-theme="carbon"] .interview-track-role,
+body.theme-carbon .interview-track-role {
+  color: #a1a1aa !important;
+}
+
+html[data-theme="carbon"] .interview-badge-sector,
+body[data-theme="carbon"] .interview-badge-sector,
+body.theme-carbon .interview-badge-sector {
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #a1a1aa !important;
+}
+
+html[data-theme="carbon"] .interview-badge-hard,
+body[data-theme="carbon"] .interview-badge-hard,
+body.theme-carbon .interview-badge-hard {
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+html[data-theme="carbon"] .interview-track-desc,
+body[data-theme="carbon"] .interview-track-desc,
+body.theme-carbon .interview-track-desc {
+  color: #71717a !important;
+}
+
+html[data-theme="carbon"] .interview-track-meta,
+body[data-theme="carbon"] .interview-track-meta,
+body.theme-carbon .interview-track-meta {
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+}
+
+html[data-theme="carbon"] .interview-track-comp,
+body[data-theme="carbon"] .interview-track-comp,
+body.theme-carbon .interview-track-comp {
+  color: #ffffff !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: 600 !important;
+}
+
+html[data-theme="carbon"] .interview-btn-start,
+body[data-theme="carbon"] .interview-btn-start,
+body.theme-carbon .interview-btn-start {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 4px rgba(255, 255, 255, 0.2) !important;
+}
+
+html[data-theme="carbon"] .interview-btn-start:hover,
+body[data-theme="carbon"] .interview-btn-start:hover,
+body.theme-carbon .interview-btn-start:hover {
+  background: #f4f4f5 !important;
+  color: #000000 !important;
+}
+
+/* Active Cockpit */
+html[data-theme="carbon"] .interview-cockpit,
+body[data-theme="carbon"] .interview-cockpit,
+body.theme-carbon .interview-cockpit {
+  background: #000000 !important;
+}
+
+html[data-theme="carbon"] .interview-hud,
+body[data-theme="carbon"] .interview-hud,
+body.theme-carbon .interview-hud {
+  background: #0c0d10 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-theme="carbon"] .interview-hud-company,
+body[data-theme="carbon"] .interview-hud-company,
+body.theme-carbon .interview-hud-company {
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-round-pill,
+body[data-theme="carbon"] .interview-round-pill,
+body.theme-carbon .interview-round-pill {
+  background: #141418 !important;
+  color: #71717a !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+html[data-theme="carbon"] .interview-round-pill.active,
+body[data-theme="carbon"] .interview-round-pill.active,
+body.theme-carbon .interview-round-pill.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="carbon"] .interview-clock-widget,
+body[data-theme="carbon"] .interview-clock-widget,
+body.theme-carbon .interview-clock-widget {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: 700 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+html[data-theme="carbon"] .interview-btn-hud,
+body[data-theme="carbon"] .interview-btn-hud,
+body.theme-carbon .interview-btn-hud {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-btn-hud:hover,
+body[data-theme="carbon"] .interview-btn-hud:hover,
+body.theme-carbon .interview-btn-hud:hover {
+  background: #27272a !important;
+}
+
+html[data-theme="carbon"] .interview-bloop-speech,
+body[data-theme="carbon"] .interview-bloop-speech,
+body.theme-carbon .interview-bloop-speech {
+  background: #0c0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-theme="carbon"] .interview-bloop-avatar,
+body[data-theme="carbon"] .interview-bloop-avatar,
+body.theme-carbon .interview-bloop-avatar {
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html[data-theme="carbon"] .interview-bloop-text h4,
+body[data-theme="carbon"] .interview-bloop-text h4,
+body.theme-carbon .interview-bloop-text h4 {
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-bloop-text p,
+body[data-theme="carbon"] .interview-bloop-text p,
+body.theme-carbon .interview-bloop-text p {
+  color: #d4d4d8 !important;
+}
+
+html[data-theme="carbon"] .interview-problem-card,
+body[data-theme="carbon"] .interview-problem-card,
+body.theme-carbon .interview-problem-card {
+  background: #0c0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-theme="carbon"] .interview-problem-title,
+body[data-theme="carbon"] .interview-problem-title,
+body.theme-carbon .interview-problem-title {
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-problem-body,
+body[data-theme="carbon"] .interview-problem-body,
+body.theme-carbon .interview-problem-body {
+  color: #d4d4d8 !important;
+}
+
+html[data-theme="carbon"] .interview-hints-box,
+body[data-theme="carbon"] .interview-hints-box,
+body.theme-carbon .interview-hints-box {
+  background: #090a0d !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+html[data-theme="carbon"] .interview-hints-header,
+body[data-theme="carbon"] .interview-hints-header,
+body.theme-carbon .interview-hints-header {
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-hints-body,
+body[data-theme="carbon"] .interview-hints-body,
+body.theme-carbon .interview-hints-body {
+  color: #a1a1aa !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-theme="carbon"] .interview-editor-card,
+body[data-theme="carbon"] .interview-editor-card,
+body.theme-carbon .interview-editor-card {
+  background: #0c0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-theme="carbon"] .interview-editor-toolbar,
+body[data-theme="carbon"] .interview-editor-toolbar,
+body.theme-carbon .interview-editor-toolbar {
+  background: #0c0d10 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-theme="carbon"] .interview-toolbar-title,
+body[data-theme="carbon"] .interview-toolbar-title,
+body.theme-carbon .interview-toolbar-title {
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-btn-run,
+body[data-theme="carbon"] .interview-btn-run,
+body.theme-carbon .interview-btn-run {
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  border: 1px solid #ffffff !important;
+  box-shadow: 0 1px 4px rgba(255, 255, 255, 0.2) !important;
+}
+
+html[data-theme="carbon"] .interview-btn-run:hover,
+body[data-theme="carbon"] .interview-btn-run:hover,
+body.theme-carbon .interview-btn-run:hover {
+  background: #f4f4f5 !important;
+  color: #000000 !important;
+}
+
+html[data-theme="carbon"] .interview-btn-submit,
+body[data-theme="carbon"] .interview-btn-submit,
+body.theme-carbon .interview-btn-submit {
+  background: #18181b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  font-weight: 600 !important;
+}
+
+html[data-theme="carbon"] .interview-btn-submit:hover,
+body[data-theme="carbon"] .interview-btn-submit:hover,
+body.theme-carbon .interview-btn-submit:hover {
+  background: #27272a !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+html[data-theme="carbon"] .interview-code-wrap,
+body[data-theme="carbon"] .interview-code-wrap,
+body.theme-carbon .interview-code-wrap {
+  background: #000000 !important;
+}
+
+html[data-theme="carbon"] .interview-gutters,
+body[data-theme="carbon"] .interview-gutters,
+body.theme-carbon .interview-gutters {
+  background: #090a0d !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #52525b !important;
+}
+
+html[data-theme="carbon"] .interview-textarea,
+body[data-theme="carbon"] .interview-textarea,
+body.theme-carbon .interview-textarea {
+  background: #000000 !important;
+  color: #f4f4f5 !important;
+  caret-color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-test-card,
+body[data-theme="carbon"] .interview-test-card,
+body.theme-carbon .interview-test-card {
+  background: #0c0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-theme="carbon"] .interview-test-header,
+body[data-theme="carbon"] .interview-test-header,
+body.theme-carbon .interview-test-header {
+  background: #0c0d10 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-theme="carbon"] .interview-test-status,
+body[data-theme="carbon"] .interview-test-status,
+body.theme-carbon .interview-test-status {
+  color: #a1a1aa !important;
+}
+
+html[data-theme="carbon"] .test-pass-pill,
+body[data-theme="carbon"] .test-pass-pill,
+body.theme-carbon .test-pass-pill {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-radius: 3px;
+  margin-right: 6px;
+  letter-spacing: 0.04em;
+}
+
+html[data-theme="carbon"] .test-fail-pill,
+body[data-theme="carbon"] .test-fail-pill,
+body.theme-carbon .test-fail-pill {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  background: #18181b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  border-radius: 3px;
+  margin-right: 6px;
+}
+
+html[data-theme="carbon"] .test-standby-pill,
+body[data-theme="carbon"] .test-standby-pill,
+body.theme-carbon .test-standby-pill {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  background: #141418 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 3px;
+  margin-right: 6px;
+}
+
+/* Report Modal */
+html[data-theme="carbon"] .interview-report-modal,
+body[data-theme="carbon"] .interview-report-modal,
+body.theme-carbon .interview-report-modal {
+  background: rgba(0, 0, 0, 0.88) !important;
+}
+
+html[data-theme="carbon"] .interview-report-card,
+body[data-theme="carbon"] .interview-report-card,
+body.theme-carbon .interview-report-card {
+  background: #0c0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8) !important;
+}
+
+html[data-theme="carbon"] .interview-report-verdict-badge,
+body[data-theme="carbon"] .interview-report-verdict-badge,
+body.theme-carbon .interview-report-verdict-badge {
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="carbon"] .interview-score-item,
+body[data-theme="carbon"] .interview-score-item,
+body.theme-carbon .interview-score-item {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+html[data-theme="carbon"] .interview-score-item strong,
+body[data-theme="carbon"] .interview-score-item strong,
+body.theme-carbon .interview-score-item strong {
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .interview-report-round-item,
+body[data-theme="carbon"] .interview-report-round-item,
+body.theme-carbon .interview-report-round-item {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+}

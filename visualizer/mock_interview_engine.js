@@ -19,6 +19,7 @@ window.MockInterviewEngine = (function() {
   let isPaused = false;
   let activeCategoryFilter = 'all';
   let roundSubmissions = {}; // { 0: { sql, passed, durationSec, hints } }
+  let hintsUsedCount = 0;
 
   function setCategoryFilter(category) {
     activeCategoryFilter = category;
@@ -77,11 +78,11 @@ window.MockInterviewEngine = (function() {
         <!-- Hero Header -->
         <div class="interview-hero">
           <div class="interview-hero-left">
-            <div class="interview-hero-icon">🎯</div>
+            <div class="interview-hero-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
             <div>
               <h1 class="interview-hero-title">
                 FAANG &amp; Wall Street Technical Screen
-                <span class="interview-timer-badge">⏱️ 45-Min Timed Simulator</span>
+                <span class="interview-timer-badge"><span class="interview-badge-dot"></span> 45-MIN TIMED SIMULATOR</span>
               </h1>
               <div class="interview-hero-desc">
                 Realistic Senior &amp; Staff Data Engineering live coding interviews across 10 industry tracks. Solve 3 progressive query rounds against in-memory WebAssembly databases with test assertions and Sir Bloop grading.
@@ -93,28 +94,28 @@ window.MockInterviewEngine = (function() {
         <!-- Rules & Scoring Briefing -->
         <div class="interview-rules-strip">
           <div class="interview-rule-card">
-            <div class="interview-rule-icon">⏱️</div>
+            <div class="interview-rule-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
             <div>
               <div class="interview-rule-title">45-Minute Total Clock</div>
               <div class="interview-rule-text">Manage your cadence across 3 rounds (Warmup 10m, Core 15m, Staff 20m).</div>
             </div>
           </div>
           <div class="interview-rule-card">
-            <div class="interview-rule-icon">🧪</div>
+            <div class="interview-rule-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></div>
             <div>
               <div class="interview-rule-title">Live Test Assertion Judge</div>
               <div class="interview-rule-text">Instant evaluation of row counts, column projections, and value diffs.</div>
             </div>
           </div>
           <div class="interview-rule-card">
-            <div class="interview-rule-icon">💡</div>
+            <div class="interview-rule-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
             <div>
               <div class="interview-rule-title">Hints with Tradeoffs</div>
               <div class="interview-rule-text">Request hints when stuck; each hint deducts 5 points from the final committee rubric.</div>
             </div>
           </div>
           <div class="interview-rule-card">
-            <div class="interview-rule-icon">📋</div>
+            <div class="interview-rule-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
             <div>
               <div class="interview-rule-title">Formal Committee Rubric</div>
               <div class="interview-rule-text">Receive an L4–L6 verdict (Strong Hire, Hire, Leaning Hire, No Hire) upon completion.</div>
@@ -160,11 +161,11 @@ window.MockInterviewEngine = (function() {
               </div>
               <div class="interview-track-desc">${escapeHtml(t.description)}</div>
               <div class="interview-track-meta">
-                <span>Interviewer: <strong>${t.interviewer.avatar} ${escapeHtml(t.interviewer.name)}</strong></span>
+                <span>Interviewer: <span class="sender-avatar-small">${t.interviewer.avatar}</span> <strong>${escapeHtml(t.interviewer.name)}</strong></span>
                 <span class="interview-track-comp">${escapeHtml(t.compensationRange)}</span>
               </div>
               <button class="interview-btn-start" onclick="window.MockInterviewEngine.startScreen('${t.id}')">
-                Begin 45-Min Screen 🎯
+                Begin 45-Min Screen
               </button>
             </div>
           `).join('')}
@@ -238,13 +239,14 @@ window.MockInterviewEngine = (function() {
 
           <div class="interview-hud-right">
             <div class="interview-clock-widget" id="interviewClockDisplay">
-              ⏱️ <span id="clockMinutes">45</span>:<span id="clockSeconds">00</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span id="clockMinutes">45</span>:<span id="clockSeconds">00</span>
             </div>
             <button class="interview-btn-hud" id="btnPauseClock" onclick="window.MockInterviewEngine.togglePause()">
-              ⏸️ Pause
+              Pause
             </button>
             <button class="interview-btn-hud" onclick="window.MockInterviewEngine.quitScreen()" style="color: #dc2626;">
-              ✕ End Screen
+              End Screen
             </button>
           </div>
         </div>
@@ -274,7 +276,7 @@ window.MockInterviewEngine = (function() {
               <!-- Hints Accordion -->
               <div class="interview-hints-box" id="interviewHintsBox">
                 <div class="interview-hints-header" onclick="window.MockInterviewEngine.toggleHints()">
-                  <span>💡 Interviewer Hints (<span id="hintsUsedCountBadge">0</span> used)</span>
+                  <span>Interviewer Hints (<span id="hintsUsedCountBadge">0</span> used)</span>
                   <span id="hintsChevron">▼</span>
                 </div>
                 <div class="interview-hints-body" id="interviewHintsContent">
@@ -292,10 +294,10 @@ window.MockInterviewEngine = (function() {
                 <span class="interview-toolbar-title" id="interviewEditorTitle">SQL Solution Console</span>
                 <div class="interview-editor-btns">
                   <button class="interview-btn-run" onclick="window.MockInterviewEngine.runTestCases()">
-                    ▶ Test Code (⌘⏎)
+                    Test Code (⌘⏎)
                   </button>
                   <button class="interview-btn-submit" onclick="window.MockInterviewEngine.submitRound()">
-                    ✓ Submit Round
+                    Submit Round
                   </button>
                 </div>
               </div>
@@ -315,13 +317,13 @@ window.MockInterviewEngine = (function() {
             <div class="interview-test-card">
               <div class="interview-test-header">
                 <span class="interview-test-status" id="interviewTestStatus">
-                  <span>⚪</span> No tests executed yet. Click "Test Code" to verify against test suite.
+                  <span class="test-standby-pill">STANDBY</span> Ready for execution. Press "Test Code" to verify assertions.
                 </span>
                 <span class="terminal-table-badge" id="interviewAssertionMeta">0 / 0 passed</span>
               </div>
               <div class="interview-test-diff-wrap" id="interviewTestDiffWrap">
                 <div class="terminal-empty-state">
-                  <div class="terminal-empty-icon">🧪</div>
+                  <div class="terminal-empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></div>
                   <div>Run tests to see live comparison against target result set.</div>
                 </div>
               </div>
@@ -401,7 +403,7 @@ window.MockInterviewEngine = (function() {
 
     if (titleEl) titleEl.textContent = round.title;
     if (bodyEl) bodyEl.innerHTML = formatMarkdown(round.prompt);
-    if (editorTitleEl) editorTitleEl.textContent = `${activeTrack.company} &mdash; Round ${round.roundNum}`;
+    if (editorTitleEl) editorTitleEl.textContent = `${activeTrack.company} — Round ${round.roundNum}`;
     if (speechEl) speechEl.innerHTML = round.bloopGreeting || "Let's examine this round's requirements.";
 
     // Update Editor content
@@ -419,15 +421,15 @@ window.MockInterviewEngine = (function() {
     const metaEl = document.getElementById('interviewAssertionMeta');
 
     if (roundSubmissions[roundIdx] && roundSubmissions[roundIdx].passed) {
-      if (statusEl) statusEl.innerHTML = `<span style="color:#16a34a;">✅</span> Round ${round.roundNum} Passed!`;
+      if (statusEl) statusEl.innerHTML = `<span class="test-pass-pill">PASSED</span> Round ${round.roundNum} Passed`;
       if (metaEl) metaEl.textContent = 'All assertions verified';
     } else {
-      if (statusEl) statusEl.innerHTML = `<span>⚪</span> Ready for testing. Press ⌘⏎ to evaluate.`;
+      if (statusEl) statusEl.innerHTML = `<span class="test-standby-pill">READY</span> Ready for testing. Press ⌘⏎ to evaluate.`;
       if (metaEl) metaEl.textContent = '0 / 0 passed';
       if (diffWrap) {
         diffWrap.innerHTML = `
           <div class="terminal-empty-state">
-            <div class="terminal-empty-icon">🧪</div>
+            <div class="terminal-empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></div>
             <div>Run tests to see live comparison against target result set.</div>
           </div>
         `;
@@ -544,7 +546,7 @@ window.MockInterviewEngine = (function() {
       if (isPass) {
         if (statusEl) {
           statusEl.className = 'interview-test-status passed';
-          statusEl.innerHTML = `<span>✅</span> PASS: All ${expectedRows.length} rows and calculations match expected output! (${userElapsed}ms)`;
+          statusEl.innerHTML = `<span class="test-pass-pill">PASS</span> All ${expectedRows.length} rows and calculations match expected output (${userElapsed}ms)`;
         }
         if (metaEl) metaEl.textContent = `${expectedRows.length} / ${expectedRows.length} passed`;
 
@@ -557,7 +559,7 @@ window.MockInterviewEngine = (function() {
       } else {
         if (statusEl) {
           statusEl.className = 'interview-test-status failed';
-          statusEl.innerHTML = `<span>❌</span> FAIL: Output mismatch. Returned ${userRows.length} rows (expected ${expectedRows.length}).`;
+          statusEl.innerHTML = `<span class="test-fail-pill">FAIL</span> Output mismatch: returned ${userRows.length} rows (expected ${expectedRows.length}).`;
         }
         if (metaEl) metaEl.textContent = `0 / ${expectedRows.length} passed`;
 
@@ -578,7 +580,7 @@ window.MockInterviewEngine = (function() {
     } catch (err) {
       if (statusEl) {
         statusEl.className = 'interview-test-status failed';
-        statusEl.innerHTML = `<span>❌</span> SQL Syntax / Execution Error`;
+        statusEl.innerHTML = `<span class="test-fail-pill">ERROR</span> SQL Syntax / Execution Error`;
       }
       if (diffWrap) {
         diffWrap.innerHTML = `
@@ -693,7 +695,7 @@ window.MockInterviewEngine = (function() {
     isPaused = !isPaused;
     const btn = document.getElementById('btnPauseClock');
     if (btn) {
-      btn.textContent = isPaused ? '▶ Resume' : '⏸️ Pause';
+      btn.textContent = isPaused ? 'Resume' : 'Pause';
     }
     setSpeech(isPaused ? "Interview paused. Timer stopped." : "Interview resumed! Keep going.", 'happy');
   }
@@ -759,7 +761,7 @@ window.MockInterviewEngine = (function() {
 
     content.innerHTML = `
       <div class="interview-report-header">
-        <div style="font-size: 2.5rem;">${finalScore >= 70 ? '🎉' : '📋'}</div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: #a1a1aa; margin-bottom: 8px;">[HIRING COMMITTEE EVALUATION]</div>
         <div class="interview-report-verdict-badge ${verdictClass}">${escapeHtml(verdict)}</div>
         <h2 style="margin: 0.2rem 0; font-family: var(--font-mono, monospace); font-size: 1.25rem;">
           ${escapeHtml(activeTrack.company)} &bull; Technical Debrief
@@ -798,7 +800,7 @@ window.MockInterviewEngine = (function() {
                 <strong>Round ${r.roundNum}:</strong> ${escapeHtml(r.title)}
               </div>
               <span class="terminal-table-badge" style="color: ${passed ? '#16a34a' : '#dc2626'};">
-                ${passed ? '✓ PASSED' : '✕ INCOMPLETE'}
+                ${passed ? '[PASS]' : '[INCOMPLETE]'}
               </span>
             </div>
           `;

@@ -18,15 +18,15 @@ window.MOCK_INTERVIEW_DATA = {
       company: "Citadel Securities",
       role: "Quantitative Data Engineer (Core Trading Systems)",
       badge: "Wall Street / HFT",
-      icon: "🏛️",
+      icon: "[CIT]",
       difficulty: "Hard",
       timeLimitMinutes: 45,
-      compensationRange: "$350,000 – $520,000",
+      compensationRange: "$350,000 - $520,000",
       description: "Fast-paced market microstructure screen testing high-frequency trade blotters, volume-weighted pricing, crossing spreads, and portfolio drawdown recovery.",
       interviewer: {
         name: "Marcus Vance",
         title: "Head of Quantitative Data Infrastructure",
-        avatar: "🎩"
+        avatar: "MV"
       },
       seedSql: `
 DROP TABLE IF EXISTS market_trades;
@@ -236,15 +236,15 @@ ORDER BY trading_day ASC;`,
       company: "Meta",
       role: "Senior Data Engineer (Instagram Growth & Engagement)",
       badge: "Big Tech / FAANG",
-      icon: "🌐",
+      icon: "[META]",
       difficulty: "Hard",
       timeLimitMinutes: 45,
-      compensationRange: "$240,000 – $380,000",
+      compensationRange: "$240,000 - $380,000",
       description: "Core engagement screen assessing active user cohorts, rolling 3-day video watch time trajectories, and mutual connection triangles.",
       interviewer: {
         name: "Chloe Zhang",
         title: "Staff Data Engineer, Growth Analytics",
-        avatar: "👩‍💻"
+        avatar: "CZ"
       },
       seedSql: `
 DROP TABLE IF EXISTS user_logins;
@@ -429,15 +429,15 @@ ORDER BY user_a, user_b, user_c ASC;`,
       company: "Stripe",
       role: "Staff Database Engineer (Core Payments & Settlement)",
       badge: "FinTech / Payments",
-      icon: "💳",
+      icon: "[STRIPE]",
       difficulty: "Hard",
       timeLimitMinutes: 45,
-      compensationRange: "$280,000 – $440,000",
+      compensationRange: "$280,000 - $440,000",
       description: "Financial integrity screen testing transaction net margins, circular money-laundering rings, and running ledger discrepancies.",
       interviewer: {
         name: "Siddharth Rao",
         title: "Principal Engineer, Treasury & Settlements",
-        avatar: "⚡"
+        avatar: "SR"
       },
       seedSql: `
 DROP TABLE IF EXISTS stripe_charges;
@@ -627,15 +627,15 @@ ORDER BY chargeback_pct DESC;`,
       company: "Netflix",
       role: "Senior Streaming & Personalization Data Engineer",
       badge: "FAANG / Media",
-      icon: "🍿",
-      difficulty: "Medium – Hard",
+      icon: "[NFLX]",
+      difficulty: "Medium - Hard",
       timeLimitMinutes: 45,
-      compensationRange: "$320,000 – $480,000",
+      compensationRange: "$320,000 - $480,000",
       description: "Personalization and telemetry screen: evaluate completion funnels, sessionize continuous binge viewing via Islands & Gaps, and forecast 30-day subscriber churn risk.",
       interviewer: {
         name: "Elena Rostova",
         title: "Principal Streaming Architect",
-        avatar: "🎬"
+        avatar: "ER"
       },
       seedSql: `
 DROP TABLE IF EXISTS netflix_streams;
@@ -884,15 +884,15 @@ ORDER BY velocity_pct_change ASC;`,
       company: "Uber / DoorDash",
       role: "Staff Logistics & Marketplace Algorithms Engineer",
       badge: "Marketplace / Logistics",
-      icon: "🚗",
+      icon: "[UBER]",
       difficulty: "Hard",
       timeLimitMinutes: 45,
-      compensationRange: "$340,000 – $490,000",
+      compensationRange: "$340,000 - $490,000",
       description: "High-throughput marketplace dispatch screen: evaluate zone delivery SLAs, compute 15-minute rolling surge multipliers, and analyze driver shift deadhead transit ratios.",
       interviewer: {
         name: "Darius Thorne",
         title: "Staff Marketplace Optimization Engineer",
-        avatar: "🗺️"
+        avatar: "DT"
       },
       seedSql: `
 DROP TABLE IF EXISTS uber_deliveries;
@@ -1056,7 +1056,7 @@ ORDER BY demand_supply_ratio DESC;`,
           timeBudgetMinutes: 20,
           title: "Round 3: Driver Deadhead Mileage vs Paid Trip Efficiency",
           difficulty: "Staff / Advanced",
-          prompt: `Driver retention and unit economics depend heavily on minimizing "deadhead" miles—unpaid distance spent driving to pick up a passenger versus actual paid trip miles.
+          prompt: `Driver retention and unit economics depend heavily on minimizing "deadhead" miles-unpaid distance spent driving to pick up a passenger versus actual paid trip miles.
 
 **Requirements:**
 - Query \`uber_driver_shifts\`.
@@ -1108,15 +1108,15 @@ ORDER BY paid_efficiency_pct DESC;`,
       company: "Google / YouTube",
       role: "Staff Ads Infrastructure & Auction Systems Engineer",
       badge: "FAANG / AdTech",
-      icon: "🔍",
+      icon: "[GOOG]",
       difficulty: "Hard",
       timeLimitMinutes: 45,
-      compensationRange: "$360,000 – $510,000",
+      compensationRange: "$360,000 - $510,000",
       description: "Search auction and click-stream telemetry screen: evaluate advertiser eCPM, clear live Generalized Second-Price (GSP) ad auctions, and detect automated click fraud bursts.",
       interviewer: {
         name: "Dr. Sanjay Patel",
         title: "Distinguished Search Ads Architect",
-        avatar: "🔬"
+        avatar: "SP"
       },
       seedSql: `
 DROP TABLE IF EXISTS google_ad_campaigns;
@@ -1348,15 +1348,15 @@ GROUP BY user_ip, campaign_id;`,
       company: "Amazon / AWS",
       role: "Principal AWS Spot & Supply Chain Systems Engineer",
       badge: "FAANG / Cloud & Supply Chain",
-      icon: "📦",
+      icon: "[AMZN]",
       difficulty: "Hard",
       timeLimitMinutes: 45,
-      compensationRange: "$350,000 – $500,000",
+      compensationRange: "$350,000 - $500,000",
       description: "Scale infrastructure screen: audit fulfillment center pick-to-pack SLA throughput, analyze Prime Day checkout drop-off funnels, and clear AWS Spot Instance cloud capacity.",
       interviewer: {
         name: "Rachel Chen",
         title: "Director of AWS Spot Optimization & Fulfillment",
-        avatar: "⚡"
+        avatar: "SR"
       },
       seedSql: `
 DROP TABLE IF EXISTS amazon_fulfillment_orders;
@@ -1601,15 +1601,15 @@ LIMIT 1;`,
       company: "Jane Street / Goldman Sachs",
       role: "Quantitative Systems & Risk Engine Architect",
       badge: "Wall Street / Quant",
-      icon: "📉",
+      icon: "[JS]",
       difficulty: "Hard / Elite",
       timeLimitMinutes: 45,
-      compensationRange: "$400,000 – $600,000",
+      compensationRange: "$400,000 - $600,000",
       description: "Elite quantitative trading screen: calculate multi-asset portfolio sector exposures, trigger intraday maintenance margin calls, and simulate multi-tier limit order book sweep slippage.",
       interviewer: {
         name: "Julian Thorne",
         title: "Global Head of Quantitative Risk Engines",
-        avatar: "🏛️"
+        avatar: "JT"
       },
       seedSql: `
 DROP TABLE IF EXISTS janestreet_portfolio_positions;
@@ -1854,15 +1854,15 @@ GROUP BY symbol, top_of_book_price;`,
       company: "Airbnb",
       role: "Staff Marketplace Dynamics & Search Infrastructure Engineer",
       badge: "Marketplaces & Travel",
-      icon: "🏡",
-      difficulty: "Medium – Hard",
+      icon: "[ABNB]",
+      difficulty: "Medium - Hard",
       timeLimitMinutes: 45,
-      compensationRange: "$330,000 – $470,000",
+      compensationRange: "$330,000 - $470,000",
       description: "Hospitality marketplace screen: evaluate Superhost inquiry response conversion, detect contiguous 7-day vacant booking windows (Islands & Gaps), and optimize RevPAR seasonal price elasticity.",
       interviewer: {
         name: "Chloe Mercier",
         title: "Principal Search & Pricing Architect",
-        avatar: "✨"
+        avatar: "CM"
       },
       seedSql: `
 DROP TABLE IF EXISTS airbnb_hosts;
@@ -2096,15 +2096,15 @@ ORDER BY neighborhood ASC;`,
       company: "Coinbase / Robinhood",
       role: "Staff Blockchain Analytics & Market Surveillance Engineer",
       badge: "Fintech / Crypto",
-      icon: "🪙",
+      icon: "[COIN]",
       difficulty: "Hard / Elite",
       timeLimitMinutes: 45,
-      compensationRange: "$360,000 – $520,000",
+      compensationRange: "$360,000 - $520,000",
       description: "Crypto exchange and market surveillance screen: compute 24-hour trading volume with maker/taker fee splits, analyze deposit-to-trade settlement velocity, and detect circular wash trading rings.",
       interviewer: {
         name: "Kavita Rao",
         title: "Head of Market Integrity & Surveillance",
-        avatar: "🛡️"
+        avatar: "KR"
       },
       seedSql: `
 DROP TABLE IF EXISTS coinbase_trades;
@@ -2326,15 +2326,15 @@ WHERE (strftime('%s', t3.fill_time) - strftime('%s', t1.fill_time)) <= 600;`,
       company: "Snowflake",
       role: "Senior Data Warehouse Engineer (Core Virtual Warehouse Engine)",
       badge: "Modern Data Stack",
-      icon: "❄️",
+      icon: "[SNOW]",
       difficulty: "Hard",
       timeLimitMinutes: 45,
-      compensationRange: "$260,000 – $390,000",
+      compensationRange: "$260,000 - $390,000",
       description: "Cloud warehouse internals screen: micro-partition pruning, multi-tenant credit consumption metering, and deduplication via window QUALIFY semantics.",
       interviewer: {
         name: "Elena Rostova",
         title: "Principal Warehouse Architect",
-        avatar: "❄️"
+        avatar: "ER"
       },
       seedSql: `
 DROP TABLE IF EXISTS snowflake_query_history;
@@ -2499,15 +2499,15 @@ ORDER BY bytes_scanned DESC;`,
       company: "Apple",
       role: "Senior Data Engineer (Apple Services & App Store)",
       badge: "Consumer & Subscriptions",
-      icon: "🍏",
+      icon: "[AAPL]",
       difficulty: "Intermediate",
       timeLimitMinutes: 45,
-      compensationRange: "$240,000 – $360,000",
+      compensationRange: "$240,000 - $360,000",
       description: "Apple Services technical screen: App Store in-app subscription lifecycle, trial conversion drop-off, and refund clawback reconciliation.",
       interviewer: {
         name: "David Chen",
         title: "Engineering Manager, App Store Commerce",
-        avatar: "🍏"
+        avatar: "DC"
       },
       seedSql: `
 DROP TABLE IF EXISTS apple_subscriptions;
@@ -2661,15 +2661,15 @@ ORDER BY total_monthly_spend_usd DESC;`,
       company: "Bloomberg",
       role: "Financial Data Engineer (Ticker Pricing & Corporate Actions)",
       badge: "Market Terminals",
-      icon: "📈",
+      icon: "[BLMB]",
       difficulty: "Hard",
       timeLimitMinutes: 45,
-      compensationRange: "$230,000 – $340,000",
+      compensationRange: "$230,000 - $340,000",
       description: "Bloomberg LP Terminal core: consecutive ticker price gain streaks, stock dividend split adjustments, and point-in-time consensus reconciliation.",
       interviewer: {
         name: "Vikram Malhotra",
         title: "Senior Lead, Market Data Engineering",
-        avatar: "📈"
+        avatar: "VM"
       },
       seedSql: `
 DROP TABLE IF EXISTS bloomberg_daily_prices;
@@ -2822,15 +2822,15 @@ ORDER BY ticker ASC, trade_date ASC;`,
       company: "Microsoft",
       role: "Principal Data Engineer (Azure Enterprise & Teams Graph)",
       badge: "Enterprise SaaS & Graph",
-      icon: "🏢",
+      icon: "[MSFT]",
       difficulty: "Hard",
       timeLimitMinutes: 45,
-      compensationRange: "$250,000 – $380,000",
+      compensationRange: "$250,000 - $380,000",
       description: "Microsoft Azure & Teams screen: recursive organizational hierarchy trees, multi-tenant subscription seat utilization, and collaborative graph edges.",
       interviewer: {
         name: "Satya Nadella",
         title: "Executive VP, Enterprise Cloud Architecture",
-        avatar: "🏢"
+        avatar: "SN"
       },
       seedSql: `
 DROP TABLE IF EXISTS msft_employees;
