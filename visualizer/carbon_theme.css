@@ -3173,3 +3173,440 @@ body[data-theme="carbon"] .lc-diff-nav-tab.active,
   color: #d4d4d8 !important;
   border-radius: 6px !important;
 }
+
+
+/* =============================================================================
+   CARBON THEME - STUDIO, MACHINES, SYNTAX GYM & MCQS UNIFIED OVERRIDES
+   ============================================================================= */
+
+/* 1. Section Studio Toolbar & Buttons */
+html[data-theme="carbon"] .studio-btn-action.primary,
+body.theme-carbon .studio-btn-action.primary {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ffffff !important;
+  font-weight: 700 !important;
+}
+html[data-theme="carbon"] .studio-btn-action.primary svg,
+body.theme-carbon .studio-btn-action.primary svg {
+  fill: #000000 !important;
+  color: #000000 !important;
+}
+html[data-theme="carbon"] .studio-btn-action.verify,
+body.theme-carbon .studio-btn-action.verify {
+  background: #18181b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+html[data-theme="carbon"] .studio-btn-action.subtle,
+body.theme-carbon .studio-btn-action.subtle {
+  background: #111115 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html[data-theme="carbon"] .studio-btn-action.subtle:hover,
+body.theme-carbon .studio-btn-action.subtle:hover {
+  background: #1c1c22 !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .dossier-btn.primary,
+body.theme-carbon .dossier-btn.primary {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ffffff !important;
+  font-weight: 700 !important;
+}
+html[data-theme="carbon"] .dossier-btn.verify,
+body.theme-carbon .dossier-btn.verify {
+  background: #18181b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+html[data-theme="carbon"] #btnStudioExportDbt,
+body.theme-carbon #btnStudioExportDbt {
+  background: #141418 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+html[data-theme="carbon"] #btnStudioExportDbt:hover,
+body.theme-carbon #btnStudioExportDbt:hover {
+  background: #202026 !important;
+  color: #ffffff !important;
+}
+
+/* Studio Carousel Bar */
+html[data-theme="carbon"] .carousel-topic-badge,
+body.theme-carbon .carousel-topic-badge {
+  background: #18181b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+html[data-theme="carbon"] .carousel-tier-badge,
+body.theme-carbon .carousel-tier-badge {
+  background: #111115 !important;
+  color: #d4d4d8 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+html[data-theme="carbon"] .carousel-table-badge,
+body.theme-carbon .carousel-table-badge {
+  background: #09090b !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html[data-theme="carbon"] .carousel-slider-track,
+body.theme-carbon .carousel-slider-track {
+  background: #18181b !important;
+}
+html[data-theme="carbon"] .carousel-hub-btn,
+body.theme-carbon .carousel-hub-btn {
+  background: #141418 !important;
+  color: #d4d4d8 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+html[data-theme="carbon"] .carousel-hub-btn:hover,
+body.theme-carbon .carousel-hub-btn:hover {
+  background: #202026 !important;
+  color: #ffffff !important;
+}
+
+/* Telemetry Bar */
+html[data-theme="carbon"] .telemetry-chip,
+body.theme-carbon .telemetry-chip {
+  background: #09090b !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #71717a !important;
+}
+html[data-theme="carbon"] .telemetry-val,
+body.theme-carbon .telemetry-val {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+/* Inserter Pills & Layout buttons */
+html[data-theme="carbon"] .col-pill-btn,
+body.theme-carbon .col-pill-btn {
+  background: #111115 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+}
+html[data-theme="carbon"] .col-pill-btn:hover,
+body.theme-carbon .col-pill-btn:hover {
+  background: #202026 !important;
+  color: #ffffff !important;
+}
+html[data-theme="carbon"] .mode-slider-btn.active,
+html[data-theme="carbon"] .studio-layout-btn.active,
+body.theme-carbon .mode-slider-btn.active,
+body.theme-carbon .studio-layout-btn.active {
+  background: #27272a !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 2. Relational Machines Top Bar & Presets */
+html[data-theme="carbon"] .machines-cat-btn,
+body.theme-carbon .machines-cat-btn {
+  background: #111115 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html[data-theme="carbon"] .machines-cat-btn.active,
+body.theme-carbon .machines-cat-btn.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+}
+html[data-theme="carbon"] .machines-preset-chip,
+body.theme-carbon .machines-preset-chip {
+  background: #111115 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html[data-theme="carbon"] .machines-preset-chip.active,
+body.theme-carbon .machines-preset-chip.active {
+  background: #27272a !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+html[data-theme="carbon"] .machine-action-btn,
+body.theme-carbon .machine-action-btn {
+  background: #141418 !important;
+  color: #d4d4d8 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+html[data-theme="carbon"] .machine-action-btn:hover,
+body.theme-carbon .machine-action-btn:hover {
+  background: #202026 !important;
+  color: #ffffff !important;
+}
+html[data-theme="carbon"] .machines-layout-btn.active,
+body.theme-carbon .machines-layout-btn.active {
+  background: #27272a !important;
+  color: #ffffff !important;
+}
+
+/* 3. Syntax Gym & Pillar Filters */
+html[data-theme="carbon"] .case-section-btn,
+body.theme-carbon .case-section-btn {
+  background: #111115 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html[data-theme="carbon"] .case-section-btn:hover,
+body.theme-carbon .case-section-btn:hover {
+  background: #18181e !important;
+  color: #ffffff !important;
+}
+html[data-theme="carbon"] .case-section-btn.active,
+body.theme-carbon .case-section-btn.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="carbon"] .btn-blitz-toggle,
+html[data-theme="carbon"] .btn-radar-toggle,
+body.theme-carbon .btn-blitz-toggle,
+body.theme-carbon .btn-radar-toggle {
+  background: #141418 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-theme="carbon"] .status-pill,
+body.theme-carbon .status-pill {
+  background: #111115 !important;
+  color: #d4d4d8 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+html[data-theme="carbon"] .gym-tables-browser-card,
+body.theme-carbon .gym-tables-browser-card {
+  background: #09090b !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html[data-theme="carbon"] .gym-table-chip,
+body.theme-carbon .gym-table-chip {
+  background: #111115 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html[data-theme="carbon"] .gym-table-chip:hover,
+body.theme-carbon .gym-table-chip:hover {
+  background: #18181e !important;
+  color: #ffffff !important;
+}
+html[data-theme="carbon"] .gym-table-chip.active,
+body.theme-carbon .gym-table-chip.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="carbon"] .drill-id-pill,
+body.theme-carbon .drill-id-pill {
+  background: #18181b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  font-weight: 700 !important;
+}
+html[data-theme="carbon"] .case-industry-pill,
+html[data-theme="carbon"] .case-section-pill,
+body.theme-carbon .case-industry-pill,
+body.theme-carbon .case-section-pill {
+  background: #111115 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 4. Topic MCQs Hub */
+html[data-theme="carbon"] .quiz-score-badge,
+body.theme-carbon .quiz-score-badge {
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+html[data-theme="carbon"] .mcq-card,
+body.theme-carbon .mcq-card {
+  background: #09090b !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html[data-theme="carbon"] .mcq-tag,
+html[data-theme="carbon"] .mcq-pill,
+body.theme-carbon .mcq-tag,
+body.theme-carbon .mcq-pill {
+  background: #111115 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html[data-theme="carbon"] .mcq-option,
+body.theme-carbon .mcq-option {
+  background: #0c0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #d4d4d8 !important;
+}
+html[data-theme="carbon"] .mcq-option:hover,
+body.theme-carbon .mcq-option:hover {
+  background: #141418 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+html[data-theme="carbon"] .mcq-option.selected,
+body.theme-carbon .mcq-option.selected {
+  background: #27272a !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+/* 5. Bottom Status Bar & Companion Dock */
+html[data-theme="carbon"] .footer-track-pill,
+body.theme-carbon .footer-track-pill {
+  color: #ffffff !important;
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  font-weight: 600 !important;
+}
+html[data-theme="carbon"] .footer-mascot-btn,
+body.theme-carbon .footer-mascot-btn {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #a1a1aa !important;
+}
+html[data-theme="carbon"] .footer-mascot-btn:hover,
+body.theme-carbon .footer-mascot-btn:hover {
+  background: #202026 !important;
+  color: #ffffff !important;
+}
+html[data-theme="carbon"] #buddySpeechBubble,
+body.theme-carbon #buddySpeechBubble {
+  display: none !important;
+}
+
+/* 6. Home Track Launch Buttons: Monochrome dots */
+html[data-theme="carbon"] .launch-track-btn span[style*="background"],
+body.theme-carbon .launch-track-btn span[style*="background"] {
+  background: #ffffff !important;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4) !important;
+}
+
+
+/* --- FINE-GRAINED CARBON MONOCHROME PRECISION OVERRIDES --- */
+
+/* Syntax Gym Browser Badge & Elements */
+html[data-theme="carbon"] .gym-browser-badge,
+body.theme-carbon .gym-browser-badge {
+  background: #18181b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="carbon"] .sm2-card-badge,
+html[data-theme="carbon"] .sm2-due,
+html[data-theme="carbon"] .sm2-scheduled,
+body.theme-carbon .sm2-card-badge,
+body.theme-carbon .sm2-due,
+body.theme-carbon .sm2-scheduled {
+  background: #141418 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+html[data-theme="carbon"] .gym-table-chip.active,
+html[data-theme="carbon"] .gym-tables-tabs-strip .gym-table-tab.active,
+body.theme-carbon .gym-table-chip.active,
+body.theme-carbon .gym-tables-tabs-strip .gym-table-tab.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="carbon"] .case-card .case-table-badge,
+html[data-theme="carbon"] .case-card [class*="table-badge"],
+html[data-theme="carbon"] .case-card .drill-table-tag,
+body.theme-carbon .case-card .case-table-badge,
+body.theme-carbon .case-card [class*="table-badge"],
+body.theme-carbon .case-card .drill-table-tag {
+  background: #18181b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* MCQ Modules Bar & Resource Tabs */
+html[data-theme="carbon"] .mcq-module-btn,
+body.theme-carbon .mcq-module-btn {
+  background: #111115 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html[data-theme="carbon"] .mcq-module-btn:hover,
+body.theme-carbon .mcq-module-btn:hover {
+  background: #18181e !important;
+  color: #ffffff !important;
+}
+html[data-theme="carbon"] .mcq-module-btn.active,
+body.theme-carbon .mcq-module-btn.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+}
+html[data-theme="carbon"] .mcq-module-btn.active .mod-count,
+body.theme-carbon .mcq-module-btn.active .mod-count {
+  color: #27272a !important;
+}
+
+html[data-theme="carbon"] .topic-resource-tab,
+body.theme-carbon .topic-resource-tab {
+  background: #111115 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html[data-theme="carbon"] .topic-resource-tab.active,
+body.theme-carbon .topic-resource-tab.active {
+  background: #27272a !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+}
+
+html[data-theme="carbon"] .mcq-header-tag,
+html[data-theme="carbon"] .mcq-card .tag-pill,
+html[data-theme="carbon"] .mcq-card [class*="clause-pill"],
+body.theme-carbon .mcq-header-tag,
+body.theme-carbon .mcq-card .tag-pill,
+body.theme-carbon .mcq-card [class*="clause-pill"] {
+  background: #18181b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Studio Range Scrubber Thumb & Hub Trigger */
+html[data-theme="carbon"] .carousel-hub-btn,
+body.theme-carbon .carousel-hub-btn {
+  background: #141418 !important;
+  color: #d4d4d8 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+html[data-theme="carbon"] .carousel-hub-btn span.hub-count-badge,
+body.theme-carbon .carousel-hub-btn span.hub-count-badge {
+  background: #27272a !important;
+  color: #ffffff !important;
+}
+html[data-theme="carbon"] .carousel-slider-controller input[type="range"]::-webkit-slider-thumb,
+body.theme-carbon .carousel-slider-controller input[type="range"]::-webkit-slider-thumb {
+  background: #ffffff !important;
+  border: 2px solid #000000 !important;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Telemetry Metrics */
+html[data-theme="carbon"] .telemetry-chip .telemetry-val,
+body.theme-carbon .telemetry-chip .telemetry-val {
+  color: #ffffff !important;
+}

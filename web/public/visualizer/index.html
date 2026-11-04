@@ -1027,12 +1027,12 @@
             <button id="btnToggleMasteryRadar" class="btn-radar-toggle" onclick="toggleMasteryRadar()" title="View 17-pillar mastery meters, mistake frequency heatmap, and spaced repetition focus">
               Mastery &amp; Weakness Radar
             </button>
-            <button id="btnDailyWorkout" class="btn-blitz-toggle" style="background: #4f46e5; border-color: #6366f1; color: #ffffff;" onclick="window.GYM_SPACED_REPETITION && window.GYM_SPACED_REPETITION.openDailyWorkoutModal()" title="Start Daily 5 SuperMemo-2 Spaced Repetition Flashcard Workout">
+            <button id="btnDailyWorkout" class="btn-blitz-toggle" onclick="window.GYM_SPACED_REPETITION && window.GYM_SPACED_REPETITION.openDailyWorkoutModal()" title="Start Daily 5 SuperMemo-2 Spaced Repetition Flashcard Workout">
               Daily 5 Workout
             </button>
             <input type="text" id="gymSearchInput" class="case-search-input" placeholder="Search 1,700 drills by keyword, table, query...">
             <span id="gymCountBadge" class="status-pill">1,700 Drills</span>
-            <span id="gymSolvedBadge" class="status-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);"><span id="gymSolvedCount">0</span>/1,700 Solved</span>
+            <span id="gymSolvedBadge" class="status-pill"><span id="gymSolvedCount">0</span>/1,700 Solved</span>
           </div>
         </div>
 
@@ -1040,23 +1040,23 @@
         <div class="toolbar-deck-bottom">
           <div class="case-section-group" id="gymPillarFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button class="case-section-btn active" data-pillar="all">All 1,700 Drills</button>
-            <button class="case-section-btn" data-pillar="select" style="border-color: #38bdf8; color: #38bdf8; font-weight: 700;">Topic 1: SELECT &amp; Projections (100)</button>
-            <button class="case-section-btn" data-pillar="where" style="border-color: #f59e0b; color: #fbbf24; font-weight: 700;">Topic 2: WHERE &amp; Predicates (100)</button>
-            <button class="case-section-btn" data-pillar="order" style="border-color: #a855f7; color: #c084fc; font-weight: 700;">Topic 3: ORDER BY &amp; LIMIT Slicing (100)</button>
-            <button class="case-section-btn" data-pillar="aggregate" style="border-color: #ec4899; color: #f472b6; font-weight: 700;">Topic 4: Aggregations &amp; GROUP BY (100)</button>
-            <button class="case-section-btn" data-pillar="casewhen" style="border-color: #10b981; color: #34d399; font-weight: 700;">Topic 5: CASE WHEN &amp; Conditional Logic (100)</button>
-            <button class="case-section-btn" data-pillar="string" style="border-color: #06b6d4; color: #22d3ee; font-weight: 700;">Topic 6: String Manipulation &amp; Patterns (100)</button>
-            <button class="case-section-btn" data-pillar="join_core" style="border-color: #6366f1; color: #818cf8; font-weight: 700;">Topic 7: Relational Joins Core (100)</button>
-            <button class="case-section-btn" data-pillar="join_adv" style="border-color: #e11d48; color: #fb7185; font-weight: 700;">Topic 8: Advanced Joins &amp; Structures (100)</button>
-            <button class="case-section-btn" data-pillar="join_agg" style="border-color: #d97706; color: #f59e0b; font-weight: 700;">Topic 9: Multi-Table Chains &amp; Aggs (100)</button>
-            <button class="case-section-btn" data-pillar="date_time" style="border-color: #8b5cf6; color: #a78bfa; font-weight: 700;">Topic 10: Date, Time &amp; Temporal (100)</button>
-            <button class="case-section-btn" data-pillar="subqueries" style="border-color: #14b8a6; color: #2dd4bf; font-weight: 700;">Topic 11: Subqueries &amp; Derived (100)</button>
-            <button class="case-section-btn" data-pillar="ctes" style="border-color: #f97316; color: #fb923c; font-weight: 700;">Topic 12: Modular CTEs &amp; Pipelines (100)</button>
-            <button class="case-section-btn" data-pillar="window_ranking" style="border-color: #0ea5e9; color: #38bdf8; font-weight: 700;">Topic 13: Window Ranking &amp; Percentiles (100)</button>
-            <button class="case-section-btn" data-pillar="window_offsets" style="border-color: #10b981; color: #34d399; font-weight: 700;">Topic 14: Value Offsets &amp; Deltas (100)</button>
-            <button class="case-section-btn" data-pillar="window_running" style="border-color: #8b5cf6; color: #a78bfa; font-weight: 700;">Topic 15: Running Balances &amp; Frames (100)</button>
-            <button class="case-section-btn" data-pillar="set_ops" style="border-color: #f43f5e; color: #fb7185; font-weight: 700;">Topic 16: Set Operations &amp; Combined (100)</button>
-            <button class="case-section-btn" data-pillar="ddl_dml" style="border-color: #eab308; color: #facc15; font-weight: 700;">Topic 17: DDL &amp; DML Mutations (100)</button>
+            <button class="case-section-btn" data-pillar="select">Topic 1: SELECT &amp; Projections (100)</button>
+            <button class="case-section-btn" data-pillar="where">Topic 2: WHERE &amp; Predicates (100)</button>
+            <button class="case-section-btn" data-pillar="order">Topic 3: ORDER BY &amp; LIMIT Slicing (100)</button>
+            <button class="case-section-btn" data-pillar="aggregate">Topic 4: Aggregations &amp; GROUP BY (100)</button>
+            <button class="case-section-btn" data-pillar="casewhen">Topic 5: CASE WHEN &amp; Conditional Logic (100)</button>
+            <button class="case-section-btn" data-pillar="string">Topic 6: String Manipulation &amp; Patterns (100)</button>
+            <button class="case-section-btn" data-pillar="join_core">Topic 7: Relational Joins Core (100)</button>
+            <button class="case-section-btn" data-pillar="join_adv">Topic 8: Advanced Joins &amp; Structures (100)</button>
+            <button class="case-section-btn" data-pillar="join_agg">Topic 9: Multi-Table Chains &amp; Aggs (100)</button>
+            <button class="case-section-btn" data-pillar="date_time">Topic 10: Date, Time &amp; Temporal (100)</button>
+            <button class="case-section-btn" data-pillar="subqueries">Topic 11: Subqueries &amp; Derived (100)</button>
+            <button class="case-section-btn" data-pillar="ctes">Topic 12: Modular CTEs &amp; Pipelines (100)</button>
+            <button class="case-section-btn" data-pillar="window_ranking">Topic 13: Window Ranking &amp; Percentiles (100)</button>
+            <button class="case-section-btn" data-pillar="window_offsets">Topic 14: Value Offsets &amp; Deltas (100)</button>
+            <button class="case-section-btn" data-pillar="window_running">Topic 15: Running Balances &amp; Frames (100)</button>
+            <button class="case-section-btn" data-pillar="set_ops">Topic 16: Set Operations &amp; Combined (100)</button>
+            <button class="case-section-btn" data-pillar="ddl_dml">Topic 17: DDL &amp; DML Mutations (100)</button>
           </div>
         </div>
       </div>
@@ -1940,6 +1940,7 @@
   <script src="relational_machines_engine.js?v=20261030_v1"></script>
   <script src="mastery_course_data.js?v=10"></script>
   <script src="mastery_course_svg_engine.js?v=10"></script>
+  <script src="database_architecture_svgs.js?v=1"></script>
   <script src="keyword_encyclopedia_data.js?v=1"></script>
   <script src="cheatsheet_pdf_engine.js?v=1"></script>
   <script src="mastery_course_engine.js?v=10"></script>

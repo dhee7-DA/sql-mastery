@@ -4433,25 +4433,25 @@ const MCQ_MODULES = [
   {
     id: "foundations",
     title: "Foundations & Projections",
-    icon: "📦",
+    icon: "σ",
     keywords: ["SELECT", "FROM", "MATH & MEDIANS"]
   },
   {
     id: "filtering",
     title: "WHERE & 3-Valued Logic",
-    icon: "🎯",
+    icon: "π",
     keywords: ["WHERE", "EXISTS Mechanics & 3VL"]
   },
   {
     id: "sorting",
     title: "ORDER BY & Pagination",
-    icon: "⚡",
+    icon: "λ",
     keywords: ["ORDER BY & LIMIT"]
   },
   {
     id: "aggregations",
     title: "Aggregations & Grouping",
-    icon: "📊",
+    icon: "∑",
     keywords: ["COUNT", "SUM", "AVG", "MIN & MAX", "GROUP BY", "HAVING", "ROLLUP & CUBE"]
   },
   {
@@ -4703,17 +4703,17 @@ function renderMcqs(filterKeyword = null, resetLimit = true, targetModule = null
       <div class="topic-resource-tabs-bar">
         <div class="topic-resource-tabs-group">
           <button class="topic-resource-tab ${activeTopicResourceTab === 'mcqs' ? 'active' : ''}" onclick="switchTopicResourceTab('mcqs')">
-            <span class="tab-icon">🧠</span>
+            <span class="tab-icon">σ</span>
             <span class="tab-label">Topic MCQs</span>
             <span class="tab-badge">${modMcqsCount}</span>
           </button>
           <button class="topic-resource-tab ${activeTopicResourceTab === 'cases' ? 'active' : ''}" onclick="switchTopicResourceTab('cases')">
-            <span class="tab-icon">💼</span>
+            <span class="tab-icon">⋈</span>
             <span class="tab-label">Corporate Case Studies</span>
             <span class="tab-badge">${modCases.length}</span>
           </button>
           <button class="topic-resource-tab ${activeTopicResourceTab === 'problems' ? 'active' : ''}" onclick="switchTopicResourceTab('problems')">
-            <span class="tab-icon">🏆</span>
+            <span class="tab-icon">⊞</span>
             <span class="tab-label">Query Problems &amp; Quests</span>
             <span class="tab-badge">${modQuests.length}</span>
           </button>
@@ -5481,7 +5481,7 @@ function renderCaseCardHtml(cs) {
               : `<span class="case-id-pill">#${String(cs.id).padStart(3, '0')}</span>`}
             <span class="case-diff-badge ${diffClass}"><span class="diff-dot"></span>${cs.difficulty}</span>
             <span class="case-industry-pill">${cs.industry}</span>
-            ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
+            ${isSolved ? '<span class="status-pill" style="font-size: 9.5px; padding: 2px 5px;" title="Solved!">✓</span>' : ''}
             ${window.GYM_SPACED_REPETITION ? window.GYM_SPACED_REPETITION.renderCardBadgeHtml(cs.id) : ''}
           </div>
           <h3 class="case-title" onclick="openCaseDossier('${cs.id}')" title="Click to open full case study dossier">${cs.title}</h3>
@@ -6690,17 +6690,17 @@ function renderSyntaxGymTablesBrowser() {
   if (!browserEl) return;
 
   const tables = [
-    { name: 'all', label: 'All 10 Tables', icon: '⚡', desc: 'Browse across all 10 everyday schemas (300 drills)', cols: [] },
-    { name: 'Students', label: 'Students', icon: '🎓', desc: 'Classroom rosters, academic majors, GPA scores, and enrolled cohorts.', cols: ['student_id INT (PK)', 'full_name VARCHAR', 'age INT', 'major VARCHAR', 'gpa DECIMAL', 'city VARCHAR', 'enrolled_year INT'] },
-    { name: 'Books', label: 'Books', icon: '📚', desc: 'Library inventory catalog, literary genres, unit pricing, and binding types.', cols: ['book_id INT (PK)', 'title VARCHAR', 'author VARCHAR', 'genre VARCHAR', 'price DECIMAL', 'stock_qty INT', 'published_year INT', 'is_hardcover BOOLEAN'] },
-    { name: 'Employees', label: 'Employees', icon: '💼', desc: 'Corporate staffing roster, salary distributions, departments, and tenure dates.', cols: ['emp_id INT (PK)', 'first_name VARCHAR', 'last_name VARCHAR', 'department VARCHAR', 'salary DECIMAL', 'bonus DECIMAL', 'hire_date DATE'] },
-    { name: 'GroceryItems', label: 'GroceryItems', icon: '🛒', desc: 'Supermarket inventory, organic certifications, caloric metrics, and shelf stock.', cols: ['item_id INT (PK)', 'item_name VARCHAR', 'category VARCHAR', 'unit_price DECIMAL', 'is_organic BOOLEAN', 'calories INT', 'stock_units INT'] },
-    { name: 'Orders', label: 'Orders', icon: '📦', desc: 'Customer sales transactions, discounts, shipping logistics, and order fulfillment.', cols: ['order_id INT (PK)', 'customer_name VARCHAR', 'item_name VARCHAR', 'unit_price DECIMAL', 'quantity INT', 'discount_pct DECIMAL', 'order_status VARCHAR', 'shipping_city VARCHAR'] },
-    { name: 'MusicTracks', label: 'MusicTracks', icon: '🎵', desc: 'Streaming music catalog, audio duration, play counts, and release chronology.', cols: ['track_id INT (PK)', 'title VARCHAR', 'artist VARCHAR', 'genre VARCHAR', 'duration_sec INT', 'release_year INT', 'plays_count INT', 'is_explicit BOOLEAN'] },
-    { name: 'GymMembers', label: 'GymMembers', icon: '🏋️', desc: 'Fitness club memberships, tier plans, monthly dues, and visit frequency.', cols: ['member_id INT (PK)', 'full_name VARCHAR', 'plan_type VARCHAR', 'monthly_fee DECIMAL', 'visits_per_month INT', 'join_date DATE', 'has_trainer BOOLEAN'] },
-    { name: 'MovieReviews', label: 'MovieReviews', icon: '🎬', desc: 'Film ratings, film critics, star metrics, and verified audience feedback.', cols: ['review_id INT (PK)', 'movie_title VARCHAR', 'reviewer_name VARCHAR', 'rating_stars DECIMAL', 'review_year INT', 'is_verified_viewer BOOLEAN'] },
-    { name: 'FlightSchedule', label: 'FlightSchedule', icon: '✈️', desc: 'Commercial air travel routes, origin/destination hubs, fares, and delays.', cols: ['flight_id INT (PK)', 'airline VARCHAR', 'origin_city VARCHAR', 'dest_city VARCHAR', 'departure_time TIME', 'duration_min INT', 'ticket_price DECIMAL', 'is_delayed BOOLEAN'] },
-    { name: 'PetClinic', label: 'PetClinic', icon: '🐾', desc: 'Veterinary patient records, species, breeds, weights, and immunization records.', cols: ['pet_id INT (PK)', 'pet_name VARCHAR', 'species VARCHAR', 'breed VARCHAR', 'age_years INT', 'weight_kg DECIMAL', 'owner_name VARCHAR', 'vaccinated BOOLEAN'] }
+    { name: 'all', label: 'All 10 Tables', icon: '⊞', desc: 'Browse across all 10 everyday schemas (300 drills)', cols: [] },
+    { name: 'Students', label: 'Students', icon: 'σ', desc: 'Classroom rosters, academic majors, GPA scores, and enrolled cohorts.', cols: ['student_id INT (PK)', 'full_name VARCHAR', 'age INT', 'major VARCHAR', 'gpa DECIMAL', 'city VARCHAR', 'enrolled_year INT'] },
+    { name: 'Books', label: 'Books', icon: 'π', desc: 'Library inventory catalog, literary genres, unit pricing, and binding types.', cols: ['book_id INT (PK)', 'title VARCHAR', 'author VARCHAR', 'genre VARCHAR', 'price DECIMAL', 'stock_qty INT', 'published_year INT', 'is_hardcover BOOLEAN'] },
+    { name: 'Employees', label: 'Employees', icon: '⋈', desc: 'Corporate payroll, departmental allocation, and hire dates.', cols: ['emp_id INT (PK)', 'first_name VARCHAR', 'department VARCHAR', 'salary DECIMAL', 'tenure_months INT', 'bonus DECIMAL'] },
+    { name: 'GroceryItems', label: 'GroceryItems', icon: '∑', desc: 'Supermarket SKU inventory, aisle taxonomy, organic flags, and stock units.', cols: ['item_id INT (PK)', 'item_name VARCHAR', 'category VARCHAR', 'price DECIMAL', 'is_organic BOOLEAN', 'calories INT', 'stock_count INT'] },
+    { name: 'Orders', label: 'Orders', icon: '⨉', desc: 'Customer fulfillment, shipment status, purchase totals, and payment gateways.', cols: ['order_id INT (PK)', 'customer_name VARCHAR', 'order_date DATE', 'total_amount DECIMAL', 'status VARCHAR', 'payment_method VARCHAR'] },
+    { name: 'MusicTracks', label: 'MusicTracks', icon: 'λ', desc: 'Audio streaming catalog, duration in seconds, play counters, and release years.', cols: ['track_id INT (PK)', 'title VARCHAR', 'artist VARCHAR', 'album VARCHAR', 'duration_sec INT', 'play_count INT', 'release_year INT'] },
+    { name: 'GymMembers', label: 'GymMembers', icon: 'Δ', desc: 'Fitness membership registry, monthly dues, trainer assignments, and active flags.', cols: ['member_id INT (PK)', 'name VARCHAR', 'membership_type VARCHAR', 'monthly_fee DECIMAL', 'join_date DATE', 'has_trainer BOOLEAN'] },
+    { name: 'MovieReviews', label: 'MovieReviews', icon: 'γ', desc: 'Box-office critic assessments, star ratings, review timestamps, and verified tags.', cols: ['review_id INT (PK)', 'movie_title VARCHAR', 'reviewer VARCHAR', 'rating DECIMAL', 'review_year INT', 'is_verified BOOLEAN'] },
+    { name: 'FlightSchedule', label: 'FlightSchedule', icon: '↻', desc: 'Aviation timetables, origin and destination hubs, delayed minutes, and gate numbers.', cols: ['flight_id INT (PK)', 'flight_no VARCHAR', 'origin VARCHAR', 'destination VARCHAR', 'duration_mins INT', 'status VARCHAR'] },
+    { name: 'PetClinic', label: 'PetClinic', icon: 'ω', desc: 'Veterinary health records, species categories, patient ages, and vaccination audits.', cols: ['pet_id INT (PK)', 'pet_name VARCHAR', 'species VARCHAR', 'age INT', 'weight_kg DECIMAL', 'is_vaccinated BOOLEAN'] }
   ];
 
   const activeTableObj = tables.find(t => t.name.toLowerCase() === (currentGymTable || 'all').toLowerCase()) || tables[0];
@@ -6741,7 +6741,7 @@ function renderSyntaxGymTablesBrowser() {
     detailBoxHtml = `
       <div class="gym-table-detail-box" style="padding: 10px 14px;">
         <p style="font-size: 11.5px; color: var(--text-secondary); margin: 0;">
-          💡 <strong>Punctuation &amp; Clause Muscle Memory:</strong> Click any of the 10 everyday schemas above to filter drills, or choose a topic pill above (SELECT, WHERE, ORDER BY) to practice active retrieval.
+          <strong>◆ Punctuation &amp; Clause Muscle Memory:</strong> Click any of the 10 everyday schemas above to filter drills, or choose a topic pill above (SELECT, WHERE, ORDER BY) to practice active retrieval.
         </p>
       </div>
     `;
@@ -6752,7 +6752,7 @@ function renderSyntaxGymTablesBrowser() {
       <div class="gym-browser-title-wrap">
         <span class="gym-browser-badge">RELATIONAL DATA MATRIX</span>
         <div>
-          <h3 class="gym-browser-title">🗄️ 10 Everyday Schemas Inspector</h3>
+          <h3 class="gym-browser-title">10 Everyday Schemas Inspector</h3>
           <p class="gym-browser-subtitle">Punctuation &amp; clause muscle memory drills built exclusively on relatable everyday data.</p>
         </div>
       </div>
@@ -6828,11 +6828,11 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
       <div class="case-card-header">
         <div>
           <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
-            <span class="case-id-pill drill-id-pill">⚡ Drill #${String(drillNum).padStart(4, '0')}</span>
+            <span class="case-id-pill drill-id-pill">Drill #${String(drillNum).padStart(4, '0')}</span>
             <span class="case-industry-pill">${topicBadgeName}</span>
-            ${isBlitz ? '<span class="case-badge-blitz">⚡ BLITZ SPRINT</span>' : ''}
+            ${isBlitz ? '<span class="case-badge-blitz">BLITZ SPRINT</span>' : ''}
             ${cs.subcluster ? `<span class="case-section-pill">${escapeHtml(cs.subcluster.split(' ')[0])}</span>` : ''}
-            ${isSolved ? '<span style="font-size: 11px;" title="Solved!">🏆</span>' : ''}
+            ${isSolved ? '<span class="status-pill" style="font-size: 9.5px; padding: 2px 5px;" title="Solved!">✓</span>' : ''}
             ${window.GYM_SPACED_REPETITION ? window.GYM_SPACED_REPETITION.renderCardBadgeHtml(cs.id) : ''}
           </div>
           <h3 class="case-title" onclick="openCaseDossier('${cs.id}')" title="Click to open full case study dossier">${escapeHtml(cs.title)}</h3>

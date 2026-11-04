@@ -349,11 +349,11 @@
     const now = Date.now();
     const isDue = card.dueDate <= now;
 
-    let badgeText = '🗂️ SM-2: Due Today';
+    let badgeText = 'SM-2: Due Today';
     let badgeClass = 'sm2-due';
     if (!isDue) {
       const daysLeft = Math.max(1, Math.ceil((card.dueDate - now) / 86400000));
-      badgeText = `🗂️ In Vault • Review in ${daysLeft}d`;
+      badgeText = `Vault • Review in ${daysLeft}d`;
       badgeClass = 'sm2-scheduled';
     }
 

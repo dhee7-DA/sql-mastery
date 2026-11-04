@@ -9455,12 +9455,12 @@ body {
 }
 
 .footer-track-pill {
-  color: #38bdf8;
-  background: rgba(56, 189, 248, 0.08);
-  border: 1px solid rgba(56, 189, 248, 0.22);
+  color: #ffffff;
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 2px 8px;
   border-radius: 4px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .footer-streak {

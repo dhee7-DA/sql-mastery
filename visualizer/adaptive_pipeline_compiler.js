@@ -600,18 +600,19 @@
     let headerText = '#ffffff';
     let subText = '#71717a';
 
+    const isCarbon = (activeTheme === 'carbon' || activeTheme === 'monochrome' || !activeTheme);
     if (activeTheme === 'ink') {
       canvasBg = '#070a0f';
       frameFill = '#0d1117';
       frameStroke = '#1e293b';
       headerText = '#f1f5f9';
       subText = '#64748b';
-    } else if (activeTheme === 'carbon') {
-      canvasBg = '#090a0c';
-      frameFill = '#111215';
-      frameStroke = '#22262e';
-      headerText = '#f3f4f6';
-      subText = '#6b7280';
+    } else {
+      canvasBg = '#000000';
+      frameFill = '#0c0d10';
+      frameStroke = 'rgba(255, 255, 255, 0.08)';
+      headerText = '#ffffff';
+      subText = '#71717a';
     }
 
     // SVG Filters and Gradients definitions
@@ -696,9 +697,11 @@
           // Gracefully dropping wire
           const xDrop = x1 + gap * 0.45;
           const yDrop = y1 + 12;
+          const dropStroke = isCarbon ? '#3f3f46' : '#f43f5e';
+          const dropPin = isCarbon ? '#52525b' : '#f43f5e';
           wiresSvg += `
-            <path class="machine-wire-path machine-wire-drop" data-wire-pin="${r.pin}" data-wire-status="drop" d="M ${x1} ${y1} Q ${x1 + 16} ${y1}, ${xDrop} ${yDrop}" fill="none" stroke="#f43f5e" stroke-width="1.3" stroke-dasharray="2,3" opacity="0.65" />
-            <circle class="machine-wire-pin" data-wire-pin="${r.pin}" cx="${xDrop}" cy="${yDrop}" r="2.5" fill="#f43f5e" />
+            <path class="machine-wire-path machine-wire-drop" data-wire-pin="${r.pin}" data-wire-status="drop" d="M ${x1} ${y1} Q ${x1 + 16} ${y1}, ${xDrop} ${yDrop}" fill="none" stroke="${dropStroke}" stroke-width="1.1" stroke-dasharray="2,3" opacity="0.65" />
+            <circle class="machine-wire-pin" data-wire-pin="${r.pin}" cx="${xDrop}" cy="${yDrop}" r="2" fill="${dropPin}" />
           `;
         } else {
           // Connected active wire to next chamber
@@ -709,10 +712,13 @@
           const cx1 = x1 + gap * 0.5;
           const cx2 = x2 - gap * 0.5;
 
+          const activeWireStroke = isCarbon ? 'rgba(255, 255, 255, 0.45)' : `url(#wire-grad-${i})`;
+          const wirePin1 = isCarbon ? '#ffffff' : srcCh.color;
+          const wirePin2 = isCarbon ? '#ffffff' : dstCh.color;
           wiresSvg += `
-            <path class="machine-wire-path machine-wire-active" data-wire-pin="${r.pin}" data-wire-status="pass" d="M ${x1} ${y1} C ${cx1} ${y1}, ${cx2} ${y2}, ${x2} ${y2}" fill="none" stroke="url(#wire-grad-${i})" stroke-width="1.6" stroke-linecap="round" opacity="0.85" />
-            <circle class="machine-wire-pin" data-wire-pin="${r.pin}" cx="${x1}" cy="${y1}" r="3.2" fill="${srcCh.color}" />
-            <circle class="machine-wire-pin" data-wire-pin="${r.pin}" cx="${x2}" cy="${y2}" r="3.2" fill="${dstCh.color}" />
+            <path class="machine-wire-path machine-wire-active" data-wire-pin="${r.pin}" data-wire-status="pass" d="M ${x1} ${y1} C ${cx1} ${y1}, ${cx2} ${y2}, ${x2} ${y2}" fill="none" stroke="${activeWireStroke}" stroke-width="${isCarbon ? '1.2' : '1.6'}" stroke-linecap="round" opacity="0.9" />
+            <circle class="machine-wire-pin" data-wire-pin="${r.pin}" cx="${x1}" cy="${y1}" r="${isCarbon ? '2.5' : '3.2'}" fill="${wirePin1}" />
+            <circle class="machine-wire-pin" data-wire-pin="${r.pin}" cx="${x2}" cy="${y2}" r="${isCarbon ? '2.5' : '3.2'}" fill="${wirePin2}" />
           `;
         }
       });
@@ -730,17 +736,17 @@
           <!-- Chamber Card Frame -->
           <rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" rx="8" fill="#0d111a" stroke="#1e293b" stroke-width="1.2" />
           
-          <!-- Electric Top Accent Line -->
-          <line x1="${c.x + 2}" y1="${c.y}" x2="${c.x + c.w - 2}" y2="${c.y}" stroke="${ch.color}" stroke-width="2.5" filter="url(#${glowFilter})" />
+          <!-- Top Line -->
+          <line x1="${c.x + 2}" y1="${c.y}" x2="${c.x + c.w - 2}" y2="${c.y}" stroke="${isCarbon ? 'rgba(255,255,255,0.15)' : ch.color}" stroke-width="${isCarbon ? '1' : '2.5'}" ${isCarbon ? '' : `filter="url(#${glowFilter})"`} />
           
           <!-- Chamber Header -->
-          <rect x="${c.x + 10}" y="${c.y + 11}" width="22" height="15" rx="3" fill="${ch.color}22" stroke="${ch.color}" stroke-width="0.8" />
-          <text x="${c.x + 21}" y="${c.y + 22}" fill="${ch.color}" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700" text-anchor="middle">${ch.chip}</text>
+          <rect x="${c.x + 10}" y="${c.y + 11}" width="22" height="15" rx="3" fill="${isCarbon ? '#18181b' : ch.color + '22'}" stroke="${isCarbon ? 'rgba(255,255,255,0.15)' : ch.color}" stroke-width="0.8" />
+          <text x="${c.x + 21}" y="${c.y + 22}" fill="${isCarbon ? '#ffffff' : ch.color}" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700" text-anchor="middle">${ch.chip}</text>
           
-          <text x="${c.x + 38}" y="${c.y + 23}" fill="#f1f5f9" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" letter-spacing="0.3">${ch.title}</text>
-          <text x="${c.x + 10}" y="${c.y + 39}" fill="${ch.color}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">${escapeXml(trunc(ch.subtitle, 25))}</text>
+          <text x="${c.x + 38}" y="${c.y + 23}" fill="#ffffff" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" letter-spacing="0.3">${ch.title}</text>
+          <text x="${c.x + 10}" y="${c.y + 39}" fill="${isCarbon ? '#71717a' : ch.color}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">${escapeXml(trunc(ch.subtitle, 25))}</text>
           
-          <line x1="${c.x}" y1="${c.y + 48}" x2="${c.x + c.w}" y2="${c.y + 48}" stroke="#1e293b" stroke-width="1" />
+          <line x1="${c.x}" y1="${c.y + 48}" x2="${c.x + c.w}" y2="${c.y + 48}" stroke="${isCarbon ? 'rgba(255,255,255,0.06)' : '#1e293b'}" stroke-width="1" />
           
           <!-- Micro-Stat Substrip -->
           <rect x="${c.x + 1}" y="${c.y + 49}" width="${c.w - 2}" height="20" fill="#070a10" />
@@ -772,8 +778,13 @@
         const ry = c.rowY(rIdx);
         const isDrop = r.status === 'drop';
         const isProjected = r.status === 'projected';
-        const rowBg = rIdx % 2 === 0 ? '#111723' : '#0e141f';
-        const textFill = isDrop ? '#64748b' : (isProjected ? '#34d399' : '#e2e8f0');
+        const rowBg = isCarbon ? (rIdx % 2 === 0 ? '#111116' : '#0a0a0d') : (rIdx % 2 === 0 ? '#111723' : '#0e141f');
+        const textFill = isCarbon ? (isDrop ? '#52525b' : '#ffffff') : (isDrop ? '#64748b' : (isProjected ? '#34d399' : '#e2e8f0'));
+
+        const pinCircleFill = isCarbon ? '#18181b' : (isDrop ? '#f43f5e22' : ch.color + '22');
+        const pinCircleStroke = isCarbon ? 'rgba(255,255,255,0.12)' : (isDrop ? '#f43f5e' : ch.color);
+        const pinTextFill = isCarbon ? '#a1a1aa' : (isDrop ? '#f43f5e' : ch.color);
+        const col3Fill = isCarbon ? (isDrop ? '#52525b' : '#ffffff') : (isDrop ? '#f43f5e' : (r.cells[2] && r.cells[2].includes('PASS') ? '#10b981' : textFill));
 
         chHtml += `
           <!-- Row ${rIdx + 1} Interactive Item -->
@@ -782,16 +793,16 @@
              onmouseleave="if(window.RelationalMachinesEngine)window.RelationalMachinesEngine.handleRowLeave()" 
              onclick="if(window.RelationalMachinesEngine)window.RelationalMachinesEngine.openDrawer('${r.metricId}', ${r.pin})" 
              style="cursor: pointer;">
-            <rect x="${c.x + 4}" y="${ry}" width="${c.w - 8}" height="28" rx="4" fill="${rowBg}" stroke="${isDrop ? '#f43f5e33' : '#1e293b'}" stroke-width="0.8" />
+            <rect x="${c.x + 4}" y="${ry}" width="${c.w - 8}" height="28" rx="4" fill="${rowBg}" stroke="${isCarbon ? 'rgba(255,255,255,0.04)' : (isDrop ? '#f43f5e33' : '#1e293b')}" stroke-width="0.8" />
             
             <!-- Pin Badge -->
-            <circle cx="${c.x + 14}" cy="${ry + 14}" r="6.5" fill="${isDrop ? '#f43f5e22' : ch.color + '22'}" stroke="${isDrop ? '#f43f5e' : ch.color}" stroke-width="1" />
-            <text x="${c.x + 14}" y="${ry + 17}" fill="${isDrop ? '#f43f5e' : ch.color}" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="700" text-anchor="middle">${isDrop ? '&times;' : r.pin}</text>
+            <circle cx="${c.x + 14}" cy="${ry + 14}" r="6.5" fill="${pinCircleFill}" stroke="${pinCircleStroke}" stroke-width="0.8" />
+            <text x="${c.x + 14}" y="${ry + 17}" fill="${pinTextFill}" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="700" text-anchor="middle">${isDrop ? '&times;' : r.pin}</text>
             
             <!-- Cell Text Values -->
             <text x="${colX1}" y="${ry + 17}" fill="${textFill}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="500">${escapeXml(trunc(r.cells[0], maxColLen))}</text>
             <text x="${colX2}" y="${ry + 17}" fill="${textFill}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="500">${escapeXml(trunc(r.cells[1], maxColLen))}</text>
-            ${is3Col ? `<text x="${colX3}" y="${ry + 17}" fill="${isDrop ? '#f43f5e' : (r.cells[2] && r.cells[2].includes('PASS') ? '#10b981' : textFill)}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="600">${escapeXml(trunc(r.cells[2], maxColLen))}</text>` : ''}
+            ${is3Col ? `<text x="${colX3}" y="${ry + 17}" fill="${col3Fill}" font-family="JetBrains Mono, monospace" font-size="8" font-weight="${r.cells[2] && r.cells[2].includes('PASS') ? '700' : '500'}">${escapeXml(trunc(r.cells[2], maxColLen))}</text>` : ''}
           </g>
         `;
       });
@@ -813,8 +824,8 @@
         <text x="${paddingX + 16}" y="48" fill="#64748b" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="600">${pipelineFlow}</text>
         
         <!-- Right Status Pills -->
-        <rect x="${totalWidth - paddingX - 90}" y="24" width="80" height="20" rx="3" fill="#10b98118" stroke="#10b981" stroke-width="0.8" />
-        <text x="${totalWidth - paddingX - 50}" y="37" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="700" text-anchor="middle">LIVE AST &#10003;</text>
+        <rect x="${totalWidth - paddingX - 90}" y="24" width="80" height="20" rx="3" fill="${isCarbon ? '#18181b' : '#10b98118'}" stroke="${isCarbon ? 'rgba(255,255,255,0.15)' : '#10b981'}" stroke-width="0.8" />
+        <text x="${totalWidth - paddingX - 50}" y="37" fill="${isCarbon ? '#ffffff' : '#10b981'}" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="700" text-anchor="middle">LIVE AST &#10003;</text>
       </g>
     `;
 
@@ -844,33 +855,33 @@
       <g>
         <!-- Panel 1: Logical Execution Plan & Cardinality Graph -->
         <rect x="${p1X}" y="${bottomY}" width="${splitW1}" height="${bottomH}" rx="6" fill="${frameFill}" stroke="${frameStroke}" stroke-width="1" />
-        <line x1="${p1X + 2}" y1="${bottomY}" x2="${p1X + splitW1 - 2}" y2="${bottomY}" stroke="#38bdf8" stroke-width="2" />
+        <line x1="${p1X + 2}" y1="${bottomY}" x2="${p1X + splitW1 - 2}" y2="${bottomY}" stroke="${isCarbon ? 'rgba(255,255,255,0.15)' : '#38bdf8'}" stroke-width="${isCarbon ? '1' : '2'}" />
         
-        <text x="${p1X + 14}" y="${bottomY + 20}" fill="#38bdf8" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700" letter-spacing="0.4">LOGICAL EXECUTION PLAN &amp; CARDINALITY PIPELINE</text>
-        <line x1="${p1X + 1}" y1="${bottomY + 28}" x2="${p1X + splitW1 - 1}" y2="${bottomY + 28}" stroke="#1e293b" stroke-width="1" />
+        <text x="${p1X + 14}" y="${bottomY + 20}" fill="${isCarbon ? '#a1a1aa' : '#38bdf8'}" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700" letter-spacing="0.4">LOGICAL EXECUTION PLAN &amp; CARDINALITY PIPELINE</text>
+        <line x1="${p1X + 1}" y1="${bottomY + 28}" x2="${p1X + splitW1 - 1}" y2="${bottomY + 28}" stroke="${isCarbon ? 'rgba(255,255,255,0.06)' : '#1e293b'}" stroke-width="1" />
         
         <foreignObject x="${p1X + 12}" y="${bottomY + 34}" width="${splitW1 - 24}" height="${bottomH - 40}">
           <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'JetBrains Mono',monospace; font-size:8px; line-height:1.55; color:#cbd5e1; word-wrap:break-word; overflow:hidden;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span style="color:#94a3b8; font-weight:600;">1. SCAN:</span> <span style="color:#f1f5f9;">${escapeXml(scanTbl)} (${chambers[0].stats.inCount} tuples)</span></div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span style="color:#94a3b8; font-weight:600;">2. OPS:</span> <span style="color:#f1f5f9;">${escapeXml(opsSummary)}</span></div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="color:#94a3b8; font-weight:600;">3. SINK:</span> <span style="color:#10b981; font-weight:600;">${chambers[n-1].stats.passCount} tuples emitted</span></div>
-            <div style="color:#64748b; font-size:7.5px; border-top:1px solid #1e293b; padding-top:4px; margin-top:2px;">Model: Volcano Pull-Stream &bull; Volatility: STABLE</div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span style="color:#71717a; font-weight:600;">1. SCAN:</span> <span style="color:#ffffff;">${escapeXml(scanTbl)} (${chambers[0].stats.inCount} tuples)</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span style="color:#71717a; font-weight:600;">2. OPS:</span> <span style="color:#ffffff;">${escapeXml(opsSummary)}</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="color:#71717a; font-weight:600;">3. SINK:</span> <span style="color:#ffffff; font-weight:700;">${chambers[n-1].stats.passCount} tuples emitted</span></div>
+            <div style="color:#52525b; font-size:7.5px; border-top:1px solid rgba(255,255,255,0.06); padding-top:4px; margin-top:2px;">Model: Volcano Pull-Stream &bull; Volatility: STABLE</div>
           </div>
         </foreignObject>
 
         <!-- Panel 2: Senior Relational Architect & Interview Dossier -->
         <rect x="${p2X}" y="${bottomY}" width="${splitW2}" height="${bottomH}" rx="6" fill="${frameFill}" stroke="${frameStroke}" stroke-width="1" />
-        <line x1="${p2X + 2}" y1="${bottomY}" x2="${p2X + splitW2 - 2}" y2="${bottomY}" stroke="#fbbf24" stroke-width="2" />
+        <line x1="${p2X + 2}" y1="${bottomY}" x2="${p2X + splitW2 - 2}" y2="${bottomY}" stroke="${isCarbon ? 'rgba(255,255,255,0.15)' : '#fbbf24'}" stroke-width="${isCarbon ? '1' : '2'}" />
         
-        <text x="${p2X + 14}" y="${bottomY + 20}" fill="#fbbf24" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700" letter-spacing="0.4">STAFF DATA ARCHITECT // PERFORMANCE &amp; DEFENSE</text>
-        <line x1="${p2X + 1}" y1="${bottomY + 28}" x2="${p2X + splitW2 - 1}" y2="${bottomY + 28}" stroke="#1e293b" stroke-width="1" />
+        <text x="${p2X + 14}" y="${bottomY + 20}" fill="${isCarbon ? '#a1a1aa' : '#fbbf24'}" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700" letter-spacing="0.4">STAFF DATA ARCHITECT // PERFORMANCE &amp; DEFENSE</text>
+        <line x1="${p2X + 1}" y1="${bottomY + 28}" x2="${p2X + splitW2 - 1}" y2="${bottomY + 28}" stroke="${isCarbon ? 'rgba(255,255,255,0.06)' : '#1e293b'}" stroke-width="1" />
         
         <foreignObject x="${p2X + 12}" y="${bottomY + 34}" width="${splitW2 - 24}" height="${bottomH - 40}">
           <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'JetBrains Mono',monospace; font-size:8px; line-height:1.45; color:#cbd5e1; word-wrap:break-word; overflow:hidden;">
-            <div style="color:#e2e8f0; margin-bottom:4px;">&#9889; ${escapeXml(architectInsight)}</div>
-            <div style="color:#94a3b8; font-weight:700; margin-top:3px;">TALKING POINT:</div>
-            <div style="color:#93c5fd; font-style:italic;">"Always explain the trade-offs between Hash Join and Nested Loop joins to interviewers."</div>
-            <div style="color:#64748b; font-size:7.5px; margin-top:4px;">Click any row node above for multi-dialect SQL &rarr;</div>
+            <div style="color:#ffffff; margin-bottom:4px;">${isCarbon ? '◆ ' : '&#9889; '}${escapeXml(architectInsight)}</div>
+            <div style="color:#a1a1aa; font-weight:700; margin-top:3px;">TALKING POINT:</div>
+            <div style="color:${isCarbon ? '#d4d4d8' : '#93c5fd'}; font-style:normal;">"Always explain the trade-offs between Hash Join and Nested Loop joins to interviewers."</div>
+            <div style="color:#71717a; font-size:7.5px; margin-top:4px;">Click any row node above for multi-dialect SQL &rarr;</div>
           </div>
         </foreignObject>
       </g>

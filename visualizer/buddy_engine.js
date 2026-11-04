@@ -412,7 +412,8 @@ const SQL_BUDDY = (() => {
       setExpression("idle");
       targetScaleY = 1.25; // Surprised wake bounce!
       SOUNDS.playBloop(1.4);
-      say("⚡ I'm awake! Ready for more SQL queries!", 4000, "happy");
+      // silent wake in carbon theme
+      // say("⚡ I'm awake! Ready for more SQL queries!", 4000, "happy");
     }
   }
 
@@ -917,7 +918,7 @@ const SQL_BUDDY = (() => {
 
     const footerBtn = document.getElementById("footerMascotToggle");
     if (footerBtn) {
-      footerBtn.innerHTML = isMinimized ? `🐙 Sir Bloops` : `🐙 Sir Bloops <span style="font-size:9px;color:var(--accent,#e11d48);font-weight:700;">●</span>`;
+      footerBtn.innerHTML = isMinimized ? `Sir Bloops` : `Sir Bloops <span style="font-size:9px;color:#ffffff;font-weight:700;">●</span>`;
       footerBtn.classList.toggle("active", !isMinimized);
       footerBtn.title = isMinimized ? "Sir Bloops is parked in dock. Click to summon companion." : "Sir Bloops is active. Click to park companion in dock.";
     }

@@ -2630,13 +2630,13 @@ function renderView() {
             <!-- Mode Selector: Blueprints vs LeetCode vs Custom -->
             <div class="machines-catalog-tabs">
               <button class="machines-cat-btn ${state.catalogMode === 'blueprints' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.switchCatalogMode('blueprints')">
-                <span>🏢 Blueprints</span>
+                <span>Blueprints</span>
               </button>
               <button class="machines-cat-btn ${state.catalogMode === 'leetcode' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.switchCatalogMode('leetcode')">
-                <span>🏆 LeetCode 323</span>
+                <span>LeetCode 323</span>
               </button>
               <button class="machines-cat-btn ${state.catalogMode === 'custom' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.switchCatalogMode('custom')">
-                <span>⚡ Custom Playground</span>
+                <span>Custom Playground</span>
               </button>
             </div>
           </div>
@@ -2657,17 +2657,17 @@ function renderView() {
 
             <!-- Export Tools -->
             <div class="machines-tools-group" style="display:flex; align-items:center; gap:6px;">
-              <button class="machine-action-btn" onclick="window.RelationalMachinesEngine.openDbtModal()" title="Export as dbt Model, Tests & Semantic YAML" style="border-color:rgba(244,63,94,0.35); color:#fb7185; background:rgba(244,63,94,0.08);">
-                <span>📦 Export dbt</span>
+              <button class="machine-action-btn" onclick="window.RelationalMachinesEngine.openDbtModal()" title="Export as dbt Model, Tests & Semantic YAML">
+                <span>dbt Export</span>
               </button>
               <button class="machine-action-btn" onclick="window.RelationalMachinesEngine.downloadSvg()" title="Download Standalone SVG">
-                <span>⤓ SVG</span>
+                <span>SVG</span>
               </button>
               <button class="machine-action-btn" onclick="window.RelationalMachinesEngine.exportRetinaPng()" title="Export 2x Retina PNG for docs & slides">
-                <span>🖼 PNG (2x)</span>
+                <span>PNG (2x)</span>
               </button>
               <button class="machine-action-btn" onclick="window.RelationalMachinesEngine.copySvgCode()" title="Copy Raw SVG XML">
-                <span>📋 Copy</span>
+                <span>Copy</span>
               </button>
             </div>
           </div>
