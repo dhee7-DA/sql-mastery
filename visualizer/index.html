@@ -2032,9 +2032,14 @@
   // Automatic Hash & Default View Router
   (function() {
     function routeView() {
-      const hash = (window.location.hash || '').replace('#', '').toLowerCase();
-      if (hash === 'course' || hash === 'mastery' || hash === 'curriculum') {
+      const rawHash = (window.location.hash || '').replace('#', '');
+      const hash = rawHash.toLowerCase();
+      if (hash.startsWith('course') || hash.startsWith('mastery') || hash.startsWith('curriculum')) {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewMasteryCourse', 'Course', null);
+        const parts = rawHash.split(':');
+        if (parts[1] && window.MasteryCourseEngine && typeof window.MasteryCourseEngine.selectPhase === 'function') {
+          setTimeout(() => window.MasteryCourseEngine.selectPhase(parts[1]), 80);
+        }
       } else       if (hash === 'guidedlab' || hash === 'guided-lab') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewGuidedLab', 'Guided Lab', 'navGroupLearn');
       } else if (hash === 'interview' || hash === 'mock' || hash === 'mockinterview') {

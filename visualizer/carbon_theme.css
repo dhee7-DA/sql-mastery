@@ -1488,15 +1488,70 @@ pre code {
   font-weight: 700 !important;
 }
 
+.course-svg-diagram-card {
+  width: 100% !important;
+  max-width: 1040px !important;
+  margin: 0 auto 20px auto !important;
+  background: #09090b !important;
+  border: 1px solid #1f1f23 !important;
+  border-radius: 8px !important;
+  padding: 14px 16px 10px 16px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+  overflow: hidden !important;
+}
+
 .course-explainer-svg {
   width: 100% !important;
-  max-width: 980px !important;
+  max-width: 1000px !important;
   height: auto !important;
+  aspect-ratio: 1000 / 270 !important;
   margin: 0 auto !important;
   display: block !important;
-  background: #000000 !important;
-  border: 1px solid #222225 !important;
+  background: #050507 !important;
+  border: 1px solid #1c1c20 !important;
+  border-radius: 8px !important;
+}
+
+.course-explainer-svg text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  user-select: none !important;
+}
+
+.diagram-stepper-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 12px 0 4px 0 !important;
+  background: transparent !important;
+  border-top: none !important;
+}
+
+.diagram-step-btn {
+  height: 28px !important;
+  padding: 0 14px !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
   border-radius: 6px !important;
+  border: 1px solid #27272a !important;
+  background: #101014 !important;
+  color: #a1a1aa !important;
+  cursor: pointer !important;
+  transition: all 140ms ease !important;
+}
+
+.diagram-step-btn:hover {
+  background: #1c1c22 !important;
+  border-color: #3f3f46 !important;
+  color: #ffffff !important;
+}
+
+.diagram-step-btn.active {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.12) !important;
 }
 
 /* 5. Everyday Analogy Hero Card */
