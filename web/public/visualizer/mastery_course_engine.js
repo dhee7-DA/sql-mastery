@@ -1942,7 +1942,10 @@ FROM Employees;`,
             </div>
             <div class="visual-mode-toggle-group">
               <button class="visual-toggle-btn ${visualMode === 'diagram' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setVisualMode('diagram')">
-                <span>Visual Diagram</span>
+                <span>Topic Diagram</span>
+              </button>
+              <button class="visual-toggle-btn ${visualMode === 'internals' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setVisualMode('internals')">
+                <span>Engine Architecture</span>
               </button>
               <button class="visual-toggle-btn ${visualMode === 'sandbox' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setVisualMode('sandbox')">
                 <span>Live Sandbox</span>
@@ -1950,7 +1953,7 @@ FROM Employees;`,
             </div>
           </div>
 
-          ${visualMode === 'diagram' ? renderSvgDiagram(phase) : renderInteractiveSimulator(phase)}
+          ${visualMode === 'diagram' ? renderSvgDiagram(phase) : (visualMode === 'internals' ? renderCourseArchInternals() : renderInteractiveSimulator(phase))}
         </div>
 
         <!-- Everyday Analogy Hero Card -->
@@ -5123,8 +5126,50 @@ Certified in high-speed verbal architecture defense across:
     `;
   }
 
+
+  function renderCourseArchInternals() {
+    const activeArch = state.archDiagramType || 'buffer_pool';
+    let svgHtml = '';
+    if (window.DatabaseArchitectureSvgs) {
+      if (activeArch === 'btree') {
+        svgHtml = window.DatabaseArchitectureSvgs.renderBTreeIndexSvg();
+      } else if (activeArch === 'hash_join') {
+        svgHtml = window.DatabaseArchitectureSvgs.renderHashJoinDagSvg();
+      } else {
+        svgHtml = window.DatabaseArchitectureSvgs.renderBufferPoolSvg();
+      }
+    } else {
+      svgHtml = '<div style="padding: 24px; text-align: center; color: #a1a1aa;">Database Architecture Engine Loading...</div>';
+    }
+
+    return `
+      <div class="course-arch-internals-card" style="padding: 16px; background: #0c0d10; border-radius: 8px; border: 1px solid rgba(255,255,255,0.14);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #ffffff; letter-spacing: 0.04em;">RELATIONAL DATABASE STORAGE &amp; EXECUTION ENGINE</div>
+            <div style="font-size: 11px; color: #a1a1aa; margin-top: 2px;">Widescreen vector diagrams of memory pipelines, B+ tree traversal, and join hash tables.</div>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button type="button" class="db-arch-tab-btn ${activeArch === 'buffer_pool' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setArchDiagramType('buffer_pool')">Buffer Pool I/O</button>
+            <button type="button" class="db-arch-tab-btn ${activeArch === 'btree' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setArchDiagramType('btree')">B+ Tree Index</button>
+            <button type="button" class="db-arch-tab-btn ${activeArch === 'hash_join' ? 'active' : ''}" onclick="window.MasteryCourseEngine.setArchDiagramType('hash_join')">Hash Join DAG</button>
+          </div>
+        </div>
+        <div style="width: 100%; overflow-x: auto; background: #000000; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); padding: 8px;">
+          ${svgHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  function setArchDiagramType(type) {
+    state.archDiagramType = type;
+    init();
+  }
+
   return {
     init,
+    setArchDiagramType,
     getPhases: () => PHASES,
     selectPhase: (phaseId) => { state.activePhaseId = phaseId; init(); },
     setVisualMode: (mode) => { state.visualMode = mode; init(); },

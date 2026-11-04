@@ -263,16 +263,16 @@
         <!-- 4 STAGE TABS -->
         <div class="stage-nav-tabs">
           <button class="stage-tab-btn ${activeTab === 'context' ? 'active' : ''}" onclick="window.AIRBNB_STORY.setViewTab('context')">
-            📋 Marketplace Briefing &amp; Ops Radar
+            Briefing &amp; Traps
           </button>
           <button class="stage-tab-btn ${activeTab === 'sample_table' ? 'active' : ''}" onclick="window.AIRBNB_STORY.setViewTab('sample_table')">
-            📊 Live Sample Telemetry &amp; Schema
+            Schema &amp; Records
           </button>
           <button class="stage-tab-btn ${activeTab === 'challenge' ? 'active' : ''}" onclick="window.AIRBNB_STORY.setViewTab('challenge')">
-            ⚡ SQL Workstation (Day Challenge)
+            SQL Workstation
           </button>
           <button class="stage-tab-btn ${activeTab === 'terminal' ? 'active' : ''}" onclick="window.AIRBNB_STORY.setViewTab('terminal')">
-            💻 Reference Query &amp; Expected SQL
+            Reference Specification
           </button>
         </div>
       </section>
@@ -320,21 +320,21 @@
         <div class="tab-pane-context">
           <div class="context-grid">
             <div class="context-box">
-              <div class="box-label">🏡 Why This Matters in Travel Marketplace Operations</div>
+              <div class="box-label">TRAVEL MARKETPLACE CONTEXT & GRAIN</div>
               <p class="box-text">${businessWhy}</p>
             </div>
             <div class="context-box">
-              <div class="box-label">🎯 Key Learning &amp; Dispatch Focus</div>
+              <div class="box-label">CORE RELATIONAL &amp; DISPATCH PATTERNS</div>
               <ul class="focus-bullets">
                 ${learningFocus.map(pt => `<li>${pt}</li>`).join('')}
               </ul>
             </div>
             <div class="context-box warning">
-              <div class="box-label">⚠️ Production Trap &amp; Dispatch Invariant Risk</div>
+              <div class="box-label">PRODUCTION TRAP &amp; INVARIANT VIOLATION RISK</div>
               <p class="box-text">${realWorldTrap}</p>
             </div>
             <div class="context-box info">
-              <div class="box-label">💼 Airbnb &amp; Marketplace Interview Relevance</div>
+              <div class="box-label">§ Marketplace Interview Rubric</div>
               <p class="box-text">${interviewRelevance}</p>
             </div>
           </div>
@@ -353,7 +353,7 @@
       root.innerHTML = `
         <div class="tab-pane-terminal">
           <div class="terminal-guidance-card">
-            <h3>💻 Production Reference SQL</h3>
+            <h3>Reference SQL Specification</h3>
             <p>Here is the benchmark query validated against Airbnb's Presto/Hudi marketplace warehouse:</p>
             <pre class="terminal-code-block"><code>${d.challenge.expectedSql}</code></pre>
             <div style="margin-top: 14px;">
@@ -483,10 +483,10 @@
         </div>
         <div style="display:flex; gap:6px;">
           <button class="stage-tab-btn ${challengeMode === 'blanks' ? 'active' : ''}" style="padding:4px 10px; font-size:11.5px;" onclick="window.AIRBNB_STORY.setChallengeMode('blanks')">
-            🧩 Guided Blanks
+            Assisted Blanks
           </button>
           <button class="stage-tab-btn ${challengeMode === 'live_repl' ? 'active' : ''}" style="padding:4px 10px; font-size:11.5px;" onclick="window.AIRBNB_STORY.setChallengeMode('live_repl')">
-            💻 Freeform REPL
+            Freeform Editor
           </button>
         </div>
       </div>
@@ -529,7 +529,7 @@
         </div>
         <div style="display:flex; gap: 10px;">
           <button class="btn-run-check" onclick="window.AIRBNB_STORY.executeLiveQuery()">
-            ▶ Execute Query
+            Run Query
           </button>
           <button class="btn-reset-challenge" onclick="document.getElementById('airbnbLiveSqlEditor').value = '';">
             Clear Editor
@@ -564,14 +564,14 @@
         evaluatedHtml = `
           <div class="evaluation-card success">
             <div class="eval-header">
-              <span class="eval-icon">🏡</span>
+              <span class="eval-icon">[VERIFIED]</span>
               <div>
                 <strong>MARKETPLACE LOGIC VERIFIED! Search &amp; Pricing Invariant Holds</strong>
                 <div class="eval-sub">You verified Elena Rostova's marketplace search CTR requirement with exact relational logic.</div>
               </div>
             </div>
             <div class="manager-review-box">
-              <div class="review-title">👩‍💻 Elena's Code Review:</div>
+              <div class="review-title">[MARKETPLACE ENG] Code Review Sign-Off:</div>
               <p class="review-comment">${ch.managerReview}</p>
             </div>
             <div class="eval-next-row" style="margin-top:14px;">
@@ -581,8 +581,7 @@
                 </button>
               ` : `
                 <div class="capstone-congrats" style="color:#06c167; font-weight:700;">
-                  🏆 You completed all 30 days of the Airbnb Marketplace &amp; Travel Infrastructure Track!
-                </div>
+                  Immersion Complete: All 30 engineering days verified to production grade.</div>
               `}
             </div>
           </div>
@@ -591,7 +590,7 @@
         evaluatedHtml = `
           <div class="evaluation-card error">
             <div class="eval-header">
-              <span class="eval-icon">⚠️</span>
+              <span class="eval-icon">[REVISION NEEDED]</span>
               <div>
                 <strong>MARKETPLACE QUERY OR SCHEMA ERROR DETECTED</strong>
                 <div class="eval-sub">One or more selected tokens violate SQL syntax or marketplace invariants.</div>
@@ -613,7 +612,7 @@
 
       <div class="challenge-actions-row" style="margin-top: 14px; display: flex; gap: 10px;">
         <button class="btn-run-check" onclick="window.AIRBNB_STORY.checkChallenge()">
-          ▶ Verify Dispatch Solution
+          Submit for Review
         </button>
         <button class="btn-reset-challenge" onclick="window.AIRBNB_STORY.resetChallenge()">
           Reset Blanks

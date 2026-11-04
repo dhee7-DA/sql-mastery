@@ -263,16 +263,16 @@
         <!-- 4 STAGE TABS -->
         <div class="stage-nav-tabs">
           <button class="stage-tab-btn ${activeTab === 'context' ? 'active' : ''}" onclick="window.STRIPE_STORY.setViewTab('context')">
-            📋 FinTech Briefing &amp; Radar Traps
+            Briefing &amp; Traps
           </button>
           <button class="stage-tab-btn ${activeTab === 'sample_table' ? 'active' : ''}" onclick="window.STRIPE_STORY.setViewTab('sample_table')">
-            📊 Live Sample Telemetry &amp; Schema
+            Schema &amp; Records
           </button>
           <button class="stage-tab-btn ${activeTab === 'challenge' ? 'active' : ''}" onclick="window.STRIPE_STORY.setViewTab('challenge')">
-            ⚡ SQL Workstation (Day Challenge)
+            SQL Workstation
           </button>
           <button class="stage-tab-btn ${activeTab === 'terminal' ? 'active' : ''}" onclick="window.STRIPE_STORY.setViewTab('terminal')">
-            💻 Reference Query &amp; Expected SQL
+            Reference Specification
           </button>
         </div>
       </section>
@@ -298,21 +298,21 @@
         <div class="tab-pane-context">
           <div class="context-grid">
             <div class="context-box">
-              <div class="box-label">💳 Why This Matters in Global Payments Infrastructure</div>
+              <div class="box-label">PAYMENTS LEDGER CONTEXT & GRAIN</div>
               <p class="box-text">${d.contextReport.businessWhy}</p>
             </div>
             <div class="context-box">
-              <div class="box-label">🎯 Key Learning &amp; Dispatch Focus</div>
+              <div class="box-label">CORE RELATIONAL &amp; DISPATCH PATTERNS</div>
               <ul class="focus-bullets">
                 ${d.contextReport.learningFocus.map(pt => `<li>${pt}</li>`).join('')}
               </ul>
             </div>
             <div class="context-box warning">
-              <div class="box-label">⚠️ Production Trap &amp; Dispatch Invariant Risk</div>
+              <div class="box-label">PRODUCTION TRAP &amp; INVARIANT VIOLATION RISK</div>
               <p class="box-text">${d.contextReport.realWorldTrap}</p>
             </div>
             <div class="context-box info">
-              <div class="box-label">💼 Stripe &amp; Mobility Interview Relevance</div>
+              <div class="box-label">§ FinTech Ledger Interview Rubric</div>
               <p class="box-text">${d.contextReport.interviewRelevance}</p>
             </div>
           </div>
@@ -331,7 +331,7 @@
       root.innerHTML = `
         <div class="tab-pane-terminal">
           <div class="terminal-guidance-card">
-            <h3>💻 Production Reference SQL</h3>
+            <h3>Reference SQL Specification</h3>
             <p>Here is the benchmark query validated against Stripe's Presto/Hudi marketplace warehouse:</p>
             <pre class="terminal-code-block"><code>${d.challenge.expectedSql}</code></pre>
             <div style="margin-top: 14px;">
@@ -450,10 +450,10 @@
         </div>
         <div style="display:flex; gap:6px;">
           <button class="stage-tab-btn ${challengeMode === 'blanks' ? 'active' : ''}" style="padding:4px 10px; font-size:11.5px;" onclick="window.STRIPE_STORY.setChallengeMode('blanks')">
-            🧩 Guided Blanks
+            Assisted Blanks
           </button>
           <button class="stage-tab-btn ${challengeMode === 'live_repl' ? 'active' : ''}" style="padding:4px 10px; font-size:11.5px;" onclick="window.STRIPE_STORY.setChallengeMode('live_repl')">
-            💻 Freeform REPL
+            Freeform Editor
           </button>
         </div>
       </div>
@@ -496,7 +496,7 @@
         </div>
         <div style="display:flex; gap: 10px;">
           <button class="btn-run-check" onclick="window.STRIPE_STORY.executeLiveQuery()">
-            ▶ Execute Query
+            Run Query
           </button>
           <button class="btn-reset-challenge" onclick="document.getElementById('stripeLiveSqlEditor').value = '';">
             Clear Editor
@@ -531,14 +531,14 @@
         evaluatedHtml = `
           <div class="evaluation-card success">
             <div class="eval-header">
-              <span class="eval-icon">💳</span>
+              <span class="eval-icon">[VERIFIED]</span>
               <div>
                 <strong>PAYMENT LOGIC VERIFIED! Transaction Auth &amp; Radar Risk Invariant Holds</strong>
                 <div class="eval-sub">You verified Rajesh Narayanan's dispatch liquidity requirement with exact relational logic.</div>
               </div>
             </div>
             <div class="manager-review-box">
-              <div class="review-title">👨‍💻 Rajesh's Code Review:</div>
+              <div class="review-title">[STAFF ENG] Code Review Sign-Off:</div>
               <p class="review-comment">${ch.managerReview}</p>
             </div>
             <div class="eval-next-row" style="margin-top:14px;">
@@ -548,8 +548,7 @@
                 </button>
               ` : `
                 <div class="capstone-congrats" style="color:#06c167; font-weight:700;">
-                  🏆 You completed all 30 days of the Stripe FinTech &amp; Global Payment Infrastructure Track!
-                </div>
+                  Immersion Complete: All 30 engineering days verified to production grade.</div>
               `}
             </div>
           </div>
@@ -558,7 +557,7 @@
         evaluatedHtml = `
           <div class="evaluation-card error">
             <div class="eval-header">
-              <span class="eval-icon">⚠️</span>
+              <span class="eval-icon">[REVISION NEEDED]</span>
               <div>
                 <strong>FINTECH AUTHORIZATION OR SCHEMA ERROR DETECTED</strong>
                 <div class="eval-sub">One or more selected tokens violate SQL syntax or marketplace invariants.</div>
@@ -580,7 +579,7 @@
 
       <div class="challenge-actions-row" style="margin-top: 14px; display: flex; gap: 10px;">
         <button class="btn-run-check" onclick="window.STRIPE_STORY.checkChallenge()">
-          ▶ Verify Dispatch Solution
+          Submit for Review
         </button>
         <button class="btn-reset-challenge" onclick="window.STRIPE_STORY.resetChallenge()">
           Reset Blanks

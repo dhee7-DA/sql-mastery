@@ -144,7 +144,7 @@ window.SqlTerminalEngine = (function() {
       <!-- 1. Hero Header Banner -->
       <div class="terminal-hero">
         <div class="terminal-hero-title-group">
-          <div class="terminal-hero-icon">💻</div>
+          <div class="terminal-hero-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></div>
           <div>
             <h1 class="terminal-hero-title">
               In-Browser SQL Terminal
@@ -168,10 +168,10 @@ window.SqlTerminalEngine = (function() {
         <aside class="terminal-sidebar">
           <div class="terminal-sidebar-tabs">
             <button class="terminal-sidebar-tab active" id="tabTerminalTables" onclick="window.SqlTerminalEngine.setSidebarTab('tables')">
-              <span>📋</span> Tables (<span id="sidebarTableCount">12</span>)
+              <span>⊞</span> Tables (<span id="sidebarTableCount">12</span>)
             </button>
             <button class="terminal-sidebar-tab" id="tabTerminalPresets" onclick="window.SqlTerminalEngine.setSidebarTab('presets')">
-              <span>⚡</span> Presets (<span id="sidebarPresetCount">6</span>)
+              <span>§</span> Presets (<span id="sidebarPresetCount">6</span>)
             </button>
           </div>
           <div class="terminal-sidebar-search">
@@ -192,16 +192,16 @@ window.SqlTerminalEngine = (function() {
               </div>
               <div class="terminal-toolbar-btns">
                 <button class="terminal-btn" onclick="window.SqlTerminalEngine.formatSql()" title="Uppercase keywords and align">
-                  ✨ Format
+                  Format
                 </button>
                 <button class="terminal-btn" onclick="window.SqlTerminalEngine.clearEditor()" title="Clear editor textarea">
-                  🗑️ Clear
+                  Clear
                 </button>
                 <button class="terminal-btn" onclick="window.SqlTerminalEngine.resetDatabase()" title="Restore 12 tables to original seed state">
-                  🔄 Reset DB
+                  Reset DB
                 </button>
                 <button class="terminal-btn terminal-btn-explain" id="btnTerminalExplain" onclick="window.SqlTerminalEngine.explainQueryPlan()" title="Generate visual execution plan (Alt+Enter)">
-                  ⚡ Explain Plan (⌥⏎)
+                  Explain Plan (⌥⏎)
                 </button>
                 <button class="terminal-btn terminal-btn-primary" id="btnTerminalRun" onclick="window.SqlTerminalEngine.executeQuery()">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -238,9 +238,9 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
 
           <!-- Bloop Co-Pilot Hint Strip -->
           <div class="terminal-bloop-banner" id="terminalBloopBanner">
-            <div class="terminal-bloop-avatar">🐡</div>
+            <div class="terminal-bloop-avatar">◆</div>
             <div class="terminal-bloop-text" id="terminalBloopText">
-              <strong>Sir Bloop Co-Pilot:</strong> Ready to crunch records! Press <code>Cmd+Enter</code> to execute, or <code>Alt+Enter</code> to analyze the query execution plan.
+              <strong>Query Monitor:</strong> Client-side SQLite WASM session active. Press <code>Cmd+Enter</code> to execute query, or <code>Alt+Enter</code> to inspect physical plan tree.
             </div>
           </div>
 
@@ -249,13 +249,13 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
             <!-- Output Sub-Navigation Tabs -->
             <div class="terminal-output-tabs">
               <button class="terminal-output-tab active" id="tabOutputGrid" onclick="window.SqlTerminalEngine.setOutputTab('grid')">
-                <span>📊</span> Results Grid
+                <span>⊞</span> Results Grid
               </button>
               <button class="terminal-output-tab" id="tabOutputPlan" onclick="window.SqlTerminalEngine.setOutputTab('plan')">
-                <span>⚡</span> Execution Plan Tree (<span id="planOpCount">0</span> ops)
+                <span>§</span> Execution Plan Tree (<span id="planOpCount">0</span> ops)
               </button>
               <button class="terminal-output-tab" id="tabOutputAdvisor" onclick="window.SqlTerminalEngine.setOutputTab('advisor')">
-                <span>💡</span> Index &amp; Cost Advisor (<span id="planScoreBadge">100/100</span>)
+                <span>◆</span> Index &amp; Cost Advisor (<span id="planScoreBadge">100/100</span>)
               </button>
             </div>
 
@@ -263,7 +263,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
             <div id="paneOutputGrid">
               <div class="terminal-results-header">
                 <div class="terminal-results-title">
-                  <span>📊 Query Output</span>
+                  <span>Query Output</span>
                   <span class="terminal-table-badge" id="terminalResultsBadge">0 rows</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -275,14 +275,14 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
                     oninput="window.SqlTerminalEngine.filterResults(this.value)"
                   >
                   <button class="terminal-btn" onclick="window.SqlTerminalEngine.exportCsv()" id="btnTerminalExport" title="Export as CSV file">
-                    📥 Export CSV
+                    Export CSV
                   </button>
                 </div>
               </div>
 
               <div class="terminal-results-table-wrap" id="terminalResultsWrap">
                 <div class="terminal-empty-state">
-                  <div class="terminal-empty-icon">⚡</div>
+                  <div class="terminal-empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></div>
                   <div>Run a query or pick a preset from the sidebar to inspect records.</div>
                 </div>
               </div>
@@ -311,7 +311,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
               <!-- Hierarchical Nodes Tree -->
               <div class="terminal-plan-tree" id="terminalPlanTree">
                 <div class="terminal-empty-state">
-                  <div class="terminal-empty-icon">⚡</div>
+                  <div class="terminal-empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></div>
                   <div>Click <strong>Explain Plan (⌥⏎)</strong> to inspect SQLite's physical execution plan.</div>
                 </div>
               </div>
@@ -443,7 +443,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
           <div class="terminal-columns-list">
             ${t.columns.map(c => `
               <div class="terminal-col-row">
-                <span class="terminal-col-name">${c.pk ? '🔑 ' : ''}${escapeHtml(c.name)}</span>
+                <span class="terminal-col-name">${c.pk ? '<span class="terminal-pk-badge">PK</span> ' : ''}${escapeHtml(c.name)}</span>
                 <span class="terminal-col-type">${escapeHtml(c.type)}</span>
               </div>
             `).join('')}
@@ -584,7 +584,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
         setOutputTab('grid');
         inspectDatabaseSchema().then(() => renderSidebarContent());
 
-        setBloopMessage(`✅ Statement executed cleanly in ${durationMs}ms! Schema state updated.`, 'celebrate');
+        setBloopMessage(`Statement executed cleanly in ${durationMs}ms. Schema state updated.`, 'celebrate');
       }
     } catch (err) {
       const durationMs = (performance.now() - startTime).toFixed(1);
@@ -656,7 +656,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
       updateStatus('error', 'Plan Error');
       renderPlanError(err.message);
       setOutputTab('plan');
-      setBloopMessage(`⚠️ Could not generate execution plan: ${err.message}`, 'thinking');
+      setBloopMessage(`Plan error: ${err.message}`, 'thinking');
 
       if (window.soundFX && typeof window.soundFX.playError === 'function') {
         window.soundFX.playError();
@@ -793,13 +793,13 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
     let bloopMood = 'happy';
 
     if (healthScore >= 90) {
-      bloopAdvice = `⚡ <strong>Pristine Execution Plan (Score: ${healthScore}/100)!</strong> All table lookups utilize indexed B-Trees with zero unindexed table scans.`;
+      bloopAdvice = `<strong>Optimal Execution Plan (Score: ${healthScore}/100)</strong> — All table lookups utilize indexed B-Trees with zero unindexed table scans.`;
       bloopMood = 'celebrate';
     } else if (healthScore >= 70) {
-      bloopAdvice = `💡 <strong>Good Execution Plan (Score: ${healthScore}/100):</strong> Fast execution, but has ${btreeCount > 0 ? 'an in-memory sort buffer' : 'some table scan overhead'}. Check the <strong>Index Advisor</strong> tab for 1-click speedups!`;
+      bloopAdvice = `<strong>Execution Plan (Score: ${healthScore}/100)</strong> — ${btreeCount > 0 ? 'In-memory sort buffer active.' : 'Minor scan overhead detected.'} Review the Index Advisor tab for optimizations.`;
       bloopMood = 'happy';
     } else {
-      bloopAdvice = `🚨 <strong>Performance Alert (Score: ${healthScore}/100):</strong> Detected ${scanCount} Full Table Scan(s)! Switch to the <strong>Index &amp; Cost Advisor</strong> tab and click <em>Apply Index</em> to eliminate the bottleneck!`;
+      bloopAdvice = `<strong>Performance Alert (Score: ${healthScore}/100)</strong> — Detected ${scanCount} Full Table Scan(s). Switch to the Index &amp; Cost Advisor tab to apply suggested indexes.`;
       bloopMood = 'thinking';
     }
 
@@ -894,7 +894,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
       <div class="terminal-advice-card">
         <div class="terminal-advice-header">
           <div class="terminal-advice-title">
-            <span>⚡ Automated Physical Index Optimizer</span>
+            <span>◆ Automated Physical Index Optimizer</span>
           </div>
           <span class="terminal-table-badge">WASM Memory Engine</span>
         </div>
@@ -909,7 +909,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
       html += `
         <div class="terminal-advice-card" style="border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.04);">
           <div class="terminal-advice-title" style="color: #34d399;">
-            ✅ Zero Index Recommendations Needed!
+            Zero Index Recommendations Needed
           </div>
           <div class="terminal-advice-desc">
             Your query is already executing at maximum efficiency using primary keys and existing indexes.
@@ -922,11 +922,11 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
           <div class="terminal-advice-card">
             <div class="terminal-advice-header">
               <div class="terminal-advice-title">
-                <span>🎯 Target: ${escapeHtml(rec.targetTable)}</span>
+                <span>Target: ${escapeHtml(rec.targetTable)}</span>
               </div>
               ${rec.indexName ? `
                 <button class="terminal-btn-apply-index" onclick="window.SqlTerminalEngine.applySuggestedIndex('${escapeHtml(rec.sql)}', '${rec.indexName}')">
-                  ⚡ 1-Click Apply Index
+                  Apply Index
                 </button>
               ` : ''}
             </div>
@@ -945,7 +945,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
         <div class="terminal-advice-card">
           <div class="terminal-advice-header">
             <div class="terminal-advice-title">
-              <span>🗂️ Active Custom Indexes in WASM Memory (${userCustomIndexes.length})</span>
+              <span>Active Custom Indexes in WASM Memory (${userCustomIndexes.length})</span>
             </div>
             <button class="terminal-btn" onclick="window.SqlTerminalEngine.dropAllCustomIndexes()">
               Drop All Indexes
@@ -954,7 +954,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
           <div class="terminal-indexes-list">
             ${userCustomIndexes.map(idx => `
               <div class="terminal-index-item">
-                <span>🔑 ${escapeHtml(idx)}</span>
+                <span><span class="terminal-pk-badge">IDX</span> ${escapeHtml(idx)}</span>
                 <button class="terminal-btn-peek" onclick="window.SqlTerminalEngine.dropCustomIndex('${idx}')">
                   Drop
                 </button>
@@ -1001,7 +1001,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
 
       // Automatically re-run explain plan so user sees instant improvement!
       explainQueryPlan();
-      setBloopMessage(`🚀 Custom index <code>${indexName}</code> applied! Watch your scan turn into a high-speed indexed probe!`, 'celebrate');
+      setBloopMessage(`Custom index <code>${indexName}</code> applied. Scan converted into a high-speed indexed probe.`, 'celebrate');
     } catch (err) {
       alert(`Could not create index: ${err.message}`);
     }
@@ -1061,7 +1061,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
     if (values.length === 0) {
       wrap.innerHTML = `
         <div class="terminal-empty-state">
-          <div class="terminal-empty-icon">🔍</div>
+          <div class="terminal-empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
           <div>No records match filter "${escapeHtml(filterTerm)}"</div>
         </div>
       `;
@@ -1104,7 +1104,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
     if (wrap) {
       wrap.innerHTML = `
         <div class="terminal-empty-state">
-          <div class="terminal-empty-icon">⚡</div>
+          <div class="terminal-empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg></div>
           <div style="font-weight: 600; color: #34d399;">Statement Executed Successfully</div>
           <div style="font-size: 0.8rem; color: #94a3b8;">Elapsed: ${durationMs} ms. Database state updated.</div>
         </div>
@@ -1206,7 +1206,7 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
       seedDatabase();
       inspectDatabaseSchema().then(() => renderSidebarContent());
       updateStatus('ready', 'Database reset to initial seed state');
-      setBloopMessage('🔄 Database re-seeded! All 12 domain tables refreshed to pristine factory state.', 'celebrate');
+      setBloopMessage('Database re-seeded. All 12 domain tables refreshed to pristine initial state.', 'celebrate');
     }
   }
 
@@ -1261,18 +1261,18 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
   function generateErrorDiagnostic(err, sql) {
     const errLower = err.toLowerCase();
     if (errLower.includes('no such table')) {
-      return `⚠️ Table not found! Check the <strong>Tables</strong> explorer in the left sidebar to verify table name spelling.`;
+      return `<span class="terminal-err-pill">SCHEMA</span> Table not found. Check the Tables explorer in the left sidebar to verify table name spelling.`;
     }
     if (errLower.includes('no such column')) {
-      return `⚠️ Column reference missing or misspelled! Click on a table card in the sidebar to expand its full column schema.`;
+      return `<span class="terminal-err-pill">SCHEMA</span> Column reference missing or misspelled. Expand table schema in sidebar to verify field names.`;
     }
     if (errLower.includes('syntax error')) {
-      return `⚠️ SQL syntax error detected! Check for missing commas between SELECT columns, unclosed parentheses, or misplaced keywords.`;
+      return `<span class="terminal-err-pill">SYNTAX</span> Syntax error detected. Verify commas, matching parentheses, and clause ordering.`;
     }
     if (errLower.includes('ambiguous column name')) {
-      return `⚠️ Ambiguous column name! Prefix the column with its table alias (e.g. <code>i.trade_id</code> or <code>c.cleared_qty</code>).`;
+      return `<span class="terminal-err-pill">AMBIGUOUS</span> Ambiguous column name. Prefix with table alias (e.g. <code>i.trade_id</code>).`;
     }
-    return `⚠️ ${escapeHtml(err)}`;
+    return `<span class="terminal-err-pill">ERROR</span> ${escapeHtml(err)}`;
   }
 
   function showFatalError(msg) {
@@ -1280,11 +1280,11 @@ SELECT * FROM internal_trade_blotter LIMIT 10;"
     if (container) {
       container.innerHTML = `
         <div style="padding: 3.5rem 1.5rem; text-align: center; max-width: 580px; margin: 2rem auto; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 14px; box-shadow: 0 12px 36px rgba(0,0,0,0.4);">
-          <div style="font-size: 2.8rem; margin-bottom: 0.8rem;">⚠️</div>
+          <div style="font-size: 1.5rem; margin-bottom: 0.8rem; font-weight: 700; color: #ffffff;">[OFFLINE]</div>
           <h2 style="margin: 0 0 0.5rem; color: #f87171; font-size: 1.35rem;">Failed to Launch SQLite WASM</h2>
           <p style="color: #94a3b8; font-family: monospace; font-size: 0.85rem; margin-bottom: 1.5rem; background: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 8px;">${escapeHtml(msg)}</p>
           <button class="terminal-btn terminal-btn-primary" onclick="window.SqlTerminalEngine.retryInit()" style="padding: 0.65rem 1.35rem; font-size: 0.88rem; cursor: pointer;">
-            🔄 Reset &amp; Relaunch SQLite Engine
+            Reset &amp; Relaunch SQLite Engine
           </button>
         </div>
       `;

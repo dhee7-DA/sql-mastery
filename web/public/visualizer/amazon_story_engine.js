@@ -129,11 +129,11 @@
   }
 
   function getCareerTitle(solvedCount) {
-    if (solvedCount >= 30) return { title: "L5 Senior Business Intelligence Engineer", badge: "🏆 L5 PROMOTED", color: "#10b981" };
-    if (solvedCount >= 21) return { title: "L4 Prime Day War Room Hero", badge: "⭐ WAR ROOM LEAD", color: "#f59e0b" };
-    if (solvedCount >= 14) return { title: "L4 WBR Metrics Specialist", badge: "📈 WBR CONTRIBUTOR", color: "#38bdf8" };
-    if (solvedCount >= 7) return { title: "L4 Confirmed Data Analyst", badge: "✅ L4 CONFIRMED", color: "#a855f7" };
-    return { title: "L4 Apprentice Analyst (Onboarding)", badge: "🌱 ONBOARDING", color: "#94a3b8" };
+    if (solvedCount >= 30) return { title: "L5 Senior Business Intelligence Engineer", badge: "PRINCIPAL · BIE", color: "#ffffff" };
+    if (solvedCount >= 21) return { title: "L4 Prime Day War Room Hero", badge: "STAFF · WAR ROOM", color: "#ffffff" };
+    if (solvedCount >= 14) return { title: "L4 WBR Metrics Specialist", badge: "P0 · METRICS LEAD", color: "#a1a1aa" };
+    if (solvedCount >= 7) return { title: "L4 Confirmed Data Analyst", badge: "P1 · CERTIFIED", color: "#a1a1aa" };
+    return { title: "L4 Apprentice Analyst (Onboarding)", badge: "P2 · ONBOARDING", color: "#71717a" };
   }
 
   function renderAmazonWorkspace() {
@@ -174,7 +174,7 @@
           <aside class="amazon-tickets-sidebar">
             <div class="sidebar-header-box">
               <div class="sidebar-title-row">
-                <span>💬 Chime Inbox</span>
+                <span>Chime Tickets</span>
                 <span class="inbox-count-pill">${filteredList.length} of ${allList.length} Tickets</span>
               </div>
               <!-- Phase Filter Pills -->
@@ -267,10 +267,10 @@
       <!-- NAVIGATION TABS: CONTEXT REPORT vs INTERACTIVE CHALLENGE -->
       <div class="amazon-tabs-bar">
         <button class="amazon-tab-btn ${activeTab === 'context' ? 'active' : ''}" onclick="window.AMAZON_STORY.setViewTab('context')">
-          📋 Deep Context Report &amp; Briefing
+          Briefing &amp; Traps
         </button>
         <button class="amazon-tab-btn ${activeTab === 'challenge' ? 'active' : ''}" onclick="window.AMAZON_STORY.setViewTab('challenge')">
-          ⚡ Interactive SQL Challenge &amp; Manager Review
+          SQL Workstation
         </button>
       </div>
 
@@ -289,7 +289,7 @@
         <!-- SECTION 1: BUSINESS WHY -->
         <div class="report-box why-box">
           <div class="report-box-title">
-            <span>🎯 Why This Day Matters at Amazon (The Business Context)</span>
+            <span>BUSINESS CONTEXT & GRAIN</span>
           </div>
           <p class="report-box-text">${report.businessWhy}</p>
         </div>
@@ -297,7 +297,7 @@
         <!-- SECTION 2: LEARNING FOCUS & TOPICS -->
         <div class="report-box focus-box">
           <div class="report-box-title">
-            <span>🧠 What You Should Learn &amp; Focus On Today</span>
+            <span>CORE RELATIONAL PATTERNS</span>
           </div>
           <ul class="report-bullets-list">
             ${report.learningFocus.map(item => `<li>${item}</li>`).join('')}
@@ -309,18 +309,18 @@
           <!-- PITFALLS & TRAPS -->
           <div class="report-box trap-box">
             <div class="report-box-title">
-              <span>⚠️ Real-World Traps &amp; Silent Gotchas</span>
+              <span>ENGINE TRAPS &amp; SILENT GOTCHAS</span>
             </div>
             <p class="report-box-text">${report.realWorldTrap}</p>
             <div class="interview-note">
-              <strong>💼 Interview Relevance:</strong> ${report.interviewRelevance}
+              <strong>§ Interview Rubric &amp; Relevance:</strong> ${report.interviewRelevance}
             </div>
           </div>
 
           <!-- TARGET SCHEMA -->
           <div class="report-box schema-box">
             <div class="report-box-title">
-              <span>🗄️ Amazon Redshift Sample Table Schema</span>
+              <span>REDSHIFT DDL SPECIFICATION</span>
             </div>
             <pre class="schema-code-block"><code>${report.sampleSchema}</code></pre>
           </div>
@@ -357,14 +357,14 @@
         evaluatedHtml = `
           <div class="evaluation-card success">
             <div class="eval-header">
-              <span class="eval-icon">🎉</span>
+              <span class="eval-icon">[PASS]</span>
               <div>
                 <strong>TICKET RESOLVED! Manager Approval Granted</strong>
                 <div class="eval-sub">You successfully answered Sarah's business request with correct SQL syntax.</div>
               </div>
             </div>
             <div class="manager-review-box">
-              <div class="review-title">👩‍💼 Sarah's Code Review:</div>
+              <div class="review-title">[LEAD BIE] Code Review Sign-Off:</div>
               <p class="review-comment">${ch.managerReview}</p>
             </div>
             <div class="eval-next-row">
@@ -374,8 +374,7 @@
                 </button>
               ` : `
                 <div class="capstone-congrats">
-                  🏆 You completed all 30 days of the Amazon Data Analyst Immersion!
-                </div>
+                  Immersion Complete: All 30 engineering days verified to production grade.</div>
               `}
             </div>
           </div>
@@ -384,7 +383,7 @@
         evaluatedHtml = `
           <div class="evaluation-card error">
             <div class="eval-header">
-              <span class="eval-icon">❌</span>
+              <span class="eval-icon">[FAIL]</span>
               <div>
                 <strong>QUERY FAILED CODE REVIEW</strong>
                 <div class="eval-sub">One or more blanks do not match the required operational logic. Check your inputs and try again!</div>
@@ -414,7 +413,7 @@
     container.innerHTML = `
       <div class="challenge-inner-wrap">
         <div class="challenge-instruction-card">
-          <span class="instruction-lead">🎯 Ticket Goal:</span> ${ch.instruction}
+          <span class="instruction-lead">§ Ticket Specification:</span> ${ch.instruction}
         </div>
 
         <!-- CODE EDITOR WORKSPACE -->
@@ -458,10 +457,10 @@
         <!-- ACTION BUTTONS -->
         <div class="challenge-actions-bar">
           <button class="btn-verify-query" onclick="window.AMAZON_STORY.checkAmazonChallenge()">
-            <span>⚡ Run Query &amp; Submit to Lead</span>
+            <span>Submit for Review</span>
           </button>
           <button class="btn-reset-query" onclick="window.AMAZON_STORY.resetAmazonChallenge()">
-            <span>↺ Reset Blanks</span>
+            <span>Reset</span>
           </button>
         </div>
 

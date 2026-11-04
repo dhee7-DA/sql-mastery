@@ -150,11 +150,11 @@
   }
 
   function getCareerTitle(solvedCount) {
-    if (solvedCount >= 30) return { title: "Managing Director & Global Head of Quantitative Risk", badge: "🏆 MANAGING DIRECTOR", color: "#f59e0b" };
-    if (solvedCount >= 21) return { title: "Executive Director, Quantitative Strategy", badge: "⭐ EXEC DIRECTOR", color: "#38bdf8" };
-    if (solvedCount >= 14) return { title: "Vice President, Treasury Risk & Analytics", badge: "📈 VICE PRESIDENT", color: "#10b981" };
-    if (solvedCount >= 7) return { title: "Associate Analyst, Markets & Liquidity", badge: "✅ ASSOCIATE", color: "#a855f7" };
-    return { title: "Junior Analyst, Global Banking Rotation", badge: "🌱 ANALYST", color: "#94a3b8" };
+    if (solvedCount >= 30) return { title: "Managing Director & Global Head of Quantitative Risk", badge: "MANAGING DIRECTOR", color: "#ffffff" };
+    if (solvedCount >= 21) return { title: "Executive Director, Quantitative Strategy", badge: "EXEC · STRATEGY", color: "#ffffff" };
+    if (solvedCount >= 14) return { title: "Vice President, Treasury Risk & Analytics", badge: "P0 · VICE PRESIDENT", color: "#a1a1aa" };
+    if (solvedCount >= 7) return { title: "Associate Analyst, Markets & Liquidity", badge: "P1 · ASSOCIATE", color: "#a1a1aa" };
+    return { title: "Junior Analyst, Global Banking Rotation", badge: "P2 · ANALYST", color: "#71717a" };
   }
 
   function renderJPMorganWorkspace() {
@@ -195,7 +195,7 @@
           <aside class="amazon-tickets-sidebar">
             <div class="sidebar-header-box">
               <div class="sidebar-title-row">
-                <span>🏛️ Symphony Inbox</span>
+                <span>Symphony Tickets</span>
                 <span class="inbox-count-pill">${filteredList.length} Tickets</span>
               </div>
               <!-- Phase Filter Pills -->
@@ -287,16 +287,16 @@
         <!-- 4 STAGE TABS -->
         <div class="stage-nav-tabs">
           <button class="stage-tab-btn ${activeTab === 'context' ? 'active' : ''}" onclick="window.JPMORGAN_STORY.setViewTab('context')">
-            📋 Executive Briefing &amp; Traps
+            Briefing &amp; Traps
           </button>
           <button class="stage-tab-btn ${activeTab === 'sample_table' ? 'active' : ''}" onclick="window.JPMORGAN_STORY.setViewTab('sample_table')">
-            📊 Live Sample Table &amp; Ledger Data
+            Schema &amp; Records
           </button>
           <button class="stage-tab-btn ${activeTab === 'challenge' ? 'active' : ''}" onclick="window.JPMORGAN_STORY.setViewTab('challenge')">
-            ⚡ SQL Workstation (Day Challenge)
+            SQL Workstation
           </button>
           <button class="stage-tab-btn ${activeTab === 'terminal' ? 'active' : ''}" onclick="window.JPMORGAN_STORY.setViewTab('terminal')">
-            💻 Reference Query &amp; Expected SQL
+            Reference Specification
           </button>
         </div>
       </section>
@@ -321,29 +321,29 @@
       root.innerHTML = `
         <div class="context-report-grid">
           <div class="context-card card-why">
-            <div class="context-card-title">💡 Why This Financial Metric Matters to Leadership</div>
+            <div class="context-card-title">FINANCIAL CONTEXT & GRAIN</div>
             <p class="context-card-p">${d.contextReport.businessWhy}</p>
           </div>
 
           <div class="context-card card-focus">
-            <div class="context-card-title">🎯 SQL &amp; Quantitative Principles in Focus</div>
+            <div class="context-card-title">QUANTITATIVE RELATIONAL PRINCIPLES</div>
             <ul class="context-focus-list">
               ${d.contextReport.learningFocus.map(item => `<li>${item}</li>`).join('')}
             </ul>
           </div>
 
           <div class="context-card card-schema">
-            <div class="context-card-title">🗄️ Relational Ledger Schema Definition</div>
+            <div class="context-card-title">LEDGER DDL SPECIFICATION</div>
             <pre class="context-schema-code"><code>${d.contextReport.sampleSchema}</code></pre>
           </div>
 
           <div class="context-card card-trap">
-            <div class="context-card-title">⚠️ Production Trap to Avoid on Wall Street</div>
+            <div class="context-card-title">PRODUCTION TRAP &amp; RUNTIME GOTCHA</div>
             <p class="context-card-p">${d.contextReport.realWorldTrap}</p>
           </div>
 
           <div class="context-card card-interview" style="grid-column: 1 / -1;">
-            <div class="context-card-title">🏛️ Investment Banking Interview Relevance</div>
+            <div class="context-card-title">§ Quantitative Interview Rubric</div>
             <p class="context-card-p">${d.contextReport.interviewRelevance}</p>
           </div>
         </div>
@@ -369,13 +369,13 @@
           <div class="terminal-ref-header">
             <span class="terminal-ref-title">ANSI SQL / MySQL 8.0 Reference Implementation</span>
             <button class="btn btn-secondary btn-xs" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(d.challenge.expectedSql)}')); alert('SQL copied to clipboard!');">
-              📋 Copy SQL
+              Copy SQL
             </button>
           </div>
           <pre class="terminal-ref-code"><code>${d.challenge.expectedSql}</code></pre>
 
           <div class="terminal-ref-review">
-            <div class="review-lead-title">💬 Managing Director Sign-off:</div>
+            <div class="review-lead-title">[QUANT DIRECTOR] Audit Sign-Off:</div>
             <p class="review-lead-p">${d.challenge.managerReview}</p>
           </div>
         </div>
@@ -388,7 +388,7 @@
     if (!sample) {
       return `
         <div style="padding: 28px; text-align: center; color: var(--text-muted); background: var(--bg-surface); border-radius: var(--radius-sm, 6px); border: 1px solid var(--border-default);">
-          <div style="font-size: 28px; margin-bottom: 8px;">📊</div>
+          <div style="font-size: 20px; margin-bottom: 8px; color: #ffffff;">⊞</div>
           <h4 style="color: var(--text-primary); margin: 0 0 6px 0; font-family: var(--font-sans);">No Sample Data Seeded for Day ${d.day}</h4>
           <p style="margin: 0; font-size: 12.5px; font-family: var(--font-sans);">Refer to the Relational Schema Definition in the Executive Briefing tab.</p>
         </div>
@@ -406,7 +406,7 @@
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
           <div>
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 16px;">📊</span>
+              <span style="font-size: 16px;">⊞</span>
               <h3 style="margin: 0; color: var(--text-primary); font-family: var(--font-mono); font-size: 15px;">${sample.tableName}</h3>
               <span style="background: var(--bg-surface-elevated); color: var(--text-muted); border: 1px solid var(--border-default); padding: 2px 7px; border-radius: var(--radius-xs, 4px); font-size: 11px; font-family: var(--font-mono); font-weight: 600;">
                 ${sample.rows.length} Rows
@@ -415,7 +415,7 @@
             <p style="margin: 4px 0 0 0; color: var(--text-muted); font-size: 12.5px; font-family: var(--font-sans);">${sample.description}</p>
           </div>
           <button class="btn btn-secondary btn-xs" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(createTableSql)}')); alert('Table DDL and sample INSERTs copied to clipboard!');">
-            📋 Copy Table SQL (DDL + Inserts)
+            Copy Table DDL
           </button>
         </div>
 
@@ -594,7 +594,7 @@
           <div class="action-left-col">
             ${isEvaluated ? `
               <div class="eval-result-pill ${isSuccess ? 'eval-pass' : 'eval-fail'}">
-                ${isSuccess ? '✅ Audit Clearance Confirmed! Risk ticket marked resolved.' : '❌ Ledger Discrepancy Detected! Review token selections.'}
+                ${isSuccess ? '[PASS] Audit Clearance Confirmed. Risk ticket marked resolved.' : '[FAIL] Ledger Discrepancy Detected. Review token selections.'}
               </div>
             ` : ''}
           </div>
@@ -618,15 +618,15 @@
         <div class="live-sql-editor-container" style="margin-bottom: 14px;">
           <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface-elevated); padding: 8px 12px; border-bottom: 1px solid var(--border-default); flex-wrap: wrap; gap: 8px;">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 14px;">⚡</span>
+              <span style="font-size: 14px;">◆</span>
               <span style="font-family: var(--font-mono); font-size: 11.5px; color: var(--text-primary); font-weight: 600;">Active Table: ${sample ? sample.tableName : d.schema}</span>
             </div>
             <div style="display: flex; gap: 6px;">
               <button class="btn btn-secondary btn-xs" onclick="window.JPMORGAN_STORY.loadSuggestedQuery()">
-                ✨ Load Expected Solution
+                Load Reference SQL
               </button>
               <button class="btn btn-secondary btn-xs" onclick="window.JPMORGAN_STORY.clearLiveQuery()">
-                ↺ Clear
+                Clear
               </button>
             </div>
           </div>
@@ -637,11 +637,11 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
           <div style="display: flex; gap: 8px; align-items: center;">
             <button class="btn btn-primary" onclick="window.JPMORGAN_STORY.runLiveQuery()">
-              ▶ Run Query (Ctrl+Enter)
+              Run Query (Ctrl+Enter)
             </button>
             ${liveQueryLatency !== null ? `
               <span style="font-size: 11px; font-family: var(--font-mono); color: var(--status-success); background: var(--status-success-bg); padding: 3px 8px; border-radius: var(--radius-xs, 4px); border: 1px solid var(--status-success-border);">
-                ⚡ ${liveQueryResult ? liveQueryResult.length : 0} rows in ${liveQueryLatency}ms
+                ◆ ${liveQueryResult ? liveQueryResult.length : 0} rows in ${liveQueryLatency}ms
               </span>
             ` : ''}
           </div>
@@ -651,7 +651,7 @@
         <!-- Terminal Execution Results -->
         ${liveQueryError ? `
           <div style="background: var(--status-fail-bg); border: 1px solid var(--status-fail-border); border-radius: var(--radius-sm, 6px); padding: 12px 14px; margin-bottom: 14px;">
-            <div style="color: var(--status-fail); font-weight: 700; font-size: 12px; margin-bottom: 4px; font-family: var(--font-mono);">⚠️ SQL Execution Error:</div>
+            <div style="color: var(--status-fail); font-weight: 700; font-size: 12px; margin-bottom: 4px; font-family: var(--font-mono);">[ERROR] SQL Execution Error:</div>
             <pre style="margin: 0; color: var(--status-fail); font-family: var(--font-mono); font-size: 11.5px; white-space: pre-wrap;">${liveQueryError}</pre>
           </div>
         ` : ''}
@@ -698,7 +698,7 @@
           </div>
         ` : (liveQueryError ? '' : `
           <div style="padding: 24px; text-align: center; color: var(--text-muted); background: var(--bg-surface-elevated); border: 1px dashed var(--border-default); border-radius: var(--radius-sm, 6px); font-family: var(--font-mono); font-size: 12px;">
-            <span>Click <strong>▶ Run Query</strong> or press <strong>Ctrl+Enter</strong> to execute against ${sample ? sample.tableName : 'the ledger table'}.</span>
+            <span>Click <strong>Run Query</strong> or press <strong>Ctrl+Enter</strong> to execute against ${sample ? sample.tableName : 'the ledger table'}.</span>
           </div>
         `)}
       `;
@@ -708,7 +708,7 @@
       <div class="challenge-workspace-box">
         <!-- Instruction banner -->
         <div class="challenge-instruction-card">
-          <span class="instruction-icon">🎯</span>
+          <span class="instruction-icon">§</span>
           <div>
             <div class="instruction-title">Trading Day Objective:</div>
             <div class="instruction-p">${d.challenge.instruction}</div>
@@ -720,14 +720,14 @@
           <div style="display: flex; gap: 8px; align-items: center;">
             <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);">Workstation Mode:</span>
             <button class="choice-pill ${challengeMode === 'blanks' ? 'active' : ''}" onclick="window.JPMORGAN_STORY.setChallengeMode('blanks')">
-              🧩 Assisted Token Blanks
+              Assisted Blanks
             </button>
             <button class="choice-pill ${challengeMode === 'live_repl' ? 'active' : ''}" onclick="window.JPMORGAN_STORY.setChallengeMode('live_repl')">
-              💻 Live SQL Terminal (Run Queries)
+              Freeform Editor
             </button>
           </div>
           ${challengeMode === 'live_repl' ? `
-            <span style="font-size: 11px; color: var(--accent); font-family: var(--font-mono);">⚡ In-Memory SQL Engine</span>
+            <span style="font-size: 11px; color: var(--accent); font-family: var(--font-mono);">◆ In-Memory SQL Engine</span>
           ` : ''}
         </div>
 
@@ -737,22 +737,22 @@
         ${(isSuccess || (challengeMode === 'live_repl' && liveQueryResult && liveQueryResult.length > 0)) ? `
           <div class="manager-feedback-card">
             <div class="feedback-header">
-              <span style="font-size: 16px;">🏛️</span>
+              <span style="font-size: 14px; font-weight: 700; color: #ffffff;">§</span>
               <span class="feedback-title">Managing Director Sign-off:</span>
             </div>
             <p class="feedback-body">${d.challenge.managerReview}</p>
           </div>
           ${solvedDays.size >= 30 ? `
-            <div class="jpmorgan-capstone-banner" style="margin-top: 18px; padding: 20px; border-radius: 12px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.25) 100%); border: 2px solid #f59e0b; text-align: center;">
-              <div style="font-size: 32px; margin-bottom: 6px;">🏆 🏛️ 📜</div>
-              <h3 style="color: #fbbf24; margin: 0 0 8px 0; font-family: serif; font-size: 22px; letter-spacing: 0.04em;">JPMORGAN CHASE &amp; CO. BOARD OF DIRECTORS CITATION</h3>
-              <p style="color: #f1f5f9; font-size: 14px; line-height: 1.6; max-width: 680px; margin: 0 auto 12px auto;">
-                In recognition of exceptional analytical rigor across 30 days of market volatility, liquidity stress, and regulatory compliance. You have successfully resolved all 30 high-stakes quantitative risk tickets and earned the rank of <strong>Managing Director &amp; Global Head of Quantitative Risk</strong>.
+            <div class="jpmorgan-capstone-banner" style="margin-top: 18px; padding: 22px; border-radius: 8px; background: #0c0d10; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center;">
+              <div style="font-size: 13px; font-weight: 700; letter-spacing: 0.1em; color: #a1a1aa; margin-bottom: 8px;">[AUDIT COMPLETE · 30 / 30 TICKETS RESOLVED]</div>
+              <h3 style="color: #ffffff; margin: 0 0 8px 0; font-family: 'JetBrains Mono', monospace; font-size: 18px; letter-spacing: 0.04em;">JPMORGAN QUANTITATIVE RISK CITATION</h3>
+              <p style="color: #d4d4d8; font-size: 13px; line-height: 1.6; max-width: 680px; margin: 0 auto 16px auto;">
+                In recognition of analytical rigor across 30 days of market volatility, liquidity stress, and regulatory compliance. Resolved all 30 quantitative risk tickets to production grade and achieved the rank of <strong>Managing Director &amp; Global Head of Quantitative Risk</strong>.
               </p>
-              <div style="display: inline-flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                <span style="background: rgba(0,0,0,0.4); border: 1px solid #f59e0b; color: #fde68a; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;">✅ Basel III LCR Compliant</span>
-                <span style="background: rgba(0,0,0,0.4); border: 1px solid #f59e0b; color: #fde68a; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;">✅ 99% 1-Day VaR Audited</span>
-                <span style="background: rgba(0,0,0,0.4); border: 1px solid #f59e0b; color: #fde68a; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;">✅ CET1 Ratio 14.85%</span>
+              <div style="display: inline-flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <span style="background: #18181b; border: 1px solid rgba(255,255,255,0.18); color: #ffffff; padding: 5px 12px; border-radius: 4px; font-size: 11px; font-weight: 600;">Basel III LCR Compliant</span>
+                <span style="background: #18181b; border: 1px solid rgba(255,255,255,0.18); color: #ffffff; padding: 5px 12px; border-radius: 4px; font-size: 11px; font-weight: 600;">99% 1-Day VaR Audited</span>
+                <span style="background: #18181b; border: 1px solid rgba(255,255,255,0.18); color: #ffffff; padding: 5px 12px; border-radius: 4px; font-size: 11px; font-weight: 600;">CET1 Ratio 14.85%</span>
               </div>
             </div>
           ` : ''}

@@ -34,6 +34,7 @@ window.StudioWorkbenchEngine = (function() {
     splitPercent: 50,
     currentStepIndex: 0,
     tilesOpen: false,        // Collapsible problem tiles drawer state
+    activeArchDiagram: 'buffer_pool',
     filterSearch: ''         // Filter search keyword
   };
 
@@ -556,7 +557,6 @@ window.StudioWorkbenchEngine = (function() {
               <span class="split-slider-tag">SLIDER</span>
             </div>
           </div>
-          </div>
 
           <!-- Right Column: Visualizer Stage with Cathryn Lavery Editorial Diagrams -->
           <section class="studio-stage-column" id="studioStageCol">
@@ -567,11 +567,11 @@ window.StudioWorkbenchEngine = (function() {
                 <div class="tab-group">
                   <button class="tab-item ${state.activeTab === 'tabDiagram' ? 'active' : ''}" data-tab="tabDiagram">
                     Editorial Diagram (SVG)
-                    <span class="hot-badge" style="background: rgba(37, 99, 235, 0.12); color: #2563eb; font-size: 8.5px; padding: 1px 4px; border-radius: 3px; font-weight: 700; margin-left: 3px;">DESIGN</span>
+                    <span class="hot-badge" style="background: #18181b; color: #ffffff; font-size: 8.5px; padding: 1px 5px; border-radius: 3px; font-weight: 700; margin-left: 3px; border: 1px solid rgba(255,255,255,0.18);">VECTOR</span>
                   </button>
-                  <button type="button" class="tab-item tab-machines-direct-btn" onclick="if(typeof selectNavView==='function'){selectNavView('viewRelationalMachines', 'Relational Machines', null);}else if(typeof switchMainView==='function'){switchMainView('viewRelationalMachines');}else{window.location.hash='#machines';}" title="View Obsidian 3-Gauge Relational Machines &amp; Explainer SVGs" style="color: #0284c7; font-weight: 700; cursor: pointer;">
+                  <button type="button" class="tab-item tab-machines-direct-btn" onclick="if(typeof selectNavView==='function'){selectNavView('viewRelationalMachines', 'Relational Machines', null);}else if(typeof switchMainView==='function'){switchMainView('viewRelationalMachines');}else{window.location.hash='#machines';}" title="View Obsidian 3-Gauge Relational Machines &amp; Explainer SVGs" style="color: #ffffff; font-weight: 700; cursor: pointer;">
                     Relational Machines
-                    <span class="hot-badge" style="background: rgba(14, 165, 233, 0.18); color: #0284c7; font-size: 8.5px; padding: 1px 5px; border-radius: 3px; font-weight: 800; margin-left: 3px; border: 1px solid rgba(14, 165, 233, 0.3);">3 GAUGES</span>
+                    <span class="hot-badge" style="background: #18181b; color: #ffffff; font-size: 8.5px; padding: 1px 5px; border-radius: 3px; font-weight: 700; margin-left: 3px; border: 1px solid rgba(255,255,255,0.18);">3 GAUGES</span>
                   </button>
                   <button class="tab-item ${state.activeTab === 'tabStepper' ? 'active' : ''}" data-tab="tabStepper">Data Grid</button>
                   <button class="tab-item ${state.activeTab === 'tabDiff' ? 'active' : ''}" data-tab="tabDiff">
@@ -591,14 +591,14 @@ window.StudioWorkbenchEngine = (function() {
                 
                 <!-- Tab 1: Cathryn Lavery Editorial Vector Diagram -->
                 <div class="tab-pane ${state.activeTab === 'tabDiagram' ? 'active' : ''}" id="tabDiagram">
-                  <div class="machines-quick-jump-banner" style="margin-bottom: 12px; padding: 8px 12px; background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.22); border-radius: 6px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                  <div class="machines-quick-jump-banner" style="margin-bottom: 12px; padding: 8px 12px; background: #0c0d10; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 6px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
                     <div style="display:flex; align-items:center; gap:8px;">
-                      <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#0ea5e9; box-shadow: 0 0 6px rgba(14, 165, 233, 0.6);"></span>
-                      <span style="font-size:11.5px; font-weight:700; color:var(--text-primary, #0f172a);">Looking for the 3-Gauge Relational Machines &amp; Data Analysis Explainer SVGs?</span>
+                      <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#ffffff; box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);"></span>
+                      <span style="font-size:11.5px; font-weight:600; color:#d4d4d8;">Obsidian Relational Machines &amp; Execution DAGs</span>
                     </div>
-                    <button type="button" onclick="if(typeof selectNavView==='function'){selectNavView('viewRelationalMachines', 'Relational Machines', null);}else{window.location.hash='#machines';}" style="background: #0284c7; color: #ffffff; border: none; padding: 4px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; box-shadow: 0 1px 3px rgba(2, 132, 199, 0.3);">
+                    <button type="button" onclick="if(typeof selectNavView==='function'){selectNavView('viewRelationalMachines', 'Relational Machines', null);}else{window.location.hash='#machines';}" style="background: #18181b; color: #ffffff; border: 1px solid rgba(255,255,255,0.22); padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;">
                       <span>Open Relational Machines</span>
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </button>
                   </div>
                   <div class="editorial-diagram-container" id="editorialDiagramContainer">
@@ -1796,22 +1796,52 @@ window.StudioWorkbenchEngine = (function() {
   function renderEngineExplainerHtml(prob) {
     const defense = prob.interviewDefense;
     const deepTheory = prob.deepTheory || [];
+    const activeArch = state.activeArchDiagram || 'buffer_pool';
+
+    let archSvgHtml = '';
+    if (window.DatabaseArchitectureSvgs) {
+      if (activeArch === 'btree') {
+        archSvgHtml = window.DatabaseArchitectureSvgs.renderBTreeIndexSvg();
+      } else if (activeArch === 'hash_join') {
+        archSvgHtml = window.DatabaseArchitectureSvgs.renderHashJoinDagSvg();
+      } else {
+        archSvgHtml = window.DatabaseArchitectureSvgs.renderBufferPoolSvg();
+      }
+    }
 
     return `
       <div style="display: flex; flex-direction: column; gap: 14px;">
+        <!-- Interactive Database Architecture SVG Viewer -->
+        <div class="db-arch-viewer-card" style="background: #0c0d10; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 11px; font-weight: 700; color: #ffffff; letter-spacing: 0.05em; font-family: 'JetBrains Mono', monospace;">DATABASE ENGINE ARCHITECTURE</span>
+              <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; background: #18181b; color: #a1a1aa; border: 1px solid rgba(255,255,255,0.15); border-radius: 3px;">WASM ZERO-COPY</span>
+            </div>
+            <div class="db-arch-toggle-group" style="display: flex; gap: 6px;">
+              <button type="button" class="db-arch-tab-btn ${activeArch === 'buffer_pool' ? 'active' : ''}" id="btnArchBufferPool" onclick="window.StudioWorkbenchEngine.switchArchDiagram('buffer_pool')">Buffer Pool I/O</button>
+              <button type="button" class="db-arch-tab-btn ${activeArch === 'btree' ? 'active' : ''}" id="btnArchBTree" onclick="window.StudioWorkbenchEngine.switchArchDiagram('btree')">B+ Tree Index</button>
+              <button type="button" class="db-arch-tab-btn ${activeArch === 'hash_join' ? 'active' : ''}" id="btnArchHashJoin" onclick="window.StudioWorkbenchEngine.switchArchDiagram('hash_join')">Hash Join DAG</button>
+            </div>
+          </div>
+          <div id="dbArchSvgTarget" style="width: 100%; overflow-x: auto; background: #000000; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); padding: 6px;">
+            ${archSvgHtml}
+          </div>
+        </div>
+
         <!-- Relational Execution Flow -->
         <div style="background: var(--bg-card-subtle, #f8f8f9); padding: 14px; border-radius: 8px; border: 1px solid var(--border-subtle, #e4e4e7);">
           <h4 style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: var(--text-primary);">Physical Execution Lifecycle for Topic ${prob.topicSeq}</h4>
           <p style="margin: 0 0 8px 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
             SQL is declarative: written syntax starts with <code>SELECT</code>, but physical relational engines execute in strict order:
           </p>
-          <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-family: var(--font-mono, monospace); font-size: 11px;">
-            <span style="padding: 2px 7px; background: #e0e7ff; color: #3730a3; border-radius: 4px; font-weight: 700;">1. FROM</span> &rarr;
-            <span style="padding: 2px 7px; background: #fee2e2; color: #991b1b; border-radius: 4px; font-weight: 700;">2. WHERE</span> &rarr;
-            <span style="padding: 2px 7px; background: #fef3c7; color: #92400e; border-radius: 4px; font-weight: 700;">3. GROUP BY</span> &rarr;
-            <span style="padding: 2px 7px; background: #e0f2fe; color: #075985; border-radius: 4px; font-weight: 700;">4. HAVING</span> &rarr;
-            <span style="padding: 2px 7px; background: #dcfce7; color: #166534; border-radius: 4px; font-weight: 700;">5. SELECT</span> &rarr;
-            <span style="padding: 2px 7px; background: #f3e8ff; color: #6b21a8; border-radius: 4px; font-weight: 700;">6. ORDER &amp; LIMIT</span>
+          <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 11px;">
+            <span style="padding: 2px 8px; background: #18181b; color: #ffffff; border: 1px solid rgba(255,255,255,0.18); border-radius: 4px; font-weight: 600;">1. FROM</span> &rarr;
+            <span style="padding: 2px 8px; background: #18181b; color: #ffffff; border: 1px solid rgba(255,255,255,0.18); border-radius: 4px; font-weight: 600;">2. WHERE</span> &rarr;
+            <span style="padding: 2px 8px; background: #18181b; color: #ffffff; border: 1px solid rgba(255,255,255,0.18); border-radius: 4px; font-weight: 600;">3. GROUP BY</span> &rarr;
+            <span style="padding: 2px 8px; background: #18181b; color: #ffffff; border: 1px solid rgba(255,255,255,0.18); border-radius: 4px; font-weight: 600;">4. HAVING</span> &rarr;
+            <span style="padding: 2px 8px; background: #18181b; color: #ffffff; border: 1px solid rgba(255,255,255,0.18); border-radius: 4px; font-weight: 600;">5. SELECT</span> &rarr;
+            <span style="padding: 2px 8px; background: #18181b; color: #ffffff; border: 1px solid rgba(255,255,255,0.18); border-radius: 4px; font-weight: 600;">6. ORDER &amp; LIMIT</span>
           </div>
         </div>
 
@@ -2625,8 +2655,37 @@ window.StudioWorkbenchEngine = (function() {
     }
   }
 
+
+  function switchArchDiagram(type) {
+    state.activeArchDiagram = type;
+    const target = document.getElementById('dbArchSvgTarget');
+    if (target && window.DatabaseArchitectureSvgs) {
+      if (type === 'btree') {
+        target.innerHTML = window.DatabaseArchitectureSvgs.renderBTreeIndexSvg();
+      } else if (type === 'hash_join') {
+        target.innerHTML = window.DatabaseArchitectureSvgs.renderHashJoinDagSvg();
+      } else {
+        target.innerHTML = window.DatabaseArchitectureSvgs.renderBufferPoolSvg();
+      }
+    }
+
+    const btns = [
+      { id: 'btnArchBufferPool', key: 'buffer_pool' },
+      { id: 'btnArchBTree', key: 'btree' },
+      { id: 'btnArchHashJoin', key: 'hash_join' }
+    ];
+    btns.forEach(b => {
+      const el = document.getElementById(b.id);
+      if (el) {
+        if (b.key === type) el.classList.add('active');
+        else el.classList.remove('active');
+      }
+    });
+  }
+
   // Public Interface
   return {
+    switchArchDiagram,
     init,
     selectProblem,
     runStudioQuery,
