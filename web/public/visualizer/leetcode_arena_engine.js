@@ -24,7 +24,7 @@ window.LEETCODE_ARENA = (() => {
       title: 'Filtering & 3VL',
       pillar: 'filters',
       pillarName: 'Foundations & 3VL',
-      icon: '📐',
+      icon: 'σ',
       badge: 'Boolean Logic',
       summary: 'Master Three-Valued Logic (TRUE / FALSE / UNKNOWN), NULL evaluation traps, NOT IN vs NOT EXISTS gotchas, and index-friendly SARGable predicates.',
       subtopics: ['3VL & UNKNOWN', 'IS NULL Traps', 'NOT IN Gotchas', 'Boundary Predicates']
@@ -35,7 +35,7 @@ window.LEETCODE_ARENA = (() => {
       title: 'Joins & Self-Joins',
       pillar: 'joins',
       pillarName: 'Joins & Set Ops',
-      icon: '🔗',
+      icon: '⋈',
       badge: 'Relational Core',
       summary: 'Master INNER, LEFT, RIGHT, FULL OUTER joins, cartesian product blowups, self-joins on hierarchical employee structures, and anti-join data isolation.',
       subtopics: ['INNER vs LEFT', 'Self-Join Hierarchy', 'Anti-Joins', 'Non-Equi Joins']
@@ -46,7 +46,7 @@ window.LEETCODE_ARENA = (() => {
       title: 'Aggregates & Math',
       pillar: 'aggs',
       pillarName: 'Aggregates & HAVING',
-      icon: '📊',
+      icon: 'Σ',
       badge: 'Aggregations',
       summary: 'COUNT(*) vs COUNT(col) semantics, SUM & AVG NULL omission rules, conditional counting via CASE WHEN, and arithmetic rounding precision.',
       subtopics: ['COUNT NULL Semantics', 'Conditional Aggregations', 'GROUP BY Granularity', 'Math Rounding']
@@ -57,7 +57,7 @@ window.LEETCODE_ARENA = (() => {
       title: 'Sorting & HAVING',
       pillar: 'aggs',
       pillarName: 'Aggregates & HAVING',
-      icon: '🗂️',
+      icon: 'γ',
       badge: 'Post-Group Filter',
       summary: 'Physical execution assembly line (WHERE vs HAVING), multi-column tie-breakers, NULLS FIRST/LAST mechanics, and aggregate threshold filters.',
       subtopics: ['WHERE vs HAVING', 'Multi-Column Sorting', 'NULL Ordering', 'Group Filtering']
@@ -68,7 +68,7 @@ window.LEETCODE_ARENA = (() => {
       title: 'Advanced Joins & Running',
       pillar: 'joins',
       pillarName: 'Joins & Set Ops',
-      icon: '⚡',
+      icon: '⨉',
       badge: 'Advanced Relational',
       summary: 'CROSS JOIN cartesian matrices, cumulative self-join expansions, overlapping date-range intervals, and non-equi relational matching.',
       subtopics: ['CROSS JOIN Matrices', 'Running Calculations', 'Self-Matching Ranges', 'Date Joins']
@@ -79,7 +79,7 @@ window.LEETCODE_ARENA = (() => {
       title: 'Subqueries & CTEs',
       pillar: 'subqueries',
       pillarName: 'Subqueries & CTEs',
-      icon: '🧩',
+      icon: 'π',
       badge: 'Modular Queries',
       summary: 'Scalar subqueries, correlated EXISTS vs IN performance, Common Table Expressions (WITH syntax), and composing clean multi-stage pipelines.',
       subtopics: ['Correlated EXISTS', 'Scalar Subqueries', 'Multi-CTE Pipelines', 'Subquery in FROM']
@@ -90,7 +90,7 @@ window.LEETCODE_ARENA = (() => {
       title: 'Strings & Regex',
       pillar: 'strings',
       pillarName: 'Strings & Regex',
-      icon: '🔤',
+      icon: 'λ',
       badge: 'Text Processing',
       summary: 'REGEXP / RLIKE pattern validation, byte LENGTH vs character CHAR_LENGTH in UTF-8, CONCAT formatting, and string case manipulation.',
       subtopics: ['REGEXP Patterns', 'SUBSTRING & LENGTH', 'UPPER/LOWER Sanitizing', 'CONCAT Formatting']
@@ -101,7 +101,7 @@ window.LEETCODE_ARENA = (() => {
       title: 'Medians & Distributions',
       pillar: 'windows',
       pillarName: 'Window Analytics',
-      icon: '📈',
+      icon: 'ω',
       badge: 'Window Functions',
       summary: 'ROW_NUMBER vs RANK vs DENSE_RANK differences, NTILE quantile distribution, cumulative percentiles, and exact continuous median calculations.',
       subtopics: ['ROW_NUMBER vs DENSE_RANK', 'Exact Median Finding', 'Cumulative Distributions', 'Partition Windows']
@@ -112,7 +112,7 @@ window.LEETCODE_ARENA = (() => {
       title: 'Islands & Gaps',
       pillar: 'windows',
       pillarName: 'Window Analytics',
-      icon: '🏝️',
+      icon: 'Δ',
       badge: 'Pattern Recognition',
       summary: 'The classic difference island technique (ROW_NUMBER - val), consecutive streak detection, missing value discovery, and temporal gap identification.',
       subtopics: ['Consecutive Streaks', 'Difference Island Method', 'Gap Detection', 'LEAD / LAG Shifts']
@@ -123,7 +123,7 @@ window.LEETCODE_ARENA = (() => {
       title: 'Graph & Networks',
       pillar: 'windows',
       pillarName: 'Window Analytics',
-      icon: '🕸️',
+      icon: '𝒢',
       badge: 'Network Topology',
       summary: 'Bidirectional friendships, node degree analysis, mutual connection counts, triad closures, and multi-hop relationship joins.',
       subtopics: ['Bidirectional Pairs', 'Mutual Friends', 'Node Degree Counts', 'Triad Closures']
@@ -134,7 +134,7 @@ window.LEETCODE_ARENA = (() => {
       title: 'Recursive CTEs',
       pillar: 'subqueries',
       pillarName: 'Subqueries & CTEs',
-      icon: '🌲',
+      icon: '↻',
       badge: 'Hierarchical Trees',
       summary: 'WITH RECURSIVE syntax, anchor member vs recursive member execution, parent-child manager hierarchies, sequence generators, and cycle prevention.',
       subtopics: ['WITH RECURSIVE', 'Anchor & Recursive Terms', 'Org Chart Traversal', 'Sequence Generation']
@@ -538,7 +538,7 @@ window.LEETCODE_ARENA = (() => {
             <div class="lc-hub-top-right">
               <span class="lc-hub-stat-pill">✓ ${solvedCount} / ${totalProblems} Solved</span>
               <button class="lc-hub-resume-btn" id="btnResumeLastProb" title="Resume problem solving">
-                <span>🚀 Continue #${currentProb ? currentProb.id : '1757'}</span>
+                <span>Continue #${currentProb ? currentProb.id : '1757'}</span>
               </button>
             </div>
           </header>
@@ -595,9 +595,9 @@ window.LEETCODE_ARENA = (() => {
 
               <select id="lcFilterDiff" class="lc-compact-select" title="Filter by Difficulty">
                 <option value="all" ${state.sidebarDiff === 'all' ? 'selected' : ''}>Diff: All</option>
-                <option value="Easy" ${state.sidebarDiff === 'Easy' ? 'selected' : ''}>🟢 Easy (${counts.easy})</option>
-                <option value="Medium" ${state.sidebarDiff === 'Medium' ? 'selected' : ''}>🟡 Med (${counts.med})</option>
-                <option value="Hard" ${state.sidebarDiff === 'Hard' ? 'selected' : ''}>🔴 Hard (${counts.hard})</option>
+                <option value="Easy" ${state.sidebarDiff === 'Easy' ? 'selected' : ''}>Easy (${counts.easy})</option>
+                <option value="Medium" ${state.sidebarDiff === 'Medium' ? 'selected' : ''}>Medium (${counts.med})</option>
+                <option value="Hard" ${state.sidebarDiff === 'Hard' ? 'selected' : ''}>Hard (${counts.hard})</option>
               </select>
 
               <select id="lcFilterCompany" class="lc-compact-select" title="Filter by Company">
@@ -653,13 +653,12 @@ window.LEETCODE_ARENA = (() => {
             <div class="lc-studio-bar-right">
               <!-- FAANG Technical Interview Mock Timer -->
               <div class="lc-interview-timer-pill" id="lcInterviewTimer" title="FAANG Technical Phone Screen Mock Timer">
-                <span class="timer-display" id="lcTimerDisplay">⏱️ 25:00</span>
+                <span class="timer-display" id="lcTimerDisplay">25:00</span>
                 <button class="timer-control-btn" id="btnToggleTimer" title="Start / Pause Timer">▶</button>
                 <button class="timer-control-btn" id="btnResetTimer" title="Reset to 25m">↺</button>
               </div>
 
               <button class="lc-catalog-drawer-btn" id="btnOpenCatalogDrawer" title="Browse problem catalog (Ctrl+B)">
-                <span style="font-size: 13px;">📋</span>
                 <span>Problem Catalog</span>
                 <span class="lc-problems-count-pill">${totalProblems}</span>
               </button>
@@ -675,7 +674,7 @@ window.LEETCODE_ARENA = (() => {
                   <span>◩ Spec</span>
                 </button>
                 <button class="lc-layout-btn ${state.layoutMode === 'machine' ? 'active' : ''}" data-layout="machine" title="Relational Machine Visualizer Stage">
-                  <span style="color:#38bdf8;">&#x2B21; Machine</span>
+                  <span>Machine</span>
                 </button>
               </div>
 
@@ -1335,16 +1334,16 @@ window.LEETCODE_ARENA = (() => {
           <!-- Card Action Buttons Strip -->
           <div class="lc-topic-card-actions">
             <button class="lc-topic-act-btn primary btn-solve-topic" data-concept-id="${meta.id}">
-              <span>🚀 Solve Problems (${allProbs.length})</span>
+              <span>Solve (${allProbs.length})</span>
             </button>
             <button class="lc-topic-act-btn btn-theory-topic" data-concept-id="${meta.id}" title="Read visual mechanics and execution order">
-              <span>📖 Theory (${chaps.length})</span>
+              <span>Theory (${chaps.length})</span>
             </button>
             <button class="lc-topic-act-btn btn-mcq-topic" data-concept-id="${meta.id}" title="Practice 100 interview multiple-choice flashcards">
-              <span>🧠 100 MCQs</span>
+              <span>MCQs (100)</span>
             </button>
             <button class="lc-topic-act-btn btn-drill-topic" data-concept-id="${meta.id}" title="Practice 100 rapid-fire query construction drills">
-              <span>⚡ 100 Drills</span>
+              <span>Drills (100)</span>
             </button>
           </div>
         </div>
@@ -1375,7 +1374,7 @@ window.LEETCODE_ARENA = (() => {
           <div class="lc-hub-filter-container" style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.07);">
             <!-- Company Filter Strip -->
             <div class="lc-hub-filter-strip" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-              <span class="lc-filter-label" style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-right: 4px;">🏢 Company:</span>
+              <span class="lc-filter-label" style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-right: 4px;">Company:</span>
               ${['all', 'Amazon', 'Meta', 'Google', 'Citadel', 'Stripe', 'Apple', 'Netflix', 'Uber', 'Goldman Sachs', 'Bloomberg'].map(comp => `
                 <button class="lc-comp-tab-btn ${selectedComp.toLowerCase() === comp.toLowerCase() ? 'active' : ''}" data-comp-id="${comp}">
                   ${comp === 'all' ? 'All Companies' : comp}
@@ -1384,7 +1383,7 @@ window.LEETCODE_ARENA = (() => {
             </div>
             <!-- Difficulty Filter Strip -->
             <div class="lc-hub-filter-strip" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-              <span class="lc-filter-label" style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-right: 4px;">⚡ Difficulty:</span>
+              <span class="lc-filter-label" style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-right: 4px;">Difficulty:</span>
               ${[
                 { id: 'all', label: 'All Levels' },
                 { id: 'easy', label: 'Easy' },
@@ -2188,16 +2187,16 @@ WHERE ;`;
                 <span class="lc-prob-id-badge">LEETCODE #${activeProb.id}</span>
                 <span class="lc-diff-badge lc-diff-${diffClass}">${activeProb.difficulty}</span>
                 <h2 style="margin:0; font-size:15px; font-weight:700; color:#f8fafc;">${escapeHtml(activeProb.title)}</h2>
-                <span style="font-size:10px; padding:2px 8px; border-radius:4px; background:#38bdf818; color:#38bdf8; border:1px solid #38bdf844; font-family:'JetBrains Mono', monospace;">
-                  &#x2B21; ${chamberCount} CHAMBERS ADAPTIVE
+                <span style="font-size:10px; padding:2px 8px; border-radius:4px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.15); font-family:'JetBrains Mono', monospace;">
+                  ${chamberCount} Chambers Pipeline
                 </span>
               </div>
               <div class="lc-machine-view-header-right">
                 <button class="lc-btn lc-btn-secondary" id="btnMachineToggleEditor" style="font-size:10.5px; padding:6px 12px;">
-                  <span>📝 Toggle Editor</span>
+                  <span>Toggle Editor</span>
                 </button>
                 <button class="lc-btn lc-btn-primary" id="btnMachineRunLive" style="font-size:10.5px; padding:6px 14px;">
-                  <span>▶ Run &amp; Synthesize</span>
+                  <span>Run &amp; Synthesize</span>
                 </button>
                 <button class="lc-layout-restore-btn" id="btnRestoreSplitFromMachine" style="font-size:10.5px;">
                   ◀ Restore Split View
@@ -2218,18 +2217,18 @@ WHERE ;`;
                   <span style="font-size:10.5px; font-weight:700; color:#cbd5e1; font-family:'JetBrains Mono', monospace;">SQL QUERY EDITOR // LIVE SYNTHESIZER</span>
                 </div>
                 <div style="display:flex; gap:6px;">
-                  <button class="lc-tool-btn" id="btnMachineFillCanonical">⚡ Fill Golden Code</button>
-                  <button class="lc-tool-btn" id="btnMachineReset">↺ Reset</button>
+                  <button class="lc-tool-btn" id="btnMachineFillCanonical">Fill Canonical</button>
+                  <button class="lc-tool-btn" id="btnMachineReset">Reset</button>
                 </div>
               </div>
-              <textarea class="lc-textarea-editor" id="lcMachineTextEditor" rows="3" style="width:100%; box-sizing:border-box; height:80px; font-size:11.5px; font-family:'JetBrains Mono', monospace; background:#07090e; color:#38bdf8; border:1px solid #1e293b; border-radius:6px; padding:10px; line-height:1.45;">${escapeHtml(userOrStarterSql)}</textarea>
+              <textarea class="lc-textarea-editor" id="lcMachineTextEditor" rows="3" style="width:100%; box-sizing:border-box; height:80px; font-size:11.5px; font-family:'JetBrains Mono', monospace; background:#07090e; color:#ffffff; border:1px solid #1e293b; border-radius:6px; padding:10px; line-height:1.45;">${escapeHtml(userOrStarterSql)}</textarea>
             </div>
 
             <!-- Full-Width Spacious Obsidian Dark Canvas Card -->
             <div class="lc-card" style="padding: 14px; background:#07080c; border:1px solid #1e293b; border-radius:10px;">
               <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 14px; background:#0d111a; border-radius:8px; border:1px solid #1e293b; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
                 <div style="display:flex; align-items:center; gap:8px;">
-                  <span style="font-size:13px; color:#38bdf8;">&#x2B21;</span>
+                  <span style="font-size:13px; color:#ffffff;">&#x2B21;</span>
                   <strong style="font-size:10.5px; color:#f8fafc; font-family:'JetBrains Mono', monospace;">TOPOLOGICAL EXECUTION PIPELINE</strong>
                 </div>
                 <div style="display:inline-flex; align-items:center; background:var(--bg-canvas, #09090b); border:1px solid var(--border-subtle, rgba(255,255,255,0.1)); border-radius:5px; padding:2px; gap:2px;">
@@ -2352,7 +2351,7 @@ WHERE ;`;
                   <span class="lc-prob-id-badge">LEETCODE #${activeProb.id}</span>
                   <span class="lc-diff-badge lc-diff-${diffClass}">${activeProb.difficulty}</span>
                   <div class="lc-prob-companies-strip" style="display: inline-flex; align-items: center; gap: 5px; margin-left: 6px; flex-wrap: wrap;">
-                    <span style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em;">🏢 Asked at:</span>
+                    <span style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em;">Asked at:</span>
                     ${((activeProb.companies && activeProb.companies.length > 0) ? activeProb.companies : ['Meta', 'Amazon', 'Google']).map(c => `
                       <span class="lc-comp-badge" style="display: inline-flex; align-items: center; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 4px; background: #18181b; border: 1px solid rgba(255, 255, 255, 0.14); color: #e4e4e7;">${escapeHtml(c)}</span>
                     `).join('')}
@@ -2367,7 +2366,6 @@ WHERE ;`;
               <div class="lc-schema-inspector-card">
                 <div class="lc-inspector-header">
                   <div class="lc-inspector-title">
-                    <span style="font-size: 14px;">📋</span>
                     <strong>${escapeHtml(sampleTable)}</strong>
                     <span class="lc-inspector-badge">${sampleRows.length} rows</span>
                   </div>
@@ -2393,7 +2391,7 @@ WHERE ;`;
                 <details class="lc-learning-drawer" id="drawerBloops">
                   <summary class="lc-drawer-summary">
                     <div class="lc-drawer-summary-left">
-                      <span class="lc-drawer-icon">💡</span>
+                      <span class="lc-drawer-tag">GUIDE</span>
                       <strong>Strategy Guide & Hints</strong>
                     </div>
                     <span class="lc-drawer-toggle-badge">Socratic Guide ▾</span>
@@ -2407,7 +2405,7 @@ WHERE ;`;
                 <details class="lc-learning-drawer" id="drawerTraps">
                   <summary class="lc-drawer-summary">
                     <div class="lc-drawer-summary-left">
-                      <span class="lc-drawer-icon">🚨</span>
+                      <span class="lc-drawer-tag">ALERT</span>
                       <strong>Interview Edge Cases & Traps</strong>
                       <span class="lc-drawer-count-badge">${trapsList.length} Traps</span>
                     </div>
@@ -2415,7 +2413,7 @@ WHERE ;`;
                   </summary>
                   <div class="lc-drawer-body">
                     <div class="lc-callout-card danger">
-                      <div class="lc-callout-title">🚨 Why Candidates Fail This in Technical Rounds:</div>
+                      <div class="lc-callout-title">Critical Technical Traps:</div>
                       <ul class="lc-traps-bullet-list">
                         ${trapsList.map(t => `<li>${escapeHtml(t)}</li>`).join('')}
                       </ul>
@@ -2427,9 +2425,9 @@ WHERE ;`;
                 <details class="lc-learning-drawer" id="drawerCanonical" ${isRevealed ? 'open' : ''}>
                   <summary class="lc-drawer-summary">
                     <div class="lc-drawer-summary-left">
-                      <span class="lc-drawer-icon">💎</span>
+                      <span class="lc-drawer-tag">CANONICAL</span>
                       <strong>Canonical Golden Solution &amp; Line-by-Line Breakdown</strong>
-                      ${isRevealed ? '<span class="lc-drawer-status-unlocked">Unlocked ✓</span>' : '<span class="lc-drawer-status-locked">Locked 🔒</span>'}
+                      ${isRevealed ? '<span class="lc-drawer-status-unlocked">Unlocked</span>' : '<span class="lc-drawer-status-locked">Locked</span>'}
                     </div>
                     <span class="lc-drawer-toggle-badge">${isRevealed ? 'Breakdown ▾' : 'Reveal Solution ▾'}</span>
                   </summary>
@@ -2440,7 +2438,7 @@ WHERE ;`;
                           Try writing your own query in the editor first to build true relational muscle! When ready, you can unlock the golden solution here.
                         </p>
                         <button class="lc-btn lc-btn-secondary" id="btnUnlockCanonical" style="font-weight: 600;">
-                          🔓 Reveal Golden Solution
+                          Reveal Golden Solution
                         </button>
                       </div>
                     ` : `
@@ -2467,7 +2465,7 @@ WHERE ;`;
                 <details class="lc-learning-drawer" id="drawerConcepts">
                   <summary class="lc-drawer-summary">
                     <div class="lc-drawer-summary-left">
-                      <span class="lc-drawer-icon">🧭</span>
+                      <span class="lc-drawer-tag">TOPICS</span>
                       <strong>Related Concepts &amp; Theory Masterclasses</strong>
                     </div>
                     <span class="lc-drawer-toggle-badge">Explore ▾</span>
@@ -2498,9 +2496,9 @@ WHERE ;`;
                   <span class="lc-editor-target-pill">Target: ${expRows.length} rows</span>
                 </div>
                 <div class="lc-editor-tools-group">
-                  <button class="lc-tool-btn" id="btnFillSolution" title="Fill with canonical golden SQL">⚡ Fill Golden Code</button>
-                  <button class="lc-tool-btn" id="btnCopyCanonicalSql" title="Copy SQL to clipboard">📋 Copy</button>
-                  <button class="lc-tool-btn" id="btnResetEditor" title="Reset editor to starter SQL template">↺ Reset</button>
+                  <button class="lc-tool-btn" id="btnFillSolution" title="Fill with canonical golden SQL">Fill Canonical</button>
+                  <button class="lc-tool-btn" id="btnCopyCanonicalSql" title="Copy SQL to clipboard">Copy</button>
+                  <button class="lc-tool-btn" id="btnResetEditor" title="Reset editor to starter SQL template">Reset</button>
                 </div>
               </div>
 
@@ -2511,7 +2509,7 @@ WHERE ;`;
               <div class="lc-editor-action-strip">
                 <div class="lc-action-primary-group">
                   <button class="lc-btn lc-btn-secondary" id="btnRunCode" title="Execute query live in SQLite WASM (Ctrl+Enter)">
-                    <span>▶ Run Code</span>
+                    <span>Run Code</span>
                     <span class="lc-shortcut-hint">Ctrl+↵</span>
                   </button>
                   <button class="lc-btn lc-btn-primary" id="btnSubmitJudge" title="Submit solution and verify against test cases">
@@ -2523,9 +2521,9 @@ WHERE ;`;
                     <span>Ask Bloops</span>
                   </button>
                   <button class="lc-btn lc-btn-ghost" id="btnOpenStudio" title="Open schema and query in full Visual Studio">
-                    <span>🔬 Studio</span>
+                    <span>Studio</span>
                   </button>
-                  <button class="lc-btn lc-btn-ghost" id="btnOpenMachineLayout" title="Open full-width Relational Machine visualizer" style="color:#38bdf8; border:1px solid #38bdf844;">
+                  <button class="lc-btn lc-btn-ghost" id="btnOpenMachineLayout" title="Open full-width Relational Machine visualizer" style="color:#ffffff; border:1px solid rgba(255,255,255,0.15);">
                     <span>&#x2B21; Machine</span>
                   </button>
                 </div>
@@ -2657,7 +2655,7 @@ WHERE ;`;
           const badge = drawer.querySelector('.lc-drawer-status-locked');
           if (badge) {
             badge.className = 'lc-drawer-status-unlocked';
-            badge.textContent = 'Unlocked ✓';
+            badge.textContent = 'Unlocked';
           }
           drawer.open = true;
         }
@@ -2698,7 +2696,7 @@ WHERE ;`;
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(valToCopy).then(() => {
             btnCopy.textContent = 'Copied! ✓';
-            setTimeout(() => { btnCopy.textContent = '📋 Copy'; }, 2000);
+            setTimeout(() => { btnCopy.textContent = 'Copy'; }, 2000);
           });
         }
       });
@@ -2928,13 +2926,13 @@ WHERE ;`;
     return `
       <div class="lc-diff-nav-tabs" id="lcDiffTabs">
         <button class="lc-diff-nav-tab active" data-diff-view="diff">
-          📊 Visual Diff (${matchedCount}/${expRows.length || userRows.length} Rows Matched &bull; ${matchPercent}%)
+          Visual Diff (${matchedCount}/${expRows.length || userRows.length} Rows Matched &bull; ${matchPercent}%)
         </button>
         <button class="lc-diff-nav-tab" data-diff-view="user">
-          👤 Your Output (${userRows.length} rows)
+          Your Output (${userRows.length} rows)
         </button>
         <button class="lc-diff-nav-tab" data-diff-view="expected">
-          🎯 Expected Benchmark (${expRows.length} rows)
+          Expected Benchmark (${expRows.length} rows)
         </button>
       </div>
 
@@ -3070,20 +3068,20 @@ WHERE ;`;
     judgeBox.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-weight: 700; color: ${isMatch ? '#10b981' : '#2563eb'}; font-size: 13.5px;">
-            ${isMatch ? '✨ Run Output (Matches Expected!)' : '▶ Query Output'}
+          <span style="font-weight: 700; color: #ffffff; font-size: 13.5px;">
+            ${isMatch ? 'Run Output (Matches Expected)' : 'Query Output'}
           </span>
-          <span style="font-size: 11px; padding: 2px 6px; border-radius: 4px; background: rgba(37,99,235,0.08); color: var(--text-secondary); font-family: var(--font-mono);">
+          <span style="font-size: 11px; padding: 2px 6px; border-radius: 4px; background: #18181c; border: 1px solid rgba(255,255,255,0.08); color: var(--text-secondary); font-family: var(--font-mono);">
             ${res.values.length} rows returned
           </span>
         </div>
         <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
-          ⏱️ Latency: ${res.durationMs} ms
+          Latency: ${res.durationMs} ms
         </span>
       </div>
       ${render3WayDiff(res, isMatch)}
       <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
-        <span>Click <strong>🎯 Submit Solution</strong> to grade against official test cases.</span>
+        <span>Click <strong>Submit Solution</strong> to grade against official test cases.</span>
         ${res.values.length > 8 ? `<span>Showing first 8 of ${res.values.length} rows</span>` : ''}
       </div>
     `;
@@ -3146,8 +3144,8 @@ WHERE ;`;
       judgeBox.className = 'lc-judge-box show pass';
       judgeBox.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <span style="font-weight: 700; color: #10b981; font-size: 14px;">✅ Accepted</span>
-          <span style="font-family: var(--font-mono); font-size: 11px; color: #10b981; font-weight: 600;">
+          <span style="font-weight: 700; color: #10b981; font-size: 14px;">Accepted</span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: #a1a1aa; font-weight: 500;">
             Runtime: ${res.durationMs} ms (Beats 99.4%)
           </span>
         </div>
@@ -3155,8 +3153,8 @@ WHERE ;`;
           100% of relational assertions passed against table <code>${escapeHtml(res.tableName)}</code>.
         </div>
         ${render3WayDiff(res, true)}
-        <div class="lc-bloops-autopsy-box" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.3); color: #065f46; margin-top: 10px;">
-          🎉 <strong>Sir Bloops says:</strong> Flawless relational logic! Problem #${prob.id} marked solved. Keep up the streak!
+        <div class="lc-bloops-autopsy-box" style="background: #111115; border: 1px solid rgba(255,255,255,0.1); color: #e4e4e7; margin-top: 10px;">
+          <strong>Sir Bloops:</strong> Flawless relational logic! Problem #${prob.id} marked solved. Keep up the streak!
         </div>
         <div class="lc-judge-accepted-actions" style="display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;">
           ${nextProb ? `
@@ -3165,7 +3163,7 @@ WHERE ;`;
             </button>
           ` : ''}
           <button class="lc-btn lc-btn-secondary" id="btnJudgeRevealCanonical" style="padding: 7px 16px; font-size: 12px;">
-            <span>💎 View Canonical Breakdown</span>
+            <span>Canonical Breakdown</span>
           </button>
         </div>
       `;
@@ -3201,10 +3199,10 @@ WHERE ;`;
       judgeBox.className = 'lc-judge-box show fail';
       judgeBox.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <span style="font-weight: 700; color: #dc2626; font-size: 13.5px;">❌ Wrong Answer</span>
+          <span style="font-weight: 700; color: #ffffff; font-size: 13.5px;">Output Mismatch</span>
           <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">${res.durationMs} ms</span>
         </div>
-        <div style="font-size: 12px; color: #991b1b; margin-bottom: 8px;">
+        <div style="font-size: 12px; color: #a1a1aa; margin-bottom: 8px;">
           Your query output did not match the expected test case rows.
         </div>
         ${render3WayDiff(res, false)}
@@ -3326,12 +3324,12 @@ WHERE ;`;
         <div class="lc-bloops-section">
           <div class="lc-bloops-section-title">
             <span>🚨 Why Candidates Fail This Question</span>
-            <span style="font-size: 11px; font-weight: 500; color: #dc2626;">Staff Failure Traps</span>
+            <span style="font-size: 11px; font-weight: 500; color: #ffffff;">Staff Failure Traps</span>
           </div>
           <div class="lc-bloops-traps-list">
             ${traps.map(t => `
               <div class="lc-bloops-trap-pill">
-                <span style="color: #dc2626;">⚠️</span>
+                <span style="color: #ffffff;">⚠️</span>
                 <span>${escapeHtml(t)}</span>
               </div>
             `).join('')}
@@ -3364,7 +3362,7 @@ WHERE ;`;
       }
       return `🩺 <strong>Sir Bloops Diagnostic:</strong> ${hint}`;
     }
-    return `🎉 <strong>Sir Bloops says:</strong> Excellent execution! All test assertions verified green in ${execResult.durationMs}ms.`;
+    return `<strong>Sir Bloops:</strong> Excellent execution! All test assertions verified green in ${execResult.durationMs}ms.`;
   }
 
   function openInQueryStudio(prob) {

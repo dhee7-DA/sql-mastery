@@ -2286,3 +2286,890 @@ pre code {
 .nav-group-dropdown {
   overflow: visible !important;
 }
+
+
+
+/* =============================================================================
+   8. LEETCODE 323 ARENA & PROBLEM WORKSPACE - PURE CARBON MONOCHROME OVERHAUL
+   ============================================================================= */
+
+/* Active header nav tab contrast fix */
+.app-header #btnNavLeetCode.active,
+.app-header .nav-tab.active,
+.nav-group-trigger.active {
+  background: #27272a !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+.app-header #btnNavLeetCode.active .nav-group-title,
+.app-header .nav-tab.active .nav-group-title,
+.nav-group-trigger.active .nav-group-title {
+  color: #ffffff !important;
+}
+
+/* LeetCode Studio Canvas Root */
+.lc-studio-layout,
+.lc-topics-stage,
+.lc-problem-stage,
+.lc-canvas-body,
+.lc-hub-canvas {
+  background: #000000 !important;
+  color: #f4f4f5 !important;
+}
+
+/* Top Navigation Bar */
+.lc-hub-topbar {
+  background: #09090b !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.lc-brand-dot {
+  background: #ffffff !important;
+}
+.lc-brand-name {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+.lc-brand-badge {
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #e4e4e7 !important;
+  box-shadow: none !important;
+}
+.lc-brand-subbadge {
+  color: #71717a !important;
+}
+.lc-hub-stat-pill {
+  background: #121215 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+  font-family: var(--font-mono, monospace) !important;
+}
+.lc-hub-resume-btn {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  border-radius: 6px !important;
+  transition: all 0.15s ease !important;
+}
+.lc-hub-resume-btn:hover {
+  background: #e4e4e7 !important;
+  border-color: #e4e4e7 !important;
+  color: #000000 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Directory Hero, Search & Filter Strips */
+.lc-topics-hero {
+  background: #09090b !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.lc-topics-hero-dot {
+  background: #ffffff !important;
+}
+.lc-topics-hero span {
+  color: #a1a1aa !important;
+}
+.lc-topics-hero h1 {
+  color: #ffffff !important;
+}
+.lc-topics-hero p {
+  color: #71717a !important;
+}
+.lc-topics-search-box {
+  background: #121215 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 6px !important;
+  color: #ffffff !important;
+}
+.lc-topics-search-box svg {
+  color: #71717a !important;
+}
+.lc-topics-search-input {
+  background: transparent !important;
+  color: #ffffff !important;
+}
+.lc-topics-search-input::placeholder {
+  color: #52525b !important;
+}
+.lc-filter-label {
+  color: #71717a !important;
+}
+.lc-comp-tab-btn,
+.lc-diff-tab-btn {
+  background: #101013 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+  border-radius: 4px !important;
+  font-size: 11px !important;
+  padding: 4px 10px !important;
+  transition: all 0.12s ease !important;
+}
+.lc-comp-tab-btn:hover,
+.lc-diff-tab-btn:hover {
+  background: #18181e !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+.lc-comp-tab-btn.active,
+.lc-diff-tab-btn.active {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+/* Topics Grid & Concept Cards */
+.lc-topics-grid {
+  gap: 16px !important;
+}
+.lc-topic-card {
+  background: #09090c !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+.lc-topic-card:hover {
+  background: #0c0d12 !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7) !important;
+}
+.lc-topic-card-icon {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 6px !important;
+  color: #ffffff !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.lc-topic-card-kicker {
+  color: #71717a !important;
+  font-family: var(--font-mono, monospace) !important;
+  letter-spacing: 0.05em !important;
+  font-weight: 600 !important;
+}
+.lc-topic-card-title {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+}
+.lc-topic-count-badge {
+  background: #16161a !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #d4d4d8 !important;
+  font-family: var(--font-mono, monospace) !important;
+}
+.lc-topic-solved-badge {
+  background: #27272a !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+.lc-topic-card-summary {
+  color: #a1a1aa !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+}
+.lc-hub-subtopic-tag {
+  background: #121215 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: #82828e !important;
+  font-size: 10px !important;
+  border-radius: 4px !important;
+}
+.lc-topic-diff-breakdown {
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  padding-top: 8px !important;
+}
+.lc-topic-diff-bar {
+  background: #18181c !important;
+  height: 3px !important;
+  border-radius: 2px !important;
+}
+.lc-diff-bar-segment.easy {
+  background: #e4e4e7 !important;
+}
+.lc-diff-bar-segment.med {
+  background: #a1a1aa !important;
+}
+.lc-diff-bar-segment.hard {
+  background: #52525b !important;
+}
+.lc-topic-diff-labels {
+  color: #71717a !important;
+  font-family: var(--font-mono, monospace) !important;
+}
+.lc-dot.easy {
+  background: #e4e4e7 !important;
+}
+.lc-dot.medium {
+  background: #a1a1aa !important;
+}
+.lc-dot.hard {
+  background: #52525b !important;
+}
+.lc-diff-dot-label {
+  color: #71717a !important;
+}
+.lc-topic-probs-preview {
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  padding-top: 8px !important;
+}
+.lc-topic-probs-preview-title {
+  color: #ffffff !important;
+  font-size: 11px !important;
+}
+.lc-topic-probs-preview-sub {
+  color: #52525b !important;
+}
+.lc-hub-prob-pill {
+  background: #101013 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: #d4d4d8 !important;
+  border-radius: 4px !important;
+  transition: all 0.12s ease !important;
+}
+.lc-hub-prob-pill:hover {
+  background: #18181e !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+.lc-hub-prob-dot {
+  background: #52525b !important;
+}
+.lc-hub-prob-id {
+  color: #71717a !important;
+  font-family: var(--font-mono, monospace) !important;
+}
+.lc-hub-prob-title {
+  color: #d4d4d8 !important;
+}
+.lc-hub-prob-pill:hover .lc-hub-prob-title {
+  color: #ffffff !important;
+}
+.lc-hub-prob-check {
+  color: #ffffff !important;
+}
+.lc-hub-prob-more-btn {
+  color: #71717a !important;
+  font-family: var(--font-mono, monospace) !important;
+}
+.lc-hub-prob-more-btn:hover {
+  color: #ffffff !important;
+}
+.lc-topic-card-actions {
+  background: #08080a !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.lc-topic-act-btn {
+  background: transparent !important;
+  color: #8e8e99 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+}
+.lc-topic-act-btn:hover {
+  background: #141418 !important;
+  color: #ffffff !important;
+}
+.lc-topic-act-btn.primary {
+  background: #16161b !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+.lc-topic-act-btn.primary:hover {
+  background: #24242c !important;
+  color: #ffffff !important;
+}
+
+/* Problem Studio Bar & Action Strip */
+.lc-studio-bar {
+  background: #09090b !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.lc-back-hub-btn {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #e4e4e7 !important;
+  border-radius: 5px !important;
+  transition: all 0.15s ease !important;
+}
+.lc-back-hub-btn:hover {
+  background: #222228 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+.lc-arrow-btn {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+}
+.lc-arrow-btn:hover {
+  background: #202026 !important;
+  color: #ffffff !important;
+}
+.lc-bar-prob-id {
+  color: #71717a !important;
+  font-family: var(--font-mono, monospace) !important;
+}
+.lc-bar-prob-name {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+.lc-diff-badge,
+.lc-diff-easy,
+.lc-diff-medium,
+.lc-diff-hard {
+  background: #18181b !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  font-size: 10px !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.03em !important;
+}
+.lc-bar-topic-tag {
+  background: #121215 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: #71717a !important;
+  font-size: 10.5px !important;
+}
+.lc-interview-timer-pill {
+  background: #121215 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 6px !important;
+}
+.lc-interview-timer-pill .timer-display {
+  color: #ffffff !important;
+  font-family: var(--font-mono, monospace) !important;
+}
+.timer-control-btn {
+  color: #71717a !important;
+}
+.timer-control-btn:hover {
+  color: #ffffff !important;
+}
+.lc-catalog-drawer-btn {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #e4e4e7 !important;
+  border-radius: 5px !important;
+}
+.lc-catalog-drawer-btn:hover {
+  background: #202026 !important;
+  color: #ffffff !important;
+}
+.lc-problems-count-pill {
+  background: #222228 !important;
+  color: #ffffff !important;
+  font-family: var(--font-mono, monospace) !important;
+}
+.lc-layout-pill-group {
+  background: #121215 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+}
+.lc-layout-btn {
+  background: transparent !important;
+  color: #8e8e99 !important;
+  border: none !important;
+}
+.lc-layout-btn:hover {
+  color: #ffffff !important;
+}
+.lc-layout-btn.active {
+  background: #27272a !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+.lc-bar-nav-btn {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #a1a1aa !important;
+}
+.lc-bar-nav-btn:hover {
+  background: #202026 !important;
+  color: #ffffff !important;
+}
+
+/* Problem Dossier, Schema Inspector & Drawers */
+.lc-spec-card {
+  background: #09090c !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+}
+.lc-prob-id-badge {
+  background: #16161a !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #d4d4d8 !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-weight: 700 !important;
+}
+.lc-comp-badge {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+}
+.lc-prob-title {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+.lc-prob-desc {
+  color: #d4d4d8 !important;
+  line-height: 1.6 !important;
+}
+.lc-schema-inspector-card {
+  background: #0d0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+}
+.lc-inspector-header {
+  background: #121216 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+}
+.lc-inspector-badge {
+  background: #1c1c22 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+}
+.lc-insp-tab {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+  border-radius: 4px !important;
+  font-size: 11px !important;
+  padding: 3px 9px !important;
+}
+.lc-insp-tab:hover {
+  background: #18181e !important;
+  color: #ffffff !important;
+}
+.lc-insp-tab.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+  border-color: #ffffff !important;
+}
+.lc-diff-table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+}
+.lc-diff-table th {
+  background: #141418 !important;
+  color: #a1a1aa !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 8px 12px !important;
+}
+.lc-diff-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+  color: #e4e4e7 !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 12px !important;
+  padding: 7px 12px !important;
+}
+.lc-diff-table tr:hover td {
+  background: #16161c !important;
+}
+.lc-null-badge {
+  background: #27272a !important;
+  color: #71717a !important;
+  font-size: 10px !important;
+  padding: 1px 4px !important;
+  border-radius: 3px !important;
+  font-weight: 600 !important;
+}
+
+/* Socratic Drawers */
+.lc-learning-drawer {
+  background: #09090c !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+}
+.lc-drawer-summary {
+  background: #111115 !important;
+  color: #ffffff !important;
+  padding: 10px 14px !important;
+  border-bottom: 1px solid transparent !important;
+}
+.lc-learning-drawer[open] .lc-drawer-summary {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+.lc-drawer-tag {
+  background: #1a1a20 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #d4d4d8 !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  padding: 2px 6px !important;
+  border-radius: 3px !important;
+  letter-spacing: 0.04em !important;
+  margin-right: 6px !important;
+}
+.lc-drawer-count-badge {
+  background: #1f1f24 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #d4d4d8 !important;
+}
+.lc-drawer-toggle-badge {
+  color: #71717a !important;
+}
+.lc-drawer-status-locked {
+  background: #1a1a20 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #71717a !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+}
+.lc-drawer-status-unlocked {
+  background: #27272a !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+}
+.lc-callout-card,
+.lc-callout-card.danger {
+  background: #0f1014 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 6px !important;
+}
+.lc-callout-title {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+.lc-traps-bullet-list li {
+  color: #a1a1aa !important;
+  line-height: 1.5 !important;
+}
+.lc-canonical-wrap {
+  background: #050507 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+}
+
+/* Problem Code Editor & Actions */
+.lc-editor-card {
+  background: #09090c !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+}
+.lc-editor-top-bar {
+  background: #111115 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px 6px 0 0 !important;
+}
+.lc-engine-dot {
+  background: #ffffff !important;
+}
+.lc-editor-engine-label {
+  color: #a1a1aa !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 10.5px !important;
+  letter-spacing: 0.03em !important;
+}
+.lc-editor-target-pill {
+  background: #18181c !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #a1a1aa !important;
+  font-family: var(--font-mono, monospace) !important;
+}
+.lc-tool-btn {
+  background: #16161b !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+  border-radius: 4px !important;
+  font-size: 11px !important;
+  padding: 3px 8px !important;
+  transition: all 0.12s ease !important;
+}
+.lc-tool-btn:hover {
+  background: #22222a !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+.lc-textarea-editor {
+  background: #050507 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 6px !important;
+  color: #ffffff !important;
+  font-family: var(--font-mono, monospace) !important;
+  line-height: 1.5 !important;
+}
+.lc-textarea-editor:focus {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  outline: none !important;
+}
+.lc-btn-primary,
+#btnSubmitJudge {
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+  border: 1px solid #ffffff !important;
+  border-radius: 5px !important;
+  transition: all 0.15s ease !important;
+}
+.lc-btn-primary:hover,
+#btnSubmitJudge:hover {
+  background: #e4e4e7 !important;
+  border-color: #e4e4e7 !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15) !important;
+}
+.lc-btn-secondary,
+#btnRunCode {
+  background: #18181c !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border-radius: 5px !important;
+  font-weight: 500 !important;
+  transition: all 0.15s ease !important;
+}
+.lc-btn-secondary:hover,
+#btnRunCode:hover {
+  background: #24242c !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+.lc-btn-ghost {
+  background: #121215 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+  border-radius: 5px !important;
+}
+.lc-btn-ghost:hover {
+  background: #1e1e24 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+.lc-shortcut-hint {
+  background: #27272a !important;
+  color: #71717a !important;
+  border-radius: 3px !important;
+  padding: 1px 4px !important;
+}
+
+/* Catalog Drawer */
+.lc-catalog-drawer {
+  background: #09090b !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.lc-drawer-header {
+  background: #0d0d10 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.lc-drawer-title {
+  color: #ffffff !important;
+}
+.lc-drawer-close-btn {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+}
+.lc-drawer-close-btn:hover {
+  background: #18181c !important;
+  color: #ffffff !important;
+}
+.lc-drawer-search-box {
+  background: #121215 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.lc-drawer-search-input {
+  color: #ffffff !important;
+}
+.lc-compact-select {
+  background: #121215 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+}
+.lc-tree-concept-header {
+  color: #d4d4d8 !important;
+}
+.lc-tree-concept-header:hover {
+  background: #141418 !important;
+  color: #ffffff !important;
+}
+.lc-tree-prob-item {
+  color: #a1a1aa !important;
+}
+.lc-tree-prob-item:hover {
+  background: #16161c !important;
+  color: #ffffff !important;
+}
+.lc-tree-prob-item.active {
+  background: #1f1f24 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+.lc-prob-dot {
+  background: #71717a !important;
+}
+.lc-prob-dot.easy {
+  background: #e4e4e7 !important;
+}
+.lc-prob-dot.medium {
+  background: #a1a1aa !important;
+}
+.lc-prob-dot.hard {
+  background: #52525b !important;
+}
+.lc-drawer-progress-track {
+  background: #18181c !important;
+}
+.lc-drawer-progress-bar {
+  background: #ffffff !important;
+}
+
+/* High-specificity overrides for Carbon LeetCode elements */
+html[data-theme="carbon"] .lc-insp-tab.active,
+body[data-theme="carbon"] .lc-insp-tab.active,
+.lc-insp-tab.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  border: 1px solid #ffffff !important;
+  border-radius: 4px !important;
+}
+
+html[data-theme="carbon"] .lc-layout-btn.active,
+body[data-theme="carbon"] .lc-layout-btn.active,
+.lc-layout-btn.active {
+  background: #27272a !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+html[data-theme="carbon"] .lc-layout-btn.active span,
+body[data-theme="carbon"] .lc-layout-btn.active span,
+.lc-layout-btn.active span {
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .lc-diff-tab-btn.active,
+body[data-theme="carbon"] .lc-diff-tab-btn.active,
+.lc-diff-tab-btn.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="carbon"] .lc-comp-tab-btn.active,
+body[data-theme="carbon"] .lc-comp-tab-btn.active,
+.lc-comp-tab-btn.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Judge Box & 3-Way Diff Carbon Monochrome */
+.lc-judge-box,
+.lc-judge-box.pass,
+.lc-judge-box.fail,
+.lc-judge-box.show {
+  background: #09090c !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  color: #f4f4f5 !important;
+}
+
+.lc-judge-box span[style*="#10b981"],
+.lc-judge-box span[style*="#2563eb"],
+.lc-judge-box span[style*="#dc2626"] {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.lc-diff-nav-tabs {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  gap: 6px !important;
+}
+
+.lc-diff-nav-tab {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+  border-radius: 4px !important;
+  font-size: 11px !important;
+  padding: 4px 10px !important;
+  transition: all 0.12s ease !important;
+}
+
+.lc-diff-nav-tab:hover {
+  background: #16161c !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="carbon"] .lc-diff-nav-tab.active,
+body[data-theme="carbon"] .lc-diff-nav-tab.active,
+.lc-diff-nav-tab.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  border-color: #ffffff !important;
+}
+
+.lc-diff-row-match {
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.lc-diff-row-mismatch,
+.lc-diff-row-extra {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.lc-diff-badge-match {
+  background: #18181c !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  padding: 2px 6px !important;
+  border-radius: 3px !important;
+}
+
+.lc-diff-badge-mismatch {
+  background: #1f1f24 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #d4d4d8 !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  padding: 2px 6px !important;
+  border-radius: 3px !important;
+}
+
+.lc-bloops-autopsy-box {
+  background: #111115 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #d4d4d8 !important;
+  border-radius: 6px !important;
+}
