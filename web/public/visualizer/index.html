@@ -47,144 +47,60 @@
 
         <!-- Unified Navigation Switcher -->
         <nav class="nav-groups-container">
-          <!-- 1. LEETCODE 323 ARENA (Default Active) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab active" id="btnNavHome" data-view="viewLandingPage" onclick="selectNavView('viewLandingPage', 'Home', null)" title="SQL Foundry Product Overview &amp; Feature Showcase">
+          <!-- 1. HOME -->
+          <button class="nav-group-trigger nav-direct-link nav-tab active" id="btnNavHome" data-view="viewLandingPage" onclick="selectNavView('viewLandingPage', 'Home', null)" title="SQL Foundry Home &amp; Architecture">
             <span class="nav-group-lead">
-              
               <span class="nav-group-title">Home</span>
             </span>
           </button>
 
-          <!-- 1b. SQL MASTERY COURSE (ORDER OF EXECUTION) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavMasteryCourse" data-view="viewMasteryCourse" onclick="selectNavView('viewMasteryCourse', 'Course', null)" title="SQL Mastery &amp; Technical Interview Course (Order of Execution)">
+          <!-- 2. COURSE -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavMasteryCourse" data-view="viewMasteryCourse" onclick="selectNavView('viewMasteryCourse', 'Course', null)" title="SQL Mastery Course (10 Architecture Stages)">
             <span class="nav-group-lead">
-              
               <span class="nav-group-title">Course</span>
             </span>
-            <span class="nav-item-tag accent">Mastery</span>
           </button>
 
-          <!-- 1. LEETCODE 323 ARENA -->
+          <!-- 3. LEETCODE ARENA -->
           <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavLeetCode" data-view="viewLeetCode50" onclick="selectNavView('viewLeetCode50', 'LeetCode 323', null)" title="LeetCode 323 Official SQL Arena">
             <span class="nav-group-lead">
-              
               <span class="nav-group-title">LeetCode</span>
             </span>
-            <span class="nav-item-tag accent">323</span>
           </button>
 
-          <!-- 2. STUDIO (Direct Tab) -->
+          <!-- 4. STUDIO -->
           <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStudio" data-view="viewStudio" onclick="try{window.location.hash='#section-studio';}catch(e){} selectNavView('viewStudio', 'Section Studio', null)" title="Section Studio: Query Execution &amp; Schema Inspector">
             <span class="nav-group-lead">
-              <span class="nav-group-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-              </span>
-              <span class="nav-group-title">Section Studio</span>
+              <span class="nav-group-title">Studio</span>
             </span>
           </button>
 
-          <!-- 2b. RELATIONAL MACHINES (EXPLAINER SVGS) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavRelationalMachines" data-view="viewRelationalMachines" onclick="try{window.location.hash='#machines';}catch(e){} selectNavView('viewRelationalMachines', 'Relational Machines', null)" title="The Relational Machine: Obsidian Architectural Explainer SVGs">
+          <!-- 5. RELATIONAL MACHINES -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavRelationalMachines" data-view="viewRelationalMachines" onclick="try{window.location.hash='#machines';}catch(e){} selectNavView('viewRelationalMachines', 'Relational Machines', null)" title="Relational Machines: Obsidian Architectural Explainer SVGs">
             <span class="nav-group-lead">
-              <span class="nav-group-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 16 12 12 8"></polygon></svg>
-              </span>
               <span class="nav-group-title">Machines</span>
             </span>
-            <span class="nav-item-tag accent" style="background:rgba(56,189,248,0.15); color:#38bdf8; border-color:rgba(56,189,248,0.3);">SVG</span>
           </button>
 
-          <!-- 3. DATA ANALYTICS TRACK (AMAZON BI ANALYST 30D) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavAnalytics" data-view="viewAmazonStory" onclick="try{window.location.hash='#analytics';}catch(e){} selectNavView('viewAmazonStory', 'Analytics', null)" title="Data Analytics Track: 30-Day Amazon Business Analyst Simulation">
+          <!-- 6. ANALYTICS -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavAnalytics" data-view="viewAmazonStory" onclick="try{window.location.hash='#analytics';}catch(e){} selectNavView('viewAmazonStory', 'Analytics', null)" title="Industry Track: 30-Day Real-World Analyst Simulations">
             <span class="nav-group-lead">
-              <span class="nav-group-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"></path><rect x="7" y="10" width="3" height="8"></rect><rect x="14" y="5" width="3" height="13"></rect></svg>
-              </span>
               <span class="nav-group-title">Analytics</span>
             </span>
-            <span class="nav-item-tag accent" style="background:rgba(245,158,11,0.15); color:#f59e0b; border-color:rgba(245,158,11,0.3);">30d</span>
           </button>
 
-          <!-- 3b. NETFLIX STREAMING ANALYTICS TRACK (NETFLIX QOE 30D) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavNetflix" data-view="viewNetflixStory" onclick="try{window.location.hash='#netflix';}catch(e){} selectNavView('viewNetflixStory', 'Netflix', null)" title="Netflix Track: 30-Day Streaming Telemetry, A/B Testing &amp; Retention Simulation">
-            <span class="nav-group-lead">
-              <span class="nav-group-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
-              </span>
-              <span class="nav-group-title">Netflix</span>
-            </span>
-            <span class="nav-item-tag accent" style="background:rgba(229,9,20,0.15); color:#e50914; border-color:rgba(229,9,20,0.3);">30d</span>
-          </button>
-
-          <!-- 3c. UBER MOBILITY & LOGISTICS TRACK (UBER 30D) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavUber" data-view="viewUberStory" onclick="try{window.location.hash='#uber';}catch(e){} selectNavView('viewUberStory', 'Uber', null)" title="Uber Track: 30-Day Marketplace Dynamics, Real-Time Surge &amp; H3 Logistics Simulation">
-            <span class="nav-group-lead">
-              <span class="nav-group-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
-              </span>
-              <span class="nav-group-title">Uber</span>
-            </span>
-            <span class="nav-item-tag accent" style="background:rgba(6,193,103,0.15); color:#06c167; border-color:rgba(6,193,103,0.3);">30d</span>
-          </button>
-
-          <!-- 3d. STRIPE FINTECH & PAYMENTS TRACK (STRIPE 30D) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavStripe" data-view="viewStripeStory" onclick="try{window.location.hash='#stripe';}catch(e){} selectNavView('viewStripeStory', 'Stripe', null)" title="Stripe Track: 30-Day FinTech, Authorization Engine &amp; Radar ML Simulation">
-            <span class="nav-group-lead">
-              <span class="nav-group-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-              </span>
-              <span class="nav-group-title">Stripe</span>
-            </span>
-            <span class="nav-item-tag accent" style="background:rgba(99,91,255,0.15); color:#818cf8; border-color:rgba(99,91,255,0.3);">30d</span>
-          </button>
-
-          <!-- 3e. AIRBNB TRAVEL MARKETPLACE TRACK (AIRBNB 30D) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavAirbnb" data-view="viewAirbnbStory" onclick="try{window.location.hash='#airbnb';}catch(e){} selectNavView('viewAirbnbStory', 'Airbnb', null)" title="Airbnb Track: 30-Day Marketplace Liquidity, Dynamic Pricing &amp; Calendar Gaps">
-            <span class="nav-group-lead">
-              <span class="nav-group-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-              </span>
-              <span class="nav-group-title">Airbnb</span>
-            </span>
-            <span class="nav-item-tag accent" style="background:rgba(255,56,92,0.15); color:#ff385c; border-color:rgba(255,56,92,0.3);">30d</span>
-          </button>
-
-          <!-- 3f. SPOTIFY AUDIO STREAMING TRACK (SPOTIFY 30D) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavSpotify" data-view="viewSpotifyStory" onclick="try{window.location.hash='#spotify';}catch(e){} selectNavView('viewSpotifyStory', 'Spotify', null)" title="Spotify Track: 30-Day Audio Streaming Telemetry, Discover Weekly &amp; Creator Royalties">
-            <span class="nav-group-lead">
-              <span class="nav-group-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 11.5c3.5-1 7-1 9.5.5"></path><path d="M9 15c2.5-.7 5.5-.7 7.5.5"></path></svg>
-              </span>
-              <span class="nav-group-title">Spotify</span>
-            </span>
-            <span class="nav-item-tag accent" style="background:rgba(30,215,96,0.15); color:#1ed760; border-color:rgba(30,215,96,0.3);">30d</span>
-          </button>
-
-          <!-- 4. FINANCE ANALYTICS TRACK (JPMORGAN QUANT RISK 30D) -->
-          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavFinance" data-view="viewJPMorganStory" onclick="try{window.location.hash='#finance';}catch(e){} selectNavView('viewJPMorganStory', 'Finance', null)" title="Finance Analytics Track: 30-Day JPMorgan Quantitative Risk &amp; Treasury Simulation">
-            <span class="nav-group-lead">
-              <span class="nav-group-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><path d="M9 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v11H9V10z"></path></svg>
-              </span>
-              <span class="nav-group-title">Finance</span>
-            </span>
-            <span class="nav-item-tag accent" style="background:rgba(16,185,129,0.15); color:#10b981; border-color:rgba(16,185,129,0.3);">Wall St</span>
-          </button>
-
-          <!-- PRACTICE DROPDOWN -->
+          <!-- 7. PRACTICE DROPDOWN -->
           <div class="nav-group-dropdown" id="navGroupPractice">
             <button class="nav-group-trigger" id="btnGroupPractice" onclick="toggleNavGroupDropdown('navGroupPractice', event)">
               <span class="nav-group-lead">
-                
                 <span class="nav-group-title">Practice</span>
               </span>
               <svg class="nav-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              
             </button>
             <div class="nav-dropdown-menu">
               <div class="nav-dropdown-header">Featured Interview Screens</div>
               <button class="nav-dropdown-item nav-tab" id="btnNavMockInterview" data-view="viewMockInterview" onclick="selectNavView('viewMockInterview', 'Mock Screen', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">FAANG &amp; Wall St Mock Screen</span>
@@ -194,7 +110,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" id="btnNavCompanyHub" data-view="viewCompanyHub" onclick="selectNavView('viewCompanyHub', 'Companies &amp; Domains', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Companies &amp; Industry Domains</span>
@@ -203,29 +119,92 @@
                   <span class="nav-item-desc">10 Domains &amp; 70+ premier target employers</span>
                 </div>
               </button>
-              <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Drill &amp; Test Vaults</div>
-              <button class="nav-dropdown-item nav-tab" id="btnDropdownRelationalMachinesPractice" data-view="viewRelationalMachines" onclick="try{window.location.hash='#machines';}catch(e){} selectNavView('viewRelationalMachines', 'Relational Machines', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.8;color:#0ea5e9;">&bull;</span>
+
+              <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">30-Day Industry Simulations</div>
+              <button class="nav-dropdown-item nav-tab" data-view="viewAmazonStory" onclick="selectNavView('viewAmazonStory', 'Amazon (30d)', 'navGroupPractice')">
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
-                    <span class="nav-item-title" style="color:#0284c7;font-weight:700;">Relational Machines (SVG)</span>
-                    <span class="nav-item-tag accent" style="background:rgba(14,165,233,0.18); color:#0284c7; border: 1px solid rgba(14,165,233,0.3);">3 GAUGES</span>
+                    <span class="nav-item-title">Amazon Retail &amp; Operations</span>
+                    <span class="nav-item-tag accent">30d</span>
                   </div>
-                  <span class="nav-item-desc">3-gauge Obsidian data analysis explainer SVGs &amp; metric rollups</span>
+                  <span class="nav-item-desc">L4 Analyst onboarding &amp; Prime Day war room</span>
                 </div>
               </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewNetflixStory" onclick="selectNavView('viewNetflixStory', 'Netflix (30d)', 'navGroupPractice')">
+                <span class="nav-item-icon">&bull;</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Netflix Telemetry &amp; A/B QoE</span>
+                    <span class="nav-item-tag accent">30d</span>
+                  </div>
+                  <span class="nav-item-desc">Streaming bitrate, churn &amp; retention cohorts</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewUberStory" onclick="selectNavView('viewUberStory', 'Uber (30d)', 'navGroupPractice')">
+                <span class="nav-item-icon">&bull;</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Uber Marketplace &amp; H3 Logistics</span>
+                    <span class="nav-item-tag accent">30d</span>
+                  </div>
+                  <span class="nav-item-desc">Real-time surge pricing &amp; spatial polygons</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewStripeStory" onclick="selectNavView('viewStripeStory', 'Stripe (30d)', 'navGroupPractice')">
+                <span class="nav-item-icon">&bull;</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Stripe Payments &amp; Radar ML</span>
+                    <span class="nav-item-tag accent">30d</span>
+                  </div>
+                  <span class="nav-item-desc">Authorization pipelines &amp; fraud telemetry</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewAirbnbStory" onclick="selectNavView('viewAirbnbStory', 'Airbnb (30d)', 'navGroupPractice')">
+                <span class="nav-item-icon">&bull;</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Airbnb Marketplace &amp; Pricing</span>
+                    <span class="nav-item-tag accent">30d</span>
+                  </div>
+                  <span class="nav-item-desc">Dynamic pricing &amp; calendar gap optimization</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewSpotifyStory" onclick="selectNavView('viewSpotifyStory', 'Spotify (30d)', 'navGroupPractice')">
+                <span class="nav-item-icon">&bull;</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Spotify Audio Streaming Telemetry</span>
+                    <span class="nav-item-tag accent">30d</span>
+                  </div>
+                  <span class="nav-item-desc">Discover Weekly graphs &amp; creator royalties</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" data-view="viewJPMorganStory" onclick="selectNavView('viewJPMorganStory', 'JPMorgan (30d)', 'navGroupPractice')">
+                <span class="nav-item-icon">&bull;</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">JPMorgan Quantitative Risk &amp; Treasury</span>
+                    <span class="nav-item-tag accent">Wall St</span>
+                  </div>
+                  <span class="nav-item-desc">Ledger integrity, AML &amp; capital liquidity</span>
+                </div>
+              </button>
+
+              <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Drill &amp; Test Vaults</div>
               <button class="nav-dropdown-item nav-tab" data-view="viewSqlTerminal" onclick="selectNavView('viewSqlTerminal', 'SQL Terminal', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">SQL Terminal (WASM)</span>
-                    <span class="nav-item-tag accent">WASM Engine</span>
+                    <span class="nav-item-tag accent">SQLite</span>
                   </div>
-                  <span class="nav-item-desc">In-browser SQLite sandbox with 12 production tables</span>
+                  <span class="nav-item-desc">In-browser SQLite sandbox with 12 enterprise tables</span>
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewMcqs" onclick="selectNavView('viewMcqs', 'MCQs (2.1k)', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">MCQs Vault</span>
@@ -235,7 +214,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewSyntaxGym" onclick="selectNavView('viewSyntaxGym', 'Syntax Gym', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Syntax Gym</span>
@@ -245,7 +224,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewCases" onclick="selectNavView('viewCases', 'Case Studies', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Case Studies</span>
@@ -255,7 +234,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewProblems" onclick="selectNavView('viewProblems', 'Problem Bank', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Problem Bank</span>
@@ -265,101 +244,60 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewCapstones" onclick="selectNavView('viewCapstones', 'Capstones (10)', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Guided Capstones</span>
-                    <span class="nav-item-tag accent">Top 5 Domains</span>
+                    <span class="nav-item-tag accent">Top 5</span>
                   </div>
                   <span class="nav-item-desc">10 production finance &amp; data projects with topic bridges</span>
                 </div>
               </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewAmazonStory" onclick="selectNavView('viewAmazonStory', 'Amazon Analyst (30d)', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Amazon Analyst Story</span>
-                    <span class="nav-item-tag" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">30-Day Sim</span>
-                  </div>
-                  <span class="nav-item-desc">Day-in-the-life L4 Data Analyst onboarding &amp; Prime Day war room</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewJPMorganStory" onclick="selectNavView('viewJPMorganStory', 'JPMorgan Analyst (30d)', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">JPMorgan Analyst (30d)</span>
-                    <span class="nav-item-tag" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4);">Wall St</span>
-                  </div>
-                  <span class="nav-item-desc">Quantitative risk, core banking ledgers, AML &amp; treasury</span>
-                </div>
-              </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewTrapGym" onclick="selectNavView('viewTrapGym', 'Trap Gym (SRS)', 'navGroupPractice')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Trap Memory Gym</span>
                     <span class="nav-item-tag accent" id="trapSrsNavBadge">36 Due</span>
                   </div>
-                  <span class="nav-item-desc">Spaced repetition (Leitner SRS) for 36 critical production traps</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Activity Heatmap', 'navGroupPractice'); setTimeout(()=>{ const el = document.getElementById('curriculumActivityHeatmap'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 120);">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Activity Heatmap &amp; Streaks</span>
-                    <span class="nav-item-tag accent" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">112-Day</span>
-                  </div>
-                  <span class="nav-item-desc">GitHub-style deliberate practice matrix &amp; habit tracking</span>
+                  <span class="nav-item-desc">Spaced repetition (Leitner SRS) for production traps</span>
                 </div>
               </button>
             </div>
           </div>
 
-          <!-- 5. EXPLORE & LABS DROPDOWN -->
+          <!-- 8. LABS & EXPLORE DROPDOWN -->
           <div class="nav-group-dropdown" id="navGroupExplore">
             <button class="nav-group-trigger" id="btnGroupExplore" onclick="toggleNavGroupDropdown('navGroupExplore', event)">
               <span class="nav-group-lead">
-                
-                <span class="nav-group-title">Labs</span>
+                <span class="nav-group-title">Explore</span>
               </span>
               <svg class="nav-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
             <div class="nav-dropdown-menu">
-              <div class="nav-dropdown-header">Interactive Core &amp; Labs</div>
-              <button class="nav-dropdown-item nav-tab" id="btnDropdownRelationalMachinesLabs" data-view="viewRelationalMachines" onclick="try{window.location.hash='#machines';}catch(e){} selectNavView('viewRelationalMachines', 'Relational Machines', 'navGroupExplore')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.8;color:#0ea5e9;">&bull;</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title" style="color:#0284c7;font-weight:700;">Relational Machines (SVG)</span>
-                    <span class="nav-item-tag accent" style="background:rgba(14,165,233,0.18); color:#0284c7; border: 1px solid rgba(14,165,233,0.3);">NEW SVG</span>
-                  </div>
-                  <span class="nav-item-desc">Interactive Obsidian diagrams: Revenue Engine, Rolling 7-Day &amp; Cohorts</span>
-                </div>
-              </button>
+              <div class="nav-dropdown-header">Visual Interactive Labs</div>
               <button class="nav-dropdown-item nav-tab" data-view="viewLearningJourney" onclick="selectNavView('viewLearningJourney', 'Learning Journey', 'navGroupExplore')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">20-Day Learning Journey</span>
-                    <span class="nav-item-tag accent">Day 01–20</span>
+                    <span class="nav-item-tag accent">Milestones</span>
                   </div>
-                  <span class="nav-item-desc">Visual curriculum roadmap &amp; interactive daily milestone tracker</span>
+                  <span class="nav-item-desc">Visual curriculum roadmap &amp; daily progress tracker</span>
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewWindowMatrix" onclick="selectNavView('viewWindowMatrix', 'Window Cockpit', 'navGroupExplore')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Window Functions Cockpit</span>
-                    <span class="nav-item-tag accent">Day 11-12</span>
+                    <span class="nav-item-tag accent">Frames</span>
                   </div>
-                  <span class="nav-item-desc">Sliding Frames, Ranking Dissection &amp; Offset Vectors</span>
+                  <span class="nav-item-desc">Sliding frames, ranking dissection &amp; offset vectors</span>
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewQuests" onclick="selectNavView('viewQuests', 'Quests', 'navGroupExplore')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Interactive Quests</span>
@@ -369,48 +307,28 @@
                 </div>
               </button>
               <button class="nav-dropdown-item" onclick="openCurriculumReader(1)">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Curriculum Theory Compendium</span>
-                    <span class="nav-item-tag accent">Theory</span>
+                    <span class="nav-item-tag accent">Textbook</span>
                   </div>
                   <span class="nav-item-desc">In-app textbook theory, daily logs &amp; interview defenses</span>
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewTactileEngine" onclick="selectNavView('viewTactileEngine', 'SQL Machine', 'navGroupExplore')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Tactile SQL Machine</span>
                     <span class="nav-item-tag accent">Fig. 16</span>
                   </div>
-                  <span class="nav-item-desc">Hand-inked physical relational machine &amp; query washer</span>
+                  <span class="nav-item-desc">Hand-inked physical relational machine</span>
                 </div>
               </button>
-              <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Documentation &amp; Schema</div>
-              <button class="nav-dropdown-item nav-tab" data-view="viewExplainer" onclick="selectNavView('viewExplainer', 'Study Docs', 'navGroupExplore')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Study Docs</span>
-                    <span class="nav-item-tag">Deep-Dives</span>
-                  </div>
-                  <span class="nav-item-desc">Under-the-hood engine theory, gotchas &amp; AST diffs</span>
-                </div>
-              </button>
-              <button class="nav-dropdown-item nav-tab" data-view="viewDeconstructor" onclick="selectNavView('viewDeconstructor', 'Deconstructor', 'navGroupExplore')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
-                <div class="nav-item-text">
-                  <div class="nav-item-title-row">
-                    <span class="nav-item-title">Query Deconstructor</span>
-                    <span class="nav-item-tag">Mental Models</span>
-                  </div>
-                  <span class="nav-item-desc">Clause-by-clause query isolator and semantic breakdown</span>
-                </div>
-              </button>
+              <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Architecture &amp; Schema</div>
               <button class="nav-dropdown-item nav-tab" data-view="viewEnterpriseERD" onclick="selectNavView('viewEnterpriseERD', 'ERD Map', 'navGroupExplore')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Enterprise ERD Map</span>
@@ -420,7 +338,7 @@
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewVennMatrix" onclick="selectNavView('viewVennMatrix', 'Venn Matrix', 'navGroupExplore')">
-                <span class="nav-item-icon" style="font-size:11px;opacity:0.6;">&bull;</span>
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
                     <span class="nav-item-title">Venn &amp; Euler Matrix</span>
@@ -437,23 +355,23 @@
       
 
       <div class="header-right">
-        <button class="header-cmd-palette-btn" id="btnHeaderCmdPalette" onclick="if(window.SQL_CMD_PALETTE) window.SQL_CMD_PALETTE.open();" title="Search problems, companies, and views (Ctrl+K or Cmd+K)">
+        <button class="header-cmd-palette-btn" id="btnHeaderCmdPalette" onclick="if(window.SQL_CMD_PALETTE) window.SQL_CMD_PALETTE.open();" title="Search queries, topics &amp; schemas (Ctrl+K or Cmd+K)">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <span class="cmd-palette-label">Search...</span>
           <kbd class="cmd-palette-kbd">⌘K</kbd>
         </button>
         <div class="header-divider"></div>
-        <div class="header-stats-strip">
-          <span class="header-stat-chip" id="userStreakCounter" title="Daily SQL Mastery Streak (Click to open Calendar)" style="cursor: pointer;" onclick="if(window.dailyStreak) window.dailyStreak.open();">
-            
+        <div class="header-status-capsule">
+          <span class="capsule-item" id="userStreakCounter" title="Daily SQL Streak" onclick="if(window.dailyStreak) window.dailyStreak.open();">
+            <span class="capsule-dot active"></span>
             <span class="stat-val" id="streakDaysCount">1</span><span class="stat-unit">d</span>
           </span>
-          <span class="header-stat-chip" id="userXpCounter" title="Total SQL Mastery Points (Click to view 112-Day Heatmap)" style="cursor: pointer;" onclick="if(window.selectNavView) window.selectNavView('viewQuests', 'Quests', null); setTimeout(()=>{ const el = document.getElementById('curriculumActivityHeatmap'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 150);">
-            
+          <span class="capsule-sep">&bull;</span>
+          <span class="capsule-item" id="userXpCounter" title="Total XP Points" onclick="if(window.selectNavView) window.selectNavView('viewQuests', 'Quests', null);">
             <span class="stat-val" id="xpPointsVal">60</span><span class="stat-unit">XP</span>
           </span>
-          <span class="header-stat-chip flashcard-chip" id="headerFlashcardDuePill" title="Review Due SuperMemo-2 Flashcards" onclick="if(window.openFlashcardVault) window.openFlashcardVault();">
-            
+          <span class="capsule-sep">&bull;</span>
+          <span class="capsule-item flashcard-chip" id="headerFlashcardDuePill" title="Review Due Flashcards" onclick="if(window.openFlashcardVault) window.openFlashcardVault();">
             <span class="stat-val" id="flashcardDueCount">12</span><span class="stat-unit">Due</span>
           </span>
         </div>
@@ -463,23 +381,23 @@
         <button id="btnSoundToggle" class="header-icon-btn btn-sound-toggle" title="Toggle Sound FX" aria-label="Toggle Sound FX">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
         </button>
-        <button id="btnCompanionTrigger" class="header-icon-btn btn-mascot-toggle" title="Customize Mascot &amp; Companion Settings" aria-label="Customize Mascot &amp; Companion" onclick="if(window.SQL_BUDDY){window.SQL_BUDDY.toggleCustomizer();}else if(typeof SQL_BUDDY!=='undefined'){SQL_BUDDY.toggleCustomizer();}">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button id="btnCompanionTrigger" class="header-icon-btn btn-mascot-toggle" title="Customize Companion" aria-label="Customize Companion" onclick="if(window.SQL_BUDDY){window.SQL_BUDDY.toggleCustomizer();}else if(typeof SQL_BUDDY!=='undefined'){SQL_BUDDY.toggleCustomizer();}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="9"></circle>
             <circle cx="9" cy="10" r="1" fill="currentColor"></circle>
             <circle cx="15" cy="10" r="1" fill="currentColor"></circle>
             <path d="M9 14.5c1 .8 2 1 3 1s2-.2 3-1"></path>
           </svg>
         </button>
-        <div class="header-icon-btn carbon-theme-locked" title="Active Theme: Carbon (High-Contrast Black &amp; White)" style="cursor: default;" aria-label="Theme: Carbon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <div class="header-icon-btn carbon-theme-locked" title="Theme: Carbon Monochrome" style="cursor: default;" aria-label="Theme: Carbon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="9"></circle>
             <path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"></path>
           </svg>
         </div>
-        <a href="http://localhost:3000" target="_blank" class="saas-launch-pill" title="Open Next.js 15 Modern SaaS App" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:0 10px; height:28px; width:auto !important; min-width:auto !important; max-width:none !important; font-size:11px; font-weight:600; color:var(--text-secondary); background:#141418; border:1px solid rgba(255, 255, 255, 0.16); border-radius:6px; white-space:nowrap; transition:all 140ms ease;">
-          <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10b981; box-shadow:0 0 6px #10b981;"></span>
-          <span>Next.js App</span>
+        <a href="http://localhost:3000" target="_blank" class="saas-launch-pill" title="Next.js App">
+          <span class="saas-pill-dot"></span>
+          <span>Next.js</span>
         </a>
         <button id="btnRunQuery" class="action-btn action-btn-primary header-cta-btn">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
@@ -487,8 +405,7 @@
           </svg>
           Run
         </button>
-      </div>
-    </header>
+      </div></header>
 
     <!-- VIEW: Product Landing Page & Feature Showcase -->
     <div class="view-panel active" id="viewLandingPage"></div>

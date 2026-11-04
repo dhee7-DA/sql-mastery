@@ -1747,3 +1747,542 @@ pre code {
   font-size: 18px !important;
   flex-shrink: 0 !important;
 }
+
+
+/* =============================================================================
+   ULTRA-MINIMALIST CARBON OVERHAUL (PRECISION MONOCHROME & FLUID CARDS)
+   ============================================================================= */
+
+/* 1. Header Status Capsule */
+.header-status-capsule {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: #0d0d10 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 9999px !important;
+  padding: 3px 12px !important;
+  height: 26px !important;
+}
+
+.header-status-capsule .capsule-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  font-size: 11px !important;
+  font-family: ui-monospace, "SF Mono", monospace !important;
+  font-weight: 500 !important;
+  color: #a1a1aa !important;
+  cursor: pointer !important;
+  transition: color 120ms ease !important;
+}
+
+.header-status-capsule .capsule-item:hover {
+  color: #ffffff !important;
+}
+
+.header-status-capsule .capsule-dot {
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8) !important;
+}
+
+.header-status-capsule .capsule-sep {
+  color: #3f3f46 !important;
+  font-size: 10px !important;
+}
+
+/* 2. Course Header & Typography-First Shell */
+.course-header-bar {
+  background: #08080a !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 12px 18px !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+.course-headline {
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 !important;
+}
+
+.course-subline {
+  color: #71717a !important;
+  font-size: 11.5px !important;
+  margin-top: 3px !important;
+}
+
+/* 3. The 10-Topic Progressive Stepper Rail */
+.phase-execution-rail {
+  background: #060608 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 8px !important;
+  padding: 4px !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  gap: 4px !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #27272a transparent !important;
+}
+
+.phase-node-btn {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 6px !important;
+  color: #71717a !important;
+  padding: 5px 12px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  transition: all 140ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.phase-seq-tag {
+  background: #121216 !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 1px 5px !important;
+  border-radius: 3px !important;
+  font-family: ui-monospace, monospace !important;
+  font-size: 9.5px !important;
+  font-weight: 600 !important;
+}
+
+.phase-node-btn:hover {
+  background: #121216 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.phase-node-btn.active,
+.phase-node-btn.ovio-tab-active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+  border-color: #ffffff !important;
+}
+
+.phase-node-btn.active .phase-seq-tag,
+.phase-node-btn.ovio-tab-active .phase-seq-tag {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+.phase-node-btn.active .phase-name-tag,
+.phase-node-btn.ovio-tab-active .phase-name-tag {
+  color: #000000 !important;
+}
+
+/* 4. Active Topic Banner & Segmented Control */
+.active-phase-card {
+  background: #08080a !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 16px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+}
+
+.phase-hero-info {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+}
+
+.phase-hero-text h2 {
+  margin: 0 !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+  color: #ffffff !important;
+}
+
+.topic-num-prefix {
+  font-family: ui-monospace, monospace !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #71717a !important;
+  margin-right: 6px !important;
+  background: #121216 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+}
+
+.phase-hero-text p {
+  margin: 4px 0 0 0 !important;
+  font-size: 12px !important;
+  color: #a1a1aa !important;
+  line-height: 1.5 !important;
+}
+
+/* Segmented Control Step Tabs */
+.step-order-tabs {
+  display: inline-flex !important;
+  align-self: flex-start !important;
+  background: #050507 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 7px !important;
+  padding: 3px !important;
+  gap: 3px !important;
+}
+
+.step-tab-btn {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 5px !important;
+  color: #71717a !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  padding: 5px 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  transition: all 140ms ease !important;
+}
+
+.tab-step-idx {
+  font-family: ui-monospace, monospace !important;
+  font-size: 9.5px !important;
+  opacity: 0.6 !important;
+}
+
+.step-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: #ffffff !important;
+}
+
+.step-tab-btn.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+  border-color: #ffffff !important;
+}
+
+.step-tab-btn.active .tab-step-idx {
+  color: #000000 !important;
+  opacity: 0.7 !important;
+}
+
+.step-tab-btn.active span {
+  color: #000000 !important;
+}
+
+.step-count-pill {
+  background: #141418 !important;
+  color: #a1a1aa !important;
+  font-size: 9px !important;
+  padding: 1px 5px !important;
+  border-radius: 3px !important;
+}
+
+.step-tab-btn.active .step-count-pill {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* 5. Seamless Architectural Diagram Card (Flattening Box-in-a-Box) */
+.interactive-simulator-card {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.visual-mode-toggle-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 10px !important;
+  padding: 0 2px !important;
+}
+
+.visual-mode-title-group span {
+  color: #71717a !important;
+  font-size: 11px !important;
+  font-family: ui-monospace, monospace !important;
+  letter-spacing: 0.04em !important;
+}
+
+.visual-mode-toggle-group {
+  display: inline-flex !important;
+  background: #08080a !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  padding: 2px !important;
+  gap: 2px !important;
+}
+
+.visual-toggle-btn {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: #71717a !important;
+  padding: 3px 9px !important;
+  border-radius: 4px !important;
+  font-size: 10.5px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 120ms ease !important;
+}
+
+.visual-toggle-btn:hover {
+  color: #ffffff !important;
+}
+
+.visual-toggle-btn.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+.course-svg-diagram-card {
+  background: #040406 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 16px !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.7) !important;
+}
+
+.course-explainer-svg {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1000 / 240 !important;
+  border: none !important;
+  background: transparent !important;
+  display: block !important;
+}
+
+.diagram-stepper-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 10px 4px 0 4px !important;
+  margin-top: 10px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+.stepper-mode-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 9.5px !important;
+  font-family: ui-monospace, monospace !important;
+  color: #52525b !important;
+  letter-spacing: 0.06em !important;
+}
+
+.stepper-dot {
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+}
+
+.stepper-btn-group {
+  display: inline-flex !important;
+  gap: 5px !important;
+}
+
+.diagram-step-btn {
+  height: 24px !important;
+  padding: 0 10px !important;
+  font-size: 10.5px !important;
+  font-weight: 500 !important;
+  border-radius: 4px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: #0c0c10 !important;
+  color: #71717a !important;
+  cursor: pointer !important;
+  transition: all 120ms ease !important;
+}
+
+.diagram-step-btn:hover {
+  background: #181820 !important;
+  color: #ffffff !important;
+}
+
+.diagram-step-btn.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+/* 6. ANALYTICS & 30-DAY INDUSTRY STORIES: CARBON MONOCHROME OVERHAUL */
+.amazon-sim-container,
+.jpmorgan-sim-container,
+.netflix-sim-container,
+.uber-sim-container,
+.stripe-sim-container,
+.airbnb-sim-container,
+.spotify-sim-container {
+  background: #000000 !important;
+  color: #ededed !important;
+}
+
+.amazon-sim-header,
+.jpmorgan-sim-header,
+.netflix-sim-header,
+.uber-sim-header,
+.stripe-sim-header,
+.airbnb-sim-header,
+.spotify-sim-header {
+  background: #08080a !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.amazon-tickets-sidebar,
+.story-tickets-sidebar {
+  background: #060608 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.amazon-ticket-card,
+.story-ticket-card {
+  background: #0a0a0d !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 6px !important;
+  color: #a1a1aa !important;
+  transition: all 120ms ease !important;
+}
+
+.amazon-ticket-card:hover,
+.story-ticket-card:hover {
+  background: #121216 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.amazon-ticket-card.active,
+.story-ticket-card.active {
+  background: #16161b !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+/* Monochrome Badges */
+.amazon-phase-filter-tabs .filter-tab,
+.story-filter-tab {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #71717a !important;
+  border-radius: 4px !important;
+}
+
+.amazon-phase-filter-tabs .filter-tab.active,
+.story-filter-tab.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.amazon-ticket-priority,
+.story-priority-badge {
+  background: #121216 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+  border-radius: 3px !important;
+  font-family: ui-monospace, monospace !important;
+  font-size: 9px !important;
+}
+
+.amazon-main-stage,
+.story-main-stage {
+  background: #000000 !important;
+}
+
+.amazon-briefing-panel,
+.story-briefing-panel,
+.amazon-message-card,
+.story-message-card {
+  background: #08080a !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+}
+
+.amazon-callout-card,
+.story-callout-card {
+  background: #0a0a0e !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 6px !important;
+  color: #d4d4d8 !important;
+}
+
+.amazon-schema-box,
+.story-schema-box {
+  background: #050507 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: #f4f4f5 !important;
+}
+
+.btn-launch-challenge,
+.btn-briefing-action,
+.btn-verify-query {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 6px rgba(255, 255, 255, 0.2) !important;
+}
+
+.btn-launch-challenge:hover,
+.btn-briefing-action:hover,
+.btn-verify-query:hover {
+  background: #e4e4e7 !important;
+  color: #000000 !important;
+}
+
+/* 7. Buddy Gremlin Speech Bubble Refinement */
+#buddySpeechBubble,
+.buddy-speech-bubble {
+  background: #09090c !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 8px !important;
+  color: #f4f4f5 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8) !important;
+}
+
+.buddy-bubble-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.buddy-badge {
+  background: #141418 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1aa !important;
+}
+
+.buddy-speech-text {
+  color: #d4d4d8 !important;
+  font-size: 11px !important;
+}
+
+
+/* Header Navigation Flow & Zero Clipping */
+.header-left {
+  flex: 0 0 auto !important;
+  overflow: visible !important;
+}
+
+.nav-groups-container {
+  overflow: visible !important;
+  flex-shrink: 0 !important;
+}
+
+.nav-group-dropdown {
+  overflow: visible !important;
+}

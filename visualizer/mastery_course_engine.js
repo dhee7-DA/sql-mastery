@@ -1765,17 +1765,13 @@ FROM Employees;`,
 
     container.innerHTML = `
       <div class="mastery-course-wrapper">
-        <!-- 1. Sleek Course Top Header -->
+        <!-- 1. Sleek Minimalist Course Top Header -->
         <header class="course-header-bar">
           <div class="course-header-left">
-            
             <div class="course-title-col">
-              <h1 class="course-headline">
-                SQL Mastery &amp; Technical Interview Preparation
-                <span class="course-pill-tag">Step-by-Step Learning Track</span>
-              </h1>
+              <h1 class="course-headline">SQL Mastery Curriculum</h1>
               <p class="course-subline">
-                Beginner to Advanced: 10 structured topics designed for gradual, progressive learning
+                10 progressive architectural stages &bull; Physical execution order &amp; high-stakes interview patterns
               </p>
             </div>
           </div>
@@ -1788,40 +1784,27 @@ FROM Employees;`,
               </div>
             </div>
 
-            <!-- Milestone Badges & Claim Cert CTA -->
+            <!-- Sleek Action Controls -->
             <div class="course-achievements-bar">
-              <span class="milestone-badge-chip ${completedCount >= 3 ? 'unlocked' : ''}" title="Topics 01-03: Relational Foundations">
-                <span>Foundations</span>
-              </span>
-              <span class="milestone-badge-chip ${completedCount >= 7 ? 'unlocked' : ''}" title="Topics 04-07: Relational Architect">
-                <span>Architect</span>
-              </span>
-              <span class="milestone-badge-chip ${completedCount >= 10 ? 'unlocked' : ''}" title="Topics 08-10: Analytical Wizard">
-                <span>Wizard</span>
-              </span>
-              <span class="milestone-badge-chip ${completedCount === 10 ? 'unlocked' : ''}" title="All 10 Topics Mastered: SQL Grandmaster">
-                <span>Grandmaster</span>
-              </span>
-
               <button class="milestone-badge-chip hotkey-chip" onclick="window.MasteryCourseEngine.openShortcutsModal()" title="Keyboard Shortcuts (Press ?)">
-                <span>Hotkeys [?]</span>
+                <span>Shortcuts [?]</span>
               </button>
-              <button class="milestone-badge-chip analytics-chip" onclick="window.MasteryCourseEngine.openAnalyticsModal('stats')" title="Progress Analytics &amp; Social Share (Press A)">
+              <button class="milestone-badge-chip analytics-chip" onclick="window.MasteryCourseEngine.openAnalyticsModal('stats')" title="Progress Analytics (Press A)">
                 <span>Analytics [A]</span>
               </button>
               <button class="btn-claim-cert" onclick="window.MasteryCourseEngine.openCertificate('cert')">
-                <span>Certificate &amp; Portfolio</span>
+                <span>Certificate</span>
               </button>
             </div>
           </div>
         </header>
 
-        <!-- 2. The 10-Topic Progressive Navigation Rail (Ovio Liquid Tabs) -->
+        <!-- 2. The 10-Topic Progressive Navigation Rail -->
         <nav class="phase-execution-rail ovio-tabs-wrapper" id="phaseExecutionRail">
           ${PHASES.map((p, idx) => {
             const isActive = p.id === state.activePhaseId;
             const isDone = state.completedPhases.has(p.id);
-            const cleanName = p.shortName.replace(/^\d+\.\s*/, '');
+            const cleanName = (p.title || p.shortName || '').replace(/^\d+\.?\s*/, '').replace(/\s*\([^)]*\)/, '');
             return `
               <button class="phase-node-btn ${isActive ? 'active' : ''} ${isDone ? 'completed' : ''}" data-phase="${p.id}" title="Topic ${p.seq}: ${p.title}">
                 <span class="phase-seq-tag">${p.seq}</span>
@@ -1835,27 +1818,30 @@ FROM Employees;`,
         <!-- 3. Active Topic Banner & 4-Step Navigation Tabs -->
         <section class="active-phase-card">
           <div class="phase-hero-info">
-            <div class="phase-hero-badge">${active.icon}</div>
             <div class="phase-hero-text">
-              <h2>Topic ${active.seq}: ${active.title}</h2>
+              <h2><span class="topic-num-prefix">Topic ${active.seq}:</span> ${active.title}</h2>
               <p>${active.summary}</p>
             </div>
           </div>
 
           <div class="step-order-tabs">
             <button class="step-tab-btn ${state.activeStep === 'theory' ? 'active' : ''}" data-step="theory">
-              <span>01 Learn &amp; Visualize</span>
+              <span class="tab-step-idx">01</span>
+              <span>Learn &amp; Visualize</span>
             </button>
             <button class="step-tab-btn ${state.activeStep === 'mcqs' ? 'active' : ''}" data-step="mcqs">
-              <span>02 Quick Quiz</span>
+              <span class="tab-step-idx">02</span>
+              <span>Quick Quiz</span>
               <span class="step-count-pill">${active.mcqs ? active.mcqs.length : 0}</span>
             </button>
             <button class="step-tab-btn ${state.activeStep === 'case' ? 'active' : ''}" data-step="case">
-              <span>03 Real Case</span>
+              <span class="tab-step-idx">03</span>
+              <span>Real Case</span>
               <span class="step-count-pill">${active.caseStudy ? active.caseStudy.company : ''}</span>
             </button>
             <button class="step-tab-btn ${state.activeStep === 'problem' ? 'active' : ''}" data-step="problem">
-              <span>04 Section Studio</span>
+              <span class="tab-step-idx">04</span>
+              <span>Section Studio</span>
               <span class="step-count-pill">${active.problem ? active.problem.difficulty : ''}</span>
             </button>
           </div>
