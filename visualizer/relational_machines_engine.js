@@ -2745,11 +2745,11 @@ function renderView() {
                 <div class="machines-viewmode-pills">
                   <button class="machines-viewmode-btn ${state.viewMode !== 'chart' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.setViewMode('pipeline')" title="View Topological Execution Chambers">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 16 12 12 8"></polygon></svg>
-                    <span>⬡ Relational Flow</span>
+                    <span>Relational Flow</span>
                   </button>
                   <button class="machines-viewmode-btn ${state.viewMode === 'chart' ? 'active' : ''}" onclick="window.RelationalMachinesEngine.setViewMode('chart')" title="View Interactive Analytical Micro-Chart (BI Mode)">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"></path><rect x="7" y="10" width="3" height="8"></rect><rect x="14" y="5" width="3" height="13"></rect></svg>
-                    <span>📈 Analytical Chart (BI)</span>
+                    <span>Analytical Chart (BI)</span>
                   </button>
                 </div>
                 <div class="machines-zoom-controls">
@@ -2771,7 +2771,7 @@ function renderView() {
               `}
 
               <div class="machines-canvas-hint-bar">
-                <span>💡 Click any tuple row or DROP ✕ node to inspect relational lineage, engine plans &amp; index advice</span>
+                <span>[INSPECT] Click any tuple row or DROP ✕ node to inspect relational lineage, engine plans &amp; index advice</span>
                 <span>Zoom: ${Math.round(state.zoomLevel * 100)}%</span>
               </div>
 

@@ -4889,10 +4889,10 @@ function renderMcqs(filterKeyword = null, resetLimit = true, targetModule = null
           </div>
           <div class="mcq-topic-links-row">
             <button class="mcq-topic-link-btn" onclick="switchTopicResourceTab('cases')">
-              <span>💼 View ${modCases.length} Related Case Studies &rarr;</span>
+              <span>[CASES] View ${modCases.length} Related Case Studies &rarr;</span>
             </button>
             <button class="mcq-topic-link-btn" onclick="switchTopicResourceTab('problems')">
-              <span>🏆 View ${modQuests.length} Related Query Problems &amp; Quests &rarr;</span>
+              <span>[QUESTS] View ${modQuests.length} Related Query Problems &amp; Quests &rarr;</span>
             </button>
           </div>
         </div>
@@ -4903,7 +4903,7 @@ function renderMcqs(filterKeyword = null, resetLimit = true, targetModule = null
       html += `
         <div style="text-align: center; margin: 20px 0;">
           <button id="btnLoadMoreMcqs" class="mcq-load-more-btn">
-            <span>🍡 Load Next 25 Questions (${visibleMcqs.length} of ${filteredMcqs.length} loaded)</span>
+            <span>Load Next 25 Questions &darr; (${visibleMcqs.length} of ${filteredMcqs.length} loaded)</span>
           </button>
         </div>
       `;
@@ -5477,7 +5477,7 @@ function renderCaseCardHtml(cs) {
         <div>
           <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
             ${(cs.isGymDrill || cs.drillNumber)
-              ? `<span class="case-id-pill drill-id-pill">⚡ Drill #${String(cs.drillNumber || cs.id).padStart(3, '0')}</span>`
+              ? `<span class="case-id-pill drill-id-pill">Drill #${String(cs.drillNumber || cs.id).padStart(3, '0')}</span>`
               : `<span class="case-id-pill">#${String(cs.id).padStart(3, '0')}</span>`}
             <span class="case-diff-badge ${diffClass}"><span class="diff-dot"></span>${cs.difficulty}</span>
             <span class="case-industry-pill">${cs.industry}</span>
@@ -5499,7 +5499,7 @@ function renderCaseCardHtml(cs) {
 
       <!-- Modern Sleek Objective Strip -->
       <div class="case-objective-strip">
-        <span class="case-objective-icon">🎯</span>
+        <span class="case-objective-icon">&bull;</span>
         <div class="case-objective-content">
           <div class="case-objective-body"><strong class="case-objective-label">Objective:</strong> ${cs.businessObjective}</div>
         </div>
@@ -6838,7 +6838,7 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
           <h3 class="case-title" onclick="openCaseDossier('${cs.id}')" title="Click to open full case study dossier">${escapeHtml(cs.title)}</h3>
         </div>
         <div style="display: flex; align-items: center; gap: 6px;">
-          <span class="case-table-tag">🗄️ ${cs.table}</span>
+          <span class="case-table-tag">${cs.table}</span>
           ${isSolved ? '<span class="status-pill terminal-solved-pill">✓ Solved</span>' : ''}
         </div>
       </div>
@@ -6848,7 +6848,7 @@ function renderGymDrillCardHtml(cs, isBlitz = false) {
 
       <!-- Modern Sleek Objective Strip -->
       <div class="case-objective-strip">
-        <span class="case-objective-icon">🎯</span>
+        <span class="case-objective-icon">&bull;</span>
         <div class="case-objective-content">
           <div class="case-objective-body"><strong class="case-objective-label">Objective:</strong> ${escapeHtml(cs.businessObjective)}</div>
         </div>

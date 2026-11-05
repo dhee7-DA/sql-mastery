@@ -1799,11 +1799,11 @@ window.StudioWorkbenchEngine = (function() {
     const activeArch = state.activeArchDiagram || 'buffer_pool';
 
     let archSvgHtml = '';
+    const catalog = (window.DatabaseArchitectureSvgs && window.DatabaseArchitectureSvgs.getCatalog) ? window.DatabaseArchitectureSvgs.getCatalog() : [];
+    const currentId = activeArch || 'bufferpool';
     if (window.DatabaseArchitectureSvgs) {
-      if (activeArch === 'btree') {
-        archSvgHtml = window.DatabaseArchitectureSvgs.renderBTreeIndexSvg();
-      } else if (activeArch === 'hash_join') {
-        archSvgHtml = window.DatabaseArchitectureSvgs.renderHashJoinDagSvg();
+      if (typeof window.DatabaseArchitectureSvgs.renderById === 'function') {
+        archSvgHtml = window.DatabaseArchitectureSvgs.renderById(currentId);
       } else {
         archSvgHtml = window.DatabaseArchitectureSvgs.renderBufferPoolSvg();
       }
@@ -1816,12 +1816,12 @@ window.StudioWorkbenchEngine = (function() {
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <span style="font-size: 11px; font-weight: 700; color: #ffffff; letter-spacing: 0.05em; font-family: 'JetBrains Mono', monospace;">DATABASE ENGINE ARCHITECTURE</span>
-              <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; background: #18181b; color: #a1a1aa; border: 1px solid rgba(255,255,255,0.15); border-radius: 3px;">WASM ZERO-COPY</span>
+              <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; background: #18181b; color: #ffffff; border: 1px solid rgba(255,255,255,0.2); border-radius: 3px;">12 ENTERPRISE SCHEMATICS</span>
             </div>
-            <div class="db-arch-toggle-group" style="display: flex; gap: 6px;">
-              <button type="button" class="db-arch-tab-btn ${activeArch === 'buffer_pool' ? 'active' : ''}" id="btnArchBufferPool" onclick="window.StudioWorkbenchEngine.switchArchDiagram('buffer_pool')">Buffer Pool I/O</button>
-              <button type="button" class="db-arch-tab-btn ${activeArch === 'btree' ? 'active' : ''}" id="btnArchBTree" onclick="window.StudioWorkbenchEngine.switchArchDiagram('btree')">B+ Tree Index</button>
-              <button type="button" class="db-arch-tab-btn ${activeArch === 'hash_join' ? 'active' : ''}" id="btnArchHashJoin" onclick="window.StudioWorkbenchEngine.switchArchDiagram('hash_join')">Hash Join DAG</button>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <select id="selectArchDiagram" onchange="window.StudioWorkbenchEngine.switchArchDiagram(this.value)" style="background: #141418; color: #ffffff; border: 1px solid rgba(255,255,255,0.22); border-radius: 4px; padding: 5px 12px; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 600; cursor: pointer;">
+                ${catalog.map(d => `<option value="${d.id}" ${d.id === currentId ? 'selected' : ''}>[${d.badge}] ${escapeHtml(d.title)}</option>`).join('')}
+              </select>
             </div>
           </div>
           <div id="dbArchSvgTarget" style="width: 100%; overflow-x: auto; background: #000000; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); padding: 6px;">
@@ -2660,26 +2660,24 @@ window.StudioWorkbenchEngine = (function() {
     state.activeArchDiagram = type;
     const target = document.getElementById('dbArchSvgTarget');
     if (target && window.DatabaseArchitectureSvgs) {
-      if (type === 'btree') {
+      if (typeof window.DatabaseArchitectureSvgs.renderById === 'function') {
+        target.innerHTML = window.DatabaseArchitectureSvgs.renderById(type);
+      } else if (type === 'btree') {
         target.innerHTML = window.DatabaseArchitectureSvgs.renderBTreeIndexSvg();
-      } else if (type === 'hash_join') {
+      } else if (type === 'hash_join' || type === 'hashjoin') {
         target.innerHTML = window.DatabaseArchitectureSvgs.renderHashJoinDagSvg();
       } else {
         target.innerHTML = window.DatabaseArchitectureSvgs.renderBufferPoolSvg();
       }
     }
 
-    const btns = [
-      { id: 'btnArchBufferPool', key: 'buffer_pool' },
-      { id: 'btnArchBTree', key: 'btree' },
-      { id: 'btnArchHashJoin', key: 'hash_join' }
-    ];
+    const sel = document.getElementById('selectArchDiagram');
+    if (sel) sel.value = type;
+
+    const btns = document.querySelectorAll('.db-arch-tab-btn');
     btns.forEach(b => {
-      const el = document.getElementById(b.id);
-      if (el) {
-        if (b.key === type) el.classList.add('active');
-        else el.classList.remove('active');
-      }
+      if (b.dataset.archId === type) b.classList.add('active');
+      else b.classList.remove('active');
     });
   }
 

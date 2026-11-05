@@ -734,7 +734,7 @@
       let chHtml = `
         <g class="machine-chamber-group" data-chamber-id="${ch.id}">
           <!-- Chamber Card Frame -->
-          <rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" rx="8" fill="#0d111a" stroke="#1e293b" stroke-width="1.2" />
+          <rect x="${c.x}" y="${c.y}" width="${c.w}" height="${c.h}" rx="8" fill="${isCarbon ? '#0c0d10' : '#0d111a'}" stroke="${isCarbon ? 'rgba(255, 255, 255, 0.12)' : '#1e293b'}" stroke-width="${isCarbon ? '1' : '1.2'}" />
           
           <!-- Top Line -->
           <line x1="${c.x + 2}" y1="${c.y}" x2="${c.x + c.w - 2}" y2="${c.y}" stroke="${isCarbon ? 'rgba(255,255,255,0.15)' : ch.color}" stroke-width="${isCarbon ? '1' : '2.5'}" ${isCarbon ? '' : `filter="url(#${glowFilter})"`} />
@@ -749,14 +749,14 @@
           <line x1="${c.x}" y1="${c.y + 48}" x2="${c.x + c.w}" y2="${c.y + 48}" stroke="${isCarbon ? 'rgba(255,255,255,0.06)' : '#1e293b'}" stroke-width="1" />
           
           <!-- Micro-Stat Substrip -->
-          <rect x="${c.x + 1}" y="${c.y + 49}" width="${c.w - 2}" height="20" fill="#070a10" />
+          <rect x="${c.x + 1}" y="${c.y + 49}" width="${c.w - 2}" height="20" fill="${isCarbon ? '#08080a' : '#070a10'}" />
           <text x="${c.x + 10}" y="${c.y + 62}" fill="#64748b" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">IN: ${ch.stats.inCount} &bull; PASS: ${ch.stats.passCount} &bull; ${escapeXml(trunc(ch.badge, 12))}</text>
           
-          <line x1="${c.x}" y1="${c.y + 69}" x2="${c.x + c.w}" y2="${c.y + 69}" stroke="#1e293b" stroke-width="1" />
+          <line x1="${c.x}" y1="${c.y + 69}" x2="${c.x + c.w}" y2="${c.y + 69}" stroke="${isCarbon ? 'rgba(255, 255, 255, 0.08)' : '#1e293b'}" stroke-width="1" />
           
           <!-- Table Column Headers -->
-          <rect x="${c.x + 1}" y="${c.y + 70}" width="${c.w - 2}" height="20" fill="#0b0f17" />
-          <text x="${c.x + 10}" y="${c.y + 83}" fill="#475569" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">#</text>
+          <rect x="${c.x + 1}" y="${c.y + 70}" width="${c.w - 2}" height="20" fill="${isCarbon ? '#111216' : '#0b0f17'}" />
+          <text x="${c.x + 10}" y="${c.y + 83}" fill="${isCarbon ? '#71717a' : '#475569'}" font-family="JetBrains Mono, monospace" font-size="7.5" font-weight="600">#</text>
       `;
 
       // Spacing for 2 or 3 columns with bounded widths
