@@ -1017,64 +1017,599 @@ window.InteractiveArchitectureExplainer = (function() {
     }
   };
 
-  // Mount or Update the Interactive Architecture Explainer UI
+
+  // ---------------------------------------------------------------------------
+  // CHAOS & STRESS SIMULATION DATASET (24 Real-World Enterprise Failure Scenarios)
+  // ---------------------------------------------------------------------------
+  const CHAOS_DEEP_DIVES = {
+    buffer_pool: [
+      {
+        id: 'thrashing',
+        title: 'Buffer Pool Thrashing & Free List Depletion',
+        severity: 'P0 CRITICAL',
+        targetBox: { x: 272, y: 170, w: 424, h: 88 },
+        beacon: { x: 484, y: 214 },
+        faultType: 'CLOCK_THRASH',
+        metrics: {
+          impact: 'Cache Hit Ratio: 99.8% -> 12.4% | Latency Spikes 400x (0.12ms -> 48.2ms)',
+          invariant: 'Free Frame List = 0. Eviction thread consuming 100% CPU spinning CLOCK hand.',
+          kernel: 'sys_read synchronous NVMe storm: 140,000 IOPS · Queue Depth: 64 (Saturated)'
+        },
+        rca: {
+          incident: 'Unindexed batch analytics query triggered a sequential scan of 80M rows during peak traffic, sweeping working-set pages out of DRAM.',
+          mitigation: 'Set innodb_buffer_pool_instances=16, configure mid-point insertion (innodb_old_blocks_pct=37), and enforce query statement_timeout=5000ms.',
+          injectionScript: '-- Chaos Injection: Sweep entire buffer pool with unindexed sequential scan\nSELECT count(*) FROM transactions WHERE memo LIKE \'%audit_probe_test%\';'
+        }
+      },
+      {
+        id: 'checkpoint_stall',
+        title: 'Dirty Page Flushing Checkpoint Stall',
+        severity: 'P0 OUTAGE',
+        targetBox: { x: 760, y: 62, w: 212, h: 208 },
+        beacon: { x: 866, y: 166 },
+        faultType: 'CHECKPOINT_FREEZE',
+        metrics: {
+          impact: 'All Transaction Commits Frozen for 18.4s · Client Connection Pool Depleted',
+          invariant: 'PageLSN exceeds FlushedLSN safe margin. DBMS forces synchronous sync write barrier.',
+          kernel: 'DBWR asynchronous flusher overwhelmed · fsync() queue depth: 2,400 dirty 8KB pages'
+        },
+        rca: {
+          incident: 'Heavy bulk INSERT wrote WAL faster than storage could flush dirty table pages, triggering hard checkpoint sync barrier.',
+          mitigation: 'Tune checkpoint_completion_target=0.9, increase max_wal_size=16GB, isolate WAL to dedicated low-latency NVMe.',
+          injectionScript: '-- Simulate heavy dirty page generation\nBEGIN;\nINSERT INTO ledger_audit SELECT generate_series(1, 2000000), md5(random()::text);\nCOMMIT;'
+        }
+      }
+    ],
+
+    btree_index: [
+      {
+        id: 'page_split_wave',
+        title: 'Cascading Page Split Avalanche (Monotonic Insertion Surge)',
+        severity: 'P1 HIGH',
+        targetBox: { x: 656, y: 62, w: 316, h: 208 },
+        beacon: { x: 814, y: 166 },
+        faultType: 'CASCADING_SPLITS',
+        metrics: {
+          impact: 'B-tree Depth Expands 3 -> 4 Levels · Index Write Latency: 0.18ms -> 14.8ms',
+          invariant: 'Leaf node capacity exceeded: triggers 50/50 page split cascading up to Root Node.',
+          kernel: 'Storage Allocator: Heavy random page allocations · Fill factor degrades to 50%'
+        },
+        rca: {
+          incident: 'Concurrent microservice ingestion burst with auto-increment IDs saturated the rightmost leaf node, causing continuous parent latch serialization.',
+          mitigation: 'Use reverse-key indexes or UUID v7 with uniform key dispersion; pre-configure index fillfactor (WITH fillfactor=90).',
+          injectionScript: '-- Chaos Injection: High-concurrency monotonic insertion surge\nINSERT INTO event_log (id, payload) SELECT generate_series(1000000, 2000000), random()::text;'
+        }
+      },
+      {
+        id: 'sparse_bloat',
+        title: 'Index Bloat & Sparse Leaf Fragmentation',
+        severity: 'P2 WARNING',
+        targetBox: { x: 656, y: 190, w: 316, h: 80 },
+        beacon: { x: 814, y: 228 },
+        faultType: 'SPARSE_BLOAT',
+        metrics: {
+          impact: 'Index Size: 4GB -> 38GB (9x Bloat) · Range Scan Reads 10x More Pages from Disk',
+          invariant: 'Leaf pages are only 12% full due to random DELETEs without sibling coalescing.',
+          kernel: 'Buffer Pool polluted with near-empty pages · NVMe cache efficiency collapses'
+        },
+        rca: {
+          incident: 'Cron job deleted 10M expired records daily without running B-tree vacuum or reindex, fragmenting doubly-linked leaf chains.',
+          mitigation: 'Run REINDEX TABLE CONCURRENTLY during low-traffic windows or enable pg_squeeze/InnoDB defragmentation.',
+          injectionScript: '-- Chaos Injection: Sparse random deletion causing index fragmentation\nDELETE FROM active_sessions WHERE random() < 0.85;'
+        }
+      }
+    ],
+
+    hash_join: [
+      {
+        id: 'hash_skew',
+        title: 'Severe Hash Skew & Bucket Collision Cascade',
+        severity: 'P0 CRITICAL',
+        targetBox: { x: 268, y: 62, w: 430, h: 208 },
+        beacon: { x: 483, y: 130 },
+        faultType: 'COLLISION_CASCADE',
+        metrics: {
+          impact: 'Join Algorithm Degrades O(1) -> O(N) · Single Bucket Length: 64,000 Linked Tuples',
+          invariant: 'Uniform distribution invariant broken: 92% of join keys hash to Bucket 42.',
+          kernel: 'CPU L1/L2 Cache line misses: 84% · Worker thread pegged at 100% CPU spinning pointer chains'
+        },
+        rca: {
+          incident: 'Tenant ID column contained 90% NULLs or default account_id=1, routing all probe lookups to a single linked list.',
+          mitigation: 'Rewrite query to filter NULL keys early (`WHERE tenant_id IS NOT NULL`), or isolate high-volume tenants into dedicated partitions.',
+          injectionScript: '-- Chaos Injection: Skewed join key generation\nSELECT * FROM orders o JOIN users u ON coalesce(o.user_id, 1) = u.id;'
+        }
+      },
+      {
+        id: 'workmem_spill',
+        title: 'Out-Of-Memory WorkMem Spill (Recursive Disk Partitioning)',
+        severity: 'P1 HIGH',
+        targetBox: { x: 720, y: 172, w: 252, h: 98 },
+        beacon: { x: 846, y: 220 },
+        faultType: 'DISK_SPILL',
+        metrics: {
+          impact: 'Join Memory Limit (4MB) Breached · Spilled 1.8GB into 64 Temp Files on Scratch NVMe',
+          invariant: 'In-memory hash table aborted. Forced fallback to multi-pass Hybrid Grace Hash Join.',
+          kernel: 'Throughput plunges from 920MB/s (RAM) to 18MB/s (Disk I/O thrashing)'
+        },
+        rca: {
+          incident: 'Unexpected cardinality explosion on inner build relation exceeded default work_mem (4MB).',
+          mitigation: 'Increase work_mem for analytical workloads (`SET LOCAL work_mem = "256MB"`) or optimize join order via optimizer hints.',
+          injectionScript: '-- Chaos Injection: Force hash join spill by restricting work_mem\nSET work_mem = \'64kB\';\nSELECT count(*) FROM big_table_a a JOIN big_table_b b ON a.id = b.a_id;'
+        }
+      }
+    ],
+
+    wal_aries: [
+      {
+        id: 'power_cut_redo',
+        title: 'Host Power Failure During Redo Pass (Idempotence Test)',
+        severity: 'P0 OUTAGE',
+        targetBox: { x: 498, y: 62, w: 230, h: 208 },
+        beacon: { x: 613, y: 166 },
+        faultType: 'POWER_CUT',
+        metrics: {
+          impact: 'Server Uncleanly Halts at LSN 49080 During Recovery Replay · Reboot Triggered',
+          invariant: 'ARIES IDEMPOTENCE: Re-running Redo pass on reboot produces 100% identical state.',
+          kernel: 'PageLSN >= LogRecord.LSN check prevents double-application of transactions'
+        },
+        rca: {
+          incident: 'Data center rack PDU power failure during ongoing crash recovery replay.',
+          mitigation: 'Ensure battery-backed write cache (BBU) and non-volatile NVDIMMs are healthy; verify fsync=on in DBMS config.',
+          injectionScript: '# Linux Kernel Chaos: Simulate instantaneous kernel panic during replay\necho c > /proc/sysrq-trigger'
+        }
+      },
+      {
+        id: 'crash_undo_clr',
+        title: 'Crash During Undo Pass (Compensation Log Records Invariant)',
+        severity: 'P0 CRITICAL',
+        targetBox: { x: 748, y: 62, w: 224, h: 208 },
+        beacon: { x: 860, y: 166 },
+        faultType: 'UNDO_CRASH',
+        metrics: {
+          impact: 'Recovery Crashes While Rolling Back 5M-Row Loser Transaction · CLR PrevLSN Traversed',
+          invariant: 'CLR Invariant: Compensation Log Records with UndoNextLSN prevent infinite rollback loops.',
+          kernel: 'On second recovery pass, ARIES skips already-undone log records instantaneously'
+        },
+        rca: {
+          incident: 'OOM Killer terminated database engine while it was reversing a massive uncommitted batch delete.',
+          mitigation: 'Break gigantic multi-million row batch deletes into chunked transactions of 10,000 rows with explicit commits.',
+          injectionScript: '-- Chaos Injection: Rollback giant transaction while terminating process\nBEGIN; DELETE FROM metrics_raw; -- kill -9 <dbms_pid> before commit'
+        }
+      }
+    ],
+
+    query_optimizer: [
+      {
+        id: 'card_skew_trap',
+        title: 'Catastrophic Cardinality Estimation Skew (The 1-Row vs 10M Trap)',
+        severity: 'P0 CRITICAL',
+        targetBox: { x: 468, y: 62, w: 240, h: 208 },
+        beacon: { x: 588, y: 166 },
+        faultType: 'CARD_SKEW',
+        metrics: {
+          impact: 'Query Planned for 1 Row, Encountered 14,000,000 Rows · Run Time: 2s -> 4.8 Hours',
+          invariant: 'Cost Model Selected Unindexed Nested Loop Join based on stale histogram stats.',
+          kernel: 'CPU pegged at 100% · Executing 14,000,000 x 50,000 = 700 Billion sequential iterations'
+        },
+        rca: {
+          incident: 'Autovacuum analyze had not run after an overnight bulk ingestion of 50M rows, leaving catalog stats showing table as empty.',
+          mitigation: 'Run ANALYZE table after ETL pipelines, increase default_statistics_target to 500, or add query hints.',
+          injectionScript: '-- Chaos Injection: Corrupt table statistics to force Nested Loop catastrophe\nSET enable_hashjoin = off; SET enable_mergejoin = off;\nEXPLAIN ANALYZE SELECT * FROM large_a JOIN large_b ON large_a.flag = large_b.flag;'
+        }
+      },
+      {
+        id: 'join_explosion',
+        title: 'Join Order Permutation Explosion (N! Search Space Collapse)',
+        severity: 'P1 HIGH',
+        targetBox: { x: 228, y: 62, w: 220, h: 208 },
+        beacon: { x: 338, y: 166 },
+        faultType: 'JOIN_EXPLOSION',
+        metrics: {
+          impact: 'Query Planning Phase Stalled for 42s Before Executing a Single Byte',
+          invariant: '14-Table Join Search Space: 14! = 87,178,291,200 permutations in Dynamic Programming.',
+          kernel: 'Optimizer process allocated 1.2GB memory just exploring relational join trees'
+        },
+        rca: {
+          incident: 'BI tool auto-generated a 15-way join query without subquery boundaries, causing the cost-based optimizer to exhaust CPU memory during planning.',
+          mitigation: 'Enable Genetic Query Optimization (geqo=on, geqo_threshold=12), or break query into modular CTEs (WITH blocks).',
+          injectionScript: '-- Chaos Injection: Multi-way unconstrained join tree\nSELECT * FROM t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12 WHERE t1.k=t2.k AND t2.k=t3.k;'
+        }
+      }
+    ],
+
+    mvcc: [
+      {
+        id: 'xmin_bloat',
+        title: 'Abandoned Transaction Dead-Tuple Bloat & Wraparound Threat',
+        severity: 'P0 CRITICAL',
+        targetBox: { x: 720, y: 172, w: 252, h: 98 },
+        beacon: { x: 846, y: 220 },
+        faultType: 'DEAD_TUPLE_BLOAT',
+        metrics: {
+          impact: 'Table Size Bloated from 2.4GB to 86GB · Autovacuum Blocked Across Entire Cluster',
+          invariant: 'Snapshot Horizon frozen: OldestActiveXID held back by rogue transaction idle for 72h.',
+          kernel: 'Dead tuple versions cannot be reclaimed · System approaching Transaction ID Wraparound emergency shutdown'
+        },
+        rca: {
+          incident: 'Data science analyst opened a `BEGIN; SELECT ...` in a Jupyter notebook on Friday evening and left the connection open all weekend.',
+          mitigation: 'Set idle_in_transaction_session_timeout="15min", configure alert on pg_stat_activity.backend_xmin age, and run vacuum freeze.',
+          injectionScript: '-- Chaos Injection: Hold back xmin horizon indefinitely\nBEGIN; SELECT * FROM accounts LIMIT 1; -- Leave open without COMMIT'
+        }
+      },
+      {
+        id: 'write_skew',
+        title: 'Write-Skew Serialization Anomaly (Doctor On-Call Bug)',
+        severity: 'P1 HIGH',
+        targetBox: { x: 268, y: 62, w: 430, h: 208 },
+        beacon: { x: 483, y: 140 },
+        faultType: 'WRITE_SKEW',
+        metrics: {
+          impact: 'Cross-Record Business Invariant Violated · 0 Doctors Left On-Call Under Snapshot Isolation',
+          invariant: 'Txn 1 & 2 read disjoint rows and write disjoint rows, passing row-level conflict checks.',
+          kernel: 'REPEATABLE READ permits write-skew anomalies · SSI (Serializable Snapshot Isolation) required'
+        },
+        rca: {
+          incident: 'Two physicians concurrently submitted leave requests. Both checked that count >= 2, and both committed, leaving 0 on-call.',
+          mitigation: 'Upgrade isolation level to SERIALIZABLE, or use explicit pessimistic row locks (`SELECT ... FOR UPDATE`).',
+          injectionScript: '-- Chaos Injection: Concurrent write skew simulation\n-- Session 1: BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;\n-- UPDATE on_call SET active=false WHERE doctor_id=1 AND (SELECT count(*) FROM on_call WHERE active=true) >= 2;'
+        }
+      }
+    ],
+
+    lsm_tree: [
+      {
+        id: 'write_stall',
+        title: 'Write Stall & Compaction Debt Ingestion Freeze',
+        severity: 'P0 OUTAGE',
+        targetBox: { x: 28, y: 62, w: 220, h: 208 },
+        beacon: { x: 138, y: 166 },
+        faultType: 'WRITE_STALL',
+        metrics: {
+          impact: 'Client Write Throughput Throttled to 0 ops/sec · API Gateways Throwing 504 Gateway Timeout',
+          invariant: 'Level-0 SSTable count (32 files) exceeded hard threshold. Background compaction cannot keep up.',
+          kernel: 'Write buffer frozen · RocksDB/Cassandra enters full write stall to prevent storage exhaustion'
+        },
+        rca: {
+          incident: 'Kafka consumer burst pushed 800MB/s of write traffic, while leveled compaction was constrained by low thread count (2 threads).',
+          mitigation: 'Increase max_background_compactions=8, allocate high-IOPS NVMe tablespace, and configure rate_limiter.',
+          injectionScript: '# Chaos Injection: Saturate LSM ingestion to trigger write stall\n./db_bench --benchmarks="fillbatch" --threads=64 --batch_size=100000 --max_write_buffer_number=2'
+        }
+      },
+      {
+        id: 'read_amp_avalanche',
+        title: 'Read Amplification Avalanche (Bloom Filter False Positives)',
+        severity: 'P1 HIGH',
+        targetBox: { x: 508, y: 62, w: 220, h: 208 },
+        beacon: { x: 618, y: 166 },
+        faultType: 'READ_AVALANCHE',
+        metrics: {
+          impact: 'Read IOPS Multiplied 18x · NVMe Latency Spikes from 0.4ms to 24ms per Point Read',
+          invariant: 'Bloom filter bit array undersized (2 bits/key): false positive rate spikes to 28%.',
+          kernel: 'Engine forced to read data and index blocks from 15 separate SSTables for every key lookup'
+        },
+        rca: {
+          incident: 'Database restarted with incorrect Bloom filter configuration, degrading point lookups into exhaustive multi-SSTable disk sweeps.',
+          mitigation: 'Configure bloom_bits=10 (yields < 1% false positive rate) and pin L0/L1 filter blocks in block cache.',
+          injectionScript: '# Chaos: Disable Bloom filter in RocksDB\n./db_bench --benchmarks="readrandom" --use_bloom=false --num=1000000'
+        }
+      }
+    ],
+
+    columnar_simd: [
+      {
+        id: 'simd_gather_stall',
+        title: 'Vector Register Pipeline Stall (Unaligned Memory Gather)',
+        severity: 'P1 HIGH',
+        targetBox: { x: 508, y: 62, w: 220, h: 208 },
+        beacon: { x: 618, y: 166 },
+        faultType: 'SIMD_STALL',
+        metrics: {
+          impact: 'Vectorized Processing Throughput Collapses from 4.2B rows/s to 380M rows/s (11x Slowdown)',
+          invariant: 'AVX-512 memory alignment (64 bytes) violated by variable-length nullable fields.',
+          kernel: 'CPU falls back to serialized gather instructions (_mm512_i32gather_epi32) with 4x pipeline stalls'
+        },
+        rca: {
+          incident: 'Schema migration altered fixed-width column to nullable string, breaking contiguous cache line alignment.',
+          mitigation: 'Ensure column data arrays are 64-byte aligned and store nullability in an independent bitmask vector.',
+          injectionScript: '-- Chaos Injection: Unaligned scattered filter\nSELECT sum(cast(scattered_str AS bigint)) FROM logs WHERE scattered_str IS NOT NULL;'
+        }
+      },
+      {
+        id: 'dict_eviction',
+        title: 'High-Cardinality Dictionary Eviction & String Spill',
+        severity: 'P2 WARNING',
+        targetBox: { x: 268, y: 62, w: 220, h: 208 },
+        beacon: { x: 378, y: 166 },
+        faultType: 'DICT_SPILL',
+        metrics: {
+          impact: 'Column Compression Drops from 88% to 0% · Memory Footprint Multiplied 8x',
+          invariant: 'Dictionary entry count exceeded 65,536 (16-bit integer threshold).',
+          kernel: 'SIMD unit falls back to costly byte-by-byte string comparison in DRAM'
+        },
+        rca: {
+          incident: 'Application logged high-cardinality session tokens into a column configured for dictionary compression.',
+          mitigation: 'Implement auto-sampling on ingestion; disable dictionary encoding if distinct values exceed 5% of row count.',
+          injectionScript: '-- Chaos: Populate column with millions of distinct UUID strings\nINSERT INTO telemetry_logs (tag) SELECT md5(random()::text) FROM generate_series(1, 1000000);'
+        }
+      }
+    ],
+
+    distributed_2pc: [
+      {
+        id: 'coordinator_crash',
+        title: 'Coordinator Crash During Commit Phase (The 2PC Blocking Bug)',
+        severity: 'P0 OUTAGE',
+        targetBox: { x: 28, y: 62, w: 220, h: 208 },
+        beacon: { x: 138, y: 166 },
+        faultType: 'COORD_CRASH',
+        metrics: {
+          impact: 'All 3 Participant Shards Blocked Indefinitely · Conflicting Transactions Queue to Max Connections',
+          invariant: 'Participants voted PREPARED and hold row exclusive locks. Cannot abort or commit unilaterally.',
+          kernel: 'Cluster deadlock: distributed locks held across nodes until manual administrator recovery'
+        },
+        rca: {
+          incident: 'Transaction coordinator VM suffered an OOM kernel panic immediately after receiving VOTE_COMMIT from all shards.',
+          mitigation: 'Pair 2PC with a consensus protocol (Raft/Paxos) for coordinator election, or run automated distributed transaction resolver.',
+          injectionScript: '# Chaos Mesh: Kill coordinator process immediately after prepare phase\nkill -9 $(pgrep -f "coordinator_engine")'
+        }
+      },
+      {
+        id: 'split_brain_quorum',
+        title: 'Network Partition & Raft Quorum Loss',
+        severity: 'P0 CRITICAL',
+        targetBox: { x: 748, y: 62, w: 224, h: 208 },
+        beacon: { x: 860, y: 166 },
+        faultType: 'QUORUM_LOSS',
+        metrics: {
+          impact: 'Minority Shard Node Isolated · 100% of Writes to Isolated Node Rejected',
+          invariant: 'CAP Theorem Enforcement: Consistency prioritized over Availability. Cannot reach N/2 + 1 majority.',
+          kernel: 'Raft election term timeouts firing · Cluster state machine rejects client writes to prevent split-brain'
+        },
+        rca: {
+          incident: 'Top-of-Rack (TOR) network switch failed, isolating 1 database replica from the 2 quorum leaders.',
+          mitigation: 'Deploy database nodes across 3 distinct Availability Zones with redundant network links.',
+          injectionScript: '# Chaos: Inject network partition via iptables\niptables -A INPUT -s 10.0.1.20 -j DROP; iptables -A OUTPUT -d 10.0.1.20 -j DROP;'
+        }
+      }
+    ],
+
+    window_execution: [
+      {
+        id: 'partition_skew',
+        title: 'Slanted Partition Skew & Single-Worker Memory Spill',
+        severity: 'P1 HIGH',
+        targetBox: { x: 28, y: 62, w: 220, h: 208 },
+        beacon: { x: 138, y: 166 },
+        faultType: 'PARTITION_SKEW',
+        metrics: {
+          impact: '1 Worker Thread Stalled for 92s · Spilled 3.8GB to Scratch Disk While 15 Cores Sit Idle',
+          invariant: 'PARTITION BY customer_id: A single enterprise customer contains 12,000,000 rows.',
+          kernel: 'Single-node memory hot-spot: thread-local window buffer exhausted'
+        },
+        rca: {
+          incident: 'Power-law distribution in customer data resulted in a single massive partition that saturated worker memory.',
+          mitigation: 'Add composite partition keys (`PARTITION BY customer_id, date_trunc(\'month\', created_at)`) or salt partition keys.',
+          injectionScript: '-- Chaos: Highly skewed window query\nSELECT id, count(*) OVER (PARTITION BY default_account_id) FROM big_audit_log;'
+        }
+      },
+      {
+        id: 'sliding_avalanche',
+        title: 'Naive Sliding Frame Scanning Avalanche (O(N * W) Collapse)',
+        severity: 'P1 HIGH',
+        targetBox: { x: 508, y: 62, w: 220, h: 208 },
+        beacon: { x: 618, y: 166 },
+        faultType: 'SLIDING_COLLAPSE',
+        metrics: {
+          impact: 'CPU Instruction Count Multiplied 10,000x · Query Time Spikes 3.2s -> 410s',
+          invariant: 'Non-invertible aggregate (MIN) over ROWS BETWEEN 10000 PRECEDING forces full frame re-scan per row.',
+          kernel: 'CPU cache thrashed: 10,000 row inspections executed per emitted tuple'
+        },
+        rca: {
+          incident: 'Analytic query applied moving MIN/MAX over a 10,000-row window without sliding-window optimization.',
+          mitigation: 'Use Two-Stacks queue sliding window algorithm or pre-aggregate with range buckets.',
+          injectionScript: '-- Chaos Injection: Unbounded non-invertible sliding window\nSELECT min(val) OVER (ORDER BY id ROWS BETWEEN 10000 PRECEDING AND CURRENT ROW) FROM metric_points;'
+        }
+      }
+    ],
+
+    external_sort: [
+      {
+        id: 'fanout_spill',
+        title: 'Multi-Pass Merge Fanout Spill (K-Way Merge Explosion)',
+        severity: 'P1 HIGH',
+        targetBox: { x: 268, y: 62, w: 220, h: 208 },
+        beacon: { x: 378, y: 166 },
+        faultType: 'FANOUT_EXPLOSION',
+        metrics: {
+          impact: 'Disk I/O Multiplied 6x · Generated 48,000 Spilled Run Files on Scratch Storage',
+          invariant: 'Sorting 120GB with work_mem=4MB. Exceeds max open file limit (64), forcing 3 intermediate merge passes.',
+          kernel: 'Temporary file creation storm: kernel inode table contention and NVMe write queue saturation'
+        },
+        rca: {
+          incident: 'Huge ORDER BY on unindexed JSON payload overwhelmed work_mem, generating thousands of tiny run files.',
+          mitigation: 'Increase work_mem for batch jobs (`SET work_mem = "1GB"`), and raise OS file descriptor limits.',
+          injectionScript: '-- Chaos Injection: Force multi-pass external sort\nSET work_mem = \'64kB\';\nSELECT * FROM heavy_ledger ORDER BY payload_hash;'
+        }
+      },
+      {
+        id: 'disk_full_abort',
+        title: 'Scratch Disk Space Exhaustion (Fatal Query Abort)',
+        severity: 'P0 OUTAGE',
+        targetBox: { x: 508, y: 62, w: 220, h: 208 },
+        beacon: { x: 618, y: 166 },
+        faultType: 'DISK_EXHAUSTION',
+        metrics: {
+          impact: 'Fatal Transaction Failure: ERROR: could not write to temporary file: No space left on device',
+          invariant: 'Scratch disk filesystem (/tmp) 100% full. All concurrent sorting queries aborted simultaneously.',
+          kernel: 'OS kernel throws ENOSPC · PostgreSQL/MySQL engine enters emergency cleanup'
+        },
+        rca: {
+          incident: 'Multiple concurrent analysts launched large unindexed sort queries simultaneously, exhausting the shared /tmp volume.',
+          mitigation: 'Set temp_file_limit = "20GB" to abort rogue individual queries before the volume fills, and mount /tmp on dedicated NVMe.',
+          injectionScript: '-- Chaos: Fill temp space with unbounded sort\nSELECT * FROM generate_series(1, 50000000) ORDER BY md5(random()::text);'
+        }
+      }
+    ],
+
+    locking_hierarchy: [
+      {
+        id: 'deadlock_cycle',
+        title: 'Deadlock 4-Way Circular Wait (Tarjan Cycle Detection)',
+        severity: 'P0 CRITICAL',
+        targetBox: { x: 748, y: 62, w: 224, h: 208 },
+        beacon: { x: 860, y: 166 },
+        faultType: 'DEADLOCK_CYCLE',
+        metrics: {
+          impact: 'Complete Concurrency Lockout: T1 -> T2 -> T3 -> T4 -> T1 · Threads Frozen in Lock Wait',
+          invariant: 'Directed cycle in Wait-For Graph. Zero progress possible until one transaction is aborted.',
+          kernel: 'Deadlock detector fires every 1000ms: Tarjan algorithm selects lowest-cost victim and issues SQLSTATE 40P01'
+        },
+        rca: {
+          incident: 'Different backend services acquired row locks on "users" and "accounts" in opposing order under high concurrency.',
+          mitigation: 'Enforce deterministic global lock acquisition order across all application code (e.g. lock records in ascending PK order).',
+          injectionScript: '-- Chaos Injection: Circular lock dependency\n-- Session 1: BEGIN; UPDATE users SET bal=bal-10 WHERE id=1;\n-- Session 2: BEGIN; UPDATE users SET bal=bal+10 WHERE id=2; UPDATE users SET bal=bal-10 WHERE id=1;'
+        }
+      },
+      {
+        id: 'lock_escalation',
+        title: 'Lock Escalation & Full-Table Concurrency Starvation',
+        severity: 'P1 HIGH',
+        targetBox: { x: 28, y: 62, w: 220, h: 208 },
+        beacon: { x: 138, y: 166 },
+        faultType: 'LOCK_ESCALATION',
+        metrics: {
+          impact: 'Row Locks Escalated to Exclusive Table Lock · 2,400 Concurrent Queries Stalled in Lock Queue',
+          invariant: 'Lock Manager exceeded 25,000 row locks threshold, replacing them with a single Exclusive Table Lock (X-Lock).',
+          kernel: 'All incoming SELECT, INSERT, and UPDATE queries blocked at Table Latch level'
+        },
+        rca: {
+          incident: 'A single background migration script ran a mass UPDATE without chunking, triggering SQL Server/InnoDB lock escalation.',
+          mitigation: 'Break large updates into batches of 500 rows with explicit commits, or disable automatic lock escalation.',
+          injectionScript: '-- Chaos Injection: Mass update triggering lock escalation\nUPDATE transaction_ledger SET status = \'ARCHIVED\' WHERE created_at < NOW() - INTERVAL \'30 days\';'
+        }
+      }
+    ]
+  };
+
+  // ---------------------------------------------------------------------------
+  // INTERACTIVE ENGINE CORE & CONTROLS
+  // ---------------------------------------------------------------------------
+
   function mount(containerId, diagramId) {
     if (containerId) state.containerId = containerId;
     if (diagramId) state.activeDiagramId = normalizeDiagramId(diagramId);
-    const data = ARCH_DEEP_DIVES[state.activeDiagramId] || ARCH_DEEP_DIVES['buffer_pool'];
     const container = document.getElementById(state.containerId);
     if (!container) return;
 
-    // Reset step if switching diagram
+    const data = ARCH_DEEP_DIVES[state.activeDiagramId] || ARCH_DEEP_DIVES['buffer_pool'];
+    const chaosList = CHAOS_DEEP_DIVES[state.activeDiagramId] || CHAOS_DEEP_DIVES['buffer_pool'];
+
     if (state.currentStepIdx >= data.steps.length) {
       state.currentStepIdx = 0;
     }
+    if (state.activeChaosIdx >= chaosList.length) {
+      state.activeChaosIdx = 0;
+    }
 
-    container.innerHTML = renderViewerHtml(data);
-    attachControls();
+    container.innerHTML = renderViewerHtml(data, chaosList);
     updateSvgHighlight();
   }
 
-  function renderViewerHtml(data) {
+  function setMode(mode) {
+    state.viewMode = mode;
+    pause();
+    mount(state.containerId, state.activeDiagramId);
+  }
+
+  function setChaosScenario(idx) {
+    state.activeChaosIdx = idx;
+    mount(state.containerId, state.activeDiagramId);
+  }
+
+  function renderViewerHtml(data, chaosList) {
+    const isChaos = state.viewMode === 'chaos';
     const curScenario = data.scenarios[state.activeScenarioIdx] || data.scenarios[0];
     const curStep = data.steps[state.currentStepIdx] || data.steps[0];
+    const curChaos = chaosList[state.activeChaosIdx] || chaosList[0];
     const rawSvg = window.DatabaseArchitectureSvgs.renderById(data.id);
-
     const catalog = (window.DatabaseArchitectureSvgs && window.DatabaseArchitectureSvgs.getCatalog) ? window.DatabaseArchitectureSvgs.getCatalog() : [];
 
     return `
       <div class="interactive-arch-container" style="display:flex; flex-direction:column; gap:12px; font-family:'JetBrains Mono', monospace;">
-        <!-- Top Toolbar & Scenario Controls -->
+        
+        <!-- Header: Diagram Selector & Mode Toggle (Stepper vs Chaos) -->
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding:10px 14px; background:#0d0e12; border:1px solid rgba(255,255,255,0.14); border-radius:6px;">
+          <!-- Left: Diagram Selector Dropdown -->
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <select id="selectArchDiagram" onchange="window.InteractiveArchitectureExplainer.switchDiagram(this.value)" style="background:#141418; color:#ffffff; border:1px solid rgba(255,255,255,0.22); border-radius:4px; padding:4px 10px; font-size:11px; font-family:'JetBrains Mono', monospace; font-weight:600; cursor:pointer;">
+            <select id="selectArchDiagram" onchange="window.InteractiveArchitectureExplainer.switchDiagram(this.value)" style="background:#141418; color:#ffffff; border:1px solid rgba(255,255,255,0.22); border-radius:4px; padding:5px 12px; font-size:11px; font-family:'JetBrains Mono', monospace; font-weight:600; cursor:pointer;">
               ${catalog.map(d => `<option value="${d.id}" ${d.id === data.id ? 'selected' : ''}>[${d.badge}] ${d.title}</option>`).join('')}
             </select>
-            <span style="font-size:9.5px; padding:2px 6px; background:#18181b; color:#a1a1aa; border:1px solid rgba(255,255,255,0.18); border-radius:3px;">STEP ${curStep.stepNum} OF ${data.steps.length}</span>
+            ${isChaos ? `
+              <span style="font-size:9.5px; font-weight:700; padding:2px 8px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.3); border-radius:3px; letter-spacing:0.04em;">[CHAOS FAULT INJECTION ACTIVE]</span>
+            ` : `
+              <span style="font-size:9.5px; padding:2px 6px; background:#18181b; color:#a1a1aa; border:1px solid rgba(255,255,255,0.18); border-radius:3px;">PHASE ${curStep.stepNum} OF ${data.steps.length}</span>
+            `}
           </div>
-          
-          <!-- Scenarios Selector -->
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-            <span style="font-size:9.5px; color:#71717a; text-transform:uppercase;">Scenario:</span>
-            ${data.scenarios.map((sc, i) => `
-              <button class="arch-scenario-btn ${i === state.activeScenarioIdx ? 'active' : ''}" 
-                onclick="window.InteractiveArchitectureExplainer.setScenario(${i})"
-                style="padding:3px 8px; font-size:10px; font-family:'JetBrains Mono', monospace; font-weight:600; border-radius:3px; cursor:pointer; background:${i === state.activeScenarioIdx ? '#ffffff' : '#141418'}; color:${i === state.activeScenarioIdx ? '#000000' : '#a1a1aa'}; border:1px solid ${i === state.activeScenarioIdx ? '#ffffff' : 'rgba(255,255,255,0.18)'};">
-                ${sc.title}
-              </button>
-            `).join('')}
+
+          <!-- Right: Mode Switcher Buttons -->
+          <div style="display:flex; align-items:center; gap:6px;">
+            <button onclick="window.InteractiveArchitectureExplainer.setMode('stepper')" 
+              style="padding:4px 10px; font-size:10.5px; font-family:'JetBrains Mono', monospace; font-weight:600; border-radius:4px; cursor:pointer; background:${!isChaos ? '#ffffff' : '#141418'}; color:${!isChaos ? '#000000' : '#a1a1aa'}; border:1px solid ${!isChaos ? '#ffffff' : 'rgba(255,255,255,0.15)'};">
+              ● STEP-BY-STEP EXPLAINER
+            </button>
+            <button onclick="window.InteractiveArchitectureExplainer.setMode('chaos')" 
+              style="padding:4px 10px; font-size:10.5px; font-family:'JetBrains Mono', monospace; font-weight:700; border-radius:4px; cursor:pointer; background:${isChaos ? '#ffffff' : '#141418'}; color:${isChaos ? '#000000' : '#ffffff'}; border:1px solid ${isChaos ? '#ffffff' : 'rgba(255,255,255,0.22)'}; box-shadow:${isChaos ? '0 0 10px rgba(255,255,255,0.18)' : 'none'};">
+              &#9889; CHAOS STRESS SIMULATION
+            </button>
           </div>
         </div>
 
-        <!-- Interactive SVG Stage with Dynamic Highlight Overlay -->
+        <!-- Sub-Bar: Controls depending on Mode -->
+        ${!isChaos ? `
+          <!-- Normal Stepper Scenarios Sub-Bar -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 12px; background:#08090c; border:1px solid rgba(255,255,255,0.08); border-radius:6px;">
+            <span style="font-size:9.5px; color:#71717a; text-transform:uppercase;">Normal Execution Scenarios:</span>
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+              ${data.scenarios.map((sc, i) => `
+                <button class="arch-scenario-btn" 
+                  onclick="window.InteractiveArchitectureExplainer.setScenario(${i})"
+                  style="padding:3px 8px; font-size:10px; font-family:'JetBrains Mono', monospace; font-weight:600; border-radius:3px; cursor:pointer; background:${i === state.activeScenarioIdx ? '#ffffff' : '#141418'}; color:${i === state.activeScenarioIdx ? '#000000' : '#a1a1aa'}; border:1px solid ${i === state.activeScenarioIdx ? '#ffffff' : 'rgba(255,255,255,0.18)'};">
+                  ${sc.title}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        ` : `
+          <!-- Chaos Fault Selector Sub-Bar -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 12px; background:#111216; border:1px solid rgba(255,255,255,0.2); border-radius:6px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:9.5px; font-weight:700; color:#ffffff; text-transform:uppercase;">Select Chaos Injection Fault:</span>
+              <span style="font-size:9px; font-weight:700; padding:1px 6px; background:#000000; color:#ffffff; border:1px solid rgba(255,255,255,0.3); border-radius:3px;">${curChaos.severity}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+              ${chaosList.map((ch, i) => `
+                <button onclick="window.InteractiveArchitectureExplainer.setChaosScenario(${i})"
+                  style="padding:4px 10px; font-size:10.5px; font-family:'JetBrains Mono', monospace; font-weight:700; border-radius:3px; cursor:pointer; background:${i === state.activeChaosIdx ? '#ffffff' : '#18181b'}; color:${i === state.activeChaosIdx ? '#000000' : '#ffffff'}; border:1px solid ${i === state.activeChaosIdx ? '#ffffff' : 'rgba(255,255,255,0.22)'};">
+                  [FAULT 0${i + 1}] ${ch.title.split('&')[0].trim()}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `}
+
+        <!-- Interactive SVG Stage with Dynamic Highlight / Chaos Overlay -->
         <div style="position:relative; width:100%; overflow-x:auto; background:#000000; border-radius:6px; border:1px solid rgba(255,255,255,0.15); padding:4px;">
           <div id="archSvgMount" style="position:relative; width:1000px; margin:0 auto;">
             ${rawSvg}
-            <!-- Overlay SVG for Real-time Subsystem Focus & Particle Beacon -->
+            <!-- Overlay SVG for Real-time Subsystem Focus, Fault Waves & Particle Beacon -->
             <svg id="archHighlightOverlay" viewBox="0 0 1000 300" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;">
               <defs>
                 <filter id="arch-glow-white" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="3" result="blur"/>
+                  <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+                <filter id="arch-glow-hazard" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4.5" result="blur"/>
                   <feComposite in="SourceGraphic" in2="blur" operator="over"/>
                 </filter>
               </defs>
@@ -1083,108 +1618,189 @@ window.InteractiveArchitectureExplainer = (function() {
           </div>
         </div>
 
-        <!-- Stepper Navigation Strip -->
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding:8px 12px; background:#0a0b0e; border:1px solid rgba(255,255,255,0.12); border-radius:6px;">
-          <!-- Left: Playback buttons -->
-          <div style="display:flex; align-items:center; gap:6px;">
-            <button onclick="window.InteractiveArchitectureExplainer.prevStep()" style="padding:4px 10px; font-size:11px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.2); border-radius:4px; cursor:pointer;" title="Previous Step">&larr; Prev</button>
-            <button id="btnArchPlayPause" onclick="window.InteractiveArchitectureExplainer.togglePlay()" style="padding:4px 12px; font-size:11px; font-weight:700; background:#ffffff; color:#000000; border:1px solid #ffffff; border-radius:4px; cursor:pointer;">
-              ${state.isPlaying ? '&#10074;&#10074; Pause' : '&#9654; Auto-Play'}
-            </button>
-            <button onclick="window.InteractiveArchitectureExplainer.nextStep()" style="padding:4px 10px; font-size:11px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.2); border-radius:4px; cursor:pointer;" title="Next Step">Next &rarr;</button>
-            <button onclick="window.InteractiveArchitectureExplainer.reset()" style="padding:4px 8px; font-size:11px; background:#141418; color:#71717a; border:1px solid rgba(255,255,255,0.12); border-radius:4px; cursor:pointer;" title="Reset to Step 1">&#8634;</button>
-          </div>
-
-          <!-- Middle: Step Pills -->
-          <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
-            ${data.steps.map((st, i) => `
-              <button onclick="window.InteractiveArchitectureExplainer.setStep(${i})" style="padding:3px 8px; font-size:10px; font-family:'JetBrains Mono', monospace; font-weight:${i === state.currentStepIdx ? '700' : '500'}; background:${i === state.currentStepIdx ? '#ffffff' : '#111216'}; color:${i === state.currentStepIdx ? '#000000' : '#71717a'}; border:1px solid ${i === state.currentStepIdx ? '#ffffff' : 'rgba(255,255,255,0.1)'}; border-radius:3px; cursor:pointer;">
-                [0${st.stepNum}] ${st.name.split('&')[0].trim()}
+        ${!isChaos ? `
+          <!-- Stepper Transport & Step Navigation Strip -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding:8px 12px; background:#0a0b0e; border:1px solid rgba(255,255,255,0.12); border-radius:6px;">
+            <!-- Left: Playback buttons -->
+            <div style="display:flex; align-items:center; gap:6px;">
+              <button onclick="window.InteractiveArchitectureExplainer.prevStep()" style="padding:4px 10px; font-size:11px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.2); border-radius:4px; cursor:pointer;" title="Previous Step">&larr; Prev</button>
+              <button id="btnArchPlayPause" onclick="window.InteractiveArchitectureExplainer.togglePlay()" style="padding:4px 12px; font-size:11px; font-weight:700; background:#ffffff; color:#000000; border:1px solid #ffffff; border-radius:4px; cursor:pointer;">
+                ${state.isPlaying ? '&#10074;&#10074; Pause' : '&#9654; Auto-Play'}
               </button>
-            `).join('')}
+              <button onclick="window.InteractiveArchitectureExplainer.nextStep()" style="padding:4px 10px; font-size:11px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.2); border-radius:4px; cursor:pointer;" title="Next Step">Next &rarr;</button>
+              <button onclick="window.InteractiveArchitectureExplainer.reset()" style="padding:4px 8px; font-size:11px; background:#141418; color:#71717a; border:1px solid rgba(255,255,255,0.12); border-radius:4px; cursor:pointer;" title="Reset to Step 1">&#8634;</button>
+            </div>
+
+            <!-- Middle: Step Pills -->
+            <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+              ${data.steps.map((st, i) => `
+                <button onclick="window.InteractiveArchitectureExplainer.setStep(${i})" style="padding:3px 8px; font-size:10px; font-family:'JetBrains Mono', monospace; font-weight:${i === state.currentStepIdx ? '700' : '500'}; background:${i === state.currentStepIdx ? '#ffffff' : '#111216'}; color:${i === state.currentStepIdx ? '#000000' : '#71717a'}; border:1px solid ${i === state.currentStepIdx ? '#ffffff' : 'rgba(255,255,255,0.1)'}; border-radius:3px; cursor:pointer;">
+                  [0${st.stepNum}] ${st.name.split('&')[0].trim()}
+                </button>
+              `).join('')}
+            </div>
+
+            <!-- Right: Speed Toggle -->
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:10px; color:#71717a;">Speed:</span>
+              <button onclick="window.InteractiveArchitectureExplainer.toggleSpeed()" style="padding:2px 8px; font-size:10px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.18); border-radius:3px; cursor:pointer;">
+                ${state.playSpeed}x
+              </button>
+            </div>
           </div>
 
-          <!-- Right: Speed -->
-          <div style="display:flex; align-items:center; gap:6px;">
-            <span style="font-size:10px; color:#71717a;">Speed:</span>
-            <button onclick="window.InteractiveArchitectureExplainer.toggleSpeed()" style="padding:2px 8px; font-size:10px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.18); border-radius:3px; cursor:pointer;">
-              ${state.playSpeed}x
-            </button>
-          </div>
-        </div>
+          <!-- Normal Telemetry HUD (3 Cards) -->
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:10px;">
+            <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
+              <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">HARDWARE &amp; OS RUNTIME</div>
+              <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curStep.telemetry.hardware}</div>
+              <div style="font-size:10px; color:#71717a;">Kernel: ${curStep.telemetry.kernel}</div>
+            </div>
 
-        <!-- Telemetry HUD & Staff Architect Explainer Console -->
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:10px;">
-          <!-- Metric Box 1: Hardware & OS -->
-          <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
-            <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">HARDWARE &amp; OS RUNTIME</div>
-            <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curStep.telemetry.hardware}</div>
-            <div style="font-size:10px; color:#71717a;">Kernel: ${curStep.telemetry.kernel}</div>
-          </div>
+            <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
+              <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">RELATIONAL INVARIANT</div>
+              <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curStep.telemetry.invariant}</div>
+              <div style="font-size:10px; color:#71717a;">State: ${curStep.telemetry.state}</div>
+            </div>
 
-          <!-- Metric Box 2: Relational Invariant -->
-          <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
-            <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">RELATIONAL INVARIANT</div>
-            <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curStep.telemetry.invariant}</div>
-            <div style="font-size:10px; color:#71717a;">State: ${curStep.telemetry.state}</div>
+            <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
+              <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">ACTIVE SCENARIO SPEC</div>
+              <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curScenario.title}</div>
+              <div style="font-size:10px; color:#71717a;">${curScenario.desc}</div>
+            </div>
           </div>
 
-          <!-- Metric Box 3: Scenario Notes -->
-          <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
-            <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">ACTIVE SCENARIO SPEC</div>
-            <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curScenario.title}</div>
-            <div style="font-size:10px; color:#71717a;">${curScenario.desc}</div>
+          <!-- Staff Architect Interview Defense Card -->
+          <div style="background:#0c0d10; border:1px solid rgba(255,255,255,0.15); border-left:3px solid #ffffff; border-radius:6px; padding:12px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-size:10px; font-weight:700; color:#ffffff; letter-spacing:0.05em;">STAFF ARCHITECT INTERVIEW DEFENSE // ${data.title.toUpperCase()}</span>
+              <span style="font-size:9.5px; color:#71717a; padding:1px 6px; background:#18181b; border:1px solid rgba(255,255,255,0.1); border-radius:3px;">PHASE ${curStep.stepNum}</span>
+            </div>
+            <div style="font-size:11.5px; font-weight:700; color:#ffffff; margin-bottom:6px;">Q: ${curStep.defense.question}</div>
+            <p style="font-size:11px; color:#d4d4d8; line-height:1.5; margin:0 0 10px 0;">${curStep.defense.answer}</p>
+            <pre style="margin:0; padding:8px 12px; background:#000000; color:#f4f4f5; border:1px solid rgba(255,255,255,0.1); border-radius:4px; font-size:10.5px; overflow-x:auto;">${curStep.snippet}</pre>
           </div>
-        </div>
+        ` : `
+          <!-- Chaos Stress Simulation Telemetry HUD (3 Alert Cards) -->
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:10px;">
+            <!-- Alert Card 1: Failure Impact -->
+            <div style="background:#0e0f14; border:1px solid rgba(255,255,255,0.22); border-top:2px solid #ffffff; border-radius:6px; padding:10px 12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <span style="font-size:9.5px; font-weight:700; color:#ffffff; text-transform:uppercase; letter-spacing:0.04em;">FAILURE IMPACT &amp; SEVERITY</span>
+                <span style="font-size:8.5px; font-weight:700; padding:1px 5px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.25); border-radius:2px;">${curChaos.severity}</span>
+              </div>
+              <div style="font-size:11px; color:#ffffff; font-weight:700; margin-bottom:4px;">${curChaos.metrics.impact}</div>
+              <div style="font-size:10px; color:#a1a1aa;">Fault: ${curChaos.title}</div>
+            </div>
 
-        <!-- Staff Architect Interview Defense Card -->
-        <div style="background:#0c0d10; border:1px solid rgba(255,255,255,0.15); border-left:3px solid #ffffff; border-radius:6px; padding:12px 16px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-size:10px; font-weight:700; color:#ffffff; letter-spacing:0.05em;">STAFF ARCHITECT INTERVIEW DEFENSE // ${data.title.toUpperCase()}</span>
-            <span style="font-size:9.5px; color:#71717a; padding:1px 6px; background:#18181b; border:1px solid rgba(255,255,255,0.1); border-radius:3px;">PHASE ${curStep.stepNum}</span>
+            <!-- Alert Card 2: Invariant Under Stress -->
+            <div style="background:#0e0f14; border:1px solid rgba(255,255,255,0.22); border-top:2px solid #ffffff; border-radius:6px; padding:10px 12px;">
+              <div style="font-size:9.5px; font-weight:700; color:#ffffff; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">SYSTEM INVARIANT UNDER ATTACK</div>
+              <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curChaos.metrics.invariant}</div>
+              <div style="font-size:10px; color:#71717a;">Engine State: DEGRADED / AT RISK</div>
+            </div>
+
+            <!-- Alert Card 3: Kernel Reaction -->
+            <div style="background:#0e0f14; border:1px solid rgba(255,255,255,0.22); border-top:2px solid #ffffff; border-radius:6px; padding:10px 12px;">
+              <div style="font-size:9.5px; font-weight:700; color:#ffffff; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">OS &amp; STORAGE KERNEL REACTION</div>
+              <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curChaos.metrics.kernel}</div>
+              <div style="font-size:10px; color:#71717a;">Status: SATURATION DETECTED</div>
+            </div>
           </div>
-          <div style="font-size:11.5px; font-weight:700; color:#ffffff; margin-bottom:6px;">Q: ${curStep.defense.question}</div>
-          <p style="font-size:11px; color:#d4d4d8; line-height:1.5; margin:0 0 10px 0;">${curStep.defense.answer}</p>
-          <pre style="margin:0; padding:8px 12px; background:#000000; color:#f4f4f5; border:1px solid rgba(255,255,255,0.1); border-radius:4px; font-size:10.5px; overflow-x:auto;">${curStep.snippet}</pre>
-        </div>
+
+          <!-- Staff Architect Root Cause Analysis (RCA) & Production Runbook Card -->
+          <div style="background:#0a0a0d; border:1px solid rgba(255,255,255,0.2); border-left:3px solid #ffffff; border-radius:6px; padding:14px 18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+              <span style="font-size:10.5px; font-weight:700; color:#ffffff; letter-spacing:0.05em;">PRODUCTION RCA &amp; RUNBOOK MITIGATION // ${curChaos.title.toUpperCase()}</span>
+              <span style="font-size:9px; font-weight:700; padding:2px 6px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.2); border-radius:3px;">TIER-1 ARCHITECT AUDIT</span>
+            </div>
+            
+            <div style="margin-bottom:8px;">
+              <span style="font-size:10px; font-weight:700; color:#a1a1aa; text-transform:uppercase;">Production Incident Context:</span>
+              <p style="font-size:11px; color:#e4e4e7; line-height:1.45; margin:3px 0 0 0;">${curChaos.rca.incident}</p>
+            </div>
+
+            <div style="margin-bottom:10px;">
+              <span style="font-size:10px; font-weight:700; color:#ffffff; text-transform:uppercase;">Principal Architect Runbook &amp; Tuning Fix:</span>
+              <p style="font-size:11px; color:#d4d4d8; line-height:1.45; margin:3px 0 0 0;">${curChaos.rca.mitigation}</p>
+            </div>
+
+            <div>
+              <span style="font-size:9.5px; font-weight:700; color:#71717a; text-transform:uppercase;">Chaos Injection &amp; Reproduce Script (SQL / Bash):</span>
+              <pre style="margin:4px 0 0 0; padding:8px 12px; background:#000000; color:#ffffff; border:1px solid rgba(255,255,255,0.12); border-radius:4px; font-size:10.5px; overflow-x:auto;">${curChaos.rca.injectionScript}</pre>
+            </div>
+          </div>
+        `}
+
       </div>
     `;
   }
 
-  // Update dynamic SVG highlight overlay
+  // Update dynamic SVG highlight overlay (Handles both Stepper and Chaos views)
   function updateSvgHighlight() {
     const overlayGroup = document.getElementById('archOverlayContent');
     if (!overlayGroup) return;
 
+    const isChaos = state.viewMode === 'chaos';
     const data = ARCH_DEEP_DIVES[state.activeDiagramId] || ARCH_DEEP_DIVES['buffer_pool'];
-    const curStep = data.steps[state.currentStepIdx];
-    if (!curStep) return;
+    const chaosList = CHAOS_DEEP_DIVES[state.activeDiagramId] || CHAOS_DEEP_DIVES['buffer_pool'];
 
-    const { x, y, w, h } = curStep.box;
-    const beacon = curStep.beacon;
+    if (!isChaos) {
+      // Normal Stepper Subsystem Highlight
+      const curStep = data.steps[state.currentStepIdx];
+      if (!curStep) return;
 
-    overlayGroup.innerHTML = `
-      <!-- Active Subsystem Glowing Bounding Box -->
-      <rect x="${x - 3}" y="${y - 3}" width="${w + 6}" height="${h + 6}" rx="8" fill="none" stroke="#ffffff" stroke-width="1.8" filter="url(#arch-glow-white)" opacity="0.85" />
-      <rect x="${x - 3}" y="${y - 3}" width="${w + 6}" height="${h + 6}" rx="8" fill="rgba(255,255,255,0.02)" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="6 3" />
-      
-      <!-- Monospace Active Step Pill pinned above target -->
-      <g transform="translate(${x + 4}, ${Math.max(16, y - 10)})">
-        <rect x="0" y="0" width="130" height="18" rx="3" fill="#ffffff" />
-        <text x="65" y="12" fill="#000000" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" text-anchor="middle">ACTIVE: STEP 0${curStep.stepNum}</text>
-      </g>
+      const { x, y, w, h } = curStep.box;
+      const beacon = curStep.beacon;
 
-      <!-- Pulsing Laser Beacon Dot -->
-      <circle cx="${beacon.x}" cy="${beacon.y}" r="6" fill="#ffffff" opacity="0.25">
-        <animate attributeName="r" values="3;10;3" dur="1.8s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.6;0.1;0.6" dur="1.8s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="${beacon.x}" cy="${beacon.y}" r="3" fill="#ffffff" />
-    `;
-  }
+      overlayGroup.innerHTML = `
+        <!-- Active Subsystem Glowing Bounding Box -->
+        <rect x="${x - 3}" y="${y - 3}" width="${w + 6}" height="${h + 6}" rx="8" fill="none" stroke="#ffffff" stroke-width="1.8" filter="url(#arch-glow-white)" opacity="0.85" />
+        <rect x="${x - 3}" y="${y - 3}" width="${w + 6}" height="${h + 6}" rx="8" fill="rgba(255,255,255,0.02)" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="6 3" />
+        
+        <!-- Monospace Active Step Pill pinned above target -->
+        <g transform="translate(${x + 4}, ${Math.max(16, y - 10)})">
+          <rect x="0" y="0" width="130" height="18" rx="3" fill="#ffffff" />
+          <text x="65" y="12" fill="#000000" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" text-anchor="middle">ACTIVE: STEP 0${curStep.stepNum}</text>
+        </g>
 
-  function attachControls() {
-    // Controls are bound via inline onclick to window.InteractiveArchitectureExplainer.*
+        <!-- Pulsing Laser Beacon Dot -->
+        <circle cx="${beacon.x}" cy="${beacon.y}" r="6" fill="#ffffff" opacity="0.25">
+          <animate attributeName="r" values="3;10;3" dur="1.8s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="1.8s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="${beacon.x}" cy="${beacon.y}" r="3" fill="#ffffff" />
+      `;
+    } else {
+      // Chaos Fault Injection Animated Overlay
+      const curChaos = chaosList[state.activeChaosIdx] || chaosList[0];
+      const { x, y, w, h } = curChaos.targetBox;
+      const b = curChaos.beacon;
+
+      overlayGroup.innerHTML = `
+        <!-- High-Alert Pulsing Hazard Border -->
+        <rect x="${x - 4}" y="${y - 4}" width="${w + 8}" height="${h + 8}" rx="8" fill="none" stroke="#ffffff" stroke-width="2.5" filter="url(#arch-glow-hazard)" opacity="0.95">
+          <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="1.2s" repeatCount="indefinite" />
+        </rect>
+        <rect x="${x - 4}" y="${y - 4}" width="${w + 8}" height="${h + 8}" rx="8" fill="rgba(255,255,255,0.04)" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="8 4" />
+
+        <!-- Chaos Hazard Callout Banner Pinned to Subsystem -->
+        <g transform="translate(${x + 4}, ${Math.max(16, y - 12)})">
+          <rect x="0" y="0" width="168" height="20" rx="3" fill="#ffffff" />
+          <text x="84" y="13" fill="#000000" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="800" text-anchor="middle">&#9889; ${curChaos.severity}: FAULT INJECTED</text>
+        </g>
+
+        <!-- Pulsing Hazard Focal Pin with Rapid Shockwaves -->
+        <circle cx="${b.x}" cy="${b.y}" r="16" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.8">
+          <animate attributeName="r" values="4;22;4" dur="1.0s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.9;0.05;0.9" dur="1.0s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="${b.x}" cy="${b.y}" r="4.5" fill="#ffffff" />
+
+        <!-- Fault Label inside Subsystem -->
+        <text x="${b.x}" y="${b.y + 18}" fill="#ffffff" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" text-anchor="middle" filter="url(#arch-glow-white)">[${curChaos.faultType}]</text>
+      `;
+    }
   }
 
   function setStep(idx) {
@@ -1249,7 +1865,7 @@ window.InteractiveArchitectureExplainer = (function() {
   function toggleSpeed() {
     state.playSpeed = state.playSpeed === 1 ? 2 : 1;
     if (state.isPlaying) {
-      play(); // restart interval with new speed
+      play();
     } else {
       mount(state.containerId, state.activeDiagramId);
     }
@@ -1259,13 +1875,16 @@ window.InteractiveArchitectureExplainer = (function() {
     state.activeDiagramId = normalizeDiagramId(diagramId);
     state.currentStepIdx = 0;
     state.activeScenarioIdx = 0;
+    state.activeChaosIdx = 0;
     pause();
-    mount(state.containerId, diagramId);
+    mount(state.containerId, state.activeDiagramId);
   }
 
   return {
     mount,
     switchDiagram,
+    setMode,
+    setChaosScenario,
     setStep,
     nextStep,
     prevStep,
@@ -1275,7 +1894,8 @@ window.InteractiveArchitectureExplainer = (function() {
     play,
     pause,
     toggleSpeed,
-    getDeepDiveData: () => ARCH_DEEP_DIVES
+    getDeepDiveData: () => ARCH_DEEP_DIVES,
+    getChaosData: () => CHAOS_DEEP_DIVES
   };
 
 })();
