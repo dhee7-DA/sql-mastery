@@ -1183,19 +1183,19 @@ window.DatabaseArchitectureSvgs = (function() {
   // ---------------------------------------------------------------------------
   const DIAGRAM_CATALOG = [
     {
-      id: 'bufferpool',
+      id: 'buffer_pool',
       title: 'Buffer Pool & Storage Engine I/O',
       badge: 'MEMORY PIPELINE',
       fn: renderBufferPoolSvg
     },
     {
-      id: 'btree',
+      id: 'btree_index',
       title: 'B+ Tree Index Point Lookup & Range Scan',
       badge: 'O(log N) CLUSTER',
       fn: renderBTreeIndexSvg
     },
     {
-      id: 'hashjoin',
+      id: 'hash_join',
       title: 'In-Memory Hash Join Engine: Build vs Probe',
       badge: 'O(M+N) STREAMING',
       fn: renderHashJoinDagSvg
@@ -1207,7 +1207,7 @@ window.DatabaseArchitectureSvgs = (function() {
       fn: renderWalAriesRecoverySvg
     },
     {
-      id: 'optimizer',
+      id: 'query_optimizer',
       title: 'Cost-Based Query Optimizer & Volcano Iterator',
       badge: 'CBO // REL ALGEBRA',
       fn: renderQueryOptimizerSvg
@@ -1225,19 +1225,19 @@ window.DatabaseArchitectureSvgs = (function() {
       fn: renderLsmTreeStorageSvg
     },
     {
-      id: 'columnar',
+      id: 'columnar_simd',
       title: 'Columnar Storage & SIMD Vectorized Execution',
       badge: 'CLICKHOUSE // AVX-512',
       fn: renderColumnarVectorizedSvg
     },
     {
-      id: 'dist_2pc',
+      id: 'distributed_2pc',
       title: 'Distributed 2-Phase Commit & Raft Consensus',
       badge: 'DISTRIBUTED ACID',
       fn: renderDistributed2PcSvg
     },
     {
-      id: 'window_exec',
+      id: 'window_execution',
       title: 'Window Function Multi-Pass Sliding Frame',
       badge: 'FRAME BUFFER ENGINE',
       fn: renderWindowExecutionSvg
@@ -1249,19 +1249,39 @@ window.DatabaseArchitectureSvgs = (function() {
       fn: renderExternalSortSvg
     },
     {
-      id: 'locking',
+      id: 'locking_hierarchy',
       title: 'Locking Hierarchy, Strict 2PL & Deadlock Graphs',
       badge: 'CONCURRENCY TREE',
       fn: renderLockingHierarchySvg
     }
   ];
 
+
+  function normalizeDiagramId(id) {
+    if (!id) return 'buffer_pool';
+    const clean = String(id).toLowerCase().replace(/[-_]/g, '');
+    if (clean.includes('buffer')) return 'buffer_pool';
+    if (clean.includes('btree')) return 'btree_index';
+    if (clean.includes('hash')) return 'hash_join';
+    if (clean.includes('wal') || clean.includes('aries')) return 'wal_aries';
+    if (clean.includes('opt')) return 'query_optimizer';
+    if (clean.includes('mvcc')) return 'mvcc';
+    if (clean.includes('lsm')) return 'lsm_tree';
+    if (clean.includes('col') || clean.includes('simd')) return 'columnar_simd';
+    if (clean.includes('2pc') || clean.includes('dist')) return 'distributed_2pc';
+    if (clean.includes('window')) return 'window_execution';
+    if (clean.includes('sort')) return 'external_sort';
+    if (clean.includes('lock') || clean.includes('2pl')) return 'locking_hierarchy';
+    return 'buffer_pool';
+  }
+
   function getCatalog() {
     return DIAGRAM_CATALOG;
   }
 
   function renderById(id) {
-    const item = DIAGRAM_CATALOG.find(d => d.id === id);
+    const norm = normalizeDiagramId(id);
+    const item = DIAGRAM_CATALOG.find(d => d.id === norm || d.id === id);
     if (item && typeof item.fn === 'function') {
       return item.fn();
     }

@@ -730,7 +730,7 @@ window.StudioWorkbenchEngine = (function() {
 
                 <!-- Tab 7: Deep Engine Explainer -->
                 <div class="tab-pane ${state.activeTab === 'tabExplainer' ? 'active' : ''}" id="tabExplainer">
-                  <div id="studioExplainerContainer" style="padding: 14px; overflow-y: auto; max-height: 480px;">
+                  <div id="studioExplainerContainer" style="padding: 14px; overflow-y: auto; max-height: calc(100vh - 190px); min-height: 600px;">
                     ${renderEngineExplainerHtml(currentProb)}
                   </div>
                 </div>
@@ -1800,7 +1800,7 @@ window.StudioWorkbenchEngine = (function() {
 
     let archSvgHtml = '';
     const catalog = (window.DatabaseArchitectureSvgs && window.DatabaseArchitectureSvgs.getCatalog) ? window.DatabaseArchitectureSvgs.getCatalog() : [];
-    const currentId = activeArch || 'bufferpool';
+    const currentId = activeArch || 'buffer_pool';
     if (window.DatabaseArchitectureSvgs) {
       if (typeof window.DatabaseArchitectureSvgs.renderById === 'function') {
         archSvgHtml = window.DatabaseArchitectureSvgs.renderById(currentId);
@@ -1811,22 +1811,9 @@ window.StudioWorkbenchEngine = (function() {
 
     return `
       <div style="display: flex; flex-direction: column; gap: 14px;">
-        <!-- Interactive Database Architecture SVG Viewer -->
-        <div class="db-arch-viewer-card" style="background: #0c0d10; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 14px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 11px; font-weight: 700; color: #ffffff; letter-spacing: 0.05em; font-family: 'JetBrains Mono', monospace;">DATABASE ENGINE ARCHITECTURE</span>
-              <span style="font-size: 9px; font-weight: 700; padding: 2px 6px; background: #18181b; color: #ffffff; border: 1px solid rgba(255,255,255,0.2); border-radius: 3px;">12 ENTERPRISE SCHEMATICS</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-              <select id="selectArchDiagram" onchange="window.StudioWorkbenchEngine.switchArchDiagram(this.value)" style="background: #141418; color: #ffffff; border: 1px solid rgba(255,255,255,0.22); border-radius: 4px; padding: 5px 12px; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 600; cursor: pointer;">
-                ${catalog.map(d => `<option value="${d.id}" ${d.id === currentId ? 'selected' : ''}>[${d.badge}] ${escapeHtml(d.title)}</option>`).join('')}
-              </select>
-            </div>
-          </div>
-          <div id="dbArchSvgTarget" style="width: 100%; overflow-x: auto; background: #000000; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); padding: 6px;">
-            ${archSvgHtml}
-          </div>
+        <!-- Interactive Database Architecture Engine Host -->
+        <div id="dbArchInteractiveHost" style="width: 100%;">
+          ${archSvgHtml}
         </div>
 
         <!-- Relational Execution Flow -->
@@ -2510,7 +2497,14 @@ window.StudioWorkbenchEngine = (function() {
       if (diffBox) diffBox.innerHTML = renderDiffContentHtml();
     } else if (tabKey === 'tabExplainer') {
       const expBox = document.getElementById('studioExplainerContainer');
-      if (expBox) expBox.innerHTML = renderEngineExplainerHtml(getProblemById(state.activeProblemId));
+      if (expBox) {
+        expBox.innerHTML = renderEngineExplainerHtml(getProblemById(state.activeProblemId));
+        setTimeout(() => {
+          if (window.InteractiveArchitectureExplainer) {
+            window.InteractiveArchitectureExplainer.mount('dbArchInteractiveHost', state.activeArchDiagram || 'buffer_pool');
+          }
+        }, 10);
+      }
     }
   }
 
@@ -2658,16 +2652,16 @@ window.StudioWorkbenchEngine = (function() {
 
   function switchArchDiagram(type) {
     state.activeArchDiagram = type;
-    const target = document.getElementById('dbArchSvgTarget');
-    if (target && window.DatabaseArchitectureSvgs) {
-      if (typeof window.DatabaseArchitectureSvgs.renderById === 'function') {
-        target.innerHTML = window.DatabaseArchitectureSvgs.renderById(type);
-      } else if (type === 'btree') {
-        target.innerHTML = window.DatabaseArchitectureSvgs.renderBTreeIndexSvg();
-      } else if (type === 'hash_join' || type === 'hashjoin') {
-        target.innerHTML = window.DatabaseArchitectureSvgs.renderHashJoinDagSvg();
-      } else {
-        target.innerHTML = window.DatabaseArchitectureSvgs.renderBufferPoolSvg();
+    if (window.InteractiveArchitectureExplainer) {
+      window.InteractiveArchitectureExplainer.switchDiagram(type);
+    } else {
+      const target = document.getElementById('dbArchSvgTarget');
+      if (target && window.DatabaseArchitectureSvgs) {
+        if (typeof window.DatabaseArchitectureSvgs.renderById === 'function') {
+          target.innerHTML = window.DatabaseArchitectureSvgs.renderById(type);
+        } else {
+          target.innerHTML = window.DatabaseArchitectureSvgs.renderBufferPoolSvg();
+        }
       }
     }
 
