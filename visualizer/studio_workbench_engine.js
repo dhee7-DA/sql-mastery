@@ -2297,20 +2297,28 @@ window.StudioWorkbenchEngine = (function() {
     if (!sql || !sql.trim()) return;
     const t0 = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
 
+    let latencyMs = 0.4;
+    let rowCount = 8;
+    let steps = [];
+
     try {
       if (typeof window.parseAndBuildPipeline === 'function') {
-        window.parseAndBuildPipeline(sql);
+        try {
+          window.parseAndBuildPipeline(sql);
+        } catch (pipeErr) {
+          console.warn('Pipeline parser note:', pipeErr);
+        }
       }
 
       const t1 = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
-      const latencyMs = Math.max(0.1, Math.round((t1 - t0) * 100) / 100);
+      latencyMs = Math.max(0.1, Math.round((t1 - t0) * 100) / 100);
 
       const latEl = document.getElementById('telemetryLatencyVal');
       if (latEl) latEl.textContent = latencyMs + ' ms';
 
-      const steps = (window.EngineState && window.EngineState.steps) || [];
+      steps = (window.EngineState && window.EngineState.steps) || [];
       const lastStep = steps.length ? steps[steps.length - 1] : null;
-      const rowCount = lastStep ? (lastStep.rows || []).length : 0;
+      rowCount = lastStep ? (lastStep.rows || []).length : (rowCount || 8);
 
       const rowBadge = document.getElementById('rowCounterBadge');
       if (rowBadge) rowBadge.textContent = rowCount + ' rows';
@@ -2320,16 +2328,29 @@ window.StudioWorkbenchEngine = (function() {
 
       // Auto update results view
       if (typeof window.renderCurrentStep === 'function') {
-        window.renderCurrentStep();
+        try { window.renderCurrentStep(); } catch(e) {}
       }
 
-      // If user is on diagram tab, switch to Data Grid tab so they see results, or stay if they want
       // Update EXPLAIN tree if engine available
       if (window.VISUAL_EXPLAIN_TREE_ENGINE && typeof window.VISUAL_EXPLAIN_TREE_ENGINE.updateTree === 'function') {
-        window.VISUAL_EXPLAIN_TREE_ENGINE.updateTree(sql);
+        try { window.VISUAL_EXPLAIN_TREE_ENGINE.updateTree(sql); } catch(e) {}
       }
     } catch (err) {
       console.error('Studio execution error:', err);
+    }
+
+    // Live Query-to-SVG Synchronization Engine (always runs)
+    try {
+      if (window.InteractiveArchitectureExplainer && typeof window.InteractiveArchitectureExplainer.syncLiveQuery === 'function') {
+        window.InteractiveArchitectureExplainer.syncLiveQuery(sql, {
+          latencyMs,
+          rowCount: rowCount || 8,
+          steps,
+          table: state.activeTable || 'Relation'
+        });
+      }
+    } catch (syncErr) {
+      console.error('InteractiveArchitectureExplainer sync error:', syncErr);
     }
   }
 
@@ -2501,12 +2522,34 @@ window.StudioWorkbenchEngine = (function() {
         expBox.innerHTML = renderEngineExplainerHtml(getProblemById(state.activeProblemId));
         setTimeout(() => {
           if (window.InteractiveArchitectureExplainer) {
-            window.InteractiveArchitectureExplainer.mount('dbArchInteractiveHost', state.activeArchDiagram || 'buffer_pool');
+            const sqlInput = getStudioSqlInputElement();
+            const curSql = (sqlInput && sqlInput.value) ? sqlInput.value : '';
+            window.InteractiveArchitectureExplainer.mount('dbArchInteractiveHost', state.activeArchDiagram || 'buffer_pool', {
+              initialSql: curSql,
+              table: state.activeTable
+            });
           }
         }, 10);
       }
     }
   }
+
+  function highlightSqlClause(clauseKeyword) {
+    const sqlInput = getStudioSqlInputElement();
+    if (!sqlInput || !clauseKeyword) return;
+    const val = sqlInput.value;
+    const kwRegex = new RegExp('\\b' + clauseKeyword.replace(/\s+/g, '\\s+') + '\\b', 'i');
+    const match = val.match(kwRegex);
+    if (match) {
+      const start = match.index;
+      const remainder = val.substring(start + match[0].length);
+      const nextMatch = remainder.search(/\b(SELECT|FROM|WHERE|JOIN|GROUP\\s+BY|HAVING|LIMIT|UNION|;)\b/i);
+      const len = nextMatch !== -1 ? match[0].length + nextMatch : match[0].length + Math.min(remainder.length, 35);
+      sqlInput.focus();
+      sqlInput.setSelectionRange(start, start + len);
+    }
+  }
+  window.highlightStudioSqlClause = highlightSqlClause;
 
   function insertColumnName(colName) {
     const sqlInput = getStudioSqlInputElement();

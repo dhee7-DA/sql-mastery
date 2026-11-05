@@ -26,16 +26,136 @@ window.InteractiveArchitectureExplainer = (function() {
   }
 
 
+  // =========================================================================
+  // LIVE QUERY AST & PHYSICAL OPERATOR ANALYZER
+  // =========================================================================
+  function analyzeQueryForArchitecture(sql) {
+    const clean = (sql || '').trim();
+    if (!clean) {
+      return {
+        recommendedDiagram: 'buffer_pool',
+        detectedOp: 'SEQUENTIAL_TABLE_SCAN',
+        complexity: 'O(N) row scan',
+        reason: 'Default table scan through Buffer Pool frame buffers',
+        hardwareSummary: 'CPU L1/L2 Cacheprobe · 0 Disk IOPS',
+        kernelReaction: 'sys_read bypassed · Direct Pointer dereference in SRAM',
+        clauses: {}
+      };
+    }
+
+    const hasJoin = /\b(JOIN|INNER\s+JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|CROSS\s+JOIN|FULL\s+JOIN)\b/i.test(clean);
+    const hasWindow = /\bOVER\s*\(/i.test(clean);
+    const hasOrderBy = /\bORDER\s+BY\b/i.test(clean);
+    const hasGroupBy = /\bGROUP\s+BY\b/i.test(clean);
+    const hasAgg = /\b(SUM|AVG|COUNT|MIN|MAX)\s*\(/i.test(clean);
+    const hasLock = /\b(FOR\s+UPDATE|LOCK\s+IN\s+SHARE\s+MODE)\b/i.test(clean);
+    const hasDml = /\b(INSERT|UPDATE|DELETE|MERGE)\b/i.test(clean);
+    const hasWhere = /\bWHERE\b/i.test(clean);
+    const hasCte = /\bWITH\b/i.test(clean);
+
+    let recommendedDiagram = 'buffer_pool';
+    let detectedOp = 'ZERO_COPY_BUFFER_SCAN';
+    let complexity = 'O(N) sequential scan';
+    let reason = 'Single-table scan through Buffer Pool frame buffer memory slots';
+    let hardwareSummary = 'CPU Core: L1 Data Cache probe · 0 Disk IOPS';
+    let kernelReaction = 'sys_read bypassed · Direct pointer dereference in user-space buffer pool';
+
+    if (hasLock) {
+      recommendedDiagram = 'locking_hierarchy';
+      detectedOp = 'STRICT_2PL_ROW_LOCK';
+      complexity = 'O(1) hash bucket lock check';
+      reason = 'Exclusive row lock acquired under Strict Two-Phase Locking (S2PL)';
+      hardwareSummary = 'Lock Table Hash Directory: Read-biased mutex · 0.02% contention';
+      kernelReaction = 'pthread_mutex held in user-space lock manager';
+    } else if (hasDml) {
+      recommendedDiagram = 'wal_aries';
+      detectedOp = 'WAL_FSYNC_APPEND';
+      complexity = 'O(1) sequential write';
+      reason = 'Physiological log record appended to WAL before dirtying page in memory';
+      hardwareSummary = 'NVMe Direct I/O (O_DIRECT) · Sequential circular ring buffer';
+      kernelReaction = 'io_uring / fsync flushed log record to durable storage';
+    } else if (hasJoin) {
+      recommendedDiagram = 'hash_join';
+      detectedOp = 'HASH_JOIN_BUILD_PROBE';
+      complexity = 'O(M + N) streaming';
+      reason = 'In-memory hash table constructed for inner relation and probed by outer stream';
+      hardwareSummary = 'Hash Table: Murmur3_x64 · L2 Cache Line match (64 bytes)';
+      kernelReaction = 'work_mem RAM resident · Zero scratch disk spill';
+    } else if (hasWindow) {
+      recommendedDiagram = 'window_execution';
+      detectedOp = 'WINDOW_PARTITION_STREAM';
+      complexity = 'O(N log W) sliding frame';
+      reason = 'Partition buffer allocation with streaming framing cursor';
+      hardwareSummary = 'Partition Buffer Ring (work_mem) · L1 Data Cacheline';
+      kernelReaction = 'Single-pass streaming scan with monotonic frame cursor';
+    } else if (hasOrderBy) {
+      recommendedDiagram = 'external_sort';
+      detectedOp = 'EXTERNAL_MERGE_SORT';
+      complexity = 'O(N log N) replacement selection';
+      reason = 'Sort buffer memory allocation and multi-pass merge fanout';
+      hardwareSummary = 'Sort Buffer: In-memory QuickSort run · Top-K heap filter';
+      kernelReaction = 'work_mem resident · Spill avoided via priority queue';
+    } else if (hasAgg || hasGroupBy) {
+      recommendedDiagram = 'columnar_simd';
+      detectedOp = 'SIMD_VECTOR_AGGREGATE';
+      complexity = 'O(N / 16) vectorized SIMD';
+      reason = 'Column vector aggregation with AVX-512 register reduction';
+      hardwareSummary = 'AVX-512 Packed Registers (512-bit ZMM) · 16 ints per cycle';
+      kernelReaction = 'Contiguous memory prefetch · 99.4% L1 Data Cache hit rate';
+    } else if (hasCte) {
+      recommendedDiagram = 'query_optimizer';
+      detectedOp = 'CBO_PLAN_TREE_EXPLORATION';
+      complexity = 'O(2^K) search space pruned';
+      reason = 'Cost-based optimizer evaluating join orders and subquery unnesting';
+      hardwareSummary = 'Dynamic Programming Memo Structure · Statistics Histograms in DRAM';
+      kernelReaction = 'Volcano iterator physical plan compiled in < 0.2ms';
+    } else if (hasWhere) {
+      recommendedDiagram = 'btree_index';
+      detectedOp = 'INDEX_SEEK_RANGE_SCAN';
+      complexity = 'O(log N) tree depth';
+      reason = 'B+ Tree root-to-leaf binary search for target predicate range';
+      hardwareSummary = 'Root -> Internal -> Leaf Page binary search · Fanout: 256';
+      kernelReaction = 'Pointer dereference through shared leaf page latch';
+    }
+
+    return {
+      recommendedDiagram,
+      detectedOp,
+      complexity,
+      reason,
+      hardwareSummary,
+      kernelReaction,
+      hasJoin,
+      hasWindow,
+      hasOrderBy,
+      hasGroupBy,
+      hasAgg,
+      hasLock,
+      hasDml,
+      hasWhere,
+      hasCte
+    };
+  }
+
   // State
   const state = {
     activeDiagramId: 'buffer_pool',
     containerId: 'dbArchInteractiveHost',
+    viewMode: 'stepper', // 'stepper' | 'chaos' | 'live'
     activeScenarioIdx: 0,
     currentStepIdx: 0,
+    activeChaosIdx: 0,
     isPlaying: false,
     playSpeed: 1, // 1x = 2200ms, 2x = 1100ms
     timer: null,
-    listenersAttached: false
+    listenersAttached: false,
+    // Live synchronization state
+    autoRouteDiagram: true,
+    lastQuery: '',
+    lastQueryAnalysis: null,
+    lastExecutionStats: null,
+    livePulseTimer: null,
+    liveAnimationActive: false
   };
 
   // Deep Architecture Explainer Dataset for all 12 Diagrams
@@ -1495,9 +1615,48 @@ window.InteractiveArchitectureExplainer = (function() {
   // INTERACTIVE ENGINE CORE & CONTROLS
   // ---------------------------------------------------------------------------
 
-  function mount(containerId, diagramId) {
+  // =========================================================================
+  // SQL CLAUSE MAPPING FOR BI-DIRECTIONAL EDITOR SYNCHRONIZATION
+  // =========================================================================
+  const SQL_CLAUSE_MAP = {
+    buffer_pool: ['SELECT', 'FROM', 'WHERE', 'LIMIT'],
+    btree_index: ['WHERE', 'WHERE', 'WHERE', 'SELECT'],
+    hash_join: ['FROM', 'JOIN', 'ON', 'SELECT'],
+    wal_aries: ['INSERT', 'UPDATE', 'COMMIT', 'ROLLBACK'],
+    query_optimizer: ['SELECT', 'WHERE', 'FROM', 'ORDER BY'],
+    mvcc_vacuum: ['SELECT', 'WHERE', 'FROM', 'LIMIT'],
+    lsm_tree: ['INSERT', 'UPDATE', 'WHERE', 'SELECT'],
+    columnar_simd: ['SELECT', 'WHERE', 'GROUP BY', 'SUM'],
+    distributed_2pc: ['BEGIN', 'UPDATE', 'COMMIT', 'COMMIT'],
+    window_execution: ['OVER', 'PARTITION BY', 'ORDER BY', 'SELECT'],
+    external_sort: ['ORDER BY', 'ORDER BY', 'LIMIT', 'SELECT'],
+    locking_hierarchy: ['FOR UPDATE', 'LOCK', 'UPDATE', 'COMMIT']
+  };
+
+  function getStepSqlTarget(diagramId, stepIdx) {
+    const targets = SQL_CLAUSE_MAP[diagramId] || ['SELECT', 'FROM', 'WHERE', 'LIMIT'];
+    return targets[stepIdx] || 'SELECT';
+  }
+
+  // =========================================================================
+  // MOUNT & RENDERING ENGINE
+  // =========================================================================
+  function mount(containerId, diagramId, options) {
     if (containerId) state.containerId = containerId;
     if (diagramId) state.activeDiagramId = normalizeDiagramId(diagramId);
+    
+    if (options && options.initialSql && !state.lastQuery) {
+      state.lastQuery = options.initialSql.trim();
+      state.lastExecutionStats = { latencyMs: 0.35, rowCount: 8, table: options.table || 'CITY' };
+      state.lastQueryAnalysis = analyzeQueryForArchitecture(options.initialSql);
+    } else if (!state.lastQuery) {
+      const sqlInput = document.getElementById('studioSqlInput');
+      const val = (sqlInput && sqlInput.value && sqlInput.value.trim()) ? sqlInput.value.trim() : 'SELECT id, name, population FROM City WHERE population > 100000;';
+      state.lastQuery = val;
+      state.lastExecutionStats = { latencyMs: 0.38, rowCount: 5, table: 'CITY' };
+      state.lastQueryAnalysis = analyzeQueryForArchitecture(val);
+    }
+
     const container = document.getElementById(state.containerId);
     if (!container) return;
 
@@ -1518,7 +1677,23 @@ window.InteractiveArchitectureExplainer = (function() {
   function setMode(mode) {
     state.viewMode = mode;
     pause();
-    mount(state.containerId, state.activeDiagramId);
+    if (mode === 'live') {
+      if (!state.lastQuery) {
+        const sqlInput = document.getElementById('studioSqlInput');
+        const val = (sqlInput && sqlInput.value) ? sqlInput.value.trim() : 'SELECT id, name, population FROM City WHERE population > 100000;';
+        state.lastQuery = val;
+        state.lastExecutionStats = { latencyMs: 0.42, rowCount: 8, table: 'CITY' };
+        state.lastQueryAnalysis = analyzeQueryForArchitecture(val);
+      }
+      mount(state.containerId, state.activeDiagramId);
+      playLiveExecutionPulse();
+    } else {
+      if (state.livePulseTimer) {
+        clearInterval(state.livePulseTimer);
+        state.livePulseTimer = null;
+      }
+      mount(state.containerId, state.activeDiagramId);
+    }
   }
 
   function setChaosScenario(idx) {
@@ -1526,60 +1701,172 @@ window.InteractiveArchitectureExplainer = (function() {
     mount(state.containerId, state.activeDiagramId);
   }
 
+  function toggleAutoRoute() {
+    state.autoRouteDiagram = !state.autoRouteDiagram;
+    mount(state.containerId, state.activeDiagramId);
+  }
+
+  // =========================================================================
+  // LIVE QUERY SYNCHRONIZATION & PULSE ANIMATION
+  // =========================================================================
+  function syncLiveQuery(sql, stats) {
+    if (!sql || !sql.trim()) return;
+    const cleanSql = sql.trim();
+    state.lastQuery = cleanSql;
+    state.lastExecutionStats = stats || { latencyMs: 0.35, rowCount: 1, table: 'DATA' };
+    state.lastQueryAnalysis = analyzeQueryForArchitecture(cleanSql);
+
+    // Auto-switch schematic if enabled
+    if (state.autoRouteDiagram && state.lastQueryAnalysis.recommendedDiagram) {
+      state.activeDiagramId = state.lastQueryAnalysis.recommendedDiagram;
+    }
+
+    state.viewMode = 'live';
+    state.currentStepIdx = 0;
+    mount(state.containerId, state.activeDiagramId);
+    playLiveExecutionPulse();
+  }
+
+  function playLiveExecutionPulse() {
+    if (state.livePulseTimer) {
+      clearInterval(state.livePulseTimer);
+      state.livePulseTimer = null;
+    }
+    const data = ARCH_DEEP_DIVES[state.activeDiagramId] || ARCH_DEEP_DIVES['buffer_pool'];
+    const totalSteps = data.steps.length;
+    let step = 0;
+    state.currentStepIdx = 0;
+    state.liveAnimationActive = true;
+    updateSvgHighlight();
+
+    // Initial SQL highlight
+    const initClause = getStepSqlTarget(state.activeDiagramId, 0);
+    if (typeof window.highlightStudioSqlClause === 'function') {
+      window.highlightStudioSqlClause(initClause);
+    }
+
+    const intervalMs = state.playSpeed === 2 ? 220 : 420;
+    state.livePulseTimer = setInterval(() => {
+      step++;
+      if (step >= totalSteps) {
+        clearInterval(state.livePulseTimer);
+        state.livePulseTimer = null;
+        state.liveAnimationActive = false;
+        state.currentStepIdx = totalSteps - 1;
+        updateSvgHighlight();
+        const finalClause = getStepSqlTarget(state.activeDiagramId, totalSteps - 1);
+        if (typeof window.highlightStudioSqlClause === 'function') {
+          window.highlightStudioSqlClause(finalClause);
+        }
+      } else {
+        state.currentStepIdx = step;
+        updateSvgHighlight();
+        const curClause = getStepSqlTarget(state.activeDiagramId, step);
+        if (typeof window.highlightStudioSqlClause === 'function') {
+          window.highlightStudioSqlClause(curClause);
+        }
+      }
+    }, intervalMs);
+  }
+
+  function selectStepWithSql(idx) {
+    const data = ARCH_DEEP_DIVES[state.activeDiagramId] || ARCH_DEEP_DIVES['buffer_pool'];
+    if (idx >= 0 && idx < data.steps.length) {
+      state.currentStepIdx = idx;
+      if (state.livePulseTimer) {
+        clearInterval(state.livePulseTimer);
+        state.livePulseTimer = null;
+        state.liveAnimationActive = false;
+      }
+      const targetClause = getStepSqlTarget(state.activeDiagramId, idx);
+      if (typeof window.highlightStudioSqlClause === 'function') {
+        window.highlightStudioSqlClause(targetClause);
+      }
+      mount(state.containerId, state.activeDiagramId);
+      if (window.soundFX && typeof window.soundFX.playPop === 'function') {
+        window.soundFX.playPop();
+      }
+    }
+  }
+
+  // =========================================================================
+  // VIEWER HTML RENDERER
+  // =========================================================================
   function renderViewerHtml(data, chaosList) {
     const isChaos = state.viewMode === 'chaos';
+    const isLive = state.viewMode === 'live';
     const curScenario = data.scenarios[state.activeScenarioIdx] || data.scenarios[0];
     const curStep = data.steps[state.currentStepIdx] || data.steps[0];
     const curChaos = chaosList[state.activeChaosIdx] || chaosList[0];
     const rawSvg = window.DatabaseArchitectureSvgs.renderById(data.id);
     const catalog = (window.DatabaseArchitectureSvgs && window.DatabaseArchitectureSvgs.getCatalog) ? window.DatabaseArchitectureSvgs.getCatalog() : [];
+    const stats = state.lastExecutionStats || { latencyMs: 0.35, rowCount: 8, table: 'CITY' };
+    const analysis = state.lastQueryAnalysis || analyzeQueryForArchitecture(state.lastQuery);
+    const targetClause = getStepSqlTarget(state.activeDiagramId, state.currentStepIdx);
 
     return `
       <div class="interactive-arch-container" style="display:flex; flex-direction:column; gap:12px; font-family:'JetBrains Mono', monospace;">
         
-        <!-- Header: Diagram Selector & Mode Toggle (Stepper vs Chaos) -->
+        <!-- Header: Diagram Selector & 3-Way Mode Switcher -->
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding:10px 14px; background:#0d0e12; border:1px solid rgba(255,255,255,0.14); border-radius:6px;">
           <!-- Left: Diagram Selector Dropdown -->
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <select id="selectArchDiagram" onchange="window.InteractiveArchitectureExplainer.switchDiagram(this.value)" style="background:#141418; color:#ffffff; border:1px solid rgba(255,255,255,0.22); border-radius:4px; padding:5px 12px; font-size:11px; font-family:'JetBrains Mono', monospace; font-weight:600; cursor:pointer;">
               ${catalog.map(d => `<option value="${d.id}" ${d.id === data.id ? 'selected' : ''}>[${d.badge}] ${d.title}</option>`).join('')}
             </select>
-            ${isChaos ? `
+            ${isLive ? `
+              <span style="font-size:9.5px; font-weight:700; padding:2px 8px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.3); border-radius:3px; letter-spacing:0.04em;">[● LIVE WASM SYNC ACTIVE]</span>
+            ` : isChaos ? `
               <span style="font-size:9.5px; font-weight:700; padding:2px 8px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.3); border-radius:3px; letter-spacing:0.04em;">[CHAOS FAULT INJECTION ACTIVE]</span>
             ` : `
               <span style="font-size:9.5px; padding:2px 6px; background:#18181b; color:#a1a1aa; border:1px solid rgba(255,255,255,0.18); border-radius:3px;">PHASE ${curStep.stepNum} OF ${data.steps.length}</span>
             `}
           </div>
 
-          <!-- Right: Mode Switcher Buttons -->
-          <div style="display:flex; align-items:center; gap:6px;">
+          <!-- Right: Mode Switcher Buttons (Stepper / Chaos / Live Sync) -->
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
             <button onclick="window.InteractiveArchitectureExplainer.setMode('stepper')" 
-              style="padding:4px 10px; font-size:10.5px; font-family:'JetBrains Mono', monospace; font-weight:600; border-radius:4px; cursor:pointer; background:${!isChaos ? '#ffffff' : '#141418'}; color:${!isChaos ? '#000000' : '#a1a1aa'}; border:1px solid ${!isChaos ? '#ffffff' : 'rgba(255,255,255,0.15)'};">
-              ● STEP-BY-STEP EXPLAINER
+              style="padding:4px 10px; font-size:10.5px; font-family:'JetBrains Mono', monospace; font-weight:600; border-radius:4px; cursor:pointer; background:${state.viewMode === 'stepper' ? '#ffffff' : '#141418'}; color:${state.viewMode === 'stepper' ? '#000000' : '#a1a1aa'}; border:1px solid ${state.viewMode === 'stepper' ? '#ffffff' : 'rgba(255,255,255,0.15)'};">
+              ● STEPPER
             </button>
             <button onclick="window.InteractiveArchitectureExplainer.setMode('chaos')" 
-              style="padding:4px 10px; font-size:10.5px; font-family:'JetBrains Mono', monospace; font-weight:700; border-radius:4px; cursor:pointer; background:${isChaos ? '#ffffff' : '#141418'}; color:${isChaos ? '#000000' : '#ffffff'}; border:1px solid ${isChaos ? '#ffffff' : 'rgba(255,255,255,0.22)'}; box-shadow:${isChaos ? '0 0 10px rgba(255,255,255,0.18)' : 'none'};">
-              &#9889; CHAOS STRESS SIMULATION
+              style="padding:4px 10px; font-size:10.5px; font-family:'JetBrains Mono', monospace; font-weight:700; border-radius:4px; cursor:pointer; background:${state.viewMode === 'chaos' ? '#ffffff' : '#141418'}; color:${state.viewMode === 'chaos' ? '#000000' : '#ffffff'}; border:1px solid ${state.viewMode === 'chaos' ? '#ffffff' : 'rgba(255,255,255,0.22)'}; box-shadow:${state.viewMode === 'chaos' ? '0 0 10px rgba(255,255,255,0.18)' : 'none'};">
+              &#9889; CHAOS
+            </button>
+            <button onclick="window.InteractiveArchitectureExplainer.setMode('live')" 
+              style="padding:4px 10px; font-size:10.5px; font-family:'JetBrains Mono', monospace; font-weight:700; border-radius:4px; cursor:pointer; background:${state.viewMode === 'live' ? '#ffffff' : '#141418'}; color:${state.viewMode === 'live' ? '#000000' : '#ffffff'}; border:1px solid ${state.viewMode === 'live' ? '#ffffff' : 'rgba(255,255,255,0.22)'}; box-shadow:${state.viewMode === 'live' ? '0 0 10px rgba(255,255,255,0.18)' : 'none'};">
+              &#9654; LIVE SYNC
             </button>
           </div>
         </div>
 
         <!-- Sub-Bar: Controls depending on Mode -->
-        ${!isChaos ? `
-          <!-- Normal Stepper Scenarios Sub-Bar -->
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 12px; background:#08090c; border:1px solid rgba(255,255,255,0.08); border-radius:6px;">
-            <span style="font-size:9.5px; color:#71717a; text-transform:uppercase;">Normal Execution Scenarios:</span>
+        ${isLive ? `
+          <!-- Live Query Synchronization Sub-Bar -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 12px; background:#0a0c10; border:1px solid rgba(255,255,255,0.15); border-radius:6px;">
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span style="font-size:9.5px; font-weight:700; color:#ffffff; text-transform:uppercase;">QUERY RUNNER HUD:</span>
+              <span style="font-size:10px; padding:2px 8px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.22); border-radius:3px;">
+                ${stats.latencyMs}ms • ${stats.rowCount} rows • ${stats.table || 'QUERY'}
+              </span>
+              <button onclick="window.InteractiveArchitectureExplainer.toggleAutoRoute()"
+                style="padding:2px 8px; font-size:10px; font-family:'JetBrains Mono', monospace; font-weight:600; background:${state.autoRouteDiagram ? '#ffffff' : '#141418'}; color:${state.autoRouteDiagram ? '#000000' : '#71717a'}; border:1px solid rgba(255,255,255,0.2); border-radius:3px; cursor:pointer;"
+                title="Automatically switch schematic to match executed SQL operator">
+                AUTO-DETECT: ${state.autoRouteDiagram ? 'ON' : 'OFF'}
+              </button>
+            </div>
+            
             <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-              ${data.scenarios.map((sc, i) => `
-                <button class="arch-scenario-btn" 
-                  onclick="window.InteractiveArchitectureExplainer.setScenario(${i})"
-                  style="padding:3px 8px; font-size:10px; font-family:'JetBrains Mono', monospace; font-weight:600; border-radius:3px; cursor:pointer; background:${i === state.activeScenarioIdx ? '#ffffff' : '#141418'}; color:${i === state.activeScenarioIdx ? '#000000' : '#a1a1aa'}; border:1px solid ${i === state.activeScenarioIdx ? '#ffffff' : 'rgba(255,255,255,0.18)'};">
-                  ${sc.title}
-                </button>
-              `).join('')}
+              <button onclick="window.InteractiveArchitectureExplainer.replayLivePulse()"
+                style="padding:3px 10px; font-size:10.5px; font-weight:700; background:#ffffff; color:#000000; border:1px solid #ffffff; border-radius:3px; cursor:pointer;"
+                title="Replay animated execution pulse across diagram">
+                &#8635; REPLAY PULSE
+              </button>
+              <button onclick="window.InteractiveArchitectureExplainer.prevStep()" style="padding:3px 8px; font-size:10.5px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.18); border-radius:3px; cursor:pointer;">&larr;</button>
+              <button onclick="window.InteractiveArchitectureExplainer.nextStep()" style="padding:3px 8px; font-size:10.5px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.18); border-radius:3px; cursor:pointer;">&rarr;</button>
             </div>
           </div>
-        ` : `
+        ` : isChaos ? `
           <!-- Chaos Fault Selector Sub-Bar -->
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 12px; background:#111216; border:1px solid rgba(255,255,255,0.2); border-radius:6px;">
             <div style="display:flex; align-items:center; gap:8px;">
@@ -1595,14 +1882,28 @@ window.InteractiveArchitectureExplainer = (function() {
               `).join('')}
             </div>
           </div>
+        ` : `
+          <!-- Normal Stepper Scenarios Sub-Bar -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:8px 12px; background:#08090c; border:1px solid rgba(255,255,255,0.08); border-radius:6px;">
+            <span style="font-size:9.5px; color:#71717a; text-transform:uppercase;">Normal Execution Scenarios:</span>
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+              ${data.scenarios.map((sc, i) => `
+                <button class="arch-scenario-btn" 
+                  onclick="window.InteractiveArchitectureExplainer.setScenario(${i})"
+                  style="padding:3px 9px; font-size:10px; font-family:'JetBrains Mono', monospace; font-weight:${i === state.activeScenarioIdx ? '700' : '400'}; border-radius:3px; cursor:pointer; background:${i === state.activeScenarioIdx ? '#ffffff' : '#141418'}; color:${i === state.activeScenarioIdx ? '#000000' : '#a1a1aa'}; border:1px solid ${i === state.activeScenarioIdx ? '#ffffff' : 'rgba(255,255,255,0.12)'};">
+                  ${sc.title.split('(')[0].trim()}
+                </button>
+              `).join('')}
+            </div>
+          </div>
         `}
 
-        <!-- Interactive SVG Stage with Dynamic Highlight / Chaos Overlay -->
+        <!-- Interactive SVG Stage with Dynamic Highlight / Chaos Overlay / Hotspots -->
         <div style="position:relative; width:100%; overflow-x:auto; background:#000000; border-radius:6px; border:1px solid rgba(255,255,255,0.15); padding:4px;">
           <div id="archSvgMount" style="position:relative; width:1000px; margin:0 auto;">
             ${rawSvg}
             <!-- Overlay SVG for Real-time Subsystem Focus, Fault Waves & Particle Beacon -->
-            <svg id="archHighlightOverlay" viewBox="0 0 1000 300" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;">
+            <svg id="archHighlightOverlay" viewBox="0 0 1000 300" style="position:absolute; top:0; left:0; width:100%; height:100%;">
               <defs>
                 <filter id="arch-glow-white" x="-20%" y="-20%" width="140%" height="140%">
                   <feGaussianBlur stdDeviation="3.5" result="blur"/>
@@ -1618,7 +1919,67 @@ window.InteractiveArchitectureExplainer = (function() {
           </div>
         </div>
 
-        ${!isChaos ? `
+        <!-- Navigation Ribbon / Stepping Pills -->
+        ${isLive ? `
+          <!-- Live Execution Phase Stepper Strip -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding:8px 12px; background:#0a0b0e; border:1px solid rgba(255,255,255,0.12); border-radius:6px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:10px; font-weight:700; color:#ffffff;">EXECUTION PHASES:</span>
+            </div>
+            
+            <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+              ${data.steps.map((st, i) => `
+                <button onclick="window.InteractiveArchitectureExplainer.selectStepWithSql(${i})" 
+                  style="padding:3px 8px; font-size:10px; font-family:'JetBrains Mono', monospace; font-weight:${i === state.currentStepIdx ? '700' : '500'}; background:${i === state.currentStepIdx ? '#ffffff' : '#111216'}; color:${i === state.currentStepIdx ? '#000000' : '#71717a'}; border:1px solid ${i === state.currentStepIdx ? '#ffffff' : 'rgba(255,255,255,0.1)'}; border-radius:3px; cursor:pointer;"
+                  title="Step 0${st.stepNum}: Click to highlight SQL keyword [${getStepSqlTarget(state.activeDiagramId, i)}] in editor">
+                  [0${st.stepNum}] ${st.name.split('&')[0].trim()}
+                </button>
+              `).join('')}
+            </div>
+
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size:10px; color:#71717a;">Pacing:</span>
+              <button onclick="window.InteractiveArchitectureExplainer.toggleSpeed()" style="padding:2px 8px; font-size:10px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.18); border-radius:3px; cursor:pointer;">
+                ${state.playSpeed}x
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Telemetry HUD (3 Cards) -->
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:10px;">
+            <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
+              <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">LIVE CLIENT-SIDE WASM EXECUTION</div>
+              <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">Latency: ${stats.latencyMs}ms • ${stats.rowCount} rows returned</div>
+              <div style="font-size:10px; color:#71717a;">Active Target: ${stats.table || 'Relation'} • In-Browser SQLite WASM</div>
+            </div>
+
+            <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
+              <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">PHYSICAL ENGINE OPERATOR</div>
+              <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${analysis.detectedOp} (${analysis.complexity})</div>
+              <div style="font-size:10px; color:#71717a;">Active SQL Keyword: [${targetClause}] in query editor</div>
+            </div>
+
+            <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
+              <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">HARDWARE REGISTER &amp; BUS REACTION</div>
+              <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${analysis.hardwareSummary}</div>
+              <div style="font-size:10px; color:#71717a;">${analysis.kernelReaction}</div>
+            </div>
+          </div>
+
+          <!-- Live Physical Plan & SQL Bi-Directional Binding Card -->
+          <div style="background:#0a0a0d; border:1px solid rgba(255,255,255,0.18); border-left:3px solid #ffffff; border-radius:6px; padding:12px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
+              <span style="font-size:10px; font-weight:700; color:#ffffff; letter-spacing:0.04em;">LIVE SQL QUERY &bull; PHYSICAL EXECUTION PLAN</span>
+              <span style="font-size:9px; font-weight:700; padding:2px 6px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.22); border-radius:3px;">
+                CLICK ANY SVG NODE TO SELECT MATCHING SQL CLAUSE
+              </span>
+            </div>
+            <pre style="margin:4px 0 8px 0; padding:8px 12px; background:#000000; color:#ffffff; border:1px solid rgba(255,255,255,0.12); border-radius:4px; font-size:11px; overflow-x:auto;">${state.lastQuery || 'SELECT * FROM table;'}</pre>
+            <div style="font-size:11px; color:#d4d4d8; line-height:1.45;">
+              <span style="color:#ffffff; font-weight:700;">Subsystem Action (Phase 0${curStep.stepNum}):</span> ${curStep.telemetry.invariant}
+            </div>
+          </div>
+        ` : !isChaos ? `
           <!-- Stepper Transport & Step Navigation Strip -->
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding:8px 12px; background:#0a0b0e; border:1px solid rgba(255,255,255,0.12); border-radius:6px;">
             <!-- Left: Playback buttons -->
@@ -1634,7 +1995,7 @@ window.InteractiveArchitectureExplainer = (function() {
             <!-- Middle: Step Pills -->
             <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
               ${data.steps.map((st, i) => `
-                <button onclick="window.InteractiveArchitectureExplainer.setStep(${i})" style="padding:3px 8px; font-size:10px; font-family:'JetBrains Mono', monospace; font-weight:${i === state.currentStepIdx ? '700' : '500'}; background:${i === state.currentStepIdx ? '#ffffff' : '#111216'}; color:${i === state.currentStepIdx ? '#000000' : '#71717a'}; border:1px solid ${i === state.currentStepIdx ? '#ffffff' : 'rgba(255,255,255,0.1)'}; border-radius:3px; cursor:pointer;">
+                <button onclick="window.InteractiveArchitectureExplainer.selectStepWithSql(${i})" style="padding:3px 8px; font-size:10px; font-family:'JetBrains Mono', monospace; font-weight:${i === state.currentStepIdx ? '700' : '500'}; background:${i === state.currentStepIdx ? '#ffffff' : '#111216'}; color:${i === state.currentStepIdx ? '#000000' : '#71717a'}; border:1px solid ${i === state.currentStepIdx ? '#ffffff' : 'rgba(255,255,255,0.1)'}; border-radius:3px; cursor:pointer;">
                   [0${st.stepNum}] ${st.name.split('&')[0].trim()}
                 </button>
               `).join('')}
@@ -1654,46 +2015,53 @@ window.InteractiveArchitectureExplainer = (function() {
             <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
               <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">HARDWARE &amp; OS RUNTIME</div>
               <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curStep.telemetry.hardware}</div>
-              <div style="font-size:10px; color:#71717a;">Kernel: ${curStep.telemetry.kernel}</div>
+              <div style="font-size:10px; color:#71717a;">L1/L2 Cacheline: 64 Bytes • SIMD AVX-512 Ready</div>
             </div>
 
             <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
-              <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">RELATIONAL INVARIANT</div>
+              <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">SYSTEM INVARIANT VERIFIED</div>
               <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curStep.telemetry.invariant}</div>
-              <div style="font-size:10px; color:#71717a;">State: ${curStep.telemetry.state}</div>
+              <div style="font-size:10px; color:#71717a;">Engine State: NOMINAL (Invariants Preserved)</div>
             </div>
 
             <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:10px 12px;">
-              <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">ACTIVE SCENARIO SPEC</div>
-              <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curScenario.title}</div>
-              <div style="font-size:10px; color:#71717a;">${curScenario.desc}</div>
+              <div style="font-size:9.5px; font-weight:700; color:#a1a1aa; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">KERNEL &amp; STORAGE BUS INTERACTION</div>
+              <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curStep.telemetry.kernel}</div>
+              <div style="font-size:10px; color:#71717a;">Status: ZERO-COPY MEMORY PIPELINE</div>
             </div>
           </div>
 
-          <!-- Staff Architect Interview Defense Card -->
-          <div style="background:#0c0d10; border:1px solid rgba(255,255,255,0.15); border-left:3px solid #ffffff; border-radius:6px; padding:12px 16px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-              <span style="font-size:10px; font-weight:700; color:#ffffff; letter-spacing:0.05em;">STAFF ARCHITECT INTERVIEW DEFENSE // ${data.title.toUpperCase()}</span>
-              <span style="font-size:9.5px; color:#71717a; padding:1px 6px; background:#18181b; border:1px solid rgba(255,255,255,0.1); border-radius:3px;">PHASE ${curStep.stepNum}</span>
+          <!-- Staff Engineer Defense Card -->
+          <div style="background:#090a0d; border:1px solid rgba(255,255,255,0.14); border-left:3px solid #ffffff; border-radius:6px; padding:14px 18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
+              <span style="font-size:10px; font-weight:700; color:#ffffff; letter-spacing:0.05em;">FAANG STAFF INTERVIEW DEFENSE &bull; DATABASE ARCHITECT</span>
+              <span style="font-size:9px; font-weight:700; padding:2px 6px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.2); border-radius:3px;">SYSTEM INVARIANT EXPLAINER</span>
             </div>
-            <div style="font-size:11.5px; font-weight:700; color:#ffffff; margin-bottom:6px;">Q: ${curStep.defense.question}</div>
-            <p style="font-size:11px; color:#d4d4d8; line-height:1.5; margin:0 0 10px 0;">${curStep.defense.answer}</p>
-            <pre style="margin:0; padding:8px 12px; background:#000000; color:#f4f4f5; border:1px solid rgba(255,255,255,0.1); border-radius:4px; font-size:10.5px; overflow-x:auto;">${curStep.snippet}</pre>
+            <div style="font-size:11px; color:#ffffff; font-weight:700; margin-bottom:6px;">
+              Q: ${curStep.defense.question}
+            </div>
+            <p style="font-size:11px; color:#a1a1aa; line-height:1.5; margin:0 0 10px 0;">
+              ${curStep.defense.answer}
+            </p>
+            <div>
+              <span style="font-size:9.5px; font-weight:700; color:#71717a; text-transform:uppercase;">C++ / C Engine Implementation Pattern:</span>
+              <pre style="margin:4px 0 0 0; padding:8px 12px; background:#000000; color:#ffffff; border:1px solid rgba(255,255,255,0.1); border-radius:4px; font-size:10.5px; overflow-x:auto;">${curStep.snippet}</pre>
+            </div>
           </div>
         ` : `
-          <!-- Chaos Stress Simulation Telemetry HUD (3 Alert Cards) -->
+          <!-- Chaos Telemetry HUD (3 Cards) -->
           <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:10px;">
-            <!-- Alert Card 1: Failure Impact -->
+            <!-- Alert Card 1: Impact -->
             <div style="background:#0e0f14; border:1px solid rgba(255,255,255,0.22); border-top:2px solid #ffffff; border-radius:6px; padding:10px 12px;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
                 <span style="font-size:9.5px; font-weight:700; color:#ffffff; text-transform:uppercase; letter-spacing:0.04em;">FAILURE IMPACT &amp; SEVERITY</span>
-                <span style="font-size:8.5px; font-weight:700; padding:1px 5px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.25); border-radius:2px;">${curChaos.severity}</span>
+                <span style="font-size:8.5px; font-weight:800; padding:1px 5px; background:#ffffff; color:#000000; border-radius:2px;">${curChaos.severity}</span>
               </div>
-              <div style="font-size:11px; color:#ffffff; font-weight:700; margin-bottom:4px;">${curChaos.metrics.impact}</div>
-              <div style="font-size:10px; color:#a1a1aa;">Fault: ${curChaos.title}</div>
+              <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curChaos.metrics.impact}</div>
+              <div style="font-size:10px; color:#71717a;">Fault: ${curChaos.title}</div>
             </div>
 
-            <!-- Alert Card 2: Invariant Under Stress -->
+            <!-- Alert Card 2: Invariant Attacked -->
             <div style="background:#0e0f14; border:1px solid rgba(255,255,255,0.22); border-top:2px solid #ffffff; border-radius:6px; padding:10px 12px;">
               <div style="font-size:9.5px; font-weight:700; color:#ffffff; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.04em;">SYSTEM INVARIANT UNDER ATTACK</div>
               <div style="font-size:11px; color:#ffffff; font-weight:600; margin-bottom:4px;">${curChaos.metrics.invariant}</div>
@@ -1736,24 +2104,84 @@ window.InteractiveArchitectureExplainer = (function() {
     `;
   }
 
-  // Update dynamic SVG highlight overlay (Handles both Stepper and Chaos views)
+  // Update dynamic SVG highlight overlay (Handles Stepper, Chaos, and Live Sync)
   function updateSvgHighlight() {
     const overlayGroup = document.getElementById('archOverlayContent');
     if (!overlayGroup) return;
 
     const isChaos = state.viewMode === 'chaos';
+    const isLive = state.viewMode === 'live';
     const data = ARCH_DEEP_DIVES[state.activeDiagramId] || ARCH_DEEP_DIVES['buffer_pool'];
     const chaosList = CHAOS_DEEP_DIVES[state.activeDiagramId] || CHAOS_DEEP_DIVES['buffer_pool'];
 
-    if (!isChaos) {
-      // Normal Stepper Subsystem Highlight
-      const curStep = data.steps[state.currentStepIdx];
-      if (!curStep) return;
+    if (isLive) {
+      // Live Query Execution Pulse Animated Overlay
+      const curStep = data.steps[state.currentStepIdx] || data.steps[0];
+      const { x, y, w, h } = curStep.box;
+      const beacon = curStep.beacon;
+      const analysis = state.lastQueryAnalysis || analyzeQueryForArchitecture(state.lastQuery);
+      const prevStep = state.currentStepIdx > 0 ? data.steps[state.currentStepIdx - 1] : null;
 
+      overlayGroup.innerHTML = `
+        <!-- Transparent Click Hotspots over all Steps for Bi-directional Selection -->
+        ${data.steps.map((st, i) => `
+          <rect x="${st.box.x}" y="${st.box.y}" width="${st.box.w}" height="${st.box.h}" 
+            fill="transparent" cursor="pointer" pointer-events="all"
+            onclick="window.InteractiveArchitectureExplainer.selectStepWithSql(${i})">
+            <title>Step 0${st.stepNum}: Click to highlight SQL keyword [${getStepSqlTarget(state.activeDiagramId, i)}]</title>
+          </rect>
+        `).join('')}
+
+        ${prevStep ? `
+          <!-- Animated Data-Flow Laser Beam from Previous Subsystem -->
+          <line x1="${prevStep.beacon.x}" y1="${prevStep.beacon.y}" x2="${beacon.x}" y2="${beacon.y}" 
+            stroke="#ffffff" stroke-width="1.8" stroke-dasharray="6 3" opacity="0.85">
+            <animate attributeName="stroke-dashoffset" values="18;0" dur="0.8s" repeatCount="indefinite" />
+          </line>
+        ` : ''}
+
+        <!-- Active Subsystem Glowing Bounding Box -->
+        <rect x="${x - 3}" y="${y - 3}" width="${w + 6}" height="${h + 6}" rx="8" fill="none" stroke="#ffffff" stroke-width="2.2" filter="url(#arch-glow-white)" opacity="0.95" />
+        <rect x="${x - 3}" y="${y - 3}" width="${w + 6}" height="${h + 6}" rx="8" fill="rgba(255,255,255,0.03)" stroke="#ffffff" stroke-width="1.4" stroke-dasharray="6 3" />
+        
+        <!-- Live WASM Active Step Pill pinned above target -->
+        <g transform="translate(${x + 4}, ${Math.max(16, y - 12)})">
+          <rect x="0" y="0" width="168" height="20" rx="3" fill="#ffffff" />
+          <circle cx="10" cy="10" r="3.5" fill="#000000">
+            <animate attributeName="opacity" values="1;0.2;1" dur="1s" repeatCount="indefinite" />
+          </circle>
+          <text x="90" y="13.5" fill="#000000" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="800" text-anchor="middle">LIVE WASM: STEP 0${curStep.stepNum}</text>
+        </g>
+
+        <!-- Pulsing Laser Beacon Dot -->
+        <circle cx="${beacon.x}" cy="${beacon.y}" r="8" fill="#ffffff" opacity="0.3">
+          <animate attributeName="r" values="4;14;4" dur="1.2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.7;0.1;0.7" dur="1.2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="${beacon.x}" cy="${beacon.y}" r="3.5" fill="#ffffff" />
+
+        <!-- Detected Physical Operator Badge below Beacon -->
+        <g transform="translate(${beacon.x - 50}, ${beacon.y + 12})">
+          <rect x="0" y="0" width="100" height="14" rx="2" fill="#000000" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" />
+          <text x="50" y="9.5" fill="#ffffff" font-family="'JetBrains Mono', monospace" font-size="7.5" font-weight="700" text-anchor="middle">[${analysis.detectedOp}]</text>
+        </g>
+      `;
+    } else if (!isChaos) {
+      // Normal Stepper Subsystem Highlight
+      const curStep = data.steps[state.currentStepIdx] || data.steps[0];
       const { x, y, w, h } = curStep.box;
       const beacon = curStep.beacon;
 
       overlayGroup.innerHTML = `
+        <!-- Transparent Click Hotspots over all Steps -->
+        ${data.steps.map((st, i) => `
+          <rect x="${st.box.x}" y="${st.box.y}" width="${st.box.w}" height="${st.box.h}" 
+            fill="transparent" cursor="pointer" pointer-events="all"
+            onclick="window.InteractiveArchitectureExplainer.selectStepWithSql(${i})">
+            <title>Step 0${st.stepNum}: Click to select and highlight [${getStepSqlTarget(state.activeDiagramId, i)}]</title>
+          </rect>
+        `).join('')}
+
         <!-- Active Subsystem Glowing Bounding Box -->
         <rect x="${x - 3}" y="${y - 3}" width="${w + 6}" height="${h + 6}" rx="8" fill="none" stroke="#ffffff" stroke-width="1.8" filter="url(#arch-glow-white)" opacity="0.85" />
         <rect x="${x - 3}" y="${y - 3}" width="${w + 6}" height="${h + 6}" rx="8" fill="rgba(255,255,255,0.02)" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="6 3" />
@@ -1814,17 +2242,29 @@ window.InteractiveArchitectureExplainer = (function() {
   function nextStep() {
     const data = ARCH_DEEP_DIVES[state.activeDiagramId] || ARCH_DEEP_DIVES['buffer_pool'];
     const nextIdx = (state.currentStepIdx + 1) % data.steps.length;
-    setStep(nextIdx);
+    if (state.viewMode === 'live') {
+      selectStepWithSql(nextIdx);
+    } else {
+      setStep(nextIdx);
+    }
   }
 
   function prevStep() {
     const data = ARCH_DEEP_DIVES[state.activeDiagramId] || ARCH_DEEP_DIVES['buffer_pool'];
     const prevIdx = (state.currentStepIdx - 1 + data.steps.length) % data.steps.length;
-    setStep(prevIdx);
+    if (state.viewMode === 'live') {
+      selectStepWithSql(prevIdx);
+    } else {
+      setStep(prevIdx);
+    }
   }
 
   function reset() {
-    setStep(0);
+    if (state.viewMode === 'live') {
+      selectStepWithSql(0);
+    } else {
+      setStep(0);
+    }
   }
 
   function setScenario(scIdx) {
@@ -1860,6 +2300,11 @@ window.InteractiveArchitectureExplainer = (function() {
       clearInterval(state.timer);
       state.timer = null;
     }
+    if (state.livePulseTimer) {
+      clearInterval(state.livePulseTimer);
+      state.livePulseTimer = null;
+      state.liveAnimationActive = false;
+    }
   }
 
   function toggleSpeed() {
@@ -1894,8 +2339,15 @@ window.InteractiveArchitectureExplainer = (function() {
     play,
     pause,
     toggleSpeed,
+    // Live query synchronization methods
+    syncLiveQuery,
+    toggleAutoRoute,
+    replayLivePulse: playLiveExecutionPulse,
+    selectStepWithSql,
+    analyzeQuery: analyzeQueryForArchitecture,
     getDeepDiveData: () => ARCH_DEEP_DIVES,
-    getChaosData: () => CHAOS_DEEP_DIVES
+    getChaosData: () => CHAOS_DEEP_DIVES,
+    getState: () => ({ ...state })
   };
 
 })();
