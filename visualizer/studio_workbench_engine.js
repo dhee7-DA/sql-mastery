@@ -18,6 +18,7 @@ window.StudioWorkbenchEngine = (function() {
   }
 
   let state = {
+    activeVolume: 'all',
     activeTopicSeq: '01',
     activeDifficulty: 'all', // 'all' | 'easy' | 'medium' | 'hard'
     activeProblemId: '01_1',
@@ -186,8 +187,10 @@ window.StudioWorkbenchEngine = (function() {
   // Helper to extract all 30 problems from MASTERY_COURSE_DATA
   function getAllProblems() {
     const rawData = (typeof window !== 'undefined' && window.MASTERY_COURSE_DATA) || [];
+    const volumesData = (typeof window !== 'undefined' && window.DEEP_DIVE_PRACTICE_VOLUMES) || [];
     const problems = [];
 
+    // Volume 0: Core ANSI SQL Foundations (Topics 01-10)
     rawData.forEach(topic => {
       const topicSeq = topic.seq || '01';
       const topicTitle = topic.title || ('Topic ' + topicSeq);
@@ -198,6 +201,9 @@ window.StudioWorkbenchEngine = (function() {
         const id = topicSeq + '_' + tierId;
         problems.push({
           id,
+          volumeId: 'vol_0_foundations',
+          volumeName: 'Volume 0: Core Relational Foundations',
+          volumeShortName: 'Vol 0: Foundations',
           topicSeq,
           topicTitle,
           topicShortName: topic.shortName || (topicSeq + '. ' + topicTitle),
@@ -217,12 +223,71 @@ window.StudioWorkbenchEngine = (function() {
       });
     });
 
+    // Volumes 1-4: Deep-Dive Production Systems Practice Volumes (48 Problems)
+    volumesData.forEach(vol => {
+      const volId = vol.volumeId;
+      const volName = vol.volumeName;
+      const volShort = vol.volumeShortName || volName;
+      (vol.problems || []).forEach((p, idx) => {
+        problems.push({
+          id: p.id,
+          volumeId: volId,
+          volumeName: volName,
+          volumeShortName: volShort,
+          topicSeq: p.topicSeq || ('V' + vol.volumeSeq + '-' + (idx + 1)),
+          topicTitle: p.title,
+          topicShortName: (p.topicSeq || ('V' + vol.volumeSeq + '-' + (idx + 1))) + '. ' + p.title,
+          tierId: idx + 1,
+          tierName: 'Deep-Dive ' + (idx + 1),
+          difficulty: (p.difficulty || 'hard').toLowerCase(),
+          badgeClass: p.badgeClass || 'hard',
+          title: p.title,
+          targetTable: p.targetTable,
+          columns: p.columns || [],
+          seedSql: p.seedSql || '',
+          seedRows: p.seedRows || [],
+          extraTables: p.extraTables || {},
+          spec: p.spec || '',
+          starterSql: p.starterSql,
+          expectedSolutionSql: p.expectedSolutionSql,
+          expectedRowCount: p.expectedRowCount,
+          svgDiagramKey: p.svgDiagramKey,
+          deepTheory: p.deepTheory || [],
+          interviewDefense: p.staffInterviewDefense || null
+        });
+      });
+    });
+
     return problems;
   }
 
   function getProblemById(id) {
     const all = getAllProblems();
-    return all.find(p => p.id === id) || all[0];
+    const prob = all.find(p => p.id === id) || all[0];
+    if (prob) {
+      if (typeof window !== 'undefined') {
+        if (!window.DATABASE) window.DATABASE = {};
+        if (prob.targetTable && prob.seedRows && prob.seedRows.length > 0) {
+          window.DATABASE[prob.targetTable] = prob.seedRows;
+        }
+        if (prob.extraTables) {
+          Object.keys(prob.extraTables).forEach(t => {
+            window.DATABASE[t] = prob.extraTables[t];
+          });
+        }
+        if (window.sqlDb && prob.seedSql) {
+          try { window.sqlDb.run(prob.seedSql); } catch(e) {}
+        }
+      }
+      if (prob.columns && prob.columns.length > 0 && !TABLE_SCHEMAS[prob.targetTable]) {
+        TABLE_SCHEMAS[prob.targetTable] = {
+          name: prob.targetTable,
+          description: prob.domain || 'Practice Table',
+          columns: prob.columns
+        };
+      }
+    }
+    return prob;
   }
 
   // ---------------------------------------------------------------------------
@@ -265,11 +330,19 @@ window.StudioWorkbenchEngine = (function() {
     const dbTables = Object.keys(TABLE_SCHEMAS);
     const currentTable = state.activeTable || currentProb.targetTable || 'CITY';
 
-    // Unique topics list
+    // Unique topics list filtered by active volume
+    const activeVol = state.activeVolume || 'all';
     const topicsMap = new Map();
     allProblems.forEach(p => {
+      if (activeVol !== 'all' && p.volumeId !== activeVol) return;
       if (!topicsMap.has(p.topicSeq)) {
-        topicsMap.set(p.topicSeq, { seq: p.topicSeq, title: p.topicTitle, shortName: p.topicShortName });
+        topicsMap.set(p.topicSeq, { 
+          seq: p.topicSeq, 
+          title: p.topicTitle, 
+          shortName: p.topicShortName,
+          volumeId: p.volumeId,
+          volumeName: p.volumeName
+        });
       }
     });
     const topicsList = Array.from(topicsMap.values());
@@ -299,10 +372,25 @@ window.StudioWorkbenchEngine = (function() {
               <span class="studio-brand-icon">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
               </span>
-              <div>
+                            <div>
                 <h1 class="studio-brand-title">Section Studio</h1>
-                <span class="studio-brand-pill">Relational Arena · 30 Problems</span>
+                <span class="studio-brand-pill">Relational Arena • 78 Problems · 5 Volumes</span>
               </div>
+            </div>
+
+            <div class="studio-bar-sep"></div>
+
+            <!-- Volume Quick Switcher -->
+            <div class="studio-select-group" title="Practice Volume">
+              <span class="studio-select-label">Vol:</span>
+              <select id="studioVolumeSelect" class="studio-compact-select" onchange="window.StudioWorkbenchEngine.switchVolume(this.value)">
+                <option value="all" ${state.activeVolume === 'all' ? 'selected' : ''}>All Volumes (78 Probs)</option>
+                <option value="vol_0_foundations" ${state.activeVolume === 'vol_0_foundations' ? 'selected' : ''}>Vol 0: Core Foundations (30)</option>
+                <option value="vol_1_storage" ${state.activeVolume === 'vol_1_storage' ? 'selected' : ''}>Vol 1: Storage &amp; Memory Physics (12)</option>
+                <option value="vol_2_operators" ${state.activeVolume === 'vol_2_operators' ? 'selected' : ''}>Vol 2: Relational Operators (12)</option>
+                <option value="vol_3_concurrency" ${state.activeVolume === 'vol_3_concurrency' ? 'selected' : ''}>Vol 3: Concurrency &amp; Distributed (12)</option>
+                <option value="vol_4_streaming" ${state.activeVolume === 'vol_4_streaming' ? 'selected' : ''}>Vol 4: Streaming &amp; Time-Series (12)</option>
+              </select>
             </div>
 
             <div class="studio-bar-sep"></div>
@@ -384,7 +472,7 @@ window.StudioWorkbenchEngine = (function() {
             </button>
             <div class="carousel-range-wrapper">
               <input type="range" id="problemCarouselRange" min="1" max="30" value="${curProbIndex + 1}" step="1" class="carousel-range-input" title="Problem Slider: Slide across all 30 problems">
-              <span class="carousel-range-indicator">Problem <strong>${curProbIndex + 1}</strong> of 30</span>
+              <span class="carousel-range-indicator">Problem <strong>${curProbIndex + 1}</strong> of ${allProblems.length}</span>
             </div>
             <button type="button" id="btnNextProblemSlider" class="carousel-nav-btn next" title="Next Problem (Arrow Right)">
               Next &#9654;
@@ -394,7 +482,7 @@ window.StudioWorkbenchEngine = (function() {
           <!-- Browse All 10 Topics & 30 Problems Collapsible Button Right -->
           <button type="button" id="btnToggleProblemTiles" class="btn-toggle-tiles ${state.tilesOpen ? 'active' : ''}" title="View and search all 30 problems across 10 topics">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-            <span>Browse All 10 Topics &amp; 30 Problems</span>
+            <span>Browse All ${topicsList.length} Topics &amp; ${allProblems.length} Problems</span>
             <span class="tiles-badge-count">30</span>
             <span class="tiles-state-chevron">${state.tilesOpen ? '&#9650; Collapse' : '&#9660; Expand Tiles'}</span>
           </button>
@@ -809,6 +897,9 @@ window.StudioWorkbenchEngine = (function() {
   }
 
   function renderEditorialDiagramSvg(prob) {
+    if (prob && prob.svgDiagramKey && typeof window !== 'undefined' && window.DeepDivePracticeSvgs && typeof window.DeepDivePracticeSvgs[prob.svgDiagramKey] === 'function') {
+      return window.DeepDivePracticeSvgs[prob.svgDiagramKey](prob);
+    }
     var seq = prob.topicSeq || '01';
     var accentColor = 
       seq === '01' ? '#2563eb' :
@@ -2718,11 +2809,25 @@ window.StudioWorkbenchEngine = (function() {
     });
   }
 
+  function switchVolume(volId) {
+    state.activeVolume = volId;
+    const all = getAllProblems();
+    const firstProb = all.find(p => volId === 'all' || p.volumeId === volId);
+    if (firstProb) {
+      selectProblem(firstProb.id);
+    } else {
+      init();
+    }
+  }
+
   // Public Interface
   return {
     switchArchDiagram,
     init,
     selectProblem,
+    switchVolume,
+    getAllProblems,
+    getProblemById,
     runStudioQuery,
     verifyCurrentProblem,
     setStageTab,
@@ -2731,3 +2836,5 @@ window.StudioWorkbenchEngine = (function() {
   };
 
 })();
+
+window.StudioWorkbench = window.StudioWorkbenchEngine;

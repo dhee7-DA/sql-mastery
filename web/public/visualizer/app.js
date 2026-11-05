@@ -7479,9 +7479,27 @@ function renderErdInspector(companyData, tableName) {
 
 function renderProblemBank(filter = 'all') {
   const container = document.getElementById('problemsListGrid');
-  if (!container || !window.FOUNDATIONS_DATA) return;
+  if (!container) return;
 
-  let problems = window.FOUNDATIONS_DATA.problems || [];
+  let problems = [...((window.FOUNDATIONS_DATA && window.FOUNDATIONS_DATA.problems) || [])];
+  if (window.DEEP_DIVE_PRACTICE_VOLUMES) {
+    window.DEEP_DIVE_PRACTICE_VOLUMES.forEach(vol => {
+      (vol.problems || []).forEach(p => {
+        problems.push({
+          id: p.id,
+          volumeId: p.volumeId,
+          volumeName: p.volumeName,
+          title: p.title,
+          difficulty: p.difficulty || 'Hard',
+          points: 100,
+          table: p.targetTable,
+          prompt: p.spec,
+          solutionSQL: p.starterSql
+        });
+      });
+    });
+  }
+
   if (filter !== 'all') {
     problems = problems.filter(p => p.difficulty.toLowerCase() === filter.toLowerCase());
   }

@@ -99,6 +99,16 @@
             </button>
             <div class="nav-dropdown-menu">
               <div class="nav-dropdown-header">Featured Interview Screens</div>
+              <button class="nav-dropdown-item nav-tab" id="btnNavPracticeVolumes" data-view="viewStudio" onclick="selectNavView('viewStudio', 'Practice Volumes', 'navGroupPractice'); if(window.StudioWorkbenchEngine) window.StudioWorkbenchEngine.switchVolume('vol_1_storage');">
+                <span class="nav-item-icon">&bull;</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Deep-Dive Practice Volumes</span>
+                    <span class="nav-item-tag" style="background:#27272a; color:#ffffff; font-weight:700;">48 Problems · 4 Vols</span>
+                  </div>
+                  <span class="nav-item-desc">Hardware storage, relational operators, MVCC &amp; streaming analytics</span>
+                </div>
+              </button>
               <button class="nav-dropdown-item nav-tab" id="btnNavMockInterview" data-view="viewMockInterview" onclick="selectNavView('viewMockInterview', 'Mock Screen', 'navGroupPractice')">
                 <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
@@ -1939,6 +1949,8 @@
   <script src="studio_workbench_engine.js?v=20261029_clean_v4"></script>
   <script src="relational_machines_engine.js?v=20261030_v1"></script>
   <script src="mastery_course_data.js?v=10"></script>
+  <script src="deep_dive_practice_volumes_data.js?v=1"></script>
+  <script src="deep_dive_practice_svgs.js?v=1"></script>
   <script src="mastery_course_svg_engine.js?v=10"></script>
   <script src="database_architecture_svgs.js?v=1"></script>
   <script src="interactive_architecture_explainer.js?v=1"></script>
