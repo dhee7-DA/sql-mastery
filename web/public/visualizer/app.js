@@ -2989,33 +2989,103 @@ const orderSandboxPresets = [
 // LIMIT sandbox options
 const limitSandboxPresets = [1, 3, 5];
 
+function getActiveTrackSteps(trackId) {
+  if (trackId === 'track01') return window.GUIDED_STEPS || [];
+  if (trackId === 'track02') return window.CASEWHEN_STEPS || [];
+  if (trackId === 'trackAggregations') return window.AGGREGATIONS_STEPS || [];
+  if (trackId === 'trackJoins') return window.JOINS_STEPS || [];
+  if (trackId === 'track05' || trackId === 'trackWindow') return window.WINDOW_STEPS || [];
+  if (trackId === 'track06' || trackId === 'trackCTE') return window.CTE_STEPS || [];
+  if (trackId === 'track07' || trackId === 'trackSetops') return window.SETOPS_STEPS || [];
+  if (trackId === 'track08' || trackId === 'trackIndexing') return window.INDEXING_STEPS || [];
+  return window.GUIDED_STEPS || [];
+}
+
+function getActiveTrackSchema(trackId) {
+  if (trackId === 'track01') return window.GUIDED_SCHEMA;
+  if (trackId === 'track02') return window.CASEWHEN_SCHEMA;
+  if (trackId === 'trackAggregations') return window.AGGREGATIONS_SCHEMA;
+  if (trackId === 'trackJoins') return window.JOINS_SCHEMA ? window.JOINS_SCHEMA.tableA : null;
+  if (trackId === 'track05' || trackId === 'trackWindow') return window.WINDOW_SCHEMA;
+  if (trackId === 'track06' || trackId === 'trackCTE') return window.CTE_SCHEMA;
+  if (trackId === 'track07' || trackId === 'trackSetops') return window.SETOPS_SCHEMA;
+  if (trackId === 'track08' || trackId === 'trackIndexing') return window.INDEXING_SCHEMA;
+  return window.GUIDED_SCHEMA;
+}
+
+window.switchGuidedMode = function(mode) {
+  const btnSteps = document.getElementById('btnModeStepLabs');
+  const btnDrills = document.getElementById('btnModeClauseDrills');
+  const stepSec = document.getElementById('guidedStepSection');
+  const drillSec = document.getElementById('guidedDrillsSection');
+
+  if (mode === 'drills') {
+    if (btnSteps) btnSteps.classList.remove('active');
+    if (btnDrills) btnDrills.classList.add('active');
+    if (stepSec) stepSec.style.display = 'none';
+    if (drillSec) drillSec.style.display = 'flex';
+    if (window.GuidedDrillsEngine) window.GuidedDrillsEngine.init();
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say("Welcome to Clause Drills! Test physical engine execution order and bust production bugs!", 4500, 'thinking');
+  } else {
+    if (btnSteps) btnSteps.classList.add('active');
+    if (btnDrills) btnDrills.classList.remove('active');
+    if (stepSec) stepSec.style.display = 'block';
+    if (drillSec) drillSec.style.display = 'none';
+    renderGuidedStepperBar();
+    renderGuidedStep(currentGuidedStep);
+  }
+};
+
 function initGuidedLab() {
   const btnTrack01 = document.getElementById('btnTrack01');
   const btnTrack02 = document.getElementById('btnTrack02');
   const btnTrackAggregations = document.getElementById('btnTrackAggregations');
   const btnTrackJoins = document.getElementById('btnTrackJoins');
+  const btnTrack05 = document.getElementById('btnTrack05');
+  const btnTrack06 = document.getElementById('btnTrack06');
+  const btnTrack07 = document.getElementById('btnTrack07');
+  const btnTrack08 = document.getElementById('btnTrack08');
   const btnTrackOperators = document.getElementById('btnTrackOperators');
 
   if (btnTrack01) btnTrack01.addEventListener('click', () => switchTrack('track01'));
   if (btnTrack02) btnTrack02.addEventListener('click', () => switchTrack('track02'));
   if (btnTrackAggregations) btnTrackAggregations.addEventListener('click', () => switchTrack('trackAggregations'));
   if (btnTrackJoins) btnTrackJoins.addEventListener('click', () => switchTrack('trackJoins'));
+  if (btnTrack05) btnTrack05.addEventListener('click', () => switchTrack('track05'));
+  if (btnTrack06) btnTrack06.addEventListener('click', () => switchTrack('track06'));
+  if (btnTrack07) btnTrack07.addEventListener('click', () => switchTrack('track07'));
+  if (btnTrack08) btnTrack08.addEventListener('click', () => switchTrack('track08'));
   if (btnTrackOperators) btnTrackOperators.addEventListener('click', () => switchTrack('trackOperators'));
 
   switchTrack('track01');
 }
+
+window.switchTrack = switchTrack;
+window.renderGuidedStep = renderGuidedStep;
+window.renderGuidedStepperBar = renderGuidedStepperBar;
 
 function switchTrack(trackId) {
   currentTrack = trackId;
   currentGuidedStep = 1;
 
   document.querySelectorAll('.track-btn').forEach(b => b.classList.remove('active'));
-  const activeBtn = document.getElementById(
-    trackId === 'track01' ? 'btnTrack01' : 
-    (trackId === 'track02' ? 'btnTrack02' : 
-    (trackId === 'trackAggregations' ? 'btnTrackAggregations' : 
-    (trackId === 'trackJoins' ? 'btnTrackJoins' : 'btnTrackOperators')))
-  );
+  const trackBtnMap = {
+    'track01': 'btnTrack01',
+    'track02': 'btnTrack02',
+    'trackAggregations': 'btnTrackAggregations',
+    'trackJoins': 'btnTrackJoins',
+    'track05': 'btnTrack05',
+    'trackWindow': 'btnTrack05',
+    'track06': 'btnTrack06',
+    'trackCTE': 'btnTrack06',
+    'track07': 'btnTrack07',
+    'trackSetops': 'btnTrack07',
+    'track08': 'btnTrack08',
+    'trackIndexing': 'btnTrack08',
+    'trackOperators': 'btnTrackOperators'
+  };
+  const activeBtnId = trackBtnMap[trackId] || 'btnTrack01';
+  const activeBtn = document.getElementById(activeBtnId);
   if (activeBtn) activeBtn.classList.add('active');
 
   const badge = document.getElementById('trackActiveSchemaBadge');
@@ -3024,6 +3094,10 @@ function switchTrack(trackId) {
     else if (trackId === 'track02') badge.textContent = 'Schema: TRIANGLES (8 rows)';
     else if (trackId === 'trackAggregations') badge.textContent = 'Schema: Employees (9 rows, NULL bonuses)';
     else if (trackId === 'trackJoins') badge.textContent = 'Schema: Employees (5 rows) ⟕ Departments (4 rows)';
+    else if (trackId === 'track05' || trackId === 'trackWindow') badge.textContent = 'Schema: SalesPerformance (10 rows)';
+    else if (trackId === 'track06' || trackId === 'trackCTE') badge.textContent = 'Schema: OrgHierarchy (9 rows, CEO root)';
+    else if (trackId === 'track07' || trackId === 'trackSetops') badge.textContent = 'Schema: OnlineUsers (5) ∪ StoreCustomers (5)';
+    else if (trackId === 'track08' || trackId === 'trackIndexing') badge.textContent = 'Schema: OrdersStorage (10 rows, 5 disk pages)';
     else badge.textContent = 'Operators: LIKE, IN, BETWEEN, NULL';
   }
 
@@ -3040,10 +3114,7 @@ function switchTrack(trackId) {
 
 function renderGuidedStepperBar() {
   const bar = document.getElementById('guidedStepperBar');
-  const activeSteps = currentTrack === 'track01' ? window.GUIDED_STEPS : 
-    (currentTrack === 'track02' ? window.CASEWHEN_STEPS : 
-    (currentTrack === 'trackAggregations' ? window.AGGREGATIONS_STEPS : 
-    (currentTrack === 'trackJoins' ? window.JOINS_STEPS : [])));
+  const activeSteps = getActiveTrackSteps(currentTrack);
   if (!bar || !activeSteps) return;
 
   let html = '';
@@ -3208,14 +3279,8 @@ function renderGuidedStep(stepNum) {
   renderGuidedStepperBar();
 
   const container = document.getElementById('guidedStepCard');
-  const activeSteps = currentTrack === 'track01' ? window.GUIDED_STEPS : 
-    (currentTrack === 'track02' ? window.CASEWHEN_STEPS : 
-    (currentTrack === 'trackAggregations' ? window.AGGREGATIONS_STEPS : 
-    (currentTrack === 'trackJoins' ? window.JOINS_STEPS : [])));
-  const activeSchema = currentTrack === 'track01' ? window.GUIDED_SCHEMA : 
-    (currentTrack === 'track02' ? window.CASEWHEN_SCHEMA : 
-    (currentTrack === 'trackAggregations' ? window.AGGREGATIONS_SCHEMA : 
-    (currentTrack === 'trackJoins' ? window.JOINS_SCHEMA.tableA : null)));
+  const activeSteps = getActiveTrackSteps(currentTrack);
+  const activeSchema = getActiveTrackSchema(currentTrack);
   if (!container || !activeSteps) return;
 
   const step = activeSteps.find(s => s.stepIndex === stepNum) || activeSteps[0];

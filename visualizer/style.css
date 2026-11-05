@@ -28776,3 +28776,330 @@ pre code {
   font-size: 18px !important;
   flex-shrink: 0 !important;
 }
+
+
+/* =============================================================================
+   CARBON MONOCHROME: GUIDED LAB TRACKS & INTERACTIVE DRILL ENGINE STYLES
+   ============================================================================= */
+
+/* Clause Badges / Pills */
+.pill-case {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.pill-window {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.pill-cte {
+  background: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.pill-setops {
+  background: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.pill-index {
+  background: rgba(236, 72, 153, 0.12);
+  color: #f472b6;
+  border: 1px solid rgba(236, 72, 153, 0.3);
+}
+
+/* Guided Lab Mode Switcher Bar */
+.guided-mode-tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #090a0d;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  padding: 4px;
+  margin-bottom: 12px;
+}
+
+.guided-mode-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #71717a;
+  font-family: var(--font-mono, monospace);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.guided-mode-tab:hover {
+  color: #ffffff;
+  background: #121318;
+}
+
+.guided-mode-tab.active {
+  background: #18181b;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Drill Card Container */
+.drill-section-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.drill-card-block {
+  background: #0d0e12;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.drill-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 12px;
+}
+
+/* Drill 1: Clause Scrambler */
+.scrambler-slots-row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.scrambler-slot {
+  flex: 1;
+  min-width: 90px;
+  background: #121318;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.scrambler-slot.filled {
+  border-style: solid;
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.04);
+}
+
+.slot-number {
+  font-family: var(--font-mono, monospace);
+  font-size: 8.5px;
+  color: #71717a;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.slot-token {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.slot-token.active {
+  color: #10b981;
+}
+
+.slot-token.empty .slot-placeholder {
+  color: #52525b;
+  font-size: 10px;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.scrambler-choices-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: #121318;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 12px 14px;
+  align-items: center;
+}
+
+.scrambler-choice-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.scrambler-choice-chip:hover {
+  background: #27272a;
+  border-color: #10b981;
+  transform: translateY(-1px);
+}
+
+.scrambler-choice-chip .chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.scrambler-success-banner {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 4px;
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.scrambler-feedback-box {
+  background: #141417;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+/* Drill 2: Step Builder */
+.builder-stepper-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.builder-stage-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #121318;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a1a1aa;
+  font-family: var(--font-mono, monospace);
+  font-size: 10.5px;
+  padding: 6px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.builder-stage-chip:hover {
+  color: #ffffff;
+  background: #18181b;
+}
+
+.builder-stage-chip.active {
+  background: #18181b;
+  border-color: #3b82f6;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.builder-stage-chip.completed {
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+
+.builder-stage-details {
+  background: #121318;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 12px 14px;
+}
+
+/* Drill 3: Trap Buster */
+.trap-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .trap-comparison-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.trap-code-column {
+  background: #121318;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.trap-code-column.active-broken {
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.trap-code-column.dimmed {
+  opacity: 0.6;
+}
+
+.trap-code-column.active-fixed {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.03);
+}
+
+.trap-column-header {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.trap-fault-tag {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  color: #a1a1aa;
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  padding: 5px 8px;
+}
+
+.trap-explanation-panel {
+  background: #121318;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 14px 16px;
+}

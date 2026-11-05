@@ -314,7 +314,7 @@
   function completeCapstoneProject() {
     if (window.AudioFX) window.AudioFX.playLevelUp();
     if (window.SQL_BUDDY) {
-      window.SQL_BUDDY.say(`[COMPLETED] Incredible Work! You completed the full production capstone! This is real-world enterprise SQL!", 5000, 'celebrate');
+      window.SQL_BUDDY.say("[COMPLETED] Incredible Work! You completed the full production capstone! This is real-world enterprise SQL!", 5000, 'celebrate');
     }
   }
 

@@ -286,6 +286,16 @@
             </button>
             <div class="nav-dropdown-menu">
               <div class="nav-dropdown-header">Visual Interactive Labs</div>
+              <button class="nav-dropdown-item nav-tab" data-view="viewGuidedLab" onclick="selectNavView('viewGuidedLab', 'Guided Labs &amp; Drills', 'navGroupExplore')">
+                <span class="nav-item-icon">&bull;</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Guided Labs &amp; Drills</span>
+                    <span class="nav-item-tag accent">8 Tracks</span>
+                  </div>
+                  <span class="nav-item-desc">Step-by-step clause lifecycle &amp; interactive fault-finders</span>
+                </div>
+              </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewLearningJourney" onclick="selectNavView('viewLearningJourney', 'Learning Journey', 'navGroupExplore')">
                 <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
@@ -574,36 +584,69 @@
     <!-- VIEW 1: Guided Learning Lab (Calm, Step-by-Step) -->
     <div class="view-panel" id="viewGuidedLab">
       <div class="guided-lab-container">
-        <!-- Track Switcher Header -->
-        <div class="track-switcher-bar">
-          <div class="track-pill-group">
-            <button class="track-btn active" id="btnTrack01">
-              <span>Track 01: Foundations (FROM &rarr; LIMIT)</span>
-            </button>
-            <button class="track-btn" id="btnTrack02">
-              <span>Track 02: CASE WHEN &amp; Decision Trees</span>
-            </button>
-            <button class="track-btn" id="btnTrackAggregations">
-              <span>Track 03: Aggregations &amp; GROUP BY</span>
-            </button>
-            <button class="track-btn" id="btnTrackJoins">
-              <span>Track 04: Relational JOINs</span>
-            </button>
-            <button class="track-btn" id="btnTrackOperators">
-              <span>Operators &amp; NULL Sandbox</span>
-            </button>
+        <!-- Mode Switcher: Step-by-Step vs Interactive Clause Drills -->
+        <div class="guided-mode-tabs-bar">
+          <button class="guided-mode-tab active" id="btnModeStepLabs" onclick="switchGuidedMode('steps')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span>Step-by-Step Guided Tracks (01-08)</span>
+          </button>
+          <button class="guided-mode-tab" id="btnModeClauseDrills" onclick="switchGuidedMode('drills')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>Interactive Clause Drills &amp; Fault-Finder</span>
+          </button>
+        </div>
+
+        <div id="guidedStepSection">
+          <!-- Track Switcher Header -->
+          <div class="track-switcher-bar">
+            <div class="track-pill-group">
+              <button class="track-btn active" id="btnTrack01">
+                <span>Track 01: Foundations (FROM &rarr; LIMIT)</span>
+              </button>
+              <button class="track-btn" id="btnTrack02">
+                <span>Track 02: CASE WHEN</span>
+              </button>
+              <button class="track-btn" id="btnTrackAggregations">
+                <span>Track 03: Aggregations</span>
+              </button>
+              <button class="track-btn" id="btnTrackJoins">
+                <span>Track 04: Relational JOINs</span>
+              </button>
+              <button class="track-btn" id="btnTrack05">
+                <span>Track 05: Window Functions</span>
+              </button>
+              <button class="track-btn" id="btnTrack06">
+                <span>Track 06: CTEs &amp; Recursion</span>
+              </button>
+              <button class="track-btn" id="btnTrack07">
+                <span>Track 07: Set Operations</span>
+              </button>
+              <button class="track-btn" id="btnTrack08">
+                <span>Track 08: Indexing &amp; Plans</span>
+              </button>
+              <button class="track-btn" id="btnTrackOperators">
+                <span>Operators &amp; NULL Sandbox</span>
+              </button>
+            </div>
+            <span class="status-pill" id="trackActiveSchemaBadge">Schema: Employees (8 rows)</span>
           </div>
-          <span class="status-pill" id="trackActiveSchemaBadge">Schema: Employees (8 rows)</span>
+
+          <!-- Step Navigation Stepper Bar -->
+          <div class="guided-stepper-bar" id="guidedStepperBar">
+            <!-- Dynamically populated step buttons: 01 FROM, 02 WHERE, etc. -->
+          </div>
+
+          <!-- Single Focused Step Content -->
+          <div class="guided-step-card" id="guidedStepCard">
+            <!-- Dynamically populated for current step -->
+          </div>
         </div>
 
-        <!-- Step Navigation Stepper Bar -->
-        <div class="guided-stepper-bar" id="guidedStepperBar">
-          <!-- Dynamically populated step buttons: 01 FROM, 02 WHERE, etc. -->
-        </div>
-
-        <!-- Single Focused Step Content -->
-        <div class="guided-step-card" id="guidedStepCard">
-          <!-- Dynamically populated for current step -->
+        <!-- Interactive Clause Drills Section (Shown when in drills mode) -->
+        <div id="guidedDrillsSection" class="drill-section-container" style="display: none;">
+          <div class="drill-card-block" id="drillScramblerContainer"></div>
+          <div class="drill-card-block" id="drillStepBuilderContainer"></div>
+          <div class="drill-card-block" id="drillTrapBusterContainer"></div>
         </div>
       </div>
     </div>
@@ -1847,6 +1890,11 @@
 <script src="casewhen_lab_data.js"></script>
 <script src="aggregations_lab_data.js"></script>
 <script src="joins_lab_data.js"></script>
+<script src="window_lab_data.js"></script>
+<script src="cte_lab_data.js"></script>
+<script src="setops_lab_data.js"></script>
+<script src="indexing_lab_data.js"></script>
+<script src="guided_drills_engine.js"></script>
 <script src="operators_sandbox.js"></script>
 <script src="quests_section1_data.js"></script>
 <script src="quests_section2_data.js"></script>
