@@ -707,6 +707,14 @@ lagged <span class="landing-kw">AS</span> (
                 <span class="landing-launch-desc">Execution Tree Flows, Operator Bottlenecks &amp; What-If B+Tree Simulator</span>
               </div>
 
+                            <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewRelationalCollider', 'Relational Collider', 'navGroupExplore'); try{window.location.hash='#collider';}catch(e){}" style="border-color:rgba(16,185,129,0.5);">
+                <div class="landing-launch-meta">
+                  <span class="landing-launch-name" style="color:#10b981;">Relational Collider</span>
+                  <span class="landing-launch-tag" style="background:rgba(16,185,129,0.15); color:#10b981; border-color:rgba(16,185,129,0.3);">60FPS PHYSICS</span>
+                </div>
+                <span class="landing-launch-desc">60fps Relational Algebra Chamber, Predicate Lasers, Vortex Joins &amp; Glass Accumulators</span>
+              </div>
+
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewHardwareStrata', '3D Hardware Strata', 'navGroupExplore'); try{window.location.hash='#strata';}catch(e){}" style="border-color:rgba(6,182,212,0.5);">
                 <div class="landing-launch-meta">
                   <span class="landing-launch-name" style="color:#22d3ee;">3D Hardware Strata</span>

@@ -1,0 +1,415 @@
+/**
+ * SQL MASTERY - RELATIONAL PARTICLE COLLIDER STYLES
+ * ------------------------------------------------------------------------
+ * Shift Nudge / Carbon Obsidian theme with neon particle glow accents.
+ */
+
+.collider-workspace-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 24px 100px 24px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.collider-ambient-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.07) 0%, rgba(99, 102, 241, 0.05) 50%, transparent 75%);
+  pointer-events: none;
+  filter: blur(50px);
+  z-index: 0;
+}
+
+/* Header */
+.collider-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.collider-header-left {
+  max-width: 720px;
+}
+
+.collider-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  margin-bottom: 12px;
+}
+
+.collider-pulse-gem {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  animation: colliderPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes colliderPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.collider-badge-text {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #34d399;
+}
+
+.collider-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #f8fafc;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.collider-sub {
+  font-size: 14px;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.collider-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-self: center;
+}
+
+.collider-scenario-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 6px 14px;
+  border-radius: 9999px;
+}
+
+.picker-lbl {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.collider-select {
+  background: transparent;
+  border: none;
+  color: #f1f5f9;
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.collider-select option {
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+.btn-collider-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-collider-action:hover {
+  background: rgba(51, 65, 85, 0.8);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+.btn-collider-primary {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #34d399;
+}
+
+.btn-collider-primary:hover {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.3);
+}
+
+/* Main Simulation Chamber Card */
+.collider-main-card {
+  position: relative;
+  z-index: 1;
+  background: #07090e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.8);
+  margin-bottom: 24px;
+}
+
+.collider-canvas-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(15, 23, 42, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+}
+
+.strip-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.strip-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 0.05em;
+  background: rgba(56, 189, 248, 0.1);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.strip-algebra {
+  font-size: 13px;
+  color: #a5b4fc;
+}
+
+.strip-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.speed-toggle-group {
+  display: flex;
+  gap: 3px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-speed {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-speed.active, .btn-speed:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+.btn-reset-sim {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-reset-sim:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #f8fafc;
+}
+
+/* Canvas Viewport */
+.collider-canvas-viewport {
+  width: 100%;
+  height: 420px;
+  position: relative;
+  background: #050609;
+  overflow: hidden;
+}
+
+#colliderCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Bottom Telemetry HUD Bar */
+.collider-telemetry-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 16px 24px;
+  background: rgba(10, 14, 22, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 16px;
+}
+
+.telemetry-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.stat-val {
+  font-size: 22px;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.stat-passed .stat-val {
+  color: #10b981;
+  text-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+}
+
+.stat-deflected .stat-val {
+  color: #f43f5e;
+  text-shadow: 0 0 12px rgba(244, 63, 94, 0.35);
+}
+
+/* SQL Dossier Card */
+.collider-dossier-card {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  background: #090b12;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 900px) {
+  .collider-dossier-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dossier-scenario-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 8px 0;
+}
+
+.dossier-scenario-desc {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+}
+
+.collider-actions-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-bridge-studio, .btn-bridge-profiler {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-bridge-studio {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  color: #a5b4fc;
+}
+
+.btn-bridge-studio:hover {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-bridge-profiler {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #7dd3fc;
+}
+
+.btn-bridge-profiler:hover {
+  background: rgba(56, 189, 248, 0.22);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
+  transform: translateY(-1px);
+}
+
+.sql-box-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.collider-sql-pre {
+  background: #040508;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 13px;
+  color: #38bdf8;
+  overflow-x: auto;
+  line-height: 1.6;
+  margin: 0;
+}

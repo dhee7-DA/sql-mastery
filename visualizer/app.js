@@ -1858,7 +1858,9 @@ function initThemeController() {
     } else if (hash === '#motion-deck' || hash === '#topics' || hash === '#motion' || hash === '#deck' || hash === '#cards') {
       if (typeof selectNavView === 'function') selectNavView('viewMotionDeck', 'Topic Motion Deck', 'navGroupExplore');
     } else if (hash === '#strata' || hash === '#hardware' || hash === '#3d-engine' || hash === '#storage-layers') {
-      if (typeof selectNavView === 'function') selectNavView('viewHardwareStrata', '3D Hardware Strata', 'navGroupExplore');
+      if (typeof selectNavView === 'function') selectNavView('viewHardwareStrata', '3D Hardware Strata', 'navGroupExplore');
+    } else if (hash === '#collider' || hash === '#particles' || hash === '#dataflow' || hash === '#physics') {
+      if (typeof selectNavView === 'function') selectNavView('viewRelationalCollider', 'Relational Collider', 'navGroupExplore');
     }
   }
   window.addEventListener('hashchange', handleHashRoute);
@@ -2294,6 +2296,8 @@ const NAV_GROUPS_MAP = {
   viewWindowMatrix: { triggerId: 'btnGroupExplore', pillId: null, label: 'Window Cockpit' },
 
   viewHardwareStrata: { triggerId: 'btnGroupExplore', pillId: null, label: '3D Hardware Strata' },
+  viewRelationalCollider: { triggerId: 'btnGroupExplore', pillId: null, label: 'Relational Collider' },
+
   viewMotionDeck: { triggerId: 'btnGroupExplore', pillId: null, label: 'Topic Motion Deck' },
 
   viewLandingPage: { triggerId: 'btnNavHome', pillId: null, label: 'Home' },
@@ -2453,10 +2457,18 @@ function switchMainView(targetId) {
     if (window.CompanyMasteryEngine) window.CompanyMasteryEngine.init();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏛️ Welcome to the Institutional Domain & Company Hub! 10 Industry Verticals, 70+ Premier Employers, and curated LeetCode drills loaded!", 5000, 'celebrate');
   }
-  if (targetId === 'viewHardwareStrata') {
-    if (window.HARDWARE_STRATA_ENGINE) window.HARDWARE_STRATA_ENGINE.init('viewHardwareStrata');
-    if (window.SQL_BUDDY) window.SQL_BUDDY.say('⬡ 3D Hardware Strata loaded! Explore physical storage layers, LSN checkpoints, and NVMe page blocks!', 5000, 'celebrate');
+  if (targetId === 'viewHardwareStrata') {
+
+    if (window.HARDWARE_STRATA_ENGINE) window.HARDWARE_STRATA_ENGINE.init('viewHardwareStrata');
+
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say('⬡ 3D Hardware Strata loaded! Explore physical storage layers, LSN checkpoints, and NVMe page blocks!', 5000, 'celebrate');
+
   }
+  if (targetId === 'viewRelationalCollider') {
+    if (window.RELATIONAL_COLLIDER_ENGINE) window.RELATIONAL_COLLIDER_ENGINE.init('viewRelationalCollider');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say('⚡ Relational Particle Collider active! Tuples flowing through predicate laser gates & vortex joins!', 5000, 'celebrate');
+  }
+
   if (targetId === 'viewMotionDeck') {
 
     if (window.TOPIC_MOTION_CARDS_ENGINE) window.TOPIC_MOTION_CARDS_ENGINE.init('viewMotionDeck');
