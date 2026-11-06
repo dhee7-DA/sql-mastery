@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="carbon_theme.css?v=20261103_carbon_ovio">
   <link rel="stylesheet" href="ovio_motion.css?v=20261103_carbon_ovio">
   <link rel="stylesheet" href="topic_motion_cards.css?v=20261106_tactile">
+  <link rel="stylesheet" href="hardware_strata.css?v=20261106_3d">
 </head>
 <body data-theme="carbon">
   <div class="app-layout">
@@ -305,6 +306,16 @@
                     <span class="nav-item-tag" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3);">3D CARDS</span>
                   </div>
                   <span class="nav-item-desc">3D gyroscopic cards, 60fps micro-simulations &amp; dual-face traps</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" id="btnNavHardwareStrata" data-view="viewHardwareStrata" onclick="try{window.location.hash='#strata';}catch(e){} selectNavView('viewHardwareStrata', '3D Hardware Strata', 'navGroupExplore')">
+                <span class="nav-item-icon">&bull;</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">3D Hardware Strata</span>
+                    <span class="nav-item-tag" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.3);">EXPLODED 3D</span>
+                  </div>
+                  <span class="nav-item-desc">Interactive 3D storage engine layers, latency hierarchy &amp; laser conduits</span>
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewGuidedLab" onclick="selectNavView('viewGuidedLab', 'Guided Labs &amp; Drills', 'navGroupExplore')">
@@ -702,6 +713,9 @@
 
     <!-- VIEW: Dedicated Interactive Motion Topic Deck (3D Tilt Cards) -->
     <div class="view-panel" id="viewMotionDeck"></div>
+
+    <!-- VIEW: Dedicated 3D Hardware Storage Strata Exploder -->
+    <div class="view-panel" id="viewHardwareStrata"></div>
 
     <!-- VIEW 2: Query Studio (Advanced Mode) -->
     <div class="view-panel" id="viewStudio"><section id="section-studio" class="section-studio-container" style="display:contents;">
@@ -2040,6 +2054,8 @@
   <script src="app.js?v=20261103_carbon"></script>
   <script src="topic_motion_cards_data.js?v=20261106_tactile"></script>
   <script src="topic_motion_cards_engine.js?v=20261106_tactile"></script>
+  <script src="hardware_strata_data.js?v=20261106_3d"></script>
+  <script src="hardware_strata_engine.js?v=20261106_3d"></script>
 <script>
   // Automatic Hash & Default View Router
   (function() {
@@ -2052,6 +2068,8 @@
         if (parts[1] && window.MasteryCourseEngine && typeof window.MasteryCourseEngine.selectPhase === 'function') {
           setTimeout(() => window.MasteryCourseEngine.selectPhase(parts[1]), 80);
         }
+      } else if (hash === 'strata' || hash === 'hardware' || hash === '3d-engine' || hash === 'storage-layers') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewHardwareStrata', '3D Hardware Strata', 'navGroupExplore');
       } else if (hash === 'motion-deck' || hash === 'topics' || hash === 'motion' || hash === 'deck' || hash === 'cards') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewMotionDeck', 'Topic Motion Deck', 'navGroupExplore');
       } else if (hash === 'profiler' || hash === 'explain' || hash === 'execution-tree' || hash === 'profile') {

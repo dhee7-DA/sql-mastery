@@ -1,0 +1,774 @@
+/**
+ * SQL MASTERY - 3D HARDWARE STRATA CSS
+ * 60fps GPU-Accelerated 3D Isometric Database Storage Architecture
+ * ------------------------------------------------------------------------
+ */
+
+/* ==========================================================================
+   Workspace Layout & Ambient Backdrop
+   ========================================================================== */
+.strata-workspace-container {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5rem 1.5rem;
+  color: var(--text-primary, #f1f5f9);
+  box-sizing: border-box;
+}
+
+.strata-ambient-glow {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 820px;
+  height: 400px;
+  background: radial-gradient(circle at 50% 30%, rgba(6, 182, 212, 0.12) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ==========================================================================
+   Header Navigation
+   ========================================================================== */
+.strata-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.strata-header-left {
+  max-width: 740px;
+}
+
+.strata-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 9999px;
+  margin-bottom: 0.75rem;
+  backdrop-filter: blur(8px);
+}
+
+.strata-gem-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #06b6d4;
+  box-shadow: 0 0 10px #06b6d4;
+  animation: pulseGem 2s infinite ease-in-out;
+}
+
+.strata-badge-text {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.strata-main-title {
+  font-size: clamp(2rem, 3.2vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  color: #ffffff;
+  margin: 0 0 0.65rem 0;
+  text-wrap: balance;
+}
+
+.strata-main-sub {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.strata-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-strata-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  font-size: 0.825rem;
+  font-weight: 600;
+  padding: 0.65rem 1.1rem;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all 180ms ease;
+  backdrop-filter: blur(10px);
+}
+
+.btn-strata-action:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-strata-action:active {
+  transform: scale(0.975);
+}
+
+.btn-strata-action.active {
+  background: rgba(6, 182, 212, 0.15);
+  border-color: rgba(6, 182, 212, 0.4);
+  color: #22d3ee;
+}
+
+.btn-strata-primary {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+}
+
+.btn-strata-primary:hover {
+  background: linear-gradient(135deg, #38bdf8 0%, #0369a1 100%);
+  box-shadow: 0 6px 18px rgba(14, 165, 233, 0.5);
+}
+
+/* ==========================================================================
+   Two-Column Workspace Grid
+   ========================================================================== */
+.strata-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .strata-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   3D Isometric Stage (Left Column)
+   ========================================================================== */
+.strata-stage-card {
+  background: #080a10;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.strata-stage-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stage-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #38bdf8;
+}
+
+.chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+}
+
+.stage-hint {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+/* 3D Viewport */
+.strata-stage-viewport {
+  position: relative;
+  width: 100%;
+  height: 560px;
+  background: radial-gradient(circle at 50% 50%, #0d1019 0%, #050608 85%);
+  overflow: hidden;
+  perspective: 1200px;
+  perspective-origin: 50% 48%;
+  cursor: grab;
+}
+
+.strata-stage-viewport:active {
+  cursor: grabbing;
+}
+
+/* Animated Vertical Laser Conduits */
+.strata-conduits-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.conduit-line-pulse {
+  animation: laserPulse 1.8s linear infinite;
+}
+
+@keyframes laserPulse {
+  0% { stroke-dashoffset: 20; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* 3D Stack Container */
+.strata-3d-stack {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  width: 360px;
+  height: 190px;
+  margin-left: -180px;
+  margin-top: -95px;
+  transform-style: preserve-3d;
+  transform: rotateX(54deg) rotateZ(-36deg);
+  transition: transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
+}
+
+/* ==========================================================================
+   3D Slab Layers (Exploded vs Collapsed)
+   ========================================================================== */
+.strata-slab-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 250ms ease;
+  cursor: pointer;
+}
+
+/* Exploded Offsets (Z-depth) */
+.strata-3d-stack.is-exploded #slab_layer_01_client {
+  transform: translateZ(160px);
+}
+.strata-3d-stack.is-exploded #slab_layer_02_optimizer {
+  transform: translateZ(80px);
+}
+.strata-3d-stack.is-exploded #slab_layer_03_buffer {
+  transform: translateZ(0px);
+}
+.strata-3d-stack.is-exploded #slab_layer_04_wal {
+  transform: translateZ(-80px);
+}
+.strata-3d-stack.is-exploded #slab_layer_05_storage {
+  transform: translateZ(-160px);
+}
+
+/* Collapsed Stack */
+.strata-3d-stack.is-collapsed #slab_layer_01_client { transform: translateZ(24px); }
+.strata-3d-stack.is-collapsed #slab_layer_02_optimizer { transform: translateZ(18px); }
+.strata-3d-stack.is-collapsed #slab_layer_03_buffer { transform: translateZ(12px); }
+.strata-3d-stack.is-collapsed #slab_layer_04_wal { transform: translateZ(6px); }
+.strata-3d-stack.is-collapsed #slab_layer_05_storage { transform: translateZ(0px); }
+
+/* Slab Faces */
+.strata-slab-top {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(16, 20, 30, 0.88) 0%, rgba(9, 11, 18, 0.95) 100%);
+  border: 1.5px solid var(--layer-color, #06b6d4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  padding: 1.25rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+
+.strata-slab-wrapper:hover .strata-slab-top {
+  border-color: #ffffff;
+  background: linear-gradient(135deg, rgba(22, 28, 44, 0.95) 0%, rgba(12, 16, 26, 0.98) 100%);
+}
+
+.strata-slab-wrapper.is-selected .strata-slab-top {
+  border-width: 2px;
+  border-color: #ffffff;
+  box-shadow: 0 0 25px var(--layer-color), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.strata-slab-wrapper.is-pulse-active .strata-slab-top {
+  animation: slabFlash 400ms ease-in-out;
+}
+
+@keyframes slabFlash {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(2) drop-shadow(0 0 30px var(--layer-color)); }
+}
+
+/* 3D Extruded Edges */
+.strata-slab-front {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: rgba(10, 12, 18, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transform-origin: bottom center;
+  transform: rotateX(-90deg);
+}
+
+.strata-slab-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 100%;
+  background: rgba(6, 8, 12, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transform-origin: center right;
+  transform: rotateY(90deg);
+}
+
+/* Slab Content */
+.slab-content-grid {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.slab-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.slab-info-group {
+  flex: 1;
+}
+
+.slab-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.25rem;
+}
+
+.slab-num {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.slab-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.slab-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.015em;
+}
+
+.slab-latency-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+/* Bottom Latency Ruler */
+.strata-latency-ruler {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.7rem;
+  overflow-x: auto;
+}
+
+.ruler-step {
+  color: #94a3b8;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.step-l1 { color: #10b981; }
+.step-l3 { color: #6366f1; }
+.step-ram { color: #06b6d4; }
+.step-nvme { color: #f59e0b; }
+.step-disk { color: #f43f5e; }
+
+.ruler-arrow {
+  color: #475569;
+}
+
+/* ==========================================================================
+   Inspection Dossier (Right Column)
+   ========================================================================== */
+.strata-dossier-card {
+  background: #090b12;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.dossier-header {
+  padding-left: 0.9rem;
+}
+
+.dossier-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.dossier-badge {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 5px;
+}
+
+.dossier-hw-tier {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+.dossier-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.45rem 0;
+  letter-spacing: -0.02em;
+}
+
+.dossier-summary {
+  font-size: 0.88rem;
+  color: #94a3b8;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* KPI Banner */
+.dossier-kpi-banner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.dossier-kpi-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.kpi-lbl {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.04em;
+}
+
+.kpi-val {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.kpi-sub {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+/* Sections */
+.dossier-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.dossier-subheading {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dossier-mechanics-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.dossier-mechanics-list li {
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  line-height: 1.45;
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.dossier-mechanics-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: #38bdf8;
+  font-size: 0.85rem;
+}
+
+/* Formulas Grid */
+.dossier-formulas-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.formula-card {
+  background: #050609;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.formula-lbl {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.formula-val {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+/* Tuning Knobs */
+.tuning-knobs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.knob-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+}
+
+.knob-name-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.knob-name {
+  font-size: 0.775rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.knob-desc {
+  font-size: 0.72rem;
+  color: #64748b;
+  line-height: 1.35;
+}
+
+.knob-val-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.knob-unit {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Incident Trap Card */
+.dossier-trap-card {
+  background: #090a10;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-left: 3px solid #ef4444;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.trap-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.trap-gem {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+}
+
+.trap-title {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #f87171;
+}
+
+.trap-gotcha {
+  font-size: 0.78rem;
+  color: #cbd5e1;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.trap-code {
+  margin: 0;
+  background: #040507;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 0.65rem;
+  font-size: 0.72rem;
+  color: #e2e8f0;
+  line-height: 1.35;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* Footer Action Buttons */
+.dossier-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.btn-dossier-action {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.775rem;
+  font-weight: 600;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 160ms ease;
+  white-space: nowrap;
+}
+
+.btn-dossier-studio {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  color: #a5b4fc;
+}
+
+.btn-dossier-studio:hover {
+  background: rgba(99, 102, 241, 0.28);
+  border-color: rgba(99, 102, 241, 0.6);
+  color: #ffffff;
+}
+
+.btn-dossier-profiler {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+}
+
+.btn-dossier-profiler:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.btn-dossier-action:active {
+  transform: scale(0.975);
+}

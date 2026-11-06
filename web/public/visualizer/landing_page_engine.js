@@ -707,6 +707,14 @@ lagged <span class="landing-kw">AS</span> (
                 <span class="landing-launch-desc">Execution Tree Flows, Operator Bottlenecks &amp; What-If B+Tree Simulator</span>
               </div>
 
+              <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewHardwareStrata', '3D Hardware Strata', 'navGroupExplore'); try{window.location.hash='#strata';}catch(e){}" style="border-color:rgba(6,182,212,0.5);">
+                <div class="landing-launch-meta">
+                  <span class="landing-launch-name" style="color:#22d3ee;">3D Hardware Strata</span>
+                  <span class="landing-launch-tag" style="background:rgba(6,182,212,0.15); color:#06b6d4; border-color:rgba(6,182,212,0.3);">EXPLODED 3D</span>
+                </div>
+                <span class="landing-launch-desc">5-Layer Isometric Storage Hierarchy, Latency Spectrum &amp; Laser Conduits</span>
+              </div>
+
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewUberStory', 'Uber', null); try{window.location.hash='#uber';}catch(e){}" style="border-color:rgba(6,193,103,0.4);">
                 <div class="landing-launch-meta">
                   <span class="landing-launch-name" style="color:#34d399;">Mobility Track</span>
