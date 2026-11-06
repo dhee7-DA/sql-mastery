@@ -1855,6 +1855,8 @@ function initThemeController() {
       if (typeof selectNavView === 'function') selectNavView('viewCompanyHub', 'Companies & Domains', 'navGroupPractice');
     } else if (hash === '#profiler' || hash === '#explain' || hash === '#profile' || hash === '#execution-tree') {
       if (typeof selectNavView === 'function') selectNavView('viewQueryProfiler', 'Query Profiler', 'navGroupExplore');
+    } else if (hash === '#motion-deck' || hash === '#topics' || hash === '#motion' || hash === '#deck' || hash === '#cards') {
+      if (typeof selectNavView === 'function') selectNavView('viewMotionDeck', 'Topic Motion Deck', 'navGroupExplore');
     }
   }
   window.addEventListener('hashchange', handleHashRoute);
@@ -2289,6 +2291,7 @@ const NAV_GROUPS_MAP = {
   viewVennMatrix: { triggerId: 'btnGroupExplore', pillId: null, label: 'Venn Matrix' },
   viewWindowMatrix: { triggerId: 'btnGroupExplore', pillId: null, label: 'Window Cockpit' },
 
+  viewMotionDeck: { triggerId: 'btnGroupExplore', pillId: null, label: 'Topic Motion Deck' },
   viewLandingPage: { triggerId: 'btnNavHome', pillId: null, label: 'Home' },
   viewMasteryCourse: { triggerId: 'btnNavMasteryCourse', pillId: null, label: 'Course' },
   viewLearningJourney: { triggerId: 'btnGroupExplore', pillId: null, label: 'Learning Journey' },
@@ -2446,6 +2449,10 @@ function switchMainView(targetId) {
     if (window.CompanyMasteryEngine) window.CompanyMasteryEngine.init();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏛️ Welcome to the Institutional Domain & Company Hub! 10 Industry Verticals, 70+ Premier Employers, and curated LeetCode drills loaded!", 5000, 'celebrate');
   }
+  if (targetId === 'viewMotionDeck') {
+    if (window.TOPIC_MOTION_CARDS_ENGINE) window.TOPIC_MOTION_CARDS_ENGINE.init('viewMotionDeck');
+    if (window.SQL_BUDDY) window.SQL_BUDDY.say('✨ Topic Motion Deck loaded! 3D gyroscopic cards, 60fps micro-simulations, and dual-face production traps ready!', 5000, 'celebrate');
+  }
   if (targetId === 'viewQueryProfiler') {
     if (window.QUERY_PROFILER_ENGINE) window.QUERY_PROFILER_ENGINE.renderWorkspace();
   }

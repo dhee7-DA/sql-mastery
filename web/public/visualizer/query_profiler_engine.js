@@ -568,12 +568,16 @@
     }
     walk(currentTop);
 
-    const totalRunCost = currentTop.cost.total;
-    const totalExecutionTimeMs = currentTop.timing.timeMs;
+    const maxSubtreeCost = Math.max(...allNodes.map(n => parseFloat(n.cost?.total || 0)), 1);
+    const totalRunCost = Math.max(parseFloat(currentTop.cost?.total || 0), maxSubtreeCost, 1);
+    const maxSubtreeTime = Math.max(...allNodes.map(n => parseFloat(n.timing?.timeMs || 0)), 0.01);
+    const totalExecutionTimeMs = Math.max(parseFloat(currentTop.timing?.timeMs || 0), maxSubtreeTime, 0.01);
 
     allNodes.forEach(node => {
-      node.costPercent = Math.max(1, Math.round((node.cost.total / Math.max(1, totalRunCost)) * 100));
-      node.latencyPercent = Math.max(1, Math.round((node.timing.timeMs / Math.max(0.01, totalExecutionTimeMs)) * 100));
+      const nodeCost = parseFloat(node.cost?.total || 0);
+      const nodeTime = parseFloat(node.timing?.timeMs || 0);
+      node.costPercent = Math.min(100, Math.max(1, Math.round((nodeCost / totalRunCost) * 100)));
+      node.latencyPercent = Math.min(100, Math.max(1, Math.round((nodeTime / totalExecutionTimeMs) * 100)));
     });
 
     const bottleneckNode = allNodes.reduce((max, node) => (node.cost.total > max.cost.total ? node : max), allNodes[0]);

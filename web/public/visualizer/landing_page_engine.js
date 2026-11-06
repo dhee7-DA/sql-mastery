@@ -660,6 +660,25 @@ lagged <span class="landing-kw">AS</span> (
             </div>
           </section>
 
+          <!-- FEATURE SPOTLIGHT: TACTILE MOTION TOPIC DECK -->
+          <section style="margin-bottom: 56px;">
+            <div class="landing-motion-deck-teaser" onclick="if(window.selectNavView) window.selectNavView('viewMotionDeck', 'Topic Motion Deck', 'navGroupExplore'); try{window.location.hash='#motion-deck';}catch(e){}">
+              <div class="teaser-content">
+                <div class="teaser-badge">
+                  <span class="motion-pulse-gem"></span>
+                  <span>NEW // 3D GYROSCOPIC TOPIC DECK</span>
+                </div>
+                <h3 class="teaser-title">Tactile Motion Topic Deck &amp; Production Trap Dossiers</h3>
+                <p class="teaser-desc">
+                  Explore 12 enterprise curriculum topics with 60fps animated SVG micro-simulations, dynamic cursor spotlights, and 3D flip cards revealing real production post-mortems and high-latency anti-patterns.
+                </p>
+              </div>
+              <div class="teaser-cta-btn">
+                <span>Explore 3D Motion Deck &rarr;</span>
+              </div>
+            </div>
+          </section>
+
           <!-- 7. FAST ACCESS PRACTICE HUB -->
           <section style="margin-bottom: 64px;">
             <div class="landing-section-header">
@@ -672,6 +691,22 @@ lagged <span class="landing-kw">AS</span> (
 
             <div class="landing-launch-grid">
               
+              <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewMotionDeck', 'Topic Motion Deck', 'navGroupExplore'); try{window.location.hash='#motion-deck';}catch(e){}" style="border-color:rgba(99,102,241,0.5);">
+                <div class="landing-launch-meta">
+                  <span class="landing-launch-name" style="color:#818cf8;">Motion Topic Deck</span>
+                  <span class="landing-launch-tag" style="background:rgba(99,102,241,0.15); color:#a5b4fc; border-color:rgba(99,102,241,0.3);">3D CARDS</span>
+                </div>
+                <span class="landing-launch-desc">60fps Storage &amp; Join Physics, 3D Gyroscopic Tilt &amp; Dual-Face Trap Dossiers</span>
+              </div>
+
+              <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewQueryProfiler', 'Visual Query Profiler', 'navGroupExplore'); try{window.location.hash='#profiler';}catch(e){}" style="border-color:rgba(16,185,129,0.5);">
+                <div class="landing-launch-meta">
+                  <span class="landing-launch-name" style="color:#34d399;">Visual Query Profiler</span>
+                  <span class="landing-launch-tag" style="background:rgba(16,185,129,0.15); color:#10b981; border-color:rgba(16,185,129,0.3);">EXPLAIN TREE</span>
+                </div>
+                <span class="landing-launch-desc">Execution Tree Flows, Operator Bottlenecks &amp; What-If B+Tree Simulator</span>
+              </div>
+
               <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewUberStory', 'Uber', null); try{window.location.hash='#uber';}catch(e){}" style="border-color:rgba(6,193,103,0.4);">
                 <div class="landing-launch-meta">
                   <span class="landing-launch-name" style="color:#34d399;">Mobility Track</span>

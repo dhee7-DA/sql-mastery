@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="cheatsheet_book.css?v=20261103_carbon_ovio">
   <link rel="stylesheet" href="carbon_theme.css?v=20261103_carbon_ovio">
   <link rel="stylesheet" href="ovio_motion.css?v=20261103_carbon_ovio">
+  <link rel="stylesheet" href="topic_motion_cards.css?v=20261106_tactile">
 </head>
 <body data-theme="carbon">
   <div class="app-layout">
@@ -294,6 +295,16 @@
                     <span class="nav-item-tag" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">EXPLAIN TREE</span>
                   </div>
                   <span class="nav-item-desc">Execution tree flows, latency waterfall &amp; What-If B+Tree simulator</span>
+                </div>
+              </button>
+              <button class="nav-dropdown-item nav-tab" id="btnNavMotionDeck" data-view="viewMotionDeck" onclick="try{window.location.hash='#motion-deck';}catch(e){} selectNavView('viewMotionDeck', 'Topic Motion Deck', 'navGroupExplore')">
+                <span class="nav-item-icon">&bull;</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Topic Motion Deck</span>
+                    <span class="nav-item-tag" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3);">3D CARDS</span>
+                  </div>
+                  <span class="nav-item-desc">3D gyroscopic cards, 60fps micro-simulations &amp; dual-face traps</span>
                 </div>
               </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewGuidedLab" onclick="selectNavView('viewGuidedLab', 'Guided Labs &amp; Drills', 'navGroupExplore')">
@@ -688,6 +699,9 @@
 
     <!-- VIEW: Dedicated Visual Query Profiler & Execution Tree Studio -->
     <div class="view-panel" id="viewQueryProfiler"></div>
+
+    <!-- VIEW: Dedicated Interactive Motion Topic Deck (3D Tilt Cards) -->
+    <div class="view-panel" id="viewMotionDeck"></div>
 
     <!-- VIEW 2: Query Studio (Advanced Mode) -->
     <div class="view-panel" id="viewStudio"><section id="section-studio" class="section-studio-container" style="display:contents;">
@@ -2024,6 +2038,8 @@
   <script src="mastery_course_engine.js?v=10"></script>
   <script src="ovio_motion_engine.js?v=20261103_carbon_ovio"></script>
   <script src="app.js?v=20261103_carbon"></script>
+  <script src="topic_motion_cards_data.js?v=20261106_tactile"></script>
+  <script src="topic_motion_cards_engine.js?v=20261106_tactile"></script>
 <script>
   // Automatic Hash & Default View Router
   (function() {
@@ -2036,6 +2052,8 @@
         if (parts[1] && window.MasteryCourseEngine && typeof window.MasteryCourseEngine.selectPhase === 'function') {
           setTimeout(() => window.MasteryCourseEngine.selectPhase(parts[1]), 80);
         }
+      } else if (hash === 'motion-deck' || hash === 'topics' || hash === 'motion' || hash === 'deck' || hash === 'cards') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewMotionDeck', 'Topic Motion Deck', 'navGroupExplore');
       } else if (hash === 'profiler' || hash === 'explain' || hash === 'execution-tree' || hash === 'profile') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewQueryProfiler', 'Visual Query Profiler', 'navGroupExplore');
       } else if (hash === 'guidedlab' || hash === 'guided-lab') {
