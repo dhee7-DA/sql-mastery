@@ -1853,6 +1853,8 @@ function initThemeController() {
       if (typeof selectNavView === 'function') selectNavView('viewMockInterview', 'Mock Screen', 'navGroupPractice');
     } else if (hash === '#companies' || hash === '#domains') {
       if (typeof selectNavView === 'function') selectNavView('viewCompanyHub', 'Companies & Domains', 'navGroupPractice');
+    } else if (hash === '#profiler' || hash === '#explain' || hash === '#profile' || hash === '#execution-tree') {
+      if (typeof selectNavView === 'function') selectNavView('viewQueryProfiler', 'Query Profiler', 'navGroupExplore');
     }
   }
   window.addEventListener('hashchange', handleHashRoute);
@@ -2443,6 +2445,9 @@ function switchMainView(targetId) {
   if (targetId === 'viewCompanyHub') {
     if (window.CompanyMasteryEngine) window.CompanyMasteryEngine.init();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏛️ Welcome to the Institutional Domain & Company Hub! 10 Industry Verticals, 70+ Premier Employers, and curated LeetCode drills loaded!", 5000, 'celebrate');
+  }
+  if (targetId === 'viewQueryProfiler') {
+    if (window.QUERY_PROFILER_ENGINE) window.QUERY_PROFILER_ENGINE.renderWorkspace();
   }
   if (targetId === 'viewTactileEngine') {
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🧺 Welcome to the Tactile SQL Relational Washer! Hand-inked isometric physical query engine ready!", 5000, 'celebrate');

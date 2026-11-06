@@ -286,6 +286,16 @@
             </button>
             <div class="nav-dropdown-menu">
               <div class="nav-dropdown-header">Visual Interactive Labs</div>
+              <button class="nav-dropdown-item nav-tab" id="btnNavQueryProfiler" data-view="viewQueryProfiler" onclick="try{window.location.hash='#profiler';}catch(e){} selectNavView('viewQueryProfiler', 'Visual Query Profiler', 'navGroupExplore')">
+                <span class="nav-item-icon">&bull;</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title">Visual Query Profiler</span>
+                    <span class="nav-item-tag" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">EXPLAIN TREE</span>
+                  </div>
+                  <span class="nav-item-desc">Execution tree flows, latency waterfall &amp; What-If B+Tree simulator</span>
+                </div>
+              </button>
               <button class="nav-dropdown-item nav-tab" data-view="viewGuidedLab" onclick="selectNavView('viewGuidedLab', 'Guided Labs &amp; Drills', 'navGroupExplore')">
                 <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
@@ -676,6 +686,9 @@
       </div>
     </div>
 
+    <!-- VIEW: Dedicated Visual Query Profiler & Execution Tree Studio -->
+    <div class="view-panel" id="viewQueryProfiler"></div>
+
     <!-- VIEW 2: Query Studio (Advanced Mode) -->
     <div class="view-panel" id="viewStudio"><section id="section-studio" class="section-studio-container" style="display:contents;">
       <!-- Dynamic Case Study Table Active Banner -->
@@ -881,7 +894,10 @@
                 Prettify SQL
               </button>
               <button id="btnExplainPlanInline" class="btn-format-inline" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);" onclick="if(window.VISUAL_EXPLAIN_TREE_ENGINE) window.VISUAL_EXPLAIN_TREE_ENGINE.openAndFocusTree();" title="Inspect Visual EXPLAIN ANALYZE Execution Plan Tree">
-                EXPLAIN Tree
+                EXPLAIN Tab
+              </button>
+              <button id="btnOpenProfilerFull" class="btn-format-inline" style="background: #27272a; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.25);" onclick="if(window.QUERY_PROFILER_ENGINE) { const sql = (document.getElementById('sqlInput')||{}).value; window.QUERY_PROFILER_ENGINE.openWithSql(sql); }" title="Open in Dedicated Visual Query Profiler &amp; Execution Tree Studio">
+                Profiler ⚡
               </button>
             </div>
           </div>
@@ -1937,6 +1953,7 @@
 <script src="gym_execution_timeline.js?v=57"></script>
 <script src="gym_explain_optimizer.js?v=57"></script>
 <script src="visual_explain_tree_engine.js?v=1"></script>
+<script src="query_profiler_engine.js?v=1"></script>
 <script src="gym_faang_interviewer.js?v=57"></script>
 <script src="gym_dataflow_graph.js?v=57"></script>
 <script src="gym_typing_dojo.js?v=57"></script>
@@ -2019,7 +2036,9 @@
         if (parts[1] && window.MasteryCourseEngine && typeof window.MasteryCourseEngine.selectPhase === 'function') {
           setTimeout(() => window.MasteryCourseEngine.selectPhase(parts[1]), 80);
         }
-      } else       if (hash === 'guidedlab' || hash === 'guided-lab') {
+      } else if (hash === 'profiler' || hash === 'explain' || hash === 'execution-tree' || hash === 'profile') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewQueryProfiler', 'Visual Query Profiler', 'navGroupExplore');
+      } else if (hash === 'guidedlab' || hash === 'guided-lab') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewGuidedLab', 'Guided Lab', 'navGroupLearn');
       } else if (hash === 'interview' || hash === 'mock' || hash === 'mockinterview') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewMockInterview', 'Mock Interview', null);
