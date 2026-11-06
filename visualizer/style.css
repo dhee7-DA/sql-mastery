@@ -30114,3 +30114,238 @@ pre code {
 .btn-modal-close:hover {
   background: #3f3f46;
 }
+
+
+/* ========================================================================= */
+/* SHIFT NUDGE 16 CORE PRINCIPLES: FLUID INTERFACE REFINEMENT SYSTEM         */
+/* Based on Matt D. Smith's 16 Design Principles (shiftnudge.com/skill)      */
+/* ========================================================================= */
+
+:root {
+  /* Principle 10: Motion - Spring physics & fluid timing */
+  --sn-spring-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+  --sn-ease-out-quad: cubic-bezier(0.25, 1, 0.5, 1);
+  --sn-duration-fast: 140ms;
+  --sn-duration-normal: 200ms;
+  --sn-duration-enter: 220ms;
+
+  /* Principle 1: Typography - Proportional optical tracking */
+  --sn-tracking-tight: -0.02em;
+  --sn-tracking-wide: 0.06em;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 1. TYPOGRAPHIC FLUIDITY & TABULAR FIGURES                                 */
+/* ------------------------------------------------------------------------- */
+
+/* Zero-jitter live data counters, execution timers, costs, and row telemetry */
+.font-mono,
+.kpi-value,
+.m-val,
+.mm-val,
+.flame-bar-text,
+.flame-rows-chip,
+.telemetry-chip,
+.telemetry-metric-val,
+.step-counter,
+.timer-badge,
+.xp-badge,
+.streak-count,
+.row-count-tag,
+.matrix-table td.font-mono,
+.drill-score-badge,
+.drill-timer-display,
+.node-cost-pct,
+.matrix-table td,
+.flame-total-time {
+  font-variant-numeric: tabular-nums lining-nums;
+  -webkit-font-feature-settings: "tnum" 1, "lnum" 1;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* Principle 1: Optical text wrapping and hierarchy */
+h1, h2, h3,
+.profiler-main-title,
+.step-heading,
+.guided-lab-title,
+.section-title,
+.flamegraph-title strong,
+.matrix-heading strong {
+  text-wrap: balance;
+  letter-spacing: var(--sn-tracking-tight);
+}
+
+p,
+.profiler-sub-title,
+.kpi-footnote,
+.radar-item-desc,
+.step-explanation,
+.nav-item-desc,
+.tree-flow-instructions {
+  text-wrap: pretty;
+}
+
+/* Small uppercase metadata: deliberate tracking */
+.kpi-tag,
+.profiler-control-label,
+.card-header-title,
+.radar-status-badge,
+.profiler-logo-text,
+.whatif-toggle-label,
+.prof-tab-btn,
+.raw-fmt-btn,
+.matrix-table th,
+.modal-section-title,
+.mm-lbl {
+  letter-spacing: var(--sn-tracking-wide);
+}
+
+/* ------------------------------------------------------------------------- */
+/* 2. TACTILE MICRO-INTERACTIONS & ACTIVE PRESS STATES (Affordance & Motion)  */
+/* ------------------------------------------------------------------------- */
+
+/* Tactile scale response on user interaction (Shift Nudge Affordance & Motion) */
+button:active:not(:disabled),
+.btn:active:not(:disabled),
+.btn-primary:active:not(:disabled),
+.btn-secondary:active:not(:disabled),
+.nav-tab:active,
+.prof-tab-btn:active,
+.exp-pill-btn:active,
+.profiler-pill:active,
+.guided-mode-tab:active,
+.drill-mode-btn:active,
+.btn-prof-action:active,
+.btn-prof-primary:active,
+.btn-copy-ddl:active,
+.btn-copy-raw:active,
+.btn-format-inline:active,
+.action-btn-primary:active,
+.tree-node-card:active,
+.flamegraph-row:active {
+  transform: scale(0.978);
+  transition: transform 70ms ease-out !important;
+}
+
+/* Replace broad transition:all with explicit, GPU-composited properties */
+.prof-tab-btn,
+.profiler-pill,
+.exp-pill-btn,
+.guided-mode-tab,
+.drill-mode-btn,
+.btn-prof-action,
+.btn-prof-primary,
+.btn-copy-ddl,
+.btn-copy-raw,
+.btn-format-inline,
+.action-btn-primary,
+.flamegraph-row,
+.tree-node-card,
+.profiler-kpi-card,
+.kpi-card,
+.raw-fmt-btn,
+.whatif-slider {
+  transition-property: transform, background-color, border-color, box-shadow, color, opacity;
+  transition-duration: var(--sn-duration-normal);
+  transition-timing-function: var(--sn-spring-fluid);
+}
+
+/* Elevate interactive cards smoothly on hover */
+.tree-node-card:hover,
+.flamegraph-row:hover,
+.profiler-kpi-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* ------------------------------------------------------------------------- */
+/* 3. FLUID VIEW SWITCHING & COMPOSITOR REVEAL (Clarity & Motion)            */
+/* ------------------------------------------------------------------------- */
+
+.view-panel.active {
+  animation: shiftNudgeViewEnter var(--sn-duration-enter) var(--sn-spring-fluid) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes shiftNudgeViewEnter {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth tab pane reveal */
+.tab-pane.active {
+  animation: shiftNudgeTabEnter 180ms var(--sn-spring-fluid) forwards;
+}
+
+@keyframes shiftNudgeTabEnter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+/* 4. SLEEK FLUID SCROLLBARS (Restraint & Precision)                         */
+/* ------------------------------------------------------------------------- */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  transition: background 150ms ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 5. OPTICAL ACCESSIBILITY & FOCUS VISIBLE (Responsibility & Affordance)     */
+/* ------------------------------------------------------------------------- */
+
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.65) !important;
+  outline-offset: 2px !important;
+}
+
+/* Reduced motion preference compliance */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .view-panel.active,
+  .tab-pane.active {
+    animation: none !important;
+  }
+}
