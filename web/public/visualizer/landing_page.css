@@ -438,11 +438,153 @@
 
 .koma-code-column {
   border-right: 1px solid var(--koma-border);
-  padding: 16px 20px;
-  overflow-x: auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background: #1e1e1e;
+  overflow: hidden;
   font-family: var(--koma-font-mono);
   font-size: 12px;
-  line-height: 1.65;
+  line-height: 1.6;
+}
+
+/* IDE Editor Toolbar */
+.koma-editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #18181b;
+  border-bottom: 1px solid var(--koma-border);
+  font-family: var(--koma-font-mono);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.koma-editor-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.koma-btn-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(78, 201, 176, 0.16);
+  border: 1px solid rgba(78, 201, 176, 0.45);
+  color: #4ec9b0;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--koma-font-mono);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.koma-btn-run:hover {
+  background: rgba(78, 201, 176, 0.28);
+  border-color: #4ec9b0;
+  box-shadow: 0 0 10px rgba(78, 201, 176, 0.2);
+}
+
+.koma-btn-run .koma-kbd {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(78, 201, 176, 0.3);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 9.5px;
+  color: #a7f3d0;
+}
+
+.koma-btn-toolbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #27272a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #a1a1aa;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-family: var(--koma-font-mono);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.koma-btn-toolbar:hover {
+  background: #3f3f46;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.koma-editor-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10.5px;
+  color: #71717a;
+}
+
+.koma-editor-pulse {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ec9b0;
+  box-shadow: 0 0 6px #4ec9b0;
+  margin-right: 4px;
+}
+
+/* IDE Editor Body */
+.koma-editor-body {
+  display: flex;
+  flex: 1;
+  min-height: 270px;
+  max-height: 330px;
+  position: relative;
+  background: #1e1e1e;
+  overflow: hidden;
+}
+
+.koma-editor-gutter {
+  width: 36px;
+  padding: 12px 6px;
+  text-align: right;
+  user-select: none;
+  color: #52525b;
+  font-family: var(--koma-font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  background: #18181b;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.koma-code-textarea {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: #f4f4f5;
+  font-family: var(--koma-font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 12px 14px;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+  caret-color: #4ec9b0;
+  box-sizing: border-box;
+}
+
+.koma-code-textarea::selection {
+  background: rgba(78, 201, 176, 0.25);
 }
 
 .koma-line {
@@ -499,6 +641,78 @@
   background: rgba(78, 201, 176, 0.1);
   border: 1px solid rgba(78, 201, 176, 0.3);
   color: #4ec9b0;
+  font-family: var(--koma-font-mono);
+  display: inline-flex;
+  align-items: center;
+}
+
+.koma-badge-red {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #ef4444;
+  font-family: var(--koma-font-mono);
+  display: inline-flex;
+  align-items: center;
+}
+
+.koma-badge-yellow {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(234, 179, 8, 0.12);
+  border: 1px solid rgba(234, 179, 8, 0.35);
+  color: #eab308;
+  font-family: var(--koma-font-mono);
+  display: inline-flex;
+  align-items: center;
+}
+
+.koma-sink-error-box {
+  padding: 16px;
+  margin: 12px;
+  border-radius: 6px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #fca5a5;
+  font-family: var(--koma-font-mono);
+  font-size: 11.5px;
+}
+
+.koma-sink-error-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.koma-sink-error-message {
+  font-family: var(--koma-font-mono);
+  font-size: 11px;
+  color: #fecaca;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px 10px;
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
+.koma-sink-error-hint {
+  font-size: 10.5px;
+  color: #a1a1aa;
+}
+
+.koma-sink-empty {
+  padding: 40px 16px;
+  text-align: center;
+  color: #71717a;
+  font-family: var(--koma-font-mono);
+  font-size: 12px;
 }
 
 .koma-table-wrapper {
