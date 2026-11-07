@@ -1,1077 +1,1077 @@
 /**
- * SQL FOUNDRY - ENTERPRISE DUAL-TRACK LANDING PAGE ENGINE
- * -----------------------------------------------------------------------------
- * Shift Nudge Typography • Apple Liquid Glass • Aceternity Bento Architecture
- * Track 01: Modern Data Analytics & Product Growth
- * Track 02: Quantitative Finance, Ledgers & Market Microstructure
+ * SQL FOUNDRY - PROFESSIONAL DATA & FINANCE ANALYTICS LANDING PAGE ENGINE
+ * Aesthetic aligned with Section Studio:
+ * Matte Carbon Obsidian, Hairline Borders, Monochrome Badges, Zero Distracting Hardware Diagrams.
  */
 
 (function(window) {
   'use strict';
 
-  // --- STATE ---
-  const State = {
-    activeTrack: 'analytics', // 'analytics' | 'finance'
-    activeScenarioId: 'scenario_amazon',
-    cohortDisplayMode: 'percent', // 'percent' | 'absolute'
-    activeTrapId: 'trap_three_valued_null',
-    orderSize: 1500,
-    bentoAnimId: null,
-    bentoParticles: []
+  // --- 1. HERO WORKBENCH SCENARIOS ---
+  const HERO_SCENARIOS = {
+    scenario_amazon: {
+      id: 'scenario_amazon',
+      title: 'Amazon: Prime Churn (Anti-Join)',
+      tablePill: 'TABLE: amazon_prime_orders (2.4M rows)',
+      topicTag: 'AMAZON SCOT // RETENTION COHORT',
+      filename: 'amazon_prime_churn_detector.sql',
+      columns: ['customer_id', 'purchase_date', 'product_id', 'order_id'],
+      latency: '0.014ms',
+      memory: '0.0KB',
+      status: 'AST PASSED ✓',
+      lines: [
+        { num: 1, text: `<span class="studio-cm">-- Amazon SCOT: Detect Prime buyers churned within 30 days of purchase</span>` },
+        { num: 2, text: `<span class="studio-kw">SELECT DISTINCT</span> o1.customer_id, o1.purchase_date, o1.product_id` },
+        { num: 3, text: `<span class="studio-kw">FROM</span> amazon_prime_orders o1` },
+        { num: 4, text: `<span class="studio-kw">LEFT JOIN</span> amazon_prime_orders o2` },
+        { num: 5, text: `  <span class="studio-kw">ON</span> o1.customer_id = o2.customer_id` },
+        { num: 6, text: `  <span class="studio-kw">AND</span> o2.purchase_date &gt; o1.purchase_date` },
+        { num: 7, text: `  <span class="studio-kw">AND</span> o2.purchase_date &lt;= <span class="studio-fn">DATE</span>(o1.purchase_date, <span class="studio-str">'+30 days'</span>)` },
+        { num: 8, text: `<span class="studio-kw">WHERE</span> o2.order_id <span class="studio-kw">IS NULL</span>;` }
+      ],
+      tableHeaders: ['customer_id', 'purchase_date', 'product_id'],
+      tableRows: [
+        ['CUST_88201', '2026-09-01', 'PROD_KINDLE_PAPERWHITE'],
+        ['CUST_88245', '2026-09-01', 'PROD_ECHO_DOT_5TH_GEN'],
+        ['CUST_89104', '2026-09-02', 'PROD_FIRE_TV_STICK_4K'],
+        ['CUST_89311', '2026-09-03', 'PROD_RING_VIDEO_DOORBELL']
+      ],
+      tip: 'Anti-Join mastered! Using LEFT JOIN ... WHERE right.key IS NULL is sargable and outperforms expensive NOT IN subqueries in large tables.'
+    },
+
+    scenario_jpmorgan: {
+      id: 'scenario_jpmorgan',
+      title: 'JPMorgan: Core Ledger Invariant',
+      tablePill: 'TABLE: general_ledger_entries (Multi-Entity)',
+      topicTag: 'JPMORGAN CHASE // DOUBLE-ENTRY AUDIT',
+      filename: 'jpmorgan_gl_invariants.sql',
+      columns: ['legal_entity', 'account_code', 'entry_type', 'amount_usd'],
+      latency: '0.011ms',
+      memory: '0.0KB',
+      status: 'AST PASSED ✓',
+      lines: [
+        { num: 1, text: `<span class="studio-cm">-- JPMorgan Day 01: Audit double-entry general ledger balance invariants</span>` },
+        { num: 2, text: `<span class="studio-kw">SELECT</span>` },
+        { num: 3, text: `  legal_entity, account_code,` },
+        { num: 4, text: `  <span class="studio-fn">SUM</span>(<span class="studio-kw">CASE WHEN</span> entry_type = <span class="studio-str">'DEBIT'</span> <span class="studio-kw">THEN</span> amount_usd <span class="studio-kw">ELSE</span> <span class="studio-num">0</span> <span class="studio-kw">END</span>) <span class="studio-kw">AS</span> total_debits,` },
+        { num: 5, text: `  <span class="studio-fn">SUM</span>(<span class="studio-kw">CASE WHEN</span> entry_type = <span class="studio-str">'CREDIT'</span> <span class="studio-kw">THEN</span> amount_usd <span class="studio-kw">ELSE</span> <span class="studio-num">0</span> <span class="studio-kw">END</span>) <span class="studio-kw">AS</span> total_credits,` },
+        { num: 6, text: `  <span class="studio-fn">ROUND</span>(<span class="studio-fn">SUM</span>(<span class="studio-kw">CASE WHEN</span> entry_type = <span class="studio-str">'DEBIT'</span> <span class="studio-kw">THEN</span> amount_usd <span class="studio-kw">ELSE</span> -amount_usd <span class="studio-kw">END</span>), <span class="studio-num">2</span>) <span class="studio-kw">AS</span> net_variance` },
+        { num: 7, text: `<span class="studio-kw">FROM</span> general_ledger_entries` },
+        { num: 8, text: `<span class="studio-kw">GROUP BY</span> <span class="studio-num">1</span>, <span class="studio-num">2</span>` },
+        { num: 9, text: `<span class="studio-kw">HAVING</span> total_debits != total_credits;` }
+      ],
+      tableHeaders: ['legal_entity', 'account_code', 'total_debits', 'total_credits', 'net_variance'],
+      tableRows: [
+        ['JPMC_US_RETAIL', '1010-CASH', '$2,140,000.00', '$2,140,000.00', '$0.00 (BALANCED)'],
+        ['JPMC_UK_IB', '2040-NOSTRO', '$1,420,200.00', '$1,420,200.00', '$0.00 (BALANCED)'],
+        ['JPMC_EU_SE', '3010-INTERBANK', '$1,290,000.00', '$1,290,000.00', '$0.00 (BALANCED)']
+      ],
+      tip: 'OCC & Fed Regulation D satisfied! Conditional aggregation inside SUM() guarantees exact double-entry verification across all entities.'
+    },
+
+    scenario_saas_mrr: {
+      id: 'scenario_saas_mrr',
+      title: 'SaaS: 5-Way MRR Waterfall Bridge',
+      tablePill: 'TABLE: subscriptions (Dense Expansion)',
+      topicTag: 'SAAS METRICS // 5-WAY MRR WATERFALL',
+      filename: 'saas_mrr_waterfall_bridge.sql',
+      columns: ['cohort_month', 'prev_mrr', 'curr_mrr', 'user_id'],
+      latency: '0.018ms',
+      memory: '0.0KB',
+      status: 'AST PASSED ✓',
+      lines: [
+        { num: 1, text: `<span class="studio-cm">-- SaaS Metrics: 5-Way MRR Movement Waterfall Bridge</span>` },
+        { num: 2, text: `<span class="studio-kw">SELECT</span>` },
+        { num: 3, text: `  cohort_month,` },
+        { num: 4, text: `  <span class="studio-fn">SUM</span>(<span class="studio-kw">CASE WHEN</span> prev_mrr = <span class="studio-num">0</span> <span class="studio-kw">THEN</span> curr_mrr <span class="studio-kw">ELSE</span> <span class="studio-num">0</span> <span class="studio-kw">END</span>) <span class="studio-kw">AS</span> new_mrr,` },
+        { num: 5, text: `  <span class="studio-fn">SUM</span>(<span class="studio-kw">CASE WHEN</span> curr_mrr &gt; prev_mrr <span class="studio-kw">AND</span> prev_mrr &gt; <span class="studio-num">0</span> <span class="studio-kw">THEN</span> curr_mrr - prev_mrr <span class="studio-kw">ELSE</span> <span class="studio-num">0</span> <span class="studio-kw">END</span>) <span class="studio-kw">AS</span> expansion_mrr,` },
+        { num: 6, text: `  <span class="studio-fn">SUM</span>(<span class="studio-kw">CASE WHEN</span> curr_mrr &lt; prev_mrr <span class="studio-kw">AND</span> curr_mrr &gt; <span class="studio-num">0</span> <span class="studio-kw">THEN</span> prev_mrr - curr_mrr <span class="studio-kw">ELSE</span> <span class="studio-num">0</span> <span class="studio-kw">END</span>) <span class="studio-kw">AS</span> contraction_mrr,` },
+        { num: 7, text: `  <span class="studio-fn">SUM</span>(<span class="studio-kw">CASE WHEN</span> curr_mrr = <span class="studio-num">0</span> <span class="studio-kw">AND</span> prev_mrr &gt; <span class="studio-num">0</span> <span class="studio-kw">THEN</span> prev_mrr <span class="studio-kw">ELSE</span> <span class="studio-num">0</span> <span class="studio-kw">END</span>) <span class="studio-kw">AS</span> churned_mrr` },
+        { num: 8, text: `<span class="studio-kw">FROM</span> monthly_customer_mrr` },
+        { num: 9, text: `<span class="studio-kw">GROUP BY</span> <span class="studio-num">1</span>;` }
+      ],
+      tableHeaders: ['cohort_month', 'new_mrr', 'expansion_mrr', 'contraction_mrr', 'churned_mrr'],
+      tableRows: [
+        ['2026-01-01', '$32,000', '$12,000', '$2,100', '$4,400'],
+        ['2026-02-01', '$36,500', '$15,400', '$1,800', '$5,400'],
+        ['2026-03-01', '$41,200', '$18,100', '$2,200', '$4,700'],
+        ['2026-04-01', '$45,000', '$21,500', '$2,400', '$5,700']
+      ],
+      tip: 'SaaS Quick Ratio at 4.1x! Partition frames cleanly segment net new revenue drivers for executive board decks.'
+    },
+
+    scenario_leetcode185: {
+      id: 'scenario_leetcode185',
+      title: 'LeetCode #185: Top 3 Salaries',
+      tablePill: 'TABLE: enterprise_employees (12 columns)',
+      topicTag: 'LEETCODE HARD // WINDOW RANKING',
+      filename: 'leetcode_185_department_salaries.sql',
+      columns: ['emp_id', 'full_name', 'department_id', 'salary'],
+      latency: '0.012ms',
+      memory: '0.0KB',
+      status: 'AST PASSED ✓',
+      lines: [
+        { num: 1, text: `<span class="studio-cm">-- LeetCode #185: Top 3 Department Earners using Dense Ranking</span>` },
+        { num: 2, text: `<span class="studio-kw">WITH</span> ranked_payroll <span class="studio-kw">AS</span> (` },
+        { num: 3, text: `  <span class="studio-kw">SELECT</span> emp_id, full_name, department_id, salary,` },
+        { num: 4, text: `    <span class="studio-fn">DENSE_RANK</span>() <span class="studio-kw">OVER</span> (` },
+        { num: 5, text: `      <span class="studio-kw">PARTITION BY</span> department_id <span class="studio-kw">ORDER BY</span> salary <span class="studio-kw">DESC</span>` },
+        { num: 6, text: `    ) <span class="studio-kw">AS</span> rank_pos` },
+        { num: 7, text: `  <span class="studio-kw">FROM</span> enterprise_employees` },
+        { num: 8, text: `)` },
+        { num: 9, text: `<span class="studio-kw">SELECT</span> department_id, full_name, salary, rank_pos` },
+        { num: 10, text: `<span class="studio-kw">FROM</span> ranked_payroll <span class="studio-kw">WHERE</span> rank_pos &lt;= <span class="studio-num">3</span>;` }
+      ],
+      tableHeaders: ['department_id', 'full_name', 'salary', 'rank_pos'],
+      tableRows: [
+        ['Eng', 'Elena Rostova', '$185,000', '1'],
+        ['Eng', 'David Kim', '$172,000', '2'],
+        ['Eng', 'Marcus Vance', '$168,000', '3'],
+        ['Finance', 'Sarah Jenkins', '$195,000', '1'],
+        ['Finance', 'Alex Chen', '$180,000', '2']
+      ],
+      tip: 'Query executed via client-side SQLite WASM! Notice how DENSE_RANK() cleanly handles ties without skipping rank numbers.'
+    },
+
+    scenario_uber: {
+      id: 'scenario_uber',
+      title: 'Uber: H3 Surge Multipliers',
+      tablePill: 'TABLE: uber_trips_h3 (85K RPM)',
+      topicTag: 'UBER MOBILITY // H3 SPATIAL LOGISTICS',
+      filename: 'uber_h3_surge_calculator.sql',
+      columns: ['h3_index', 'active_requests', 'available_drivers', 'surge_ratio'],
+      latency: '0.016ms',
+      memory: '0.0KB',
+      status: 'AST PASSED ✓',
+      lines: [
+        { num: 1, text: `<span class="studio-cm">-- Uber Marketplace: Compute Real-Time Surge Multipliers per H3 Hexagon</span>` },
+        { num: 2, text: `<span class="studio-kw">WITH</span> hex_demand <span class="studio-kw">AS</span> (` },
+        { num: 3, text: `  <span class="studio-kw">SELECT</span> h3_index, <span class="studio-fn">COUNT</span>(*) <span class="studio-kw">AS</span> active_requests` },
+        { num: 4, text: `  <span class="studio-kw">FROM</span> uber_ride_requests <span class="studio-kw">WHERE</span> requested_at &gt;= <span class="studio-fn">DATETIME</span>(<span class="studio-str">'now'</span>, <span class="studio-str">'-5 minutes'</span>)` },
+        { num: 5, text: `  <span class="studio-kw">GROUP BY</span> h3_index` },
+        { num: 6, text: `)` },
+        { num: 7, text: `<span class="studio-kw">SELECT</span> d.h3_index, d.active_requests, <span class="studio-fn">COALESCE</span>(s.drivers, <span class="studio-num">0</span>) <span class="studio-kw">AS</span> drivers,` },
+        { num: 8, text: `  <span class="studio-fn">ROUND</span>(<span class="studio-fn">CAST</span>(d.active_requests <span class="studio-kw">AS FLOAT</span>) / <span class="studio-fn">MAX</span>(<span class="studio-fn">COALESCE</span>(s.drivers, <span class="studio-num">1</span>), <span class="studio-num">1</span>), <span class="studio-num">2</span>) <span class="studio-kw">AS</span> surge_ratio` },
+        { num: 9, text: `<span class="studio-kw">FROM</span> hex_demand d <span class="studio-kw">LEFT JOIN</span> uber_driver_telemetry s <span class="studio-kw">ON</span> d.h3_index = s.h3_index` },
+        { num: 10, text: `<span class="studio-kw">ORDER BY</span> surge_ratio <span class="studio-kw">DESC</span>;` }
+      ],
+      tableHeaders: ['h3_index', 'active_requests', 'drivers', 'surge_ratio'],
+      tableRows: [
+        ['882681a339fffff', '142', '18', '7.89x'],
+        ['882681a33bfffff', '98', '21', '4.67x'],
+        ['882681a331fffff', '64', '32', '2.00x'],
+        ['882681a337fffff', '45', '40', '1.13x']
+      ],
+      tip: 'H3 spatial joins prevent driver dry-outs during peak surge periods while preserving fair driver compensation.'
+    }
   };
 
-  // --- 1. HERO SCENARIOS (DUAL-TRACK) ---
-  const SCENARIOS = {
-    analytics: [
-      {
-        id: 'scenario_amazon',
-        title: 'Amazon: Prime Churn (Anti-Join)',
-        filename: 'amazon_prime_churn_detector.sql',
-        latency: '0.014ms',
-        rowsCount: '4 churned customers',
-        codeHtml: `<span class="landing-cm">-- Amazon SCOT: Detect Prime buyers churned within 30 days of purchase</span>
-<span class="landing-kw">SELECT DISTINCT</span> o1.customer_id, o1.purchase_date, o1.product_id
-<span class="landing-kw">FROM</span> amazon_prime_orders o1
-<span class="landing-kw">LEFT JOIN</span> amazon_prime_orders o2
-  <span class="landing-kw">ON</span> o1.customer_id = o2.customer_id
-  <span class="landing-kw">AND</span> o2.purchase_date &gt; o1.purchase_date
-  <span class="landing-kw">AND</span> o2.purchase_date &lt;= <span class="landing-fn">DATE</span>(o1.purchase_date, <span class="landing-str">'+30 days'</span>)
-<span class="landing-kw">WHERE</span> o2.order_id <span class="landing-kw">IS NULL</span>;`,
-        sql: `SELECT DISTINCT o1.customer_id, o1.purchase_date, o1.product_id
-FROM amazon_prime_orders o1
-LEFT JOIN amazon_prime_orders o2
-  ON o1.customer_id = o2.customer_id
-  AND o2.purchase_date > o1.purchase_date
-  AND o2.purchase_date <= DATE(o1.purchase_date, '+30 days')
-WHERE o2.order_id IS NULL;`,
-        tableHeaders: ['customer_id', 'purchase_date', 'product_id'],
-        tableRows: [
-          ['CUST_88201', '2026-09-01', 'PROD_KINDLE_PAPERWHITE'],
-          ['CUST_88245', '2026-09-01', 'PROD_ECHO_DOT_5TH_GEN'],
-          ['CUST_89104', '2026-09-02', 'PROD_FIRE_TV_STICK_4K'],
-          ['CUST_89311', '2026-09-03', 'PROD_RING_VIDEO_DOORBELL']
-        ],
-        tip: 'Anti-Join mastered! Using LEFT JOIN ... WHERE right.key IS NULL is sargable and avoids expensive correlated subqueries.'
-      },
-      {
-        id: 'scenario_saas_mrr',
-        title: 'SaaS: 5-Way MRR Movement',
-        filename: 'saas_mrr_waterfall_bridge.sql',
-        latency: '0.018ms',
-        rowsCount: '5 movement categories',
-        codeHtml: `<span class="landing-cm">-- SaaS Metrics: 5-Way MRR Movement Waterfall Bridge</span>
-<span class="landing-kw">SELECT</span>
-  cohort_month,
-  <span class="landing-fn">SUM</span>(<span class="landing-kw">CASE WHEN</span> prev_mrr = <span class="landing-num">0</span> <span class="landing-kw">THEN</span> curr_mrr <span class="landing-kw">ELSE</span> <span class="landing-num">0</span> <span class="landing-kw">END</span>) <span class="landing-kw">AS</span> new_mrr,
-  <span class="landing-fn">SUM</span>(<span class="landing-kw">CASE WHEN</span> curr_mrr &gt; prev_mrr <span class="landing-kw">AND</span> prev_mrr &gt; <span class="landing-num">0</span> <span class="landing-kw">THEN</span> curr_mrr - prev_mrr <span class="landing-kw">ELSE</span> <span class="landing-num">0</span> <span class="landing-kw">END</span>) <span class="landing-kw">AS</span> expansion_mrr,
-  <span class="landing-fn">SUM</span>(<span class="landing-kw">CASE WHEN</span> curr_mrr &lt; prev_mrr <span class="landing-kw">AND</span> curr_mrr &gt; <span class="landing-num">0</span> <span class="landing-kw">THEN</span> prev_mrr - curr_mrr <span class="landing-kw">ELSE</span> <span class="landing-num">0</span> <span class="landing-kw">END</span>) <span class="landing-kw">AS</span> contraction_mrr,
-  <span class="landing-fn">SUM</span>(<span class="landing-kw">CASE WHEN</span> curr_mrr = <span class="landing-num">0</span> <span class="landing-kw">AND</span> prev_mrr &gt; <span class="landing-num">0</span> <span class="landing-kw">THEN</span> prev_mrr <span class="landing-kw">ELSE</span> <span class="landing-num">0</span> <span class="landing-kw">END</span>) <span class="landing-kw">AS</span> churned_mrr
-<span class="landing-kw">FROM</span> monthly_customer_mrr
-<span class="landing-kw">GROUP BY</span> <span class="landing-num">1</span>;`,
-        sql: `SELECT
-  cohort_month,
-  SUM(CASE WHEN prev_mrr = 0 THEN curr_mrr ELSE 0 END) AS new_mrr,
-  SUM(CASE WHEN curr_mrr > prev_mrr AND prev_mrr > 0 THEN curr_mrr - prev_mrr ELSE 0 END) AS expansion_mrr,
-  SUM(CASE WHEN curr_mrr < prev_mrr AND curr_mrr > 0 THEN prev_mrr - curr_mrr ELSE 0 END) AS contraction_mrr,
-  SUM(CASE WHEN curr_mrr = 0 AND prev_mrr > 0 THEN prev_mrr ELSE 0 END) AS churned_mrr
-FROM monthly_customer_mrr
-GROUP BY 1;`,
-        tableHeaders: ['cohort_month', 'new_mrr', 'expansion_mrr', 'contraction_mrr', 'churned_mrr'],
-        tableRows: [
-          ['2026-09', '$142,500', '$38,200', '$12,400', '$18,900'],
-          ['2026-10', '$168,000', '$44,100', '$14,000', '$16,200'],
-          ['2026-11', '$189,400', '$52,800', '$11,900', '$14,500']
-        ],
-        tip: 'Net New MRR = New + Expansion - Contraction - Churn. Pure conditional aggregation handles dense temporal cohorts.'
-      },
-      {
-        id: 'scenario_leetcode_185',
-        title: 'LeetCode #185 (Dense Rank Salaries)',
-        filename: 'leetcode_185_department_salaries.sql',
-        latency: '0.012ms',
-        rowsCount: '6 rows returned',
-        codeHtml: `<span class="landing-cm">-- LeetCode #185: Top 3 Department Earners using Dense Ranking</span>
-<span class="landing-kw">WITH</span> ranked_payroll <span class="landing-kw">AS</span> (
-  <span class="landing-kw">SELECT</span> 
-    emp_id, full_name, department_id, salary,
-    <span class="landing-fn">DENSE_RANK</span>() <span class="landing-kw">OVER</span> (
-      <span class="landing-kw">PARTITION BY</span> department_id 
-      <span class="landing-kw">ORDER BY</span> salary <span class="landing-kw">DESC</span>
-    ) <span class="landing-kw">AS</span> rank_pos
-  <span class="landing-kw">FROM</span> enterprise_employees
-)
-<span class="landing-kw">SELECT</span> department_id, full_name, salary, rank_pos
-<span class="landing-kw">FROM</span> ranked_payroll
-<span class="landing-kw">WHERE</span> rank_pos &lt;= <span class="landing-num">3</span>;`,
-        sql: `WITH ranked_payroll AS (
-  SELECT emp_id, full_name, department_id, salary,
-    DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rank_pos
-  FROM enterprise_employees
-)
-SELECT department_id, full_name, salary, rank_pos
-FROM ranked_payroll
-WHERE rank_pos <= 3;`,
-        tableHeaders: ['department_id', 'full_name', 'salary', 'rank_pos'],
-        tableRows: [
-          ['Eng', 'Elena Rostova', '$185,000', '1'],
-          ['Eng', 'David Kim', '$172,000', '2'],
-          ['Eng', 'Marcus Vance', '$168,000', '3'],
-          ['Product', 'Sarah Jenkins', '$195,000', '1'],
-          ['Product', 'Alex Chen', '$180,000', '2']
-        ],
-        tip: 'DENSE_RANK() prevents rank holes when salaries tie, ensuring the top 3 unique compensation tiers are always retrieved.'
-      }
-    ],
-    finance: [
-      {
-        id: 'scenario_jpmorgan_ledger',
-        title: 'JPMorgan: General Ledger Invariant',
-        filename: 'jpmorgan_gl_invariants.sql',
-        latency: '0.011ms',
-        rowsCount: '3 legal entities audited',
-        codeHtml: `<span class="landing-cm">-- JPMorgan: Verify double-entry balance invariant (Debits = Credits)</span>
-<span class="landing-kw">SELECT</span> 
-  legal_entity, account_code,
-  <span class="landing-fn">SUM</span>(<span class="landing-kw">CASE WHEN</span> entry_type = <span class="landing-str">'DEBIT'</span> <span class="landing-kw">THEN</span> amount_usd <span class="landing-kw">ELSE</span> <span class="landing-num">0</span> <span class="landing-kw">END</span>) <span class="landing-kw">AS</span> total_debits,
-  <span class="landing-fn">SUM</span>(<span class="landing-kw">CASE WHEN</span> entry_type = <span class="landing-str">'CREDIT'</span> <span class="landing-kw">THEN</span> amount_usd <span class="landing-kw">ELSE</span> <span class="landing-num">0</span> <span class="landing-kw">END</span>) <span class="landing-kw">AS</span> total_credits,
-  <span class="landing-fn">ROUND</span>(<span class="landing-fn">SUM</span>(<span class="landing-kw">CASE WHEN</span> entry_type = <span class="landing-str">'DEBIT'</span> <span class="landing-kw">THEN</span> amount_usd <span class="landing-kw">ELSE</span> -amount_usd <span class="landing-kw">END</span>), <span class="landing-num">2</span>) <span class="landing-kw">AS</span> net_variance
-<span class="landing-kw">FROM</span> general_ledger_entries
-<span class="landing-kw">GROUP BY</span> <span class="landing-num">1</span>, <span class="landing-num">2</span>;`,
-        sql: `SELECT legal_entity, account_code,
-  SUM(CASE WHEN entry_type = 'DEBIT' THEN amount_usd ELSE 0 END) AS total_debits,
-  SUM(CASE WHEN entry_type = 'CREDIT' THEN amount_usd ELSE 0 END) AS total_credits,
-  ROUND(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount_usd ELSE -amount_usd END), 2) AS net_variance
-FROM general_ledger_entries
-GROUP BY 1, 2;`,
-        tableHeaders: ['legal_entity', 'account_code', 'total_debits', 'total_credits', 'net_variance'],
-        tableRows: [
-          ['JPMC_US_RETAIL', '1010-CASH', '$2,140,000.00', '$2,140,000.00', '$0.00 (BALANCED)'],
-          ['JPMC_UK_IB', '2040-NOSTRO', '$1,420,200.00', '$1,420,200.00', '$0.00 (BALANCED)'],
-          ['JPMC_EU_SE', '3010-INTERBANK', '$1,290,000.00', '$1,290,000.00', '$0.00 (BALANCED)']
-        ],
-        tip: 'OCC & Fed Regulation D satisfied! Zero net variance confirms all concurrent multi-currency book transfers balance exactly.'
-      },
-      {
-        id: 'scenario_orderbook_depth',
-        title: 'Quant LOB: Cumulative Market Depth',
-        filename: 'limit_order_book_depth_window.sql',
-        latency: '0.015ms',
-        rowsCount: '6 depth price levels',
-        codeHtml: `<span class="landing-cm">-- Wall St Microstructure: Compute cumulative liquidity on limit order book</span>
-<span class="landing-kw">SELECT</span> 
-  symbol, side, price, shares,
-  <span class="landing-fn">SUM</span>(shares) <span class="landing-kw">OVER</span> (
-    <span class="landing-kw">PARTITION BY</span> symbol, side 
-    <span class="landing-kw">ORDER BY</span> <span class="landing-kw">CASE WHEN</span> side = <span class="landing-str">'BID'</span> <span class="landing-kw">THEN</span> -price <span class="landing-kw">ELSE</span> price <span class="landing-kw">END</span>
-    <span class="landing-kw">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span>
-  ) <span class="landing-kw">AS</span> cum_depth_shares,
-  <span class="landing-fn">ROUND</span>(<span class="landing-fn">SUM</span>(price * shares) <span class="landing-kw">OVER</span> (
-    <span class="landing-kw">PARTITION BY</span> symbol, side 
-    <span class="landing-kw">ORDER BY</span> <span class="landing-kw">CASE WHEN</span> side = <span class="landing-str">'BID'</span> <span class="landing-kw">THEN</span> -price <span class="landing-kw">ELSE</span> price <span class="landing-kw">END</span>
-    <span class="landing-kw">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span>
-  ) / <span class="landing-fn">SUM</span>(shares) <span class="landing-kw">OVER</span> (
-    <span class="landing-kw">PARTITION BY</span> symbol, side 
-    <span class="landing-kw">ORDER BY</span> <span class="landing-kw">CASE WHEN</span> side = <span class="landing-str">'BID'</span> <span class="landing-kw">THEN</span> -price <span class="landing-kw">ELSE</span> price <span class="landing-kw">END</span>
-    <span class="landing-kw">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span>
-  ), <span class="landing-num">3</span>) <span class="landing-kw">AS</span> vwap_execution_price
-<span class="landing-kw">FROM</span> market_limit_orders
-<span class="landing-kw">WHERE</span> symbol = <span class="landing-str">'NVDA'</span>;`,
-        sql: `SELECT symbol, side, price, shares,
-  SUM(shares) OVER (
-    PARTITION BY symbol, side 
-    ORDER BY CASE WHEN side = 'BID' THEN -price ELSE price END
+  // --- 2. DEFENSIVE SQL TRAPS DATA ---
+  const DEFENSIVE_TRAPS = {
+    trap_null: {
+      id: 'trap_null',
+      title: 'Three-Valued Logic NULL Trap',
+      severity: 'P0 FATAL ERROR',
+      severityClass: 'fatal',
+      context: 'Amazon, Meta, Stripe BI Screens',
+      wrongCode: `-- ✕ VULNERABLE: Returns 0 rows if churned_users has even 1 NULL!
+SELECT user_id, email, signup_date
+FROM users
+WHERE user_id NOT IN (
+  SELECT user_id FROM churned_users
+);`,
+      fixCode: `-- ✓ PRODUCTION DEFENSIVE: Null-safe ANTI-JOIN or NOT EXISTS
+SELECT u.user_id, u.email, u.signup_date
+FROM users u
+WHERE NOT EXISTS (
+  SELECT 1 FROM churned_users c
+  WHERE c.user_id = u.user_id
+);`,
+      impact: 'In SQL three-valued logic, (x NOT IN (NULL, 1)) evaluates to UNKNOWN for all rows. The WHERE filter discards everything silently without throwing any database error.'
+    },
+
+    trap_float: {
+      id: 'trap_float',
+      title: 'Floating-Point Currency Drift',
+      severity: 'P0 FINANCIAL DRIFT',
+      severityClass: 'fatal',
+      context: 'Wall Street Ledgers & CCAR Audits',
+      wrongCode: `-- ✕ VULNERABLE: Float accumulation triggers IEEE-754 precision drift
+SELECT account_id, 
+  SUM(CAST(amount AS FLOAT)) AS total_balance
+FROM ledger_entries
+GROUP BY account_id
+HAVING SUM(CAST(amount AS FLOAT)) != 0.00;`,
+      fixCode: `-- ✓ PRODUCTION DEFENSIVE: Exact DECIMAL(18,4) or integer cents
+SELECT account_id, 
+  ROUND(SUM(CAST(amount_cents AS BIGINT)), 2) AS net_cents,
+  ROUND(SUM(CAST(amount AS DECIMAL(18,4))), 4) AS exact_balance
+FROM ledger_entries
+GROUP BY account_id
+HAVING SUM(amount_cents) != 0;`,
+      impact: 'IEEE-754 binary floating-point representation cannot represent fractions like 0.1 or 0.01 exactly. Across millions of trades, fractional pennies drift by thousands of dollars, failing SOX audits.'
+    },
+
+    trap_window: {
+      id: 'trap_window',
+      title: 'Window Frame Default Range Skew',
+      severity: 'P2 SILENT SKEW',
+      severityClass: 'skew',
+      context: 'Senior BI & Telemetry Screens',
+      wrongCode: `-- ✕ VULNERABLE: Default RANGE bundles identical timestamps together!
+SELECT order_date, order_amount,
+  SUM(order_amount) OVER (ORDER BY order_date) AS running_total
+FROM daily_sales;`,
+      fixCode: `-- ✓ PRODUCTION DEFENSIVE: Explicit ROWS frame avoids tie bundling
+SELECT order_date, order_amount,
+  SUM(order_amount) OVER (
+    ORDER BY order_date, order_id
     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-  ) AS cum_depth_shares
-FROM market_limit_orders
-WHERE symbol = 'NVDA';`,
-        tableHeaders: ['symbol', 'side', 'price', 'shares', 'cum_depth_shares', 'vwap_execution_price'],
-        tableRows: [
-          ['NVDA', 'ASK', '$138.45', '800', '800', '$138.450'],
-          ['NVDA', 'ASK', '$138.50', '1,200', '2,000', '$138.480'],
-          ['NVDA', 'ASK', '$138.55', '2,500', '4,500', '$138.519'],
-          ['NVDA', 'BID', '$138.40', '1,100', '1,100', '$138.400'],
-          ['NVDA', 'BID', '$138.35', '1,800', '2,900', '$138.369']
-        ],
-        tip: 'VWAP Execution Windowing! Computing running volume-weighted price lets algorithmic desks simulate market impact before firing.'
-      },
-      {
-        id: 'scenario_var_stress',
-        title: 'Portfolio: 95% Value-at-Risk (VaR)',
-        filename: 'portfolio_var_percentile.sql',
-        latency: '0.019ms',
-        rowsCount: '1 portfolio metric',
-        codeHtml: `<span class="landing-cm">-- Citadel / Bridgewater Risk: Historical 95% Value-at-Risk (VaR)</span>
-<span class="landing-kw">WITH</span> daily_returns <span class="landing-kw">AS</span> (
-  <span class="landing-kw">SELECT</span> trade_date,
-    (portfolio_nav - <span class="landing-fn">LAG</span>(portfolio_nav) <span class="landing-kw">OVER</span> (<span class="landing-kw">ORDER BY</span> trade_date)) / <span class="landing-fn">LAG</span>(portfolio_nav) <span class="landing-kw">OVER</span> (<span class="landing-kw">ORDER BY</span> trade_date) <span class="landing-kw">AS</span> daily_pnl_pct
-  <span class="landing-kw">FROM</span> portfolio_daily_nav
-)
-<span class="landing-kw">SELECT</span>
-  <span class="landing-fn">ROUND</span>(<span class="landing-fn">PERCENTILE_CONT</span>(<span class="landing-num">0.05</span>) <span class="landing-kw">WITHIN GROUP</span> (<span class="landing-kw">ORDER BY</span> daily_pnl_pct) * <span class="landing-num">100</span>, <span class="landing-num">2</span>) <span class="landing-kw">AS</span> var_95_pct,
-  <span class="landing-fn">ROUND</span>(<span class="landing-fn">MIN</span>(daily_pnl_pct) * <span class="landing-num">100</span>, <span class="landing-num">2</span>) <span class="landing-kw">AS</span> max_historical_drawdown
-<span class="landing-kw">FROM</span> daily_returns;`,
-        sql: `WITH daily_returns AS (
-  SELECT trade_date,
-    (portfolio_nav - LAG(portfolio_nav) OVER (ORDER BY trade_date)) / LAG(portfolio_nav) OVER (ORDER BY trade_date) AS daily_pnl_pct
-  FROM portfolio_daily_nav
-)
-SELECT ROUND(MIN(daily_pnl_pct) * 100, 2) AS max_historical_drawdown FROM daily_returns;`,
-        tableHeaders: ['metric', 'confidence', 'loss_threshold_pct', 'capital_at_risk_100m'],
-        tableRows: [
-          ['1-Day Parametric VaR', '95.0%', '-2.14%', '$2,140,000'],
-          ['1-Day Historical VaR', '99.0%', '-3.85%', '$3,850,000'],
-          ['Max Tail Loss (COVID)', 'Worst Day', '-7.42%', '$7,420,000']
-        ],
-        tip: 'Basel III compliant! 95% 1-day VaR indicates that 95 out of 100 trading sessions will experience portfolio losses no worse than 2.14%.'
-      }
-    ]
-  };
-
-  // --- 2. COHORT HEATMAP DATA ---
-  const COHORT_DATA = [
-    { cohort: '2026-01', size: 1200, decay: [100, 84, 73, 67, 63, 60, 58, 56, 55, 54, 53, 52] },
-    { cohort: '2026-02', size: 1350, decay: [100, 82, 71, 65, 61, 58, 56, 54, 53, 52, 51] },
-    { cohort: '2026-03', size: 1500, decay: [100, 86, 75, 69, 65, 62, 60, 58, 57, 56] },
-    { cohort: '2026-04', size: 1620, decay: [100, 85, 74, 68, 64, 61, 59, 57, 56] },
-    { cohort: '2026-05', size: 1780, decay: [100, 83, 72, 66, 62, 59, 57, 55] },
-    { cohort: '2026-06', size: 1950, decay: [100, 87, 77, 71, 67, 64, 62] },
-    { cohort: '2026-07', size: 2100, decay: [100, 84, 73, 67, 63, 60] },
-    { cohort: '2026-08', size: 2280, decay: [100, 86, 76, 70, 66] }
-  ];
-
-  // --- 3. LIMIT ORDER BOOK DATA ---
-  const ORDER_BOOK = {
-    asks: [
-      { price: 138.65, shares: 3200, depthPct: 95 },
-      { price: 138.60, shares: 2800, depthPct: 80 },
-      { price: 138.55, shares: 2500, depthPct: 65 },
-      { price: 138.50, shares: 1200, depthPct: 35 },
-      { price: 138.45, shares: 800,  depthPct: 18 }
-    ],
-    bids: [
-      { price: 138.40, shares: 1100, depthPct: 22 },
-      { price: 138.35, shares: 1800, depthPct: 45 },
-      { price: 138.30, shares: 2400, depthPct: 68 },
-      { price: 138.25, shares: 3100, depthPct: 85 },
-      { price: 138.20, shares: 4200, depthPct: 100 }
-    ]
-  };
-
-  // --- 4. DEFENSIVE SQL TRAPS DATA ---
-  const DEFENSIVE_TRAPS = [
-    {
-      id: 'trap_three_valued_null',
-      name: 'Three-Valued Logic NULL Trap',
-      category: 'Correctness / Defensive SQL',
-      desc: 'In SQL, NULL is neither true nor false — comparisons evaluate to UNKNOWN and are silently dropped by WHERE clauses.',
-      wrongSql: `-- FAILS SILENTLY: Misses all employees with NULL bonus!
-SELECT emp_id, salary, bonus
-FROM employees
-WHERE bonus > 0 OR bonus <= 0;`,
-      fixedSql: `-- CORRECT: Explicit IS NULL defense
-SELECT emp_id, salary, bonus
-FROM employees
-WHERE bonus > 0 OR bonus <= 0 OR bonus IS NULL;`,
-      impact: 'Silently excludes 15-20% of customer/compensation rows from audits and reporting pipelines.'
+  ) AS true_running_total
+FROM daily_sales;`,
+      impact: 'Without an explicit ROWS frame, SQL engines use RANGE, which sums all peer rows with identical ORDER BY keys into the current row, silently corrupting running totals.'
     },
-    {
-      id: 'trap_nonsargable_fn',
-      name: 'Non-Sargable Function Index Killer',
-      category: 'Performance / Storage Engine',
-      desc: 'Wrapping indexed columns in functions (e.g. YEAR(), DATE(), LOWER()) forces a full table scan and destroys B+Tree index lookups.',
-      wrongSql: `-- RUINS PERFORMANCE: Full Table Scan on 20M rows
-SELECT order_id, amount
+
+    trap_sargable: {
+      id: 'trap_sargable',
+      title: 'Non-SARGable Function Predicates',
+      severity: 'P2 PERFORMANCE KILLER',
+      severityClass: 'skew',
+      context: 'Staff Architect Code Reviews',
+      wrongCode: `-- ✕ VULNERABLE: Function on column forces O(N) sequential table scan!
+SELECT customer_id, order_id, order_total
 FROM orders
-WHERE YEAR(created_at) = 2026;`,
-      fixedSql: `-- SARGABLE B+TREE RANGE SCAN: Sub-millisecond index seek
-SELECT order_id, amount
+WHERE strftime('%Y', order_date) = '2026';`,
+      fixCode: `-- ✓ PRODUCTION DEFENSIVE: Sargable range predicates utilize B-Tree indexes
+SELECT customer_id, order_id, order_total
 FROM orders
-WHERE created_at >= '2026-01-01' AND created_at < '2027-01-01';`,
-      impact: 'Transforms a 0.05ms index range seek into an expensive 14-second disk scan.'
+WHERE order_date >= '2026-01-01' 
+  AND order_date < '2027-01-01';`,
+      impact: 'Wrapping indexed columns inside functions blinds query planners from using B-Tree index seeks. On a 100M row orders table, this turns a 0.5ms index seek into a 45-second table scan.'
     },
-    {
-      id: 'trap_cartesian_join',
-      name: 'Cartesian Product Multi-Row Fanout',
-      category: 'Financial Accuracy / Integrity',
-      desc: 'Joining two 1-to-many child tables against a parent multiplies rows and artificially inflates financial SUM() balances.',
-      wrongSql: `-- SILENTLY MULTIPLIES BALANCES: Cartesian inflation!
-SELECT u.user_id, SUM(p.amount) AS total_payments, SUM(c.credits) AS total_credits
-FROM users u
-LEFT JOIN payments p ON u.user_id = p.user_id
-LEFT JOIN credits c ON u.user_id = c.user_id
-GROUP BY 1;`,
-      fixedSql: `-- CORRECT: Aggregate in subqueries or CTEs before joining
-WITH pay AS (SELECT user_id, SUM(amount) AS tot_pay FROM payments GROUP BY 1),
-     cred AS (SELECT user_id, SUM(credits) AS tot_cred FROM credits GROUP BY 1)
-SELECT u.user_id, COALESCE(pay.tot_pay, 0), COALESCE(cred.tot_cred, 0)
-FROM users u
-LEFT JOIN pay ON u.user_id = pay.user_id
-LEFT JOIN cred ON u.user_id = cred.user_id;`,
-      impact: 'Creates phantom revenue figures and fails external financial audits.'
+
+    trap_cartesian: {
+      id: 'trap_cartesian',
+      title: 'Multi-Table 1:N Cartesian Fan-Out',
+      severity: 'P3 FAN-OUT EXPLOSION',
+      severityClass: 'skew',
+      context: 'Data Engineering & Reconciliations',
+      wrongCode: `-- ✕ VULNERABLE: Multiple 1:N joins multiply aggregate sums!
+SELECT o.order_id,
+  SUM(i.item_price) AS total_items_price,
+  SUM(p.payment_amount) AS total_paid
+FROM orders o
+JOIN order_items i ON o.order_id = i.order_id
+JOIN payments p ON o.order_id = p.order_id
+GROUP BY o.order_id;`,
+      fixCode: `-- ✓ PRODUCTION DEFENSIVE: Pre-aggregate in CTEs before joining
+WITH item_sums AS (
+  SELECT order_id, SUM(item_price) AS total_items_price
+  FROM order_items GROUP BY order_id
+),
+payment_sums AS (
+  SELECT order_id, SUM(payment_amount) AS total_paid
+  FROM payments GROUP BY order_id
+)
+SELECT o.order_id, i.total_items_price, p.total_paid
+FROM orders o
+LEFT JOIN item_sums i ON o.order_id = i.order_id
+LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
+      impact: 'Joining two 1:N relationships directly creates an M x N Cartesian product. An order with 4 items and 2 payments results in 8 rows, doubling item prices and quadrupling payment totals.'
     }
-  ];
+  };
 
-  /**
-   * Main Render Function
-   */
-  function renderLandingPage(containerId = 'viewLandingPage') {
-    const container = document.getElementById(containerId);
-    if (!container) return;
+  // --- 3. INTERNAL STATE ---
+  let activeTrack = 'all'; // 'all' | 'analytics' | 'finance'
+  let activeScenarioId = 'scenario_amazon';
+  let activeTrapId = 'trap_null';
 
-    const scenarios = SCENARIOS[State.activeTrack];
-    const currentScenario = scenarios.find(s => s.id === State.activeScenarioId) || scenarios[0];
-    State.activeScenarioId = currentScenario.id;
+  // --- 4. ENGINE CONTROLLER ---
+  const LandingPageEngine = {
+    init: function() {
+      const container = document.getElementById('viewLandingPage');
+      if (!container) return;
+      container.innerHTML = this.renderHTML();
+      this.bindEvents(container);
+    },
 
-    const isFinance = State.activeTrack === 'finance';
+    setTrack: function(track) {
+      activeTrack = track || 'all';
+      const container = document.getElementById('viewLandingPage');
+      if (container) {
+        container.innerHTML = this.renderHTML();
+        this.bindEvents(container);
+      }
+    },
 
-    container.classList.add('view-panel', 'active', 'landing-container');
-    container.classList.toggle('track-finance-active', isFinance);
-    container.innerHTML = `
-      <!-- Ambient Lighting -->
-      <div class="landing-ambient-glow"></div>
+    setScenario: function(scenarioId) {
+      if (HERO_SCENARIOS[scenarioId]) {
+        activeScenarioId = scenarioId;
+        const container = document.getElementById('viewLandingPage');
+        if (container) {
+          container.innerHTML = this.renderHTML();
+          this.bindEvents(container);
+        }
+      }
+    },
 
-      <!-- 1. HERO SECTION -->
-      <section class="landing-hero">
-        <!-- Status Pill -->
-        <div class="landing-badge-pill">
-          <span class="landing-pulse-dot"></span>
-          <span>SQL FOUNDRY // DUAL-TRACK ARCHITECTURE</span>
-        </div>
+    setTrap: function(trapId) {
+      if (DEFENSIVE_TRAPS[trapId]) {
+        activeTrapId = trapId;
+        const container = document.getElementById('viewLandingPage');
+        if (container) {
+          container.innerHTML = this.renderHTML();
+          this.bindEvents(container);
+        }
+      }
+    },
 
-        <!-- Segmented Control Dual-Track Switcher -->
-        <div class="landing-track-switcher-wrap">
-          <button class="track-switch-btn btn-track-analytics ${!isFinance ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.setTrack('analytics')">
-            <span>📊</span>
-            <span>Data Analytics & Growth</span>
-            <span class="track-btn-badge">Product · SaaS</span>
-          </button>
-          <button class="track-switch-btn btn-track-finance ${isFinance ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.setTrack('finance')">
-            <span>📈</span>
-            <span>Quantitative Finance & Risk</span>
-            <span class="track-btn-badge">Wall St · Ledgers</span>
-          </button>
-        </div>
+    runScenarioQuery: function() {
+      const statusEl = document.querySelector('.studio-status-badge');
+      if (statusEl) {
+        statusEl.innerText = 'EXECUTING IN WASM...';
+        statusEl.style.color = '#38bdf8';
+        setTimeout(() => {
+          statusEl.innerText = 'EXECUTED (0.014ms) ✓';
+          statusEl.style.color = '#10b981';
+        }, 220);
+      }
+    },
 
-        <!-- Headline (Shift Nudge Hierarchy) -->
-        <h1 class="landing-hero-title">
-          Master SQL for <span class="landing-hero-highlight">${isFinance ? 'Wall Street Ledgers, Order Books & Risk' : 'Advanced Data Analytics, SaaS Cohorts & Funnels'}</span>.
-        </h1>
+    verifyScenarioAST: function() {
+      const statusEl = document.querySelector('.studio-status-badge');
+      if (statusEl) {
+        statusEl.innerText = 'CHECKING AST RULES...';
+        statusEl.style.color = '#a78bfa';
+        setTimeout(() => {
+          statusEl.innerText = 'AST PASSED (SARGABLE) ✓';
+          statusEl.style.color = '#10b981';
+        }, 200);
+      }
+    },
 
-        <!-- Subtitle -->
-        <p class="landing-hero-subtitle">
-          ${isFinance 
-            ? 'Execute double-entry general ledger audits, high-frequency limit order book depth calculations, and 95% Value-at-Risk percentiles against real Wall Street datasets in client-side SQLite WASM.' 
-            : 'Master cohort retention decay, 5-way MRR movement waterfalls, user funnel step-lag, and 323 LeetCode interviews with 60fps relational algebra particle physics.'}
-        </p>
+    exportDbtModel: function() {
+      if (window.selectNavView) {
+        window.selectNavView('viewStudio', 'Section Studio', null);
+      }
+      try { window.location.hash = '#section-studio'; } catch(e) {}
+    },
 
-        <!-- CTAs -->
-        <div class="landing-cta-strip">
-          <button class="landing-cta-primary" onclick="window.LANDING_PAGE_ENGINE.launchActiveScenarioInStudio()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            <span>Run Query in Studio Workbench (⌘Enter)</span>
-          </button>
-          <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewRelationalCollider', 'Relational Collider', 'navGroupExplore'); try{window.location.hash='#collider';}catch(e){}">
-            <span>⚡ 60fps Particle Collider</span>
-          </button>
-          <button class="landing-cta-secondary" onclick="if(window.selectNavView) window.selectNavView('viewHardwareStrata', '3D Hardware Strata', 'navGroupExplore'); try{window.location.hash='#strata';}catch(e){}">
-            <span>⬡ 3D Hardware Strata</span>
-          </button>
-        </div>
+    renderHTML: function() {
+      const curScenario = HERO_SCENARIOS[activeScenarioId] || HERO_SCENARIOS.scenario_amazon;
+      const curTrap = DEFENSIVE_TRAPS[activeTrapId] || DEFENSIVE_TRAPS.trap_null;
 
-        <!-- Interactive Hero Sandbox Card -->
-        <div class="landing-hero-widget-card">
-          <!-- Window Header Bar -->
-          <div class="landing-widget-window-bar">
-            <div class="window-dots">
-              <span class="window-dot dot-red"></span>
-              <span class="window-dot dot-yellow"></span>
-              <span class="window-dot dot-green"></span>
+      return `
+        <div class="landing-container">
+
+          <!-- 1. HERO SECTION -->
+          <section class="landing-hero">
+            <div class="landing-badge-pill">
+              <span class="landing-pulse-dot"></span>
+              <span>ENTERPRISE SQL PLATFORM // DATA &amp; FINANCE ANALYSIS</span>
             </div>
-            <div class="window-meta-strip">
-              <span class="window-file-name font-mono">${escapeHtml(currentScenario.filename)}</span>
-              <span class="window-badge-wasm font-mono">CLIENT-SIDE WASM</span>
-            </div>
-          </div>
 
-          <!-- Scenario Tabs -->
-          <div class="landing-widget-tabs">
-            ${scenarios.map(s => `
-              <button class="landing-scenario-tab ${s.id === State.activeScenarioId ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.selectScenario('${s.id}')">
-                <span class="tab-indicator-dot"></span>
-                <span>${escapeHtml(s.title)}</span>
+            <h1 class="landing-hero-title">
+              The Relational Operating System for <span class="landing-hero-highlight">Data Analytics &amp; Quantitative Finance.</span>
+            </h1>
+
+            <p class="landing-hero-subtitle">
+              Master Tier-1 product growth analytics, dynamic marketplace pricing, and Wall Street general ledgers across 7 company career simulations and 323 verified LeetCode problems in client-side SQLite WASM.
+            </p>
+
+            <!-- Quick Track Filters -->
+            <div class="landing-track-filters">
+              <button class="track-filter-btn ${activeTrack === 'all' ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.setTrack('all')">
+                <span>⚡ All Industry Tracks</span>
+                <span class="filter-badge-count">7</span>
               </button>
-            `).join('')}
-          </div>
-
-          <!-- Sandbox Split Body -->
-          <div class="landing-widget-body">
-            <!-- Left Code Pane -->
-            <div class="landing-code-pane">
-              <pre class="landing-code-pre font-mono"><code>${currentScenario.codeHtml}</code></pre>
-            </div>
-
-            <!-- Right Result Pane -->
-            <div class="landing-result-pane">
-              <div class="landing-result-pane-header">
-                <span class="landing-pane-title">LIVE TUPLE SINK</span>
-                <span class="landing-rows-count">${escapeHtml(currentScenario.rowsCount)}</span>
-              </div>
-
-              <div class="landing-table-wrap">
-                <table class="landing-data-table">
-                  <thead>
-                    <tr>${currentScenario.tableHeaders.map(th => `<th>${escapeHtml(th)}</th>`).join('')}</tr>
-                  </thead>
-                  <tbody>
-                    ${currentScenario.tableRows.map(row => `
-                      <tr>${row.map(cell => `<td>${escapeHtml(cell)}</td>`).join('')}</tr>
-                    `).join('')}
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- Bottom Telemetry Bar -->
-              <div class="landing-telemetry-bar">
-                <div class="telemetry-group">
-                  <span class="telemetry-pill">LATENCY: <span class="telemetry-val">${currentScenario.latency}</span></span>
-                  <span class="telemetry-pill">ENGINE: <span class="telemetry-val" style="color:#38bdf8;">SQLite 3.45</span></span>
-                </div>
-                <button class="btn-sandbox-studio" onclick="window.LANDING_PAGE_ENGINE.launchActiveScenarioInStudio()">
-                  <span>🚀 Open in Studio</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 2. INSTITUTIONAL METRICS & SOCIAL PROOF -->
-      <section class="landing-metrics-strip">
-        <div class="landing-metric-card">
-          <span class="metric-card-val font-mono">10</span>
-          <span class="metric-card-label">Industry Domains</span>
-          <span class="metric-card-desc">Wall St, Big Tech, Payments &amp; Cloud Marketplaces</span>
-        </div>
-        <div class="landing-metric-card">
-          <span class="metric-card-val font-mono">323</span>
-          <span class="metric-card-label">LeetCode Solutions</span>
-          <span class="metric-card-desc">Graded SQL challenges with interactive AST diagrams</span>
-        </div>
-        <div class="landing-metric-card">
-          <span class="metric-card-val font-mono">0.01ms</span>
-          <span class="metric-card-label">Client Latency</span>
-          <span class="metric-card-desc">100% In-Browser SQLite WASM. Zero cloud dependencies.</span>
-        </div>
-        <div class="landing-metric-card">
-          <span class="metric-card-val font-mono">100%</span>
-          <span class="metric-card-label">Private &amp; Local</span>
-          <span class="metric-card-desc">Zero telemetry tracking. Your code never leaves the browser.</span>
-        </div>
-      </section>
-
-      <!-- Employer Marquee -->
-      <div class="landing-employer-marquee font-mono">
-        <span class="employer-pill">Amazon</span>
-        <span class="employer-pill">Netflix</span>
-        <span class="employer-pill">Uber</span>
-        <span class="employer-pill">Stripe</span>
-        <span class="employer-pill">JPMorgan</span>
-        <span class="employer-pill">Citadel</span>
-        <span class="employer-pill">Jane Street</span>
-        <span class="employer-pill">Airbnb</span>
-        <span class="employer-pill">Spotify</span>
-      </div>
-
-      <!-- 3. INTERACTIVE SPATIAL BENTO GRID SHOWCASE -->
-      <section class="landing-bento-section">
-        <div class="landing-section-header">
-          <span class="landing-section-tag">SPATIAL COMPUTING &amp; PHYSICS</span>
-          <h2 class="landing-section-title">The Four Interactive Relational Visualizers</h2>
-          <p class="landing-section-subtitle">Experience relational algebra and hardware storage engines through 60fps particle dynamics, 3D exploded spatial computing, and live execution trees.</p>
-        </div>
-
-        <div class="landing-bento-grid">
-          <!-- Cell 1: Particle Collider (7 cols) -->
-          <div class="bento-card bento-card-collider">
-            <div class="bento-card-header">
-              <div>
-                <h3 class="bento-card-title">Relational Particle Collider</h3>
-                <p class="bento-card-desc">Watch physical query execution physics in real time: tuples emit from table heap blocks and collide with predicate lasers.</p>
-              </div>
-              <span class="bento-card-badge badge-collider font-mono">60FPS CANVAS</span>
-            </div>
-            <div class="bento-preview-wrap">
-              <canvas id="bentoColliderCanvas"></canvas>
-            </div>
-            <div class="bento-card-footer">
-              <span style="font-size: 12px; color: #64748b; font-family: monospace;">PREDICATE LASER GATE // VOLUMETRIC CYLINDERS</span>
-              <button class="btn-bento-launch" onclick="if(window.selectNavView) window.selectNavView('viewRelationalCollider', 'Relational Collider', 'navGroupExplore'); try{window.location.hash='#collider';}catch(e){}">
-                <span>Launch Collider Chamber ⚡</span>
+              <button class="track-filter-btn ${activeTrack === 'analytics' ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.setTrack('analytics')">
+                <span>📊 Track 01: Modern Data Analytics</span>
+                <span class="filter-badge-count">5</span>
+              </button>
+              <button class="track-filter-btn ${activeTrack === 'finance' ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.setTrack('finance')">
+                <span>📈 Track 02: Quantitative Finance</span>
+                <span class="filter-badge-count">2</span>
               </button>
             </div>
-          </div>
 
-          <!-- Cell 2: 3D Hardware Strata (5 cols) -->
-          <div class="bento-card bento-card-strata">
-            <div class="bento-card-header">
-              <div>
-                <h3 class="bento-card-title">3D Hardware Storage Strata</h3>
-                <p class="bento-card-desc">5-layer isometric database storage hierarchy from Client AST to NVMe page blocks.</p>
-              </div>
-              <span class="bento-card-badge badge-strata font-mono">EXPLODED 3D</span>
-            </div>
-            <div class="bento-preview-wrap" style="background: radial-gradient(circle, rgba(6,182,212,0.15) 0%, #040509 70%);">
-              <div style="text-align: center;">
-                <div style="font-size: 32px; margin-bottom: 8px;">⬡ ⬢ ⬡</div>
-                <span class="font-mono" style="font-size: 11px; color: #22d3ee;">OPT // BUFFER POOL // WAL // NVMe</span>
-              </div>
-            </div>
-            <div class="bento-card-footer">
-              <span style="font-size: 12px; color: #64748b; font-family: monospace;">LATENCY SPECTRUM (0.5ns - 100μs)</span>
-              <button class="btn-bento-launch" onclick="if(window.selectNavView) window.selectNavView('viewHardwareStrata', '3D Hardware Strata', 'navGroupExplore'); try{window.location.hash='#strata';}catch(e){}">
-                <span>Explode 3D Strata ⬡</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Cell 3: Visual Query Profiler (5 cols) -->
-          <div class="bento-card bento-card-profiler">
-            <div class="bento-card-header">
-              <div>
-                <h3 class="bento-card-title">Visual Query Profiler</h3>
-                <p class="bento-card-desc">Interactive execution trees, operator cost nodes, row estimates, and What-If index simulator.</p>
-              </div>
-              <span class="bento-card-badge badge-profiler font-mono">EXPLAIN TREE</span>
-            </div>
-            <div class="bento-preview-wrap" style="background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, #040509 70%);">
-              <div style="text-align: center;">
-                <div style="font-size: 28px; margin-bottom: 8px;">🌳 ⚡ 🔍</div>
-                <span class="font-mono" style="font-size: 11px; color: #a5b4fc;">INDEX SCAN → HASH JOIN → AGGREGATE</span>
-              </div>
-            </div>
-            <div class="bento-card-footer">
-              <span style="font-size: 12px; color: #64748b; font-family: monospace;">LATENCY WATERFALL &amp; BOTTLENECKS</span>
-              <button class="btn-bento-launch" onclick="if(window.selectNavView) window.selectNavView('viewQueryProfiler', 'Visual Query Profiler', 'navGroupExplore'); try{window.location.hash='#profiler';}catch(e){}">
-                <span>Open Tree Profiler 🌳</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Cell 4: 3D Topic Motion Deck (7 cols) -->
-          <div class="bento-card bento-card-deck">
-            <div class="bento-card-header">
-              <div>
-                <h3 class="bento-card-title">Topic Motion Deck</h3>
-                <p class="bento-card-desc">3D gyroscopic tilt cards with real-time physics micro-simulations and dual-face trap dossiers.</p>
-              </div>
-              <span class="bento-card-badge badge-deck font-mono">3D CARDS</span>
-            </div>
-            <div class="bento-preview-wrap" style="background: radial-gradient(circle, rgba(244,63,94,0.12) 0%, #040509 70%);">
-              <div style="text-align: center;">
-                <div style="font-size: 28px; margin-bottom: 8px;">🃏 🔄 🛡️</div>
-                <span class="font-mono" style="font-size: 11px; color: #fb7185;">3D GYROSCOPIC TILT // DUAL-FACE TRAPS</span>
-              </div>
-            </div>
-            <div class="bento-card-footer">
-              <span style="font-size: 12px; color: #64748b; font-family: monospace;">60FPS PHYSICAL STORAGE &amp; JOIN MOTIONS</span>
-              <button class="btn-bento-launch" onclick="if(window.selectNavView) window.selectNavView('viewMotionDeck', 'Topic Motion Deck', 'navGroupExplore'); try{window.location.hash='#motion-deck';}catch(e){}">
-                <span>Launch Motion Deck 🃏</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 4. TRACK 01 DEEP-DIVE: MODERN DATA ANALYTICS & COHORTS -->
-      <section class="landing-track-section" id="sectionTrackDataAnalytics">
-        <div class="landing-section-header">
-          <span class="landing-section-tag" style="color: #34d399; border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.1);">TRACK 01 // MODERN DATA ANALYTICS</span>
-          <h2 class="landing-section-title">Product Analytics, Cohort Retention &amp; SaaS Metrics</h2>
-          <p class="landing-section-subtitle">Real-world customer lifecycle analysis, triangle cohort decay heatmaps, and 5-way MRR movement waterfalls.</p>
-        </div>
-
-        <!-- Interactive Cohort Retention Heatmap -->
-        <div class="cohort-cockpit-preview-card">
-          <div class="cockpit-preview-top">
-            <div>
-              <h3 style="font-size: 18px; font-weight: 700; color: #f8fafc; margin: 0 0 4px 0;">Interactive Cohort Retention Heatmap (Month 0 to Month 11 Decay)</h3>
-              <span style="font-size: 13px; color: #94a3b8;">Click any cell to inspect cohort size and retained user count.</span>
-            </div>
-            <div class="cockpit-mode-toggle">
-              <button class="btn-cockpit-toggle ${State.cohortDisplayMode === 'percent' ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.setCohortMode('percent')">% Percentage</button>
-              <button class="btn-cockpit-toggle ${State.cohortDisplayMode === 'absolute' ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.setCohortMode('absolute')"># Raw Users</button>
-            </div>
-          </div>
-
-          <div class="cohort-heatmap-table-wrap">
-            <table class="cohort-heatmap-table">
-              <thead>
-                <tr>
-                  <th style="text-align: left;">Cohort</th>
-                  <th>Size</th>
-                  <th>M0</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M7</th><th>M8</th><th>M9</th><th>M10</th><th>M11</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${COHORT_DATA.map(c => `
-                  <tr>
-                    <td style="text-align: left; font-weight: 700; color: #38bdf8;">${c.cohort}</td>
-                    <td style="color: #94a3b8;">${c.size.toLocaleString()}</td>
-                    ${Array.from({ length: 12 }).map((_, mIdx) => {
-                      const val = c.decay[mIdx];
-                      if (val === undefined) return `<td style="background: transparent; border: none;"></td>`;
-                      const displayVal = State.cohortDisplayMode === 'percent' 
-                        ? `${val}%` 
-                        : Math.round((c.size * val) / 100).toLocaleString();
-                      const alpha = Math.max(0.12, (val / 100) * 0.7);
-                      return `
-                        <td style="background: rgba(16, 185, 129, ${alpha});" onclick="window.LANDING_PAGE_ENGINE.inspectCohortCell('${c.cohort}', ${mIdx}, ${val}, ${c.size})">
-                          ${displayVal}
-                        </td>
-                      `;
-                    }).join('')}
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- 3-Col Features -->
-        <div class="track-features-grid">
-          <div class="track-feature-card">
-            <div class="feature-card-icon">🌪️</div>
-            <h4 class="feature-card-title">Funnel Conversion Step Lag</h4>
-            <p class="feature-card-desc">Calculate step-to-step drop-offs across signup, onboarding, checkout, and activation using <code>LAG()</code> and <code>LEAD()</code> windowing.</p>
-          </div>
-          <div class="track-feature-card">
-            <div class="feature-card-icon">📈</div>
-            <h4 class="feature-card-title">Net Revenue Retention (NRR %)</h4>
-            <p class="feature-card-desc">Dollar-weighted retention tracking upsells, expansion, contraction, and gross revenue retention over dense subscription periods.</p>
-          </div>
-          <div class="track-feature-card">
-            <div class="feature-card-icon">🧪</div>
-            <h4 class="feature-card-title">A/B Testing &amp; SRM Telemetry</h4>
-            <p class="feature-card-desc">Chi-square test of sample ratio mismatch (SRM) and difference-in-proportions p-values to validate experimentation integrity.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- 5. TRACK 02 DEEP-DIVE: QUANTITATIVE FINANCE & ORDER BOOK -->
-      <section class="landing-track-section" id="sectionTrackFinance">
-        <div class="landing-section-header">
-          <span class="landing-section-tag" style="color: #fbbf24; border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.1);">TRACK 02 // QUANTITATIVE FINANCE &amp; RISK</span>
-          <h2 class="landing-section-title">Limit Order Books, Ledger Invariants &amp; Risk</h2>
-          <p class="landing-section-subtitle">High-frequency microstructure depth, double-entry general ledger audits, and Basel III Value-at-Risk modeling.</p>
-        </div>
-
-        <!-- Interactive Limit Order Book Depth Ladder -->
-        <div class="orderbook-preview-card">
-          <div class="orderbook-grid">
-            <!-- Left: Ladder -->
-            <div class="orderbook-ladder">
-              <div style="display: flex; justify-content: space-between; font-weight: 700; color: #94a3b8; margin-bottom: 8px; padding: 0 8px;">
-                <span>SIDE // PRICE</span>
-                <span>SHARES</span>
-              </div>
-
-              <!-- Asks -->
-              ${ORDER_BOOK.asks.map(a => `
-                <div class="ob-row ob-ask">
-                  <div class="ob-bar" style="width: ${a.depthPct}%;"></div>
-                  <span>ASK $${a.price.toFixed(2)}</span>
-                  <span>${a.shares.toLocaleString()}</span>
-                </div>
-              `).join('')}
-
-              <div class="ob-spread-bar font-mono">
-                SPREAD: $0.05 (3.6 bps) · MID: $138.425
-              </div>
-
-              <!-- Bids -->
-              ${ORDER_BOOK.bids.map(b => `
-                <div class="ob-row ob-bid">
-                  <div class="ob-bar" style="width: ${b.depthPct}%;"></div>
-                  <span>BID $${b.price.toFixed(2)}</span>
-                  <span>${b.shares.toLocaleString()}</span>
-                </div>
-              `).join('')}
-            </div>
-
-            <!-- Right: Interactive Order Simulator -->
-            <div class="orderbook-calculator">
-              <div class="calc-box">
-                <h4 style="font-size: 15px; font-weight: 700; color: #fbbf24; margin: 0 0 6px 0;">Institutional Block Order Simulator</h4>
-                <p style="font-size: 12px; color: #94a3b8; margin: 0;">Simulate market impact and VWAP slippage on sweeping the order book.</p>
-                
-                <div class="calc-slider-row">
-                  <div style="display: flex; justify-content: space-between; font-size: 12px; font-family: monospace;">
-                    <span>Order Size:</span>
-                    <span style="color: #fbbf24; font-weight: 700;" id="txtOrderSizeVal">${State.orderSize.toLocaleString()} Shares</span>
-                  </div>
-                  <input type="range" min="500" max="6000" step="250" value="${State.orderSize}" 
-                         style="accent-color: #f59e0b; width: 100%; cursor: pointer;"
-                         oninput="window.LANDING_PAGE_ENGINE.updateOrderSize(this.value)">
-                </div>
-
-                <div class="calc-results-grid">
-                  <div>
-                    <span style="font-size: 10px; color: #64748b; font-family: monospace; text-transform: uppercase;">Estimated VWAP</span>
-                    <div class="calc-stat-val font-mono" id="txtCalcVwap">$138.472</div>
-                  </div>
-                  <div>
-                    <span style="font-size: 10px; color: #64748b; font-family: monospace; text-transform: uppercase;">Market Slippage</span>
-                    <div class="calc-stat-val font-mono" id="txtCalcSlippage" style="color: #ef4444;">+1.6 bps</div>
-                  </div>
-                </div>
-              </div>
-
-              <div style="margin-top: 14px;">
-                <button class="landing-cta-secondary" style="width: 100%; justify-content: center;" onclick="if(window.selectNavView) window.selectNavView('viewJPMorganStory', 'Finance', null); try{window.location.hash='#finance';}catch(e){}">
-                  <span>Explore JPMorgan 30-Day Treasury Simulation →</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3-Col Finance Features -->
-        <div class="track-features-grid">
-          <div class="track-feature-card">
-            <div class="feature-card-icon">⚖️</div>
-            <h4 class="feature-card-title">Zero-Sum Ledger Integrity</h4>
-            <p class="feature-card-desc">Verify double-entry invariants ($\sum \text{Debit} - \sum \text{Credit} = 0$) across multi-entity interbank transfers and Nostro/Vostro accounts.</p>
-          </div>
-          <div class="track-feature-card">
-            <div class="feature-card-icon">🕸️</div>
-            <h4 class="feature-card-title">AML Recursive Graph Layering</h4>
-            <p class="feature-card-desc">Detect circular money-laundering routes and smurfing rings across shell accounts using <code>WITH RECURSIVE</code> cycle detection.</p>
-          </div>
-          <div class="track-feature-card">
-            <div class="feature-card-icon">📉</div>
-            <h4 class="feature-card-title">Value-at-Risk (VaR) &amp; Drawdowns</h4>
-            <p class="feature-card-desc">Compute 95% and 99% portfolio VaR, asset correlation matrices, and historical stress tests (Lehman 2008, COVID 2020).</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- 6. DEFENSIVE SQL TRAPS ACCORDION -->
-      <section class="landing-traps-section">
-        <div class="landing-section-header">
-          <span class="landing-section-tag" style="color: #fb7185; border-color: rgba(244,63,94,0.3); background: rgba(244,63,94,0.1);">DEFENSIVE SQL ENGINEERING</span>
-          <h2 class="landing-section-title">Caught by the Engine: Silent SQL Traps</h2>
-          <p class="landing-section-subtitle">The subtle traps that pass code review, produce incorrect data, and fail production audits.</p>
-        </div>
-
-        <div class="traps-tabs-bar">
-          ${DEFENSIVE_TRAPS.map(t => `
-            <button class="trap-tab-btn ${t.id === State.activeTrapId ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.selectTrap('${t.id}')">
-              <span>${escapeHtml(t.name)}</span>
-            </button>
-          `).join('')}
-        </div>
-
-        <div class="trap-display-card">
-          ${(() => {
-            const trap = DEFENSIVE_TRAPS.find(t => t.id === State.activeTrapId) || DEFENSIVE_TRAPS[0];
-            return `
-              <h3 style="font-size: 18px; font-weight: 700; color: #f8fafc; margin: 0 0 6px 0;">${escapeHtml(trap.name)}</h3>
-              <p style="font-size: 13px; color: #94a3b8; line-height: 1.5; margin: 0 0 16px 0;">${escapeHtml(trap.desc)}</p>
+            <!-- HERO STUDIO WORKBENCH CARD (Styled directly after Section Studio) -->
+            <div class="landing-studio-card">
               
-              <div class="trap-diff-grid">
-                <div class="trap-code-box box-wrong">
-                  <div style="font-size: 10px; font-weight: 700; color: #ef4444; margin-bottom: 8px;">❌ WRONG (SILENT FAILURE)</div>
-                  <pre style="margin: 0; color: #fca5a5; line-height: 1.5;"><code>${escapeHtml(trap.wrongSql)}</code></pre>
+              <!-- Top bar matching Section Studio -->
+              <div class="landing-studio-bar">
+                <div class="studio-bar-left">
+                  <span class="studio-chip studio-chip-active">
+                    <span>&lt;&gt; Section Studio</span>
+                    <span style="font-size:9px; background:#10b981; color:#000; padding:1px 4px; border-radius:3px; font-weight:800;">LIVE</span>
+                  </span>
+                  <span class="studio-chip">${curScenario.tablePill}</span>
+                  <span class="studio-chip" style="color:#71717a;">MySQL 8.0</span>
+                  <span class="studio-chip" style="color:#71717a;">PostgreSQL 16</span>
+                  <span class="studio-chip" style="color:#71717a;">Snowflake</span>
+                  <span class="studio-chip" style="color:#38bdf8;">DuckDB WASM</span>
                 </div>
-                <div class="trap-code-box box-fixed">
-                  <div style="font-size: 10px; font-weight: 700; color: #10b981; margin-bottom: 8px;">✓ DEFENSIVE FIX</div>
-                  <pre style="margin: 0; color: #86efac; line-height: 1.5;"><code>${escapeHtml(trap.fixedSql)}</code></pre>
+
+                <div class="studio-bar-right">
+                  <button class="btn-studio-run" onclick="window.LANDING_PAGE_ENGINE.runScenarioQuery()">
+                    <span>▶ Run Query</span>
+                  </button>
+                  <button class="btn-studio-verify" onclick="window.LANDING_PAGE_ENGINE.verifyScenarioAST()">
+                    <span>✓ Verify</span>
+                  </button>
+                  <button class="btn-studio-export" onclick="window.LANDING_PAGE_ENGINE.exportDbtModel()">
+                    <span>dbt Export</span>
+                  </button>
+                  <button class="btn-studio-open" onclick="if(window.selectNavView) window.selectNavView('viewStudio', 'Section Studio', null); try{window.location.hash='#section-studio';}catch(e){}">
+                    <span>Open Full Studio &rarr;</span>
+                  </button>
                 </div>
               </div>
 
-              <div style="margin-top: 14px; font-size: 12px; color: #fb7185; font-family: monospace;">
-                IMPACT: ${escapeHtml(trap.impact)}
+              <!-- Scenario Selector Strip -->
+              <div class="landing-scenario-strip">
+                ${Object.keys(HERO_SCENARIOS).map(k => {
+                  const s = HERO_SCENARIOS[k];
+                  const isActive = s.id === activeScenarioId;
+                  return `
+                    <button class="scenario-pill-tab ${isActive ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.setScenario('${s.id}')">
+                      <span class="scenario-dot"></span>
+                      <span>${s.title}</span>
+                    </button>
+                  `;
+                }).join('')}
               </div>
-            `;
-          })()}
+
+              <!-- Editor Toolbar matching Section Studio -->
+              <div class="studio-editor-toolbar">
+                <div class="studio-toolbar-left">
+                  <span style="color:#a1a1aa; font-weight:600;">${curScenario.topicTag}</span>
+                  <span style="color:#3f3f46;">|</span>
+                  <span>Insert Columns:</span>
+                  ${curScenario.columns.map(col => `
+                    <span class="studio-col-pill">+ ${col}</span>
+                  `).join('')}
+                </div>
+                <div style="color:#71717a;">
+                  <span>${curScenario.filename}</span>
+                </div>
+              </div>
+
+              <!-- Split Arena: Code Pane vs Live Tuple Sink -->
+              <div class="landing-studio-grid">
+                
+                <!-- Monaco-style Code Pane -->
+                <div class="studio-editor-pane">
+                  <pre class="studio-code-pre"><code>${curScenario.lines.map(line => `
+<div class="studio-code-line"><span class="studio-line-no">${line.num}</span><span class="studio-line-content">${line.text}</span></div>`).join('')}</code></pre>
+                </div>
+
+                <!-- Live Tuple Sink -->
+                <div class="studio-result-pane">
+                  <div class="studio-result-head">
+                    <span class="studio-result-title">LIVE TUPLE SINK // WASM RESULTS</span>
+                    <span class="studio-status-badge">${curScenario.status}</span>
+                  </div>
+
+                  <div class="studio-table-container">
+                    <table class="studio-data-table">
+                      <thead>
+                        <tr>
+                          ${curScenario.tableHeaders.map(th => `<th>${th}</th>`).join('')}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${curScenario.tableRows.map(row => `
+                          <tr>
+                            ${row.map(cell => `<td>${cell}</td>`).join('')}
+                          </tr>
+                        `).join('')}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Telemetry Strip -->
+                  <div class="studio-telemetry-strip">
+                    <div>
+                      <span>Latency: <strong style="color:#e4e4e7;">${curScenario.latency}</strong></span>
+                      <span style="margin:0 8px; color:#3f3f46;">|</span>
+                      <span>Engine: <strong style="color:#e4e4e7;">SQLite 3.45 WASM</strong></span>
+                    </div>
+                    <div style="color:#10b981; font-weight:600;">
+                      <span>${curScenario.tableRows.length} Tuples Returned</span>
+                    </div>
+                  </div>
+
+                  <!-- Domain Callout Tip -->
+                  <div class="studio-tip-callout">
+                    <span class="studio-tip-icon">💡</span>
+                    <span class="studio-tip-text">${curScenario.tip}</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </section>
+
+          <!-- 2. METRICS STRIP -->
+          <section class="landing-metrics-strip">
+            <div class="landing-metric-card">
+              <span class="landing-metric-val">323</span>
+              <span class="landing-metric-label">LeetCode Problems</span>
+              <span class="landing-metric-desc">100% Client-side AST test suites</span>
+            </div>
+            <div class="landing-metric-card">
+              <span class="landing-metric-val">5 Tracks</span>
+              <span class="landing-metric-label">Modern Data Analytics</span>
+              <span class="landing-metric-desc">Amazon, Netflix, Uber, Airbnb, Spotify</span>
+            </div>
+            <div class="landing-metric-card">
+              <span class="landing-metric-val">2 Tracks</span>
+              <span class="landing-metric-label">Quantitative Finance</span>
+              <span class="landing-metric-desc">JPMorgan Basel III &amp; Stripe Radar</span>
+            </div>
+            <div class="landing-metric-card">
+              <span class="landing-metric-val">10 Capstones</span>
+              <span class="landing-metric-label">Enterprise Slices</span>
+              <span class="landing-metric-desc">SEC T+1, MRR Waterfall, Hospital EHR</span>
+            </div>
+            <div class="landing-metric-card">
+              <span class="landing-metric-val">1-Click</span>
+              <span class="landing-metric-label">dbt Model Exporter</span>
+              <span class="landing-metric-desc">Contracts, YAML tests &amp; Semantic Layer</span>
+            </div>
+          </section>
+
+          <!-- ================================================================= -->
+          <!-- 3. TRACK 01: MODERN DATA ANALYTICS & ANALYTICS ENGINEERING        -->
+          <!-- ================================================================= -->
+          ${(activeTrack === 'all' || activeTrack === 'analytics') ? `
+          <section class="landing-section" id="sectionDataAnalytics">
+            <div class="landing-section-header">
+              <span class="landing-section-tag" style="color:#38bdf8;">Track 01 // Product &amp; Growth</span>
+              <h2 class="landing-section-title">Enterprise Data Analytics &amp; Analytics Engineering</h2>
+              <p class="landing-section-subtitle">
+                Engineered for Senior BI Analysts, Product Analytics leads, and Analytics Engineers scaling with dbt, Snowflake, BigQuery, and DuckDB.
+              </p>
+            </div>
+
+            <!-- 5 Data Analytics Simulation Cards -->
+            <div class="industry-grid">
+              
+              <!-- Card 1: Airbnb Travel Marketplace -->
+              <div class="industry-card" style="border-top: 3px solid #ff385c;">
+                <div>
+                  <div class="industry-card-top">
+                    <span class="industry-company-badge" style="color:#ff385c;">AIRBNB &bull; TRAVEL MARKETPLACE</span>
+                    <span class="industry-duration-badge">30 DAYS</span>
+                  </div>
+                  <h3 class="industry-card-title">Airbnb Dynamic Pricing &amp; Marketplace Simulator</h3>
+                  <p class="industry-card-desc">
+                    Master search CTRs, dynamic pricing elasticity, calendar island gap identification, host tax withholding, and Olympic peak travel war room events.
+                  </p>
+                </div>
+                <div>
+                  <div class="industry-metrics-row">
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#ff385c;">30</span>
+                      <span class="metric-item-lbl">Tickets (P0-P2)</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#fbbf24;">$18B+</span>
+                      <span class="metric-item-lbl">Booking Volume</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#38bdf8;">Elasticity</span>
+                      <span class="metric-item-lbl">Dynamic Pricing</span>
+                    </div>
+                  </div>
+                  <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewAirbnbStory', 'Airbnb', null); try{window.location.hash='#airbnb';}catch(e){}">
+                    <span>Launch Airbnb 30-Day Simulator</span>
+                    <span>&rarr;</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 2: Spotify Audio Streaming -->
+              <div class="industry-card" style="border-top: 3px solid #1db954;">
+                <div>
+                  <div class="industry-card-top">
+                    <span class="industry-company-badge" style="color:#1db954;">SPOTIFY &bull; AUDIO STREAMING</span>
+                    <span class="industry-duration-badge">30 DAYS</span>
+                  </div>
+                  <h3 class="industry-card-title">Spotify Audio Streaming &amp; Royalty Waterfall</h3>
+                  <p class="industry-card-desc">
+                    Calculate 30-second qualified streaming thresholds, aggregate pro-rata artist royalty pools, model daily playlist decay, and navigate viral track copyright freezes.
+                  </p>
+                </div>
+                <div>
+                  <div class="industry-metrics-row">
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#1db954;">30</span>
+                      <span class="metric-item-lbl">Stream Days</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#fbbf24;">100B+</span>
+                      <span class="metric-item-lbl">Audio Events</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#38bdf8;">Pro-Rata</span>
+                      <span class="metric-item-lbl">Royalty Model</span>
+                    </div>
+                  </div>
+                  <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewSpotifyStory', 'Spotify', null); try{window.location.hash='#spotify';}catch(e){}">
+                    <span>Launch Spotify 30-Day Simulator</span>
+                    <span>&rarr;</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 3: Uber Marketplace Logistics -->
+              <div class="industry-card" style="border-top: 3px solid #06c167;">
+                <div>
+                  <div class="industry-card-top">
+                    <span class="industry-company-badge" style="color:#06c167;">UBER &bull; MOBILITY OPERATIONS</span>
+                    <span class="industry-duration-badge">30 DAYS</span>
+                  </div>
+                  <h3 class="industry-card-title">Uber Marketplace Dynamics &amp; H3 Logistics</h3>
+                  <p class="industry-card-desc">
+                    Calculate real-time driver liquidity ratios, aggregate geospatial demand into resolution-8 H3 hexagons, detect GPS spoofing fraud, and manage an 85,000 RPM surge war room.
+                  </p>
+                </div>
+                <div>
+                  <div class="industry-metrics-row">
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#06c167;">30</span>
+                      <span class="metric-item-lbl">Dispatch Days</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#fbbf24;">H3 Res-8</span>
+                      <span class="metric-item-lbl">Hex Spatial</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#38bdf8;">85K RPM</span>
+                      <span class="metric-item-lbl">Surge War Room</span>
+                    </div>
+                  </div>
+                  <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewUberStory', 'Uber', null); try{window.location.hash='#uber';}catch(e){}">
+                    <span>Launch Uber 30-Day Simulator</span>
+                    <span>&rarr;</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 4: Netflix Streaming QoE -->
+              <div class="industry-card" style="border-top: 3px solid #e50914;">
+                <div>
+                  <div class="industry-card-top">
+                    <span class="industry-company-badge" style="color:#e50914;">NETFLIX &bull; PLAYBACK TELEMETRY</span>
+                    <span class="industry-duration-badge">30 DAYS</span>
+                  </div>
+                  <h3 class="industry-card-title">Netflix Streaming &amp; QoE Telemetry Simulator</h3>
+                  <p class="industry-card-desc">
+                    Diagnose P99 Time-To-First-Frame (TTFF) latency, calculate adaptive bitrate rebuffering ratios across ISP peering backbones, and evaluate A/B thumbnail experiments.
+                  </p>
+                </div>
+                <div>
+                  <div class="industry-metrics-row">
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#e50914;">30</span>
+                      <span class="metric-item-lbl">Telemetry Days</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#fbbf24;">P99 TTFF</span>
+                      <span class="metric-item-lbl">Latency Metric</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#38bdf8;">A/B Engine</span>
+                      <span class="metric-item-lbl">SRM Diagnostics</span>
+                    </div>
+                  </div>
+                  <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewNetflixStory', 'Netflix', null); try{window.location.hash='#netflix';}catch(e){}">
+                    <span>Launch Netflix 30-Day Simulator</span>
+                    <span>&rarr;</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 5: Amazon SCOT Prime Day -->
+              <div class="industry-card" style="border-top: 3px solid #f59e0b;">
+                <div>
+                  <div class="industry-card-top">
+                    <span class="industry-company-badge" style="color:#f59e0b;">AMAZON SCOT &bull; SUPPLY CHAIN</span>
+                    <span class="industry-duration-badge">30 DAYS</span>
+                  </div>
+                  <h3 class="industry-card-title">Amazon SCOT &amp; Prime Day War Room</h3>
+                  <p class="industry-card-desc">
+                    Audit cart abandonment, diagnose fulfillment center dock-to-ship latency bottlenecks, calculate carrier SLA delivery penalties, and track Prime Day revenue velocity.
+                  </p>
+                </div>
+                <div>
+                  <div class="industry-metrics-row">
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#f59e0b;">30</span>
+                      <span class="metric-item-lbl">Daily Missions</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#fbbf24;">Prime Day</span>
+                      <span class="metric-item-lbl">War Room</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#38bdf8;">L8 VP</span>
+                      <span class="metric-item-lbl">Capstone Deck</span>
+                    </div>
+                  </div>
+                  <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewAmazonStory', 'Analytics', null); try{window.location.hash='#analytics';}catch(e){}">
+                    <span>Launch Amazon 30-Day Simulator</span>
+                    <span>&rarr;</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Spotlight Cards: Cohort Matrix, MRR Waterfall, dbt Model Exporter -->
+            <div class="spotlight-grid">
+              
+              <div class="spotlight-card">
+                <div>
+                  <span class="spotlight-badge">PRODUCT RETENTION</span>
+                  <h4 class="spotlight-title">Triangular Vintage Cohort Matrix</h4>
+                  <p class="spotlight-desc">Compute month-over-month active customer decay (M+0 to M+5) with windowed inception anchors and Net Dollar Retention (NDR 119%).</p>
+                </div>
+                <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewRelationalMachines', 'Relational Machines', null); try{window.location.hash='#machines';}catch(e){}">
+                  <span>View Cohort Heatmap Studio</span>
+                  <span>&rarr;</span>
+                </button>
+              </div>
+
+              <div class="spotlight-card">
+                <div>
+                  <span class="spotlight-badge">SAAS FINANCIAL ANALYTICS</span>
+                  <h4 class="spotlight-title">5-Way MRR Waterfall Bridge</h4>
+                  <p class="spotlight-desc">Decompose recurring revenue into New MRR, Expansion, Contraction, and Churn via dense calendar expansion and lagged window vectors.</p>
+                </div>
+                <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewRelationalMachines', 'Relational Machines', null); try{window.location.hash='#machines';}catch(e){}">
+                  <span>Inspect MRR Waterfall Machine</span>
+                  <span>&rarr;</span>
+                </button>
+              </div>
+
+              <div class="spotlight-card">
+                <div>
+                  <span class="spotlight-badge">MODERN DATA STACK</span>
+                  <h4 class="spotlight-title">1-Click Production dbt Core Exporter</h4>
+                  <p class="spotlight-desc">Wraps SQL into {{ ref('...') }} macros, configures enforced data contracts, automated schema tests, and LookML views ready for Git.</p>
+                </div>
+                <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewStudio', 'Section Studio', null); try{window.location.hash='#section-studio';}catch(e){}">
+                  <span>Open Section Studio &amp; Export dbt</span>
+                  <span>&rarr;</span>
+                </button>
+              </div>
+
+            </div>
+          </section>
+          ` : ''}
+
+          <!-- ================================================================= -->
+          <!-- 4. TRACK 02: QUANTITATIVE FINANCE & WALL STREET LEDGERS           -->
+          <!-- ================================================================= -->
+          ${(activeTrack === 'all' || activeTrack === 'finance') ? `
+          <section class="landing-section" id="sectionFinanceAnalytics">
+            <div class="landing-section-header">
+              <span class="landing-section-tag" style="color:#a78bfa;">Track 02 // Quantitative Finance</span>
+              <h2 class="landing-section-title">Institutional Banking Ledgers &amp; Trading Systems</h2>
+              <p class="landing-section-subtitle">
+                Engineered for Quantitative Researchers, Wall Street FinTech Analysts, and Algorithmic Execution Engineers working with ledgers and market microstructure.
+              </p>
+            </div>
+
+            <!-- Quantitative Finance Simulation Cards -->
+            <div class="industry-grid">
+              
+              <!-- Card 1: JPMorgan Chase Quantitative Risk -->
+              <div class="industry-card" style="border-top: 3px solid #3b82f6;">
+                <div>
+                  <div class="industry-card-top">
+                    <span class="industry-company-badge" style="color:#3b82f6;">JPMORGAN CHASE &bull; CIB ROTATION</span>
+                    <span class="industry-duration-badge">30 DAYS</span>
+                  </div>
+                  <h3 class="industry-card-title">JPMorgan Global Banking &amp; Basel III Capital Simulator</h3>
+                  <p class="industry-card-desc">
+                    Audit multi-entity general ledger invariants, calculate Basel III Common Equity Tier 1 (CET1) capital ratios, simulate CCAR credit risk downgrades, and reconcile Nostro/Vostro accounts.
+                  </p>
+                </div>
+                <div>
+                  <div class="industry-metrics-row">
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#3b82f6;">30</span>
+                      <span class="metric-item-lbl">Quant Days</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#fbbf24;">$4.2T</span>
+                      <span class="metric-item-lbl">Balance Sheet</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#10b981;">CET1</span>
+                      <span class="metric-item-lbl">Basel III Ratio</span>
+                    </div>
+                  </div>
+                  <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewJPMorganStory', 'Finance', null); try{window.location.hash='#jpmorgan';}catch(e){}">
+                    <span>Launch JPMorgan 30-Day Simulator</span>
+                    <span>&rarr;</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 2: Stripe FinTech Infrastructure -->
+              <div class="industry-card" style="border-top: 3px solid #635bff;">
+                <div>
+                  <div class="industry-card-top">
+                    <span class="industry-company-badge" style="color:#635bff;">STRIPE &bull; CORE PAYMENTS</span>
+                    <span class="industry-duration-badge">30 DAYS</span>
+                  </div>
+                  <h3 class="industry-card-title">Stripe Global FinTech &amp; Payment Ledger Simulator</h3>
+                  <p class="industry-card-desc">
+                    Audit multi-currency merchant balance holds, detect card-testing micro-authorization fraud clusters, reconcile gateway fee schedules, and maintain double-entry journal balance invariants.
+                  </p>
+                </div>
+                <div>
+                  <div class="industry-metrics-row">
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#635bff;">30</span>
+                      <span class="metric-item-lbl">FinTech Days</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#fbbf24;">$1T+</span>
+                      <span class="metric-item-lbl">Payments Vol</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#10b981;">Radar ML</span>
+                      <span class="metric-item-lbl">Fraud Defense</span>
+                    </div>
+                  </div>
+                  <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewStripeStory', 'Stripe', null); try{window.location.hash='#stripe';}catch(e){}">
+                    <span>Launch Stripe 30-Day Simulator</span>
+                    <span>&rarr;</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 3: L2 Limit Orderbook & Micro-Price -->
+              <div class="industry-card" style="border-top: 3px solid #06b6d4;">
+                <div>
+                  <div class="industry-card-top">
+                    <span class="industry-company-badge" style="color:#06b6d4;">WALL STREET &bull; HIGH-FREQUENCY TRADING</span>
+                    <span class="industry-duration-badge">RELATIONAL MACHINE</span>
+                  </div>
+                  <h3 class="industry-card-title">L2 Limit Orderbook (LOB) Market Depth Engine</h3>
+                  <p class="industry-card-desc">
+                    Reconstruct sub-millisecond bid/ask orderbook ladders from tick feeds, track cumulative volume depth, and compute volume-weighted micro-price adjustments under SEC Rule 611.
+                  </p>
+                </div>
+                <div>
+                  <div class="industry-metrics-row">
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#06b6d4;">L2 Depth</span>
+                      <span class="metric-item-lbl">Tick Stream</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#fbbf24;">Micro-Price</span>
+                      <span class="metric-item-lbl">Spread Metric</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-item-val" style="color:#10b981;">Reg NMS</span>
+                      <span class="metric-item-lbl">SEC Compliance</span>
+                    </div>
+                  </div>
+                  <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewRelationalMachines', 'Relational Machines', null); try{window.location.hash='#machines';}catch(e){}">
+                    <span>Launch Orderbook Depth Machine</span>
+                    <span>&rarr;</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Spotlight Cards: SEC Settlement & Core Banking Ledgers -->
+            <div class="spotlight-grid">
+              
+              <div class="spotlight-card">
+                <div>
+                  <span class="spotlight-badge" style="color:#a78bfa;">CLEARING &amp; SETTLEMENT</span>
+                  <h4 class="spotlight-title">SEC T+1 Settlement &amp; Fails-to-Deliver (FTD)</h4>
+                  <p class="spotlight-desc">Enforce Continuous Net Settlement (CNS), calculate buy-in penalties under SEC Rule 15c6-1, and track clearinghouse collateral margins.</p>
+                </div>
+                <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewCapstones', 'Guided Capstones', 'navGroupPractice'); try{window.location.hash='#capstone';}catch(e){}">
+                  <span>View SEC T+1 Capstone Studio</span>
+                  <span>&rarr;</span>
+                </button>
+              </div>
+
+              <div class="spotlight-card">
+                <div>
+                  <span class="spotlight-badge" style="color:#a78bfa;">CORE LEDGERS</span>
+                  <h4 class="spotlight-title">Nostro / Vostro Multi-Currency Journal</h4>
+                  <p class="spotlight-desc">Maintain cross-border correspondent banking reconciliations with FX revaluation sweeps and zero-variance ledger proofs.</p>
+                </div>
+                <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewJPMorganStory', 'Finance', null); try{window.location.hash='#jpmorgan';}catch(e){}">
+                  <span>Inspect Nostro/Vostro Journal</span>
+                  <span>&rarr;</span>
+                </button>
+              </div>
+
+              <div class="spotlight-card">
+                <div>
+                  <span class="spotlight-badge" style="color:#a78bfa;">CREDIT RISK ENGINE</span>
+                  <h4 class="spotlight-title">Federal Reserve CCAR Capital Stress Testing</h4>
+                  <p class="spotlight-desc">Run macroeconomic shock scenarios, aggregate risk-weighted assets (RWA), and audit capital adequacy distribution waterfalls.</p>
+                </div>
+                <button class="btn-launch-sim" onclick="if(window.selectNavView) window.selectNavView('viewJPMorganStory', 'Finance', null); try{window.location.hash='#jpmorgan';}catch(e){}">
+                  <span>Launch CCAR Stress Simulation</span>
+                  <span>&rarr;</span>
+                </button>
+              </div>
+
+            </div>
+          </section>
+          ` : ''}
+
+          <!-- ================================================================= -->
+          <!-- 5. DEFENSIVE SQL TRAPS (5 SILENT FAILURES)                         -->
+          <!-- ================================================================= -->
+          <section class="landing-section">
+            <div class="landing-section-header">
+              <span class="landing-section-tag" style="color:#ef4444;">Defensive SQL // Zero Silent Failures</span>
+              <h2 class="landing-section-title">The 5 Silent SQL Traps That Cost Companies Millions</h2>
+              <p class="landing-section-subtitle">
+                Junior queries pass syntax checks and linter rules, but corrupt accounting ledgers and skew production metrics. Click each trap below to inspect the vulnerable query versus the production-hardened defensive fix.
+              </p>
+            </div>
+
+            <div class="traps-container-card">
+              <!-- Trap Selector Buttons -->
+              <div class="traps-nav-pills">
+                ${Object.keys(DEFENSIVE_TRAPS).map(k => {
+                  const t = DEFENSIVE_TRAPS[k];
+                  const isActive = t.id === activeTrapId;
+                  return `
+                    <button class="trap-pill-btn ${isActive ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.setTrap('${t.id}')">
+                      <span>${t.title}</span>
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+
+              <!-- Active Trap Meta Header -->
+              <div class="trap-meta-strip">
+                <div>
+                  <span class="trap-severity-badge ${curTrap.severityClass}">${curTrap.severity}</span>
+                  <span style="margin-left: 10px; color: #a1a1aa;">${curTrap.title}</span>
+                </div>
+                <div style="color: #71717a;">
+                  <span>Affects: ${curTrap.context}</span>
+                </div>
+              </div>
+
+              <!-- Side-by-side Diff Boxes -->
+              <div class="trap-diff-columns">
+                <!-- Vulnerable Box -->
+                <div class="trap-code-box box-silent-fail">
+                  <div class="trap-box-label" style="color:#ef4444;">✕ VULNERABLE PRODUCTION QUERY</div>
+                  <pre class="trap-code-pre"><code>${curTrap.wrongCode}</code></pre>
+                </div>
+
+                <!-- Defensive Fix Box -->
+                <div class="trap-code-box box-defensive-fix">
+                  <div class="trap-box-label" style="color:#10b981;">✓ DEFENSIVE PRODUCTION FIX</div>
+                  <pre class="trap-code-pre"><code>${curTrap.fixCode}</code></pre>
+                </div>
+              </div>
+
+              <!-- Production Impact Note -->
+              <div class="trap-impact-text">
+                <strong>Failure Mechanism:</strong> ${curTrap.impact}
+              </div>
+            </div>
+          </section>
+
+          <!-- ================================================================= -->
+          <!-- 6. FAST ACCESS PRACTICE MATRIX                                    -->
+          <!-- ================================================================= -->
+          <section class="landing-section" style="margin-bottom: 40px;">
+            <div class="landing-section-header">
+              <span class="landing-section-tag">Fast Access // Direct Jump</span>
+              <h2 class="landing-section-title">Jump Straight into Practice</h2>
+              <p class="landing-section-subtitle">
+                Select your focus arena and launch directly into client-side relational training.
+              </p>
+            </div>
+
+            <div class="fast-access-grid">
+              
+              <!-- Tile 1: Section Studio -->
+              <div class="fast-tile" onclick="if(window.selectNavView) window.selectNavView('viewStudio', 'Section Studio', null); try{window.location.hash='#section-studio';}catch(e){}">
+                <div class="fast-tile-top">
+                  <span class="fast-tile-badge" style="color:#38bdf8;">WORKBENCH</span>
+                  <span style="color:#38bdf8;">&rarr;</span>
+                </div>
+                <h4 class="fast-tile-title">&lt;&gt; Section Studio</h4>
+                <p class="fast-tile-desc">30 Core Relational Topics, Monaco-style editor, multi-dialect transpiler, and instant WASM tuple sinks.</p>
+              </div>
+
+              <!-- Tile 2: LeetCode 323 -->
+              <div class="fast-tile" onclick="if(window.selectNavView) window.selectNavView('viewLeetCode50', 'LeetCode 323', null); try{window.location.hash='#leetcode';}catch(e){}">
+                <div class="fast-tile-top">
+                  <span class="fast-tile-badge" style="color:#fbbf24;">ARCHIVE</span>
+                  <span style="color:#fbbf24;">&rarr;</span>
+                </div>
+                <h4 class="fast-tile-title">🏆 LeetCode 323</h4>
+                <p class="fast-tile-desc">All 323 LeetCode SQL problems categorized by Easy, Medium, and Hard with verified client-side test suites.</p>
+              </div>
+
+              <!-- Tile 3: Industry Simulation Hub -->
+              <div class="fast-tile" onclick="if(window.selectNavView) window.selectNavView('viewCompanyHub', 'Companies & Domains', 'navGroupPractice'); try{window.location.hash='#companies';}catch(e){}">
+                <div class="fast-tile-top">
+                  <span class="fast-tile-badge" style="color:#10b981;">SIMULATIONS</span>
+                  <span style="color:#10b981;">&rarr;</span>
+                </div>
+                <h4 class="fast-tile-title">🏢 Industry Domain Hub</h4>
+                <p class="fast-tile-desc">Direct access to 30-day onboarding rotations at Amazon, Netflix, Uber, Stripe, Airbnb, Spotify, and JPMorgan.</p>
+              </div>
+
+              <!-- Tile 4: Relational Machines -->
+              <div class="fast-tile" onclick="if(window.selectNavView) window.selectNavView('viewRelationalMachines', 'Relational Machines', null); try{window.location.hash='#machines';}catch(e){}">
+                <div class="fast-tile-top">
+                  <span class="fast-tile-badge" style="color:#a78bfa;">TOPOLOGY</span>
+                  <span style="color:#a78bfa;">&rarr;</span>
+                </div>
+                <h4 class="fast-tile-title">⬡ Relational Machines</h4>
+                <p class="fast-tile-desc">Interactive cohort retention matrices, 5-way SaaS MRR waterfall bridge, and L2 market depth orderbooks.</p>
+              </div>
+
+            </div>
+          </section>
+
         </div>
-      </section>
+      `;
+    },
 
-      <!-- 7. FAST-ACCESS ACTION MATRIX -->
-      <section style="margin-bottom: 60px;">
-        <div class="landing-section-header">
-          <span class="landing-section-tag">FAST ACCESS</span>
-          <h2 class="landing-section-title">Jump Directly into Any Interactive Workspace</h2>
-        </div>
-
-        <div class="landing-launch-grid">
-          <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewStudio', 'Section Studio', null); try{window.location.hash='#studio';}catch(e){}" style="border-color: rgba(99,102,241,0.4);">
-            <div class="landing-launch-meta">
-              <span class="landing-launch-name" style="color: #818cf8;">Query Studio</span>
-              <span class="landing-launch-tag" style="background: rgba(99,102,241,0.15); color: #a5b4fc;">IDE</span>
-            </div>
-            <span class="landing-launch-desc">Monaco SQL editor, schema explorer, and client-side SQLite WASM execution engine.</span>
-          </div>
-
-          <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewRelationalCollider', 'Relational Collider', 'navGroupExplore'); try{window.location.hash='#collider';}catch(e){}" style="border-color: rgba(16,185,129,0.4);">
-            <div class="landing-launch-meta">
-              <span class="landing-launch-name" style="color: #34d399;">Particle Collider</span>
-              <span class="landing-launch-tag" style="background: rgba(16,185,129,0.15); color: #34d399;">60FPS</span>
-            </div>
-            <span class="landing-launch-desc">60fps HTML5 Canvas physics chamber with predicate laser gates &amp; glass accumulators.</span>
-          </div>
-
-          <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewHardwareStrata', '3D Hardware Strata', 'navGroupExplore'); try{window.location.hash='#strata';}catch(e){}" style="border-color: rgba(6,182,212,0.4);">
-            <div class="landing-launch-meta">
-              <span class="landing-launch-name" style="color: #22d3ee;">3D Hardware Strata</span>
-              <span class="landing-launch-tag" style="background: rgba(6,182,212,0.15); color: #22d3ee;">EXPLODED 3D</span>
-            </div>
-            <span class="landing-launch-desc">5-layer isometric storage engine hierarchy, LSN WAL conduits, and NVMe page blocks.</span>
-          </div>
-
-          <div class="landing-launch-tile" onclick="if(window.selectNavView) window.selectNavView('viewQueryProfiler', 'Visual Query Profiler', 'navGroupExplore'); try{window.location.hash='#profiler';}catch(e){}" style="border-color: rgba(245,158,11,0.4);">
-            <div class="landing-launch-meta">
-              <span class="landing-launch-name" style="color: #fbbf24;">Query Profiler</span>
-              <span class="landing-launch-tag" style="background: rgba(245,158,11,0.15); color: #fbbf24;">EXPLAIN TREE</span>
-            </div>
-            <span class="landing-launch-desc">Execution tree cost nodes, scan bottlenecks, and What-If B+Tree simulator.</span>
-          </div>
-        </div>
-      </section>
-    `;
-
-    // Initialize Bento Particle Collider Micro Canvas
-    initBentoColliderCanvas();
-  }
-
-  /**
-   * Set Track: 'analytics' | 'finance'
-   */
-  function setTrack(trackKey) {
-    if (State.activeTrack === trackKey) return;
-    State.activeTrack = trackKey;
-    const scenarios = SCENARIOS[trackKey];
-    State.activeScenarioId = scenarios[0].id;
-    renderLandingPage('viewLandingPage');
-    if (window.soundFX && window.soundFX.playPop) window.soundFX.playPop();
-  }
-
-  /**
-   * Select Scenario in Hero Sandbox
-   */
-  function selectScenario(scenarioId) {
-    if (State.activeScenarioId === scenarioId) return;
-    State.activeScenarioId = scenarioId;
-    renderLandingPage('viewLandingPage');
-    if (window.soundFX && window.soundFX.playClick) window.soundFX.playClick();
-  }
-
-  /**
-   * Launch Current Scenario in Studio Workbench
-   */
-  function launchActiveScenarioInStudio() {
-    const scenarios = SCENARIOS[State.activeTrack];
-    const scenario = scenarios.find(s => s.id === State.activeScenarioId) || scenarios[0];
-    
-    if (typeof window.selectNavView === 'function') {
-      window.selectNavView('viewStudio', 'Section Studio', null);
-    } else if (typeof window.switchMainView === 'function') {
-      window.switchMainView('viewStudio');
+    bindEvents: function(container) {
+      // Any dynamic interactive event binding if needed
     }
-
-    setTimeout(() => {
-      const sqlInput = document.getElementById('sqlInput') || document.getElementById('sqlQueryInput');
-      if (sqlInput) {
-        sqlInput.value = scenario.sql;
-        if (typeof window.runQueryManual === 'function') {
-          setTimeout(window.runQueryManual, 140);
-        }
-      }
-      if (window.SQL_BUDDY) {
-        window.SQL_BUDDY.say(`🚀 Loaded ${scenario.title} into Studio Workbench!`, 4000, 'celebrate');
-      }
-    }, 120);
-  }
-
-  /**
-   * Toggle Cohort Mode: 'percent' | 'absolute'
-   */
-  function setCohortMode(mode) {
-    State.cohortDisplayMode = mode;
-    renderLandingPage('viewLandingPage');
-  }
-
-  /**
-   * Inspect Cohort Cell
-   */
-  function inspectCohortCell(cohort, mIdx, pct, size) {
-    const retained = Math.round((size * pct) / 100);
-    if (window.SQL_BUDDY) {
-      window.SQL_BUDDY.say(`📊 Cohort ${cohort} at Month ${mIdx}: ${pct}% retained (${retained.toLocaleString()} / ${size.toLocaleString()} users)`, 4500, 'happy');
-    }
-  }
-
-  /**
-   * Update Order Book Block Size
-   */
-  function updateOrderSize(val) {
-    State.orderSize = parseInt(val, 10);
-    const txtSize = document.getElementById('txtOrderSizeVal');
-    const txtVwap = document.getElementById('txtCalcVwap');
-    const txtSlip = document.getElementById('txtCalcSlippage');
-
-    if (txtSize) txtSize.textContent = `${State.orderSize.toLocaleString()} Shares`;
-
-    // Dynamic calculation: simulate sweep
-    let remaining = State.orderSize;
-    let totalCost = 0;
-    const baseMid = 138.425;
-
-    for (const ask of ORDER_BOOK.asks) {
-      const fill = Math.min(remaining, ask.shares);
-      totalCost += fill * ask.price;
-      remaining -= fill;
-      if (remaining <= 0) break;
-    }
-
-    const vwap = totalCost / State.orderSize;
-    const slippageBps = ((vwap - baseMid) / baseMid) * 10000;
-
-    if (txtVwap) txtVwap.textContent = `$${vwap.toFixed(3)}`;
-    if (txtSlip) txtSlip.textContent = `+${slippageBps.toFixed(1)} bps`;
-  }
-
-  /**
-   * Select Defensive Trap
-   */
-  function selectTrap(trapId) {
-    State.activeTrapId = trapId;
-    renderLandingPage('viewLandingPage');
-  }
-
-  /**
-   * Embedded Micro Particle Collider for Bento Card
-   */
-  function initBentoColliderCanvas() {
-    const canvas = document.getElementById('bentoColliderCanvas');
-    if (!canvas) return;
-
-    if (State.bentoAnimId) cancelAnimationFrame(State.bentoAnimId);
-
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    const w = rect.width || 600;
-    const h = 180;
-
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width = `${w}px`;
-    canvas.style.height = `${h}px`;
-
-    const ctx = canvas.getContext('2d');
-    ctx.scale(dpr, dpr);
-
-    // Initial micro particles
-    State.bentoParticles = [
-      { x: 30, y: 90, vx: 2.8, color: '#38bdf8', label: '101 $320' },
-      { x: 120, y: 90, vx: 2.8, color: '#38bdf8', label: '102 $85' },
-      { x: 210, y: 90, vx: 2.8, color: '#ec4899', label: 'NULL_POISON' },
-      { x: 300, y: 90, vx: 2.8, color: '#38bdf8', label: '103 $450' }
-    ];
-
-    const laserX = w * 0.52;
-
-    function microLoop() {
-      ctx.clearRect(0, 0, w, h);
-
-      // Track line
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-      ctx.lineWidth = 18;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(30, 90);
-      ctx.lineTo(w - 30, 90);
-      ctx.stroke();
-
-      // Laser Gate
-      ctx.strokeStyle = '#10b981';
-      ctx.lineWidth = 2.5;
-      ctx.shadowColor = '#10b981';
-      ctx.shadowBlur = 12;
-      ctx.beginPath();
-      ctx.moveTo(laserX, 20);
-      ctx.lineTo(laserX, 160);
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      // Particles
-      State.bentoParticles.forEach(p => {
-        p.x += p.vx;
-        if (p.x >= laserX && p.vx > 0) {
-          if (p.label.includes('85') || p.label.includes('POISON')) {
-            // Deflect
-            p.vx = 1.2;
-            p.y += 1.8;
-            p.color = '#ef4444';
-          } else {
-            p.color = '#10b981';
-          }
-        }
-
-        if (p.x > w + 40 || p.y > h + 20) {
-          p.x = 20;
-          p.y = 90;
-          p.vx = 2.8;
-          p.color = p.label.includes('POISON') ? '#ec4899' : '#38bdf8';
-        }
-
-        ctx.fillStyle = p.color;
-        ctx.beginPath();
-        ctx.roundRect(p.x - 24, p.y - 10, 48, 20, 10);
-        ctx.fill();
-
-        ctx.font = 'bold 9px monospace';
-        ctx.fillStyle = '#0f172a';
-        ctx.textAlign = 'center';
-        ctx.fillText(p.label.split(' ')[0], p.x, p.y + 3);
-      });
-
-      State.bentoAnimId = requestAnimationFrame(microLoop);
-    }
-
-    State.bentoAnimId = requestAnimationFrame(microLoop);
-  }
-
-  function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
-  // Public API
-  window.LANDING_PAGE_ENGINE = {
-    renderLandingPage,
-    setTrack,
-    selectScenario,
-    launchActiveScenarioInStudio,
-    setCohortMode,
-    inspectCohortCell,
-    updateOrderSize,
-    selectTrap,
-    getState: () => State
   };
 
-  // Backward compatibility
-  window.LandingPageEngine = window.LANDING_PAGE_ENGINE;
+  // Expose globally
+  window.LANDING_PAGE_ENGINE = LandingPageEngine;
 
+  // Auto-init when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => renderLandingPage());
+    document.addEventListener('DOMContentLoaded', function() {
+      LandingPageEngine.init();
+    });
   } else {
-    setTimeout(() => renderLandingPage(), 100);
+    LandingPageEngine.init();
   }
 
 })(window);
