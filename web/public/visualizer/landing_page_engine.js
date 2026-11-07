@@ -419,7 +419,7 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
             </div>
 
             <h1 class="koma-hero-title">
-              Super Relational OS<br>
+              SQL Foundry<br>
               for Data &amp; Finance
             </h1>
 
