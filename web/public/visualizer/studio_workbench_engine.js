@@ -525,7 +525,7 @@ window.StudioWorkbenchEngine = (function() {
               <span class="problem-tier-badge ${currentProb.difficulty}">${currentProb.difficulty.toUpperCase()}</span>
               <h2 class="brief-title">${currentProb.title}</h2>
               <span class="status-pill">Target: <strong>${currentProb.targetTable}</strong></span>
-              ${currentProb.expectedRowCount !== null ? `<span class="status-pill status-pill-accent">${currentProb.expectedRowCount} Tuples Expected</span>` : ''}
+              ${currentProb.expectedRowCount !== null ? `<span class="status-pill status-pill-accent">${currentProb.expectedRowCount} Rows Expected</span>` : ''}
             </div>
             <p class="brief-spec-text">${currentProb.spec}</p>
           </div>
@@ -667,7 +667,7 @@ window.StudioWorkbenchEngine = (function() {
                     ${state.testResult ? (`<span class="hot-badge" style="background:${state.testResult.passed ? 'rgba(22,163,74,0.15)' : 'rgba(220,38,38,0.15)'}; color:${state.testResult.passed ? '#16a34a' : '#dc2626'}; font-size:8.5px; padding:1px 4px; border-radius:3px; font-weight:700; margin-left:3px;">${state.testResult.passed ? 'PASS' : 'DIFF'}</span>`) : ''}
                   </button>
                   <button class="tab-item ${state.activeTab === 'tabPipeline' ? 'active' : ''}" data-tab="tabPipeline">6-Stage Stepper</button>
-                  <button class="tab-item ${state.activeTab === 'tabSchema' ? 'active' : ''}" data-tab="tabSchema">Schema &amp; Tuples</button>
+                  <button class="tab-item ${state.activeTab === 'tabSchema' ? 'active' : ''}" data-tab="tabSchema">Schema &amp; Rows</button>
                   <button class="tab-item ${state.activeTab === 'tabExplainPlan' ? 'active' : ''}" data-tab="tabExplainPlan">EXPLAIN Plan</button>
                   <button class="tab-item ${state.activeTab === 'tabExplainer' ? 'active' : ''}" data-tab="tabExplainer">Engine Explainer</button>
                 </div>
@@ -751,7 +751,7 @@ window.StudioWorkbenchEngine = (function() {
                   <div id="pipelineStepResultsGrid" style="overflow-x: auto; max-height: 240px; padding: 0 14px 14px 14px;"></div>
                 </div>
 
-                <!-- Tab 5: Real Schema Tables & Live Sample Tuples -->
+                <!-- Tab 5: Real Schema Tables & Live Sample Rows -->
                 <div class="tab-pane ${state.activeTab === 'tabSchema' ? 'active' : ''}" id="tabSchema">
                   <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 6px;">
@@ -759,7 +759,7 @@ window.StudioWorkbenchEngine = (function() {
                         <strong style="font-size: 13px; color: var(--text-primary);">Table: ${schema.name}</strong>
                         <span style="font-size: 11px; color: var(--text-muted); margin-left: 8px;">${schema.description}</span>
                       </div>
-                      <span class="status-pill" style="font-size: 10px;">${rawRows.length} Total Tuples</span>
+                      <span class="status-pill" style="font-size: 10px;">${rawRows.length} Total Rows</span>
                     </div>
 
                     <!-- Column definitions table -->
@@ -788,9 +788,9 @@ window.StudioWorkbenchEngine = (function() {
                       </table>
                     </div>
 
-                    <!-- Live Sample Tuples Grid -->
+                    <!-- Live Sample Rows Grid -->
                     <div>
-                      <div style="font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 4px;">Live Sample Tuples (${sampleRows.length} of ${rawRows.length} rows):</div>
+                      <div style="font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 4px;">Live Sample Rows (${sampleRows.length} of ${rawRows.length} rows):</div>
                       <div style="overflow-x: auto; border: 1px solid var(--border-default); border-radius: 6px; max-height: 220px;">
                         <table class="studio-diff-table" style="font-size: 10.5px;">
                           <thead>
@@ -873,7 +873,7 @@ window.StudioWorkbenchEngine = (function() {
           '<p class="tile-card-summary">' + p.spec + '</p>' +
           '<div class="tile-card-footer">' +
             '<span class="tile-card-status">' + (isSelected ? '&#9679; ACTIVE IN WORKBENCH' : 'Click to Load &amp; Solve &rarr;') + '</span>' +
-            (p.expectedRowCount !== null ? '<span class="tile-card-rows">' + p.expectedRowCount + ' tuples expected</span>' : '') +
+            (p.expectedRowCount !== null ? '<span class="tile-card-rows">' + p.expectedRowCount + ' rows expected</span>' : '') +
           '</div>' +
         '</div>';
       });
@@ -926,7 +926,7 @@ window.StudioWorkbenchEngine = (function() {
       footerNote = 'Top-N heap optimization maintains a bounded in-memory priority queue of size K, avoiding expensive disk-based external merge sorts.';
     } else if (seq === '04') {
       inner = getTopic04Svg(prob, accentColor);
-      footerNote = 'Vector aggregators condense N relational tuples down to 1 scalar summary row in a single sequential pass over columnar memory.';
+      footerNote = 'Vector aggregators condense N rows down to 1 scalar summary row in a single sequential pass over columnar memory.';
     } else if (seq === '05') {
       inner = getTopic05Svg(prob, accentColor);
       footerNote = 'GROUP BY constructs in-memory hash buckets; HAVING executes post-aggregation filtering on bucket aggregates before emission.';
@@ -944,7 +944,7 @@ window.StudioWorkbenchEngine = (function() {
       footerNote = 'Common Table Expressions provide clean modular DAG composition, materialized in ephemeral memory buffers or inlined by modern cost-based optimizers.';
     } else {
       inner = getTopic10Svg(prob, accentColor);
-      footerNote = 'Window functions calculate peer aggregations over defined row frames without collapsing the underlying relational tuples.';
+      footerNote = 'Window functions calculate peer aggregations over defined row frames without collapsing the underlying rows.';
     }
 
     return `
@@ -1066,7 +1066,7 @@ window.StudioWorkbenchEngine = (function() {
         <rect width="216" height="274" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.4" />
         <rect width="216" height="30" rx="6" fill="rgba(16,185,129,0.12)" />
         <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#047857">RESULT SET (EMITTED)</text>
-        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#059669">${prob.expectedRowCount || 5} TUPLES PROJECTED</text>
+        <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#059669">${prob.expectedRowCount || 5} ROWS FOUND</text>
         
         <rect x="12" y="62" width="192" height="26" rx="4" fill="rgba(16,185,129,0.05)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
         <text x="20" y="79" font-family="ui-monospace, monospace" font-size="9" font-weight="600" fill="#047857">1 &bull; Scottsdale | 202,705</text>
@@ -1096,19 +1096,19 @@ window.StudioWorkbenchEngine = (function() {
       <g transform="translate(24, 28)">
         <rect width="190" height="274" rx="6" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.2" />
         <rect width="190" height="30" rx="6" fill="#f4f4f5" />
-        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#18181b">INPUT TUPLE STREAM</text>
+        <text x="12" y="20" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" fill="#18181b">INPUT ROWS</text>
         <text x="12" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#71717a">PHYSICAL HEAP SCAN</text>
         
         <rect x="10" y="62" width="170" height="34" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
-        <text x="18" y="78" font-family="ui-monospace, monospace" font-size="9.5" font-weight="600" fill="#18181b">Tuple 1: pop = 202,705</text>
+        <text x="18" y="78" font-family="ui-monospace, monospace" font-size="9.5" font-weight="600" fill="#18181b">Row 1: pop = 202,705</text>
         <text x="18" y="90" font-family="ui-monospace, monospace" font-size="8" fill="#059669">Satisfies &gt; 100k</text>
 
         <rect x="10" y="106" width="170" height="34" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
-        <text x="18" y="122" font-family="ui-monospace, monospace" font-size="9.5" font-weight="600" fill="#18181b">Tuple 2: pop = 85,000</text>
+        <text x="18" y="122" font-family="ui-monospace, monospace" font-size="9.5" font-weight="600" fill="#18181b">Row 2: pop = 85,000</text>
         <text x="18" y="134" font-family="ui-monospace, monospace" font-size="8" fill="#dc2626">Fails Predicate</text>
 
         <rect x="10" y="150" width="170" height="34" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />
-        <text x="18" y="166" font-family="ui-monospace, monospace" font-size="9.5" font-weight="600" fill="#18181b">Tuple 3: pop = 124,966</text>
+        <text x="18" y="166" font-family="ui-monospace, monospace" font-size="9.5" font-weight="600" fill="#18181b">Row 3: pop = 124,966</text>
         <text x="18" y="178" font-family="ui-monospace, monospace" font-size="8" fill="#059669">Satisfies &gt; 100k</text>
 
         <rect x="10" y="194" width="170" height="34" rx="4" fill="#fafafa" stroke="#e4e4e7" stroke-width="1" />

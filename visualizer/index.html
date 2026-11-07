@@ -12,22 +12,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/vqa3wut.css">
-  <link rel="stylesheet" href="style.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="mastery_course_theme.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="leetcode_theme.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="studio_workbench_theme.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="relational_machines_theme.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="company_mastery_theme.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="sql_terminal_theme.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="mock_interview_theme.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="landing_page.css?v=20261107_dual_track">
-  <link rel="stylesheet" href="command_palette.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="cheatsheet_book.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="carbon_theme.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="ovio_motion.css?v=20261103_carbon_ovio">
-  <link rel="stylesheet" href="topic_motion_cards.css?v=20261106_tactile">
-  <link rel="stylesheet" href="hardware_strata.css?v=20261106_3d">
-  <link rel="stylesheet" href="relational_collider.css?v=20261106_collider">
+  <link rel="stylesheet" href="style.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="mastery_course_theme.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="leetcode_theme.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="studio_workbench_theme.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="relational_machines_theme.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="company_mastery_theme.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="sql_terminal_theme.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="mock_interview_theme.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="landing_page.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="command_palette.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="cheatsheet_book.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="carbon_theme.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="ovio_motion.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="topic_motion_cards.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="hardware_strata.css?v=20261107_beginner_clean_v3">
+  <link rel="stylesheet" href="relational_collider.css?v=20261107_beginner_clean_v3">
 </head>
 <body data-theme="carbon">
   <div class="app-layout">
@@ -1917,7 +1917,7 @@
   </div>
 
   <!-- Enhanced Modern IDE Footer -->
-  <footer class="app-footer">
+  <footer class="app-footer" style="display:none !important;">
     <div class="footer-left-group">
       <div class="footer-status">
         <span class="status-dot"></span>
@@ -1935,11 +1935,29 @@
       <span class="footer-shortcut-hint">⌨️ 1-4 Pick &bull; Enter Run &bull; Esc Close</span>
       <span class="footer-sep">|</span>
       <a href="../FOUNDATIONS_MASTER_COMPENDIUM.md" target="_blank" class="footer-link">Compendium</a>
-      <span class="footer-sep">|</span>
-      <button class="footer-mascot-btn" id="footerMascotToggle" onclick="if(window.SQL_BUDDY) window.SQL_BUDDY.toggleMinimize();" title="Toggle Assistant Mascot">Sir Bloops</button>
+      <button class="footer-close-btn" id="btnCloseFooter" onclick="toggleAppFooter(true)" title="Hide Bottom Bar">&times;</button>
     </div>
   </footer>
+  <button id="btnRestoreFooter" class="footer-restore-trigger" onclick="toggleAppFooter(false)" title="Show Status Bar">⌃ Status Bar</button>
 </div>
+
+  <script>
+    function toggleAppFooter(hide) {
+      const footer = document.querySelector('.app-footer');
+      const restoreBtn = document.getElementById('btnRestoreFooter');
+      if (!footer) return;
+      const shouldHide = (hide !== undefined) ? hide : !footer.classList.contains('collapsed');
+      footer.classList.toggle('collapsed', shouldHide);
+      if (restoreBtn) restoreBtn.style.display = shouldHide ? 'block' : 'none';
+      try { localStorage.setItem('sql_footer_collapsed', shouldHide ? 'true' : 'false'); } catch(e) {}
+    }
+    // Auto-restore preference
+    try {
+      if (localStorage.getItem('sql_footer_collapsed') === 'true') {
+        toggleAppFooter(true);
+      }
+    } catch(e) {}
+  </script>
 
   <!-- Persistent Living Avatar Container -->
   <div id="sqlBuddyContainer" class="sql-buddy-container"></div>
@@ -1976,33 +1994,33 @@
 <script src="deconstructor_data.js"></script>
 <script src="theory_interview_prep.js"></script>
 <script src="syntax_gym_data.js"></script>
-<script src="case_studies_500.js?v=58"></script>
-<script src="case_study_blanks.js?v=57"></script>
-<script src="domain_erd_engine.js?v=57"></script>
-<script src="case_dossier_engine.js?v=57"></script>
+<script src="case_studies_500.js?v=20261107_beginner_clean_v3"></script>
+<script src="case_study_blanks.js?v=20261107_beginner_clean_v3"></script>
+<script src="domain_erd_engine.js?v=20261107_beginner_clean_v3"></script>
+<script src="case_dossier_engine.js?v=20261107_beginner_clean_v3"></script>
 <script src="enterprise_erd_data.js"></script>
-<script src="case_simulator_engine.js?v=57"></script>
+<script src="case_simulator_engine.js?v=20261107_beginner_clean_v3"></script>
 <script src="foundations_curriculum.js"></script>
-<script src="joins_master_350_vault.js?v=57"></script>
-<script src="mcqs_vault_500.js?v=57"></script>
-<script src="traps_interview_secrets.js?v=57"></script>
+<script src="joins_master_350_vault.js?v=20261107_beginner_clean_v3"></script>
+<script src="mcqs_vault_500.js?v=20261107_beginner_clean_v3"></script>
+<script src="traps_interview_secrets.js?v=20261107_beginner_clean_v3"></script>
 <script src="audio_fx.js"></script>
-<script src="study_library_data.js?v=65"></script>
-<script src="buddy_engine.js?v=87"></script>
-<script src="gym_blitz_engine.js?v=57"></script>
-<script src="gym_mastery_radar.js?v=57"></script>
-<script src="gym_autopsy_engine.js?v=57"></script>
-<script src="gym_execution_timeline.js?v=57"></script>
-<script src="gym_explain_optimizer.js?v=57"></script>
-<script src="visual_explain_tree_engine.js?v=1"></script>
-<script src="query_profiler_engine.js?v=1"></script>
-<script src="gym_faang_interviewer.js?v=57"></script>
-<script src="gym_dataflow_graph.js?v=57"></script>
-<script src="gym_typing_dojo.js?v=57"></script>
-<script src="gym_spaced_repetition.js?v=57"></script>
-<script src="venn_matrix_engine.js?v=89"></script>
-<script src="window_functions_engine.js?v=90"></script>
-<script src="activity_heatmap_engine.js?v=91"></script>
+<script src="study_library_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="buddy_engine.js?v=20261107_beginner_clean_v3"></script>
+<script src="gym_blitz_engine.js?v=20261107_beginner_clean_v3"></script>
+<script src="gym_mastery_radar.js?v=20261107_beginner_clean_v3"></script>
+<script src="gym_autopsy_engine.js?v=20261107_beginner_clean_v3"></script>
+<script src="gym_execution_timeline.js?v=20261107_beginner_clean_v3"></script>
+<script src="gym_explain_optimizer.js?v=20261107_beginner_clean_v3"></script>
+<script src="visual_explain_tree_engine.js?v=20261107_beginner_clean_v3"></script>
+<script src="query_profiler_engine.js?v=20261107_beginner_clean_v3"></script>
+<script src="gym_faang_interviewer.js?v=20261107_beginner_clean_v3"></script>
+<script src="gym_dataflow_graph.js?v=20261107_beginner_clean_v3"></script>
+<script src="gym_typing_dojo.js?v=20261107_beginner_clean_v3"></script>
+<script src="gym_spaced_repetition.js?v=20261107_beginner_clean_v3"></script>
+<script src="venn_matrix_engine.js?v=20261107_beginner_clean_v3"></script>
+<script src="window_functions_engine.js?v=20261107_beginner_clean_v3"></script>
+<script src="activity_heatmap_engine.js?v=20261107_beginner_clean_v3"></script>
 <script src="learning_journey.js"></script>
 <script src="capstones_data.js"></script>
 <script src="capstone_engine.js"></script>
@@ -2012,66 +2030,66 @@
 <script src="jpmorgan_sample_data.js"></script>
 <script src="jpmorgan_story_data.js"></script>
 <script src="jpmorgan_story_engine.js"></script>
-<script src="netflix_story_data.js?v=20261103_opt4"></script>
-<script src="netflix_sql_runner.js?v=20261103_opt4"></script>
-<script src="netflix_story_engine.js?v=20261103_opt4"></script>
-<script src="uber_story_data.js?v=20261103_opt4"></script>
-<script src="uber_sql_runner.js?v=20261103_opt4"></script>
-<script src="uber_story_engine.js?v=20261103_opt4"></script>
-  <script src="stripe_story_data.js?v=20261103_opt4"></script>
-  <script src="stripe_sql_runner.js?v=20261103_opt4"></script>
-  <script src="stripe_story_engine.js?v=20261103_opt4"></script>
-  <script src="airbnb_story_data.js?v=20261103_opt4"></script>
-  <script src="airbnb_sql_runner.js?v=20261103_opt4"></script>
-  <script src="airbnb_story_engine.js?v=20261103_opt4"></script>
-  <script src="spotify_story_data.js?v=20261103_opt4"></script>
-  <script src="spotify_sql_runner.js?v=20261103_opt4"></script>
-  <script src="spotify_story_engine.js?v=20261103_opt4"></script>
+<script src="netflix_story_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="netflix_sql_runner.js?v=20261107_beginner_clean_v3"></script>
+<script src="netflix_story_engine.js?v=20261107_beginner_clean_v3"></script>
+<script src="uber_story_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="uber_sql_runner.js?v=20261107_beginner_clean_v3"></script>
+<script src="uber_story_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="stripe_story_data.js?v=20261107_beginner_clean_v3"></script>
+  <script src="stripe_sql_runner.js?v=20261107_beginner_clean_v3"></script>
+  <script src="stripe_story_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="airbnb_story_data.js?v=20261107_beginner_clean_v3"></script>
+  <script src="airbnb_sql_runner.js?v=20261107_beginner_clean_v3"></script>
+  <script src="airbnb_story_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="spotify_story_data.js?v=20261107_beginner_clean_v3"></script>
+  <script src="spotify_sql_runner.js?v=20261107_beginner_clean_v3"></script>
+  <script src="spotify_story_engine.js?v=20261107_beginner_clean_v3"></script>
 <script src="trap_flashcards_data.js"></script>
 <script src="trap_memory_engine.js"></script>
-<script src="leetcode_section1_data.js?v=8"></script>
-<script src="leetcode_section2_data.js?v=5"></script>
-<script src="leetcode_section3_data.js?v=2"></script>
-<script src="leetcode_section4_data.js?v=2"></script>
-<script src="leetcode_section5_data.js?v=2"></script>
-<script src="leetcode_section6_data.js?v=1"></script>
-<script src="leetcode_section7_data.js?v=1"></script>
-<script src="leetcode_section8_data.js?v=1"></script>
-<script src="leetcode_section9_data.js?v=1"></script>
-<script src="leetcode_section10_data.js?v=1"></script>
-<script src="leetcode_section11_data.js?v=1"></script>
+<script src="leetcode_section1_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="leetcode_section2_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="leetcode_section3_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="leetcode_section4_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="leetcode_section5_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="leetcode_section6_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="leetcode_section7_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="leetcode_section8_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="leetcode_section9_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="leetcode_section10_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="leetcode_section11_data.js?v=20261107_beginner_clean_v3"></script>
 <script src="leetcode_300_master_vault.js"></script>
-<script src="adaptive_pipeline_compiler.js?v=20261031_v1"></script>
-  <script src="leetcode_arena_engine.js?v=20261103_opt4"></script>
+<script src="adaptive_pipeline_compiler.js?v=20261107_beginner_clean_v3"></script>
+  <script src="leetcode_arena_engine.js?v=20261107_beginner_clean_v3"></script>
 <script src="sql-wasm.js"></script>
-<script src="sql_terminal_data.js?v=105"></script>
-<script src="sql_terminal_engine.js?v=105"></script>
-<script src="mock_interview_data.js?v=106"></script>
-<script src="mock_interview_engine.js?v=106"></script>
-<script src="company_mastery_engine.js?v=201"></script>
+<script src="sql_terminal_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="sql_terminal_engine.js?v=20261107_beginner_clean_v3"></script>
+<script src="mock_interview_data.js?v=20261107_beginner_clean_v3"></script>
+<script src="mock_interview_engine.js?v=20261107_beginner_clean_v3"></script>
+<script src="company_mastery_engine.js?v=20261107_beginner_clean_v3"></script>
 <script src="curriculum_compendium_data.js"></script>
 <script src="curriculum_reader_engine.js"></script>
-<script src="command_palette.js?v=2"></script>
-<script src="landing_page_engine.js?v=20261107_dual_track"></script>
-  <script src="studio_workbench_engine.js?v=20261029_clean_v4"></script>
-  <script src="relational_machines_engine.js?v=20261030_v1"></script>
-  <script src="mastery_course_data.js?v=10"></script>
-  <script src="deep_dive_practice_volumes_data.js?v=1"></script>
-  <script src="deep_dive_practice_svgs.js?v=1"></script>
-  <script src="mastery_course_svg_engine.js?v=10"></script>
-  <script src="database_architecture_svgs.js?v=1"></script>
-  <script src="interactive_architecture_explainer.js?v=1"></script>
-  <script src="keyword_encyclopedia_data.js?v=1"></script>
-  <script src="cheatsheet_pdf_engine.js?v=1"></script>
-  <script src="mastery_course_engine.js?v=10"></script>
-  <script src="ovio_motion_engine.js?v=20261103_carbon_ovio"></script>
-  <script src="app.js?v=20261103_carbon"></script>
-  <script src="topic_motion_cards_data.js?v=20261106_tactile"></script>
-  <script src="topic_motion_cards_engine.js?v=20261106_tactile"></script>
-  <script src="hardware_strata_data.js?v=20261106_3d"></script>
-  <script src="hardware_strata_engine.js?v=20261106_3d"></script>
-  <script src="relational_collider_data.js?v=20261106_collider"></script>
-  <script src="relational_collider_engine.js?v=20261106_collider"></script>
+<script src="command_palette.js?v=20261107_beginner_clean_v3"></script>
+<script src="landing_page_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="studio_workbench_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="relational_machines_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="mastery_course_data.js?v=20261107_beginner_clean_v3"></script>
+  <script src="deep_dive_practice_volumes_data.js?v=20261107_beginner_clean_v3"></script>
+  <script src="deep_dive_practice_svgs.js?v=20261107_beginner_clean_v3"></script>
+  <script src="mastery_course_svg_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="database_architecture_svgs.js?v=20261107_beginner_clean_v3"></script>
+  <script src="interactive_architecture_explainer.js?v=20261107_beginner_clean_v3"></script>
+  <script src="keyword_encyclopedia_data.js?v=20261107_beginner_clean_v3"></script>
+  <script src="cheatsheet_pdf_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="mastery_course_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="ovio_motion_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="app.js?v=20261107_beginner_clean_v3"></script>
+  <script src="topic_motion_cards_data.js?v=20261107_beginner_clean_v3"></script>
+  <script src="topic_motion_cards_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="hardware_strata_data.js?v=20261107_beginner_clean_v3"></script>
+  <script src="hardware_strata_engine.js?v=20261107_beginner_clean_v3"></script>
+  <script src="relational_collider_data.js?v=20261107_beginner_clean_v3"></script>
+  <script src="relational_collider_engine.js?v=20261107_beginner_clean_v3"></script>
 <script>
   // Automatic Hash & Default View Router
   (function() {
@@ -2102,7 +2120,7 @@
         if (typeof window.selectNavView === 'function') window.selectNavView('viewSqlTerminal', 'SQL Terminal', null);
       } else if (hash === 'machines' || hash === 'svg' || hash === 'machine') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewRelationalMachines', 'Relational Machines', null);
-      } else if (hash === 'studio') {
+      } else if (hash === 'studio' || hash === 'section-studio' || hash === 'sectionstudio') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewStudio', 'Studio', null);
       } else if (hash === 'journey') {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewLearningJourney', 'Learning Journey', null);

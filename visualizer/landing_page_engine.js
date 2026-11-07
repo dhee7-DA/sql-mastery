@@ -1,7 +1,7 @@
 /**
- * SQL FOUNDRY - KOMA.RUN INSPIRED LANDING PAGE ENGINE
- * Clean UI, Matte Charcoal #1e1e1e, JetBrains Mono, Desktop IDE Mockup,
- * Live-Editable SQLite WASM Runner, Instant Tuple Sink, and Minimalist Industry Tracks Grid.
+ * SQL FOUNDRY - SIMPLE, BEGINNER-FRIENDLY LANDING PAGE & LIVE RUNNER
+ * Easy language, clear explanations, no complex jargon.
+ * Client-side in-browser SQL practice.
  */
 
 (function(window) {
@@ -17,17 +17,17 @@
       .replace(/'/g, '&#39;');
   }
 
-  // --- KOMA SHOWCASE SCENARIOS ---
+  // --- BEGINNER-FRIENDLY COMPANY SCENARIOS ---
   const KOMA_SCENARIOS = {
     amazon: {
       id: 'amazon',
-      tabLabel: 'Amazon BI',
-      company: 'Amazon SCOT',
+      tabLabel: 'Amazon Orders',
+      company: 'Amazon',
       brandLetter: 'A',
-      filename: 'amazon_prime_churn.sql',
-      prompt: 'identify Day-1 Prime buyers with zero orders in the next 30 days and export dbt model',
-      reasoning: 'Generating sargable LEFT JOIN ... WHERE right.order_id IS NULL to avoid expensive NOT IN subquery scans on 2.4M records.',
-      rawSql: `-- Amazon SCOT: Detect Prime buyers churned within 30 days
+      filename: 'amazon_orders.sql',
+      prompt: 'Find new customers who signed up for Prime on Day 1 but placed no orders in their first 30 days.',
+      reasoning: 'We check customer orders to see who hasn\'t bought anything again in 30 days so marketing can send a welcome reminder.',
+      rawSql: `-- Amazon: Find new Prime members with no orders in 30 days
 SELECT DISTINCT o1.customer_id, o1.purchase_date, o1.product_id
 FROM amazon_prime_orders o1
 LEFT JOIN amazon_prime_orders o2
@@ -60,8 +60,8 @@ WHERE o2.order_id IS NULL;`,
         ['CUST_89311', '2026-09-03', 'PROD_RING_VIDEO_DOORBELL']
       ],
       latency: '0.014ms',
-      tuples: '4 tuples returned',
-      status: 'AST PASSED ✓',
+      tuples: '4 rows found',
+      status: 'QUERY SUCCESS ✓',
       viewId: 'viewAmazonStory',
       viewTitle: 'Analytics',
       viewHash: '#analytics'
@@ -69,17 +69,17 @@ WHERE o2.order_id IS NULL;`,
 
     netflix: {
       id: 'netflix',
-      tabLabel: 'Netflix QoE',
-      company: 'Netflix Playback',
+      tabLabel: 'Netflix Video',
+      company: 'Netflix',
       brandLetter: 'N',
-      filename: 'netflix_playback_qoe.sql',
-      prompt: 'compute P99 Time-To-First-Frame (TTFF) latency and rebuffering ratio across ISP backbones',
-      reasoning: 'Aggregating playback metrics grouped by isp_asn to isolate CDN routing degradation.',
-      rawSql: `-- Netflix Playback: Calculate P99 TTFF across ISP backbones
+      filename: 'netflix_speeds.sql',
+      prompt: 'Compare video loading speed and buffering percentage across different internet providers.',
+      reasoning: 'We calculate the average load time and buffering percentage for each internet provider to spot slow connections.',
+      rawSql: `-- Netflix: Compare video speed across internet providers
 SELECT isp_asn,
-  ROUND(AVG(ttff_ms), 1) AS avg_ttff_ms,
-  ROUND(MAX(ttff_ms), 1) AS p99_ttff_ms,
-  ROUND(SUM(rebuffer_seconds) / SUM(play_duration_sec), 4) AS rebuffer_ratio
+  ROUND(AVG(ttff_ms), 1) AS avg_load_ms,
+  ROUND(MAX(ttff_ms), 1) AS max_load_ms,
+  ROUND(SUM(rebuffer_seconds) / SUM(play_duration_sec), 4) AS buffer_ratio
 FROM playback_telemetry_events
 GROUP BY isp_asn
 HAVING COUNT(*) >= 2;`,
@@ -101,7 +101,7 @@ HAVING COUNT(*) >= 2;`,
           ('EVT_7', 'AS3356-LUMEN', 285.0, 3.1, 1000.0),
           ('EVT_8', 'AS3356-LUMEN', 1040.2, 0.0, 900.0);
       `,
-      tableHeaders: ['isp_asn', 'avg_ttff_ms', 'p99_ttff_ms', 'rebuffer_ratio'],
+      tableHeaders: ['isp_asn', 'avg_load_ms', 'max_load_ms', 'buffer_ratio'],
       tableRows: [
         ['AS7922-COMCAST', '528.2', '814.0', '0.0008'],
         ['AS7018-ATT', '300.9', '940.5', '0.0012'],
@@ -109,8 +109,8 @@ HAVING COUNT(*) >= 2;`,
         ['AS3356-LUMEN', '662.6', '1040.2', '0.0016']
       ],
       latency: '0.016ms',
-      tuples: '4 ISP ASNs evaluated',
-      status: 'AST PASSED ✓',
+      tuples: '4 providers compared',
+      status: 'QUERY SUCCESS ✓',
       viewId: 'viewNetflixStory',
       viewTitle: 'Netflix',
       viewHash: '#netflix'
@@ -118,24 +118,24 @@ HAVING COUNT(*) >= 2;`,
 
     uber: {
       id: 'uber',
-      tabLabel: 'Uber H3',
-      company: 'Uber Mobility',
+      tabLabel: 'Uber Rides',
+      company: 'Uber',
       brandLetter: 'U',
-      filename: 'uber_h3_surge.sql',
-      prompt: 'aggregate real-time passenger ride requests into resolution-8 H3 hexagons and compute surge ratios',
-      reasoning: 'Joining spatial rider demand with available driver telemetry pings filtered to the tumbling window.',
-      rawSql: `-- Uber Marketplace: Compute Real-Time Surge Multipliers per H3 Hexagon
-WITH hex_demand AS (
-  SELECT h3_index, COUNT(*) AS active_requests
+      filename: 'uber_rides.sql',
+      prompt: 'Compare passenger ride requests to available drivers to calculate busy-area surge pricing.',
+      reasoning: 'When there are many ride requests but few drivers in an area, the surge multiplier goes up.',
+      rawSql: `-- Uber: Calculate busy-area surge multiplier based on demand
+WITH area_demand AS (
+  SELECT h3_index AS area_id, COUNT(*) AS ride_requests
   FROM uber_ride_requests
   WHERE requested_at >= '2026-11-07 16:00:00'
-  GROUP BY h3_index
+  GROUP BY area_id
 )
-SELECT d.h3_index, d.active_requests, COALESCE(s.drivers, 0) AS drivers,
-  ROUND(CAST(d.active_requests AS FLOAT) / MAX(COALESCE(s.drivers, 1), 1), 2) AS surge
-FROM hex_demand d
-LEFT JOIN uber_driver_telemetry s ON d.h3_index = s.h3_index
-ORDER BY surge DESC;`,
+SELECT d.area_id, d.ride_requests, COALESCE(s.drivers, 0) AS drivers,
+  ROUND(CAST(d.ride_requests AS FLOAT) / MAX(COALESCE(s.drivers, 1), 1), 2) AS surge_price
+FROM area_demand d
+LEFT JOIN uber_driver_telemetry s ON d.area_id = s.h3_index
+ORDER BY surge_price DESC;`,
       seedSql: `
         CREATE TABLE uber_ride_requests (
           request_id TEXT PRIMARY KEY,
@@ -147,29 +147,29 @@ ORDER BY surge DESC;`,
           drivers INT
         );
         INSERT INTO uber_ride_requests VALUES
-          ('REQ_1', '882681a339fffff', '2026-11-07 16:00:00'),
-          ('REQ_2', '882681a339fffff', '2026-11-07 16:02:00'),
-          ('REQ_3', '882681a339fffff', '2026-11-07 16:03:00'),
-          ('REQ_4', '882681a33bfffff', '2026-11-07 16:01:00'),
-          ('REQ_5', '882681a33bfffff', '2026-11-07 16:04:00'),
-          ('REQ_6', '882681a331fffff', '2026-11-07 16:02:30'),
-          ('REQ_7', '882681a337fffff', '2026-11-07 16:01:15');
+          ('REQ_1', 'Downtown_Area', '2026-11-07 16:00:00'),
+          ('REQ_2', 'Downtown_Area', '2026-11-07 16:02:00'),
+          ('REQ_3', 'Downtown_Area', '2026-11-07 16:03:00'),
+          ('REQ_4', 'Airport_Terminal', '2026-11-07 16:01:00'),
+          ('REQ_5', 'Airport_Terminal', '2026-11-07 16:04:00'),
+          ('REQ_6', 'Midtown_Mall', '2026-11-07 16:02:30'),
+          ('REQ_7', 'Suburbs_North', '2026-11-07 16:01:15');
         INSERT INTO uber_driver_telemetry VALUES
-          ('882681a339fffff', 18),
-          ('882681a33bfffff', 21),
-          ('882681a331fffff', 32),
-          ('882681a337fffff', 40);
+          ('Downtown_Area', 18),
+          ('Airport_Terminal', 21),
+          ('Midtown_Mall', 32),
+          ('Suburbs_North', 40);
       `,
-      tableHeaders: ['h3_index', 'active_requests', 'drivers', 'surge'],
+      tableHeaders: ['area_id', 'ride_requests', 'drivers', 'surge_price'],
       tableRows: [
-        ['882681a339fffff', '3', '18', '0.17'],
-        ['882681a33bfffff', '2', '21', '0.1'],
-        ['882681a331fffff', '1', '32', '0.03'],
-        ['882681a337fffff', '1', '40', '0.03']
+        ['Downtown_Area', '3', '18', '0.17x'],
+        ['Airport_Terminal', '2', '21', '0.10x'],
+        ['Midtown_Mall', '1', '32', '0.03x'],
+        ['Suburbs_North', '1', '40', '0.03x']
       ],
       latency: '0.015ms',
-      tuples: '4 H3 hexes computed',
-      status: 'AST PASSED ✓',
+      tuples: '4 areas computed',
+      status: 'QUERY SUCCESS ✓',
       viewId: 'viewUberStory',
       viewTitle: 'Uber',
       viewHash: '#uber'
@@ -177,19 +177,19 @@ ORDER BY surge DESC;`,
 
     airbnb: {
       id: 'airbnb',
-      tabLabel: 'Airbnb Pricing',
-      company: 'Airbnb Travel',
+      tabLabel: 'Airbnb Stays',
+      company: 'Airbnb',
       brandLetter: 'A',
-      filename: 'airbnb_dynamic_pricing.sql',
-      prompt: 'identify unbooked calendar island gaps between bookings and adjust nightly price elasticity',
-      reasoning: 'Applying LEAD() window functions over reservation calendar check-in dates to find orphaned gaps.',
-      rawSql: `-- Airbnb Marketplace: Detect orphaned calendar gaps between bookings
-SELECT listing_id, check_out_date AS gap_start,
+      filename: 'airbnb_calendar.sql',
+      prompt: 'Find empty calendar days between guest bookings so hosts can offer a discount.',
+      reasoning: 'We look at booking check-out dates and the next check-in dates to find 1 to 3 empty days.',
+      rawSql: `-- Airbnb: Find unbooked calendar gaps between guest stays
+SELECT listing_id, check_out_date AS stay_ended,
   LEAD(check_in_date) OVER (
     PARTITION BY listing_id ORDER BY check_in_date
-  ) AS next_checkin,
+  ) AS next_guest_arrives,
   ROUND(JULIANDAY(LEAD(check_in_date) OVER (PARTITION BY listing_id ORDER BY check_in_date))
-    - JULIANDAY(check_out_date), 1) AS gap_days
+    - JULIANDAY(check_out_date), 1) AS empty_gap_days
 FROM airbnb_reservations
 WHERE status = 'CONFIRMED';`,
       seedSql: `
@@ -201,25 +201,25 @@ WHERE status = 'CONFIRMED';`,
           status TEXT
         );
         INSERT INTO airbnb_reservations VALUES
-          ('RES_1', 'LIST_10492', '2026-10-10', '2026-10-14', 'CONFIRMED'),
-          ('RES_2', 'LIST_10492', '2026-10-16', '2026-10-22', 'CONFIRMED'),
-          ('RES_3', 'LIST_10492', '2026-10-24', '2026-10-30', 'CONFIRMED'),
-          ('RES_4', 'LIST_22891', '2026-10-01', '2026-10-05', 'CONFIRMED'),
-          ('RES_5', 'LIST_22891', '2026-10-07', '2026-10-12', 'CONFIRMED'),
-          ('RES_6', 'LIST_33014', '2026-10-28', '2026-11-01', 'CONFIRMED'),
-          ('RES_7', 'LIST_33014', '2026-11-04', '2026-11-10', 'CONFIRMED');
+          ('RES_1', 'Apartment_101', '2026-10-10', '2026-10-14', 'CONFIRMED'),
+          ('RES_2', 'Apartment_101', '2026-10-16', '2026-10-22', 'CONFIRMED'),
+          ('RES_3', 'Apartment_101', '2026-10-24', '2026-10-30', 'CONFIRMED'),
+          ('RES_4', 'Beach_House_202', '2026-10-01', '2026-10-05', 'CONFIRMED'),
+          ('RES_5', 'Beach_House_202', '2026-10-07', '2026-10-12', 'CONFIRMED'),
+          ('RES_6', 'Mountain_Cabin_303', '2026-10-28', '2026-11-01', 'CONFIRMED'),
+          ('RES_7', 'Mountain_Cabin_303', '2026-11-04', '2026-11-10', 'CONFIRMED');
       `,
-      tableHeaders: ['listing_id', 'gap_start', 'next_checkin', 'gap_days'],
+      tableHeaders: ['listing_id', 'stay_ended', 'next_guest_arrives', 'empty_gap_days'],
       tableRows: [
-        ['LIST_10492', '2026-10-14', '2026-10-16', '2.0'],
-        ['LIST_10492', '2026-10-22', '2026-10-24', '2.0'],
-        ['LIST_10492', '2026-10-30', null, null],
-        ['LIST_22891', '2026-10-05', '2026-10-07', '2.0'],
-        ['LIST_22891', '2026-10-12', null, null]
+        ['Apartment_101', '2026-10-14', '2026-10-16', '2.0 days'],
+        ['Apartment_101', '2026-10-22', '2026-10-24', '2.0 days'],
+        ['Apartment_101', '2026-10-30', null, null],
+        ['Beach_House_202', '2026-10-05', '2026-10-07', '2.0 days'],
+        ['Beach_House_202', '2026-10-12', null, null]
       ],
       latency: '0.013ms',
-      tuples: '7 calendar rows evaluated',
-      status: 'AST PASSED ✓',
+      tuples: '7 bookings checked',
+      status: 'QUERY SUCCESS ✓',
       viewId: 'viewAirbnbStory',
       viewTitle: 'Airbnb',
       viewHash: '#airbnb'
@@ -227,24 +227,22 @@ WHERE status = 'CONFIRMED';`,
 
     spotify: {
       id: 'spotify',
-      tabLabel: 'Spotify Royalties',
-      company: 'Spotify Audio',
+      tabLabel: 'Spotify Music',
+      company: 'Spotify',
       brandLetter: 'S',
-      filename: 'spotify_royalty_waterfall.sql',
-      prompt: 'filter 30-second qualified streaming plays and calculate pro-rata artist royalty distribution',
-      reasoning: 'Filtering playback_duration_sec >= 30, computing track stream share, and calculating royalty payouts.',
-      rawSql: `-- Spotify Royalty: Pro-rata artist distribution on 30s+ streams
-WITH qualified_streams AS (
-  SELECT track_id, artist_id, territory,
-    COUNT(*) AS stream_count
+      filename: 'spotify_earnings.sql',
+      prompt: 'Count song plays of 30 seconds or longer to calculate how much money artists earned.',
+      reasoning: 'Plays under 30 seconds are skipped and not paid. We calculate total valid plays multiplied by the payment rate.',
+      rawSql: `-- Spotify: Calculate artist earnings for plays over 30 seconds
+WITH valid_plays AS (
+  SELECT artist_id, COUNT(*) AS stream_count
   FROM stream_events
   WHERE duration_seconds >= 30
-  GROUP BY 1, 2, 3
+  GROUP BY artist_id
 )
-SELECT artist_id, SUM(stream_count) AS total_plays,
-  ROUND(SUM(stream_count) * 0.0038, 4) AS estimated_royalty_usd
-FROM qualified_streams
-GROUP BY 1
+SELECT artist_id, stream_count AS total_plays,
+  ROUND(stream_count * 0.0038, 4) AS earnings_usd
+FROM valid_plays
 ORDER BY total_plays DESC;`,
       seedSql: `
         CREATE TABLE stream_events (
@@ -255,23 +253,23 @@ ORDER BY total_plays DESC;`,
           duration_seconds INT
         );
         INSERT INTO stream_events VALUES
-          ('S_1', 'TRK_BIRDS_OF_FEATHER', 'ART_BILLIE_EILISH', 'US', 210),
-          ('S_2', 'TRK_BIRDS_OF_FEATHER', 'ART_BILLIE_EILISH', 'GB', 210),
-          ('S_3', 'TRK_BLINDING_LIGHTS', 'ART_THE_WEEKND', 'US', 200),
-          ('S_4', 'TRK_CRUEL_SUMMER', 'ART_TAYLOR_SWIFT', 'US', 178),
-          ('S_5', 'TRK_NOT_LIKE_US', 'ART_KENDRICK_LAMAR', 'US', 274),
-          ('S_6', 'TRK_SKIP', 'ART_SKIP_USER', 'US', 12);
+          ('S_1', 'Song_1', 'Billie Eilish', 'US', 210),
+          ('S_2', 'Song_2', 'Billie Eilish', 'GB', 210),
+          ('S_3', 'Song_3', 'The Weeknd', 'US', 200),
+          ('S_4', 'Song_4', 'Taylor Swift', 'US', 178),
+          ('S_5', 'Song_5', 'Kendrick Lamar', 'US', 274),
+          ('S_6', 'Song_6', 'Skipped User', 'US', 12);
       `,
-      tableHeaders: ['artist_id', 'total_plays', 'estimated_royalty_usd'],
+      tableHeaders: ['artist_id', 'total_plays', 'earnings_usd'],
       tableRows: [
-        ['ART_BILLIE_EILISH', '2', '0.0076'],
-        ['ART_KENDRICK_LAMAR', '1', '0.0038'],
-        ['ART_TAYLOR_SWIFT', '1', '0.0038'],
-        ['ART_THE_WEEKND', '1', '0.0038']
+        ['Billie Eilish', '2', '$0.0076'],
+        ['Kendrick Lamar', '1', '$0.0038'],
+        ['Taylor Swift', '1', '$0.0038'],
+        ['The Weeknd', '1', '$0.0038']
       ],
       latency: '0.017ms',
       tuples: '4 artists calculated',
-      status: 'AST PASSED ✓',
+      status: 'QUERY SUCCESS ✓',
       viewId: 'viewSpotifyStory',
       viewTitle: 'Spotify',
       viewHash: '#spotify'
@@ -279,44 +277,44 @@ ORDER BY total_plays DESC;`,
 
     jpmorgan: {
       id: 'jpmorgan',
-      tabLabel: 'JPMorgan Ledgers',
+      tabLabel: 'JPMorgan Banking',
       company: 'JPMorgan Chase',
       brandLetter: 'J',
-      filename: 'jpmorgan_core_ledger.sql',
-      prompt: 'audit multi-entity double-entry balance invariants and verify Debits equal Credits across Nostro accounts',
-      reasoning: 'Evaluating conditional aggregation to audit double-entry ledger equilibrium across corporate entities.',
-      rawSql: `-- JPMorgan Chase: Audit double-entry balance invariant across entities
-SELECT legal_entity, account_code,
-  ROUND(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount_usd ELSE 0 END), 2) AS debits,
-  ROUND(SUM(CASE WHEN entry_type = 'CREDIT' THEN amount_usd ELSE 0 END), 2) AS credits,
-  ROUND(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount_usd ELSE -amount_usd END), 2) AS variance
+      filename: 'jpmorgan_balance.sql',
+      prompt: 'Check bank accounts to make sure money coming in (Debits) matches money going out (Credits).',
+      reasoning: 'Every bank account must balance to zero. We add up debits and credits to ensure the difference is $0.00.',
+      rawSql: `-- JPMorgan: Check that debits and credits balance to zero
+SELECT bank_branch, account_name,
+  ROUND(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount_usd ELSE 0 END), 2) AS total_in,
+  ROUND(SUM(CASE WHEN entry_type = 'CREDIT' THEN amount_usd ELSE 0 END), 2) AS total_out,
+  ROUND(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount_usd ELSE -amount_usd END), 2) AS difference
 FROM general_ledger_entries
 GROUP BY 1, 2;`,
       seedSql: `
         CREATE TABLE general_ledger_entries (
           entry_id TEXT PRIMARY KEY,
-          legal_entity TEXT,
-          account_code TEXT,
+          bank_branch TEXT,
+          account_name TEXT,
           entry_type TEXT,
           amount_usd REAL
         );
         INSERT INTO general_ledger_entries VALUES
-          ('E_1', 'JPMC_US_RETAIL', '1010-CASH', 'DEBIT', 2140000.00),
-          ('E_2', 'JPMC_US_RETAIL', '1010-CASH', 'CREDIT', 2140000.00),
-          ('E_3', 'JPMC_UK_IB', '2040-NOSTRO', 'DEBIT', 1420200.00),
-          ('E_4', 'JPMC_UK_IB', '2040-NOSTRO', 'CREDIT', 1420200.00),
-          ('E_5', 'JPMC_EU_SE', '3010-INTERBANK', 'DEBIT', 1290000.00),
-          ('E_6', 'JPMC_EU_SE', '3010-INTERBANK', 'CREDIT', 1290000.00);
+          ('E_1', 'New York Branch', 'Checking Accounts', 'DEBIT', 2140000.00),
+          ('E_2', 'New York Branch', 'Checking Accounts', 'CREDIT', 2140000.00),
+          ('E_3', 'London Branch', 'Savings Accounts', 'DEBIT', 1420200.00),
+          ('E_4', 'London Branch', 'Savings Accounts', 'CREDIT', 1420200.00),
+          ('E_5', 'Tokyo Branch', 'Interbank Reserve', 'DEBIT', 1290000.00),
+          ('E_6', 'Tokyo Branch', 'Interbank Reserve', 'CREDIT', 1290000.00);
       `,
-      tableHeaders: ['legal_entity', 'account_code', 'debits', 'credits', 'variance'],
+      tableHeaders: ['bank_branch', 'account_name', 'total_in', 'total_out', 'difference'],
       tableRows: [
-        ['JPMC_EU_SE', '3010-INTERBANK', '1290000', '1290000', '0'],
-        ['JPMC_UK_IB', '2040-NOSTRO', '1420200', '1420200', '0'],
-        ['JPMC_US_RETAIL', '1010-CASH', '2140000', '2140000', '0']
+        ['London Branch', 'Savings Accounts', '$1,420,200', '$1,420,200', '$0.00 (Balanced)'],
+        ['New York Branch', 'Checking Accounts', '$2,140,000', '$2,140,000', '$0.00 (Balanced)'],
+        ['Tokyo Branch', 'Interbank Reserve', '$1,290,000', '$1,290,000', '$0.00 (Balanced)']
       ],
       latency: '0.011ms',
-      tuples: '3 entities verified',
-      status: 'AST PASSED ✓',
+      tuples: '3 accounts checked',
+      status: 'QUERY SUCCESS ✓',
       viewId: 'viewJPMorganStory',
       viewTitle: 'Finance',
       viewHash: '#jpmorgan'
@@ -324,17 +322,17 @@ GROUP BY 1, 2;`,
 
     stripe: {
       id: 'stripe',
-      tabLabel: 'Stripe FinTech',
-      company: 'Stripe Payments',
+      tabLabel: 'Stripe Payments',
+      company: 'Stripe',
       brandLetter: 'S',
-      filename: 'stripe_radar_fraud.sql',
-      prompt: 'detect card-testing micro-authorization clusters and reconcile merchant currency holds',
-      reasoning: 'Filtering auth attempts with identical card fingerprint and < $1.00 amounts with velocity thresholding.',
-      rawSql: `-- Stripe Radar: Flag card-testing velocity attacks within 60s window
-SELECT card_fingerprint, ip_address,
-  COUNT(*) AS attempts_count,
-  MIN(auth_timestamp) AS first_attempt,
-  MAX(auth_timestamp) AS last_attempt
+      filename: 'stripe_fraud.sql',
+      prompt: 'Spot potential card fraud by finding multiple test charges under $1 on the same card.',
+      reasoning: 'Fraudsters often test stolen cards with tiny amounts. We flag any card with 5 or more rapid attempts.',
+      rawSql: `-- Stripe: Flag suspicious tiny test payments under $1.00
+SELECT card_number_masked, ip_location,
+  COUNT(*) AS charge_attempts,
+  MIN(charge_time) AS first_charge,
+  MAX(charge_time) AS last_charge
 FROM card_authorization_events
 WHERE amount_usd < 1.00
 GROUP BY 1, 2
@@ -342,113 +340,113 @@ HAVING COUNT(*) >= 5;`,
       seedSql: `
         CREATE TABLE card_authorization_events (
           auth_id TEXT PRIMARY KEY,
-          card_fingerprint TEXT,
-          ip_address TEXT,
+          card_number_masked TEXT,
+          ip_location TEXT,
           amount_usd REAL,
-          auth_timestamp TEXT
+          charge_time TEXT
         );
         INSERT INTO card_authorization_events VALUES
-          ('A_1', 'FP_981a3e88', '198.51.100.42', 0.50, '14:22:01'),
-          ('A_2', 'FP_981a3e88', '198.51.100.42', 0.50, '14:22:12'),
-          ('A_3', 'FP_981a3e88', '198.51.100.42', 0.50, '14:22:25'),
-          ('A_4', 'FP_981a3e88', '198.51.100.42', 0.50, '14:22:35'),
-          ('A_5', 'FP_981a3e88', '198.51.100.42', 0.50, '14:22:48'),
-          ('A_6', 'FP_981a3e91', '198.51.100.42', 0.75, '14:23:12'),
-          ('A_7', 'FP_981a3e91', '198.51.100.42', 0.75, '14:23:20'),
-          ('A_8', 'FP_981a3e91', '198.51.100.42', 0.75, '14:23:30'),
-          ('A_9', 'FP_981a3e91', '198.51.100.42', 0.75, '14:23:42'),
-          ('A_10', 'FP_981a3e91', '198.51.100.42', 0.75, '14:23:55');
+          ('A_1', '•••• 4242', '198.51.100.42', 0.50, '14:22:01'),
+          ('A_2', '•••• 4242', '198.51.100.42', 0.50, '14:22:12'),
+          ('A_3', '•••• 4242', '198.51.100.42', 0.50, '14:22:25'),
+          ('A_4', '•••• 4242', '198.51.100.42', 0.50, '14:22:35'),
+          ('A_5', '•••• 4242', '198.51.100.42', 0.50, '14:22:48'),
+          ('A_6', '•••• 9191', '198.51.100.42', 0.75, '14:23:12'),
+          ('A_7', '•••• 9191', '198.51.100.42', 0.75, '14:23:20'),
+          ('A_8', '•••• 9191', '198.51.100.42', 0.75, '14:23:30'),
+          ('A_9', '•••• 9191', '198.51.100.42', 0.75, '14:23:42'),
+          ('A_10', '•••• 9191', '198.51.100.42', 0.75, '14:23:55');
       `,
-      tableHeaders: ['card_fingerprint', 'ip_address', 'attempts_count', 'first_attempt', 'last_attempt'],
+      tableHeaders: ['card_number_masked', 'ip_location', 'charge_attempts', 'first_charge', 'last_charge'],
       tableRows: [
-        ['FP_981a3e88', '198.51.100.42', '5', '14:22:01', '14:22:48'],
-        ['FP_981a3e91', '198.51.100.42', '5', '14:23:12', '14:23:55']
+        ['•••• 4242', '198.51.100.42', '5', '14:22:01', '14:22:48'],
+        ['•••• 9191', '198.51.100.42', '5', '14:23:12', '14:23:55']
       ],
       latency: '0.012ms',
-      tuples: '2 fraud clusters detected',
-      status: 'AST PASSED ✓',
+      tuples: '2 cards flagged',
+      status: 'QUERY SUCCESS ✓',
       viewId: 'viewStripeStory',
       viewTitle: 'Stripe',
       viewHash: '#stripe'
     }
   };
 
-  // --- DEFENSIVE TRAPS ---
+  // --- 5 COMMON BEGINNER MISTAKES ---
   const TRAPS = {
     null_trap: {
       id: 'null_trap',
-      title: 'Three-Valued Logic NULL Trap',
-      codeWrong: `-- ✕ VULNERABLE: Discards 100% of rows if subquery returns any NULL
+      title: '1. Forgetting Missing Values (NULL)',
+      codeWrong: `-- ✕ MISTAKE: If churned_users has any empty (NULL) value, this returns 0 rows!
 SELECT user_id, email, signup_date
 FROM users
 WHERE user_id NOT IN (
   SELECT user_id FROM churned_users
 );`,
-      codeFix: `-- ✓ DEFENSIVE FIX: Null-safe ANTI-JOIN or NOT EXISTS
+      codeFix: `-- ✓ CLEAN FIX: Safe check using NOT EXISTS
 SELECT u.user_id, u.email, u.signup_date
 FROM users u
 WHERE NOT EXISTS (
   SELECT 1 FROM churned_users c
   WHERE c.user_id = u.user_id
 );`,
-      impact: 'In SQL 3VL, (x NOT IN (NULL, 1)) evaluates to UNKNOWN. The WHERE filter silently drops all rows.'
+      impact: 'In SQL, checking if something is NOT IN a list that has missing (NULL) values cancels out the whole query. Always use NOT EXISTS or WHERE IS NOT NULL.'
     },
 
     float_drift: {
       id: 'float_drift',
-      title: 'Floating-Point Currency Drift',
-      codeWrong: `-- ✕ VULNERABLE: Float accumulation causes IEEE-754 precision drift
+      title: '2. Money Rounding Errors with Decimals',
+      codeWrong: `-- ✕ MISTAKE: Standard numbers (FLOAT) can lose pennies due to computer rounding!
 SELECT account_id, 
   SUM(CAST(amount AS FLOAT)) AS total_balance
 FROM ledger_entries
 GROUP BY account_id
 HAVING SUM(CAST(amount AS FLOAT)) != 0.00;`,
-      codeFix: `-- ✓ DEFENSIVE FIX: Exact DECIMAL(18,4) or integer cents
+      codeFix: `-- ✓ CLEAN FIX: Use exact cents or fixed decimals
 SELECT account_id, 
   ROUND(SUM(CAST(amount_cents AS BIGINT)), 2) AS net_cents,
   ROUND(SUM(CAST(amount AS DECIMAL(18,4))), 4) AS exact_balance
 FROM ledger_entries
 GROUP BY account_id
 HAVING SUM(amount_cents) != 0;`,
-      impact: 'IEEE-754 binary floating point drifts across millions of trades, causing balance reconciliation failures.'
+      impact: 'Computer floating-point numbers can turn $10.00 into $9.999999. In finance and ecommerce, always store money as exact cents or fixed decimals.'
     },
 
     window_frame: {
       id: 'window_frame',
-      title: 'Window Frame Default Range Skew',
-      codeWrong: `-- ✕ VULNERABLE: Default RANGE bundles identical timestamps together!
+      title: '3. Running Totals on the Same Date',
+      codeWrong: `-- ✕ MISTAKE: If two orders happen on the same day, this lumps them together!
 SELECT order_date, order_amount,
   SUM(order_amount) OVER (ORDER BY order_date) AS running_total
 FROM daily_sales;`,
-      codeFix: `-- ✓ DEFENSIVE FIX: Explicit ROWS frame avoids tie bundling
+      codeFix: `-- ✓ CLEAN FIX: Specify row-by-row order so each order is separate
 SELECT order_date, order_amount,
   SUM(order_amount) OVER (
     ORDER BY order_date, order_id
     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
   ) AS true_running_total
 FROM daily_sales;`,
-      impact: 'Default RANGE frame groups peer rows with identical dates, silently corrupting running revenue totals.'
+      impact: 'By default, SQL window sums can bundle rows that share the exact same date. Adding row-by-row ordering keeps your running balance accurate.'
     },
 
     non_sargable: {
       id: 'non_sargable',
-      title: 'Non-SARGable Function Predicates',
-      codeWrong: `-- ✕ VULNERABLE: Function on column forces O(N) sequential table scan!
+      title: '4. Slow Date Filtering in Large Tables',
+      codeWrong: `-- ✕ MISTAKE: Putting a function on a date makes the database check every row!
 SELECT customer_id, order_id, order_total
 FROM orders
 WHERE strftime('%Y', order_date) = '2026';`,
-      codeFix: `-- ✓ DEFENSIVE FIX: Sargable range predicates utilize B-Tree indexes
+      codeFix: `-- ✓ CLEAN FIX: Use a simple date range (>= and <) which runs 100x faster
 SELECT customer_id, order_id, order_total
 FROM orders
 WHERE order_date >= '2026-01-01' 
   AND order_date < '2027-01-01';`,
-      impact: 'Wrapping indexed columns inside functions blinds the planner, turning 0.5ms index seeks into full table scans.'
+      impact: 'Wrapping table columns inside functions stops the database from using its fast indexes. Clean comparisons using >= and < make queries fly.'
     },
 
     cartesian_fanout: {
       id: 'cartesian_fanout',
-      title: 'Multi-Table 1:N Cartesian Fan-Out',
-      codeWrong: `-- ✕ VULNERABLE: Multiple 1:N joins multiply aggregate sums!
+      title: '5. Accidental Duplicate Rows When Joining',
+      codeWrong: `-- ✕ MISTAKE: Joining items and payments directly multiplies rows and inflates sums!
 SELECT o.order_id,
   SUM(i.item_price) AS total_items_price,
   SUM(p.payment_amount) AS total_paid
@@ -456,7 +454,7 @@ FROM orders o
 JOIN order_items i ON o.order_id = i.order_id
 JOIN payments p ON o.order_id = p.order_id
 GROUP BY o.order_id;`,
-      codeFix: `-- ✓ DEFENSIVE FIX: Pre-aggregate in CTEs before joining
+      codeFix: `-- ✓ CLEAN FIX: Calculate subtotals first before joining them
 WITH item_sums AS (
   SELECT order_id, SUM(item_price) AS total_items_price
   FROM order_items GROUP BY order_id
@@ -469,15 +467,14 @@ SELECT o.order_id, i.total_items_price, p.total_paid
 FROM orders o
 LEFT JOIN item_sums i ON o.order_id = i.order_id
 LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
-      impact: 'Joining two 1:N tables creates an M x N Cartesian product, duplicating item sums and payment totals.'
+      impact: 'Joining two lists of items for the same order multiplies rows together (e.g. 3 items x 2 payments = 6 rows), giving inflated totals. Calculate subtotals first.'
     }
   };
 
   let activeScenarioId = 'amazon';
   let activeTrapId = 'null_trap';
-  let userSqlMap = {}; // scenarioId -> string (persists user changes during session)
+  let userSqlMap = {};
 
-  // SQLite WASM Database instance management
   let sqlModuleInstance = null;
   let activeDb = null;
   let activeDbScenarioId = null;
@@ -494,7 +491,7 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
           }
         });
       } catch (e) {
-        console.warn('WASM initialization notice:', e);
+        console.warn('WASM notice:', e);
       }
     }
 
@@ -522,7 +519,6 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
       container.innerHTML = this.renderHTML();
       this.bindEvents(container);
 
-      // Trigger first execution on WASM DB
       setTimeout(() => {
         this.runActiveQuery();
       }, 50);
@@ -530,7 +526,6 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
 
     setScenario: function(id) {
       if (KOMA_SCENARIOS[id]) {
-        // Save current editor state before leaving
         const textarea = document.getElementById('komaSqlEditor');
         if (textarea) {
           userSqlMap[activeScenarioId] = textarea.value;
@@ -539,7 +534,6 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
         activeScenarioId = id;
         this.updateView();
 
-        // Run query for the newly selected scenario
         setTimeout(() => {
           this.runActiveQuery();
         }, 30);
@@ -582,9 +576,6 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
       try { window.location.hash = hash; } catch(e) {}
     },
 
-    /**
-     * Run the current active query against client-side SQLite WASM
-     */
     runActiveQuery: async function() {
       const textarea = document.getElementById('komaSqlEditor');
       if (!textarea) return;
@@ -601,14 +592,14 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
           badge.innerText = 'EMPTY QUERY ⚠';
         }
         if (tableWrapper) {
-          tableWrapper.innerHTML = '<div class="koma-sink-empty">Please enter a valid SQL query to execute.</div>';
+          tableWrapper.innerHTML = '<div class="koma-sink-empty">Type any SQL query above and click ▶ Run Query.</div>';
         }
         return;
       }
 
       if (badge) {
         badge.className = 'koma-badge-yellow';
-        badge.innerText = 'EXECUTING...';
+        badge.innerText = 'RUNNING...';
       }
 
       const db = await getWasmDb(activeScenarioId);
@@ -622,11 +613,11 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
 
           if (badge) {
             badge.className = 'koma-badge-green';
-            badge.innerText = 'AST PASSED ✓';
+            badge.innerText = 'QUERY SUCCESS ✓';
           }
 
           if (latencyElem) {
-            latencyElem.innerHTML = `latency: <strong>${latencyMs}</strong>`;
+            latencyElem.innerHTML = `speed: <strong>${latencyMs}</strong>`;
           }
 
           if (results && results.length > 0 && results[0].columns) {
@@ -634,7 +625,7 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
             const rows = results[0].values || [];
 
             if (tuplesElem) {
-              tuplesElem.innerText = `${rows.length} tuples returned`;
+              tuplesElem.innerText = `${rows.length} rows found`;
             }
 
             if (tableWrapper) {
@@ -656,54 +647,51 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
               `;
             }
           } else {
-            // Valid query, but zero result rows (or DDL/DML)
             if (tuplesElem) {
-              tuplesElem.innerText = '0 tuples returned';
+              tuplesElem.innerText = '0 rows found';
             }
             if (tableWrapper) {
               tableWrapper.innerHTML = `
                 <div class="koma-sink-empty">
-                  0 tuples returned (Empty set). Execution latency: ${latencyMs}
+                  0 rows found (Empty result). Query finished in ${latencyMs}.
                 </div>
               `;
             }
           }
 
         } catch (err) {
-          // SQL execution or parsing error
           if (badge) {
             badge.className = 'koma-badge-red';
             badge.innerText = 'SYNTAX ERROR ✕';
           }
           if (latencyElem) {
-            latencyElem.innerHTML = `latency: <strong style="color:#ef4444;">error</strong>`;
+            latencyElem.innerHTML = `status: <strong style="color:#ef4444;">error</strong>`;
           }
           if (tuplesElem) {
-            tuplesElem.innerText = '0 tuples';
+            tuplesElem.innerText = '0 rows';
           }
           if (tableWrapper) {
             tableWrapper.innerHTML = `
               <div class="koma-sink-error-box">
                 <div class="koma-sink-error-title">
-                  <span>✕ SQLite Engine Execution Error</span>
+                  <span>✕ SQL Syntax Error</span>
                 </div>
                 <div class="koma-sink-error-message">${escapeHtml(err.message || String(err))}</div>
                 <div class="koma-sink-error-hint">
-                  Tip: Press <strong>↺ Reset</strong> to restore working baseline query, or check table and column aliases.
+                  Tip: Check your column and table names, or click <strong>↺ Reset</strong> to restore the working query!
                 </div>
               </div>
             `;
           }
         }
       } else {
-        // Fallback if WASM is still downloading over slow network
         const cur = KOMA_SCENARIOS[activeScenarioId];
         if (badge) {
           badge.className = 'koma-badge-green';
           badge.innerText = cur.status;
         }
         if (latencyElem) {
-          latencyElem.innerHTML = `latency: <strong>${cur.latency}</strong>`;
+          latencyElem.innerHTML = `speed: <strong>${cur.latency}</strong>`;
         }
         if (tuplesElem) {
           tuplesElem.innerText = cur.tuples;
@@ -725,9 +713,6 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
       }
     },
 
-    /**
-     * Reset editor to default scenario query and re-seed database
-     */
     resetActiveQuery: function() {
       const cur = KOMA_SCENARIOS[activeScenarioId];
       if (!cur) return;
@@ -739,7 +724,6 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
         this.updateEditorGutter();
       }
 
-      // Re-seed DB to clean slate
       if (activeDb && sqlModuleInstance && cur.seedSql) {
         try { activeDb.close(); } catch(e) {}
         activeDb = new sqlModuleInstance.Database();
@@ -750,9 +734,6 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
       this.runActiveQuery();
     },
 
-    /**
-     * Simple SQL formatter to uppercase standard SQL keywords
-     */
     formatActiveQuery: function() {
       const textarea = document.getElementById('komaSqlEditor');
       if (!textarea) return;
@@ -760,10 +741,9 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
       let sql = textarea.value;
       const keywords = [
         'select', 'distinct', 'from', 'where', 'and', 'or', 'not', 'in', 'is', 'null',
-        'join', 'left join', 'right join', 'inner join', 'outer join', 'cross join',
-        'group by', 'order by', 'having', 'limit', 'offset', 'as', 'with', 'case',
-        'when', 'then', 'else', 'end', 'over', 'partition by', 'asc', 'desc',
-        'union', 'union all', 'insert into', 'values', 'create table', 'drop table'
+        'join', 'left join', 'right join', 'inner join', 'group by', 'order by',
+        'having', 'limit', 'offset', 'as', 'with', 'case', 'when', 'then', 'else',
+        'end', 'over', 'partition by', 'asc', 'desc'
       ];
 
       keywords.forEach(kw => {
@@ -776,9 +756,6 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
       this.updateEditorGutter();
     },
 
-    /**
-     * Update line numbers gutter to match textarea line count
-     */
     updateEditorGutter: function() {
       const textarea = document.getElementById('komaSqlEditor');
       const gutter = document.getElementById('komaEditorGutter');
@@ -801,16 +778,12 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
       return `
         <div class="koma-container">
 
-          <!-- 1. HERO SECTION (KOMA.RUN STYLE) -->
+          <!-- 1. HERO SECTION (BEGINNER FRIENDLY) -->
           <section class="koma-hero">
             
             <div class="koma-badge-row">
-              <a href="#studio" class="koma-badge-pill" onclick="window.LANDING_PAGE_ENGINE.openSectionStudio(); return false;">
-                <span>supported by DuckDB &amp; SQLite WASM</span>
-                <span>&nearr;</span>
-              </a>
-              <span class="koma-badge-pill-rust">
-                <span>&bull; client-side AST engine</span>
+              <span class="koma-badge-pill">
+                <span>Interactive SQL Learning &bull; Zero Installation Required</span>
               </span>
             </div>
 
@@ -820,28 +793,28 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
             </h1>
 
             <p class="koma-hero-subtitle">
-              Master 30-day industry rotations across Amazon, Netflix, Uber, Airbnb, Spotify, and JPMorgan. Solve 323 LeetCode database problems directly in your browser with zero server latency.
+              Learn SQL step-by-step with simple, real-world examples from companies like Amazon, Netflix, and Spotify. Designed for complete beginners to practice and run real queries directly in your browser.
             </p>
 
             <div class="koma-cta-row">
               <button class="btn-koma-primary" onclick="window.LANDING_PAGE_ENGINE.openSectionStudio()">
-                launch Section Studio &rarr;
+                Start Learning SQL &rarr;
               </button>
               <button class="btn-koma-secondary" onclick="window.LANDING_PAGE_ENGINE.openLeetCode()">
-                explore 323 leetcode problems
+                Browse Practice Problems
               </button>
             </div>
 
             <div class="koma-platform-subtext">
-              MySQL 8.0 &bull; PostgreSQL 16 &bull; Snowflake &bull; DuckDB &bull; SQLite 3.45 WASM
+              Beginner-friendly &bull; MySQL &bull; PostgreSQL &bull; SQLite in browser &bull; Real datasets
             </div>
 
           </section>
 
-          <!-- 2. KOMA SHOWCASE (PILL SEGMENTED CONTROL + IDE MOCKUP) -->
+          <!-- 2. KOMA SHOWCASE (PILL TABS + IDE RUNNER) -->
           <section class="koma-showcase-wrapper">
             
-            <!-- Floating Pill Segmented Bar -->
+            <!-- Company Selection Tabs -->
             <div class="koma-pill-nav-container">
               <div class="koma-pill-nav">
                 ${Object.keys(KOMA_SCENARIOS).map(k => {
@@ -856,10 +829,10 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
               </div>
             </div>
 
-            <!-- Desktop IDE Window Mockup (Koma Window Style) -->
+            <!-- Desktop IDE Window Mockup -->
             <div class="koma-window-mockup">
               
-              <!-- macOS Window Header -->
+              <!-- Window Header -->
               <div class="koma-window-header">
                 <div class="koma-window-dots">
                   <span class="koma-dot koma-dot-red"></span>
@@ -868,16 +841,15 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                 </div>
 
                 <div class="koma-session-bar">
-                  <span>&gt;_ session: <strong>${cur.id}_rotation</strong></span>
+                  <span>practice: <strong>${cur.company} Dataset</strong></span>
                   <span style="color:#444;">|</span>
-                  <span class="koma-action-tag" onclick="window.LANDING_PAGE_ENGINE.openSectionStudio()">🪄 open studio</span>
-                  <span class="koma-action-tag" onclick="window.LANDING_PAGE_ENGINE.launchTrack('${cur.viewId}', '${cur.viewTitle}', '${cur.viewHash}')">&nearr; launch 30d</span>
+                  <span class="koma-action-tag" onclick="window.LANDING_PAGE_ENGINE.openSectionStudio()">Open Studio</span>
                   <span style="color:#444;">|</span>
-                  <span style="color:#71717a;">sqlite_wasm_3.45.db</span>
+                  <span style="color:#71717a;">In-Browser SQL Engine</span>
                 </div>
 
                 <div class="koma-wordmark">
-                  <span>sql foundry&trade;</span>
+                  <span>sql foundry</span>
                 </div>
               </div>
 
@@ -886,10 +858,10 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                 
                 <!-- Sidebar Explorer -->
                 <div class="koma-sidebar">
-                  <div class="koma-sidebar-label">EXPLORER</div>
+                  <div class="koma-sidebar-label">PRACTICE EXAMPLES</div>
                   
                   <div class="koma-tree-group">
-                    <div class="koma-tree-header">&blacktriangledown; ROTATION DATASETS</div>
+                    <div class="koma-tree-header">&blacktriangledown; COMPANY TABLES</div>
                     ${Object.keys(KOMA_SCENARIOS).map(k => {
                       const s = KOMA_SCENARIOS[k];
                       const isActive = s.id === activeScenarioId;
@@ -903,10 +875,10 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                   </div>
 
                   <div class="koma-tree-group">
-                    <div class="koma-tree-header">&blacktriangledown; RUNTIME SINK</div>
+                    <div class="koma-tree-header">&blacktriangledown; ENGINE STATUS</div>
                     <div class="koma-tree-item active">
                       <span>&check;</span>
-                      <span>in-memory wasm</span>
+                      <span>Ready to run</span>
                     </div>
                   </div>
                 </div>
@@ -919,48 +891,45 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                     <div class="koma-tab active">
                       <span>&gt;_ ${cur.filename}</span>
                     </div>
-                    <div class="koma-tab" onclick="window.LANDING_PAGE_ENGINE.openSectionStudio()">
-                      <span>&lt;&gt; dbt_model.sql</span>
-                    </div>
                   </div>
 
-                  <!-- Prompt Strip (Koma Signature Style) -->
+                  <!-- Prompt Strip -->
                   <div class="koma-prompt-strip">
                     <div class="koma-prompt-text">
                       ${cur.prompt}
                     </div>
                     <div class="koma-reasoning-toggle">
-                      <span>&bull; reasoning &rsaquo;</span>
+                      <span>&bull; Simple Explanation &rsaquo;</span>
                       <span style="color:#a3a3a3;">${cur.reasoning}</span>
                     </div>
                   </div>
 
-                  <!-- Split: Code Column vs Sink Column -->
+                  <!-- Split: Code Editor vs Results -->
                   <div class="koma-editor-sink-split">
                     
-                    <!-- Monaco / Interactive Code Column -->
+                    <!-- Code Editor Column -->
                     <div class="koma-code-column">
                       
                       <!-- Editor Toolbar -->
                       <div class="koma-editor-toolbar">
                         <div class="koma-editor-toolbar-left">
-                          <button class="koma-btn-run" onclick="window.LANDING_PAGE_ENGINE.runActiveQuery()" title="Execute SQL (Ctrl+Enter)">
+                          <button class="koma-btn-run" onclick="window.LANDING_PAGE_ENGINE.runActiveQuery()" title="Run SQL (Ctrl+Enter)">
                             <span>▶ Run Query</span>
                             <span class="koma-kbd">Ctrl+↵</span>
                           </button>
-                          <button class="koma-btn-toolbar" onclick="window.LANDING_PAGE_ENGINE.resetActiveQuery()" title="Revert to original scenario query">
+                          <button class="koma-btn-toolbar" onclick="window.LANDING_PAGE_ENGINE.resetActiveQuery()" title="Reset to original query">
                             <span>↺ Reset</span>
                           </button>
-                          <button class="koma-btn-toolbar" onclick="window.LANDING_PAGE_ENGINE.formatActiveQuery()" title="Format SQL keywords">
+                          <button class="koma-btn-toolbar" onclick="window.LANDING_PAGE_ENGINE.formatActiveQuery()" title="Uppercase keywords">
                             <span>⚡ Format</span>
                           </button>
                         </div>
                         <div class="koma-editor-toolbar-right">
-                          <span><span class="koma-editor-pulse"></span>SQLite 3.45 WASM</span>
+                          <span><span class="koma-editor-pulse"></span>Live Editor Ready</span>
                         </div>
                       </div>
 
-                      <!-- Editor Textarea with Gutter -->
+                      <!-- Editor Textarea with Line Numbers -->
                       <div class="koma-editor-body">
                         <div id="komaEditorGutter" class="koma-editor-gutter"></div>
                         <textarea id="komaSqlEditor" class="koma-code-textarea" spellcheck="false" wrap="off" placeholder="Write SQL query here...">${escapeHtml(activeQuerySql)}</textarea>
@@ -968,10 +937,10 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
 
                     </div>
 
-                    <!-- Live Tuple Sink Column -->
+                    <!-- Live Query Results Column -->
                     <div class="koma-sink-column">
                       <div class="koma-sink-header">
-                        <span class="koma-sink-title">TUPLE SINK // WASM OUTPUT</span>
+                        <span class="koma-sink-title">QUERY RESULTS</span>
                         <span id="komaSinkBadge" class="koma-badge-green">${cur.status}</span>
                       </div>
 
@@ -993,10 +962,10 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                       </div>
 
                       <div class="koma-sink-footer">
-                        <span id="komaSinkLatency">latency: <strong>${cur.latency}</strong></span>
+                        <span id="komaSinkLatency">speed: <strong>${cur.latency}</strong></span>
                         <span id="komaSinkTuples" style="color:#4ec9b0;">${cur.tuples}</span>
                         <button class="btn-koma-primary" style="padding:4px 10px; font-size:11px;" onclick="window.LANDING_PAGE_ENGINE.launchTrack('${cur.viewId}', '${cur.viewTitle}', '${cur.viewHash}')">
-                          open ${cur.company} &rarr;
+                          Practice ${cur.company} &rarr;
                         </button>
                       </div>
                     </div>
@@ -1011,17 +980,17 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
 
           </section>
 
-          <!-- 3. GIANT STAT SECTION (KOMA TOKENS BURNED STYLE) -->
+          <!-- 3. PRACTICE PROBLEMS COUNTER -->
           <section class="koma-giant-stat-section">
             <div class="koma-giant-number">323 / 323</div>
-            <div class="koma-giant-label">verified leetcode relational solutions executed client-side</div>
+            <div class="koma-giant-label">practice problems solved step-by-step directly in your browser</div>
           </section>
 
-          <!-- 4. INDUSTRY TRACKS GRID (KOMA HONORARY PARTNERS STYLE) -->
+          <!-- 4. REAL-WORLD PRACTICE TRACKS -->
           <section class="koma-tracks-section">
             
             <div class="koma-vertical-header">
-              <span>industry tracks</span>
+              <span>real-world examples</span>
             </div>
 
             <div class="koma-cards-grid">
@@ -1033,8 +1002,8 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                   <span class="koma-card-arrow">&nearr;</span>
                 </div>
                 <div>
-                  <h4 class="koma-card-title">Amazon SCOT</h4>
-                  <p class="koma-card-desc">L4/L5 BI Engineer &bull; 30d Prime Day simulation</p>
+                  <h4 class="koma-card-title">Amazon Store</h4>
+                  <p class="koma-card-desc">Customer retention &bull; 30-day Prime orders practice</p>
                 </div>
               </div>
 
@@ -1045,8 +1014,8 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                   <span class="koma-card-arrow">&nearr;</span>
                 </div>
                 <div>
-                  <h4 class="koma-card-title">Netflix Playback</h4>
-                  <p class="koma-card-desc">P99 TTFF QoE &bull; 30d telemetry &amp; A/B testing</p>
+                  <h4 class="koma-card-title">Netflix Video</h4>
+                  <p class="koma-card-desc">Video loading speed &bull; buffering data analysis</p>
                 </div>
               </div>
 
@@ -1057,8 +1026,8 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                   <span class="koma-card-arrow">&nearr;</span>
                 </div>
                 <div>
-                  <h4 class="koma-card-title">Uber Mobility</h4>
-                  <p class="koma-card-desc">H3 Spatial Indexing &bull; 85K RPM surge war room</p>
+                  <h4 class="koma-card-title">Uber Rides</h4>
+                  <p class="koma-card-desc">Passenger ride demand &bull; busy-area surge pricing</p>
                 </div>
               </div>
 
@@ -1069,8 +1038,8 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                   <span class="koma-card-arrow">&nearr;</span>
                 </div>
                 <div>
-                  <h4 class="koma-card-title">Airbnb Travel</h4>
-                  <p class="koma-card-desc">Marketplace Elasticity &bull; calendar island gaps</p>
+                  <h4 class="koma-card-title">Airbnb Stays</h4>
+                  <p class="koma-card-desc">Calendar gap days &bull; smart price discounts</p>
                 </div>
               </div>
 
@@ -1081,8 +1050,8 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                   <span class="koma-card-arrow">&nearr;</span>
                 </div>
                 <div>
-                  <h4 class="koma-card-title">Spotify Audio</h4>
-                  <p class="koma-card-desc">Pro-Rata Royalties &bull; 30s stream thresholds</p>
+                  <h4 class="koma-card-title">Spotify Music</h4>
+                  <p class="koma-card-desc">Song play counts &bull; artist royalty payouts</p>
                 </div>
               </div>
 
@@ -1093,8 +1062,8 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                   <span class="koma-card-arrow">&nearr;</span>
                 </div>
                 <div>
-                  <h4 class="koma-card-title">JPMorgan Risk</h4>
-                  <p class="koma-card-desc">Basel III CET1 Capital &bull; CCAR bank ledgers</p>
+                  <h4 class="koma-card-title">JPMorgan Banking</h4>
+                  <p class="koma-card-desc">Balancing bank accounts &bull; debits and credits check</p>
                 </div>
               </div>
 
@@ -1105,20 +1074,20 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                   <span class="koma-card-arrow">&nearr;</span>
                 </div>
                 <div>
-                  <h4 class="koma-card-title">Stripe FinTech</h4>
-                  <p class="koma-card-desc">Radar ML Fraud &bull; multi-currency balance holds</p>
+                  <h4 class="koma-card-title">Stripe Payments</h4>
+                  <p class="koma-card-desc">Credit card safety &bull; detecting tiny test charges</p>
                 </div>
               </div>
 
-              <!-- Card 8: Enterprise Capstones -->
+              <!-- Card 8: Guided Capstones -->
               <div class="koma-track-card" onclick="if(window.selectNavView) window.selectNavView('viewCapstones', 'Guided Capstones', 'navGroupPractice'); try{window.location.hash='#capstone';}catch(e){}">
                 <div class="koma-card-top">
                   <div class="koma-brand-icon">+</div>
                   <span class="koma-card-arrow">&nearr;</span>
                 </div>
                 <div>
-                  <h4 class="koma-card-title">10 Capstones</h4>
-                  <p class="koma-card-desc">SEC T+1, MRR Waterfall &bull; Hospital EHR systems</p>
+                  <h4 class="koma-card-title">10 Guided Projects</h4>
+                  <p class="koma-card-desc">Healthcare, Ecommerce &bull; End-to-end beginner projects</p>
                 </div>
               </div>
 
@@ -1126,14 +1095,14 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
 
           </section>
 
-          <!-- 5. DEFENSIVE SQL ENGINEERING (CLEAN CODE DIFF) -->
+          <!-- 5. 5 COMMON BEGINNER MISTAKES (CLEAN EXPLANATION) -->
           <section class="koma-diff-section">
             
             <div class="koma-section-header">
-              <span class="koma-section-tag">defensive sql</span>
-              <h2 class="koma-section-title">The 5 Silent SQL Traps</h2>
+              <span class="koma-section-tag">beginner guide</span>
+              <h2 class="koma-section-title">5 Common SQL Mistakes (And How to Fix Them)</h2>
               <p class="koma-section-sub">
-                Subtle query flaws that pass tests and linter rules, but corrupt accounting journals and skew executive board metrics.
+                Simple query mistakes that beginners run into, why they happen, and the clean way to write them.
               </p>
             </div>
 
@@ -1154,35 +1123,34 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
               <div class="koma-diff-grid">
                 
                 <div class="koma-diff-box koma-box-danger">
-                  <div class="koma-box-tag" style="color:#f87171;">✕ VULNERABLE PRODUCTION QUERY</div>
+                  <div class="koma-box-tag" style="color:#f87171;">✕ COMMON BEGINNER MISTAKE</div>
                   <pre class="koma-diff-pre"><code>${curTrap.codeWrong}</code></pre>
                 </div>
 
                 <div class="koma-diff-box koma-box-success">
-                  <div class="koma-box-tag" style="color:#4ec9b0;">✓ PRODUCTION HARDENED FIX</div>
+                  <div class="koma-box-tag" style="color:#4ec9b0;">✓ CLEAN WORKING FIX</div>
                   <pre class="koma-diff-pre"><code>${curTrap.codeFix}</code></pre>
                 </div>
 
               </div>
 
               <div class="koma-diff-impact">
-                <strong>failure mechanism:</strong> ${curTrap.impact}
+                <strong>Why this matters:</strong> ${curTrap.impact}
               </div>
 
             </div>
 
           </section>
 
-          <!-- 6. MINIMALIST FOOTER -->
+          <!-- 6. FOOTER -->
           <footer class="koma-footer">
             <div>
-              <span>sql foundry&trade; &bull; the relational operating system for data &amp; finance</span>
+              <span>sql foundry &bull; interactive sql learning platform for beginners</span>
             </div>
             <div style="display:flex; gap:16px;">
-              <a href="#studio" onclick="window.LANDING_PAGE_ENGINE.openSectionStudio(); return false;">section studio</a>
-              <a href="#leetcode" onclick="window.LANDING_PAGE_ENGINE.openLeetCode(); return false;">leetcode 323</a>
-              <a href="#companies" onclick="if(window.selectNavView) window.selectNavView('viewCompanyHub', 'Companies', 'navGroupPractice'); return false;">domain hub</a>
-              <a href="#machines" onclick="if(window.selectNavView) window.selectNavView('viewRelationalMachines', 'Machines', null); return false;">relational machines</a>
+              <a href="#studio" onclick="window.LANDING_PAGE_ENGINE.openSectionStudio(); return false;">interactive studio</a>
+              <a href="#leetcode" onclick="window.LANDING_PAGE_ENGINE.openLeetCode(); return false;">practice problems</a>
+              <a href="#companies" onclick="if(window.selectNavView) window.selectNavView('viewCompanyHub', 'Companies', 'navGroupPractice'); return false;">company tracks</a>
             </div>
           </footer>
 
@@ -1197,20 +1165,16 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
       if (textarea && gutter) {
         this.updateEditorGutter();
 
-        // Sync scroll between textarea and line gutter
         textarea.addEventListener('scroll', function() {
           gutter.scrollTop = textarea.scrollTop;
         });
 
-        // Update line gutter on input
         textarea.addEventListener('input', () => {
           userSqlMap[activeScenarioId] = textarea.value;
           this.updateEditorGutter();
         });
 
-        // Keyboard navigation and shortcut handling
         textarea.addEventListener('keydown', (e) => {
-          // Tab key: Insert 2 spaces
           if (e.key === 'Tab') {
             e.preventDefault();
             const start = textarea.selectionStart;
@@ -1222,7 +1186,6 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
             return;
           }
 
-          // Ctrl+Enter or Cmd+Enter: Execute query immediately
           if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
             e.preventDefault();
             this.runActiveQuery();
@@ -1232,10 +1195,8 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
     }
   };
 
-  // Expose globally
   window.LANDING_PAGE_ENGINE = LandingPageEngine;
 
-  // Auto-init
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
       LandingPageEngine.init();

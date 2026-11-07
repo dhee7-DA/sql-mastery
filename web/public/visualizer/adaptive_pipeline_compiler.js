@@ -196,7 +196,7 @@
           mysql: `-> Filter: (${tbl.toLowerCase()}.${cond.toLowerCase()})  (cost=0.65 rows=3)\n    -> Table scan on ${tbl.toLowerCase()}  (cost=0.65 rows=6)`,
           postgres: `Seq Scan on ${tbl.toLowerCase()}  (cost=0.00..1.08 rows=3 width=36)\n  Filter: (${cond})\n  Rows Removed by Filter: 3`,
           duckdb: `┌───────────────────────────┐\n│         PROJECTION        │\n└─────────────┬─────────────┘\n┌─────────────┴─────────────┐\n│           FILTER          │\n│     ${cond.slice(0, 20)}  │\n└─────────────┬─────────────┘\n┌─────────────┴─────────────┐\n│          SEQ_SCAN         │\n│          ${tbl.padEnd(8)}         │\n└───────────────────────────┘`,
-          snowflake: `GlobalStats: bytesAssigned=1024, rowsProduced=3\nOperator [1]: TableScan (${tbl}) [Partitions 1/1]\nOperator [2]: Filter (${cond})\nOperator [3]: Result [3 tuples emitted]`
+          snowflake: `GlobalStats: bytesAssigned=1024, rowsProduced=3\nOperator [1]: TableScan (${tbl}) [Partitions 1/1]\nOperator [2]: Filter (${cond})\nOperator [3]: Result [3 rows emitted]`
         },
         indexAdvice: {
           statement: `CREATE INDEX idx_${tbl.toLowerCase()}_covering ON ${tbl}(id, ${(parsed.select && parsed.select[0] && parsed.select[0].replace(/^[a-z0-9_]+\./i, '')) || 'name'});`,
@@ -240,12 +240,12 @@
 
     scanRows.forEach(r => {
       registerDossier(r.metricId, {
-        title: `${fromTbl} Tuple Scan // Key: ${r.cells[0]}`,
+        title: `${fromTbl} Row Scan // Key: ${r.cells[0]}`,
         pin: r.pin,
         color: '#38bdf8',
         gauge: `01 PHYSICAL SCAN // ${fromTbl.toUpperCase()}`,
         grain: `${fromTbl}.${scanHeaders[0]} (PRIMARY KEY / CLUSTERED INDEX)`,
-        audit: `Raw base tuple emitted from storage engine. ${scanHeaders.join(', ')} verified present.`,
+        audit: `Raw base row emitted from storage engine. ${scanHeaders.join(', ')} verified present.`,
         edge: 'Sequential scan on large tables requires composite index or partition filter pushdown.',
         commercial: `Initial data ingestion layer for ${fromTbl}. Provides atomic raw facts.`,
         interview: `How does the database buffer pool and OS page cache optimize sequential scans versus index scans on ${fromTbl}?`
@@ -257,7 +257,7 @@
       chip: '01',
       title: 'SOURCE SCAN',
       subtitle: `FROM ${fromTbl}${parsed.from && parsed.from.alias !== fromTbl ? ' AS ' + parsed.from.alias : ''}`,
-      badge: 'BASE TUPLES',
+      badge: 'BASE ROWS',
       color: '#38bdf8',
       colorName: 'cyan',
       headers: scanHeaders,
@@ -325,8 +325,8 @@
           pin: idx + 1,
           color: '#fbbf24',
           gauge: '03 PREDICATE FILTER // BOOLEAN EVALUATION',
-          grain: prevChamber.headers[0] + ' tuple grain',
-          audit: `Boolean expression evaluates to ${isPass ? 'TRUE (TUPLE RETAINED)' : 'FALSE/NULL (TUPLE PRUNED)'}.`,
+          grain: prevChamber.headers[0] + ' row level',
+          audit: `Boolean expression evaluates to ${isPass ? 'TRUE (ROW KEPT)' : 'FALSE/NULL (ROW FILTERED)'}.`,
           edge: 'Beware of NULL values in ternary logic: NULL >= X evaluates to UNKNOWN and is dropped!',
           commercial: 'Prunes irrelevant records early to conserve downstream memory and I/O bandwidth.',
           interview: 'How does predicate pushdown allow database query planners to filter rows before executing expensive joins?'
@@ -521,7 +521,7 @@
     let emitRows = lastActiveChamber.rows.filter(r => r.status === 'pass').slice(0, 3).map((r, idx) => {
       const metricId = `emit_${idx + 1}`;
       registerDossier(metricId, {
-        title: `Projected Emission Tuple // Key: ${r.cells[0]}`,
+        title: `Projected Row // Key: ${r.cells[0]}`,
         pin: idx + 1,
         color: '#10b981',
         gauge: 'FINAL EMISSION // SINK STREAM',
@@ -545,7 +545,7 @@
         emitRows = problemMeta.expectedOutput.rows.slice(0, 3).map((r, idx) => {
           const metricId = `emit_${idx + 1}`;
           registerDossier(metricId, {
-            title: `Expected Output Tuple // Key: ${r[0]}`,
+            title: `Expected Output Row // Key: ${r[0]}`,
             pin: idx + 1,
             color: '#10b981',
             gauge: 'FINAL EMISSION // LEETCODE EXPECTED',
@@ -862,9 +862,9 @@
         
         <foreignObject x="${p1X + 12}" y="${bottomY + 34}" width="${splitW1 - 24}" height="${bottomH - 40}">
           <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'JetBrains Mono',monospace; font-size:8px; line-height:1.55; color:#cbd5e1; word-wrap:break-word; overflow:hidden;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span style="color:#71717a; font-weight:600;">1. SCAN:</span> <span style="color:#ffffff;">${escapeXml(scanTbl)} (${chambers[0].stats.inCount} tuples)</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span style="color:#71717a; font-weight:600;">1. SCAN:</span> <span style="color:#ffffff;">${escapeXml(scanTbl)} (${chambers[0].stats.inCount} rows)</span></div>
             <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span style="color:#71717a; font-weight:600;">2. OPS:</span> <span style="color:#ffffff;">${escapeXml(opsSummary)}</span></div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="color:#71717a; font-weight:600;">3. SINK:</span> <span style="color:#ffffff; font-weight:700;">${chambers[n-1].stats.passCount} tuples emitted</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span style="color:#71717a; font-weight:600;">3. SINK:</span> <span style="color:#ffffff; font-weight:700;">${chambers[n-1].stats.passCount} rows emitted</span></div>
             <div style="color:#52525b; font-size:7.5px; border-top:1px solid rgba(255,255,255,0.06); padding-top:4px; margin-top:2px;">Model: Volcano Pull-Stream &bull; Volatility: STABLE</div>
           </div>
         </foreignObject>

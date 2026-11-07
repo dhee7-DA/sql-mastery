@@ -139,6 +139,15 @@
     // Radial circular pointer-anchored menu with spring elasticity
     // -------------------------------------------------------------------------
     initDialMenu() {
+      // Disabled floating dial and background sphere per user request
+      return;
+
+      // Disabled floating dial and background sphere per user request
+      return;
+
+      // Disabled floating dial and background sphere per user request
+      return;
+
       let overlay = document.getElementById('ovioDialOverlay');
       if (!overlay) {
         overlay = document.createElement('div');

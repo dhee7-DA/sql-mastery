@@ -1034,6 +1034,15 @@ const SQL_BUDDY = (() => {
   // 13. INITIALIZATION & MOUNT
   // ---------------------------------------------------------------------------
   function init() {
+    // Disabled blob mascot per user request
+    return;
+
+    // Disabled blob mascot per user request
+    return;
+
+    // Disabled blob mascot per user request
+    return;
+
     let container = document.getElementById("sqlBuddyContainer");
     if (!container) {
       container = document.createElement("div");

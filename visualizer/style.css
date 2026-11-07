@@ -30378,7 +30378,71 @@ a:focus-visible {
   font-family: var(--font-mono, 'JetBrains Mono', monospace) !important;
   font-size: 11.5px !important;
   color: #94a3b8 !important;
-  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 250ms ease, border-color 200ms ease !important;
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 250ms ease, border-color 200ms ease, opacity 250ms ease !important;
+}
+
+.app-footer.collapsed {
+  transform: translateX(-50%) translateY(140%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.footer-close-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  margin-left: 6px;
+  transition: all 0.15s ease;
+}
+.footer-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #f87171;
+}
+
+.footer-restore-trigger {
+  position: fixed;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(24, 24, 27, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a1a1aa;
+  border-radius: 999px;
+  padding: 3px 12px;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  cursor: pointer;
+  z-index: 999;
+  display: none;
+  transition: all 0.15s ease;
+}
+.footer-restore-trigger:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Ample bottom clearance for reader panels so nothing is covered */
+.amazon-main-stage,
+.context-report-view,
+.challenge-panel-view,
+.amazon-tickets-list {
+  padding-bottom: 90px !important;
+}
+
+/* Hide floating mascot & background sphere by default so they don't block text */
+.sql-buddy-container {
+  display: none !important;
 }
 
 .app-footer * {
@@ -30467,4 +30531,57 @@ a:focus-visible {
 
 .footer-mascot-btn:active {
   transform: scale(0.97) !important;
+}
+
+
+/* =============================================================================
+   BEGINNER CLEAN UI: COMPLETELY HIDE FIXED BOTTOM BAR & FLOATING DISTRACTIONS
+   Ensures 100% unobstructed reading of challenges, code editors, and tables.
+   ============================================================================= */
+.app-footer,
+.status-bar,
+#btnRestoreFooter,
+.footer-restore-trigger {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+.sql-buddy-container,
+.buddy-speech-bubble,
+#sqlBuddyContainer,
+#buddySpeechBubble {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.ovio-dial-floating-trigger,
+.ovio-dial-overlay,
+#ovioDialTrigger,
+#ovioDialOverlay {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Ensure all workspace containers have generous bottom padding for comfortable reading */
+.amazon-main-stage,
+.context-report-view,
+.challenge-panel-view,
+.amazon-tickets-list,
+.section-studio-container,
+.workspace-grid,
+.editor-card,
+.koma-hero-section {
+  padding-bottom: 60px !important;
 }

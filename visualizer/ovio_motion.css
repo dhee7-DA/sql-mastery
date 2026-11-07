@@ -276,6 +276,7 @@
 
 /* Persistent Quick Floating Dial Trigger (Bottom Right) */
 .ovio-dial-floating-trigger {
+  display: none !important;
   position: fixed;
   bottom: 24px;
   right: 24px;
@@ -285,7 +286,6 @@
   background: #000000;
   border: 1px solid #3f3f46;
   color: #ffffff;
-  display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 255, 255, 0.15);
@@ -495,3 +495,9 @@
   border-color: #ffffff !important;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.4) !important;
 }
+
+.ovio-dial-floating-trigger, .ovio-dial-overlay { display: none !important; visibility: hidden !important; pointer-events: none !important; }
+
+.ovio-dial-floating-trigger, .ovio-dial-overlay { display: none !important; visibility: hidden !important; pointer-events: none !important; }
+
+.ovio-dial-floating-trigger, .ovio-dial-overlay { display: none !important; visibility: hidden !important; pointer-events: none !important; }

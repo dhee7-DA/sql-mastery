@@ -133,7 +133,7 @@
     if (solvedCount >= 21) return { title: "L4 Prime Day War Room Hero", badge: "STAFF · WAR ROOM", color: "#ffffff" };
     if (solvedCount >= 14) return { title: "L4 WBR Metrics Specialist", badge: "P0 · METRICS LEAD", color: "#a1a1aa" };
     if (solvedCount >= 7) return { title: "L4 Confirmed Data Analyst", badge: "P1 · CERTIFIED", color: "#a1a1aa" };
-    return { title: "L4 Apprentice Analyst (Onboarding)", badge: "P2 · ONBOARDING", color: "#71717a" };
+    return { title: "Beginner Data Analyst (Day 1)", badge: "P2 · ONBOARDING", color: "#71717a" };
   }
 
   function renderAmazonWorkspace() {
@@ -267,10 +267,10 @@
       <!-- NAVIGATION TABS: CONTEXT REPORT vs INTERACTIVE CHALLENGE -->
       <div class="amazon-tabs-bar">
         <button class="amazon-tab-btn ${activeTab === 'context' ? 'active' : ''}" onclick="window.AMAZON_STORY.setViewTab('context')">
-          Briefing &amp; Traps
+          📖 Lesson &amp; Explanation
         </button>
         <button class="amazon-tab-btn ${activeTab === 'challenge' ? 'active' : ''}" onclick="window.AMAZON_STORY.setViewTab('challenge')">
-          SQL Workstation
+          💻 SQL Practice Editor
         </button>
       </div>
 
@@ -289,7 +289,7 @@
         <!-- SECTION 1: BUSINESS WHY -->
         <div class="report-box why-box">
           <div class="report-box-title">
-            <span>BUSINESS CONTEXT & GRAIN</span>
+            <span>💡 Why This Query Matters</span>
           </div>
           <p class="report-box-text">${report.businessWhy}</p>
         </div>
@@ -297,7 +297,7 @@
         <!-- SECTION 2: LEARNING FOCUS & TOPICS -->
         <div class="report-box focus-box">
           <div class="report-box-title">
-            <span>CORE RELATIONAL PATTERNS</span>
+            <span>🎯 What You'll Learn (Step-by-Step)</span>
           </div>
           <ul class="report-bullets-list">
             ${report.learningFocus.map(item => `<li>${item}</li>`).join('')}
@@ -309,18 +309,18 @@
           <!-- PITFALLS & TRAPS -->
           <div class="report-box trap-box">
             <div class="report-box-title">
-              <span>ENGINE TRAPS &amp; SILENT GOTCHAS</span>
+              <span>⚠️ Common Mistake to Avoid</span>
             </div>
             <p class="report-box-text">${report.realWorldTrap}</p>
             <div class="interview-note">
-              <strong>§ Interview Rubric &amp; Relevance:</strong> ${report.interviewRelevance}
+              <strong>💡 Practical Tip:</strong> ${report.interviewRelevance}
             </div>
           </div>
 
           <!-- TARGET SCHEMA -->
           <div class="report-box schema-box">
             <div class="report-box-title">
-              <span>REDSHIFT DDL SPECIFICATION</span>
+              <span>📋 Table Structure (Columns &amp; Types)</span>
             </div>
             <pre class="schema-code-block"><code>${report.sampleSchema}</code></pre>
           </div>
@@ -329,7 +329,7 @@
         <!-- CALL TO ACTION BUTTON -->
         <div class="report-action-row">
           <button class="btn-launch-challenge" onclick="window.AMAZON_STORY.setViewTab('challenge')">
-            <span>Ready! Solve Today's Ticket Challenge &rarr;</span>
+            <span>Ready! Start Ticket Challenge &rarr;</span>
           </button>
         </div>
       </div>
