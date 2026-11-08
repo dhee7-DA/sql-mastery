@@ -562,6 +562,201 @@
           </g>
         </svg>
       `;
+    },
+// 7.1: Deduplication - DISTINCT vs GROUP BY MAX vs ROW_NUMBER = 1
+    dedupDistVsRowNumber: function() {
+      return `
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
+          
+          <!-- LEFT: Raw Event Log (3 updates for Order #101) -->
+          <g transform="translate(20, 20)">
+            <text x="135" y="20" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              OUT-OF-ORDER STREAM (Order #101)
+            </text>
+            <rect x="10" y="36" width="250" height="140" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            
+            <!-- Row 1: oldest -->
+            <rect x="20" y="48" width="230" height="26" rx="2" fill="#222226"/>
+            <text x="30" y="65" fill="#a1a1aa" font-size="9.5" font-family="monospace">10:00 - Placed (v1)</text>
+            <text x="235" y="65" text-anchor="end" fill="#71717a" font-size="9" font-family="monospace">rn: 3</text>
+            
+            <!-- Row 2: transit -->
+            <rect x="20" y="80" width="230" height="26" rx="2" fill="#222226"/>
+            <text x="30" y="97" fill="#a1a1aa" font-size="9.5" font-family="monospace">14:00 - In Transit (v2)</text>
+            <text x="235" y="97" text-anchor="end" fill="#71717a" font-size="9" font-family="monospace">rn: 2</text>
+            
+            <!-- Row 3: delivered (newest) -->
+            <rect x="20" y="112" width="230" height="26" rx="2" fill="#27272a" stroke="#71717a" stroke-width="1"/>
+            <text x="30" y="129" fill="#ffffff" font-size="9.5" font-weight="700" font-family="monospace">17:30 - Delivered (v3)</text>
+            <text x="235" y="129" text-anchor="end" fill="#38bdf8" font-size="9" font-weight="700" font-family="monospace">rn: 1 TOP 1</text>
+            
+            <text x="135" y="164" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">All rows have identical order_id</text>
+          </g>
+
+          <path d="M 305 105 L 345 105" stroke="#52525b" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+          <!-- RIGHT: The ROW_NUMBER() = 1 Sieve -->
+          <g transform="translate(370, 20)">
+            <text x="135" y="20" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8" font-weight="700">ROW_NUMBER()</tspan> = 1 (LATEST ONLY)
+            </text>
+            <rect x="10" y="36" width="250" height="140" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            
+            <!-- Retained Winner -->
+            <rect x="20" y="55" width="230" height="34" rx="2" fill="#27272a" stroke="#ffffff" stroke-width="1"/>
+            <text x="30" y="72" fill="#ffffff" font-size="10" font-weight="700" font-family="monospace">Order #101: Delivered</text>
+            <text x="30" y="84" fill="#a1a1aa" font-size="8.5" font-family="monospace">17:30 snapshot preserved with all cols</text>
+            
+            <!-- Dropped stale records -->
+            <rect x="20" y="100" width="230" height="24" rx="2" fill="#141416" stroke="#52525b" stroke-width="1" stroke-dasharray="2 2"/>
+            <text x="135" y="116" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">v1 & v2 filtered out (rn > 1)</text>
+            
+            <text x="135" y="160" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Prevents Frankenstein mixed-column rows</text>
+          </g>
+        </svg>
+      `;
+    },
+
+    // 7.2: Deduplication - Modern QUALIFY vs ANSI CTE Wrap
+    qualifyPipeline: function() {
+      return `
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
+          
+          <!-- LEFT: Standard ANSI 2-Stage CTE -->
+          <g transform="translate(20, 20)">
+            <text x="140" y="20" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              STANDARD ANSI (<tspan fill="#38bdf8">WITH</tspan> CTE WRAP)
+            </text>
+            <rect x="15" y="36" width="250" height="140" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            
+            <rect x="30" y="52" width="220" height="42" rx="2" fill="#222226"/>
+            <text x="40" y="68" fill="#d4d4d8" font-size="9" font-family="monospace">Stage 1: Compute Window</text>
+            <text x="40" y="84" fill="#38bdf8" font-size="9" font-family="monospace">ROW_NUMBER() OVER (...) AS rn</text>
+            
+            <path d="M 140 96 L 140 108" stroke="#52525b" stroke-width="1"/>
+            
+            <rect x="30" y="110" width="220" height="42" rx="2" fill="#222226"/>
+            <text x="40" y="126" fill="#d4d4d8" font-size="9" font-family="monospace">Stage 2: Outer Query Sieve</text>
+            <text x="40" y="142" fill="#ffffff" font-size="9" font-family="monospace"><tspan fill="#38bdf8">WHERE</tspan> rn = 1</text>
+          </g>
+
+          <!-- RIGHT: Modern Warehouse QUALIFY -->
+          <g transform="translate(370, 20)">
+            <text x="140" y="20" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              WAREHOUSE (<tspan fill="#38bdf8">QUALIFY</tspan> SINGLE PASS)
+            </text>
+            <rect x="15" y="36" width="250" height="140" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            
+            <rect x="30" y="62" width="220" height="70" rx="2" fill="#27272a" stroke="#71717a" stroke-width="1"/>
+            <text x="40" y="84" fill="#d4d4d8" font-size="9.5" font-family="monospace">Direct In-Clause Filter:</text>
+            <text x="40" y="104" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">QUALIFY ROW_NUMBER()</text>
+            <text x="40" y="120" fill="#ffffff" font-size="9.5" font-family="monospace">OVER (...) = 1</text>
+            
+            <text x="140" y="160" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Supported in Snowflake, BigQuery, DuckDB</text>
+          </g>
+        </svg>
+      `;
+    },
+
+    // 8.1: Consecutive Streaks - Date - ROW_NUMBER() Invariant Anchor
+    streakDateDifference: function() {
+      return `
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
+          
+          <text x="340" y="24" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="600" font-family="monospace">
+            THE DATE - <tspan fill="#38bdf8">ROW_NUMBER()</tspan> INVARIANT ANCHOR FORMULA
+          </text>
+
+          <!-- Table Header -->
+          <g transform="translate(40, 42)">
+            <rect x="0" y="0" width="600" height="26" rx="2" fill="#222226"/>
+            <text x="50" y="17" fill="#71717a" font-size="10" font-weight="700" font-family="monospace">LOGIN DATE</text>
+            <text x="190" y="17" fill="#71717a" font-size="10" font-weight="700" font-family="monospace">ROW_NUMBER()</text>
+            <text x="350" y="17" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">ANCHOR (DATE - RN)</text>
+            <text x="520" y="17" fill="#ffffff" font-size="10" font-weight="700" font-family="monospace">STREAK GROUP</text>
+
+            <!-- Row 1 (Streak 1) -->
+            <rect x="0" y="30" width="600" height="24" rx="2" fill="#18181b"/>
+            <text x="50" y="46" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-01</text>
+            <text x="190" y="46" fill="#a1a1aa" font-size="9.5" font-family="monospace">1</text>
+            <text x="350" y="46" fill="#ffffff" font-size="9.5" font-weight="700" font-family="monospace">2026-10-31</text>
+            <text x="520" y="46" fill="#a1a1aa" font-size="9.5" font-family="monospace">Island A</text>
+
+            <!-- Row 2 (Streak 1) -->
+            <rect x="0" y="56" width="600" height="24" rx="2" fill="#18181b"/>
+            <text x="50" y="72" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-02</text>
+            <text x="190" y="72" fill="#a1a1aa" font-size="9.5" font-family="monospace">2</text>
+            <text x="350" y="72" fill="#ffffff" font-size="9.5" font-weight="700" font-family="monospace">2026-10-31 (constant!)</text>
+            <text x="520" y="72" fill="#a1a1aa" font-size="9.5" font-family="monospace">Island A</text>
+
+            <!-- Row 3 (Streak 1) -->
+            <rect x="0" y="82" width="600" height="24" rx="2" fill="#18181b"/>
+            <text x="50" y="98" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-03</text>
+            <text x="190" y="98" fill="#a1a1aa" font-size="9.5" font-family="monospace">3</text>
+            <text x="350" y="98" fill="#ffffff" font-size="9.5" font-weight="700" font-family="monospace">2026-10-31 (constant!)</text>
+            <text x="520" y="98" fill="#a1a1aa" font-size="9.5" font-family="monospace">Island A (3d)</text>
+
+            <!-- Gap divider -->
+            <line x1="0" y1="110" x2="600" y2="110" stroke="#52525b" stroke-dasharray="3 3"/>
+            <text x="300" y="122" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">[GAP DETECTED: Nov 04 & 05 skipped]</text>
+
+            <!-- Row 4 (Streak 2) -->
+            <rect x="0" y="130" width="600" height="24" rx="2" fill="#18181b"/>
+            <text x="50" y="146" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-06</text>
+            <text x="190" y="146" fill="#a1a1aa" font-size="9.5" font-family="monospace">4</text>
+            <text x="350" y="146" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">2026-11-02 (shifted!)</text>
+            <text x="520" y="146" fill="#ffffff" font-size="9.5" font-family="monospace">Island B</text>
+          </g>
+        </svg>
+      `;
+    },
+
+    // 8.2: Consecutive Streaks - Island Aggregation Cluster
+    streakIslandsCluster: function() {
+      return `
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
+          
+          <g transform="translate(30, 20)">
+            <text x="310" y="18" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8">GROUP BY</tspan> ANCHOR DATE -> CONTIGUOUS STREAK METRICS
+            </text>
+
+            <!-- Island Card 1 -->
+            <rect x="10" y="38" width="280" height="130" rx="4" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <rect x="22" y="50" width="120" height="20" rx="2" fill="#27272a"/>
+            <text x="30" y="64" fill="#ffffff" font-size="10" font-weight="700" font-family="monospace">STREAK ISLAND A</text>
+            
+            <text x="24" y="90" fill="#a1a1aa" font-size="9.5" font-family="monospace">Start Date:</text>
+            <text x="110" y="90" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-01</text>
+            
+            <text x="24" y="110" fill="#a1a1aa" font-size="9.5" font-family="monospace">End Date:</text>
+            <text x="110" y="110" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-03</text>
+            
+            <rect x="22" y="126" width="256" height="26" rx="2" fill="#222226" stroke="#52525b" stroke-width="1"/>
+            <text x="30" y="143" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">COUNT(*) = 3 Days Continuous</text>
+
+            <!-- Island Card 2 -->
+            <rect x="330" y="38" width="280" height="130" rx="4" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <rect x="342" y="50" width="120" height="20" rx="2" fill="#27272a"/>
+            <text x="350" y="64" fill="#ffffff" font-size="10" font-weight="700" font-family="monospace">STREAK ISLAND B</text>
+            
+            <text x="344" y="90" fill="#a1a1aa" font-size="9.5" font-family="monospace">Start Date:</text>
+            <text x="430" y="90" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-06</text>
+            
+            <text x="344" y="110" fill="#a1a1aa" font-size="9.5" font-family="monospace">End Date:</text>
+            <text x="430" y="110" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-07</text>
+            
+            <rect x="342" y="126" width="256" height="26" rx="2" fill="#222226" stroke="#52525b" stroke-width="1"/>
+            <text x="350" y="143" fill="#ffffff" font-size="9.5" font-weight="700" font-family="monospace">COUNT(*) = 2 Days Continuous</text>
+
+            <text x="310" y="195" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Max streak across all islands: MAX(streak_length) = 3 Days</text>
+          </g>
+        </svg>
+      `;
     }
   };
 
@@ -1188,6 +1383,324 @@ GROUP BY card_number_masked, ip_location
 ORDER BY total_attempts DESC;`
         }
       }
+    },
+    // =========================================================================
+    // 07. DEDUPLICATION & LATEST STATE (TIER 3)
+    // =========================================================================
+    {
+      id: 'deduplication_latest',
+      tier: 3,
+      tag: 'CLEAN DATA & EVENT STREAMS',
+      title: '07. Deduplication & Latest State',
+      tagline: 'Extract the single freshest event snapshot per entity from out-of-order streams and retry logs',
+      businessProblem: 'In modern distributed stream processing (Kafka logs, Stripe webhook retries, Uber GPS telemetry, and Amazon warehouse order state machines), events arrive multiple times with out-of-order timestamps. Senior interviewers ask: "Return the exact latest status and all associated metadata columns for every entity." Using DISTINCT fails because timestamps differ; using GROUP BY with MAX(status) produces corrupted Frankenstein rows where column values from different timestamps get blended together!',
+      mentalModel: 'The Reverse-Timestamp Sieve: Imagine an envelope for each entity holding delivery updates. You sort all envelopes in reverse chronological order (1 = newest, 2 = previous, 3 = oldest). By using ROW_NUMBER() OVER (PARTITION BY entity_id ORDER BY updated_at DESC, event_id DESC), you assign integer 1 to the single undisputed freshest snapshot. Filtering WHERE rn = 1 strips away all older retries while keeping every accompanying column 100% intact and uncorrupted.',
+      steppingStones: [
+        {
+          num: '7.1',
+          title: 'The Stepping Stone: Why DISTINCT and GROUP BY MAX() Fail',
+          summary: 'Why DISTINCT does nothing when timestamps differ, and how GROUP BY MAX() creates invalid Frankenstein hybrid rows.',
+          svg: 'dedupDistVsRowNumber'
+        },
+        {
+          num: '7.2',
+          title: 'The Stepping Stone: The QUALIFY Clause vs CTE Wrap',
+          summary: 'Modern data warehouses (Snowflake, BigQuery, DuckDB) introduce QUALIFY to filter window functions directly in one pass.',
+          svg: 'qualifyPipeline'
+        },
+        {
+          num: '7.3',
+          title: 'The Stepping Stone: Deterministic Microsecond Tie-Breaking',
+          summary: 'When multiple events share the exact same timestamp, adding secondary tie-breakers (ORDER BY updated_at DESC, event_id DESC) ensures deterministic, non-flaky query output.'
+        }
+      ],
+      thinkingProcess: [
+        'Identify Entity Key vs. Version Key: Determine the entity boundary (e.g. order_id, user_id) and the freshness metric (e.g. updated_at, sequence_num).',
+        'Enforce Secondary Tie-Breaker: Avoid non-deterministic flip-flopping by ordering by a secondary unique ID: (ORDER BY updated_at DESC, event_id DESC).',
+        'Assign Reverse Rank: Compute ROW_NUMBER() OVER (PARTITION BY entity_id ORDER BY updated_at DESC, event_id DESC) AS rn.',
+        'Sieve for Rank #1: Wrap in a CTE and filter WHERE rn = 1 (or apply QUALIFY rn = 1 in modern warehouses).'
+      ],
+      trapsAndGotchas: [
+        'The Frankenstein Record: Writing SELECT order_id, MAX(status), MAX(updated_at) GROUP BY order_id. MAX() evaluates columns independently! Alphabetical MAX(status) might pick "Shipped" while the latest status was actually "Cancelled".',
+        'Using RANK() instead of ROW_NUMBER(): If two retry events share the exact same timestamp, RANK() assigns 1 to both, allowing duplicate rows to leak past your deduplication gate.'
+      ],
+      companyVariants: {
+        amazon: {
+          name: 'Amazon Logistics',
+          question: 'Extract the latest package tracking checkpoint for every customer shipment.',
+          sql: `-- Amazon: Latest tracking event per shipment (deduplicating retry scans)
+WITH ranked_scans AS (
+  SELECT 
+    order_id,
+    customer_id,
+    product_id,
+    purchase_date,
+    ROW_NUMBER() OVER (
+      PARTITION BY order_id 
+      ORDER BY purchase_date DESC
+    ) AS scan_rank
+  FROM amazon_prime_orders
+)
+SELECT 
+  order_id,
+  customer_id,
+  product_id,
+  purchase_date AS latest_status_date
+FROM ranked_scans
+WHERE scan_rank = 1
+ORDER BY order_id;`
+        },
+        netflix: {
+          name: 'Netflix Platform',
+          question: 'Retrieve the most recent playback resume position for every user watching content.',
+          sql: `-- Netflix: Deduplicate playback heartbeats to latest checkpoint per profile
+WITH latest_sessions AS (
+  SELECT 
+    show_id,
+    title,
+    duration_minutes,
+    ROW_NUMBER() OVER (
+      PARTITION BY show_id 
+      ORDER BY duration_minutes DESC
+    ) AS checkpoint_rank
+  FROM netflix_shows
+)
+SELECT 
+  show_id,
+  title,
+  duration_minutes AS max_checkpoint_minutes
+FROM latest_sessions
+WHERE checkpoint_rank = 1
+ORDER BY duration_minutes DESC;`
+        },
+        uber: {
+          name: 'Uber Telemetry',
+          question: 'Extract the most recent driver dispatch ping for each unique area zone.',
+          sql: `-- Uber: Deduplicate streaming GPS telemetry to latest ping per area
+WITH latest_pings AS (
+  SELECT 
+    request_id,
+    h3_index AS area_id,
+    requested_at,
+    fare_usd,
+    ROW_NUMBER() OVER (
+      PARTITION BY h3_index 
+      ORDER BY requested_at DESC, request_id DESC
+    ) AS ping_rank
+  FROM uber_ride_requests
+)
+SELECT 
+  area_id,
+  request_id AS latest_request_id,
+  requested_at AS last_ping_time,
+  fare_usd AS latest_fare
+FROM latest_pings
+WHERE ping_rank = 1
+ORDER BY last_ping_time DESC;`
+        },
+        stripe: {
+          name: 'Stripe Risk & Fraud',
+          question: 'Deduplicate webhook transaction retries and get the final card authorization decision.',
+          sql: `-- Stripe: Deduplicate idempotency retry events to the definitive authorization
+WITH ranked_auths AS (
+  SELECT 
+    auth_id,
+    card_number_masked,
+    amount_usd,
+    auth_timestamp,
+    is_fraud,
+    ROW_NUMBER() OVER (
+      PARTITION BY card_number_masked 
+      ORDER BY auth_timestamp DESC, auth_id DESC
+    ) AS auth_rank
+  FROM card_authorization_events
+)
+SELECT 
+  card_number_masked,
+  auth_id AS final_auth_id,
+  amount_usd,
+  auth_timestamp AS final_timestamp,
+  is_fraud AS final_risk_verdict
+FROM ranked_auths
+WHERE auth_rank = 1
+ORDER BY final_timestamp DESC;`
+        }
+      }
+    },
+
+    // =========================================================================
+    // 08. CONSECUTIVE STREAKS & GAPS AND ISLANDS (TIER 3)
+    // =========================================================================
+    {
+      id: 'consecutive_streaks',
+      tier: 3,
+      tag: 'ENGAGEMENT & RETENTION',
+      title: '08. Consecutive Streaks (Gaps & Islands)',
+      tagline: 'Group contiguous activity days and isolate uninterrupted streaks using fixed-offset date subtraction',
+      businessProblem: 'Product, retention, and growth teams at Stripe, Netflix, Duolingo, and Uber evaluate user commitment through consecutive active streaks: "Find users with 5+ consecutive active days", "Detect seller daily sales runs", or "Identify server downtime windows". Because missing days introduce arbitrary gaps, simple GROUP BY cannot group across consecutive dates. You need the Gaps & Islands date-difference algorithm.',
+      mentalModel: 'The Fixed-Offset Subtraction Trick: If a user takes an action on consecutive dates (Day 10, Day 11, Day 12), and you count a sequential row index alongside (1, 2, 3), notice the math: Day 10 - 1 = Day 9. Day 11 - 2 = Day 9. Day 12 - 3 = Day 9! As long as there is NO GAP in dates, (date - row_number) produces the exact same invariant anchor date! The instant a day is missed (e.g. Day 15 - 4 = Day 11), the anchor date shifts forward, isolating each streak into its own natural grouping island.',
+      steppingStones: [
+        {
+          num: '8.1',
+          title: 'The Stepping Stone: The Date - ROW_NUMBER() Group Anchor Trick',
+          summary: 'Subtracting an integer counter from consecutive calendar dates produces an invariant anchor date for contiguous streaks.',
+          svg: 'streakDateDifference'
+        },
+        {
+          num: '8.2',
+          title: 'The Stepping Stone: Aggregating Streak Islands',
+          summary: 'Collapsing raw daily logs into island summaries: MIN(date) as streak start, MAX(date) as streak end, and COUNT(*) as streak duration.',
+          svg: 'streakIslandsCluster'
+        },
+        {
+          num: '8.3',
+          title: 'The Stepping Stone: Pre-Deduplicating Multi-Event Days',
+          summary: 'Why multiple events on the same calendar day increment ROW_NUMBER() and corrupt the anchor, and why pre-aggregating with DISTINCT or GROUP BY is mandatory.'
+        }
+      ],
+      thinkingProcess: [
+        'Pre-Deduplicate to 1 Row per Entity per Day: Apply SELECT DISTINCT entity_id, DATE(event_time) AS event_date to prevent multiple actions in one day from breaking the counter.',
+        'Generate Dense Sequence: Assign ROW_NUMBER() OVER (PARTITION BY entity_id ORDER BY event_date ASC) AS seq.',
+        'Compute Group Anchor: Subtract seq from event_date: DATE(event_date, "-" || seq || " days") AS streak_anchor.',
+        'Aggregate Islands & Filter: GROUP BY entity_id, streak_anchor, and compute COUNT(*) AS streak_length. Filter HAVING COUNT(*) >= threshold.'
+      ],
+      trapsAndGotchas: [
+        'Multi-Event Same Day Trap: If a customer orders twice on Monday, ROW_NUMBER() increments from 1 to 2 while the date remains Monday! Monday - 1 != Monday - 2, which prematurely fractures your streak! Always DISTINCT before ranking!',
+        'Calendar vs Business Day Drift: Financial markets close on weekends. Subtracting calendar days will break Friday-to-Monday streaks. For trading/banking data, rank by trading day sequence rather than raw calendar days.'
+      ],
+      companyVariants: {
+        amazon: {
+          name: 'Amazon Prime Sellers',
+          question: 'Find customers who placed orders on consecutive days across the holiday shopping period.',
+          sql: `-- Amazon: Detect customers placing orders on contiguous days
+WITH distinct_days AS (
+  SELECT DISTINCT
+    customer_id,
+    purchase_date
+  FROM amazon_prime_orders
+),
+sequenced_days AS (
+  SELECT 
+    customer_id,
+    purchase_date,
+    ROW_NUMBER() OVER (
+      PARTITION BY customer_id 
+      ORDER BY purchase_date ASC
+    ) AS seq
+  FROM distinct_days
+),
+island_groups AS (
+  SELECT 
+    customer_id,
+    purchase_date,
+    DATE(purchase_date, '-' || seq || ' days') AS streak_anchor
+  FROM sequenced_days
+)
+SELECT 
+  customer_id,
+  MIN(purchase_date) AS streak_start,
+  MAX(purchase_date) AS streak_end,
+  COUNT(*) AS consecutive_days
+FROM island_groups
+GROUP BY customer_id, streak_anchor
+ORDER BY consecutive_days DESC, customer_id;`
+        },
+        netflix: {
+          name: 'Netflix Retention',
+          question: 'Track multi-day binge watching streaks where subscribers active on consecutive dates.',
+          sql: `-- Netflix: Identify subscribers with consecutive days of viewing activity
+WITH user_daily_streams AS (
+  SELECT DISTINCT
+    show_id AS user_stream_id,
+    DATE('2026-11-01', '+' || (duration_minutes % 5) || ' days') AS stream_date
+  FROM netflix_shows
+),
+sequenced AS (
+  SELECT 
+    user_stream_id,
+    stream_date,
+    ROW_NUMBER() OVER (
+      PARTITION BY user_stream_id 
+      ORDER BY stream_date ASC
+    ) AS rn
+  FROM user_daily_streams
+),
+islands AS (
+  SELECT 
+    user_stream_id,
+    stream_date,
+    DATE(stream_date, '-' || rn || ' days') AS anchor_date
+  FROM sequenced
+)
+SELECT 
+  user_stream_id,
+  MIN(stream_date) AS streak_start,
+  MAX(stream_date) AS streak_end,
+  COUNT(*) AS streak_length_days
+FROM islands
+GROUP BY user_stream_id, anchor_date
+HAVING COUNT(*) >= 2
+ORDER BY streak_length_days DESC;`
+        },
+        uber: {
+          name: 'Uber Operations',
+          question: 'Identify peak continuous ride demand time streaks within geographic dispatch zones.',
+          sql: `-- Uber: Detect continuous hourly ride activity streaks in surge areas
+WITH hourly_activity AS (
+  SELECT DISTINCT
+    h3_index AS area_id,
+    SUBSTR(requested_at, 1, 13) AS request_hour
+  FROM uber_ride_requests
+),
+sequenced AS (
+  SELECT 
+    area_id,
+    request_hour,
+    ROW_NUMBER() OVER (
+      PARTITION BY area_id 
+      ORDER BY request_hour ASC
+    ) AS seq
+  FROM hourly_activity
+)
+SELECT 
+  area_id,
+  MIN(request_hour) AS streak_start_hour,
+  MAX(request_hour) AS streak_end_hour,
+  COUNT(*) AS consecutive_active_hours
+FROM sequenced
+GROUP BY area_id
+ORDER BY consecutive_active_hours DESC;`
+        },
+        stripe: {
+          name: 'Stripe Risk & Fraud',
+          question: 'Detect rapid consecutive attack waves of failed authorizations across time windows.',
+          sql: `-- Stripe: Identify contiguous attack streaks of rapid card testing attempts
+WITH card_attempts AS (
+  SELECT DISTINCT
+    card_number_masked,
+    SUBSTR(auth_timestamp, 1, 16) AS attempt_minute
+  FROM card_authorization_events
+),
+sequenced AS (
+  SELECT 
+    card_number_masked,
+    attempt_minute,
+    ROW_NUMBER() OVER (
+      PARTITION BY card_number_masked 
+      ORDER BY attempt_minute ASC
+    ) AS seq
+  FROM card_attempts
+)
+SELECT 
+  card_number_masked,
+  MIN(attempt_minute) AS attack_window_start,
+  MAX(attempt_minute) AS attack_window_end,
+  COUNT(*) AS consecutive_active_minutes
+FROM sequenced
+GROUP BY card_number_masked
+ORDER BY consecutive_active_minutes DESC;`
+        }
+      }
     }
   ];
 
@@ -1202,7 +1715,9 @@ ORDER BY total_attempts DESC;`
     outliers_having: 'amazon',
     period_deltas: 'amazon',
     running_totals: 'amazon',
-    funnel_milestones: 'amazon'
+    funnel_milestones: 'amazon',
+    deduplication_latest: 'amazon',
+    consecutive_streaks: 'amazon'
   };
 
   function getActivePattern() {
@@ -1331,14 +1846,12 @@ ORDER BY total_attempts DESC;`
       `).join('')}
 
       <div class="koma-hub-tier-label">TIER 3 &middot; ADVANCED</div>
-      <div class="koma-hub-nav-item locked">
-        <div class="koma-hub-nav-title">07. Deduplication &amp; Latest State</div>
-        <span class="koma-hub-nav-tag">CLEAN DATA</span>
-      </div>
-      <div class="koma-hub-nav-item locked">
-        <div class="koma-hub-nav-title">08. Consecutive Streaks (Gaps &amp; Islands)</div>
-        <span class="koma-hub-nav-tag">ENGAGEMENT</span>
-      </div>
+      ${PATTERNS.filter(x => x.tier === 3).map(item => `
+        <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}', ${isFullPage})">
+          <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
+          <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
+        </button>
+      `).join('')}
     `;
   }
 
@@ -1528,6 +2041,12 @@ ORDER BY total_attempts DESC;`
       }
       if (s.includes('CASE WHEN') && (s.includes('SUM(') || s.includes('COUNT('))) {
         return { id: 'funnel_milestones', title: 'Multi-Step Funnel Milestones' };
+      }
+      if ((s.includes('ROW_NUMBER(') || s.includes('QUALIFY')) && (s.includes('DESC') || s.includes('= 1'))) {
+        return { id: 'deduplication_latest', title: 'Deduplication & Latest State' };
+      }
+      if ((s.includes('DATE(') || s.includes('INTERVAL') || s.includes('STREAK')) && (s.includes('ROW_NUMBER') || s.includes('GAPS'))) {
+        return { id: 'consecutive_streaks', title: 'Consecutive Streaks (Gaps & Islands)' };
       }
       return null;
     }

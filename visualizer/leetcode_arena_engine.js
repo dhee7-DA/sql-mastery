@@ -165,7 +165,8 @@ window.LEETCODE_ARENA = (() => {
     sidebarFilter: '',
     sidebarPillar: 'all', // 'all' | 'filters' | 'joins' | 'aggs' | 'subqueries' | 'windows' | 'strings'
     sidebarDiff: 'all', // 'all' | 'Easy' | 'Medium' | 'Hard'
-    sidebarCompany: 'all', // 'all' | 'Amazon' | 'Google' | 'Meta' | 'Stripe' | 'Apple' | 'Uber' | 'Bloomberg' | 'Citadel' | 'Netflix'
+    sidebarCompany: 'all',
+    sidebarPattern: 'all', // 'all' | 'Amazon' | 'Google' | 'Meta' | 'Stripe' | 'Apple' | 'Uber' | 'Bloomberg' | 'Citadel' | 'Netflix'
     topicsSearch: '',
     topicsPillar: 'all',
     topicsDiff: 'all',
@@ -282,6 +283,75 @@ window.LEETCODE_ARENA = (() => {
       }
     });
     return { total, easy, med, hard };
+  }
+
+  // =========================================================================
+  // 80/20 UNIVERSAL SQL ARCHETYPE DETECTOR & ROSETTA STONE MAPPER
+  // =========================================================================
+  function getProblemPattern(prob) {
+    if (!prob) return null;
+    const id = Number(prob.id);
+    const sql = ((prob.solutionSQL || '') + ' ' + (prob.targetQuery || '')).toUpperCase();
+    const title = (prob.title || '').toUpperCase();
+    const desc = (prob.description || prob.prompt || '').toUpperCase();
+
+    // 1. Explicit Overrides for Famous LeetCode Problems
+    if ([183, 175, 197, 607, 1084, 1581, 1795].includes(id)) {
+      return { id: 'anti_join', num: '01', title: 'The Missing Match (Anti-Join)', shortTitle: 'Anti-Join', tagline: 'Identify unmatched, inactive, or dormant entities with LEFT JOIN ... WHERE NULL' };
+    }
+    if ([184, 185, 178, 585, 601, 1070, 1112].includes(id)) {
+      return { id: 'top_n_ranking', num: '02', title: 'Top N Per Group (Ranking)', shortTitle: 'Top N Ranking', tagline: 'Isolate top rankers per partition using ROW_NUMBER, RANK, or DENSE_RANK' };
+    }
+    if ([182, 586, 596, 619, 1050, 1141, 1484].includes(id)) {
+      return { id: 'outliers_having', num: '03', title: 'Outliers & Thresholds (HAVING)', shortTitle: 'HAVING Thresholds', tagline: 'Filter aggregated groups based on volume or anomaly thresholds' };
+    }
+    if ([180, 626, 1709, 1971, 1322].includes(id)) {
+      return { id: 'period_deltas', num: '04', title: 'Period-over-Period Deltas (LAG)', shortTitle: 'Deltas (LAG)', tagline: 'Track sequential transitions, time gaps, and offsets with LAG & LEAD' };
+    }
+    if ([534, 579, 1308, 1321, 1097].includes(id)) {
+      return { id: 'running_totals', num: '05', title: 'Cumulative & Rolling Windows', shortTitle: 'Cumulative Windows', tagline: 'Compute rolling velocity and running totals with ROWS BETWEEN frames' };
+    }
+    if ([1179, 1193, 1204, 1211, 1445, 1633].includes(id)) {
+      return { id: 'funnel_milestones', num: '06', title: 'Multi-Step Funnel Milestones', shortTitle: 'Funnel Sieve', tagline: 'Single-pass milestone pivot and conversion ratios using SUM(CASE WHEN ...)' };
+    }
+    if ([196, 511, 512, 1075, 1076].includes(id)) {
+      return { id: 'deduplication_latest', num: '07', title: 'Deduplication & Latest State', shortTitle: 'Deduplication', tagline: 'Extract single freshest snapshot from event streams using ROW_NUMBER() = 1' };
+    }
+    if ([1285, 1454, 1225, 1412, 1613].includes(id)) {
+      return { id: 'consecutive_streaks', num: '08', title: 'Consecutive Streaks (Gaps & Islands)', shortTitle: 'Consecutive Streaks', tagline: 'Isolate contiguous active date streaks using invariant date subtraction' };
+    }
+
+    // 2. Heuristic Detection
+    if (sql.includes('IS NULL') && (sql.includes('LEFT JOIN') || sql.includes('NOT EXISTS') || sql.includes('NOT IN'))) {
+      return { id: 'anti_join', num: '01', title: 'The Missing Match (Anti-Join)', shortTitle: 'Anti-Join', tagline: 'Identify unmatched or inactive entities' };
+    }
+    if ((sql.includes('DATE') || desc.includes('CONSECUTIVE') || title.includes('CONSECUTIVE') || title.includes('CONTINUOUS')) && (sql.includes('ROW_NUMBER') || desc.includes('STREAK'))) {
+      return { id: 'consecutive_streaks', num: '08', title: 'Consecutive Streaks (Gaps & Islands)', shortTitle: 'Consecutive Streaks', tagline: 'Isolate contiguous date streaks' };
+    }
+    if ((sql.includes('ROW_NUMBER()') || sql.includes('QUALIFY')) && (sql.includes('DESC') && (sql.includes('= 1') || sql.includes('RN = 1')))) {
+      return { id: 'deduplication_latest', num: '07', title: 'Deduplication & Latest State', shortTitle: 'Deduplication', tagline: 'Extract single freshest snapshot' };
+    }
+    if (sql.includes('DENSE_RANK') || (sql.includes('RANK()') && sql.includes('OVER')) || (sql.includes('ROW_NUMBER()') && sql.includes('PARTITION BY'))) {
+      return { id: 'top_n_ranking', num: '02', title: 'Top N Per Group (Ranking)', shortTitle: 'Top N Ranking', tagline: 'Isolate category leaders per group' };
+    }
+    if (sql.includes('LAG(') || sql.includes('LEAD(')) {
+      return { id: 'period_deltas', num: '04', title: 'Period-over-Period Deltas (LAG)', shortTitle: 'Deltas (LAG)', tagline: 'Track sequential transitions and offsets' };
+    }
+    if ((sql.includes('SUM(') || sql.includes('AVG(')) && sql.includes('OVER') && (sql.includes('ROWS') || sql.includes('PRECEDING'))) {
+      return { id: 'running_totals', num: '05', title: 'Cumulative & Rolling Windows', shortTitle: 'Cumulative Windows', tagline: 'Compute rolling velocity and running totals' };
+    }
+    if (sql.includes('CASE WHEN') && (sql.includes('SUM(') || sql.includes('COUNT('))) {
+      return { id: 'funnel_milestones', num: '06', title: 'Multi-Step Funnel Milestones', shortTitle: 'Funnel Sieve', tagline: 'Single-pass conditional milestone aggregation' };
+    }
+    if (sql.includes('HAVING') && sql.includes('GROUP BY')) {
+      return { id: 'outliers_having', num: '03', title: 'Outliers & Thresholds (HAVING)', shortTitle: 'HAVING Thresholds', tagline: 'Filter aggregated groups based on thresholds' };
+    }
+
+    if (sql.includes('JOIN')) {
+      return { id: 'anti_join', num: '01', title: 'The Missing Match (Anti-Join)', shortTitle: 'Anti-Join', tagline: 'Relational entity filtering and matching' };
+    }
+
+    return { id: 'top_n_ranking', num: '02', title: 'Top N Per Group (Ranking)', shortTitle: 'Top N Ranking', tagline: 'Ranking and projection archetype' };
   }
 
   function getProblemCategoryTag(p, meta) {
@@ -600,6 +670,18 @@ window.LEETCODE_ARENA = (() => {
                 <option value="Hard" ${state.sidebarDiff === 'Hard' ? 'selected' : ''}>Hard (${counts.hard})</option>
               </select>
 
+              <select id="lcFilterPattern" class="lc-compact-select" title="Filter by 80/20 Universal SQL Pattern">
+                <option value="all" ${state.sidebarPattern === 'all' ? 'selected' : ''}>Pattern: All</option>
+                <option value="anti_join" ${state.sidebarPattern === 'anti_join' ? 'selected' : ''}>01. Anti-Join</option>
+                <option value="top_n_ranking" ${state.sidebarPattern === 'top_n_ranking' ? 'selected' : ''}>02. Top N</option>
+                <option value="outliers_having" ${state.sidebarPattern === 'outliers_having' ? 'selected' : ''}>03. HAVING</option>
+                <option value="period_deltas" ${state.sidebarPattern === 'period_deltas' ? 'selected' : ''}>04. LAG</option>
+                <option value="running_totals" ${state.sidebarPattern === 'running_totals' ? 'selected' : ''}>05. Cumulative</option>
+                <option value="funnel_milestones" ${state.sidebarPattern === 'funnel_milestones' ? 'selected' : ''}>06. Funnel</option>
+                <option value="deduplication_latest" ${state.sidebarPattern === 'deduplication_latest' ? 'selected' : ''}>07. Dedup</option>
+                <option value="consecutive_streaks" ${state.sidebarPattern === 'consecutive_streaks' ? 'selected' : ''}>08. Streaks</option>
+              </select>
+
               <select id="lcFilterCompany" class="lc-compact-select" title="Filter by Company">
                 <option value="all" ${state.sidebarCompany === 'all' ? 'selected' : ''}>Co: All</option>
                 <option value="Amazon" ${state.sidebarCompany === 'Amazon' ? 'selected' : ''}>Amazon</option>
@@ -763,6 +845,14 @@ window.LEETCODE_ARENA = (() => {
       if (filterDiff) {
         filterDiff.addEventListener('change', (e) => {
           state.sidebarDiff = e.target.value;
+          renderSidebarTree();
+        });
+      }
+
+      const filterPattern = container.querySelector('#lcFilterPattern');
+      if (filterPattern) {
+        filterPattern.addEventListener('change', (e) => {
+          state.sidebarPattern = e.target.value;
           renderSidebarTree();
         });
       }
@@ -972,6 +1062,15 @@ window.LEETCODE_ARENA = (() => {
         matchingProbs = matchingProbs.filter(p => (p.companies || []).some(c => c.toLowerCase() === activeComp.toLowerCase()));
       }
 
+      // Filter by 80/20 pattern if active
+      if (state.sidebarPattern && state.sidebarPattern !== 'all') {
+        matchingProbs = matchingProbs.filter(p => {
+          const pat = getProblemPattern(p);
+          return pat && pat.id === state.sidebarPattern;
+        });
+      }
+
+
       // If filtering and no matches in this concept, skip unless title matches
       if ((filter || activeDiff !== 'all' || activeComp !== 'all') && matchingProbs.length === 0 && !meta.title.toLowerCase().includes(filter)) {
         return;
@@ -989,6 +1088,10 @@ window.LEETCODE_ARENA = (() => {
             <span class="lc-prob-dot ${diffClass}"></span>
             <span class="lc-tree-prob-id">#${p.id}</span>
             <span class="lc-tree-prob-title">${escapeHtml(p.title)}</span>
+            ${(function() {
+              const pat = getProblemPattern(p);
+              return pat ? `<span class="lc-tree-prob-pat-badge" title="${escapeHtml(pat.title)}">P${pat.num}</span>` : '';
+            })()}
             ${catTag ? `<span class="lc-tree-prob-tag">${escapeHtml(catTag)}</span>` : ''}
             ${isSolved ? '<span class="lc-tree-prob-check">✓</span>' : ''}
           </div>
@@ -1980,6 +2083,18 @@ window.LEETCODE_ARENA = (() => {
   }
 
   function renderProblemGatewaySection(prob) {
+    const pat = getProblemPattern(prob);
+    const archetypeCard = pat ? `
+      <div class="lc-gateway-card lc-gateway-archetype" onclick="try{window.location.hash=\'#patterns\';}catch(e){} selectNavView(\'viewPatternAcademy\', \'Patterns\', null); if(window.SQL_PATTERN_HUB) { window.SQL_PATTERN_HUB.selectPattern(\'${pat.id}\', true); window.SQL_PATTERN_HUB.mountView(\'viewPatternAcademy\'); }">
+        <div class="lc-gateway-info">
+          <div class="lc-gateway-tag" style="background:#27272a; color:#ffffff; font-weight:700;"><span>Pattern ${pat.num}</span><span>80/20 Universal Archetype</span></div>
+          <div class="lc-gateway-name">${escapeHtml(pat.title)}</div>
+          <div class="lc-gateway-desc">${escapeHtml(pat.tagline)}</div>
+        </div>
+        <div class="lc-gateway-action-arrow">&rarr;</div>
+      </div>
+    ` : '';
+
     const fullSql = (prob.solutionSQL || '').toUpperCase();
     const explanationText = (prob.logicBreakdown || []).join(' ').toUpperCase();
     const cards = [];
@@ -2186,6 +2301,17 @@ WHERE ;`;
               <div class="lc-machine-view-header-left">
                 <span class="lc-prob-id-badge">LEETCODE #${activeProb.id}</span>
                 <span class="lc-diff-badge lc-diff-${diffClass}">${activeProb.difficulty}</span>
+                  ${(function() {
+                    const pat = getProblemPattern(activeProb);
+                    if (!pat) return '';
+                    return `
+                      <button class="lc-pattern-pill-btn" onclick="try{window.location.hash=\'#patterns\';}catch(e){} selectNavView(\'viewPatternAcademy\', \'Patterns\', null); if(window.SQL_PATTERN_HUB) { window.SQL_PATTERN_HUB.selectPattern(\'${pat.id}\', true); window.SQL_PATTERN_HUB.mountView(\'viewPatternAcademy\'); }" title="80/20 Universal Archetype: Pattern ${pat.num} (${escapeHtml(pat.title)}). Click to study blueprint!">
+                        <span class="lc-pat-num">Pattern ${pat.num}</span>
+                        <span class="lc-pat-name">${escapeHtml(pat.shortTitle)}</span>
+                        <span class="lc-pat-arrow">&rarr;</span>
+                      </button>
+                    `;
+                  })()}
                 <h2 style="margin:0; font-size:15px; font-weight:700; color:#f8fafc;">${escapeHtml(activeProb.title)}</h2>
                 <span style="font-size:10px; padding:2px 8px; border-radius:4px; background:#18181b; color:#ffffff; border:1px solid rgba(255,255,255,0.15); font-family:'JetBrains Mono', monospace;">
                   ${chamberCount} Chambers Pipeline
@@ -2350,6 +2476,17 @@ WHERE ;`;
                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                   <span class="lc-prob-id-badge">LEETCODE #${activeProb.id}</span>
                   <span class="lc-diff-badge lc-diff-${diffClass}">${activeProb.difficulty}</span>
+                  ${(function() {
+                    const pat = getProblemPattern(activeProb);
+                    if (!pat) return '';
+                    return `
+                      <button class="lc-pattern-pill-btn" onclick="try{window.location.hash=\'#patterns\';}catch(e){} selectNavView(\'viewPatternAcademy\', \'Patterns\', null); if(window.SQL_PATTERN_HUB) window.SQL_PATTERN_HUB.selectPattern(\'${pat.id}\', true);" title="View ${escapeHtml(pat.title)} Blueprint in 80/20 Pattern Academy">
+                        <span class="lc-pat-num">Pattern ${pat.num}</span>
+                        <span class="lc-pat-name">${escapeHtml(pat.shortTitle)}</span>
+                        <span class="lc-pat-arrow">&rarr;</span>
+                      </button>
+                    `;
+                  })()}
                   <div class="lc-prob-companies-strip" style="display: inline-flex; align-items: center; gap: 5px; margin-left: 6px; flex-wrap: wrap;">
                     <span style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em;">Asked at:</span>
                     ${((activeProb.companies && activeProb.companies.length > 0) ? activeProb.companies : ['Meta', 'Amazon', 'Google']).map(c => `

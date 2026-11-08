@@ -256,9 +256,9 @@
   height: 10px;
   border-radius: 50%;
 }
-.koma-dot-red { background: #ff5f56; opacity: 0.85; }
-.koma-dot-yellow { background: #ffbd2e; opacity: 0.85; }
-.koma-dot-green { background: #27c93f; opacity: 0.85; }
+.koma-dot-red { background: #27272a; }
+.koma-dot-yellow { background: #3f3f46; }
+.koma-dot-green { background: #52525b; }
 
 .koma-session-bar {
   display: flex;
@@ -471,9 +471,9 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(78, 201, 176, 0.16);
-  border: 1px solid rgba(78, 201, 176, 0.45);
-  color: #4ec9b0;
+  background: #27272a;
+  border: 1px solid #3f3f46;
+  color: #ffffff;
   border-radius: 4px;
   padding: 4px 10px;
   font-size: 11px;
@@ -484,18 +484,19 @@
 }
 
 .koma-btn-run:hover {
-  background: rgba(78, 201, 176, 0.28);
-  border-color: #4ec9b0;
-  box-shadow: 0 0 10px rgba(78, 201, 176, 0.2);
+  background: #3f3f46;
+  border-color: #52525b;
+  color: #ffffff;
+  box-shadow: none;
 }
 
 .koma-btn-run .koma-kbd {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(78, 201, 176, 0.3);
+  background: #18181b;
+  border: 1px solid #27272a;
   border-radius: 3px;
   padding: 1px 5px;
   font-size: 9.5px;
-  color: #a7f3d0;
+  color: #a1a1aa;
 }
 
 .koma-btn-toolbar {
@@ -584,7 +585,7 @@
 }
 
 .koma-code-textarea::selection {
-  background: rgba(78, 201, 176, 0.25);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .koma-line {
@@ -638,9 +639,9 @@
   font-size: 10px;
   padding: 2px 7px;
   border-radius: 4px;
-  background: rgba(78, 201, 176, 0.1);
-  border: 1px solid rgba(78, 201, 176, 0.3);
-  color: #4ec9b0;
+  background: #18181b;
+  border: 1px solid #27272a;
+  color: #d4d4d8;
   font-family: var(--koma-font-mono);
   display: inline-flex;
   align-items: center;
@@ -651,8 +652,8 @@
   padding: 2px 7px;
   border-radius: 4px;
   background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.35);
-  color: #ef4444;
+  border: 1px solid #27272a;
+  color: #a1a1aa;
   font-family: var(--koma-font-mono);
   display: inline-flex;
   align-items: center;
@@ -676,7 +677,7 @@
   border-radius: 6px;
   background: rgba(239, 68, 68, 0.08);
   border: 1px solid rgba(239, 68, 68, 0.25);
-  color: #fca5a5;
+  color: #71717a;
   font-family: var(--koma-font-mono);
   font-size: 11.5px;
 }
@@ -684,7 +685,7 @@
 .koma-sink-error-title {
   font-weight: 600;
   margin-bottom: 6px;
-  color: #ef4444;
+  color: #a1a1aa;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1342,7 +1343,7 @@
   border-radius: 4px;
   background: rgba(16, 185, 129, 0.12);
   border: 1px solid rgba(16, 185, 129, 0.25);
-  color: #34d399;
+  color: #ffffff;
 }
 
 .koma-step-explanation-text {
@@ -1356,7 +1357,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  background: rgba(245, 158, 11, 0.08);
+  background: #18181b;
   border: 1px solid rgba(245, 158, 11, 0.22);
   border-radius: 5px;
   padding: 9px 12px;
@@ -1372,11 +1373,11 @@
 .koma-rule-text {
   font-size: 11.5px;
   line-height: 1.5;
-  color: #fde68a;
+  color: #d4d4d8;
 }
 
 .koma-rule-text strong {
-  color: #fbbf24;
+  color: #d4d4d8;
 }
 
 /* Code Slice in Stepper */
@@ -1445,7 +1446,7 @@
   flex-direction: column;
   gap: 12px;
   background: #141417;
-  border: 1px solid rgba(239, 68, 68, 0.35);
+  border: 1px solid #27272a;
   border-radius: 8px;
   padding: 16px 18px;
   box-shadow: 0 4px 24px rgba(239, 68, 68, 0.08);
@@ -1467,9 +1468,9 @@
 }
 
 .koma-doctor-badge {
-  background: rgba(239, 68, 68, 0.14);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: #18181b;
+  color: #ffffff;
+  border: 1px solid #27272a;
   font-family: var(--koma-font-mono);
   font-size: 11px;
   font-weight: 700;
@@ -1488,7 +1489,7 @@
 
 .koma-doctor-line-tag {
   background: #27272a;
-  color: #fbbf24;
+  color: #d4d4d8;
   font-family: var(--koma-font-mono);
   font-size: 10.5px;
   font-weight: 700;
@@ -1533,8 +1534,8 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.25);
+  background: #18181b;
+  border: 1px solid #27272a;
   border-radius: 6px;
   padding: 10px 12px;
 }
@@ -1547,7 +1548,7 @@
 .koma-doctor-rule-text {
   font-size: 12px;
   line-height: 1.5;
-  color: #fde68a;
+  color: #d4d4d8;
 }
 
 /* Diff Comparison Box */
@@ -1571,21 +1572,21 @@
 }
 
 .koma-doctor-diff-row.diff-bad {
-  color: #f87171;
+  color: #ffffff;
 }
 
 .koma-doctor-diff-row.diff-bad code {
-  color: #fca5a5;
+  color: #71717a;
   text-decoration: line-through;
   opacity: 0.85;
 }
 
 .koma-doctor-diff-row.diff-good {
-  color: #34d399;
+  color: #ffffff;
 }
 
 .koma-doctor-diff-row.diff-good code {
-  color: #6ee7b7;
+  color: #ffffff;
   font-weight: 700;
 }
 
@@ -1605,7 +1606,7 @@
 }
 
 .koma-doctor-btn-autofix {
-  background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+  background: #ffffff;
   color: #000000;
   font-weight: 700;
   font-family: var(--koma-font-mono);
@@ -1623,7 +1624,7 @@
 
 .koma-doctor-btn-autofix:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 18px rgba(56, 189, 248, 0.5);
+  box-shadow: none;
 }
 
 .koma-doctor-btn-reset {
@@ -1668,7 +1669,7 @@
   border: 1px solid #202024;
   border-radius: 4px;
   padding: 8px 10px;
-  color: #ef4444;
+  color: #a1a1aa;
   font-family: var(--koma-font-mono);
   font-size: 11px;
   overflow-x: auto;
@@ -1926,7 +1927,7 @@
 
 .status-discarded {
   background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
+  color: #ffffff;
   border: 1px solid rgba(239, 68, 68, 0.4);
 }
 
@@ -1965,7 +1966,7 @@
 /* 1-Click In-Editor Autofix Banner */
 .koma-autofix-banner {
   background: #171513;
-  border: 1px solid rgba(245, 158, 11, 0.45);
+  border: 1px solid #3f3f46;
   border-left: 4px solid #f59e0b;
   border-radius: 6px;
   padding: 8px 14px;
@@ -2061,15 +2062,15 @@
 }
 
 .koma-btn-autofix-dismiss:hover {
-  color: #ef4444;
+  color: #a1a1aa;
   background: rgba(239, 68, 68, 0.15);
 }
 
 .koma-btn-toolbar-fix {
-  background: rgba(245, 158, 11, 0.16);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.45);
-  animation: komaGlowAmber 2s infinite ease-in-out;
+  background: #27272a;
+  color: #d4d4d8;
+  border: 1px solid #3f3f46;
+  /* animation removed */
   padding: 4px 10px;
   border-radius: 4px;
   font-size: 11px;
@@ -2144,10 +2145,10 @@
 
 .koma-clause-chip.chip-select .chip-kw { color: #38bdf8; }
 .koma-clause-chip.chip-col .chip-col-name { color: #38bdf8; }
-.koma-clause-chip.chip-from .chip-kw { color: #fbbf24; }
-.koma-clause-chip.chip-where .chip-kw { color: #34d399; }
+.koma-clause-chip.chip-from .chip-kw { color: #d4d4d8; }
+.koma-clause-chip.chip-where .chip-kw { color: #ffffff; }
 .koma-clause-chip.chip-order .chip-kw { color: #a78bfa; }
-.koma-clause-chip.chip-limit .chip-kw { color: #f87171; }
+.koma-clause-chip.chip-limit .chip-kw { color: #ffffff; }
 
 .koma-clause-chip:hover, .koma-clause-chip.active {
   transform: translateY(-1px);
@@ -2160,13 +2161,13 @@
 }
 
 .koma-clause-chip.chip-from:hover {
-  border-color: #fbbf24;
+  border-color: #d4d4d8;
   background: rgba(251, 191, 36, 0.18);
   box-shadow: 0 2px 8px rgba(251, 191, 36, 0.25);
 }
 
 .koma-clause-chip.chip-where:hover {
-  border-color: #34d399;
+  border-color: #ffffff;
   background: rgba(52, 211, 153, 0.18);
   box-shadow: 0 2px 8px rgba(52, 211, 153, 0.25);
 }
@@ -2178,7 +2179,7 @@
 }
 
 .koma-clause-chip.chip-limit:hover {
-  border-color: #f87171;
+  border-color: #ffffff;
   background: rgba(248, 113, 113, 0.18);
   box-shadow: 0 2px 8px rgba(248, 113, 113, 0.25);
 }
@@ -2205,13 +2206,13 @@
 
 .highlight-banner-where {
   background: rgba(52, 211, 153, 0.12);
-  color: #34d399;
+  color: #ffffff;
   border: 1px solid rgba(52, 211, 153, 0.35);
 }
 
 .highlight-banner-from {
   background: rgba(251, 191, 36, 0.12);
-  color: #fbbf24;
+  color: #d4d4d8;
   border: 1px solid rgba(251, 191, 36, 0.35);
 }
 

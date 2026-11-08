@@ -2324,6 +2324,7 @@ const NAV_GROUPS_MAP = {
   viewMotionDeck: { triggerId: 'btnGroupExplore', pillId: null, label: 'Topic Motion Deck' },
 
   viewLandingPage: { triggerId: 'btnNavHome', pillId: null, label: 'Home' },
+  viewPatternAcademy: { triggerId: 'btnNavPatternAcademy', pillId: null, label: 'Patterns' },
   viewMasteryCourse: { triggerId: 'btnNavMasteryCourse', pillId: null, label: 'Course' },
   viewLearningJourney: { triggerId: 'btnGroupExplore', pillId: null, label: 'Learning Journey' },
   viewLeetCode50: { triggerId: 'btnNavLeetCode', pillId: null, label: 'LeetCode 323' },
@@ -2366,6 +2367,11 @@ function switchMainView(targetId) {
   }
 
   // Lazy render on view switch
+  if (targetId === 'viewPatternAcademy') {
+    if (window.SQL_PATTERN_HUB && typeof window.SQL_PATTERN_HUB.mountView === 'function') {
+      window.SQL_PATTERN_HUB.mountView('viewPatternAcademy');
+    }
+  }
   if (targetId === 'viewMasteryCourse') {
     if (window.MasteryCourseEngine && typeof window.MasteryCourseEngine.init === 'function') {
       window.MasteryCourseEngine.init();

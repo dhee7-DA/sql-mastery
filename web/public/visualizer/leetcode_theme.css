@@ -4803,3 +4803,59 @@ body.lc-zen-mode .lc-arena-shell {
   background: rgba(239, 68, 68, 0.2) !important;
   color: #f87171 !important;
 }
+
+/* ========================================================================== */
+/* 80/20 UNIVERSAL ARCHETYPE MONOCHROME BADGES & GATEWAYS                     */
+/* ========================================================================== */
+.lc-pattern-pill-btn {
+  background: #18181b;
+  border: 1px solid #3f3f46;
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 2px 9px;
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  line-height: 1.4;
+}
+
+.lc-pattern-pill-btn:hover {
+  background: #27272a;
+  border-color: #52525b;
+}
+
+.lc-pat-num {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.lc-pat-name {
+  color: #d4d4d8;
+}
+
+.lc-pat-arrow {
+  color: #71717a;
+  font-size: 10px;
+}
+
+.lc-tree-prob-pat-badge {
+  font-size: 9px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  background: #27272a;
+  color: #38bdf8;
+  border: 1px solid #3f3f46;
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+
+.lc-gateway-archetype {
+  border-left: 3px solid #38bdf8 !important;
+}
