@@ -1822,7 +1822,7 @@ function initThemeController() {
   function handleHashRoute() {
     const hash = (window.location.hash || '').toLowerCase();
     if (hash === '#patterns' || hash === '#pattern-academy' || hash === '#recipes') {
-      if (typeof selectNavView === 'function') selectNavView('viewPatternAcademy', '80/20 Patterns', null);
+      if (typeof selectNavView === 'function') selectNavView('viewPatternAcademy', 'Patterns', null);
       if (window.SQL_PATTERN_HUB && typeof window.SQL_PATTERN_HUB.mountView === 'function') {
         window.SQL_PATTERN_HUB.mountView('viewPatternAcademy');
       }
@@ -2479,6 +2479,12 @@ function switchMainView(targetId) {
   if (targetId === 'viewCompanyHub') {
     if (window.CompanyMasteryEngine) window.CompanyMasteryEngine.init();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏛️ Welcome to the Institutional Domain & Company Hub! 10 Industry Verticals, 70+ Premier Employers, and curated LeetCode drills loaded!", 5000, 'celebrate');
+  }
+  if (targetId === 'viewPatternAcademy') {
+    if (targetView) targetView.scrollTop = 0;
+    if (window.SQL_PATTERN_HUB && typeof window.SQL_PATTERN_HUB.mountView === 'function') {
+      window.SQL_PATTERN_HUB.mountView('viewPatternAcademy');
+    }
   }
   if (targetId === 'viewLandingPage') {
 

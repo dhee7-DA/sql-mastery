@@ -213,12 +213,12 @@
               </button>
 
                             <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Universal SQL Archetypes</div>
-              <button class="nav-dropdown-item nav-tab" onclick="window.SQL_PATTERN_HUB &amp;&amp; window.SQL_PATTERN_HUB.open()">
-                <span class="nav-item-icon" style="color:#c084fc;">🧬</span>
+              <button class="nav-dropdown-item nav-tab" onclick="try{window.location.hash='#patterns';}catch(e){} selectNavView('viewPatternAcademy', 'Patterns', null); if(window.SQL_PATTERN_HUB) window.SQL_PATTERN_HUB.mountView('viewPatternAcademy');">
+                <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
                   <div class="nav-item-title-row">
-                    <span class="nav-item-title" style="color:#c084fc;">80/20 Pattern Academy</span>
-                    <span class="nav-item-tag accent" style="background:#2e1065; color:#c084fc; border:1px solid #7c3aed;">6 Archetypes</span>
+                    <span class="nav-item-title">SQL Pattern Academy</span>
+                    <span class="nav-item-tag" style="background:#27272a; color:#ffffff; font-weight:700;">6 Archetypes</span>
                   </div>
                   <span class="nav-item-desc">Master the vital 20% of patterns that solve 80% of company queries</span>
                 </div>
@@ -2121,7 +2121,12 @@
     function routeView() {
       const rawHash = (window.location.hash || '').replace('#', '');
       const hash = rawHash.toLowerCase();
-      if (hash.startsWith('course') || hash.startsWith('mastery') || hash.startsWith('curriculum')) {
+      if (hash === 'patterns' || hash === 'pattern' || hash === 'pattern-academy' || hash === 'recipes') {
+        if (typeof window.selectNavView === 'function') window.selectNavView('viewPatternAcademy', 'Patterns', null);
+        if (window.SQL_PATTERN_HUB && typeof window.SQL_PATTERN_HUB.mountView === 'function') {
+          window.SQL_PATTERN_HUB.mountView('viewPatternAcademy');
+        }
+      } else if (hash.startsWith('course') || hash.startsWith('mastery') || hash.startsWith('curriculum')) {
         if (typeof window.selectNavView === 'function') window.selectNavView('viewMasteryCourse', 'Course', null);
         const parts = rawHash.split(':');
         if (parts[1] && window.MasteryCourseEngine && typeof window.MasteryCourseEngine.selectPhase === 'function') {

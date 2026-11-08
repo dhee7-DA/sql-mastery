@@ -1,7 +1,6 @@
 /**
- * SQL FOUNDRY - 80/20 UNIVERSAL PATTERN ACADEMY
- * Master the vital 20% of SQL archetypes that solve 80% of company database questions.
- * Deep subtopic stepping stones, visual mental models, and handcrafted dark-theme SVGs.
+ * SQL FOUNDRY - 80/20 UNIVERSAL SQL PATTERN ACADEMY
+ * Clean Monochrome Architectural Theme - Only SQL Keywords Are Colored.
  */
 
 (function(window) {
@@ -16,8 +15,26 @@
       .replace(/"/g, '&quot;');
   }
 
+  function highlightSql(sql) {
+    if (!sql) return '';
+    let escaped = escapeHtml(sql);
+    const keywords = [
+      'SELECT', 'DISTINCT', 'FROM', 'LEFT JOIN', 'INNER JOIN', 'JOIN', 'ON', 'AND', 'OR', 'NOT',
+      'WHERE', 'IS NULL', 'IS NOT NULL', 'NULL', 'ORDER BY', 'GROUP BY', 'HAVING', 'WITH', 'AS',
+      'OVER', 'PARTITION BY', 'ROWS BETWEEN', 'UNBOUNDED PRECEDING', 'CURRENT ROW', 'PRECEDING',
+      'FOLLOWING', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'ASC', 'DESC', 'DATE', 'SUBSTR',
+      'COUNT', 'SUM', 'AVG', 'ROUND', 'LAG', 'LEAD', 'ROW_NUMBER', 'DENSE_RANK', 'RANK'
+    ];
+    keywords.sort((a, b) => b.length - a.length);
+    keywords.forEach(kw => {
+      const regex = new RegExp('\\b(' + kw.replace(/\s+/g, '\\s+') + ')\\b', 'gi');
+      escaped = escaped.replace(regex, '<span style="color:#38bdf8; font-weight:600;">$1</span>');
+    });
+    return escaped;
+  }
+
   // ===========================================================================
-  // SVG DIAGRAM GENERATORS (Handcrafted with dark Koma.run styling)
+  // SVG DIAGRAM GENERATORS (Strict Monochrome Blueprint - SQL Keywords Colored)
   // ===========================================================================
 
   const SVG_LIBRARY = {
@@ -25,117 +42,105 @@
     joinComparison: function() {
       return `
         <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="gradCyan" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.25"/>
-              <stop offset="100%" stop-color="#0284c7" stop-opacity="0.1"/>
-            </linearGradient>
-            <linearGradient id="gradGreen" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#34d399" stop-opacity="0.25"/>
-              <stop offset="100%" stop-color="#059669" stop-opacity="0.1"/>
-            </linearGradient>
-            <linearGradient id="gradRed" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#f87171" stop-opacity="0.25"/>
-              <stop offset="100%" stop-color="#dc2626" stop-opacity="0.1"/>
-            </linearGradient>
-          </defs>
-
-          <!-- Background Card -->
-          <rect x="0" y="0" width="680" height="230" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
 
           <!-- LEFT SIDE: INNER JOIN -->
           <g transform="translate(20, 20)">
-            <text x="140" y="22" text-anchor="middle" fill="#94a3b8" font-size="12" font-weight="700" letter-spacing="0.05em">INNER JOIN (ONLY MATCHES)</text>
+            <text x="140" y="22" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8" font-weight="700">INNER JOIN</tspan> (ONLY MATCHES)
+            </text>
             
             <!-- Table A -->
-            <rect x="20" y="40" width="110" height="130" rx="6" fill="#18181b" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="2 2"/>
-            <text x="75" y="58" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="600">USERS (3)</text>
-            <rect x="30" y="68" width="90" height="24" rx="4" fill="#27272a"/>
-            <text x="75" y="84" text-anchor="middle" fill="#e4e4e7" font-size="10">User #1</text>
-            <rect x="30" y="98" width="90" height="24" rx="4" fill="#27272a"/>
-            <text x="75" y="114" text-anchor="middle" fill="#e4e4e7" font-size="10">User #2</text>
-            <rect x="30" y="128" width="90" height="24" rx="4" fill="url(#gradRed)" stroke="#f87171" stroke-width="1" stroke-dasharray="3 3"/>
-            <text x="75" y="144" text-anchor="middle" fill="#f87171" font-size="10">User #3 (No buy)</text>
+            <rect x="20" y="40" width="110" height="130" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="75" y="58" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="600" font-family="monospace">USERS (3)</text>
+            <rect x="30" y="68" width="90" height="24" rx="2" fill="#222226"/>
+            <text x="75" y="84" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">User #1</text>
+            <rect x="30" y="98" width="90" height="24" rx="2" fill="#222226"/>
+            <text x="75" y="114" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">User #2</text>
+            <rect x="30" y="128" width="90" height="24" rx="2" fill="#18181b" stroke="#52525b" stroke-width="1" stroke-dasharray="2 2"/>
+            <text x="75" y="144" text-anchor="middle" fill="#71717a" font-size="10" font-family="monospace">User #3</text>
 
             <!-- Table B -->
-            <rect x="160" y="40" width="110" height="130" rx="6" fill="#18181b" stroke="#34d399" stroke-width="1.5" stroke-dasharray="2 2"/>
-            <text x="215" y="58" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">ORDERS (2)</text>
-            <rect x="170" y="68" width="90" height="24" rx="4" fill="#27272a"/>
-            <text x="215" y="84" text-anchor="middle" fill="#e4e4e7" font-size="10">Order #101</text>
-            <rect x="170" y="98" width="90" height="24" rx="4" fill="#27272a"/>
-            <text x="215" y="114" text-anchor="middle" fill="#e4e4e7" font-size="10">Order #102</text>
+            <rect x="160" y="40" width="110" height="130" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="215" y="58" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="600" font-family="monospace">ORDERS (2)</text>
+            <rect x="170" y="68" width="90" height="24" rx="2" fill="#222226"/>
+            <text x="215" y="84" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Order #101</text>
+            <rect x="170" y="98" width="90" height="24" rx="2" fill="#222226"/>
+            <text x="215" y="114" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Order #102</text>
 
-            <text x="140" y="190" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="600">💥 User #3 ERASED from results!</text>
+            <text x="140" y="190" text-anchor="middle" fill="#71717a" font-size="10.5" font-family="monospace">User #3 excluded from result set</text>
           </g>
 
           <!-- Divider -->
-          <line x1="340" y1="20" x2="340" y2="210" stroke="#26262b" stroke-width="1" stroke-dasharray="4 4"/>
+          <line x1="340" y1="20" x2="340" y2="210" stroke="#27272a" stroke-width="1" stroke-dasharray="3 3"/>
 
           <!-- RIGHT SIDE: LEFT JOIN -->
           <g transform="translate(360, 20)">
-            <text x="140" y="22" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700" letter-spacing="0.05em">LEFT JOIN (KEEPS HOLES AS NULL)</text>
+            <text x="140" y="22" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8" font-weight="700">LEFT JOIN</tspan> (KEEPS UNMATCHED)
+            </text>
             
             <!-- Table A -->
-            <rect x="20" y="40" width="110" height="130" rx="6" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
-            <text x="75" y="58" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="600">USERS (3)</text>
-            <rect x="30" y="68" width="90" height="24" rx="4" fill="#27272a"/>
-            <text x="75" y="84" text-anchor="middle" fill="#e4e4e7" font-size="10">User #1</text>
-            <rect x="30" y="98" width="90" height="24" rx="4" fill="#27272a"/>
-            <text x="75" y="114" text-anchor="middle" fill="#e4e4e7" font-size="10">User #2</text>
-            <rect x="30" y="128" width="90" height="24" rx="4" fill="#1e293b" stroke="#38bdf8" stroke-width="1"/>
-            <text x="75" y="144" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="600">User #3 ★</text>
+            <rect x="20" y="40" width="110" height="130" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="75" y="58" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="600" font-family="monospace">USERS (3)</text>
+            <rect x="30" y="68" width="90" height="24" rx="2" fill="#222226"/>
+            <text x="75" y="84" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">User #1</text>
+            <rect x="30" y="98" width="90" height="24" rx="2" fill="#222226"/>
+            <text x="75" y="114" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">User #2</text>
+            <rect x="30" y="128" width="90" height="24" rx="2" fill="#27272a" stroke="#52525b" stroke-width="1"/>
+            <text x="75" y="144" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="600" font-family="monospace">User #3</text>
 
             <!-- Table B -->
-            <rect x="160" y="40" width="110" height="130" rx="6" fill="#18181b" stroke="#34d399" stroke-width="1.5"/>
-            <text x="215" y="58" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">MATCHED</text>
-            <rect x="170" y="68" width="90" height="24" rx="4" fill="#27272a"/>
-            <text x="215" y="84" text-anchor="middle" fill="#e4e4e7" font-size="10">Order #101</text>
-            <rect x="170" y="98" width="90" height="24" rx="4" fill="#27272a"/>
-            <text x="215" y="114" text-anchor="middle" fill="#e4e4e7" font-size="10">Order #102</text>
-            <rect x="170" y="128" width="90" height="24" rx="4" fill="#3f2e10" stroke="#f59e0b" stroke-width="1" stroke-dasharray="2 2"/>
-            <text x="215" y="144" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">NULL (Target!)</text>
+            <rect x="160" y="40" width="110" height="130" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="215" y="58" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="600" font-family="monospace">MATCHED</text>
+            <rect x="170" y="68" width="90" height="24" rx="2" fill="#222226"/>
+            <text x="215" y="84" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Order #101</text>
+            <rect x="170" y="98" width="90" height="24" rx="2" fill="#222226"/>
+            <text x="215" y="114" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Order #102</text>
+            <rect x="170" y="128" width="90" height="24" rx="2" fill="#18181b" stroke="#52525b" stroke-width="1" stroke-dasharray="2 2"/>
+            <text x="215" y="144" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">NULL (Target)</text>
 
-            <text x="140" y="190" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">🎯 User #3 SURVIVES with NULL slot</text>
+            <text x="140" y="190" text-anchor="middle" fill="#d4d4d8" font-size="10.5" font-family="monospace">User #3 preserved with NULL placeholder</text>
           </g>
         </svg>
       `;
     },
 
-    // 1.2: The Anti-Join Filter (WHERE right_table.id IS NULL)
+    // 1.2: The Anti-Join Filter
     antiJoinFilter: function() {
       return `
         <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="180" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+          <rect x="0" y="0" width="680" height="180" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
           
           <g transform="translate(30, 20)">
-            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">THE 3-STAGE "HOLE HUNTER" PIPELINE</text>
+            <text x="310" y="20" text-anchor="middle" fill="#d4d4d8" font-size="12" font-weight="600" font-family="monospace">THE 3-STAGE ANTI-JOIN PIPELINE</text>
 
             <!-- Stage 1 -->
-            <rect x="10" y="45" width="170" height="90" rx="6" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
-            <text x="95" y="68" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">1. LEFT JOIN</text>
-            <text x="95" y="88" text-anchor="middle" fill="#94a3b8" font-size="10">Attaches orders</text>
-            <text x="95" y="104" text-anchor="middle" fill="#94a3b8" font-size="10">Creates NULL holes</text>
-            <text x="95" y="122" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="monospace">All Users Kept</text>
+            <rect x="10" y="45" width="170" height="90" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="95" y="68" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">1. <tspan fill="#38bdf8">LEFT JOIN</tspan></text>
+            <text x="95" y="88" text-anchor="middle" fill="#888888" font-size="10">Attaches orders</text>
+            <text x="95" y="104" text-anchor="middle" fill="#888888" font-size="10">Creates NULL slots</text>
+            <text x="95" y="122" text-anchor="middle" fill="#d4d4d8" font-size="9" font-family="monospace">All Users Kept</text>
 
             <!-- Arrow 1 -->
-            <path d="M 195 90 L 225 90" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowCyan)"/>
+            <path d="M 195 90 L 225 90" stroke="#52525b" stroke-width="1.5"/>
 
             <!-- Stage 2 -->
-            <rect x="235" y="45" width="180" height="90" rx="6" fill="#271c10" stroke="#f59e0b" stroke-width="1.5"/>
-            <text x="325" y="68" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">2. WHERE order_id IS NULL</text>
-            <text x="325" y="88" text-anchor="middle" fill="#d4d4d8" font-size="10">The Filter Sieve</text>
-            <text x="325" y="104" text-anchor="middle" fill="#a1a1aa" font-size="10">Discards all matching rows</text>
-            <text x="325" y="122" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="monospace">Holes Isolated</text>
+            <rect x="235" y="45" width="180" height="90" rx="3" fill="#18181b" stroke="#52525b" stroke-width="1"/>
+            <text x="325" y="68" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">2. <tspan fill="#38bdf8">WHERE</tspan> id <tspan fill="#38bdf8">IS NULL</tspan></text>
+            <text x="325" y="88" text-anchor="middle" fill="#888888" font-size="10">Filter Sieve</text>
+            <text x="325" y="104" text-anchor="middle" fill="#888888" font-size="10">Discards matching rows</text>
+            <text x="325" y="122" text-anchor="middle" fill="#d4d4d8" font-size="9" font-family="monospace">Holes Isolated</text>
 
             <!-- Arrow 2 -->
-            <path d="M 430 90 L 460 90" stroke="#34d399" stroke-width="2"/>
+            <path d="M 430 90 L 460 90" stroke="#52525b" stroke-width="1.5"/>
 
             <!-- Stage 3 -->
-            <rect x="470" y="45" width="160" height="90" rx="6" fill="#062e20" stroke="#34d399" stroke-width="1.5"/>
-            <text x="550" y="68" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">3. CHURNED OUTPUT</text>
-            <text x="550" y="88" text-anchor="middle" fill="#6ee7b7" font-size="10">Exact Dormant Users</text>
-            <text x="550" y="104" text-anchor="middle" fill="#a7f3d0" font-size="10">Ready for Marketing</text>
-            <text x="550" y="122" text-anchor="middle" fill="#34d399" font-size="9" font-family="monospace">Zero Inactive Dropped</text>
+            <rect x="470" y="45" width="160" height="90" rx="3" fill="#222226" stroke="#71717a" stroke-width="1"/>
+            <text x="550" y="68" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">3. OUTPUT RESULT</text>
+            <text x="550" y="88" text-anchor="middle" fill="#888888" font-size="10">Exact Dormant Entities</text>
+            <text x="550" y="104" text-anchor="middle" fill="#888888" font-size="10">Clean Result Set</text>
+            <text x="550" y="122" text-anchor="middle" fill="#ffffff" font-size="9" font-family="monospace">Zero Inactive Dropped</text>
           </g>
         </svg>
       `;
@@ -145,101 +150,103 @@
     partitionVsGroupBy: function() {
       return `
         <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="230" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
 
           <!-- GROUP BY side -->
           <g transform="translate(25, 20)">
-            <text x="140" y="20" text-anchor="middle" fill="#f87171" font-size="12" font-weight="700">GROUP BY (SQUASHES ROWS)</text>
+            <text x="140" y="20" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8" font-weight="700">GROUP BY</tspan> (SQUASHES ROWS)
+            </text>
             
-            <rect x="20" y="40" width="240" height="130" rx="6" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
-            <text x="50" y="65" fill="#a1a1aa" font-size="10">6 Raw Rows</text>
-            <rect x="40" y="75" width="80" height="18" rx="3" fill="#27272a"/>
-            <text x="80" y="88" text-anchor="middle" fill="#71717a" font-size="9">Shoes #1 ($80)</text>
-            <rect x="40" y="98" width="80" height="18" rx="3" fill="#27272a"/>
-            <text x="80" y="111" text-anchor="middle" fill="#71717a" font-size="9">Shoes #2 ($120)</text>
-            <rect x="40" y="121" width="80" height="18" rx="3" fill="#27272a"/>
-            <text x="80" y="134" text-anchor="middle" fill="#71717a" font-size="9">Shoes #3 ($45)</text>
+            <rect x="20" y="40" width="240" height="130" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="50" y="65" fill="#71717a" font-size="10" font-family="monospace">6 Raw Rows</text>
+            <rect x="40" y="75" width="80" height="18" rx="2" fill="#222226"/>
+            <text x="80" y="88" text-anchor="middle" fill="#888888" font-size="9" font-family="monospace">Item #1 ($80)</text>
+            <rect x="40" y="98" width="80" height="18" rx="2" fill="#222226"/>
+            <text x="80" y="111" text-anchor="middle" fill="#888888" font-size="9" font-family="monospace">Item #2 ($120)</text>
+            <rect x="40" y="121" width="80" height="18" rx="2" fill="#222226"/>
+            <text x="80" y="134" text-anchor="middle" fill="#888888" font-size="9" font-family="monospace">Item #3 ($45)</text>
 
-            <path d="M 130 107 L 160 107" stroke="#f87171" stroke-width="1.5"/>
+            <path d="M 130 107 L 160 107" stroke="#52525b" stroke-width="1.5"/>
 
-            <rect x="170" y="75" width="75" height="64" rx="4" fill="#3f1212" stroke="#ef4444" stroke-width="1"/>
-            <text x="207" y="95" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="700">Only 1 Summary</text>
-            <text x="207" y="115" text-anchor="middle" fill="#ffffff" font-size="9">SUM = $245</text>
+            <rect x="170" y="75" width="75" height="64" rx="3" fill="#222226" stroke="#52525b" stroke-width="1"/>
+            <text x="207" y="95" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="700" font-family="monospace">1 Summary</text>
+            <text x="207" y="115" text-anchor="middle" fill="#d4d4d8" font-size="9" font-family="monospace">SUM = $245</text>
 
-            <text x="140" y="190" text-anchor="middle" fill="#ef4444" font-size="10">⚠️ Individual items destroyed!</text>
+            <text x="140" y="190" text-anchor="middle" fill="#71717a" font-size="10" font-family="monospace">Individual row details collapsed</text>
           </g>
 
-          <line x1="335" y1="20" x2="335" y2="210" stroke="#26262b" stroke-width="1" stroke-dasharray="4 4"/>
+          <line x1="335" y1="20" x2="335" y2="210" stroke="#27272a" stroke-width="1" stroke-dasharray="3 3"/>
 
           <!-- PARTITION BY side -->
           <g transform="translate(350, 20)">
-            <text x="150" y="20" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700">PARTITION BY (KEEPS ROWS + ADDS RANK)</text>
+            <text x="150" y="20" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8" font-weight="700">PARTITION BY</tspan> (PRESERVES ROWS)
+            </text>
             
-            <rect x="15" y="40" width="280" height="130" rx="6" fill="#18181b" stroke="#0284c7" stroke-width="1"/>
+            <rect x="15" y="40" width="280" height="130" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
             
             <!-- Table Header -->
-            <text x="45" y="60" fill="#94a3b8" font-size="10" font-weight="600">Department</text>
-            <text x="140" y="60" fill="#94a3b8" font-size="10" font-weight="600">Product</text>
-            <text x="245" y="60" fill="#38bdf8" font-size="10" font-weight="700">ROW_NUMBER</text>
+            <text x="45" y="60" fill="#71717a" font-size="10" font-weight="600" font-family="monospace">Category</text>
+            <text x="140" y="60" fill="#71717a" font-size="10" font-weight="600" font-family="monospace">Item</text>
+            <text x="245" y="60" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">ROW_NUMBER</text>
 
             <line x1="25" y1="68" x2="285" y2="68" stroke="#27272a" stroke-width="1"/>
 
-            <!-- Row 1 -->
-            <text x="45" y="86" fill="#e4e4e7" font-size="9">Shoes</text>
-            <text x="140" y="86" fill="#e4e4e7" font-size="9">Nike Air ($120)</text>
-            <rect x="235" y="74" width="40" height="16" rx="3" fill="#047857"/>
-            <text x="255" y="86" text-anchor="middle" fill="#a7f3d0" font-size="9" font-weight="700">#1 🥇</text>
+            <!-- Rows -->
+            <text x="45" y="86" fill="#d4d4d8" font-size="9" font-family="monospace">Shoes</text>
+            <text x="140" y="86" fill="#d4d4d8" font-size="9" font-family="monospace">Nike ($120)</text>
+            <rect x="235" y="74" width="30" height="16" rx="2" fill="#27272a" stroke="#52525b" stroke-width="1"/>
+            <text x="250" y="86" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="700" font-family="monospace">1</text>
 
-            <!-- Row 2 -->
-            <text x="45" y="110" fill="#e4e4e7" font-size="9">Shoes</text>
-            <text x="140" y="110" fill="#e4e4e7" font-size="9">Adidas ($80)</text>
-            <rect x="235" y="98" width="40" height="16" rx="3" fill="#1d4ed8"/>
-            <text x="255" y="110" text-anchor="middle" fill="#bfdbfe" font-size="9" font-weight="700">#2 🥈</text>
+            <text x="45" y="110" fill="#d4d4d8" font-size="9" font-family="monospace">Shoes</text>
+            <text x="140" y="110" fill="#d4d4d8" font-size="9" font-family="monospace">Adidas ($80)</text>
+            <rect x="235" y="98" width="30" height="16" rx="2" fill="#27272a" stroke="#52525b" stroke-width="1"/>
+            <text x="250" y="110" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="700" font-family="monospace">2</text>
 
-            <!-- Row 3 -->
-            <text x="45" y="134" fill="#e4e4e7" font-size="9">Shoes</text>
-            <text x="140" y="134" fill="#e4e4e7" font-size="9">Puma ($45)</text>
-            <rect x="235" y="122" width="40" height="16" rx="3" fill="#374151"/>
-            <text x="255" y="134" text-anchor="middle" fill="#d1d5db" font-size="9" font-weight="700">#3 🥉</text>
+            <text x="45" y="134" fill="#d4d4d8" font-size="9" font-family="monospace">Shoes</text>
+            <text x="140" y="134" fill="#d4d4d8" font-size="9" font-family="monospace">Puma ($45)</text>
+            <rect x="235" y="122" width="30" height="16" rx="2" fill="#27272a" stroke="#52525b" stroke-width="1"/>
+            <text x="250" y="134" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="700" font-family="monospace">3</text>
 
-            <text x="150" y="190" text-anchor="middle" fill="#38bdf8" font-size="10">✨ Every row survives with an exact rank sticker!</text>
+            <text x="150" y="190" text-anchor="middle" fill="#a1a1aa" font-size="10" font-family="monospace">Every row preserved with calculated rank index</text>
           </g>
         </svg>
       `;
     },
 
-    // 2.2: The 3-Way Tie Race: ROW_NUMBER vs RANK vs DENSE_RANK
+    // 2.2: The 3-Way Tie Race
     rankComparison: function() {
       return `
         <svg viewBox="0 0 680 190" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="190" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+          <rect x="0" y="0" width="680" height="190" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
 
           <g transform="translate(30, 20)">
-            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">THE 3-WAY TIE RACE: WHICH FUNCTION FOR WHICH GOAL?</text>
+            <text x="310" y="20" text-anchor="middle" fill="#d4d4d8" font-size="12" font-weight="600" font-family="monospace">TIE RESOLUTION: FUNCTION COMPARISON</text>
             
-            <!-- Context: Scores are 100, 100, 90 -->
-            <rect x="20" y="45" width="160" height="110" rx="6" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
-            <text x="100" y="68" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">ROW_NUMBER()</text>
-            <text x="100" y="88" text-anchor="middle" fill="#e4e4e7" font-size="10">Alex (100) → <tspan fill="#38bdf8" font-weight="700">1</tspan></text>
-            <text x="100" y="106" text-anchor="middle" fill="#e4e4e7" font-size="10">Bob (100) → <tspan fill="#38bdf8" font-weight="700">2</tspan></text>
-            <text x="100" y="124" text-anchor="middle" fill="#e4e4e7" font-size="10">Chad (90) → <tspan fill="#38bdf8" font-weight="700">3</tspan></text>
-            <text x="100" y="145" text-anchor="middle" fill="#94a3b8" font-size="9">Guarantees NO duplicates</text>
+            <!-- ROW_NUMBER -->
+            <rect x="20" y="45" width="160" height="110" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="100" y="68" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700" font-family="monospace">ROW_NUMBER()</text>
+            <text x="100" y="88" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Score 100 &rarr; 1</text>
+            <text x="100" y="106" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Score 100 &rarr; 2</text>
+            <text x="100" y="124" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Score 90 &rarr; 3</text>
+            <text x="100" y="145" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Strictly unique values</text>
 
-            <!-- RANK() -->
-            <rect x="225" y="45" width="160" height="110" rx="6" fill="#18181b" stroke="#fbbf24" stroke-width="1.5"/>
-            <text x="305" y="68" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">RANK()</text>
-            <text x="305" y="88" text-anchor="middle" fill="#e4e4e7" font-size="10">Alex (100) → <tspan fill="#fbbf24" font-weight="700">1</tspan></text>
-            <text x="305" y="106" text-anchor="middle" fill="#e4e4e7" font-size="10">Bob (100) → <tspan fill="#fbbf24" font-weight="700">1</tspan></text>
-            <text x="305" y="124" text-anchor="middle" fill="#e4e4e7" font-size="10">Chad (90) → <tspan fill="#ef4444" font-weight="700">3 (Gap!)</tspan></text>
-            <text x="305" y="145" text-anchor="middle" fill="#fbbf24" font-size="9">Skips 2 due to 2-way tie</text>
+            <!-- RANK -->
+            <rect x="225" y="45" width="160" height="110" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="305" y="68" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700" font-family="monospace">RANK()</text>
+            <text x="305" y="88" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Score 100 &rarr; 1</text>
+            <text x="305" y="106" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Score 100 &rarr; 1</text>
+            <text x="305" y="124" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Score 90 &rarr; 3 (Gap)</text>
+            <text x="305" y="145" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Skips 2 due to duplicate</text>
 
-            <!-- DENSE_RANK() -->
-            <rect x="430" y="45" width="160" height="110" rx="6" fill="#18181b" stroke="#34d399" stroke-width="1.5"/>
-            <text x="510" y="68" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">DENSE_RANK()</text>
-            <text x="510" y="88" text-anchor="middle" fill="#e4e4e7" font-size="10">Alex (100) → <tspan fill="#34d399" font-weight="700">1</tspan></text>
-            <text x="510" y="106" text-anchor="middle" fill="#e4e4e7" font-size="10">Bob (100) → <tspan fill="#34d399" font-weight="700">1</tspan></text>
-            <text x="510" y="124" text-anchor="middle" fill="#e4e4e7" font-size="10">Chad (90) → <tspan fill="#34d399" font-weight="700">2 (No Gap)</tspan></text>
-            <text x="510" y="145" text-anchor="middle" fill="#34d399" font-size="9">Always continuous (Top 3)</text>
+            <!-- DENSE_RANK -->
+            <rect x="430" y="45" width="160" height="110" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="510" y="68" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700" font-family="monospace">DENSE_RANK()</text>
+            <text x="510" y="88" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Score 100 &rarr; 1</text>
+            <text x="510" y="106" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Score 100 &rarr; 1</text>
+            <text x="510" y="124" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">Score 90 &rarr; 2 (No Gap)</text>
+            <text x="510" y="145" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Continuous sequence</text>
           </g>
         </svg>
       `;
@@ -249,179 +256,171 @@
     timelineWhereHaving: function() {
       return `
         <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="180" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+          <rect x="0" y="0" width="680" height="180" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
 
           <g transform="translate(25, 20)">
-            <text x="315" y="18" text-anchor="middle" fill="#e4e4e7" font-size="12" font-weight="700" letter-spacing="0.05em">THE EXECUTION TIMELINE: WHERE vs. HAVING</text>
+            <text x="315" y="18" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              EXECUTION ORDER: <tspan fill="#38bdf8">WHERE</tspan> vs. <tspan fill="#38bdf8">HAVING</tspan>
+            </text>
 
             <!-- Step 1: FROM -->
-            <rect x="15" y="42" width="125" height="85" rx="5" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
-            <text x="77" y="62" text-anchor="middle" fill="#e4e4e7" font-size="11" font-weight="700">1. FROM</text>
-            <text x="77" y="80" text-anchor="middle" fill="#a1a1aa" font-size="10">Raw Data</text>
-            <text x="77" y="98" text-anchor="middle" fill="#71717a" font-size="9">10,000 Rows</text>
-            <text x="77" y="112" text-anchor="middle" fill="#71717a" font-size="9">Transactions</text>
+            <rect x="15" y="42" width="125" height="85" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="77" y="62" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">1. <tspan fill="#38bdf8">FROM</tspan></text>
+            <text x="77" y="80" text-anchor="middle" fill="#888888" font-size="10">Raw Data</text>
+            <text x="77" y="98" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">10,000 Rows</text>
+            <text x="77" y="112" text-anchor="middle" fill="#71717a" font-size="9">Table scan</text>
 
             <line x1="147" y1="84" x2="167" y2="84" stroke="#52525b" stroke-width="1.5"/>
 
             <!-- Step 2: WHERE -->
-            <rect x="175" y="42" width="135" height="85" rx="5" fill="#0c2333" stroke="#0284c7" stroke-width="1.5"/>
-            <text x="242" y="62" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">2. WHERE</text>
-            <text x="242" y="80" text-anchor="middle" fill="#93c5fd" font-size="10">Filters Individual Rows</text>
-            <text x="242" y="98" text-anchor="middle" fill="#7dd3fc" font-size="9" font-family="monospace">status = 'active'</text>
-            <text x="242" y="112" text-anchor="middle" fill="#38bdf8" font-size="9">Leaves 4,000 Rows</text>
+            <rect x="175" y="42" width="135" height="85" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="242" y="62" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">2. <tspan fill="#38bdf8">WHERE</tspan></text>
+            <text x="242" y="80" text-anchor="middle" fill="#888888" font-size="10">Row-level filter</text>
+            <text x="242" y="98" text-anchor="middle" fill="#d4d4d8" font-size="9" font-family="monospace">status = 'active'</text>
+            <text x="242" y="112" text-anchor="middle" fill="#71717a" font-size="9">Before grouping</text>
 
             <line x1="317" y1="84" x2="337" y2="84" stroke="#52525b" stroke-width="1.5"/>
 
             <!-- Step 3: GROUP BY -->
-            <rect x="345" y="42" width="130" height="85" rx="5" fill="#1f152e" stroke="#8b5cf6" stroke-width="1.5"/>
-            <text x="410" y="62" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">3. GROUP BY</text>
-            <text x="410" y="80" text-anchor="middle" fill="#e9d5ff" font-size="10">Piles by Merchant</text>
-            <text x="410" y="98" text-anchor="middle" fill="#d8b4fe" font-size="9">500 Merchants</text>
-            <text x="410" y="112" text-anchor="middle" fill="#c084fc" font-size="9">Calculates Counts</text>
+            <rect x="345" y="42" width="130" height="85" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="410" y="62" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">3. <tspan fill="#38bdf8">GROUP BY</tspan></text>
+            <text x="410" y="80" text-anchor="middle" fill="#888888" font-size="10">Piles by key</text>
+            <text x="410" y="98" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">500 Groups</text>
+            <text x="410" y="112" text-anchor="middle" fill="#71717a" font-size="9">Aggregation phase</text>
 
             <line x1="482" y1="84" x2="502" y2="84" stroke="#52525b" stroke-width="1.5"/>
 
             <!-- Step 4: HAVING -->
-            <rect x="510" y="42" width="125" height="85" rx="5" fill="#042718" stroke="#059669" stroke-width="1.5"/>
-            <text x="572" y="62" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">4. HAVING</text>
-            <text x="572" y="80" text-anchor="middle" fill="#a7f3d0" font-size="10">Filters Summary Piles</text>
-            <text x="572" y="98" text-anchor="middle" fill="#6ee7b7" font-size="9" font-family="monospace">COUNT(*) &gt;= 5</text>
-            <text x="572" y="112" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700">Final 12 Outliers</text>
+            <rect x="510" y="42" width="125" height="85" rx="3" fill="#222226" stroke="#52525b" stroke-width="1"/>
+            <text x="572" y="62" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">4. <tspan fill="#38bdf8">HAVING</tspan></text>
+            <text x="572" y="80" text-anchor="middle" fill="#888888" font-size="10">Group summary filter</text>
+            <text x="572" y="98" text-anchor="middle" fill="#d4d4d8" font-size="9" font-family="monospace">COUNT(*) &gt;= 5</text>
+            <text x="572" y="112" text-anchor="middle" fill="#ffffff" font-size="9" font-family="monospace">Final Outliers</text>
 
-            <!-- Alert footer -->
-            <text x="315" y="150" text-anchor="middle" fill="#f87171" font-size="10" font-weight="600">⚠️ TRAP: You cannot put COUNT(*) in step #2 (WHERE), because the groups do not exist yet!</text>
+            <text x="315" y="152" text-anchor="middle" fill="#71717a" font-size="10" font-family="monospace">Note: Aggregates like COUNT(*) cannot be used in WHERE because groups are not yet formed.</text>
           </g>
         </svg>
       `;
     },
 
-    // 4.1: LAG() Conveyor Belt Diagram
+    // 4.1: LAG() Conveyor Belt
     lagConveyor: function() {
       return `
         <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <marker id="arrowCyanLag" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
-            </marker>
-            <marker id="arrowAmberLag" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/>
-            </marker>
-          </defs>
-          <rect x="0" y="0" width="680" height="230" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
 
           <g transform="translate(30, 20)">
-            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">LAG() CONVEYOR BELT: PEEK BACKWARDS WITHOUT SQUASHING ROWS</text>
+            <text x="310" y="20" text-anchor="middle" fill="#d4d4d8" font-size="12" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8">LAG()</tspan> LOOKBACK: PRIOR ROW COMPARISON
+            </text>
 
             <!-- Month 1: Jan -->
-            <rect x="20" y="65" width="160" height="90" rx="6" fill="#18181b" stroke="#3f3f46" stroke-width="1.5"/>
-            <text x="100" y="88" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="700">JANUARY 2026</text>
-            <text x="100" y="110" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="800">$100,000</text>
-            <rect x="35" y="122" width="130" height="20" rx="4" fill="#27272a"/>
-            <text x="100" y="136" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">LAG() = NULL</text>
+            <rect x="20" y="65" width="160" height="90" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="100" y="88" text-anchor="middle" fill="#71717a" font-size="10" font-weight="600" font-family="monospace">JANUARY 2026</text>
+            <text x="100" y="110" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700" font-family="monospace">$100,000</text>
+            <rect x="35" y="122" width="130" height="20" rx="2" fill="#222226"/>
+            <text x="100" y="136" text-anchor="middle" fill="#888888" font-size="9" font-family="monospace"><tspan fill="#38bdf8">LAG</tspan>() = NULL</text>
 
             <!-- Month 2: Feb -->
-            <rect x="230" y="65" width="160" height="90" rx="6" fill="#082f49" stroke="#38bdf8" stroke-width="1.5"/>
-            <text x="310" y="88" text-anchor="middle" fill="#7dd3fc" font-size="11" font-weight="700">FEBRUARY 2026</text>
-            <text x="310" y="110" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="800">$150,000</text>
-            <rect x="245" y="122" width="130" height="20" rx="4" fill="#0369a1"/>
-            <text x="310" y="136" text-anchor="middle" fill="#e0f2fe" font-size="9" font-weight="700">+ $50,000 (+50.0%)</text>
+            <rect x="230" y="65" width="160" height="90" rx="3" fill="#18181b" stroke="#52525b" stroke-width="1"/>
+            <text x="310" y="88" text-anchor="middle" fill="#d4d4d8" font-size="10" font-weight="600" font-family="monospace">FEBRUARY 2026</text>
+            <text x="310" y="110" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700" font-family="monospace">$150,000</text>
+            <rect x="245" y="122" width="130" height="20" rx="2" fill="#27272a"/>
+            <text x="310" y="136" text-anchor="middle" fill="#ffffff" font-size="9" font-family="monospace">+ $50,000 (+50.0%)</text>
 
-            <!-- Backward Arrow 1: Feb reaches back to Jan -->
-            <path d="M 230 100 C 195 50, 185 50, 180 75" fill="none" stroke="#38bdf8" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrowCyanLag)"/>
-            <text x="200" y="42" text-anchor="middle" fill="#38bdf8" font-size="9" font-weight="700">LAG(sales, 1)</text>
+            <path d="M 230 100 C 195 55, 185 55, 180 75" fill="none" stroke="#52525b" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <text x="200" y="45" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="monospace">LAG(sales, 1)</text>
 
             <!-- Month 3: Mar -->
-            <rect x="440" y="65" width="160" height="90" rx="6" fill="#381e04" stroke="#fbbf24" stroke-width="1.5"/>
-            <text x="520" y="88" text-anchor="middle" fill="#fde68a" font-size="11" font-weight="700">MARCH 2026</text>
-            <text x="520" y="110" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="800">$120,000</text>
-            <rect x="455" y="122" width="130" height="20" rx="4" fill="#b45309"/>
-            <text x="520" y="136" text-anchor="middle" fill="#fef3c7" font-size="9" font-weight="700">- $30,000 (-20.0%)</text>
+            <rect x="440" y="65" width="160" height="90" rx="3" fill="#18181b" stroke="#52525b" stroke-width="1"/>
+            <text x="520" y="88" text-anchor="middle" fill="#d4d4d8" font-size="10" font-weight="600" font-family="monospace">MARCH 2026</text>
+            <text x="520" y="110" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700" font-family="monospace">$120,000</text>
+            <rect x="455" y="122" width="130" height="20" rx="2" fill="#27272a"/>
+            <text x="520" y="136" text-anchor="middle" fill="#ffffff" font-size="9" font-family="monospace">- $30,000 (-20.0%)</text>
 
-            <!-- Backward Arrow 2: Mar reaches back to Feb -->
-            <path d="M 440 100 C 405 50, 395 50, 390 75" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrowAmberLag)"/>
-            <text x="410" y="42" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="700">LAG(sales, 1)</text>
+            <path d="M 440 100 C 405 55, 395 55, 390 75" fill="none" stroke="#52525b" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <text x="410" y="45" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="monospace">LAG(sales, 1)</text>
 
-            <!-- Footnote -->
-            <text x="310" y="188" text-anchor="middle" fill="#94a3b8" font-size="10">✨ Zero self-joins required. Every monthly row survives side-by-side with its historical baseline.</text>
+            <text x="310" y="188" text-anchor="middle" fill="#71717a" font-size="10" font-family="monospace">Zero self-joins required. Every monthly row survives side-by-side with prior baseline.</text>
           </g>
         </svg>
       `;
     },
 
-    // 4.2: Division By Zero Safety (NULLIF)
+    // 4.2: Division By Zero Safety
     divisionByZeroSafety: function() {
       return `
         <svg viewBox="0 0 680 190" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="190" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+          <rect x="0" y="0" width="680" height="190" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
 
           <g transform="translate(30, 20)">
-            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">PRODUCTION TRAP: WHY NAIVE GROWTH PERCENTAGES CRASH</text>
+            <text x="310" y="20" text-anchor="middle" fill="#d4d4d8" font-size="12" font-weight="600" font-family="monospace">GROWTH FORMULA ZERO-DIVISION PROTECTION</text>
 
             <!-- Dangerous formula -->
-            <rect x="20" y="45" width="260" height="100" rx="6" fill="#2d1215" stroke="#ef4444" stroke-width="1.5"/>
-            <text x="150" y="68" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">❌ NAIVE CALCULATION</text>
-            <text x="150" y="90" text-anchor="middle" fill="#f87171" font-size="11" font-family="monospace">(sales - prev) / prev</text>
-            <rect x="35" y="105" width="230" height="26" rx="4" fill="#450a0a"/>
-            <text x="150" y="122" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="700">💥 If prev = 0: "Division by zero" crash!</text>
+            <rect x="20" y="45" width="260" height="100" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="150" y="68" text-anchor="middle" fill="#888888" font-size="11" font-weight="600" font-family="monospace">STANDARD DIVISION</text>
+            <text x="150" y="90" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">(sales - prev) / prev</text>
+            <rect x="35" y="105" width="230" height="26" rx="2" fill="#222226"/>
+            <text x="150" y="122" text-anchor="middle" fill="#71717a" font-size="9.5" font-family="monospace">If prev = 0 &rarr; Division by zero exception</text>
 
             <!-- Divider -->
             <line x1="310" y1="45" x2="310" y2="145" stroke="#27272a" stroke-width="1" stroke-dasharray="3 3"/>
 
             <!-- Bulletproof formula -->
-            <rect x="340" y="45" width="260" height="100" rx="6" fill="#042f1f" stroke="#10b981" stroke-width="1.5"/>
-            <text x="470" y="68" text-anchor="middle" fill="#a7f3d0" font-size="11" font-weight="700">✅ PRODUCTION SAFEGUARD</text>
-            <text x="470" y="90" text-anchor="middle" fill="#34d399" font-size="10" font-family="monospace">(sales - prev) / NULLIF(prev, 0)</text>
-            <rect x="355" y="105" width="230" height="26" rx="4" fill="#064e3b"/>
-            <text x="470" y="122" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="700">🛡️ If prev = 0: returns clean NULL</text>
+            <rect x="340" y="45" width="260" height="100" rx="3" fill="#18181b" stroke="#52525b" stroke-width="1"/>
+            <text x="470" y="68" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="600" font-family="monospace">SAFEGUARDED WITH <tspan fill="#38bdf8">NULLIF</tspan></text>
+            <text x="470" y="90" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">(sales - prev) / <tspan fill="#38bdf8">NULLIF</tspan>(prev, 0)</text>
+            <rect x="355" y="105" width="230" height="26" rx="2" fill="#27272a"/>
+            <text x="470" y="122" text-anchor="middle" fill="#ffffff" font-size="9.5" font-family="monospace">If prev = 0 &rarr; returns NULL safely</text>
 
-            <text x="310" y="170" text-anchor="middle" fill="#a1a1aa" font-size="10">NULLIF(val, 0) turns zeros into NULLs, preventing SQL engine exceptions on brand new launches.</text>
+            <text x="310" y="170" text-anchor="middle" fill="#71717a" font-size="10" font-family="monospace">NULLIF(val, 0) converts zeros into NULLs, preventing SQL engine exceptions.</text>
           </g>
         </svg>
       `;
     },
 
-    // 5.1: Cumulative Windows & Running Totals (Snowball)
+    // 5.1: Cumulative Windows (Snowball)
     runningTotalSnowball: function() {
       return `
         <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="230" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
 
           <g transform="translate(30, 20)">
-            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">THE SNOWBALL EFFECT: CUMULATIVE RUNNING TOTALS</text>
+            <text x="310" y="20" text-anchor="middle" fill="#d4d4d8" font-size="12" font-weight="600" font-family="monospace">CUMULATIVE RUNNING TOTAL ACCUMULATION</text>
 
             <!-- Day 1 -->
-            <rect x="20" y="55" width="165" height="105" rx="6" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
-            <text x="102" y="78" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">DAY 1: ORDER #101</text>
-            <text x="102" y="98" text-anchor="middle" fill="#94a3b8" font-size="10">Daily Amount: $100</text>
-            <rect x="35" y="112" width="135" height="32" rx="4" fill="#0c4a6e"/>
-            <text x="102" y="127" text-anchor="middle" fill="#e0f2fe" font-size="9">CUMULATIVE YTD</text>
-            <text x="102" y="139" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="800">$100</text>
+            <rect x="20" y="55" width="165" height="105" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="102" y="78" text-anchor="middle" fill="#71717a" font-size="10" font-weight="600" font-family="monospace">DAY 1: ORDER #101</text>
+            <text x="102" y="98" text-anchor="middle" fill="#888888" font-size="10">Daily Amount: $100</text>
+            <rect x="35" y="112" width="135" height="32" rx="2" fill="#222226"/>
+            <text x="102" y="127" text-anchor="middle" fill="#888888" font-size="9" font-family="monospace">RUNNING TOTAL</text>
+            <text x="102" y="139" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">$100</text>
 
-            <!-- Arrow 1 to 2 -->
-            <path d="M 190 108 L 220 108" stroke="#38bdf8" stroke-width="2"/>
+            <path d="M 190 108 L 220 108" stroke="#52525b" stroke-width="1.5"/>
 
             <!-- Day 2 -->
-            <rect x="225" y="55" width="170" height="105" rx="6" fill="#18181b" stroke="#818cf8" stroke-width="1.5"/>
-            <text x="310" y="78" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="700">DAY 2: ORDER #102</text>
-            <text x="310" y="98" text-anchor="middle" fill="#94a3b8" font-size="10">Daily Amount: $200</text>
-            <rect x="240" y="112" width="140" height="32" rx="4" fill="#312e81"/>
-            <text x="310" y="127" text-anchor="middle" fill="#e0e7ff" font-size="9">$100 + $200</text>
-            <text x="310" y="139" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="800">$300</text>
+            <rect x="225" y="55" width="170" height="105" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="310" y="78" text-anchor="middle" fill="#71717a" font-size="10" font-weight="600" font-family="monospace">DAY 2: ORDER #102</text>
+            <text x="310" y="98" text-anchor="middle" fill="#888888" font-size="10">Daily Amount: $200</text>
+            <rect x="240" y="112" width="140" height="32" rx="2" fill="#222226"/>
+            <text x="310" y="127" text-anchor="middle" fill="#888888" font-size="9" font-family="monospace">$100 + $200</text>
+            <text x="310" y="139" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">$300</text>
 
-            <!-- Arrow 2 to 3 -->
-            <path d="M 400 108 L 430 108" stroke="#818cf8" stroke-width="2"/>
+            <path d="M 400 108 L 430 108" stroke="#52525b" stroke-width="1.5"/>
 
             <!-- Day 3 -->
-            <rect x="435" y="55" width="165" height="105" rx="6" fill="#18181b" stroke="#34d399" stroke-width="1.5"/>
-            <text x="517" y="78" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">DAY 3: ORDER #103</text>
-            <text x="517" y="98" text-anchor="middle" fill="#94a3b8" font-size="10">Daily Amount: $150</text>
-            <rect x="450" y="112" width="135" height="32" rx="4" fill="#064e3b"/>
-            <text x="517" y="127" text-anchor="middle" fill="#d1fae5" font-size="9">$300 + $150</text>
-            <text x="517" y="139" text-anchor="middle" fill="#34d399" font-size="11" font-weight="800">$450</text>
+            <rect x="435" y="55" width="165" height="105" rx="3" fill="#18181b" stroke="#52525b" stroke-width="1"/>
+            <text x="517" y="78" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="600" font-family="monospace">DAY 3: ORDER #103</text>
+            <text x="517" y="98" text-anchor="middle" fill="#888888" font-size="10">Daily Amount: $150</text>
+            <rect x="450" y="112" width="135" height="32" rx="2" fill="#27272a"/>
+            <text x="517" y="127" text-anchor="middle" fill="#888888" font-size="9" font-family="monospace">$300 + $150</text>
+            <text x="517" y="139" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">$450</text>
 
             <!-- Bottom Frame Bar -->
-            <rect x="20" y="172" width="580" height="24" rx="4" fill="#27272a"/>
-            <text x="310" y="188" text-anchor="middle" fill="#e4e4e7" font-size="10" font-family="monospace">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</text>
+            <rect x="20" y="172" width="580" height="24" rx="2" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+            <text x="310" y="188" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">
+              <tspan fill="#38bdf8">SUM</tspan>(amount) <tspan fill="#38bdf8">OVER</tspan> (<tspan fill="#38bdf8">ORDER BY</tspan> date <tspan fill="#38bdf8">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</tspan>)
+            </text>
           </g>
         </svg>
       `;
@@ -431,137 +430,135 @@
     rollingWindowSliding: function() {
       return `
         <svg viewBox="0 0 680 210" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="210" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+          <rect x="0" y="0" width="680" height="210" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
 
           <g transform="translate(30, 20)">
-            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">7-DAY SLIDING WINDOW: FILTERING OUT WEEKEND NOISE</text>
+            <text x="310" y="20" text-anchor="middle" fill="#d4d4d8" font-size="12" font-weight="600" font-family="monospace">MOVING AVERAGE WINDOW SMOOTHING</text>
 
-            <!-- Daily bars -->
-            <!-- D1 --> <rect x="30" y="110" width="28" height="40" rx="3" fill="#3f3f46"/>
-            <!-- D2 --> <rect x="75" y="115" width="28" height="35" rx="3" fill="#3f3f46"/>
-            <!-- D3 --> <rect x="120" y="105" width="28" height="45" rx="3" fill="#3f3f46"/>
-            <!-- D4 --> <rect x="165" y="100" width="28" height="50" rx="3" fill="#3f3f46"/>
-            <!-- D5 --> <rect x="210" y="90" width="28" height="60" rx="3" fill="#3f3f46"/>
-            <!-- D6 (Sat) --> <rect x="255" y="60" width="28" height="90" rx="3" fill="#ef4444"/>
-            <!-- D7 (Sun) --> <rect x="300" y="65" width="28" height="85" rx="3" fill="#ef4444"/>
+            <!-- Daily bars in neutral grays -->
+            <rect x="30" y="110" width="28" height="40" rx="2" fill="#27272a"/>
+            <rect x="75" y="115" width="28" height="35" rx="2" fill="#27272a"/>
+            <rect x="120" y="105" width="28" height="45" rx="2" fill="#27272a"/>
+            <rect x="165" y="100" width="28" height="50" rx="2" fill="#27272a"/>
+            <rect x="210" y="90" width="28" height="60" rx="2" fill="#27272a"/>
+            <rect x="255" y="60" width="28" height="90" rx="2" fill="#3f3f46"/>
+            <rect x="300" y="65" width="28" height="85" rx="2" fill="#3f3f46"/>
             
-            <!-- Sliding Frame Bracket around D1..D7 -->
-            <rect x="22" y="45" width="315" height="115" rx="6" fill="#10b981" fill-opacity="0.1" stroke="#34d399" stroke-width="2" stroke-dasharray="4 4"/>
-            <text x="180" y="40" text-anchor="middle" fill="#34d399" font-size="10" font-weight="700">SLIDING WINDOW: 6 PRECEDING .. CURRENT ROW</text>
+            <!-- Sliding Frame Bracket -->
+            <rect x="22" y="45" width="315" height="115" rx="4" fill="none" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <text x="180" y="40" text-anchor="middle" fill="#d4d4d8" font-size="10" font-family="monospace">
+              <tspan fill="#38bdf8">ROWS BETWEEN</tspan> 6 <tspan fill="#38bdf8">PRECEDING AND CURRENT ROW</tspan>
+            </text>
 
-            <!-- Rolling Average Trendline Dot -->
-            <circle cx="314" cy="95" r="5" fill="#34d399"/>
-            <rect x="360" y="70" width="230" height="55" rx="6" fill="#18181b" stroke="#34d399" stroke-width="1.5"/>
-            <text x="475" y="92" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">7-DAY ROLLING AVERAGE: $59.2</text>
-            <text x="475" y="110" text-anchor="middle" fill="#94a3b8" font-size="9">Smooths Saturday surge into true trend</text>
+            <circle cx="314" cy="95" r="4" fill="#ffffff"/>
+            <rect x="360" y="70" width="230" height="55" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="475" y="92" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">7-DAY AVERAGE: $59.2</text>
+            <text x="475" y="110" text-anchor="middle" fill="#888888" font-size="9">Smooths weekend volume into trend</text>
 
-            <!-- Day 8, 9, 10 future bars -->
-            <rect x="345" y="115" width="28" height="35" rx="3" fill="#27272a"/>
-            <rect x="390" y="110" width="28" height="40" rx="3" fill="#27272a"/>
+            <rect x="345" y="115" width="28" height="35" rx="2" fill="#222226"/>
+            <rect x="390" y="110" width="28" height="40" rx="2" fill="#222226"/>
 
-            <text x="310" y="180" text-anchor="middle" fill="#a1a1aa" font-size="10">AVG(val) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)</text>
+            <text x="310" y="180" text-anchor="middle" fill="#71717a" font-size="10" font-family="monospace">
+              <tspan fill="#38bdf8">AVG</tspan>(val) <tspan fill="#38bdf8">OVER</tspan> (<tspan fill="#38bdf8">ORDER BY</tspan> date <tspan fill="#38bdf8">ROWS BETWEEN</tspan> 6 <tspan fill="#38bdf8">PRECEDING AND CURRENT ROW</tspan>)
+            </text>
           </g>
         </svg>
       `;
     },
 
-    // 6.1: Conditional Aggregation (CASE inside SUM)
+    // 6.1: Conditional Aggregation
     conditionalAggregationMatrix: function() {
       return `
         <svg viewBox="0 0 680 200" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="200" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+          <rect x="0" y="0" width="680" height="200" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
 
           <g transform="translate(25, 20)">
-            <text x="315" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">CONDITIONAL AGGREGATION: SINGLE-PASS ROW PIVOT</text>
+            <text x="315" y="20" text-anchor="middle" fill="#d4d4d8" font-size="12" font-weight="600" font-family="monospace">CONDITIONAL AGGREGATION: ROW PIVOTING</text>
 
             <!-- Left: Vertical Event Stream -->
-            <rect x="20" y="45" width="180" height="105" rx="6" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
-            <text x="110" y="65" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700">RAW VERTICAL LOGS</text>
-            <rect x="30" y="74" width="160" height="18" rx="3" fill="#27272a"/>
-            <text x="110" y="86" text-anchor="middle" fill="#e4e4e7" font-size="9">User #882 | 'view_item'</text>
-            <rect x="30" y="96" width="160" height="18" rx="3" fill="#27272a"/>
-            <text x="110" y="108" text-anchor="middle" fill="#38bdf8" font-size="9">User #882 | 'add_to_cart'</text>
-            <rect x="30" y="118" width="160" height="18" rx="3" fill="#27272a"/>
-            <text x="110" y="130" text-anchor="middle" fill="#34d399" font-size="9">User #882 | 'checkout'</text>
+            <rect x="20" y="45" width="180" height="105" rx="3" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+            <text x="110" y="65" text-anchor="middle" fill="#71717a" font-size="10" font-weight="600" font-family="monospace">RAW EVENT STREAM</text>
+            <rect x="30" y="74" width="160" height="18" rx="2" fill="#222226"/>
+            <text x="110" y="86" text-anchor="middle" fill="#888888" font-size="9" font-family="monospace">User #882 | 'view'</text>
+            <rect x="30" y="96" width="160" height="18" rx="2" fill="#222226"/>
+            <text x="110" y="108" text-anchor="middle" fill="#888888" font-size="9" font-family="monospace">User #882 | 'cart'</text>
+            <rect x="30" y="118" width="160" height="18" rx="2" fill="#222226"/>
+            <text x="110" y="130" text-anchor="middle" fill="#888888" font-size="9" font-family="monospace">User #882 | 'buy'</text>
 
             <!-- Center Transformation Arrow -->
             <g transform="translate(215, 80)">
-              <path d="M 0 15 L 50 15" stroke="#c084fc" stroke-width="2"/>
-              <text x="25" y="5" text-anchor="middle" fill="#c084fc" font-size="9" font-family="monospace">SUM(CASE...)</text>
+              <path d="M 0 15 L 50 15" stroke="#52525b" stroke-width="1.5"/>
+              <text x="25" y="5" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="monospace">SUM(CASE...)</text>
             </g>
 
             <!-- Right: Pivoted Horizontal Summary -->
-            <rect x="280" y="45" width="330" height="105" rx="6" fill="#1e1330" stroke="#a855f7" stroke-width="1.5"/>
-            <text x="445" y="65" text-anchor="middle" fill="#d8b4fe" font-size="10" font-weight="700">ONE CLEAN EXECUTIVE SUMMARY ROW</text>
+            <rect x="280" y="45" width="330" height="105" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="445" y="65" text-anchor="middle" fill="#d4d4d8" font-size="10" font-weight="600" font-family="monospace">PIVOTED SUMMARY ROW</text>
             
-            <rect x="295" y="80" width="70" height="45" rx="4" fill="#2e1065"/>
-            <text x="330" y="97" text-anchor="middle" fill="#e9d5ff" font-size="9">user_id</text>
-            <text x="330" y="114" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700">#882</text>
+            <rect x="295" y="80" width="70" height="45" rx="2" fill="#222226"/>
+            <text x="330" y="97" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">user_id</text>
+            <text x="330" y="114" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">#882</text>
 
-            <rect x="375" y="80" width="70" height="45" rx="4" fill="#0c4a6e"/>
-            <text x="410" y="97" text-anchor="middle" fill="#bae6fd" font-size="9">views</text>
-            <text x="410" y="114" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">1</text>
+            <rect x="375" y="80" width="70" height="45" rx="2" fill="#222226"/>
+            <text x="410" y="97" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">views</text>
+            <text x="410" y="114" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">1</text>
 
-            <rect x="455" y="80" width="70" height="45" rx="4" fill="#064e3b"/>
-            <text x="490" y="97" text-anchor="middle" fill="#a7f3d0" font-size="9">carts</text>
-            <text x="490" y="114" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">1</text>
+            <rect x="455" y="80" width="70" height="45" rx="2" fill="#222226"/>
+            <text x="490" y="97" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">carts</text>
+            <text x="490" y="114" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">1</text>
 
-            <rect x="535" y="80" width="65" height="45" rx="4" fill="#701a75"/>
-            <text x="567" y="97" text-anchor="middle" fill="#f5d0fe" font-size="9">buys</text>
-            <text x="567" y="114" text-anchor="middle" fill="#f472b6" font-size="11" font-weight="700">1</text>
+            <rect x="535" y="80" width="65" height="45" rx="2" fill="#222226"/>
+            <text x="567" y="97" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">buys</text>
+            <text x="567" y="114" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">1</text>
 
-            <text x="315" y="172" text-anchor="middle" fill="#a1a1aa" font-size="10">Pivots millions of events in 1 database scan without multiple expensive subqueries.</text>
+            <text x="315" y="172" text-anchor="middle" fill="#71717a" font-size="10" font-family="monospace">Pivots millions of events in 1 database scan without multiple expensive subqueries.</text>
           </g>
         </svg>
       `;
     },
 
-    // 6.2: Multi-Stage Conversion Funnel Sieve
+    // 6.2: Multi-Stage Conversion Funnel
     funnelConversion: function() {
       return `
         <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="230" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
 
           <g transform="translate(30, 20)">
-            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">THE CONVERSION FUNNEL: PINPOINTING PIPELINE LEAKS</text>
+            <text x="310" y="20" text-anchor="middle" fill="#d4d4d8" font-size="12" font-weight="600" font-family="monospace">SEQUENTIAL FUNNEL MILESTONES</text>
 
             <!-- Stage 1 -->
-            <rect x="40" y="42" width="400" height="26" rx="4" fill="#0284c7"/>
-            <text x="55" y="59" fill="#ffffff" font-size="11" font-weight="700">1. Landing Page Visitors</text>
-            <text x="380" y="59" text-anchor="end" fill="#e0f2fe" font-size="11" font-weight="800">10,000 (100%)</text>
+            <rect x="40" y="42" width="400" height="26" rx="2" fill="#ffffff"/>
+            <text x="55" y="59" fill="#141416" font-size="11" font-weight="700" font-family="monospace">1. Landing Page Visitors</text>
+            <text x="380" y="59" text-anchor="end" fill="#141416" font-size="11" font-weight="700" font-family="monospace">10,000 (100%)</text>
 
-            <!-- Drop 1 -->
-            <rect x="460" y="42" width="130" height="26" rx="4" fill="#27272a"/>
-            <text x="525" y="59" text-anchor="middle" fill="#94a3b8" font-size="10">Baseline</text>
+            <rect x="460" y="42" width="130" height="26" rx="2" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+            <text x="525" y="59" text-anchor="middle" fill="#71717a" font-size="10" font-family="monospace">Baseline</text>
 
             <!-- Stage 2 -->
-            <rect x="70" y="74" width="340" height="26" rx="4" fill="#059669"/>
-            <text x="85" y="91" fill="#ffffff" font-size="11" font-weight="700">2. Added Item to Cart</text>
-            <text x="380" y="91" text-anchor="end" fill="#d1fae5" font-size="11" font-weight="800">3,200 (32.0%)</text>
+            <rect x="70" y="74" width="340" height="26" rx="2" fill="#d4d4d8"/>
+            <text x="85" y="91" fill="#141416" font-size="11" font-weight="700" font-family="monospace">2. Added Item to Cart</text>
+            <text x="380" y="91" text-anchor="end" fill="#141416" font-size="11" font-weight="700" font-family="monospace">3,200 (32.0%)</text>
 
-            <!-- Drop 2 -->
-            <rect x="460" y="74" width="130" height="26" rx="4" fill="#3f1212"/>
-            <text x="525" y="91" text-anchor="middle" fill="#f87171" font-size="10" font-weight="700">-68.0% Drop</text>
+            <rect x="460" y="74" width="130" height="26" rx="2" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+            <text x="525" y="91" text-anchor="middle" fill="#a1a1aa" font-size="10" font-family="monospace">-68.0% Drop</text>
 
             <!-- Stage 3 -->
-            <rect x="100" y="106" width="280" height="26" rx="4" fill="#7c3aed"/>
-            <text x="115" y="123" fill="#ffffff" font-size="11" font-weight="700">3. Began Checkout</text>
-            <text x="360" y="123" text-anchor="end" fill="#ede9fe" font-size="11" font-weight="800">1,400 (14.0%)</text>
+            <rect x="100" y="106" width="280" height="26" rx="2" fill="#a1a1aa"/>
+            <text x="115" y="123" fill="#141416" font-size="11" font-weight="700" font-family="monospace">3. Began Checkout</text>
+            <text x="360" y="123" text-anchor="end" fill="#141416" font-size="11" font-weight="700" font-family="monospace">1,400 (14.0%)</text>
 
-            <!-- Drop 3 -->
-            <rect x="460" y="106" width="130" height="26" rx="4" fill="#451a03"/>
-            <text x="525" y="123" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">-56.2% Drop</text>
+            <rect x="460" y="106" width="130" height="26" rx="2" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+            <text x="525" y="123" text-anchor="middle" fill="#a1a1aa" font-size="10" font-family="monospace">-56.2% Drop</text>
 
             <!-- Stage 4 -->
-            <rect x="130" y="138" width="220" height="26" rx="4" fill="#db2777"/>
-            <text x="145" y="155" fill="#ffffff" font-size="11" font-weight="700">4. Order Completed</text>
-            <text x="330" y="155" text-anchor="end" fill="#fce7f3" font-size="11" font-weight="800">420 (4.2%)</text>
+            <rect x="130" y="138" width="220" height="26" rx="2" fill="#71717a"/>
+            <text x="145" y="155" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">4. Order Completed</text>
+            <text x="330" y="155" text-anchor="end" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">420 (4.2%)</text>
 
-            <!-- Drop 4 -->
-            <rect x="460" y="138" width="130" height="26" rx="4" fill="#4c0519"/>
-            <text x="525" y="155" text-anchor="middle" fill="#fb7185" font-size="10" font-weight="700">-70.0% Drop 🔥</text>
+            <rect x="460" y="138" width="130" height="26" rx="2" fill="#222226" stroke="#3f3f46" stroke-width="1"/>
+            <text x="525" y="155" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700" font-family="monospace">-70.0% Drop</text>
 
-            <text x="310" y="188" text-anchor="middle" fill="#f43f5e" font-size="10" font-weight="700">🚨 CHOKEPOINT DETECTED: Stage 3 to 4 loses 70% of high-intent buyers during payment entry.</text>
+            <text x="310" y="188" text-anchor="middle" fill="#71717a" font-size="10" font-family="monospace">Identifies conversion drop-off between checkout and purchase completion.</text>
           </g>
         </svg>
       `;
@@ -573,9 +570,6 @@
   // ===========================================================================
 
   const PATTERNS = [
-    // -------------------------------------------------------------------------
-    // PATTERN 1: The Missing Match (Anti-Join)
-    // -------------------------------------------------------------------------
     {
       id: 'anti_join',
       tier: 1,
@@ -605,15 +599,15 @@
         }
       ],
       thinkingProcess: [
-        '1. Identify the Master List: Which table has EVERY entity? (Users, Products, Drivers). Put this table immediately after FROM.',
-        '2. Identify the Event Stream: Which table logs transactions or actions? (Orders, Rides, StreamEvents). Attach it via LEFT JOIN.',
+        '1. Identify the Master List: Which table has EVERY entity? Put this table immediately after FROM.',
+        '2. Identify the Event Stream: Which table logs transactions or actions? Attach it via LEFT JOIN.',
         '3. Establish Primary Keys: Join on the shared key (e.g. ON u.user_id = o.user_id).',
-        '4. Hunt for Holes: Add WHERE o.order_id IS NULL. If an entity never took action, its right-side columns are guaranteed NULL.'
+        '4. Hunt for Holes: Add WHERE o.order_id IS NULL. Unmatched rows are guaranteed NULL.'
       ],
       gotchas: [
-        '1. Checking the wrong table: Writing WHERE u.user_id IS NULL instead of WHERE o.order_id IS NULL will return 0 rows!',
-        '2. The NOT IN Trap: If subquery returns even a single NULL value, NOT IN evaluates to UNKNOWN and drops all results. Anti-Join is immune to this.',
-        '3. Accidental INNER JOIN: Putting a condition like AND o.order_date > "2026-01-01" in the WHERE clause silently turns your LEFT JOIN back into an INNER JOIN!'
+        '1. Checking the wrong table: Writing WHERE u.user_id IS NULL instead of WHERE o.order_id IS NULL returns 0 rows.',
+        '2. The NOT IN Trap: If subquery returns even a single NULL value, NOT IN evaluates to UNKNOWN and drops all results. Anti-Join is immune.',
+        '3. Accidental INNER JOIN: Putting filter conditions like AND o.order_date > "2026-01-01" in WHERE silently turns LEFT JOIN back into INNER JOIN.'
       ],
       companyVariants: {
         amazon: {
@@ -672,9 +666,6 @@ WHERE settled.auth_id IS NULL;`
       }
     },
 
-    // -------------------------------------------------------------------------
-    // PATTERN 2: Top N Per Group (Category Leaders)
-    // -------------------------------------------------------------------------
     {
       id: 'top_n_ranking',
       tier: 1,
@@ -682,7 +673,7 @@ WHERE settled.auth_id IS NULL;`
       tag: 'LEADERBOARDS & RANKINGS',
       tagline: 'Rank items within each category and slice out only the top 1, 2, or 3 winners',
       businessProblem: `Businesses love leaderboards: "What are the top 3 best-selling products in each department?", "Who is the highest-spending customer per country?", or "Top 5 most-watched TV shows per region."`,
-      mentalModel: `Think of organizing a school sports day. Instead of one single race with 1,000 students, you divide students into classes (PARTITION BY). Within each class, students race and you stamp gold, silver, and bronze ribbons (#1, #2, #3). Finally, you take only the ribbon winners.`,
+      mentalModel: `Think of organizing a school sports day. Instead of one single race with 1,000 students, you divide students into classes (PARTITION BY). Within each class, students race and you stamp rank badges (#1, #2, #3). Finally, you take only the top winners.`,
       steppingStones: [
         {
           num: '2.1',
@@ -704,15 +695,15 @@ WHERE settled.auth_id IS NULL;`
         }
       ],
       thinkingProcess: [
-        '1. Define the buckets: Which column divides your data into separate groups? (e.g. department, genre, country) → PARTITION BY department.',
-        '2. Define the metric of success: What constitutes "winning"? (Revenue, streams, rating) → ORDER BY revenue DESC.',
-        '3. Stamp the rank sticker: Use ROW_NUMBER() OVER (PARTITION BY group ORDER BY score DESC) AS rnk inside a CTE.',
-        '4. Filter the podium: In the outer query, simply filter WHERE rnk <= 3.'
+        '1. Define the buckets: Which column divides your data into separate groups? -> PARTITION BY department.',
+        '2. Define the metric: What constitutes the top score? -> ORDER BY revenue DESC.',
+        '3. Stamp the rank: Use ROW_NUMBER() OVER (PARTITION BY group ORDER BY score DESC) AS rnk inside a CTE.',
+        '4. Filter podium: In the outer query, filter WHERE rnk <= 3.'
       ],
       gotchas: [
-        '1. WHERE clause rejection: Writing WHERE ROW_NUMBER() <= 3 directly will fail with "Window functions not allowed in WHERE". Window functions execute AFTER WHERE!',
-        '2. Tie handling: If two products have the exact same revenue of $500, ROW_NUMBER() randomly picks one for #1 and one for #2. If you want both to share #1, use DENSE_RANK().',
-        '3. Missing ORDER BY: Forgetting ORDER BY inside the OVER() clause results in random unranked order.'
+        '1. WHERE clause rejection: Writing WHERE ROW_NUMBER() <= 3 directly fails because window functions execute AFTER WHERE.',
+        '2. Tie handling: If two products have the same value, ROW_NUMBER() arbitrarily breaks the tie. Use DENSE_RANK() if both should share the rank.',
+        '3. Missing ORDER BY: Forgetting ORDER BY inside OVER() creates undefined arbitrary ordering.'
       ],
       companyVariants: {
         amazon: {
@@ -736,7 +727,7 @@ WHERE purchase_rank = 1;`
         },
         netflix: {
           name: 'Netflix Content',
-          question: 'Find the top 2 highest bandwidth streaming events per ISP.',
+          question: 'Find the top 2 lowest latency streaming events per ISP.',
           sql: `-- Netflix: Top telemetry events per ISP network
 WITH ranked_telemetry AS (
   SELECT 
@@ -794,9 +785,6 @@ WHERE spend_rank = 1;`
       }
     },
 
-    // -------------------------------------------------------------------------
-    // PATTERN 3: Outliers & Thresholds (GROUP BY + HAVING)
-    // -------------------------------------------------------------------------
     {
       id: 'outliers_having',
       tier: 1,
@@ -820,15 +808,15 @@ WHERE spend_rank = 1;`
         }
       ],
       thinkingProcess: [
-        '1. Pre-filter individual rows: Use WHERE to drop irrelevant raw records before grouping (e.g. WHERE amount < 1.00).',
-        '2. Bundle into buckets: Choose your grouping dimension with GROUP BY (e.g. GROUP BY card_number_masked).',
+        '1. Pre-filter individual rows: Use WHERE to drop irrelevant raw records before grouping.',
+        '2. Bundle into buckets: Choose your grouping dimension with GROUP BY.',
         '3. Calculate summary metrics: Choose aggregate functions like COUNT(*), SUM(amount), AVG(latency).',
-        '4. Enforce group threshold: Add HAVING COUNT(*) >= 5 to filter out ordinary normal groups.'
+        '4. Enforce group threshold: Add HAVING COUNT(*) >= 5 to filter out normal groups.'
       ],
       gotchas: [
-        '1. The WHERE COUNT(*) mistake: Writing WHERE COUNT(*) > 5 triggers a syntax error because WHERE executes before rows are grouped!',
-        '2. Filtering non-aggregate columns in HAVING: Putting HAVING status = "active" works in some dialects but wastes performance; move non-aggregates to WHERE!',
-        '3. Integer division in AVG: In SQL engines, AVG(5 / 2) might round down to 2 unless cast to float.'
+        '1. The WHERE COUNT(*) mistake: Writing WHERE COUNT(*) > 5 triggers syntax errors because WHERE executes before grouping.',
+        '2. Filtering non-aggregate columns in HAVING: Putting HAVING status = "active" wastes performance; move non-aggregates to WHERE.',
+        '3. Integer division in AVG: In SQL engines, AVG(5 / 2) can round down to 2 unless cast to float.'
       ],
       companyVariants: {
         amazon: {
@@ -886,9 +874,6 @@ HAVING COUNT(*) >= 5;`
       }
     },
 
-    // -------------------------------------------------------------------------
-    // PATTERN 4: Period-over-Period Deltas (LAG / LEAD)
-    // -------------------------------------------------------------------------
     {
       id: 'period_deltas',
       tier: 2,
@@ -918,15 +903,15 @@ HAVING COUNT(*) >= 5;`
         }
       ],
       thinkingProcess: [
-        '1. Establish chronological order: Wrap the metric with ORDER BY date ASC so SQL knows what "yesterday" or "last month" means.',
+        '1. Establish chronological order: Wrap the metric with ORDER BY date ASC so SQL knows chronological progression.',
         '2. Grab the predecessor: Call LAG(metric, 1, 0) OVER (PARTITION BY entity ORDER BY date).',
         '3. Compute difference: current - previous for absolute change, or (current - prev) * 100.0 / NULLIF(prev, 0) for percentage.',
-        '4. Handle first row: Remember the very first period has no previous data, so it produces NULL (or your chosen default).'
+        '4. Handle first row: Remember the first period has no prior data, returning NULL safely.'
       ],
       gotchas: [
-        '1. Missing dates: If an e-commerce store had 0 sales in February, LAG() on March will look back to January! (Always ensure continuous dates via a calendar table or CTE).',
-        '2. Division by zero: Naive (curr - prev) / prev crashes SQL engines with "division by zero" if prev is 0. Always wrap with NULLIF(prev, 0).',
-        '3. Forgetting PARTITION BY: If calculating MoM growth for 10 different products, forgetting PARTITION BY product_id will compare Product B\'s January sales to Product A\'s December sales!'
+        '1. Missing dates: If a store had 0 sales in February, LAG() on March looks back to January unless continuous dates are generated via CTE.',
+        '2. Division by zero: Naive (curr - prev) / prev crashes SQL engines if prev is 0. Always wrap with NULLIF(prev, 0).',
+        '3. Forgetting PARTITION BY: Forgetting PARTITION BY product_id compares Product B to Product A.'
       ],
       companyVariants: {
         amazon: {
@@ -997,9 +982,6 @@ ORDER BY card_number_masked, charge_time;`
       }
     },
 
-    // -------------------------------------------------------------------------
-    // PATTERN 5: Cumulative Windows & Rolling Averages
-    // -------------------------------------------------------------------------
     {
       id: 'running_totals',
       tier: 2,
@@ -1007,7 +989,7 @@ ORDER BY card_number_masked, charge_time;`
       tag: 'RUNNING TOTALS',
       tagline: 'Calculate Year-to-Date (YTD) running totals and 7-day smoothed trendlines',
       businessProblem: `Finance teams need to know: "What is our cumulative revenue pacing toward the $10M annual goal?", "What is our 7-day rolling average active users to eliminate Saturday/Sunday noise?", "At what point in the quarter did we break even?"`,
-      mentalModel: `Picture a snowball rolling down a snow-covered hill. As it rolls from Jan 1 down toward Dec 31, every day adds another layer of snow to the ball. The ball keeps growing continuously until New Year's Day, where a PARTITION BY year melts it back down to start fresh.`,
+      mentalModel: `Picture a snowball rolling down a snow-covered hill. As it rolls from Jan 1 down toward Dec 31, every day adds another layer of snow to the ball. The ball keeps growing continuously until New Year's Day, where a PARTITION BY year resets it to start fresh.`,
       steppingStones: [
         {
           num: '5.1',
@@ -1030,14 +1012,14 @@ ORDER BY card_number_masked, charge_time;`
       ],
       thinkingProcess: [
         '1. Establish chronological order: ORDER BY date ASC so the accumulation rolls forward.',
-        '2. Define partitions: Add PARTITION BY customer_id or PARTITION BY year if running totals should reset per entity.',
-        '3. Specify the window frame: Use ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW for running totals, or ROWS BETWEEN N PRECEDING AND CURRENT ROW for rolling averages.',
-        '4. Verify duplicate timestamps: If multiple rows share the same date, include a secondary ordering key (ORDER BY date, transaction_id).'
+        '2. Define partitions: Add PARTITION BY customer_id or year if running totals reset per entity.',
+        '3. Specify window frame: Use ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW for cumulative sums, or ROWS BETWEEN N PRECEDING AND CURRENT ROW for rolling averages.',
+        '4. Verify duplicates: If timestamps repeat, add a secondary tiebreaker key (ORDER BY date, id).'
       ],
       gotchas: [
-        '1. Duplicate timestamp grouping: In default SQL RANGE mode, rows with identical timestamps get lumped together, jumping the sum abruptly instead of stepping through.',
-        '2. Window frame boundaries: Forgetting ROWS BETWEEN in an AVG() function can calculate the average over all preceding rows rather than just the last 7 days!',
-        '3. Performance on big data: Running cumulative sums across 500 million rows requires massive memory; in production warehouses, partition by day or month.'
+        '1. Duplicate timestamp grouping: In default SQL RANGE mode, rows with identical timestamps get summed together in a jump.',
+        '2. Window frame boundaries: Forgetting ROWS BETWEEN in AVG() calculates the average over all preceding rows rather than just the last 7 days.',
+        '3. Performance on large data: Running cumulative sums across millions of rows requires partitioning by day or month in production warehouses.'
       ],
       companyVariants: {
         amazon: {
@@ -1107,9 +1089,6 @@ ORDER BY card_number_masked, charge_time;`
       }
     },
 
-    // -------------------------------------------------------------------------
-    // PATTERN 6: Multi-Step Funnel Milestones
-    // -------------------------------------------------------------------------
     {
       id: 'funnel_milestones',
       tier: 2,
@@ -1140,13 +1119,13 @@ ORDER BY card_number_masked, charge_time;`
       ],
       thinkingProcess: [
         '1. Identify key milestone events: e.g. "view_item", "add_to_cart", "start_checkout", "purchase".',
-        '2. Pivot with CASE WHEN: Wrap each milestone in SUM(CASE WHEN event_name = "..." THEN 1 ELSE 0 END) or COUNT(DISTINCT CASE...).',
+        '2. Pivot with CASE WHEN: Wrap each milestone in SUM(CASE WHEN event_name = "..." THEN 1 ELSE 0 END).',
         '3. Compute conversion percentages: Divide Stage N by Stage 1 (overall conversion) and Stage N by Stage N-1 (step retention).',
-        '4. Segment by dimensions: Group by marketing channel, device type, or country to see where conversion thrives or fails.'
+        '4. Segment by dimensions: Group by marketing channel, device type, or country.'
       ],
       gotchas: [
-        '1. Counting clicks instead of users: If a user clicks "Add to Cart" 6 times, SUM(CASE ...) counts 6 actions, but only 1 converted user. Always use COUNT(DISTINCT user_id).',
-        '2. Chronological sequence: Ensuring the purchase happened AFTER the cart addition, not before (e.g., re-order shortcuts).',
+        '1. Counting clicks instead of users: If a user clicks "Add to Cart" 6 times, SUM(CASE...) counts 6 actions, but only 1 converted user. Use COUNT(DISTINCT user_id).',
+        '2. Chronological sequence: Ensuring the purchase happened AFTER the cart addition, not before.',
         '3. Integer division truncation: 450 / 1000 evaluates to 0 in many SQL dialects without 100.0 *.'
       ],
       companyVariants: {
@@ -1213,7 +1192,7 @@ ORDER BY total_attempts DESC;`
   ];
 
   // ===========================================================================
-  // PATTERN HUB STATE & ENGINE
+  // STATE & CONTROLLER
   // ===========================================================================
 
   let activePatternId = 'anti_join';
@@ -1230,206 +1209,146 @@ ORDER BY total_attempts DESC;`
     return PATTERNS.find(p => p.id === activePatternId) || PATTERNS[0];
   }
 
-  function renderPatternHubHtml() {
-    const p = getActivePattern();
-    const curCompany = activeCompanyMap[p.id] || 'amazon';
+  function renderPatternContentHtml(p, curCompany, isFullPage) {
     const variant = p.companyVariants[curCompany] || p.companyVariants.amazon;
 
     return `
-      <div class="koma-pattern-hub-overlay" id="komaPatternHubModal">
-        <div class="koma-pattern-hub-modal">
-          
-          <!-- Top Bar -->
-          <div class="koma-hub-topbar">
-            <div class="koma-hub-branding">
-              <span class="koma-hub-dna-icon">🧬</span>
-              <div>
-                <h2 class="koma-hub-title">80/20 Universal SQL Pattern Academy</h2>
-                <p class="koma-hub-subtitle">Master the 6 vital archetypes that solve 80% of company database questions</p>
+      <!-- Pattern Header Banner -->
+      <div class="koma-hub-header-banner">
+        <div class="koma-hub-tier-pill">TIER ${p.tier} &middot; ${p.tier === 1 ? 'ESSENTIALS' : 'BUSINESS GROWTH'}</div>
+        <div class="koma-hub-tag-pill">${escapeHtml(p.tag)}</div>
+        <h1 class="koma-hub-header-title">${escapeHtml(p.title)}</h1>
+        <p class="koma-hub-tagline">${escapeHtml(p.tagline)}</p>
+      </div>
+
+      <!-- Section 1: Business Problem -->
+      <div class="koma-hub-section">
+        <div class="koma-hub-section-title">1. BUSINESS PROBLEM</div>
+        <div class="koma-hub-quote-card">${escapeHtml(p.businessProblem)}</div>
+      </div>
+
+      <!-- Section 2: Mental Model -->
+      <div class="koma-hub-section">
+        <div class="koma-hub-section-title">2. MENTAL MODEL</div>
+        <div class="koma-hub-mental-card"><p>${escapeHtml(p.mentalModel)}</p></div>
+      </div>
+
+      <!-- Section 3: Stepping Stones (Monochrome Blueprint SVGs with Keyword Colors) -->
+      <div class="koma-hub-section">
+        <div class="koma-hub-section-title">3. STEPPING STONES</div>
+        <div class="koma-subtopics-list">
+          ${p.steppingStones.map(st => `
+            <div class="koma-subtopic-card">
+              <div class="koma-subtopic-header">
+                <span class="koma-subtopic-badge">${st.num}</span>
+                <div class="koma-subtopic-title">${escapeHtml(st.title)}</div>
               </div>
+              <p class="koma-subtopic-desc">${escapeHtml(st.summary)}</p>
+              ${st.svg && SVG_LIBRARY[st.svg] ? `
+                <div class="koma-svg-viewport">
+                  ${SVG_LIBRARY[st.svg]()}
+                </div>
+              ` : ''}
             </div>
-            <button class="koma-hub-close-btn" onclick="window.SQL_PATTERN_HUB.close()" title="Close Pattern Academy">✕</button>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Section 4: 4-Step Thinking Process -->
+      <div class="koma-hub-section">
+        <div class="koma-hub-section-title">4. THINKING PROCESS</div>
+        <div class="koma-hub-steps-card">
+          ${p.thinkingProcess.map(step => `
+            <div class="koma-hub-step-item">
+              <div class="koma-step-dot"></div>
+              <div class="koma-step-text">${escapeHtml(step)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Section 5: Traps & Gotchas -->
+      <div class="koma-hub-section">
+        <div class="koma-hub-section-title">5. TRAPS &amp; GOTCHAS</div>
+        <div class="koma-hub-gotchas-card">
+          ${p.gotchas.map(g => `
+            <div class="koma-gotcha-row">
+              <span style="color:#71717a; font-family:monospace;">&bull;</span>
+              <div class="koma-gotcha-text">${escapeHtml(g)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Section 6: Cross-Company Examples -->
+      <div class="koma-hub-section">
+        <div class="koma-hub-section-title">6. CROSS-COMPANY EXAMPLES</div>
+        <p class="koma-chameleon-intro">
+          Identical core query logic adapted across different company tables:
+        </p>
+
+        <!-- Company Selector Pills -->
+        <div class="koma-company-pills">
+          <button class="koma-company-pill ${curCompany === 'amazon' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('amazon', ${isFullPage})">Amazon</button>
+          <button class="koma-company-pill ${curCompany === 'netflix' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('netflix', ${isFullPage})">Netflix</button>
+          <button class="koma-company-pill ${curCompany === 'uber' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('uber', ${isFullPage})">Uber</button>
+          <button class="koma-company-pill ${curCompany === 'stripe' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('stripe', ${isFullPage})">Stripe</button>
+        </div>
+
+        <!-- Company Drill Box with Syntax Highlighted Query -->
+        <div class="koma-company-drill-box">
+          <div class="koma-drill-head">
+            <div class="koma-drill-co-name">${escapeHtml(variant.name)} Scenario</div>
+            <button class="koma-load-editor-btn" onclick="window.SQL_PATTERN_HUB.loadAndRun('${p.id}', '${curCompany}')">
+              Load into Live Studio &amp; Run
+            </button>
           </div>
-
-          <!-- Main Layout -->
-          <div class="koma-hub-body">
-            
-            <!-- Left Sidebar: Pattern Index -->
-            <div class="koma-hub-sidebar">
-              <div class="koma-hub-tier-label">TIER 1 &middot; ESSENTIALS</div>
-              ${PATTERNS.filter(x => x.tier === 1).map(item => `
-                <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}')">
-                  <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
-                  <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
-                </button>
-              `).join('')}
-
-              <div class="koma-hub-tier-label" style="margin-top:16px;">TIER 2 &middot; GROWTH</div>
-              ${PATTERNS.filter(x => x.tier === 2).map(item => `
-                <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}')">
-                  <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
-                  <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
-                </button>
-              `).join('')}
-
-              <div class="koma-hub-tier-label" style="margin-top:16px;">TIER 3 &middot; ADVANCED</div>
-              <div class="koma-hub-nav-item locked">
-                <div class="koma-hub-nav-title">07. Deduplication & Latest State</div>
-                <span class="koma-hub-nav-tag">CLEAN DATA</span>
-              </div>
-              <div class="koma-hub-nav-item locked">
-                <div class="koma-hub-nav-title">08. Consecutive Streaks (Gaps & Islands)</div>
-                <span class="koma-hub-nav-tag">ENGAGEMENT</span>
-              </div>
-            </div>
-
-            <!-- Right Content Area -->
-            <div class="koma-hub-content">
-              
-              <!-- Pattern Header Banner -->
-              <div class="koma-hub-header-banner">
-                <div class="koma-hub-tier-pill">Tier ${p.tier}: ${p.tier === 1 ? 'Everyday Essentials' : 'Business Growth'}</div>
-                <div class="koma-hub-tag-pill">${escapeHtml(p.tag)}</div>
-                <h1 class="koma-hub-header-title">${escapeHtml(p.title)}</h1>
-                <p class="koma-hub-tagline">${escapeHtml(p.tagline)}</p>
-              </div>
-
-              <!-- Section 1: Business Context -->
-              <div class="koma-hub-section">
-                <div class="koma-hub-section-title">
-                  <span>🎯</span> 1. The Real Business Problem
-                </div>
-                <div class="koma-hub-quote-card">
-                  ${escapeHtml(p.businessProblem)}
-                </div>
-              </div>
-
-              <!-- Section 2: Visual Mental Model -->
-              <div class="koma-hub-section">
-                <div class="koma-hub-section-title">
-                  <span>🧠</span> 2. The Visual Mental Model (How To Picture It)
-                </div>
-                <div class="koma-hub-mental-card">
-                  <p>${escapeHtml(p.mentalModel)}</p>
-                </div>
-              </div>
-
-              <!-- Section 3: Subtopics & Stepping Stones (WITH HANDCRAFTED SVGs) -->
-              <div class="koma-hub-section">
-                <div class="koma-hub-section-title">
-                  <span>🪜</span> 3. Stepping Stones: Concepts Needed to Master This
-                </div>
-                <div class="koma-subtopics-list">
-                  ${p.steppingStones.map(st => `
-                    <div class="koma-subtopic-card">
-                      <div class="koma-subtopic-header">
-                        <span class="koma-subtopic-badge">${st.num}</span>
-                        <div class="koma-subtopic-title">${escapeHtml(st.title)}</div>
-                      </div>
-                      <p class="koma-subtopic-desc">${escapeHtml(st.summary)}</p>
-                      ${st.svg && SVG_LIBRARY[st.svg] ? `
-                        <div class="koma-svg-viewport">
-                          ${SVG_LIBRARY[st.svg]()}
-                        </div>
-                      ` : ''}
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-
-              <!-- Section 4: 4-Step Thinking Process -->
-              <div class="koma-hub-section">
-                <div class="koma-hub-section-title">
-                  <span>🧭</span> 4. The 4-Step Thinking Process
-                </div>
-                <div class="koma-hub-steps-card">
-                  ${p.thinkingProcess.map(step => `
-                    <div class="koma-hub-step-item">
-                      <div class="koma-step-dot"></div>
-                      <div class="koma-step-text">${escapeHtml(step)}</div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-
-              <!-- Section 5: Common Traps & Gotchas -->
-              <div class="koma-hub-section">
-                <div class="koma-hub-section-title">
-                  <span>⚠️</span> 5. Interview Traps & Production Gotchas
-                </div>
-                <div class="koma-hub-gotchas-card">
-                  ${p.gotchas.map(g => `
-                    <div class="koma-gotcha-row">
-                      <span class="koma-gotcha-icon">⚡</span>
-                      <div class="koma-gotcha-text">${escapeHtml(g)}</div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-
-              <!-- Section 6: Cross-Company Chameleon Practice -->
-              <div class="koma-hub-section">
-                <div class="koma-hub-section-title">
-                  <span>🏢</span> 6. Cross-Company Chameleon: See the Exact Same Pattern Everywhere
-                </div>
-                <p class="koma-chameleon-intro">
-                  Notice how Amazon, Netflix, Uber, and Stripe ask the exact same fundamental question, only swapping the table names:
-                </p>
-
-                <!-- Company Selector Pills -->
-                <div class="koma-company-pills">
-                  <button class="koma-company-pill ${curCompany === 'amazon' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('amazon')">
-                    🛒 Amazon
-                  </button>
-                  <button class="koma-company-pill ${curCompany === 'netflix' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('netflix')">
-                    🎬 Netflix
-                  </button>
-                  <button class="koma-company-pill ${curCompany === 'uber' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('uber')">
-                    🚗 Uber
-                  </button>
-                  <button class="koma-company-pill ${curCompany === 'stripe' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('stripe')">
-                    💳 Stripe
-                  </button>
-                </div>
-
-                <!-- Company Drill Card -->
-                <div class="koma-company-drill-box">
-                  <div class="koma-drill-head">
-                    <div class="koma-drill-co-name">${escapeHtml(variant.name)} Case Study</div>
-                    <button class="koma-load-editor-btn" onclick="window.SQL_PATTERN_HUB.loadAndRun('${p.id}', '${curCompany}')">
-                      ⚡ 1-Click Load into Editor & Run
-                    </button>
-                  </div>
-                  <div class="koma-drill-prompt">
-                    <strong>Challenge:</strong> ${escapeHtml(variant.question)}
-                  </div>
-                  <pre class="koma-drill-sql"><code>${escapeHtml(variant.sql)}</code></pre>
-                </div>
-              </div>
-
-            </div>
+          <div class="koma-drill-prompt">
+            <strong>Prompt:</strong> ${escapeHtml(variant.question)}
           </div>
+          <pre class="koma-drill-sql"><code>${highlightSql(variant.sql)}</code></pre>
         </div>
       </div>
     `;
   }
 
-  // ===========================================================================
-  // PUBLIC API & CONTROLLER
-  // ===========================================================================
+  function renderSidebarHtml(isFullPage) {
+    return `
+      <div class="koma-hub-tier-label">TIER 1 &middot; ESSENTIALS</div>
+      ${PATTERNS.filter(x => x.tier === 1).map(item => `
+        <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}', ${isFullPage})">
+          <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
+          <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
+        </button>
+      `).join('')}
 
-  // ===========================================================================
-  // DEDICATED FULL-PAGE VIEW RENDERER
-  // ===========================================================================
+      <div class="koma-hub-tier-label">TIER 2 &middot; GROWTH</div>
+      ${PATTERNS.filter(x => x.tier === 2).map(item => `
+        <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}', ${isFullPage})">
+          <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
+          <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
+        </button>
+      `).join('')}
+
+      <div class="koma-hub-tier-label">TIER 3 &middot; ADVANCED</div>
+      <div class="koma-hub-nav-item locked">
+        <div class="koma-hub-nav-title">07. Deduplication &amp; Latest State</div>
+        <span class="koma-hub-nav-tag">CLEAN DATA</span>
+      </div>
+      <div class="koma-hub-nav-item locked">
+        <div class="koma-hub-nav-title">08. Consecutive Streaks (Gaps &amp; Islands)</div>
+        <span class="koma-hub-nav-tag">ENGAGEMENT</span>
+      </div>
+    `;
+  }
 
   function renderFullPageViewHtml() {
     const p = getActivePattern();
     const curCompany = activeCompanyMap[p.id] || 'amazon';
-    const variant = p.companyVariants[curCompany] || p.companyVariants.amazon;
 
     return `
       <div class="view-pattern-academy-page">
-        <!-- Top Bar (Clean Minimalist Koma) -->
+        <!-- Top Bar -->
         <div class="view-pattern-topbar">
           <div class="view-pattern-title-wrap">
             <div>
@@ -1447,133 +1366,44 @@ ORDER BY total_attempts DESC;`
         <!-- Layout: 2 Columns (Sidebar + Full Canvas) -->
         <div class="view-pattern-layout">
           <!-- Left Pattern Nav -->
-          <div class="koma-hub-sidebar" style="background:#141416; border:1px solid #27272a; border-radius:8px; padding:16px;">
-            <div class="koma-hub-tier-label">TIER 1 &middot; ESSENTIALS</div>
-            ${PATTERNS.filter(x => x.tier === 1).map(item => `
-              <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}', true)">
-                <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
-                <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
-              </button>
-            `).join('')}
-
-            <div class="koma-hub-tier-label" style="margin-top:16px;">TIER 2 &middot; GROWTH</div>
-            ${PATTERNS.filter(x => x.tier === 2).map(item => `
-              <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}', true)">
-                <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
-                <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
-              </button>
-            `).join('')}
-
-            <div class="koma-hub-tier-label" style="margin-top:16px;">TIER 3 &middot; ADVANCED</div>
-            <div class="koma-hub-nav-item locked">
-              <div class="koma-hub-nav-title">07. Deduplication &amp; Latest State</div>
-              <span class="koma-hub-nav-tag">CLEAN DATA</span>
-            </div>
-            <div class="koma-hub-nav-item locked">
-              <div class="koma-hub-nav-title">08. Consecutive Streaks (Gaps &amp; Islands)</div>
-              <span class="koma-hub-nav-tag">ENGAGEMENT</span>
-            </div>
+          <div class="koma-hub-sidebar">
+            ${renderSidebarHtml(true)}
           </div>
 
           <!-- Right Pattern Content Canvas -->
-          <div class="koma-hub-content" style="background:#141416; border:1px solid #27272a; border-radius:8px; padding:28px;">
-            <!-- Pattern Header Banner -->
-            <div class="koma-hub-header-banner">
-              <div class="koma-hub-tier-pill">Tier ${p.tier}: ${p.tier === 1 ? 'Everyday Essentials' : 'Business Growth'}</div>
-              <div class="koma-hub-tag-pill">${escapeHtml(p.tag)}</div>
-              <h1 class="koma-hub-header-title">${escapeHtml(p.title)}</h1>
-              <p class="koma-hub-tagline">${escapeHtml(p.tagline)}</p>
-            </div>
+          <div class="koma-hub-content">
+            ${renderPatternContentHtml(p, curCompany, true)}
+          </div>
+        </div>
+      </div>
+    `;
+  }
 
-            <!-- Section 1: Business Context -->
-            <div class="koma-hub-section">
-              <div class="koma-hub-section-title"><span>🎯</span> 1. The Real Business Problem</div>
-              <div class="koma-hub-quote-card">${escapeHtml(p.businessProblem)}</div>
-            </div>
+  function renderPatternHubHtml() {
+    const p = getActivePattern();
+    const curCompany = activeCompanyMap[p.id] || 'amazon';
 
-            <!-- Section 2: Visual Mental Model -->
-            <div class="koma-hub-section">
-              <div class="koma-hub-section-title"><span>🧠</span> 2. The Visual Mental Model (How To Picture It)</div>
-              <div class="koma-hub-mental-card"><p>${escapeHtml(p.mentalModel)}</p></div>
-            </div>
-
-            <!-- Section 3: Subtopics & Stepping Stones (WITH HANDCRAFTED SVGs) -->
-            <div class="koma-hub-section">
-              <div class="koma-hub-section-title"><span>🪜</span> 3. Stepping Stones: Concepts Needed to Master This</div>
-              <div class="koma-subtopics-list">
-                ${p.steppingStones.map(st => `
-                  <div class="koma-subtopic-card">
-                    <div class="koma-subtopic-header">
-                      <span class="koma-subtopic-badge">${st.num}</span>
-                      <div class="koma-subtopic-title">${escapeHtml(st.title)}</div>
-                    </div>
-                    <p class="koma-subtopic-desc">${escapeHtml(st.summary)}</p>
-                    ${st.svg && SVG_LIBRARY[st.svg] ? `
-                      <div class="koma-svg-viewport">
-                        ${SVG_LIBRARY[st.svg]()}
-                      </div>
-                    ` : ''}
-                  </div>
-                `).join('')}
+    return `
+      <div class="koma-pattern-hub-overlay" id="komaPatternHubModal">
+        <div class="koma-pattern-hub-modal">
+          <div class="koma-hub-topbar" style="background:#141416; border-bottom:1px solid #27272a; padding:16px 20px;">
+            <div class="koma-hub-branding">
+              <div>
+                <h2 class="koma-hub-title" style="font-family:var(--koma-font-mono); font-size:16px; font-weight:600; color:#ffffff;">SQL Pattern Academy</h2>
+                <p class="koma-hub-subtitle" style="font-size:12px; color:#888888;">The 6 universal archetypes that solve 80% of company database questions</p>
               </div>
             </div>
+            <button class="koma-hub-close-btn" onclick="window.SQL_PATTERN_HUB.close()" title="Close">✕</button>
+          </div>
 
-            <!-- Section 4: 4-Step Thinking Process -->
-            <div class="koma-hub-section">
-              <div class="koma-hub-section-title"><span>🧭</span> 4. The 4-Step Thinking Process</div>
-              <div class="koma-hub-steps-card">
-                ${p.thinkingProcess.map(step => `
-                  <div class="koma-hub-step-item">
-                    <div class="koma-step-dot"></div>
-                    <div class="koma-step-text">${escapeHtml(step)}</div>
-                  </div>
-                `).join('')}
-              </div>
+          <div class="koma-hub-body">
+            <div class="koma-hub-sidebar">
+              ${renderSidebarHtml(false)}
             </div>
 
-            <!-- Section 5: Common Traps & Gotchas -->
-            <div class="koma-hub-section">
-              <div class="koma-hub-section-title"><span>⚠️</span> 5. Interview Traps &amp; Production Gotchas</div>
-              <div class="koma-hub-gotchas-card">
-                ${p.gotchas.map(g => `
-                  <div class="koma-gotcha-row">
-                    <span class="koma-gotcha-icon">⚡</span>
-                    <div class="koma-gotcha-text">${escapeHtml(g)}</div>
-                  </div>
-                `).join('')}
-              </div>
+            <div class="koma-hub-content">
+              ${renderPatternContentHtml(p, curCompany, false)}
             </div>
-
-            <!-- Section 6: Cross-Company Chameleon Practice -->
-            <div class="koma-hub-section">
-              <div class="koma-hub-section-title"><span>🏢</span> 6. Cross-Company Chameleon: See the Exact Same Pattern Everywhere</div>
-              <p class="koma-chameleon-intro">
-                Notice how Amazon, Netflix, Uber, and Stripe ask the exact same fundamental question, only swapping the table names:
-              </p>
-
-              <!-- Company Selector Pills -->
-              <div class="koma-company-pills">
-                <button class="koma-company-pill ${curCompany === 'amazon' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('amazon', true)">🛒 Amazon</button>
-                <button class="koma-company-pill ${curCompany === 'netflix' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('netflix', true)">🎬 Netflix</button>
-                <button class="koma-company-pill ${curCompany === 'uber' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('uber', true)">🚗 Uber</button>
-                <button class="koma-company-pill ${curCompany === 'stripe' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('stripe', true)">💳 Stripe</button>
-              </div>
-
-              <!-- Company Drill Card with 1-Click Load & Run -->
-              <div class="koma-company-drill-box">
-                <div class="koma-drill-head">
-                  <div class="koma-drill-co-name">${escapeHtml(variant.name)} Case Study</div>
-                  <button class="koma-load-editor-btn" onclick="window.SQL_PATTERN_HUB.loadAndRun('${p.id}', '${curCompany}')">
-                    ⚡ Load into Live Studio &amp; Run Query
-                  </button>
-                </div>
-                <div class="koma-drill-prompt">
-                  <strong>Challenge:</strong> ${escapeHtml(variant.question)}
-                </div>
-                <pre class="koma-drill-sql"><code>${escapeHtml(variant.sql)}</code></pre>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
@@ -1581,7 +1411,7 @@ ORDER BY total_attempts DESC;`
   }
 
   // ===========================================================================
-  // PUBLIC API & CONTROLLER
+  // PUBLIC API
   // ===========================================================================
 
   window.SQL_PATTERN_HUB = {
@@ -1652,7 +1482,6 @@ ORDER BY total_attempts DESC;`
 
       this.close();
 
-      // If user is inside the full page view, transition back to home
       const fullView = document.getElementById('viewPatternAcademy');
       if (fullView && fullView.classList.contains('active')) {
         try {
