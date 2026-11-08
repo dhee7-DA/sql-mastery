@@ -1,7 +1,7 @@
 /**
  * SQL FOUNDRY - 80/20 UNIVERSAL PATTERN ACADEMY
- * Teaches the vital 20% of SQL archetypes that solve 80% of real-world company problems.
- * Includes deep subtopic breakdowns, intuitive visual mental models, and handcrafted dark-theme SVGs.
+ * Master the vital 20% of SQL archetypes that solve 80% of company database questions.
+ * Deep subtopic stepping stones, visual mental models, and handcrafted dark-theme SVGs.
  */
 
 (function(window) {
@@ -48,97 +48,94 @@
             <text x="140" y="22" text-anchor="middle" fill="#94a3b8" font-size="12" font-weight="700" letter-spacing="0.05em">INNER JOIN (ONLY MATCHES)</text>
             
             <!-- Table A -->
-            <rect x="20" y="40" width="100" height="130" rx="6" fill="#18181c" stroke="#33333c" stroke-width="1"/>
-            <text x="70" y="60" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">USERS (3)</text>
-            <rect x="28" y="72" width="84" height="24" rx="4" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1"/>
-            <text x="70" y="88" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">User #1</text>
-            <rect x="28" y="102" width="84" height="24" rx="4" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1"/>
-            <text x="70" y="118" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">User #2</text>
-            <rect x="28" y="132" width="84" height="24" rx="4" fill="rgba(248,113,113,0.1)" stroke="#f87171" stroke-dasharray="2,2"/>
-            <text x="70" y="148" text-anchor="middle" fill="#f87171" font-size="10.5" font-family="monospace">User #3 (No buy)</text>
+            <rect x="20" y="40" width="110" height="130" rx="6" fill="#18181b" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <text x="75" y="58" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="600">USERS (3)</text>
+            <rect x="30" y="68" width="90" height="24" rx="4" fill="#27272a"/>
+            <text x="75" y="84" text-anchor="middle" fill="#e4e4e7" font-size="10">User #1</text>
+            <rect x="30" y="98" width="90" height="24" rx="4" fill="#27272a"/>
+            <text x="75" y="114" text-anchor="middle" fill="#e4e4e7" font-size="10">User #2</text>
+            <rect x="30" y="128" width="90" height="24" rx="4" fill="url(#gradRed)" stroke="#f87171" stroke-width="1" stroke-dasharray="3 3"/>
+            <text x="75" y="144" text-anchor="middle" fill="#f87171" font-size="10">User #3 (No buy)</text>
 
             <!-- Table B -->
-            <rect x="160" y="40" width="100" height="130" rx="6" fill="#18181c" stroke="#33333c" stroke-width="1"/>
-            <text x="210" y="60" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">ORDERS (2)</text>
-            <rect x="168" y="72" width="84" height="24" rx="4" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1"/>
-            <text x="210" y="88" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">Order #101</text>
-            <rect x="168" y="102" width="84" height="24" rx="4" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1"/>
-            <text x="210" y="118" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">Order #102</text>
+            <rect x="160" y="40" width="110" height="130" rx="6" fill="#18181b" stroke="#34d399" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <text x="215" y="58" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">ORDERS (2)</text>
+            <rect x="170" y="68" width="90" height="24" rx="4" fill="#27272a"/>
+            <text x="215" y="84" text-anchor="middle" fill="#e4e4e7" font-size="10">Order #101</text>
+            <rect x="170" y="98" width="90" height="24" rx="4" fill="#27272a"/>
+            <text x="215" y="114" text-anchor="middle" fill="#e4e4e7" font-size="10">Order #102</text>
 
-            <text x="140" y="195" text-anchor="middle" fill="#f87171" font-size="10.5">✕ User #3 dropped completely!</text>
+            <text x="140" y="190" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="600">💥 User #3 ERASED from results!</text>
           </g>
 
           <!-- Divider -->
-          <line x1="335" y1="20" x2="335" y2="210" stroke="#27272e" stroke-dasharray="4,4"/>
+          <line x1="340" y1="20" x2="340" y2="210" stroke="#26262b" stroke-width="1" stroke-dasharray="4 4"/>
 
           <!-- RIGHT SIDE: LEFT JOIN -->
-          <g transform="translate(355, 20)">
-            <text x="145" y="22" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700" letter-spacing="0.05em">LEFT JOIN (KEEPS HOLES AS NULL)</text>
+          <g transform="translate(360, 20)">
+            <text x="140" y="22" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700" letter-spacing="0.05em">LEFT JOIN (KEEPS HOLES AS NULL)</text>
             
             <!-- Table A -->
-            <rect x="15" y="40" width="105" height="130" rx="6" fill="#18181c" stroke="#33333c" stroke-width="1"/>
-            <text x="67" y="60" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">USERS (3)</text>
-            <rect x="23" y="72" width="89" height="24" rx="4" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1"/>
-            <text x="67" y="88" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">User #1</text>
-            <rect x="23" y="102" width="89" height="24" rx="4" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1"/>
-            <text x="67" y="118" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">User #2</text>
-            <rect x="23" y="132" width="89" height="24" rx="4" fill="rgba(56,189,248,0.25)" stroke="#38bdf8" stroke-width="1.5"/>
-            <text x="67" y="148" text-anchor="middle" fill="#38bdf8" font-size="10.5" font-weight="700" font-family="monospace">User #3 ★</text>
+            <rect x="20" y="40" width="110" height="130" rx="6" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="75" y="58" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="600">USERS (3)</text>
+            <rect x="30" y="68" width="90" height="24" rx="4" fill="#27272a"/>
+            <text x="75" y="84" text-anchor="middle" fill="#e4e4e7" font-size="10">User #1</text>
+            <rect x="30" y="98" width="90" height="24" rx="4" fill="#27272a"/>
+            <text x="75" y="114" text-anchor="middle" fill="#e4e4e7" font-size="10">User #2</text>
+            <rect x="30" y="128" width="90" height="24" rx="4" fill="#1e293b" stroke="#38bdf8" stroke-width="1"/>
+            <text x="75" y="144" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="600">User #3 ★</text>
 
-            <!-- Table B with NULL -->
-            <rect x="160" y="40" width="115" height="130" rx="6" fill="#18181c" stroke="#33333c" stroke-width="1"/>
-            <text x="217" y="60" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">MATCHED</text>
-            <rect x="168" y="72" width="99" height="24" rx="4" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1"/>
-            <text x="217" y="88" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">Order #101</text>
-            <rect x="168" y="102" width="99" height="24" rx="4" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1"/>
-            <text x="217" y="118" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-family="monospace">Order #102</text>
-            <!-- The Null Box -->
-            <rect x="168" y="132" width="99" height="24" rx="4" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-dasharray="3,3"/>
-            <text x="217" y="148" text-anchor="middle" fill="#fde047" font-weight="700" font-size="10.5" font-family="monospace">NULL (Target!)</text>
+            <!-- Table B -->
+            <rect x="160" y="40" width="110" height="130" rx="6" fill="#18181b" stroke="#34d399" stroke-width="1.5"/>
+            <text x="215" y="58" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">MATCHED</text>
+            <rect x="170" y="68" width="90" height="24" rx="4" fill="#27272a"/>
+            <text x="215" y="84" text-anchor="middle" fill="#e4e4e7" font-size="10">Order #101</text>
+            <rect x="170" y="98" width="90" height="24" rx="4" fill="#27272a"/>
+            <text x="215" y="114" text-anchor="middle" fill="#e4e4e7" font-size="10">Order #102</text>
+            <rect x="170" y="128" width="90" height="24" rx="4" fill="#3f2e10" stroke="#f59e0b" stroke-width="1" stroke-dasharray="2 2"/>
+            <text x="215" y="144" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">NULL (Target!)</text>
 
-            <text x="145" y="195" text-anchor="middle" fill="#34d399" font-size="10.5" font-weight="600">✓ User #3 survives with order_id = NULL</text>
+            <text x="140" y="190" text-anchor="middle" fill="#34d399" font-size="11" font-weight="600">🎯 User #3 SURVIVES with NULL slot</text>
           </g>
         </svg>
       `;
     },
 
-    // 1.2: The Hole Hunter (Anti-Join filtering)
+    // 1.2: The Anti-Join Filter (WHERE right_table.id IS NULL)
     antiJoinFilter: function() {
       return `
-        <svg viewBox="0 0 680 160" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="160" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+        <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="180" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
           
-          <!-- Stage 1 -->
-          <g transform="translate(30, 25)">
-            <text x="90" y="20" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="700">1. LEFT JOIN OUTPUT</text>
-            <rect x="0" y="32" width="180" height="26" rx="4" fill="#1c1c22" stroke="#2b2b36"/>
-            <text x="15" y="49" fill="#94a3b8" font-size="10.5" font-family="monospace">User #1 | Order #101</text>
-            <rect x="0" y="62" width="180" height="26" rx="4" fill="#1c1c22" stroke="#2b2b36"/>
-            <text x="15" y="79" fill="#94a3b8" font-size="10.5" font-family="monospace">User #2 | Order #102</text>
-            <rect x="0" y="92" width="180" height="26" rx="4" fill="rgba(245,158,11,0.12)" stroke="#f59e0b"/>
-            <text x="15" y="109" fill="#fde047" font-weight="700" font-size="10.5" font-family="monospace">User #3 | NULL</text>
-          </g>
+          <g transform="translate(30, 20)">
+            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">THE 3-STAGE "HOLE HUNTER" PIPELINE</text>
 
-          <!-- Arrow 1 -->
-          <path d="M 235 88 L 275 88" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
-          
-          <!-- Filter Box -->
-          <g transform="translate(285, 45)">
-            <rect x="0" y="0" width="160" height="75" rx="6" fill="#18181f" stroke="#38bdf8" stroke-width="1.5"/>
-            <text x="80" y="24" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">2. WHERE CLAUSE</text>
-            <rect x="15" y="34" width="130" height="26" rx="4" fill="#121217" stroke="#272730"/>
-            <text x="80" y="51" text-anchor="middle" fill="#4ade80" font-size="10.5" font-weight="700" font-family="monospace">order_id IS NULL</text>
-          </g>
+            <!-- Stage 1 -->
+            <rect x="10" y="45" width="170" height="90" rx="6" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="95" y="68" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">1. LEFT JOIN</text>
+            <text x="95" y="88" text-anchor="middle" fill="#94a3b8" font-size="10">Attaches orders</text>
+            <text x="95" y="104" text-anchor="middle" fill="#94a3b8" font-size="10">Creates NULL holes</text>
+            <text x="95" y="122" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="monospace">All Users Kept</text>
 
-          <!-- Arrow 2 -->
-          <path d="M 465 88 L 505 88" stroke="#34d399" stroke-width="2"/>
+            <!-- Arrow 1 -->
+            <path d="M 195 90 L 225 90" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowCyan)"/>
 
-          <!-- Stage 3 Output -->
-          <g transform="translate(515, 45)">
-            <rect x="0" y="0" width="135" height="75" rx="6" fill="rgba(52,211,153,0.1)" stroke="#34d399" stroke-width="1.5"/>
-            <text x="67" y="24" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">3. FINAL RESULT</text>
-            <rect x="12" y="34" width="111" height="26" rx="4" fill="#15261e" stroke="#34d399"/>
-            <text x="67" y="51" text-anchor="middle" fill="#4ade80" font-weight="700" font-size="10.5" font-family="monospace">User #3 (Churn!)</text>
+            <!-- Stage 2 -->
+            <rect x="235" y="45" width="180" height="90" rx="6" fill="#271c10" stroke="#f59e0b" stroke-width="1.5"/>
+            <text x="325" y="68" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">2. WHERE order_id IS NULL</text>
+            <text x="325" y="88" text-anchor="middle" fill="#d4d4d8" font-size="10">The Filter Sieve</text>
+            <text x="325" y="104" text-anchor="middle" fill="#a1a1aa" font-size="10">Discards all matching rows</text>
+            <text x="325" y="122" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="monospace">Holes Isolated</text>
+
+            <!-- Arrow 2 -->
+            <path d="M 430 90 L 460 90" stroke="#34d399" stroke-width="2"/>
+
+            <!-- Stage 3 -->
+            <rect x="470" y="45" width="160" height="90" rx="6" fill="#062e20" stroke="#34d399" stroke-width="1.5"/>
+            <text x="550" y="68" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">3. CHURNED OUTPUT</text>
+            <text x="550" y="88" text-anchor="middle" fill="#6ee7b7" font-size="10">Exact Dormant Users</text>
+            <text x="550" y="104" text-anchor="middle" fill="#a7f3d0" font-size="10">Ready for Marketing</text>
+            <text x="550" y="122" text-anchor="middle" fill="#34d399" font-size="9" font-family="monospace">Zero Inactive Dropped</text>
           </g>
         </svg>
       `;
@@ -147,229 +144,481 @@
     // 2.1: GROUP BY vs PARTITION BY
     partitionVsGroupBy: function() {
       return `
-        <svg viewBox="0 0 680 220" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="220" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="230" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
 
-          <!-- GROUP BY (Collapses Rows) -->
+          <!-- GROUP BY side -->
           <g transform="translate(25, 20)">
-            <text x="140" y="20" text-anchor="middle" fill="#f87171" font-size="11.5" font-weight="700">GROUP BY (SQUASHES ROWS)</text>
-            <rect x="10" y="35" width="120" height="120" rx="6" fill="#18181c" stroke="#2f2f38"/>
-            <text x="70" y="55" text-anchor="middle" fill="#94a3b8" font-size="10.5">6 Raw Rows</text>
-            <text x="70" y="80" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="monospace">Shoes #1 ($80)</text>
-            <text x="70" y="100" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="monospace">Shoes #2 ($120)</text>
-            <text x="70" y="120" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="monospace">Shoes #3 ($45)</text>
+            <text x="140" y="20" text-anchor="middle" fill="#f87171" font-size="12" font-weight="700">GROUP BY (SQUASHES ROWS)</text>
+            
+            <rect x="20" y="40" width="240" height="130" rx="6" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="50" y="65" fill="#a1a1aa" font-size="10">6 Raw Rows</text>
+            <rect x="40" y="75" width="80" height="18" rx="3" fill="#27272a"/>
+            <text x="80" y="88" text-anchor="middle" fill="#71717a" font-size="9">Shoes #1 ($80)</text>
+            <rect x="40" y="98" width="80" height="18" rx="3" fill="#27272a"/>
+            <text x="80" y="111" text-anchor="middle" fill="#71717a" font-size="9">Shoes #2 ($120)</text>
+            <rect x="40" y="121" width="80" height="18" rx="3" fill="#27272a"/>
+            <text x="80" y="134" text-anchor="middle" fill="#71717a" font-size="9">Shoes #3 ($45)</text>
 
-            <!-- Arrow -->
-            <path d="M 140 95 L 175 95" stroke="#f87171" stroke-width="2"/>
+            <path d="M 130 107 L 160 107" stroke="#f87171" stroke-width="1.5"/>
 
-            <rect x="185" y="55" width="105" height="80" rx="6" fill="rgba(248,113,113,0.1)" stroke="#f87171"/>
-            <text x="237" y="78" text-anchor="middle" fill="#f87171" font-size="10" font-weight="700">Only 1 Summary</text>
-            <text x="237" y="105" text-anchor="middle" fill="#e2e8f0" font-size="10" font-family="monospace">SUM = $245</text>
-            <text x="140" y="185" text-anchor="middle" fill="#94a3b8" font-size="10">Individual items destroyed!</text>
+            <rect x="170" y="75" width="75" height="64" rx="4" fill="#3f1212" stroke="#ef4444" stroke-width="1"/>
+            <text x="207" y="95" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="700">Only 1 Summary</text>
+            <text x="207" y="115" text-anchor="middle" fill="#ffffff" font-size="9">SUM = $245</text>
+
+            <text x="140" y="190" text-anchor="middle" fill="#ef4444" font-size="10">⚠️ Individual items destroyed!</text>
           </g>
 
-          <!-- Divider -->
-          <line x1="335" y1="20" x2="335" y2="200" stroke="#27272e" stroke-dasharray="4,4"/>
+          <line x1="335" y1="20" x2="335" y2="210" stroke="#26262b" stroke-width="1" stroke-dasharray="4 4"/>
 
-          <!-- PARTITION BY (Keeps Rows & Adds Tag) -->
-          <g transform="translate(355, 20)">
-            <text x="150" y="20" text-anchor="middle" fill="#38bdf8" font-size="11.5" font-weight="700">PARTITION BY (KEEPS ROWS + ADDS RANK)</text>
-            <rect x="10" y="35" width="280" height="130" rx="6" fill="#18181c" stroke="#38bdf8" stroke-width="1.5"/>
-            <text x="25" y="58" fill="#94a3b8" font-size="10.5" font-weight="700">Department</text>
-            <text x="125" y="58" fill="#94a3b8" font-size="10.5" font-weight="700">Product</text>
-            <text x="230" y="58" fill="#38bdf8" font-size="10.5" font-weight="700">ROW_NUMBER</text>
+          <!-- PARTITION BY side -->
+          <g transform="translate(350, 20)">
+            <text x="150" y="20" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700">PARTITION BY (KEEPS ROWS + ADDS RANK)</text>
+            
+            <rect x="15" y="40" width="280" height="130" rx="6" fill="#18181b" stroke="#0284c7" stroke-width="1"/>
+            
+            <!-- Table Header -->
+            <text x="45" y="60" fill="#94a3b8" font-size="10" font-weight="600">Department</text>
+            <text x="140" y="60" fill="#94a3b8" font-size="10" font-weight="600">Product</text>
+            <text x="245" y="60" fill="#38bdf8" font-size="10" font-weight="700">ROW_NUMBER</text>
 
-            <rect x="15" y="68" width="270" height="24" rx="4" fill="rgba(56,189,248,0.1)"/>
-            <text x="25" y="84" fill="#cbd5e1" font-size="10" font-family="monospace">Shoes</text>
-            <text x="125" y="84" fill="#cbd5e1" font-size="10" font-family="monospace">Nike Air ($120)</text>
-            <text x="245" y="84" fill="#38bdf8" font-weight="700" font-size="11" font-family="monospace">#1 🥇</text>
+            <line x1="25" y1="68" x2="285" y2="68" stroke="#27272a" stroke-width="1"/>
 
-            <rect x="15" y="96" width="270" height="24" rx="4" fill="#141418"/>
-            <text x="25" y="112" fill="#cbd5e1" font-size="10" font-family="monospace">Shoes</text>
-            <text x="125" y="112" fill="#cbd5e1" font-size="10" font-family="monospace">Adidas ($80)</text>
-            <text x="245" y="112" fill="#38bdf8" font-weight="700" font-size="11" font-family="monospace">#2 🥈</text>
+            <!-- Row 1 -->
+            <text x="45" y="86" fill="#e4e4e7" font-size="9">Shoes</text>
+            <text x="140" y="86" fill="#e4e4e7" font-size="9">Nike Air ($120)</text>
+            <rect x="235" y="74" width="40" height="16" rx="3" fill="#047857"/>
+            <text x="255" y="86" text-anchor="middle" fill="#a7f3d0" font-size="9" font-weight="700">#1 🥇</text>
 
-            <rect x="15" y="124" width="270" height="24" rx="4" fill="#141418"/>
-            <text x="25" y="140" fill="#cbd5e1" font-size="10" font-family="monospace">Shoes</text>
-            <text x="125" y="140" fill="#cbd5e1" font-size="10" font-family="monospace">Puma ($45)</text>
-            <text x="245" y="140" fill="#38bdf8" font-weight="700" font-size="11" font-family="monospace">#3 🥉</text>
+            <!-- Row 2 -->
+            <text x="45" y="110" fill="#e4e4e7" font-size="9">Shoes</text>
+            <text x="140" y="110" fill="#e4e4e7" font-size="9">Adidas ($80)</text>
+            <rect x="235" y="98" width="40" height="16" rx="3" fill="#1d4ed8"/>
+            <text x="255" y="110" text-anchor="middle" fill="#bfdbfe" font-size="9" font-weight="700">#2 🥈</text>
 
-            <text x="150" y="188" text-anchor="middle" fill="#34d399" font-size="10" font-weight="600">✓ Every row survives with an exact rank sticker!</text>
+            <!-- Row 3 -->
+            <text x="45" y="134" fill="#e4e4e7" font-size="9">Shoes</text>
+            <text x="140" y="134" fill="#e4e4e7" font-size="9">Puma ($45)</text>
+            <rect x="235" y="122" width="40" height="16" rx="3" fill="#374151"/>
+            <text x="255" y="134" text-anchor="middle" fill="#d1d5db" font-size="9" font-weight="700">#3 🥉</text>
+
+            <text x="150" y="190" text-anchor="middle" fill="#38bdf8" font-size="10">✨ Every row survives with an exact rank sticker!</text>
           </g>
         </svg>
       `;
     },
 
-    // 2.2: The Three Ranks (Tie Race)
+    // 2.2: The 3-Way Tie Race: ROW_NUMBER vs RANK vs DENSE_RANK
     rankComparison: function() {
       return `
-        <svg viewBox="0 0 680 170" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="680" height="170" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+        <svg viewBox="0 0 680 190" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="190" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
 
-          <text x="340" y="24" text-anchor="middle" fill="#fde047" font-size="12" font-weight="700">TIE BREAKING: SONY ($1,200) vs SAMSUNG ($1,200) vs LG ($900)</text>
+          <g transform="translate(30, 20)">
+            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">THE 3-WAY TIE RACE: WHICH FUNCTION FOR WHICH GOAL?</text>
+            
+            <!-- Context: Scores are 100, 100, 90 -->
+            <rect x="20" y="45" width="160" height="110" rx="6" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="100" y="68" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">ROW_NUMBER()</text>
+            <text x="100" y="88" text-anchor="middle" fill="#e4e4e7" font-size="10">Alex (100) → <tspan fill="#38bdf8" font-weight="700">1</tspan></text>
+            <text x="100" y="106" text-anchor="middle" fill="#e4e4e7" font-size="10">Bob (100) → <tspan fill="#38bdf8" font-weight="700">2</tspan></text>
+            <text x="100" y="124" text-anchor="middle" fill="#e4e4e7" font-size="10">Chad (90) → <tspan fill="#38bdf8" font-weight="700">3</tspan></text>
+            <text x="100" y="145" text-anchor="middle" fill="#94a3b8" font-size="9">Guarantees NO duplicates</text>
 
-          <!-- ROW NUMBER -->
-          <g transform="translate(30, 42)">
-            <rect x="0" y="0" width="185" height="105" rx="6" fill="#18181f" stroke="#38bdf8" stroke-width="1"/>
-            <text x="92" y="22" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">ROW_NUMBER()</text>
-            <text x="20" y="45" fill="#cbd5e1" font-size="10.5" font-family="monospace">Sony:    <tspan fill="#38bdf8" font-weight="700">1</tspan></text>
-            <text x="20" y="65" fill="#cbd5e1" font-size="10.5" font-family="monospace">Samsung: <tspan fill="#38bdf8" font-weight="700">2</tspan> (arbitrary)</text>
-            <text x="20" y="85" fill="#cbd5e1" font-size="10.5" font-family="monospace">LG:      <tspan fill="#38bdf8" font-weight="700">3</tspan></text>
-          </g>
+            <!-- RANK() -->
+            <rect x="225" y="45" width="160" height="110" rx="6" fill="#18181b" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="305" y="68" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">RANK()</text>
+            <text x="305" y="88" text-anchor="middle" fill="#e4e4e7" font-size="10">Alex (100) → <tspan fill="#fbbf24" font-weight="700">1</tspan></text>
+            <text x="305" y="106" text-anchor="middle" fill="#e4e4e7" font-size="10">Bob (100) → <tspan fill="#fbbf24" font-weight="700">1</tspan></text>
+            <text x="305" y="124" text-anchor="middle" fill="#e4e4e7" font-size="10">Chad (90) → <tspan fill="#ef4444" font-weight="700">3 (Gap!)</tspan></text>
+            <text x="305" y="145" text-anchor="middle" fill="#fbbf24" font-size="9">Skips 2 due to 2-way tie</text>
 
-          <!-- RANK -->
-          <g transform="translate(245, 42)">
-            <rect x="0" y="0" width="185" height="105" rx="6" fill="#18181f" stroke="#a78bfa" stroke-width="1"/>
-            <text x="92" y="22" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">RANK() (With Gaps)</text>
-            <text x="20" y="45" fill="#cbd5e1" font-size="10.5" font-family="monospace">Sony:    <tspan fill="#a78bfa" font-weight="700">1</tspan></text>
-            <text x="20" y="65" fill="#cbd5e1" font-size="10.5" font-family="monospace">Samsung: <tspan fill="#a78bfa" font-weight="700">1</tspan> (Tie!)</text>
-            <text x="20" y="85" fill="#cbd5e1" font-size="10.5" font-family="monospace">LG:      <tspan fill="#f87171" font-weight="700">3</tspan> (Skips 2!)</text>
-          </g>
-
-          <!-- DENSE RANK -->
-          <g transform="translate(460, 42)">
-            <rect x="0" y="0" width="190" height="105" rx="6" fill="#18181f" stroke="#34d399" stroke-width="1.5"/>
-            <text x="95" y="22" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">DENSE_RANK() (Best for Top N)</text>
-            <text x="20" y="45" fill="#cbd5e1" font-size="10.5" font-family="monospace">Sony:    <tspan fill="#34d399" font-weight="700">1</tspan></text>
-            <text x="20" y="65" fill="#cbd5e1" font-size="10.5" font-family="monospace">Samsung: <tspan fill="#34d399" font-weight="700">1</tspan> (Tie!)</text>
-            <text x="20" y="85" fill="#cbd5e1" font-size="10.5" font-family="monospace">LG:      <tspan fill="#34d399" font-weight="700">2</tspan> (No gaps!)</text>
+            <!-- DENSE_RANK() -->
+            <rect x="430" y="45" width="160" height="110" rx="6" fill="#18181b" stroke="#34d399" stroke-width="1.5"/>
+            <text x="510" y="68" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">DENSE_RANK()</text>
+            <text x="510" y="88" text-anchor="middle" fill="#e4e4e7" font-size="10">Alex (100) → <tspan fill="#34d399" font-weight="700">1</tspan></text>
+            <text x="510" y="106" text-anchor="middle" fill="#e4e4e7" font-size="10">Bob (100) → <tspan fill="#34d399" font-weight="700">1</tspan></text>
+            <text x="510" y="124" text-anchor="middle" fill="#e4e4e7" font-size="10">Chad (90) → <tspan fill="#34d399" font-weight="700">2 (No Gap)</tspan></text>
+            <text x="510" y="145" text-anchor="middle" fill="#34d399" font-size="9">Always continuous (Top 3)</text>
           </g>
         </svg>
       `;
     },
 
-    // 3.1: Timeline WHERE vs HAVING
+    // 3.1: The Timeline of WHERE vs HAVING
     timelineWhereHaving: function() {
       return `
         <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
           <rect x="0" y="0" width="680" height="180" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
 
-          <text x="340" y="22" text-anchor="middle" fill="#94a3b8" font-size="11.5" font-weight="700" letter-spacing="0.04em">THE EXECUTION TIMELINE: WHERE vs. HAVING</text>
+          <g transform="translate(25, 20)">
+            <text x="315" y="18" text-anchor="middle" fill="#e4e4e7" font-size="12" font-weight="700" letter-spacing="0.05em">THE EXECUTION TIMELINE: WHERE vs. HAVING</text>
 
-          <!-- Step 1: FROM -->
-          <g transform="translate(25, 45)">
-            <rect x="0" y="0" width="125" height="95" rx="6" fill="#18181f" stroke="#33333d"/>
-            <text x="62" y="24" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">1. FROM</text>
-            <text x="62" y="45" text-anchor="middle" fill="#94a3b8" font-size="10">Raw Data</text>
-            <text x="62" y="65" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="monospace">10,000 Rows</text>
-            <text x="62" y="82" text-anchor="middle" fill="#71717a" font-size="9.5">Transactions</text>
+            <!-- Step 1: FROM -->
+            <rect x="15" y="42" width="125" height="85" rx="5" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="77" y="62" text-anchor="middle" fill="#e4e4e7" font-size="11" font-weight="700">1. FROM</text>
+            <text x="77" y="80" text-anchor="middle" fill="#a1a1aa" font-size="10">Raw Data</text>
+            <text x="77" y="98" text-anchor="middle" fill="#71717a" font-size="9">10,000 Rows</text>
+            <text x="77" y="112" text-anchor="middle" fill="#71717a" font-size="9">Transactions</text>
+
+            <line x1="147" y1="84" x2="167" y2="84" stroke="#52525b" stroke-width="1.5"/>
+
+            <!-- Step 2: WHERE -->
+            <rect x="175" y="42" width="135" height="85" rx="5" fill="#0c2333" stroke="#0284c7" stroke-width="1.5"/>
+            <text x="242" y="62" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">2. WHERE</text>
+            <text x="242" y="80" text-anchor="middle" fill="#93c5fd" font-size="10">Filters Individual Rows</text>
+            <text x="242" y="98" text-anchor="middle" fill="#7dd3fc" font-size="9" font-family="monospace">status = 'active'</text>
+            <text x="242" y="112" text-anchor="middle" fill="#38bdf8" font-size="9">Leaves 4,000 Rows</text>
+
+            <line x1="317" y1="84" x2="337" y2="84" stroke="#52525b" stroke-width="1.5"/>
+
+            <!-- Step 3: GROUP BY -->
+            <rect x="345" y="42" width="130" height="85" rx="5" fill="#1f152e" stroke="#8b5cf6" stroke-width="1.5"/>
+            <text x="410" y="62" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="700">3. GROUP BY</text>
+            <text x="410" y="80" text-anchor="middle" fill="#e9d5ff" font-size="10">Piles by Merchant</text>
+            <text x="410" y="98" text-anchor="middle" fill="#d8b4fe" font-size="9">500 Merchants</text>
+            <text x="410" y="112" text-anchor="middle" fill="#c084fc" font-size="9">Calculates Counts</text>
+
+            <line x1="482" y1="84" x2="502" y2="84" stroke="#52525b" stroke-width="1.5"/>
+
+            <!-- Step 4: HAVING -->
+            <rect x="510" y="42" width="125" height="85" rx="5" fill="#042718" stroke="#059669" stroke-width="1.5"/>
+            <text x="572" y="62" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">4. HAVING</text>
+            <text x="572" y="80" text-anchor="middle" fill="#a7f3d0" font-size="10">Filters Summary Piles</text>
+            <text x="572" y="98" text-anchor="middle" fill="#6ee7b7" font-size="9" font-family="monospace">COUNT(*) &gt;= 5</text>
+            <text x="572" y="112" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700">Final 12 Outliers</text>
+
+            <!-- Alert footer -->
+            <text x="315" y="150" text-anchor="middle" fill="#f87171" font-size="10" font-weight="600">⚠️ TRAP: You cannot put COUNT(*) in step #2 (WHERE), because the groups do not exist yet!</text>
           </g>
+        </svg>
+      `;
+    },
 
-          <path d="M 160 92 L 180 92" stroke="#38bdf8" stroke-width="2"/>
+    // 4.1: LAG() Conveyor Belt Diagram
+    lagConveyor: function() {
+      return `
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrowCyanLag" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
+            </marker>
+            <marker id="arrowAmberLag" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/>
+            </marker>
+          </defs>
+          <rect x="0" y="0" width="680" height="230" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
 
-          <!-- Step 2: WHERE -->
-          <g transform="translate(190, 45)">
-            <rect x="0" y="0" width="135" height="95" rx="6" fill="#18181f" stroke="#38bdf8" stroke-width="1.5"/>
-            <text x="67" y="24" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">2. WHERE</text>
-            <text x="67" y="45" text-anchor="middle" fill="#94a3b8" font-size="10">Filters Individual Rows</text>
-            <text x="67" y="65" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="monospace">status = 'active'</text>
-            <text x="67" y="82" text-anchor="middle" fill="#38bdf8" font-size="9.5">Leaves 4,000 Rows</text>
+          <g transform="translate(30, 20)">
+            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">LAG() CONVEYOR BELT: PEEK BACKWARDS WITHOUT SQUASHING ROWS</text>
+
+            <!-- Month 1: Jan -->
+            <rect x="20" y="65" width="160" height="90" rx="6" fill="#18181b" stroke="#3f3f46" stroke-width="1.5"/>
+            <text x="100" y="88" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="700">JANUARY 2026</text>
+            <text x="100" y="110" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="800">$100,000</text>
+            <rect x="35" y="122" width="130" height="20" rx="4" fill="#27272a"/>
+            <text x="100" y="136" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">LAG() = NULL</text>
+
+            <!-- Month 2: Feb -->
+            <rect x="230" y="65" width="160" height="90" rx="6" fill="#082f49" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="310" y="88" text-anchor="middle" fill="#7dd3fc" font-size="11" font-weight="700">FEBRUARY 2026</text>
+            <text x="310" y="110" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="800">$150,000</text>
+            <rect x="245" y="122" width="130" height="20" rx="4" fill="#0369a1"/>
+            <text x="310" y="136" text-anchor="middle" fill="#e0f2fe" font-size="9" font-weight="700">+ $50,000 (+50.0%)</text>
+
+            <!-- Backward Arrow 1: Feb reaches back to Jan -->
+            <path d="M 230 100 C 195 50, 185 50, 180 75" fill="none" stroke="#38bdf8" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrowCyanLag)"/>
+            <text x="200" y="42" text-anchor="middle" fill="#38bdf8" font-size="9" font-weight="700">LAG(sales, 1)</text>
+
+            <!-- Month 3: Mar -->
+            <rect x="440" y="65" width="160" height="90" rx="6" fill="#381e04" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="520" y="88" text-anchor="middle" fill="#fde68a" font-size="11" font-weight="700">MARCH 2026</text>
+            <text x="520" y="110" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="800">$120,000</text>
+            <rect x="455" y="122" width="130" height="20" rx="4" fill="#b45309"/>
+            <text x="520" y="136" text-anchor="middle" fill="#fef3c7" font-size="9" font-weight="700">- $30,000 (-20.0%)</text>
+
+            <!-- Backward Arrow 2: Mar reaches back to Feb -->
+            <path d="M 440 100 C 405 50, 395 50, 390 75" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrowAmberLag)"/>
+            <text x="410" y="42" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="700">LAG(sales, 1)</text>
+
+            <!-- Footnote -->
+            <text x="310" y="188" text-anchor="middle" fill="#94a3b8" font-size="10">✨ Zero self-joins required. Every monthly row survives side-by-side with its historical baseline.</text>
           </g>
+        </svg>
+      `;
+    },
 
-          <path d="M 335 92 L 355 92" stroke="#a78bfa" stroke-width="2"/>
+    // 4.2: Division By Zero Safety (NULLIF)
+    divisionByZeroSafety: function() {
+      return `
+        <svg viewBox="0 0 680 190" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="190" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
 
-          <!-- Step 3: GROUP BY -->
-          <g transform="translate(365, 45)">
-            <rect x="0" y="0" width="130" height="95" rx="6" fill="#18181f" stroke="#a78bfa" stroke-width="1.5"/>
-            <text x="65" y="24" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">3. GROUP BY</text>
-            <text x="65" y="45" text-anchor="middle" fill="#94a3b8" font-size="10">Piles by Merchant</text>
-            <text x="65" y="65" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="monospace">500 Merchants</text>
-            <text x="65" y="82" text-anchor="middle" fill="#a78bfa" font-size="9.5">Calculates Counts</text>
+          <g transform="translate(30, 20)">
+            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">PRODUCTION TRAP: WHY NAIVE GROWTH PERCENTAGES CRASH</text>
+
+            <!-- Dangerous formula -->
+            <rect x="20" y="45" width="260" height="100" rx="6" fill="#2d1215" stroke="#ef4444" stroke-width="1.5"/>
+            <text x="150" y="68" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">❌ NAIVE CALCULATION</text>
+            <text x="150" y="90" text-anchor="middle" fill="#f87171" font-size="11" font-family="monospace">(sales - prev) / prev</text>
+            <rect x="35" y="105" width="230" height="26" rx="4" fill="#450a0a"/>
+            <text x="150" y="122" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="700">💥 If prev = 0: "Division by zero" crash!</text>
+
+            <!-- Divider -->
+            <line x1="310" y1="45" x2="310" y2="145" stroke="#27272a" stroke-width="1" stroke-dasharray="3 3"/>
+
+            <!-- Bulletproof formula -->
+            <rect x="340" y="45" width="260" height="100" rx="6" fill="#042f1f" stroke="#10b981" stroke-width="1.5"/>
+            <text x="470" y="68" text-anchor="middle" fill="#a7f3d0" font-size="11" font-weight="700">✅ PRODUCTION SAFEGUARD</text>
+            <text x="470" y="90" text-anchor="middle" fill="#34d399" font-size="10" font-family="monospace">(sales - prev) / NULLIF(prev, 0)</text>
+            <rect x="355" y="105" width="230" height="26" rx="4" fill="#064e3b"/>
+            <text x="470" y="122" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="700">🛡️ If prev = 0: returns clean NULL</text>
+
+            <text x="310" y="170" text-anchor="middle" fill="#a1a1aa" font-size="10">NULLIF(val, 0) turns zeros into NULLs, preventing SQL engine exceptions on brand new launches.</text>
           </g>
+        </svg>
+      `;
+    },
 
-          <path d="M 505 92 L 525 92" stroke="#34d399" stroke-width="2"/>
+    // 5.1: Cumulative Windows & Running Totals (Snowball)
+    runningTotalSnowball: function() {
+      return `
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="230" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
 
-          <!-- Step 4: HAVING -->
-          <g transform="translate(535, 45)">
-            <rect x="0" y="0" width="125" height="95" rx="6" fill="#15261e" stroke="#34d399" stroke-width="1.5"/>
-            <text x="62" y="24" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">4. HAVING</text>
-            <text x="62" y="45" text-anchor="middle" fill="#94a3b8" font-size="10">Filters Summary Piles</text>
-            <text x="62" y="65" text-anchor="middle" fill="#4ade80" font-size="10" font-family="monospace">COUNT(*) >= 5</text>
-            <text x="62" y="82" text-anchor="middle" fill="#34d399" font-size="9.5 font-weight="700">Final 12 Outliers</text>
+          <g transform="translate(30, 20)">
+            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">THE SNOWBALL EFFECT: CUMULATIVE RUNNING TOTALS</text>
+
+            <!-- Day 1 -->
+            <rect x="20" y="55" width="165" height="105" rx="6" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="102" y="78" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">DAY 1: ORDER #101</text>
+            <text x="102" y="98" text-anchor="middle" fill="#94a3b8" font-size="10">Daily Amount: $100</text>
+            <rect x="35" y="112" width="135" height="32" rx="4" fill="#0c4a6e"/>
+            <text x="102" y="127" text-anchor="middle" fill="#e0f2fe" font-size="9">CUMULATIVE YTD</text>
+            <text x="102" y="139" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="800">$100</text>
+
+            <!-- Arrow 1 to 2 -->
+            <path d="M 190 108 L 220 108" stroke="#38bdf8" stroke-width="2"/>
+
+            <!-- Day 2 -->
+            <rect x="225" y="55" width="170" height="105" rx="6" fill="#18181b" stroke="#818cf8" stroke-width="1.5"/>
+            <text x="310" y="78" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="700">DAY 2: ORDER #102</text>
+            <text x="310" y="98" text-anchor="middle" fill="#94a3b8" font-size="10">Daily Amount: $200</text>
+            <rect x="240" y="112" width="140" height="32" rx="4" fill="#312e81"/>
+            <text x="310" y="127" text-anchor="middle" fill="#e0e7ff" font-size="9">$100 + $200</text>
+            <text x="310" y="139" text-anchor="middle" fill="#a5b4fc" font-size="11" font-weight="800">$300</text>
+
+            <!-- Arrow 2 to 3 -->
+            <path d="M 400 108 L 430 108" stroke="#818cf8" stroke-width="2"/>
+
+            <!-- Day 3 -->
+            <rect x="435" y="55" width="165" height="105" rx="6" fill="#18181b" stroke="#34d399" stroke-width="1.5"/>
+            <text x="517" y="78" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">DAY 3: ORDER #103</text>
+            <text x="517" y="98" text-anchor="middle" fill="#94a3b8" font-size="10">Daily Amount: $150</text>
+            <rect x="450" y="112" width="135" height="32" rx="4" fill="#064e3b"/>
+            <text x="517" y="127" text-anchor="middle" fill="#d1fae5" font-size="9">$300 + $150</text>
+            <text x="517" y="139" text-anchor="middle" fill="#34d399" font-size="11" font-weight="800">$450</text>
+
+            <!-- Bottom Frame Bar -->
+            <rect x="20" y="172" width="580" height="24" rx="4" fill="#27272a"/>
+            <text x="310" y="188" text-anchor="middle" fill="#e4e4e7" font-size="10" font-family="monospace">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</text>
           </g>
+        </svg>
+      `;
+    },
 
-          <text x="340" y="162" text-anchor="middle" fill="#f87171" font-size="10">⚠️ TRAP: You cannot put COUNT(*) in step #2 (WHERE), because the groups do not exist yet!</text>
+    // 5.2: 7-Day Rolling Moving Window Frame
+    rollingWindowSliding: function() {
+      return `
+        <svg viewBox="0 0 680 210" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="210" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+
+          <g transform="translate(30, 20)">
+            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">7-DAY SLIDING WINDOW: FILTERING OUT WEEKEND NOISE</text>
+
+            <!-- Daily bars -->
+            <!-- D1 --> <rect x="30" y="110" width="28" height="40" rx="3" fill="#3f3f46"/>
+            <!-- D2 --> <rect x="75" y="115" width="28" height="35" rx="3" fill="#3f3f46"/>
+            <!-- D3 --> <rect x="120" y="105" width="28" height="45" rx="3" fill="#3f3f46"/>
+            <!-- D4 --> <rect x="165" y="100" width="28" height="50" rx="3" fill="#3f3f46"/>
+            <!-- D5 --> <rect x="210" y="90" width="28" height="60" rx="3" fill="#3f3f46"/>
+            <!-- D6 (Sat) --> <rect x="255" y="60" width="28" height="90" rx="3" fill="#ef4444"/>
+            <!-- D7 (Sun) --> <rect x="300" y="65" width="28" height="85" rx="3" fill="#ef4444"/>
+            
+            <!-- Sliding Frame Bracket around D1..D7 -->
+            <rect x="22" y="45" width="315" height="115" rx="6" fill="#10b981" fill-opacity="0.1" stroke="#34d399" stroke-width="2" stroke-dasharray="4 4"/>
+            <text x="180" y="40" text-anchor="middle" fill="#34d399" font-size="10" font-weight="700">SLIDING WINDOW: 6 PRECEDING .. CURRENT ROW</text>
+
+            <!-- Rolling Average Trendline Dot -->
+            <circle cx="314" cy="95" r="5" fill="#34d399"/>
+            <rect x="360" y="70" width="230" height="55" rx="6" fill="#18181b" stroke="#34d399" stroke-width="1.5"/>
+            <text x="475" y="92" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">7-DAY ROLLING AVERAGE: $59.2</text>
+            <text x="475" y="110" text-anchor="middle" fill="#94a3b8" font-size="9">Smooths Saturday surge into true trend</text>
+
+            <!-- Day 8, 9, 10 future bars -->
+            <rect x="345" y="115" width="28" height="35" rx="3" fill="#27272a"/>
+            <rect x="390" y="110" width="28" height="40" rx="3" fill="#27272a"/>
+
+            <text x="310" y="180" text-anchor="middle" fill="#a1a1aa" font-size="10">AVG(val) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)</text>
+          </g>
+        </svg>
+      `;
+    },
+
+    // 6.1: Conditional Aggregation (CASE inside SUM)
+    conditionalAggregationMatrix: function() {
+      return `
+        <svg viewBox="0 0 680 200" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="200" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+
+          <g transform="translate(25, 20)">
+            <text x="315" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">CONDITIONAL AGGREGATION: SINGLE-PASS ROW PIVOT</text>
+
+            <!-- Left: Vertical Event Stream -->
+            <rect x="20" y="45" width="180" height="105" rx="6" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="110" y="65" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="700">RAW VERTICAL LOGS</text>
+            <rect x="30" y="74" width="160" height="18" rx="3" fill="#27272a"/>
+            <text x="110" y="86" text-anchor="middle" fill="#e4e4e7" font-size="9">User #882 | 'view_item'</text>
+            <rect x="30" y="96" width="160" height="18" rx="3" fill="#27272a"/>
+            <text x="110" y="108" text-anchor="middle" fill="#38bdf8" font-size="9">User #882 | 'add_to_cart'</text>
+            <rect x="30" y="118" width="160" height="18" rx="3" fill="#27272a"/>
+            <text x="110" y="130" text-anchor="middle" fill="#34d399" font-size="9">User #882 | 'checkout'</text>
+
+            <!-- Center Transformation Arrow -->
+            <g transform="translate(215, 80)">
+              <path d="M 0 15 L 50 15" stroke="#c084fc" stroke-width="2"/>
+              <text x="25" y="5" text-anchor="middle" fill="#c084fc" font-size="9" font-family="monospace">SUM(CASE...)</text>
+            </g>
+
+            <!-- Right: Pivoted Horizontal Summary -->
+            <rect x="280" y="45" width="330" height="105" rx="6" fill="#1e1330" stroke="#a855f7" stroke-width="1.5"/>
+            <text x="445" y="65" text-anchor="middle" fill="#d8b4fe" font-size="10" font-weight="700">ONE CLEAN EXECUTIVE SUMMARY ROW</text>
+            
+            <rect x="295" y="80" width="70" height="45" rx="4" fill="#2e1065"/>
+            <text x="330" y="97" text-anchor="middle" fill="#e9d5ff" font-size="9">user_id</text>
+            <text x="330" y="114" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700">#882</text>
+
+            <rect x="375" y="80" width="70" height="45" rx="4" fill="#0c4a6e"/>
+            <text x="410" y="97" text-anchor="middle" fill="#bae6fd" font-size="9">views</text>
+            <text x="410" y="114" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">1</text>
+
+            <rect x="455" y="80" width="70" height="45" rx="4" fill="#064e3b"/>
+            <text x="490" y="97" text-anchor="middle" fill="#a7f3d0" font-size="9">carts</text>
+            <text x="490" y="114" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">1</text>
+
+            <rect x="535" y="80" width="65" height="45" rx="4" fill="#701a75"/>
+            <text x="567" y="97" text-anchor="middle" fill="#f5d0fe" font-size="9">buys</text>
+            <text x="567" y="114" text-anchor="middle" fill="#f472b6" font-size="11" font-weight="700">1</text>
+
+            <text x="315" y="172" text-anchor="middle" fill="#a1a1aa" font-size="10">Pivots millions of events in 1 database scan without multiple expensive subqueries.</text>
+          </g>
+        </svg>
+      `;
+    },
+
+    // 6.2: Multi-Stage Conversion Funnel Sieve
+    funnelConversion: function() {
+      return `
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="230" rx="8" fill="#131316" stroke="#26262b" stroke-width="1"/>
+
+          <g transform="translate(30, 20)">
+            <text x="310" y="20" text-anchor="middle" fill="#e4e4e7" font-size="13" font-weight="700">THE CONVERSION FUNNEL: PINPOINTING PIPELINE LEAKS</text>
+
+            <!-- Stage 1 -->
+            <rect x="40" y="42" width="400" height="26" rx="4" fill="#0284c7"/>
+            <text x="55" y="59" fill="#ffffff" font-size="11" font-weight="700">1. Landing Page Visitors</text>
+            <text x="380" y="59" text-anchor="end" fill="#e0f2fe" font-size="11" font-weight="800">10,000 (100%)</text>
+
+            <!-- Drop 1 -->
+            <rect x="460" y="42" width="130" height="26" rx="4" fill="#27272a"/>
+            <text x="525" y="59" text-anchor="middle" fill="#94a3b8" font-size="10">Baseline</text>
+
+            <!-- Stage 2 -->
+            <rect x="70" y="74" width="340" height="26" rx="4" fill="#059669"/>
+            <text x="85" y="91" fill="#ffffff" font-size="11" font-weight="700">2. Added Item to Cart</text>
+            <text x="380" y="91" text-anchor="end" fill="#d1fae5" font-size="11" font-weight="800">3,200 (32.0%)</text>
+
+            <!-- Drop 2 -->
+            <rect x="460" y="74" width="130" height="26" rx="4" fill="#3f1212"/>
+            <text x="525" y="91" text-anchor="middle" fill="#f87171" font-size="10" font-weight="700">-68.0% Drop</text>
+
+            <!-- Stage 3 -->
+            <rect x="100" y="106" width="280" height="26" rx="4" fill="#7c3aed"/>
+            <text x="115" y="123" fill="#ffffff" font-size="11" font-weight="700">3. Began Checkout</text>
+            <text x="360" y="123" text-anchor="end" fill="#ede9fe" font-size="11" font-weight="800">1,400 (14.0%)</text>
+
+            <!-- Drop 3 -->
+            <rect x="460" y="106" width="130" height="26" rx="4" fill="#451a03"/>
+            <text x="525" y="123" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">-56.2% Drop</text>
+
+            <!-- Stage 4 -->
+            <rect x="130" y="138" width="220" height="26" rx="4" fill="#db2777"/>
+            <text x="145" y="155" fill="#ffffff" font-size="11" font-weight="700">4. Order Completed</text>
+            <text x="330" y="155" text-anchor="end" fill="#fce7f3" font-size="11" font-weight="800">420 (4.2%)</text>
+
+            <!-- Drop 4 -->
+            <rect x="460" y="138" width="130" height="26" rx="4" fill="#4c0519"/>
+            <text x="525" y="155" text-anchor="middle" fill="#fb7185" font-size="10" font-weight="700">-70.0% Drop 🔥</text>
+
+            <text x="310" y="188" text-anchor="middle" fill="#f43f5e" font-size="10" font-weight="700">🚨 CHOKEPOINT DETECTED: Stage 3 to 4 loses 70% of high-intent buyers during payment entry.</text>
+          </g>
         </svg>
       `;
     }
   };
 
   // ===========================================================================
-  // THE 10 MASTER PATTERNS CATALOG WITH DEEP SUBTOPIC MASTERY
+  // THE 6 CORE SQL 80/20 PATTERNS
   // ===========================================================================
 
   const PATTERNS = [
     // -------------------------------------------------------------------------
-    // PATTERN 1: THE MISSING MATCH (ANTI-JOIN)
+    // PATTERN 1: The Missing Match (Anti-Join)
     // -------------------------------------------------------------------------
     {
       id: 'anti_join',
       tier: 1,
-      tierName: 'Tier 1: Everyday Essentials',
       title: '01. The Missing Match (Anti-Join)',
-      subtitle: 'Identify customers, accounts, or items that have zero recorded activity',
       tag: 'CHURN & DORMANT USERS',
-      companies: ['amazon', 'netflix', 'uber', 'stripe'],
-      
-      businessContext: `
-        At every tech company, leaders constantly ask: 
-        <em>"Who signed up but never made a purchase?"</em>, <em>"Which rides got canceled?"</em>, or <em>"Which products have zero sales?"</em>
-        This is the single most common question in analytics because finding inactive users allows marketing to send targeted re-engagement emails.
-      `,
-
-      mentalModelText: `
-        Imagine Table A is a list of 100 registered users. Table B is a stack of 80 shopping receipts. 
-        When you connect them using a <strong>LEFT JOIN</strong>, the 80 users who bought items get paired with their receipt. 
-        The 20 users who never bought anything have a blank hole on the right: <code>receipt_id IS NULL</code>. 
-        All SQL does is filter for those exact holes!
-      `,
-
-      subtopics: [
+      tagline: 'Identify customers, accounts, or items that have zero recorded activity',
+      businessProblem: `At every tech company, leaders constantly ask: "Who signed up but never made a purchase?", "Which rides got canceled?", or "Which products have zero sales?" This is the single most common question in analytics because finding inactive users allows marketing to send targeted re-engagement emails.`,
+      mentalModel: `Imagine Table A is a list of 100 registered users. Table B is a stack of 80 shopping receipts. When you connect them using a LEFT JOIN, the 80 users who bought items get paired with their receipt. The 20 users who never bought anything have a blank hole on the right: receipt_id IS NULL. All SQL does is filter for those exact holes!`,
+      steppingStones: [
         {
           num: '1.1',
           title: 'The Stepping Stone: INNER JOIN vs. LEFT JOIN',
           summary: 'Why standard INNER JOIN erases inactive users, and how LEFT JOIN keeps them alive with NULL placeholders.',
-          svgName: 'joinComparison',
-          rules: [
-            '<strong>INNER JOIN:</strong> Drops any row from the left table that does not have an exact match in the right table.',
-            '<strong>LEFT JOIN:</strong> Keeps 100% of rows from the left table, even if there is no match, filling empty right-side columns with <code>NULL</code>.'
-          ]
+          svg: 'joinComparison'
         },
         {
           num: '1.2',
-          title: 'The Hole Hunter: Why We Test For NULL',
-          summary: 'In SQL, NULL means "missing or unknown". By asking for rows where the right ID is NULL, we isolate non-buyers.',
-          svgName: 'antiJoinFilter',
-          rules: [
-            'Always filter on the <strong>primary key of the right table</strong> (e.g. <code>WHERE orders.order_id IS NULL</code>).',
-            'Never test non-key columns, as a non-key column might be NULL even if an order actually occurred.'
-          ]
+          title: 'The Stepping Stone: Hunting the NULL Holes',
+          summary: 'How adding WHERE right_table.primary_key IS NULL transforms a join into a surgical churn detector.',
+          svg: 'antiJoinFilter'
         },
         {
           num: '1.3',
-          title: 'The Silent Interview Trap: = NULL vs. IS NULL',
-          summary: 'The #1 reason candidates fail SQL screenings on joins.',
-          rules: [
-            '❌ <code>WHERE order_id = NULL</code>: In SQL, <code>NULL = NULL</code> is FALSE! This returns 0 rows silently.',
-            '✅ <code>WHERE order_id IS NULL</code>: Correctly identifies empty placeholders.'
-          ]
+          title: 'The Stepping Stone: LEFT JOIN vs. NOT EXISTS vs. NOT IN',
+          summary: 'Why NOT IN (subquery) breaks on NULL values and ruins interviews, while LEFT JOIN IS NULL is fast and immune to NULL traps.',
+          svg: null
         }
       ],
-
-      universalBlueprint: `-- UNIVERSAL ANTI-JOIN BLUEPRINT
-SELECT 
-  a.id, 
-  a.name, 
-  a.created_at
-FROM parent_table a
-LEFT JOIN activity_table b 
-  ON a.id = b.parent_id
-WHERE b.id IS NULL;`,
-
+      thinkingProcess: [
+        '1. Identify the Master List: Which table has EVERY entity? (Users, Products, Drivers). Put this table immediately after FROM.',
+        '2. Identify the Event Stream: Which table logs transactions or actions? (Orders, Rides, StreamEvents). Attach it via LEFT JOIN.',
+        '3. Establish Primary Keys: Join on the shared key (e.g. ON u.user_id = o.user_id).',
+        '4. Hunt for Holes: Add WHERE o.order_id IS NULL. If an entity never took action, its right-side columns are guaranteed NULL.'
+      ],
+      gotchas: [
+        '1. Checking the wrong table: Writing WHERE u.user_id IS NULL instead of WHERE o.order_id IS NULL will return 0 rows!',
+        '2. The NOT IN Trap: If subquery returns even a single NULL value, NOT IN evaluates to UNKNOWN and drops all results. Anti-Join is immune to this.',
+        '3. Accidental INNER JOIN: Putting a condition like AND o.order_date > "2026-01-01" in the WHERE clause silently turns your LEFT JOIN back into an INNER JOIN!'
+      ],
       companyVariants: {
         amazon: {
           name: 'Amazon Prime',
-          question: 'Find Prime customers who signed up on Day 1 but placed zero orders in their first 30 days.',
+          question: 'Find Prime members who joined on Day 1 but placed 0 orders in their first 30 days.',
           sql: `-- Amazon: Prime members with 0 orders in first 30 days
 SELECT DISTINCT 
   o1.customer_id, 
@@ -384,311 +633,580 @@ WHERE o2.order_id IS NULL;`
         },
         netflix: {
           name: 'Netflix Streaming',
-          question: 'Find accounts that were active this week but generated 0 playback sessions.',
-          sql: `-- Netflix: Subscribers who watched 0 hours
+          question: 'Find subscribers who signed up for Premium but watched 0 hours of video this month.',
+          sql: `-- Netflix: Identify dormant subscribers for re-activation email campaign
 SELECT 
-  u.event_id, 
-  u.isp_asn, 
-  u.platform
-FROM playback_telemetry_events u
-LEFT JOIN playback_telemetry_events p 
-  ON u.isp_asn = p.isp_asn AND p.ttff_ms > 0
+  s.customer_id,
+  s.purchase_date AS signup_date
+FROM amazon_prime_orders s
+LEFT JOIN playback_telemetry_events p
+  ON s.customer_id = p.event_id
 WHERE p.event_id IS NULL;`
         },
         uber: {
-          name: 'Uber Rides',
-          question: 'Find riders who opened the app and requested a ride but had 0 completed trips.',
-          sql: `-- Uber: Churned riders with 0 completed pickups
+          name: 'Uber Mobility',
+          question: 'Find geographic areas where riders opened the app but 0 drivers were available.',
+          sql: `-- Uber: Unfulfilled ride demand areas (0 active drivers)
 SELECT 
-  r.rider_id, 
-  r.city, 
-  r.signup_date
-FROM uber_riders r
-LEFT JOIN uber_trips t 
-  ON r.rider_id = t.rider_id AND t.status = 'COMPLETED'
-WHERE t.trip_id IS NULL;`
+  r.h3_index AS area_id,
+  r.request_id,
+  r.requested_at
+FROM uber_ride_requests r
+LEFT JOIN uber_driver_telemetry d
+  ON r.h3_index = d.h3_index
+WHERE d.h3_index IS NULL;`
         },
         stripe: {
           name: 'Stripe Payments',
-          question: 'Find merchants who generated an invoice but never had a successful charge captured.',
-          sql: `-- Stripe: Invoices with 0 captured payment attempts
+          question: 'Find merchant accounts created this quarter that have processed 0 successful payments.',
+          sql: `-- Stripe: Onboarded merchants with zero processed transactions
 SELECT 
-  i.invoice_id, 
-  i.merchant_id, 
-  i.amount_usd
-FROM stripe_invoices i
-LEFT JOIN stripe_charges c 
-  ON i.invoice_id = c.invoice_id AND c.status = 'succeeded'
-WHERE c.charge_id IS NULL;`
+  c.card_number_masked,
+  c.ip_location
+FROM card_authorization_events c
+LEFT JOIN card_authorization_events settled
+  ON c.card_number_masked = settled.card_number_masked
+  AND settled.amount_usd > 10.0
+WHERE settled.auth_id IS NULL;`
         }
       }
     },
 
     // -------------------------------------------------------------------------
-    // PATTERN 2: TOP N PER GROUP (RANKING)
+    // PATTERN 2: Top N Per Group (Category Leaders)
     // -------------------------------------------------------------------------
     {
       id: 'top_n_ranking',
       tier: 1,
-      tierName: 'Tier 1: Everyday Essentials',
       title: '02. Top N Per Group (Category Leaders)',
-      subtitle: 'Rank items within each category and slice out only the top 1, 2, or 3 winners',
       tag: 'LEADERBOARDS & RANKINGS',
-      companies: ['amazon', 'netflix', 'uber', 'stripe'],
-
-      businessContext: `
-        Businesses love leaderboards: <em>"What are the top 3 best-selling products in each department?"</em>, 
-        <em>"Who is the highest-spending customer per country?"</em>, or <em>"Top 5 most-watched TV shows per region."</em>
-      `,
-
-      mentalModelText: `
-        Think of organizing a school sports day. Instead of one single race with 1,000 students, you divide students into classes (PARTITION BY). 
-        Within each class, students race and you stamp gold, silver, and bronze ribbons (#1, #2, #3). 
-        Finally, you take only the ribbon winners.
-      `,
-
-      subtopics: [
+      tagline: 'Rank items within each category and slice out only the top 1, 2, or 3 winners',
+      businessProblem: `Businesses love leaderboards: "What are the top 3 best-selling products in each department?", "Who is the highest-spending customer per country?", or "Top 5 most-watched TV shows per region."`,
+      mentalModel: `Think of organizing a school sports day. Instead of one single race with 1,000 students, you divide students into classes (PARTITION BY). Within each class, students race and you stamp gold, silver, and bronze ribbons (#1, #2, #3). Finally, you take only the ribbon winners.`,
+      steppingStones: [
         {
           num: '2.1',
           title: 'The Stepping Stone: GROUP BY vs. PARTITION BY',
           summary: 'Why GROUP BY collapses your raw rows, while PARTITION BY preserves every row and stamps a calculated rank tag.',
-          svgName: 'partitionVsGroupBy',
-          rules: [
-            '<strong>GROUP BY:</strong> Destroys individual rows and outputs 1 summary row per bucket.',
-            '<strong>PARTITION BY:</strong> Keeps 100% of individual rows intact and attaches a new rank column.'
-          ]
+          svg: 'partitionVsGroupBy'
         },
         {
           num: '2.2',
-          title: 'The 3-Way Tie Race: ROW_NUMBER vs. RANK vs. DENSE_RANK',
-          summary: 'How ties are resolved when two competitors have the exact same score ($1,200).',
-          svgName: 'rankComparison',
-          rules: [
-            '<strong>ROW_NUMBER():</strong> 1, 2, 3 (no ties allowed; breaks ties arbitrarily).',
-            '<strong>RANK():</strong> 1, 1, 3 (skips rank #2 after a tie).',
-            '<strong>DENSE_RANK():</strong> 1, 1, 2 (no gaps after a tie; standard for top N leaderboards).'
-          ]
+          title: 'The Stepping Stone: ROW_NUMBER vs. RANK vs. DENSE_RANK',
+          summary: 'How ties are resolved in Olympic medals vs. e-commerce catalogs, and when to pick which window function.',
+          svg: 'rankComparison'
         },
         {
           num: '2.3',
-          title: 'The Silent Interview Trap: Window Functions in WHERE',
-          summary: 'Why you cannot write "WHERE ROW_NUMBER() <= 3" directly in the same query.',
-          rules: [
-            'SQL processes <code>WHERE</code> <em>before</em> window functions are calculated.',
-            'Always wrap the ranking inside a <strong>Common Table Expression (WITH ranked AS (...))</strong> or subquery, then filter <code>WHERE rank_num <= 3</code> on the outside.'
-          ]
+          title: 'The Stepping Stone: The Subquery / CTE Wrap Trap',
+          summary: 'Why you cannot write WHERE ROW_NUMBER() <= 3 directly in the main query and how a CTE solves it cleanly.',
+          svg: null
         }
       ],
-
-      universalBlueprint: `-- UNIVERSAL TOP-N BLUEPRINT
-WITH ranked AS (
-  SELECT
-    category,
-    item_name,
-    metric_value,
-    DENSE_RANK() OVER (
-      PARTITION BY category 
-      ORDER BY metric_value DESC
-    ) AS rank_num
-  FROM raw_items
-)
-SELECT *
-FROM ranked
-WHERE rank_num <= 3;`,
-
+      thinkingProcess: [
+        '1. Define the buckets: Which column divides your data into separate groups? (e.g. department, genre, country) → PARTITION BY department.',
+        '2. Define the metric of success: What constitutes "winning"? (Revenue, streams, rating) → ORDER BY revenue DESC.',
+        '3. Stamp the rank sticker: Use ROW_NUMBER() OVER (PARTITION BY group ORDER BY score DESC) AS rnk inside a CTE.',
+        '4. Filter the podium: In the outer query, simply filter WHERE rnk <= 3.'
+      ],
+      gotchas: [
+        '1. WHERE clause rejection: Writing WHERE ROW_NUMBER() <= 3 directly will fail with "Window functions not allowed in WHERE". Window functions execute AFTER WHERE!',
+        '2. Tie handling: If two products have the exact same revenue of $500, ROW_NUMBER() randomly picks one for #1 and one for #2. If you want both to share #1, use DENSE_RANK().',
+        '3. Missing ORDER BY: Forgetting ORDER BY inside the OVER() clause results in random unranked order.'
+      ],
       companyVariants: {
         amazon: {
           name: 'Amazon Retail',
-          question: 'Find the top 3 most expensive products in each product department.',
-          sql: `-- Amazon: Top 3 highest-priced items per department
-WITH ranked_products AS (
+          question: 'Find the latest order placed by each customer in the marketplace.',
+          sql: `-- Amazon: Most recent purchase per customer using ROW_NUMBER()
+WITH ranked_orders AS (
   SELECT 
-    department,
-    product_name,
-    price_usd,
-    DENSE_RANK() OVER (
-      PARTITION BY department 
-      ORDER BY price_usd DESC
-    ) AS rank_num
-  FROM products_catalog
+    customer_id,
+    purchase_date,
+    product_id,
+    ROW_NUMBER() OVER (
+      PARTITION BY customer_id 
+      ORDER BY purchase_date DESC
+    ) AS purchase_rank
+  FROM amazon_prime_orders
 )
-SELECT department, product_name, price_usd, rank_num
-FROM ranked_products
-WHERE rank_num <= 3;`
+SELECT customer_id, purchase_date, product_id
+FROM ranked_orders
+WHERE purchase_rank = 1;`
         },
         netflix: {
-          name: 'Netflix Telemetry',
-          question: 'Find the top 2 slowest internet providers (highest TTFF buffer latency) in each region.',
-          sql: `-- Netflix: Top 2 highest-latency ISPs per region
-WITH isp_latency AS (
+          name: 'Netflix Content',
+          question: 'Find the top 2 highest bandwidth streaming events per ISP.',
+          sql: `-- Netflix: Top telemetry events per ISP network
+WITH ranked_telemetry AS (
   SELECT 
     isp_asn,
-    city,
+    event_id,
     ttff_ms,
-    ROW_NUMBER() OVER (
-      PARTITION BY city 
-      ORDER BY ttff_ms DESC
+    DENSE_RANK() OVER (
+      PARTITION BY isp_asn 
+      ORDER BY ttff_ms ASC
     ) AS latency_rank
   FROM playback_telemetry_events
 )
-SELECT city, isp_asn, ttff_ms, latency_rank
-FROM isp_latency
+SELECT isp_asn, event_id, ttff_ms, latency_rank
+FROM ranked_telemetry
 WHERE latency_rank <= 2;`
         },
         uber: {
-          name: 'Uber Mobility',
-          question: 'Find the top 3 highest-fare rides completed in each city today.',
-          sql: `-- Uber: Top 3 highest-paying trips per city
-WITH ranked_trips AS (
+          name: 'Uber Dispatch',
+          question: 'Find the most recent ride requested in each geographic area.',
+          sql: `-- Uber: Latest requested trip per H3 geographic cell
+WITH recent_requests AS (
   SELECT 
-    city,
-    trip_id,
-    fare_usd,
-    DENSE_RANK() OVER (
-      PARTITION BY city 
-      ORDER BY fare_usd DESC
-    ) AS fare_rank
-  FROM uber_trips
+    h3_index AS area_id,
+    request_id,
+    requested_at,
+    ROW_NUMBER() OVER (
+      PARTITION BY h3_index 
+      ORDER BY requested_at DESC
+    ) AS rnk
+  FROM uber_ride_requests
 )
-SELECT city, trip_id, fare_usd, fare_rank
-FROM ranked_trips
-WHERE fare_rank <= 3;`
+SELECT area_id, request_id, requested_at
+FROM recent_requests
+WHERE rnk = 1;`
         },
         stripe: {
-          name: 'Stripe Payments',
-          question: 'Find the top 2 highest-volume merchant accounts in each currency.',
-          sql: `-- Stripe: Top 2 highest-volume accounts per currency
-WITH merchant_rankings AS (
+          name: 'Stripe Risk',
+          question: 'Find the largest dollar transaction attempted by each payment card.',
+          sql: `-- Stripe: Peak authorization dollar attempt per card
+WITH ranked_auths AS (
   SELECT 
-    currency,
-    merchant_id,
-    volume_usd,
+    card_number_masked,
+    amount_usd,
+    charge_time,
     ROW_NUMBER() OVER (
-      PARTITION BY currency 
-      ORDER BY volume_usd DESC
-    ) AS volume_rank
-  FROM merchant_metrics
+      PARTITION BY card_number_masked 
+      ORDER BY amount_usd DESC
+    ) AS spend_rank
+  FROM card_authorization_events
 )
-SELECT currency, merchant_id, volume_usd, volume_rank
-FROM merchant_rankings
-WHERE volume_rank <= 2;`
+SELECT card_number_masked, amount_usd, charge_time
+FROM ranked_auths
+WHERE spend_rank = 1;`
         }
       }
     },
 
     // -------------------------------------------------------------------------
-    // PATTERN 3: THRESHOLDS & OUTLIERS (HAVING)
+    // PATTERN 3: Outliers & Thresholds (GROUP BY + HAVING)
     // -------------------------------------------------------------------------
     {
       id: 'outliers_having',
       tier: 1,
-      tierName: 'Tier 1: Everyday Essentials',
       title: '03. Outliers & Thresholds (GROUP BY + HAVING)',
-      subtitle: 'Aggregate millions of events and isolate only the suspicious groups that cross a critical benchmark',
       tag: 'FRAUD & ANOMALY DETECTION',
-      companies: ['amazon', 'netflix', 'uber', 'stripe'],
-
-      businessContext: `
-        Fraud and security teams need to detect anomalies in real time: 
-        <em>"Which merchant has more than 10 chargebacks this week?"</em>, 
-        <em>"Which user had > 5 failed passwords?"</em>, or <em>"Which ISPs have an average buffer time over 2 seconds?"</em>
-      `,
-
-      mentalModelText: `
-        Imagine sorting letters into mailboxes for 500 different recipients (GROUP BY). 
-        Then you place each mailbox on a weight scale. 
-        Instead of reading every letter, you only inspect the mailboxes that weigh more than 10 pounds (HAVING).
-      `,
-
-      subtopics: [
+      tagline: 'Aggregate millions of events and isolate only the suspicious groups that cross a critical benchmark',
+      businessProblem: `Fraud and security teams need to detect anomalies in real time: "Which merchant has more than 10 chargebacks this week?", "Which user had > 5 failed passwords?", or "Which ISPs have an average buffer time over 2 seconds?"`,
+      mentalModel: `Imagine sorting letters into mailboxes for 500 different recipients (GROUP BY). Then you place each mailbox on a weight scale. Instead of reading every letter, you only inspect the mailboxes that weigh more than 10 pounds (HAVING).`,
+      steppingStones: [
         {
           num: '3.1',
           title: 'The Stepping Stone: The Timeline of WHERE vs. HAVING',
           summary: 'WHERE filters individual raw rows BEFORE aggregation; HAVING filters group summaries AFTER aggregation.',
-          svgName: 'timelineWhereHaving',
-          rules: [
-            '<strong>WHERE:</strong> Runs first on individual rows. Cannot contain aggregate functions like <code>COUNT(*)</code> or <code>AVG()</code>.',
-            '<strong>HAVING:</strong> Runs after groups are formed. Used specifically to test aggregate conditions.'
-          ]
+          svg: 'timelineWhereHaving'
         },
         {
           num: '3.2',
-          title: 'The Silent Interview Trap: Putting Aggregates in WHERE',
-          summary: 'The classic syntax error that reveals a candidate doesn\'t understand SQL query execution order.',
-          rules: [
-            '❌ <code>WHERE COUNT(*) > 5</code>: Causes immediate error: "aggregate function not allowed in WHERE".',
-            '✅ <code>GROUP BY merchant_id HAVING COUNT(*) > 5</code>: Correctly filters summary totals.'
-          ]
+          title: 'The Stepping Stone: Combining WHERE and HAVING in One Query',
+          summary: 'Filter raw noise with WHERE (e.g. status = "failed") to keep group sizes lean, then benchmark with HAVING (COUNT >= 5).',
+          svg: null
         }
       ],
-
-      universalBlueprint: `-- UNIVERSAL THRESHOLD / OUTLIER BLUEPRINT
-SELECT 
-  entity_id,
-  COUNT(*) AS event_count,
-  SUM(metric_value) AS total_metric
-FROM event_log
-WHERE event_status = 'confirmed'   -- 1. Filter raw rows first
-GROUP BY entity_id                 -- 2. Group into buckets
-HAVING COUNT(*) >= 5               -- 3. Filter group aggregates
-ORDER BY event_count DESC;`,
-
+      thinkingProcess: [
+        '1. Pre-filter individual rows: Use WHERE to drop irrelevant raw records before grouping (e.g. WHERE amount < 1.00).',
+        '2. Bundle into buckets: Choose your grouping dimension with GROUP BY (e.g. GROUP BY card_number_masked).',
+        '3. Calculate summary metrics: Choose aggregate functions like COUNT(*), SUM(amount), AVG(latency).',
+        '4. Enforce group threshold: Add HAVING COUNT(*) >= 5 to filter out ordinary normal groups.'
+      ],
+      gotchas: [
+        '1. The WHERE COUNT(*) mistake: Writing WHERE COUNT(*) > 5 triggers a syntax error because WHERE executes before rows are grouped!',
+        '2. Filtering non-aggregate columns in HAVING: Putting HAVING status = "active" works in some dialects but wastes performance; move non-aggregates to WHERE!',
+        '3. Integer division in AVG: In SQL engines, AVG(5 / 2) might round down to 2 unless cast to float.'
+      ],
       companyVariants: {
         amazon: {
-          name: 'Amazon Catalog',
-          question: 'Find third-party sellers who uploaded more than 5 products priced above $1,000.',
-          sql: `-- Amazon: Sellers with high concentration of luxury items
+          name: 'Amazon Prime',
+          question: 'Find repeat buyers who placed 2 or more orders across the month.',
+          sql: `-- Amazon: Loyal repeat buyers with 2+ purchases
 SELECT 
-  merchant_id,
-  COUNT(*) AS luxury_item_count,
-  ROUND(AVG(price_usd), 2) AS avg_luxury_price
-FROM products_catalog
-WHERE price_usd >= 1000.00
-GROUP BY merchant_id
-HAVING COUNT(*) >= 3
-ORDER BY luxury_item_count DESC;`
+  customer_id,
+  COUNT(*) AS total_purchases
+FROM amazon_prime_orders
+GROUP BY customer_id
+HAVING COUNT(*) >= 2
+ORDER BY total_purchases DESC;`
         },
         netflix: {
           name: 'Netflix Telemetry',
-          question: 'Find ISPs with more than 3 high-latency events where TTFF exceeded 1,500ms.',
+          question: 'Find ISPs with more than 1 high-latency event where TTFF exceeded 500ms.',
           sql: `-- Netflix: Problem ISPs with excessive rebuffering events
 SELECT 
   isp_asn,
   COUNT(*) AS slow_stream_count,
   ROUND(AVG(ttff_ms), 1) AS avg_ttff_latency
 FROM playback_telemetry_events
-WHERE ttff_ms > 1500
+WHERE ttff_ms > 500
 GROUP BY isp_asn
-HAVING COUNT(*) >= 2
+HAVING COUNT(*) >= 1
 ORDER BY avg_ttff_latency DESC;`
         },
         uber: {
           name: 'Uber Operations',
-          question: 'Find cities with more than 10 rides during high surge multiplier (> 1.8x).',
-          sql: `-- Uber: Surge concentration hotspots
+          question: 'Find geographic areas with 2 or more ride requests generated.',
+          sql: `-- Uber: High demand ride request clusters
 SELECT 
-  city,
-  COUNT(*) AS surge_ride_count,
-  ROUND(AVG(fare_usd), 2) AS avg_surge_fare
-FROM uber_trips
-WHERE surge_multiplier >= 1.8
-GROUP BY city
-HAVING COUNT(*) >= 5
-ORDER BY surge_ride_count DESC;`
+  h3_index AS area_id,
+  COUNT(*) AS ride_count
+FROM uber_ride_requests
+GROUP BY h3_index
+HAVING COUNT(*) >= 2
+ORDER BY ride_count DESC;`
         },
         stripe: {
           name: 'Stripe Risk & Fraud',
-          question: 'Find accounts that have more than 3 failed charge attempts in the last 24 hours.',
-          sql: `-- Stripe: Fraud risk accounts with high card declines
+          question: 'Detect credit cards attempting 5 or more rapid micro-charges under $1.00.',
+          sql: `-- Stripe: Fraud risk accounts with rapid card testing attacks
 SELECT 
-  merchant_id,
-  COUNT(*) AS failed_attempt_count,
-  SUM(amount_usd) AS at_risk_volume
-FROM stripe_charges
-WHERE status = 'declined'
-GROUP BY merchant_id
-HAVING COUNT(*) >= 3
-ORDER BY failed_attempt_count DESC;`
+  card_number_masked,
+  ip_location,
+  COUNT(*) AS attempt_count,
+  ROUND(SUM(amount_usd), 2) AS total_tested_amount
+FROM card_authorization_events
+WHERE amount_usd < 1.00
+GROUP BY card_number_masked, ip_location
+HAVING COUNT(*) >= 5;`
+        }
+      }
+    },
+
+    // -------------------------------------------------------------------------
+    // PATTERN 4: Period-over-Period Deltas (LAG / LEAD)
+    // -------------------------------------------------------------------------
+    {
+      id: 'period_deltas',
+      tier: 2,
+      title: '04. Period-over-Period Deltas (LAG)',
+      tag: 'GROWTH & MOM',
+      tagline: 'Calculate month-over-month growth, pace metrics, and detect sudden metric swings',
+      businessProblem: `Every executive asks: "Are sales growing or shrinking month-over-month?", "How does this week compare to last week?", "What was the time between a customer's first and second purchase?" Instead of comparing records by hand, companies use time-series window functions.`,
+      mentalModel: `Picture a row of runners on a track. Each runner looks over their shoulder at the runner directly behind them (LAG) to see how many yards ahead or behind they are. Nobody gets crushed into a summary; every single runner keeps their place on the track.`,
+      steppingStones: [
+        {
+          num: '4.1',
+          title: 'The Stepping Stone: The LAG() Conveyor Belt',
+          summary: 'Why self-joins on date - 1 are slow and brittle, and how LAG() looks back with zero performance overhead.',
+          svg: 'lagConveyor'
+        },
+        {
+          num: '4.2',
+          title: 'The Stepping Stone: Safe Growth Percentage without Crashing',
+          summary: 'Using NULLIF(prev_metric, 0) so queries never crash when a startup or product launched with zero sales.',
+          svg: 'divisionByZeroSafety'
+        },
+        {
+          num: '4.3',
+          title: 'The Stepping Stone: Default Offsets & Lookaheads (LEAD)',
+          summary: 'How LAG(col, 1, 0) handles the first period gracefully, and when LEAD() is used for churn forecasting.',
+          svg: null
+        }
+      ],
+      thinkingProcess: [
+        '1. Establish chronological order: Wrap the metric with ORDER BY date ASC so SQL knows what "yesterday" or "last month" means.',
+        '2. Grab the predecessor: Call LAG(metric, 1, 0) OVER (PARTITION BY entity ORDER BY date).',
+        '3. Compute difference: current - previous for absolute change, or (current - prev) * 100.0 / NULLIF(prev, 0) for percentage.',
+        '4. Handle first row: Remember the very first period has no previous data, so it produces NULL (or your chosen default).'
+      ],
+      gotchas: [
+        '1. Missing dates: If an e-commerce store had 0 sales in February, LAG() on March will look back to January! (Always ensure continuous dates via a calendar table or CTE).',
+        '2. Division by zero: Naive (curr - prev) / prev crashes SQL engines with "division by zero" if prev is 0. Always wrap with NULLIF(prev, 0).',
+        '3. Forgetting PARTITION BY: If calculating MoM growth for 10 different products, forgetting PARTITION BY product_id will compare Product B\'s January sales to Product A\'s December sales!'
+      ],
+      companyVariants: {
+        amazon: {
+          name: 'Amazon Retail',
+          question: 'Track order velocity per customer across time to spot accelerating buyers.',
+          sql: `-- Amazon: Track purchase intervals and order progression per customer
+SELECT 
+  customer_id,
+  order_id,
+  purchase_date,
+  LAG(purchase_date, 1) OVER (
+    PARTITION BY customer_id 
+    ORDER BY purchase_date
+  ) AS prev_purchase_date
+FROM amazon_prime_orders
+ORDER BY customer_id, purchase_date;`
+        },
+        netflix: {
+          name: 'Netflix Telemetry',
+          question: 'Compare TTFF latency against previous telemetry event to detect network degradation.',
+          sql: `-- Netflix: Compare TTFF latency against prior event per ISP
+SELECT 
+  isp_asn,
+  event_id,
+  ttff_ms,
+  LAG(ttff_ms, 1) OVER (
+    PARTITION BY isp_asn 
+    ORDER BY ttff_ms
+  ) AS prev_ttff_ms,
+  ROUND(ttff_ms - LAG(ttff_ms, 1) OVER (
+    PARTITION BY isp_asn 
+    ORDER BY ttff_ms
+  ), 1) AS latency_delta_ms
+FROM playback_telemetry_events
+ORDER BY isp_asn, ttff_ms;`
+        },
+        uber: {
+          name: 'Uber Operations',
+          question: 'Track time interval between consecutive ride requests in each geographic zone.',
+          sql: `-- Uber: Time gap between consecutive ride requests
+SELECT 
+  request_id,
+  h3_index AS area_id,
+  requested_at,
+  LAG(requested_at, 1) OVER (
+    PARTITION BY h3_index 
+    ORDER BY requested_at
+  ) AS prev_request_time
+FROM uber_ride_requests
+ORDER BY area_id, requested_at;`
+        },
+        stripe: {
+          name: 'Stripe Risk',
+          question: 'Calculate elapsed time between rapid charge attempts on the same card.',
+          sql: `-- Stripe: Velocity check - elapsed time between charge attempts
+SELECT 
+  auth_id,
+  card_number_masked,
+  amount_usd,
+  charge_time,
+  LAG(charge_time, 1) OVER (
+    PARTITION BY card_number_masked 
+    ORDER BY charge_time
+  ) AS prev_charge_time
+FROM card_authorization_events
+ORDER BY card_number_masked, charge_time;`
+        }
+      }
+    },
+
+    // -------------------------------------------------------------------------
+    // PATTERN 5: Cumulative Windows & Rolling Averages
+    // -------------------------------------------------------------------------
+    {
+      id: 'running_totals',
+      tier: 2,
+      title: '05. Cumulative Windows & Rolling Averages',
+      tag: 'RUNNING TOTALS',
+      tagline: 'Calculate Year-to-Date (YTD) running totals and 7-day smoothed trendlines',
+      businessProblem: `Finance teams need to know: "What is our cumulative revenue pacing toward the $10M annual goal?", "What is our 7-day rolling average active users to eliminate Saturday/Sunday noise?", "At what point in the quarter did we break even?"`,
+      mentalModel: `Picture a snowball rolling down a snow-covered hill. As it rolls from Jan 1 down toward Dec 31, every day adds another layer of snow to the ball. The ball keeps growing continuously until New Year's Day, where a PARTITION BY year melts it back down to start fresh.`,
+      steppingStones: [
+        {
+          num: '5.1',
+          title: 'The Stepping Stone: Cumulative Windows (The Snowball)',
+          summary: 'How SUM(amount) OVER (ORDER BY date) keeps an ongoing running tally without collapsing rows.',
+          svg: 'runningTotalSnowball'
+        },
+        {
+          num: '5.2',
+          title: 'The Stepping Stone: The 7-Day Rolling Moving Window',
+          summary: 'Using ROWS BETWEEN 6 PRECEDING AND CURRENT ROW to smooth out volatile weekday vs weekend swings.',
+          svg: 'rollingWindowSliding'
+        },
+        {
+          num: '5.3',
+          title: 'The Stepping Stone: ROWS vs. RANGE Nuance',
+          summary: 'Why physical row counts (ROWS) are safer and more predictable than logical value boundaries (RANGE) when timestamps contain duplicates.',
+          svg: null
+        }
+      ],
+      thinkingProcess: [
+        '1. Establish chronological order: ORDER BY date ASC so the accumulation rolls forward.',
+        '2. Define partitions: Add PARTITION BY customer_id or PARTITION BY year if running totals should reset per entity.',
+        '3. Specify the window frame: Use ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW for running totals, or ROWS BETWEEN N PRECEDING AND CURRENT ROW for rolling averages.',
+        '4. Verify duplicate timestamps: If multiple rows share the same date, include a secondary ordering key (ORDER BY date, transaction_id).'
+      ],
+      gotchas: [
+        '1. Duplicate timestamp grouping: In default SQL RANGE mode, rows with identical timestamps get lumped together, jumping the sum abruptly instead of stepping through.',
+        '2. Window frame boundaries: Forgetting ROWS BETWEEN in an AVG() function can calculate the average over all preceding rows rather than just the last 7 days!',
+        '3. Performance on big data: Running cumulative sums across 500 million rows requires massive memory; in production warehouses, partition by day or month.'
+      ],
+      companyVariants: {
+        amazon: {
+          name: 'Amazon Retail',
+          question: 'Track cumulative orders placed across the month to monitor fulfillment pacing.',
+          sql: `-- Amazon: Cumulative order volume running total
+SELECT 
+  purchase_date,
+  product_id,
+  customer_id,
+  COUNT(*) OVER (
+    ORDER BY purchase_date, order_id 
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ) AS cumulative_orders_placed
+FROM amazon_prime_orders
+ORDER BY purchase_date, order_id;`
+        },
+        netflix: {
+          name: 'Netflix Telemetry',
+          question: 'Compute 2-event rolling average load time per ISP to smooth network jitter.',
+          sql: `-- Netflix: 2-event moving average TTFF per ISP
+SELECT 
+  event_id,
+  isp_asn,
+  ttff_ms,
+  ROUND(AVG(ttff_ms) OVER (
+    PARTITION BY isp_asn 
+    ORDER BY event_id 
+    ROWS BETWEEN 1 PRECEDING AND CURRENT ROW
+  ), 1) AS rolling_avg_ttff
+FROM playback_telemetry_events
+ORDER BY isp_asn, event_id;`
+        },
+        uber: {
+          name: 'Uber Operations',
+          question: 'Track cumulative ride demand pacing within each metro zone.',
+          sql: `-- Uber: Cumulative ride request accumulation per area
+SELECT 
+  request_id,
+  h3_index AS area_id,
+  requested_at,
+  COUNT(*) OVER (
+    PARTITION BY h3_index 
+    ORDER BY requested_at 
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ) AS cumulative_requests_in_area
+FROM uber_ride_requests
+ORDER BY area_id, requested_at;`
+        },
+        stripe: {
+          name: 'Stripe Risk',
+          question: 'Calculate cumulative dollar exposure per card during suspected card testing attacks.',
+          sql: `-- Stripe: Cumulative dollar exposure per payment card
+SELECT 
+  auth_id,
+  card_number_masked,
+  amount_usd,
+  charge_time,
+  ROUND(SUM(amount_usd) OVER (
+    PARTITION BY card_number_masked 
+    ORDER BY charge_time 
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ), 2) AS cumulative_exposure_usd
+FROM card_authorization_events
+ORDER BY card_number_masked, charge_time;`
+        }
+      }
+    },
+
+    // -------------------------------------------------------------------------
+    // PATTERN 6: Multi-Step Funnel Milestones
+    // -------------------------------------------------------------------------
+    {
+      id: 'funnel_milestones',
+      tier: 2,
+      title: '06. Multi-Step Funnel Milestones',
+      tag: 'CONVERSIONS',
+      tagline: 'Track user conversion across sequential funnel steps and isolate the biggest drop-offs',
+      businessProblem: `Growth and product teams exist to optimize funnels: "What % of users who land on the homepage end up buying?", "Are users dropping off at the credit card entry screen or the shipping fee screen?", "Which marketing channel yields the highest end-to-end checkout rate?"`,
+      mentalModel: `Picture a water pipeline with 4 filters. 10,000 gallons enter at the top. Some spills out at filter #1, more at filter #2. Your job in SQL is to measure the flow at each tap so engineers know exactly which pipe is leaking.`,
+      steppingStones: [
+        {
+          num: '6.1',
+          title: 'The Stepping Stone: Conditional Aggregation (Single-Pass Pivot)',
+          summary: 'The super-power pattern SUM(CASE WHEN step = "cart" THEN 1 ELSE 0 END) that pivots thousands of event rows in a single pass.',
+          svg: 'conditionalAggregationMatrix'
+        },
+        {
+          num: '6.2',
+          title: 'The Stepping Stone: Measuring Drop-Off Sieve Ratios',
+          summary: 'Turning raw milestone counts into actionable conversion ratios across stages to pinpoint bottlenecks.',
+          svg: 'funnelConversion'
+        },
+        {
+          num: '6.3',
+          title: 'The Stepping Stone: COUNT(DISTINCT user_id) vs. Event Count',
+          summary: 'Preventing one hyper-active user who clicks "Refresh" 20 times from corrupting your funnel rates.',
+          svg: null
+        }
+      ],
+      thinkingProcess: [
+        '1. Identify key milestone events: e.g. "view_item", "add_to_cart", "start_checkout", "purchase".',
+        '2. Pivot with CASE WHEN: Wrap each milestone in SUM(CASE WHEN event_name = "..." THEN 1 ELSE 0 END) or COUNT(DISTINCT CASE...).',
+        '3. Compute conversion percentages: Divide Stage N by Stage 1 (overall conversion) and Stage N by Stage N-1 (step retention).',
+        '4. Segment by dimensions: Group by marketing channel, device type, or country to see where conversion thrives or fails.'
+      ],
+      gotchas: [
+        '1. Counting clicks instead of users: If a user clicks "Add to Cart" 6 times, SUM(CASE ...) counts 6 actions, but only 1 converted user. Always use COUNT(DISTINCT user_id).',
+        '2. Chronological sequence: Ensuring the purchase happened AFTER the cart addition, not before (e.g., re-order shortcuts).',
+        '3. Integer division truncation: 450 / 1000 evaluates to 0 in many SQL dialects without 100.0 *.'
+      ],
+      companyVariants: {
+        amazon: {
+          name: 'Amazon Retail',
+          question: 'Pivot customer purchases into product category baskets in a single table scan.',
+          sql: `-- Amazon: Single-pass product category basket conversion
+SELECT 
+  customer_id,
+  COUNT(*) AS total_orders,
+  SUM(CASE WHEN product_id LIKE '%KINDLE%' THEN 1 ELSE 0 END) AS kindle_orders,
+  SUM(CASE WHEN product_id LIKE '%ECHO%' THEN 1 ELSE 0 END) AS echo_orders,
+  SUM(CASE WHEN product_id LIKE '%MACBOOK%' OR product_id LIKE '%KEYBOARD%' THEN 1 ELSE 0 END) AS tech_accessories
+FROM amazon_prime_orders
+GROUP BY customer_id
+ORDER BY total_orders DESC;`
+        },
+        netflix: {
+          name: 'Netflix Telemetry',
+          question: 'Segment stream playback events into fast, medium, and severe latency tiers per ISP.',
+          sql: `-- Netflix: Quality-of-experience latency tiers per ISP
+SELECT 
+  isp_asn,
+  COUNT(*) AS total_streams,
+  SUM(CASE WHEN ttff_ms < 300 THEN 1 ELSE 0 END) AS fast_starts,
+  SUM(CASE WHEN ttff_ms BETWEEN 300 AND 800 THEN 1 ELSE 0 END) AS medium_starts,
+  SUM(CASE WHEN ttff_ms > 800 THEN 1 ELSE 0 END) AS severe_buffer_starts,
+  ROUND(100.0 * SUM(CASE WHEN ttff_ms < 300 THEN 1 ELSE 0 END) / COUNT(*), 1) AS fast_start_pct
+FROM playback_telemetry_events
+GROUP BY isp_asn
+ORDER BY fast_start_pct DESC;`
+        },
+        uber: {
+          name: 'Uber Operations',
+          question: 'Break down ride demand across early vs late dispatch windows.',
+          sql: `-- Uber: Demand distribution across dispatch time windows
+SELECT 
+  h3_index AS area_id,
+  COUNT(*) AS total_requests,
+  SUM(CASE WHEN requested_at <= '2026-11-07 16:02:00' THEN 1 ELSE 0 END) AS early_requests,
+  SUM(CASE WHEN requested_at > '2026-11-07 16:02:00' THEN 1 ELSE 0 END) AS late_requests,
+  ROUND(100.0 * SUM(CASE WHEN requested_at > '2026-11-07 16:02:00' THEN 1 ELSE 0 END) / COUNT(*), 1) AS late_surge_pct
+FROM uber_ride_requests
+GROUP BY h3_index
+ORDER BY total_requests DESC;`
+        },
+        stripe: {
+          name: 'Stripe Risk & Fraud',
+          question: 'Classify micro-charge card testing vs normal dollar authorizations.',
+          sql: `-- Stripe: Micro-charge card testing attack classifier
+SELECT 
+  card_number_masked,
+  ip_location,
+  COUNT(*) AS total_attempts,
+  SUM(CASE WHEN amount_usd < 0.60 THEN 1 ELSE 0 END) AS micro_probe_charges,
+  SUM(CASE WHEN amount_usd >= 0.60 THEN 1 ELSE 0 END) AS standard_charges,
+  ROUND(100.0 * SUM(CASE WHEN amount_usd < 0.60 THEN 1 ELSE 0 END) / COUNT(*), 1) AS card_testing_risk_pct
+FROM card_authorization_events
+GROUP BY card_number_masked, ip_location
+ORDER BY total_attempts DESC;`
         }
       }
     }
@@ -702,7 +1220,10 @@ ORDER BY failed_attempt_count DESC;`
   let activeCompanyMap = {
     anti_join: 'amazon',
     top_n_ranking: 'amazon',
-    outliers_having: 'amazon'
+    outliers_having: 'amazon',
+    period_deltas: 'amazon',
+    running_totals: 'amazon',
+    funnel_milestones: 'amazon'
   };
 
   function getActivePattern() {
@@ -724,7 +1245,7 @@ ORDER BY failed_attempt_count DESC;`
               <span class="koma-hub-dna-icon">🧬</span>
               <div>
                 <h2 class="koma-hub-title">80/20 Universal SQL Pattern Academy</h2>
-                <p class="koma-hub-subtitle">Master the 10 vital archetypes that solve 80% of company database questions</p>
+                <p class="koma-hub-subtitle">Master the 6 vital archetypes that solve 80% of company database questions</p>
               </div>
             </div>
             <button class="koma-hub-close-btn" onclick="window.SQL_PATTERN_HUB.close()" title="Close Pattern Academy">✕</button>
@@ -744,18 +1265,12 @@ ORDER BY failed_attempt_count DESC;`
               `).join('')}
 
               <div class="koma-hub-tier-label" style="margin-top:16px;">🟡 TIER 2: BUSINESS GROWTH</div>
-              <div class="koma-hub-nav-item locked">
-                <div class="koma-hub-nav-title">04. Period-over-Period Deltas (LAG)</div>
-                <span class="koma-hub-nav-tag">GROWTH & MOM</span>
-              </div>
-              <div class="koma-hub-nav-item locked">
-                <div class="koma-hub-nav-title">05. Cumulative Windows & Rolling Averages</div>
-                <span class="koma-hub-nav-tag">RUNNING TOTALS</span>
-              </div>
-              <div class="koma-hub-nav-item locked">
-                <div class="koma-hub-nav-title">06. Multi-Step Funnel Milestones</div>
-                <span class="koma-hub-nav-tag">CONVERSIONS</span>
-              </div>
+              ${PATTERNS.filter(x => x.tier === 2).map(item => `
+                <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}')">
+                  <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
+                  <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
+                </button>
+              `).join('')}
 
               <div class="koma-hub-tier-label" style="margin-top:16px;">🔴 TIER 3: BIG TECH ARSENAL</div>
               <div class="koma-hub-nav-item locked">
@@ -768,56 +1283,53 @@ ORDER BY failed_attempt_count DESC;`
               </div>
             </div>
 
-            <!-- Right Stage: Deep Learning Blueprint -->
+            <!-- Right Content Area -->
             <div class="koma-hub-content">
               
-              <!-- Pattern Hero Header -->
-              <div class="koma-pattern-hero">
-                <div class="koma-pattern-meta">
-                  <span class="koma-pill-tier">${escapeHtml(p.tierName)}</span>
-                  <span class="koma-pill-tag">${escapeHtml(p.tag)}</span>
-                </div>
-                <h1 class="koma-pattern-name">${escapeHtml(p.title)}</h1>
-                <p class="koma-pattern-lead">${escapeHtml(p.subtitle)}</p>
+              <!-- Pattern Header Banner -->
+              <div class="koma-hub-header-banner">
+                <div class="koma-hub-tier-pill">Tier ${p.tier}: ${p.tier === 1 ? 'Everyday Essentials' : 'Business Growth'}</div>
+                <div class="koma-hub-tag-pill">${escapeHtml(p.tag)}</div>
+                <h1 class="koma-hub-header-title">${escapeHtml(p.title)}</h1>
+                <p class="koma-hub-tagline">${escapeHtml(p.tagline)}</p>
               </div>
 
-              <!-- 1. The Business Problem -->
-              <div class="koma-pattern-section">
-                <h3 class="koma-sec-heading"><span class="sec-icon">🎯</span> 1. The Real Business Problem</h3>
-                <div class="koma-sec-box business-box">
-                  <p>${p.businessContext}</p>
+              <!-- Section 1: Business Context -->
+              <div class="koma-hub-section">
+                <div class="koma-hub-section-title">
+                  <span>🎯</span> 1. The Real Business Problem
                 </div>
-              </div>
-
-              <!-- 2. Visual Mental Model -->
-              <div class="koma-pattern-section">
-                <h3 class="koma-sec-heading"><span class="sec-icon">🧠</span> 2. The Visual Mental Model (How To Picture It)</h3>
-                <div class="koma-sec-box">
-                  <p class="koma-mental-lead">${p.mentalModelText}</p>
+                <div class="koma-hub-quote-card">
+                  ${escapeHtml(p.businessProblem)}
                 </div>
               </div>
 
-              <!-- 3. Stepping Stones & Subtopics with SVGs -->
-              <div class="koma-pattern-section">
-                <h3 class="koma-sec-heading"><span class="sec-icon">🪜</span> 3. Stepping Stones: Concepts Needed to Master This</h3>
+              <!-- Section 2: Visual Mental Model -->
+              <div class="koma-hub-section">
+                <div class="koma-hub-section-title">
+                  <span>🧠</span> 2. The Visual Mental Model (How To Picture It)
+                </div>
+                <div class="koma-hub-mental-card">
+                  <p>${escapeHtml(p.mentalModel)}</p>
+                </div>
+              </div>
+
+              <!-- Section 3: Subtopics & Stepping Stones (WITH HANDCRAFTED SVGs) -->
+              <div class="koma-hub-section">
+                <div class="koma-hub-section-title">
+                  <span>🪜</span> 3. Stepping Stones: Concepts Needed to Master This
+                </div>
                 <div class="koma-subtopics-list">
-                  ${p.subtopics.map(st => `
+                  ${p.steppingStones.map(st => `
                     <div class="koma-subtopic-card">
                       <div class="koma-subtopic-header">
-                        <span class="koma-subtopic-num">${escapeHtml(st.num)}</span>
-                        <h4 class="koma-subtopic-title">${escapeHtml(st.title)}</h4>
+                        <span class="koma-subtopic-badge">${st.num}</span>
+                        <div class="koma-subtopic-title">${escapeHtml(st.title)}</div>
                       </div>
                       <p class="koma-subtopic-desc">${escapeHtml(st.summary)}</p>
-                      
-                      ${st.svgName && SVG_LIBRARY[st.svgName] ? `
+                      ${st.svg && SVG_LIBRARY[st.svg] ? `
                         <div class="koma-svg-viewport">
-                          ${SVG_LIBRARY[st.svgName]()}
-                        </div>
-                      ` : ''}
-
-                      ${st.rules && st.rules.length ? `
-                        <div class="koma-subtopic-rules">
-                          ${st.rules.map(r => `<div class="subtopic-rule-item">${r}</div>`).join('')}
+                          ${SVG_LIBRARY[st.svg]()}
                         </div>
                       ` : ''}
                     </div>
@@ -825,58 +1337,92 @@ ORDER BY failed_attempt_count DESC;`
                 </div>
               </div>
 
-              <!-- 4. Universal Blueprint Skeleton -->
-              <div class="koma-pattern-section">
-                <h3 class="koma-sec-heading"><span class="sec-icon">📐</span> 4. The Universal SQL Skeleton</h3>
-                <div class="koma-blueprint-box">
-                  <pre><code>${escapeHtml(p.universalBlueprint)}</code></pre>
+              <!-- Section 4: 4-Step Thinking Process -->
+              <div class="koma-hub-section">
+                <div class="koma-hub-section-title">
+                  <span>🧭</span> 4. The 4-Step Thinking Process
+                </div>
+                <div class="koma-hub-steps-card">
+                  ${p.thinkingProcess.map(step => `
+                    <div class="koma-hub-step-item">
+                      <div class="koma-step-dot"></div>
+                      <div class="koma-step-text">${escapeHtml(step)}</div>
+                    </div>
+                  `).join('')}
                 </div>
               </div>
 
-              <!-- 5. Cross-Company Chameleon -->
-              <div class="koma-pattern-section">
-                <div class="koma-company-header-row">
-                  <h3 class="koma-sec-heading"><span class="sec-icon">🏢</span> 5. Cross-Company Chameleon (Same Pattern Everywhere)</h3>
-                  <div class="koma-company-pills">
-                    ${p.companies.map(cKey => `
-                      <button class="koma-comp-pill ${cKey === curCompany ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('${cKey}')">
-                        ${cKey === 'amazon' ? '🛒 Amazon' : (cKey === 'netflix' ? '🍿 Netflix' : (cKey === 'uber' ? '🚗 Uber' : '💳 Stripe'))}
-                      </button>
-                    `).join('')}
-                  </div>
+              <!-- Section 5: Common Traps & Gotchas -->
+              <div class="koma-hub-section">
+                <div class="koma-hub-section-title">
+                  <span>⚠️</span> 5. Interview Traps & Production Gotchas
+                </div>
+                <div class="koma-hub-gotchas-card">
+                  ${p.gotchas.map(g => `
+                    <div class="koma-gotcha-row">
+                      <span class="koma-gotcha-icon">⚡</span>
+                      <div class="koma-gotcha-text">${escapeHtml(g)}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Section 6: Cross-Company Chameleon Practice -->
+              <div class="koma-hub-section">
+                <div class="koma-hub-section-title">
+                  <span>🏢</span> 6. Cross-Company Chameleon: See the Exact Same Pattern Everywhere
+                </div>
+                <p class="koma-chameleon-intro">
+                  Notice how Amazon, Netflix, Uber, and Stripe ask the exact same fundamental question, only swapping the table names:
+                </p>
+
+                <!-- Company Selector Pills -->
+                <div class="koma-company-pills">
+                  <button class="koma-company-pill ${curCompany === 'amazon' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('amazon')">
+                    🛒 Amazon
+                  </button>
+                  <button class="koma-company-pill ${curCompany === 'netflix' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('netflix')">
+                    🎬 Netflix
+                  </button>
+                  <button class="koma-company-pill ${curCompany === 'uber' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('uber')">
+                    🚗 Uber
+                  </button>
+                  <button class="koma-company-pill ${curCompany === 'stripe' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('stripe')">
+                    💳 Stripe
+                  </button>
                 </div>
 
-                <div class="koma-company-card">
-                  <div class="koma-comp-challenge-prompt">
-                    <strong>${escapeHtml(variant.name)} Question:</strong> ${escapeHtml(variant.question)}
-                  </div>
-                  <div class="koma-comp-sql-box">
-                    <pre><code>${escapeHtml(variant.sql)}</code></pre>
-                  </div>
-                  <div class="koma-comp-actions">
-                    <button class="koma-btn-load-run" onclick="window.SQL_PATTERN_HUB.loadAndRun('${p.id}', '${curCompany}')">
-                      <span>🚀 Load into Live Editor &amp; Run Query</span>
+                <!-- Company Drill Card -->
+                <div class="koma-company-drill-box">
+                  <div class="koma-drill-head">
+                    <div class="koma-drill-co-name">${escapeHtml(variant.name)} Case Study</div>
+                    <button class="koma-load-editor-btn" onclick="window.SQL_PATTERN_HUB.loadAndRun('${p.id}', '${curCompany}')">
+                      ⚡ 1-Click Load into Editor & Run
                     </button>
-                    <span class="koma-comp-note">Loads into SQL Foundry with live data, clause highlights, and data shrink preview!</span>
                   </div>
+                  <div class="koma-drill-prompt">
+                    <strong>Challenge:</strong> ${escapeHtml(variant.question)}
+                  </div>
+                  <pre class="koma-drill-sql"><code>${escapeHtml(variant.sql)}</code></pre>
                 </div>
               </div>
 
             </div>
           </div>
-
         </div>
       </div>
     `;
   }
 
   // ===========================================================================
-  // PUBLIC CONTROLLER API
+  // PUBLIC API & CONTROLLER
   // ===========================================================================
 
-  const SqlPatternHub = {
+  window.SQL_PATTERN_HUB = {
     open: function(patternId) {
-      if (patternId) activePatternId = patternId;
+      if (patternId && PATTERNS.some(p => p.id === patternId)) {
+        activePatternId = patternId;
+      }
       let modal = document.getElementById('komaPatternHubMount');
       if (!modal) {
         modal = document.createElement('div');
@@ -924,32 +1470,44 @@ ORDER BY failed_attempt_count DESC;`
 
       const textarea = document.getElementById('komaSqlEditor');
       if (textarea && window.LANDING_PAGE_ENGINE) {
+        // Auto-switch company tab if supported
+        if (companyKey && typeof window.LANDING_PAGE_ENGINE.switchCompany === 'function') {
+          try { window.LANDING_PAGE_ENGINE.switchCompany(companyKey); } catch(e) {}
+        }
+
         textarea.value = variant.sql;
         window.LANDING_PAGE_ENGINE.runActiveQuery();
 
-        // Scroll down to editor view
-        const editorSplit = document.querySelector('.koma-sandbox-split');
-        if (editorSplit) {
-          editorSplit.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const editorContainer = document.getElementById('komaInteractiveEditor') || textarea;
+        if (editorContainer) {
+          editorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }
     },
 
     detectPattern: function(sql) {
-      sql = String(sql || '').toUpperCase();
-      if (sql.includes('LEFT JOIN') && (sql.includes('IS NULL') || sql.includes('= NULL'))) {
-        return { id: 'anti_join', title: 'The Missing Match (Anti-Join)', tag: 'CHURN PATTERN' };
+      if (!sql) return null;
+      const s = sql.toUpperCase();
+      if ((s.includes('LEFT JOIN') || s.includes('LEFT OUTER JOIN')) && (s.includes('IS NULL') || s.includes('NOT EXISTS'))) {
+        return { id: 'anti_join', title: 'The Missing Match (Anti-Join)' };
       }
-      if (sql.includes('ROW_NUMBER(') || sql.includes('DENSE_RANK(') || sql.includes('RANK(')) {
-        return { id: 'top_n_ranking', title: 'Top N Per Group', tag: 'RANKING PATTERN' };
+      if (s.includes('ROW_NUMBER(') || s.includes('DENSE_RANK(') || (s.includes('RANK(') && s.includes('OVER'))) {
+        return { id: 'top_n_ranking', title: 'Top N Per Group (Ranking)' };
       }
-      if (sql.includes('GROUP BY') && sql.includes('HAVING')) {
-        return { id: 'outliers_having', title: 'Outliers & Thresholds', tag: 'HAVING PATTERN' };
+      if (s.includes('GROUP BY') && s.includes('HAVING')) {
+        return { id: 'outliers_having', title: 'Outliers & Thresholds (HAVING)' };
+      }
+      if (s.includes('LAG(') || s.includes('LEAD(')) {
+        return { id: 'period_deltas', title: 'Period-over-Period Deltas (LAG)' };
+      }
+      if ((s.includes('SUM(') || s.includes('AVG(')) && s.includes('OVER') && (s.includes('ROWS BETWEEN') || s.includes('UNBOUNDED PRECEDING'))) {
+        return { id: 'running_totals', title: 'Cumulative & Rolling Windows' };
+      }
+      if (s.includes('CASE WHEN') && (s.includes('SUM(') || s.includes('COUNT('))) {
+        return { id: 'funnel_milestones', title: 'Multi-Step Funnel Milestones' };
       }
       return null;
     }
   };
-
-  window.SQL_PATTERN_HUB = SqlPatternHub;
 
 })(window);
