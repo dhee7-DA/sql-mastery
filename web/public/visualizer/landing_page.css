@@ -2769,43 +2769,30 @@
 }
 
 
+
 /* ========================================================================== */
-/* STANDALONE 80/20 PATTERN ACADEMY FEATURE BANNER & FULL-PAGE VIEW           */
+/* KOMA-CONSISTENT 80/20 PATTERN ACADEMY STYLING (ZERO GRADIENT SLOP)         */
 /* ========================================================================== */
 
-/* Feature Banner on Home Page */
+/* Feature Banner on Home Page - Clean Minimalist Koma Card */
 .koma-pattern-academy-feature-banner {
   max-width: 1200px;
-  margin: 28px auto 36px auto;
-  padding: 24px 28px;
-  background: linear-gradient(135deg, rgba(24, 24, 27, 0.95), rgba(39, 39, 42, 0.85));
-  border: 1px solid rgba(168, 85, 247, 0.4);
-  border-radius: 12px;
+  margin: 24px auto 32px auto;
+  padding: 22px 26px;
+  background: #141416;
+  border: 1px solid #27272a;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 32px;
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(168, 85, 247, 0.2);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: none;
+  transition: border-color 0.15s ease;
 }
 
 .koma-pattern-academy-feature-banner:hover {
-  border-color: #a855f7;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(168, 85, 247, 0.25), inset 0 1px 0 rgba(168, 85, 247, 0.4);
-}
-
-.koma-pattern-academy-feature-banner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(180deg, #c084fc, #7c3aed, #38bdf8);
+  border-color: #3f3f46;
 }
 
 .koma-pafb-left {
@@ -2815,33 +2802,36 @@
 .koma-pafb-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(168, 85, 247, 0.15);
-  border: 1px solid rgba(168, 85, 247, 0.35);
-  color: #c084fc;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  background: #1f1f23;
+  border: 1px solid #2e2e32;
+  color: #a1a1aa;
+  font-family: var(--koma-font-mono, monospace);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.05em;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .koma-pafb-heading {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 19px;
+  font-weight: 600;
   color: #ffffff;
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
   letter-spacing: -0.02em;
   line-height: 1.3;
+  font-family: var(--koma-font-mono, monospace);
 }
 
 .koma-pafb-sub {
   font-size: 13px;
-  color: #a1a1aa;
+  color: #888888;
   line-height: 1.5;
   margin: 0 0 16px 0;
-  max-width: 680px;
+  max-width: 660px;
+  font-family: var(--koma-font-sans, sans-serif);
 }
 
 .koma-pafb-cta-row {
@@ -2851,46 +2841,47 @@
 }
 
 .koma-pafb-btn {
-  background: linear-gradient(135deg, #7c3aed, #9333ea);
-  color: #ffffff;
-  border: none;
-  font-weight: 700;
-  font-size: 12.5px;
-  padding: 9px 18px;
-  border-radius: 6px;
+  background: #ffffff;
+  color: #141416;
+  border: 1px solid #ffffff;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 8px 18px;
+  border-radius: 2px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
-  transition: all 0.15s ease;
+  gap: 6px;
+  font-family: var(--koma-font-mono, monospace);
+  transition: opacity 0.15s ease;
 }
 
 .koma-pafb-btn:hover {
-  background: linear-gradient(135deg, #9333ea, #a855f7);
-  transform: translateY(-1px);
+  background: #e4e4e7;
+  opacity: 0.95;
 }
 
 .koma-pafb-metrics {
   font-size: 12px;
   color: #71717a;
+  font-family: var(--koma-font-mono, monospace);
 }
 .koma-pafb-metrics strong {
-  color: #e4e4e7;
+  color: #d4d4d8;
 }
 
 .koma-pafb-right {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   min-width: 320px;
 }
 
 .koma-pafb-preview-card {
-  background: #141416;
-  border: 1px solid #27272a;
-  border-radius: 6px;
-  padding: 8px 12px;
+  background: #0d0d0f;
+  border: 1px solid #222226;
+  border-radius: 4px;
+  padding: 7px 11px;
   font-family: var(--koma-font-mono, monospace);
   font-size: 11px;
 }
@@ -2899,51 +2890,43 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #94a3b8;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.koma-pafb-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-.koma-pafb-dot.green { background: #34d399; }
-.koma-pafb-dot.cyan { background: #38bdf8; }
-.koma-pafb-dot.purple { background: #c084fc; }
-
-.koma-pafb-preview-code {
-  color: #38bdf8;
+  color: #71717a;
+  font-weight: 500;
+  margin-bottom: 3px;
   font-size: 10.5px;
 }
 
-/* Redesigned Editor Toolbar Button - Large & Glowing */
+.koma-pafb-preview-code {
+  color: #d4d4d8;
+  font-size: 10.5px;
+}
+
+/* Editor Toolbar Button - Consistent with Koma Toolbar */
 .koma-btn-toolbar-pattern {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(124, 58, 237, 0.28)) !important;
-  color: #e9d5ff !important;
-  border: 1px solid #a855f7 !important;
-  font-weight: 700 !important;
-  font-size: 12px !important;
-  padding: 6px 14px !important;
-  border-radius: 6px !important;
+  background: #27272a !important;
+  color: #d4d4d8 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  font-weight: 500 !important;
+  font-size: 11px !important;
+  font-family: var(--koma-font-mono, monospace) !important;
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
   cursor: pointer !important;
   display: inline-flex !important;
   align-items: center !important;
   gap: 6px !important;
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.35) !important;
+  box-shadow: none !important;
   white-space: nowrap !important;
-  min-width: 145px !important;
-  height: 38px !important;
+  height: 28px !important;
   transition: all 0.15s ease !important;
 }
 
 .koma-btn-toolbar-pattern:hover {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(147, 51, 234, 0.45)) !important;
-  border-color: #c084fc !important;
+  background: #3f3f46 !important;
   color: #ffffff !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 0 18px rgba(168, 85, 247, 0.55) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 /* Dedicated Full-Page View Panel */
@@ -2958,44 +2941,367 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
-  padding-bottom: 20px;
+  padding-bottom: 16px;
   border-bottom: 1px solid #27272a;
 }
 
 .view-pattern-title-wrap {
   display: flex;
   align-items: center;
-  gap: 14px;
-}
-
-.view-pattern-logo-icon {
-  font-size: 28px;
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #581c87, #2e1065);
-  border: 1px solid #7c3aed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 12px;
 }
 
 .view-pattern-main-heading {
-  font-size: 24px;
-  font-weight: 800;
+  font-size: 22px;
+  font-weight: 600;
   color: #ffffff;
   margin: 0;
   letter-spacing: -0.02em;
+  font-family: var(--koma-font-mono, monospace);
 }
 
 .view-pattern-subtitle {
   font-size: 13px;
-  color: #a1a1aa;
+  color: #888888;
   margin: 4px 0 0 0;
+  font-family: var(--koma-font-sans, sans-serif);
 }
 
 .view-pattern-layout {
   display: grid;
   grid-template-columns: 280px 1fr;
-  gap: 28px;
+  gap: 24px;
+}
+
+/* Pattern Sidebar & Nav Items */
+.koma-hub-sidebar {
+  background: #141416;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.koma-hub-tier-label {
+  font-family: var(--koma-font-mono, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #71717a;
+  margin: 14px 0 6px 0;
+  padding-left: 4px;
+}
+.koma-hub-tier-label:first-child {
+  margin-top: 0;
+}
+
+.koma-hub-nav-item {
+  width: 100%;
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 4px;
+  color: #a1a1aa;
+  text-align: left;
+  padding: 9px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.15s ease;
+  font-family: var(--koma-font-sans, sans-serif);
+}
+
+.koma-hub-nav-item:hover {
+  background: #27272a;
+  color: #ffffff;
+  border-color: #3f3f46;
+}
+
+.koma-hub-nav-item.active {
+  background: #27272a;
+  border-color: #52525b;
+  color: #ffffff;
+  border-left: 3px solid #ffffff;
+}
+
+.koma-hub-nav-title {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.koma-hub-nav-tag {
+  font-size: 9.5px;
+  font-family: var(--koma-font-mono, monospace);
+  color: #71717a;
+  letter-spacing: 0.04em;
+}
+
+.koma-hub-nav-item.active .koma-hub-nav-tag {
+  color: #a1a1aa;
+}
+
+.koma-hub-nav-item.locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+/* Pattern Content Canvas */
+.koma-hub-content {
+  background: #141416;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  padding: 24px;
+}
+
+.koma-hub-header-banner {
+  border-bottom: 1px solid #27272a;
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+}
+
+.koma-hub-tier-pill {
+  display: inline-block;
+  font-family: var(--koma-font-mono, monospace);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: #888888;
+  background: #1f1f23;
+  border: 1px solid #27272a;
+  padding: 2px 7px;
+  border-radius: 2px;
+  margin-right: 6px;
+  margin-bottom: 10px;
+}
+
+.koma-hub-tag-pill {
+  display: inline-block;
+  font-family: var(--koma-font-mono, monospace);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: #71717a;
+  background: #18181b;
+  border: 1px solid #27272a;
+  padding: 2px 7px;
+  border-radius: 2px;
+  margin-bottom: 10px;
+}
+
+.koma-hub-header-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+  font-family: var(--koma-font-mono, monospace);
+  letter-spacing: -0.02em;
+}
+
+.koma-hub-tagline {
+  font-size: 13.5px;
+  color: #888888;
+  margin: 0;
+  line-height: 1.5;
+  font-family: var(--koma-font-sans, sans-serif);
+}
+
+.koma-hub-section {
+  margin-bottom: 24px;
+}
+
+.koma-hub-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e4e4e7;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--koma-font-mono, monospace);
+}
+
+.koma-hub-quote-card,
+.koma-hub-mental-card {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 4px;
+  padding: 14px 16px;
+  color: #d4d4d8;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.koma-subtopic-card {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.koma-subtopic-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.koma-subtopic-badge {
+  font-family: var(--koma-font-mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  background: #27272a;
+  color: #e4e4e7;
+  border: 1px solid #3f3f46;
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+.koma-subtopic-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  font-family: var(--koma-font-mono, monospace);
+}
+
+.koma-subtopic-desc {
+  font-size: 12.5px;
+  color: #888888;
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+}
+
+.koma-svg-viewport {
+  margin-top: 10px;
+  border: 1px solid #27272a;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #111113;
+}
+
+.koma-hub-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid #202024;
+  font-size: 12.5px;
+  color: #d4d4d8;
+}
+.koma-hub-step-item:last-child {
+  border-bottom: none;
+}
+
+.koma-step-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #52525b;
+  margin-top: 6px;
+}
+
+.koma-gotcha-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  font-size: 12.5px;
+  color: #d4d4d8;
+}
+
+.koma-company-pills {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 16px 0;
+}
+
+.koma-company-pill {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #888888;
+  font-family: var(--koma-font-mono, monospace);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.koma-company-pill:hover {
+  color: #ffffff;
+}
+
+.koma-company-pill.active {
+  background: #ffffff;
+  color: #141416;
+  font-weight: 600;
+}
+
+.koma-company-drill-box {
+  background: #0f0f11;
+  border: 1px solid #27272a;
+  border-radius: 4px;
+  padding: 16px;
+}
+
+.koma-drill-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #202024;
+}
+
+.koma-drill-co-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  font-family: var(--koma-font-mono, monospace);
+}
+
+.koma-load-editor-btn {
+  background: #ffffff;
+  color: #141416;
+  border: 1px solid #ffffff;
+  border-radius: 2px;
+  font-family: var(--koma-font-mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.koma-load-editor-btn:hover {
+  background: #e4e4e7;
+  opacity: 0.95;
+}
+
+.koma-drill-prompt {
+  font-size: 12.5px;
+  color: #a1a1aa;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.koma-drill-sql {
+  background: #09090b;
+  border: 1px solid #202024;
+  border-radius: 3px;
+  padding: 12px;
+  margin: 0;
+  overflow-x: auto;
+  font-family: var(--koma-font-mono, monospace);
+  font-size: 12px;
+  color: #e4e4e7;
+  line-height: 1.5;
 }

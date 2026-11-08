@@ -2901,7 +2901,7 @@ ORDER BY total_attempts DESC;`
             
             <!-- Left Sidebar: Pattern Index -->
             <div class="koma-hub-sidebar">
-              <div class="koma-hub-tier-label">🟢 TIER 1: EVERYDAY ESSENTIALS</div>
+              <div class="koma-hub-tier-label">TIER 1 &middot; ESSENTIALS</div>
               ${PATTERNS.filter(x => x.tier === 1).map(item => `
                 <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}')">
                   <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
@@ -2909,7 +2909,7 @@ ORDER BY total_attempts DESC;`
                 </button>
               `).join('')}
 
-              <div class="koma-hub-tier-label" style="margin-top:16px;">🟡 TIER 2: BUSINESS GROWTH</div>
+              <div class="koma-hub-tier-label" style="margin-top:16px;">TIER 2 &middot; GROWTH</div>
               ${PATTERNS.filter(x => x.tier === 2).map(item => `
                 <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}')">
                   <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
@@ -2917,7 +2917,7 @@ ORDER BY total_attempts DESC;`
                 </button>
               `).join('')}
 
-              <div class="koma-hub-tier-label" style="margin-top:16px;">🔴 TIER 3: BIG TECH ARSENAL</div>
+              <div class="koma-hub-tier-label" style="margin-top:16px;">TIER 3 &middot; ADVANCED</div>
               <div class="koma-hub-nav-item locked">
                 <div class="koma-hub-nav-title">07. Deduplication & Latest State</div>
                 <span class="koma-hub-nav-tag">CLEAN DATA</span>
@@ -3074,17 +3074,16 @@ ORDER BY total_attempts DESC;`
 
     return `
       <div class="view-pattern-academy-page">
-        <!-- Top Bar -->
+        <!-- Top Bar (Clean Minimalist Koma) -->
         <div class="view-pattern-topbar">
           <div class="view-pattern-title-wrap">
-            <div class="view-pattern-logo-icon">🧬</div>
             <div>
-              <h1 class="view-pattern-main-heading">80/20 Universal SQL Pattern Academy</h1>
-              <p class="view-pattern-subtitle">Master the 6 foundational archetypes that solve 80% of data &amp; finance query interviews</p>
+              <h1 class="view-pattern-main-heading">SQL Pattern Academy</h1>
+              <p class="view-pattern-subtitle">The 6 universal archetypes that solve 80% of data &amp; finance query interviews</p>
             </div>
           </div>
-          <div style="display:flex; align-items:center; gap:12px;">
-            <button class="koma-pafb-btn" onclick="try{window.location.hash='#home';}catch(e){} selectNavView('viewLandingPage', 'Home', null);" style="background:#27272a; border:1px solid #3f3f46; box-shadow:none; padding:8px 16px; font-size:12px; cursor:pointer;">
+          <div>
+            <button class="koma-pafb-btn" onclick="try{window.location.hash='#home';}catch(e){} selectNavView('viewLandingPage', 'Home', null);">
               &larr; Back to SQL Studio
             </button>
           </div>
@@ -3094,7 +3093,7 @@ ORDER BY total_attempts DESC;`
         <div class="view-pattern-layout">
           <!-- Left Pattern Nav -->
           <div class="koma-hub-sidebar" style="background:#141416; border:1px solid #27272a; border-radius:8px; padding:16px;">
-            <div class="koma-hub-tier-label">🟢 TIER 1: EVERYDAY ESSENTIALS</div>
+            <div class="koma-hub-tier-label">TIER 1 &middot; ESSENTIALS</div>
             ${PATTERNS.filter(x => x.tier === 1).map(item => `
               <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}', true)">
                 <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
@@ -3102,7 +3101,7 @@ ORDER BY total_attempts DESC;`
               </button>
             `).join('')}
 
-            <div class="koma-hub-tier-label" style="margin-top:16px;">🟡 TIER 2: BUSINESS GROWTH</div>
+            <div class="koma-hub-tier-label" style="margin-top:16px;">TIER 2 &middot; GROWTH</div>
             ${PATTERNS.filter(x => x.tier === 2).map(item => `
               <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}', true)">
                 <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
@@ -3110,7 +3109,7 @@ ORDER BY total_attempts DESC;`
               </button>
             `).join('')}
 
-            <div class="koma-hub-tier-label" style="margin-top:16px;">🔴 TIER 3: BIG TECH ARSENAL</div>
+            <div class="koma-hub-tier-label" style="margin-top:16px;">TIER 3 &middot; ADVANCED</div>
             <div class="koma-hub-nav-item locked">
               <div class="koma-hub-nav-title">07. Deduplication &amp; Latest State</div>
               <span class="koma-hub-nav-tag">CLEAN DATA</span>
