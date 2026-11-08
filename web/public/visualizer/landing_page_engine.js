@@ -3516,6 +3516,9 @@ ORDER BY total_attempts DESC;`
               <button class="btn-koma-secondary" onclick="window.LANDING_PAGE_ENGINE.openLeetCode()">
                 Browse Practice Problems
               </button>
+              <button class="btn-koma-secondary" onclick="window.SQL_PATTERN_HUB &amp;&amp; window.SQL_PATTERN_HUB.open()" style="border-color:#7c3aed; color:#c084fc;">
+                🧬 80/20 SQL Patterns
+              </button>
             </div>
 
             <div class="koma-platform-subtext">

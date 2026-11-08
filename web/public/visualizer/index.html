@@ -78,6 +78,13 @@
             </span>
           </button>
 
+          <!-- 80/20 PATTERN ACADEMY -->
+          <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavPatternAcademy" onclick="window.SQL_PATTERN_HUB &amp;&amp; window.SQL_PATTERN_HUB.open()" title="80/20 Universal SQL Pattern Academy">
+            <span class="nav-group-lead">
+              <span class="nav-group-title" style="color: #c084fc;">🧬 Patterns</span>
+            </span>
+          </button>
+
           <!-- 5. RELATIONAL MACHINES -->
           <button class="nav-group-trigger nav-direct-link nav-tab" id="btnNavRelationalMachines" data-view="viewRelationalMachines" onclick="try{window.location.hash='#machines';}catch(e){} selectNavView('viewRelationalMachines', 'Relational Machines', null)" title="Relational Machines: Obsidian Architectural Explainer SVGs">
             <span class="nav-group-lead">
@@ -205,7 +212,19 @@
                 </div>
               </button>
 
-              <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Drill &amp; Test Vaults</div>
+                            <div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Universal SQL Archetypes</div>
+              <button class="nav-dropdown-item nav-tab" onclick="window.SQL_PATTERN_HUB &amp;&amp; window.SQL_PATTERN_HUB.open()">
+                <span class="nav-item-icon" style="color:#c084fc;">🧬</span>
+                <div class="nav-item-text">
+                  <div class="nav-item-title-row">
+                    <span class="nav-item-title" style="color:#c084fc;">80/20 Pattern Academy</span>
+                    <span class="nav-item-tag accent" style="background:#2e1065; color:#c084fc; border:1px solid #7c3aed;">6 Archetypes</span>
+                  </div>
+                  <span class="nav-item-desc">Master the vital 20% of patterns that solve 80% of company queries</span>
+                </div>
+              </button>
+
+<div class="nav-dropdown-header" style="margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-subtle);">Drill &amp; Test Vaults</div>
               <button class="nav-dropdown-item nav-tab" data-view="viewSqlTerminal" onclick="selectNavView('viewSqlTerminal', 'SQL Terminal', 'navGroupPractice')">
                 <span class="nav-item-icon">&bull;</span>
                 <div class="nav-item-text">
