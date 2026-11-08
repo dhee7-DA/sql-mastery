@@ -1695,3 +1695,249 @@
   0% { background: rgba(34, 197, 94, 0.5); }
   100% { background: transparent; }
 }
+
+
+/* =============================================================================
+   PLAIN-ENGLISH QUERY EXPLAINER & TABLE SHRINK STYLES
+   ============================================================================= */
+
+/* Explainer Banner Card */
+.koma-explainer-card {
+  background: #141417;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.08);
+  animation: komaFadeIn 180ms ease forwards;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.koma-explainer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #27272a;
+  padding-bottom: 8px;
+}
+
+.koma-explainer-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.koma-explainer-badge {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  font-family: var(--koma-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.koma-explainer-sub {
+  color: #a1a1aa;
+  font-family: var(--koma-font-mono);
+  font-size: 10.5px;
+}
+
+.koma-explainer-close-btn {
+  background: transparent;
+  border: none;
+  color: #71717a;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 120ms ease;
+}
+
+.koma-explainer-close-btn:hover {
+  color: #ffffff;
+  background: #27272a;
+}
+
+.koma-explainer-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.koma-explainer-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #f4f4f5;
+}
+
+.koma-explainer-text strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.koma-explainer-text code {
+  background: #1f1f23;
+  color: #38bdf8;
+  font-family: var(--koma-font-mono);
+  font-size: 11.5px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid #2e2e34;
+}
+
+.koma-explainer-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.koma-explainer-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-family: var(--koma-font-mono);
+  font-size: 10.5px;
+}
+
+.koma-explainer-chip .chip-label {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.koma-explainer-chip .chip-val {
+  color: #38bdf8;
+}
+
+/* =============================================================================
+   LIVE TABLE TRANSFORMATION (DATA SHRINK VIEW) IN STEPPER
+   ============================================================================= */
+
+.koma-step-transform-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #0d0d0f;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+
+.koma-step-transform-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.koma-transform-label {
+  font-family: var(--koma-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: #a1a1aa;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.koma-transform-pill {
+  font-family: var(--koma-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.koma-transform-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--koma-font-mono);
+  font-size: 11px;
+}
+
+.koma-transform-table th {
+  text-align: left;
+  padding: 5px 8px;
+  color: #71717a;
+  font-size: 10px;
+  font-weight: 700;
+  border-bottom: 1px solid #222228;
+}
+
+.koma-transform-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #18181b;
+  color: #e4e4e7;
+  transition: all 180ms ease;
+}
+
+/* Row Statuses */
+.transform-row-discarded {
+  background: rgba(239, 68, 68, 0.05);
+  opacity: 0.6;
+}
+
+.transform-row-discarded td {
+  color: #f87171 !important;
+  text-decoration: line-through;
+}
+
+.transform-row-kept {
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.transform-row-kept td {
+  color: #4ade80 !important;
+  font-weight: 600;
+}
+
+.transform-row-output {
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.transform-row-output td {
+  color: #38bdf8 !important;
+  font-weight: 600;
+}
+
+.transform-status-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  display: inline-block;
+  text-decoration: none !important;
+}
+
+.status-discarded {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.status-kept {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.status-output {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}

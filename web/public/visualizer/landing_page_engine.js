@@ -1,4 +1,199 @@
 /**
+ * SQL FOUNDRY - PLAIN-ENGLISH QUERY EXPLAINER
+ * Translates any SQL query into clear, conversational, human language.
+ * Designed for complete beginners to verify their understanding of SQL logic.
+ */
+
+(function(window) {
+  'use strict';
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function friendlyName(name) {
+    if (!name) return 'the table';
+    return name.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function parseAndExplainSql(sql) {
+    sql = String(sql || '').trim();
+    const cleanSql = sql.replace(/--.*$/gm, '').trim();
+
+    if (!cleanSql) {
+      
+
+
+  return {
+        summary: 'The editor is empty. Type any SQL query above and click 💬 Explain Query to see what it does in plain English.',
+        chips: {
+          Status: 'Empty Query'
+        }
+      };
+    }
+
+    // 1. Table
+    const fromMatch = cleanSql.match(/\bFROM\s+([a-zA-Z0-9_]+)/i);
+    const table = fromMatch ? fromMatch[1] : 'the table';
+    const tableFriendly = friendlyName(table);
+
+    // 2. Join
+    const joinMatch = cleanSql.match(/\b(LEFT|RIGHT|INNER|FULL)?\s*JOIN\s+([a-zA-Z0-9_]+)/i);
+    const joinType = joinMatch && joinMatch[1] ? joinMatch[1].toUpperCase() : (joinMatch ? 'INNER' : null);
+    const joinTable = joinMatch ? joinMatch[2] : null;
+
+    // 3. Projections / Columns
+    const selectMatch = cleanSql.match(/\bSELECT\s+(DISTINCT\s+)?([\s\S]*?)\bFROM\b/i);
+    const isDistinct = Boolean(selectMatch && selectMatch[1]);
+    const rawCols = selectMatch ? selectMatch[2].trim() : '*';
+
+    let colsSummary = 'all columns';
+    if (rawCols !== '*') {
+      const colList = rawCols.split(',').map(c => c.trim()).filter(Boolean);
+      const cleanCols = colList.map(c => c.split(/\s+AS\s+|\s+/i)[0].replace(/^[a-zA-Z0-9_]+\./, ''));
+      colsSummary = cleanCols.join(', ');
+    }
+
+    // 4. Filters (WHERE)
+    const whereMatch = cleanSql.match(/\bWHERE\s+([\s\S]*?)(?=\bGROUP BY\b|\bORDER BY\b|\bHAVING\b|\bLIMIT\b|;|$)/i);
+    const rawWhere = whereMatch ? whereMatch[1].trim() : null;
+
+    let filterDesc = null;
+    if (rawWhere) {
+      let w = rawWhere.replace(/\s+/g, ' ');
+      w = w.replace(/\bIS NULL\b/gi, 'is empty or unassigned');
+      w = w.replace(/\bIS NOT NULL\b/gi, 'has a valid value');
+      w = w.replace(/!=|<>/g, 'is not equal to');
+      w = w.replace(/==/g, 'equals');
+      w = w.replace(/=/g, 'equals');
+      w = w.replace(/>=/g, 'is greater than or equal to');
+      w = w.replace(/<=/g, 'is less than or equal to');
+      w = w.replace(/>/g, 'is greater than');
+      w = w.replace(/</g, 'is less than');
+      w = w.replace(/\bAND\b/gi, 'and');
+      w = w.replace(/\bOR\b/gi, 'or');
+      filterDesc = w;
+    }
+
+    // 5. Grouping & Having
+    const groupMatch = cleanSql.match(/\bGROUP BY\s+([\s\S]*?)(?=\bHAVING\b|\bORDER BY\b|\bLIMIT\b|;|$)/i);
+    const groupDesc = groupMatch ? groupMatch[1].trim() : null;
+
+    const havingMatch = cleanSql.match(/\bHAVING\s+([\s\S]*?)(?=\bORDER BY\b|\bLIMIT\b|;|$)/i);
+    const havingDesc = havingMatch ? havingMatch[1].trim() : null;
+
+    // 6. Sorting (ORDER BY)
+    const orderMatch = cleanSql.match(/\bORDER BY\s+([\s\S]*?)(?=\bLIMIT\b|;|$)/i);
+    const rawOrder = orderMatch ? orderMatch[1].trim() : null;
+    let orderDesc = null;
+    if (rawOrder) {
+      const isDesc = /DESC/i.test(rawOrder);
+      const col = rawOrder.replace(/\s+(ASC|DESC)/i, '').trim().replace(/^[a-zA-Z0-9_]+\./, '');
+      orderDesc = `${col} (${isDesc ? 'highest to lowest' : 'lowest to highest'})`;
+    }
+
+    // 7. Limit
+    const limitMatch = cleanSql.match(/\bLIMIT\s+(\d+)/i);
+    const limitDesc = limitMatch ? `Top ${limitMatch[1]} rows` : null;
+
+    // Compose cohesive plain-English sentences
+    const parts = [];
+
+    // Sentence 1: Data source
+    if (joinTable) {
+      if (joinTable === table) {
+        parts.append ? parts.append() : parts.push(`This query checks the <strong>${tableFriendly}</strong> table against itself (self-join) to find related subsequent activity.`);
+      } else {
+        const jFriendly = friendlyName(joinTable);
+        parts.push(`This query opens the <strong>${tableFriendly}</strong> table and connects it with <strong>${jFriendly}</strong> records.`);
+      }
+    } else {
+      parts.push(`This query opens the <strong>${tableFriendly}</strong> table.`);
+    }
+
+    // Sentence 2: Filtering / Grouping
+    if (filterDesc) {
+      parts.push(`It looks specifically for rows where <em>${filterDesc}</em>.`);
+    } else if (groupDesc) {
+      parts.push(`It groups the rows together by <code>${groupDesc}</code> to calculate summary totals.`);
+    } else {
+      parts.push(`It inspects all records without filtering any rows out.`);
+    }
+
+    // Sentence 3: Output columns, sorting & bounds
+    const outPhrase = isDistinct ? `unique values for <code>${colsSummary}</code>` : `<code>${colsSummary}</code>`;
+    if (orderDesc && limitDesc) {
+      parts.push(`Finally, it displays ${outPhrase}, sorted by ${orderDesc}, and limits the output to the ${limitDesc.toLowerCase()}.`);
+    } else if (orderDesc) {
+      parts.push(`Finally, it displays ${outPhrase}, sorted by ${orderDesc}.`);
+    } else if (limitDesc) {
+      parts.push(`Finally, it displays ${outPhrase}, stopping after the ${limitDesc.toLowerCase()}.`);
+    } else {
+      parts.push(`Finally, it outputs ${outPhrase}.`);
+    }
+
+    const chips = {
+      '📂 Table': table,
+      '📋 Output': colsSummary,
+      '🔍 Filter': filterDesc ? rawWhere : 'None (All rows)',
+      '⇅ Sorting': orderDesc || 'Default physical order',
+      '🛑 Limit': limitDesc || 'All matching rows'
+    };
+
+    if (joinTable) chips['🔗 Link'] = `${joinType || 'LEFT'} JOIN on ${joinTable}`;
+    if (groupDesc) chips['📦 Grouping'] = groupDesc;
+
+    return {
+      summary: parts.join(' '),
+      chips: chips
+    };
+  }
+
+  function renderExplainerCardHtml(result) {
+    const summary = result.summary;
+    const chips = result.chips || {};
+
+    const chipKeys = Object.keys(chips);
+
+    return `
+      <div class="koma-explainer-card">
+        <div class="koma-explainer-header">
+          <div class="koma-explainer-badge-row">
+            <span class="koma-explainer-badge">💬 Plain-English Translation</span>
+            <span class="koma-explainer-sub">How SQL translates to human thoughts</span>
+          </div>
+          <button class="koma-explainer-close-btn" onclick="window.LANDING_PAGE_ENGINE.toggleQueryExplainer()" title="Close explanation">✕</button>
+        </div>
+
+        <div class="koma-explainer-body">
+          <p class="koma-explainer-text">${summary}</p>
+          <div class="koma-explainer-chips-row">
+            ${chipKeys.map(k => `
+              <div class="koma-explainer-chip">
+                <span class="chip-label">${escapeHtml(k)}:</span>
+                <span class="chip-val">${escapeHtml(chips[k])}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  window.SQL_EXPLAINER = {
+    explain: parseAndExplainSql,
+    renderExplainerCardHtml: renderExplainerCardHtml
+  };
+
+})(window);
+
+
+/**
  * SQL FOUNDRY - FRIENDLY ERROR DOCTOR & AUTO-FIX ENGINE
  * Converts cryptic database parser and execution errors into plain-English beginner guides
  * with 1-click automatic query repair.
@@ -545,6 +740,16 @@ WHERE o2.order_id IS NULL;`,
                 "explanation": "SQL begins by loading the amazon_prime_orders table where all customer signups and initial purchases are stored.",
                 "mentalRule": "SQL always starts with FROM. It cannot filter or select columns without first opening the table.",
                 "rowImpact": "8 total orders loaded into memory",
+        "transform": {
+          "stat": "4 sample rows loaded · 0 filtered out",
+          "headers": ["Status", "customer_id", "purchase_date", "product_id"],
+          "rows": [
+            { "status": "KEPT", "cells": ["CUST_88201", "2026-09-01", "PROD_KINDLE_PAPERWHITE"] },
+            { "status": "KEPT", "cells": ["CUST_88245", "2026-09-01", "PROD_ECHO_DOT_5TH_GEN"] },
+            { "status": "KEPT", "cells": ["CUST_89104", "2026-09-02", "PROD_FIRE_TV_STICK_4K"] },
+            { "status": "KEPT", "cells": ["CUST_89311", "2026-09-03", "PROD_RING_VIDEO_DOORBELL"] }
+          ]
+        },
                 "lineNumbers": [
                         2
                 ],
@@ -556,6 +761,16 @@ WHERE o2.order_id IS NULL;`,
                 "explanation": "We connect each order with any other purchases that same member made within their next 30 days. Inactive members will have blank (NULL) follow-up data.",
                 "mentalRule": "LEFT JOIN keeps all original members even if they placed zero future orders.",
                 "rowImpact": "Evaluated 30-day window for each member",
+        "transform": {
+          "stat": "Matched members against their future orders",
+          "headers": ["Status", "customer_id", "initial_date", "future_order_id"],
+          "rows": [
+            { "status": "KEPT", "cells": ["CUST_88201", "2026-09-01", "ORD_103 (Sept 15)"] },
+            { "status": "KEPT", "cells": ["CUST_88245", "2026-09-01", "NULL (No orders)"] },
+            { "status": "KEPT", "cells": ["CUST_89104", "2026-09-02", "ORD_106 (Sept 10)"] },
+            { "status": "KEPT", "cells": ["CUST_89311", "2026-09-03", "ORD_108 (Sept 22)"] }
+          ]
+        },
                 "lineNumbers": [
                         3,
                         4,
@@ -570,6 +785,16 @@ WHERE o2.order_id IS NULL;`,
                 "explanation": "We filter for rows where o2.order_id IS NULL. This instantly isolates the inactive members who bought nothing else.",
                 "mentalRule": "WHERE IS NULL is the industry standard pattern to find missing or non-occurring events.",
                 "rowImpact": "Filtered down to 4 inactive members",
+        "transform": {
+          "stat": "4 inactive members kept · active members eliminated",
+          "headers": ["Filter Status", "customer_id", "future_order", "reason"],
+          "rows": [
+            { "status": "DISCARDED", "cells": ["CUST_88201", "ORD_103", "Has future order (Active)"] },
+            { "status": "KEPT", "cells": ["CUST_88245", "NULL", "Zero future orders! (Target found)"] },
+            { "status": "DISCARDED", "cells": ["CUST_89104", "ORD_106", "Has future order (Active)"] },
+            { "status": "DISCARDED", "cells": ["CUST_89311", "ORD_108", "Has future order (Active)"] }
+          ]
+        },
                 "lineNumbers": [
                         7
                 ],
@@ -581,6 +806,13 @@ WHERE o2.order_id IS NULL;`,
                 "explanation": "Finally, SQL selects just the customer ID, signup date, and product purchased, removing duplicate rows with DISTINCT.",
                 "mentalRule": "SELECT runs after WHERE. The database filters rows first, and picks columns last.",
                 "rowImpact": "4 clean rows ready for marketing outreach",
+        "transform": {
+          "stat": "3 requested columns kept · internal join ID discarded",
+          "headers": ["Action", "customer_id", "purchase_date", "product_id"],
+          "rows": [
+            { "status": "OUTPUT", "cells": ["CUST_88245", "2026-09-01", "PROD_ECHO_DOT_5TH_GEN"] }
+          ]
+        },
                 "lineNumbers": [
                         1
                 ],
@@ -1315,6 +1547,7 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
   let lastDoctorDiagnosis = null;
   let activeErrorLine = null;
   let activeSuccessLine = null;
+  let isExplainerOpen = false;
   // Interactive Step-by-Step State
   let currentSinkMode = 'results'; // 'results' | 'stepper'
   let activeStepMap = {
@@ -1365,7 +1598,55 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
     return null;
   }
 
+    function renderStepTableTransformation(cur, st, stepIdx) {
+    if (!st.transform) return '';
+    const tf = st.transform;
+    return `
+      <div class="koma-step-transform-box">
+        <div class="koma-step-transform-header">
+          <div class="koma-transform-label">
+            <span>📊 LIVE DATA TRANSFORMATION (WATCH ROWS SHRINK)</span>
+          </div>
+          <span class="koma-transform-pill">${escapeHtml(tf.stat)}</span>
+        </div>
+        <table class="koma-transform-table">
+          <thead>
+            <tr>
+              ${tf.headers.map(h => `<th>${escapeHtml(h)}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${tf.rows.map(r => {
+              let rCls = 'transform-row-kept';
+              let badgeCls = 'status-kept';
+              let badgeText = '✓ KEPT';
+              if (String(r.status).toLowerCase() === 'discarded' || String(r.status).toLowerCase() === 'filtered') {
+                rCls = 'transform-row-discarded';
+                badgeCls = 'status-discarded';
+                badgeText = '✕ FILTERED';
+              } else if (String(r.status).toLowerCase() === 'output') {
+                rCls = 'transform-row-output';
+                badgeCls = 'status-output';
+                badgeText = '★ OUTPUT';
+              }
+              return `
+                <tr class="${rCls}">
+                  <td><span class="transform-status-badge ${badgeCls}">${badgeText}</span></td>
+                  ${r.cells.map(c => `<td>${escapeHtml(c)}</td>`).join('')}
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
   const LandingPageEngine = {
+    renderLandingPage: function() {
+      this.init();
+    },
+
     init: function() {
       const container = document.getElementById('viewLandingPage');
       if (!container) return;
@@ -1431,6 +1712,7 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
     },
 
     runActiveQuery: async function() {
+      if (isExplainerOpen) this.updateQueryExplainer();
       const textarea = document.getElementById('komaSqlEditor');
       if (!textarea) return;
       const query = textarea.value.trim();
@@ -1832,6 +2114,9 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                           <button class="koma-btn-toolbar" onclick="window.LANDING_PAGE_ENGINE.checkQueryHealth()" title="Check query with Friendly Error Doctor" style="color:#f87171;">
                             <span>🩺 Error Doctor</span>
                           </button>
+                          <button class="koma-btn-toolbar" onclick="window.LANDING_PAGE_ENGINE.toggleQueryExplainer()" title="Explain this query in plain English" style="color:#38bdf8;">
+                            <span>💬 Explain Query</span>
+                          </button>
                           <button class="koma-btn-toolbar ${currentSinkMode === 'stepper' ? 'active-stepper-btn' : ''}" id="komaBtnStepThrough" onclick="window.LANDING_PAGE_ENGINE.toggleStepThrough()" title="Interactive Step-by-Step SQL Guide">
                             <span>🚶 Step-by-Step</span>
                           </button>
@@ -1852,6 +2137,9 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                     <!-- Live Query Results & Interactive Stepper Column -->
                     <div class="koma-sink-column">
                       
+                      <!-- Explainer Mount Point -->
+                      <div id="komaExplainerMount">${isExplainerOpen && window.SQL_EXPLAINER ? window.SQL_EXPLAINER.renderExplainerCardHtml(window.SQL_EXPLAINER.explain(userSqlMap[activeScenarioId] || cur.rawSql)) : ''}</div>
+
                       <!-- Sink Tab Switcher Header -->
                       <div class="koma-sink-header">
                         <div class="koma-sink-tab-group">
@@ -1921,6 +2209,9 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                                   <div class="koma-slice-label">SQL Executed in this Step (Line ${st.lineNumbers.join(', ')}):</div>
                                   <pre class="koma-slice-code"><code>${escapeHtml(st.codeSlice)}</code></pre>
                                 </div>
+
+                                <!-- Live Table Transformation -->
+                                ${renderStepTableTransformation(cur, st, stepIdx)}
                               </div>
 
                               <!-- Stepper Footer -->
@@ -2313,6 +2604,36 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
         }
       } else {
         this.runActiveQuery();
+      }
+    },
+
+    toggleQueryExplainer: function() {
+      isExplainerOpen = !isExplainerOpen;
+      if (isExplainerOpen) {
+        this.updateQueryExplainer();
+        if (window.soundFX && typeof window.soundFX.playPop === 'function') {
+          try { window.soundFX.playPop(); } catch(e) {}
+        }
+      } else {
+        const box = document.getElementById('komaExplainerMount');
+        if (box) box.innerHTML = '';
+      }
+    },
+
+    updateQueryExplainer: function() {
+      const box = document.getElementById('komaExplainerMount');
+      const textarea = document.getElementById('komaSqlEditor');
+      if (!box || !textarea) return;
+
+      if (!isExplainerOpen) {
+        box.innerHTML = '';
+        return;
+      }
+
+      const query = textarea.value;
+      if (window.SQL_EXPLAINER) {
+        const res = window.SQL_EXPLAINER.explain(query);
+        box.innerHTML = window.SQL_EXPLAINER.renderExplainerCardHtml(res);
       }
     },
 

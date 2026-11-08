@@ -487,7 +487,17 @@ const AMAZON_DAY1_STEPS = [
       badge: '350M ASINs Available',
       explanation: 'SQL begins by opening the products_catalog table. Before applying any filters or choosing columns, the database establishes connection to the physical product table.',
       rule: 'SQL always starts with FROM. It cannot filter or sort until it knows which table to read.',
-      code: 'FROM products_catalog'
+      code: 'FROM products_catalog',
+      transform: {
+        stat: '350M catalog products loaded into buffer pool',
+        headers: ['Status', 'asin', 'product_name', 'department', 'price_usd'],
+        rows: [
+          { status: 'KEPT', cells: ['B07VGRJDFY', 'Smart LED TV 55 Inch', 'Electronics', '1200000.00'] },
+          { status: 'KEPT', cells: ['B08N5WRWNW', 'Wireless Noise Cancelling Headphones', 'Electronics', '349.99'] },
+          { status: 'KEPT', cells: ['B09B2W5KHW', 'Cotton Casual Crew T-Shirt', 'Apparel', '19.99'] },
+          { status: 'KEPT', cells: ['B01DFKC2SO', 'Organic Fair Trade Whole Bean Coffee', 'Grocery', '14.50'] }
+        ]
+      }
     },
     {
       clause: 'WHERE',
@@ -495,7 +505,18 @@ const AMAZON_DAY1_STEPS = [
       badge: 'Discards Non-Electronics',
       explanation: 'SQL scans each row and checks whether department equals Electronics. All books, clothing, and groceries are thrown out immediately, saving memory.',
       rule: 'Filtering early with WHERE prevents massive memory spills in AWS Redshift.',
-      code: "WHERE department = 'Electronics'"
+      code: "WHERE department = 'Electronics'",
+      transform: {
+        stat: 'Filtered: Non-Electronics discarded · Electronics retained',
+        headers: ['Filter Status', 'asin', 'product_name', 'department', 'price_usd'],
+        rows: [
+          { status: 'kept', cells: ['B08N5WRWNW', 'Sony Bravia 4K TV (Anomaly)', 'Electronics', '$1,200,000.00'] },
+          { status: 'discarded', cells: ['B01M3WNZ65', 'Kindle Paperwhite E-Reader', 'Books & Media', '$129.99'] },
+          { status: 'kept', cells: ['B09X43F291', 'Apple MacBook Pro 16"', 'Electronics', '$2,499.00'] },
+          { status: 'discarded', cells: ['B0050SYZ80', 'Organic Whole Bean Coffee', 'Grocery', '$24.50'] },
+          { status: 'discarded', cells: ['B07ABC1234', 'Levis Denim Jacket', 'Apparel', '$89.00'] }
+        ]
+      }
     },
     {
       clause: 'SELECT',
@@ -503,7 +524,15 @@ const AMAZON_DAY1_STEPS = [
       badge: 'Reduces Data Width',
       explanation: 'Instead of loading all 50 columns with SELECT *, SQL isolates just asin, product_name, and price_usd.',
       rule: 'SELECT runs after WHERE. The database filters rows first, then slices columns.',
-      code: 'SELECT asin, product_name, price_usd'
+      code: 'SELECT asin, product_name, price_usd',
+      transform: {
+        stat: '3 requested columns kept · 47 unused catalog columns stripped',
+        headers: ['Column Status', 'asin', 'product_name', 'price_usd'],
+        rows: [
+          { status: 'OUTPUT', cells: ['B07VGRJDFY', 'Smart LED TV 55 Inch', '$1,200,000.00'] },
+          { status: 'OUTPUT', cells: ['B08N5WRWNW', 'Wireless Headphones', '$349.99'] }
+        ]
+      }
     },
     {
       clause: 'ORDER BY',
@@ -511,7 +540,15 @@ const AMAZON_DAY1_STEPS = [
       badge: 'Price Anomaly Surfaced to Top',
       explanation: 'SQL sorts the filtered rows in descending order (DESC). This immediately pushes the accidental $1,200,000 television error right to Row 1!',
       rule: 'ORDER BY DESC is the analyst superpower to spot pricing bugs and outliers.',
-      code: 'ORDER BY price_usd DESC'
+      code: 'ORDER BY price_usd DESC',
+      transform: {
+        stat: 'Rows reordered by price_usd DESC · Anomaly is now Row 1',
+        headers: ['Rank', 'asin', 'product_name', 'price_usd', 'audit_note'],
+        rows: [
+          { status: 'OUTPUT', cells: ['B07VGRJDFY', 'Smart LED TV 55 Inch', '$1,200,000.00', '⚠️ ANOMALY DETECTED (Row 1)'] },
+          { status: 'KEPT', cells: ['B08N5WRWNW', 'Wireless Headphones', '$349.99', 'Normal pricing'] }
+        ]
+      }
     },
     {
       clause: 'LIMIT',
@@ -519,7 +556,15 @@ const AMAZON_DAY1_STEPS = [
       badge: 'Safe Bounded Output',
       explanation: 'Finally, SQL cuts off after returning 10 rows. This delivers an instant report to Category Management without pulling millions of rows into your browser.',
       rule: 'Never run SELECT without LIMIT on massive warehouse tables.',
-      code: 'LIMIT 10;'
+      code: 'LIMIT 10;',
+      transform: {
+        stat: 'Bounded output: Exactly 10 rows sent to Sarah Jenkins',
+        headers: ['Limit Verdict', 'asin', 'product_name', 'price_usd'],
+        rows: [
+          { status: 'OUTPUT', cells: ['B07VGRJDFY', 'Smart LED TV 55 Inch', '$1,200,000.00'] },
+          { status: 'OUTPUT', cells: ['B08N5WRWNW', 'Wireless Headphones', '$349.99'] }
+        ]
+      }
     }
   ];
 
@@ -584,6 +629,45 @@ const AMAZON_DAY1_STEPS = [
             <div style="font-family:monospace; font-size:10px; font-weight:700; color:#71717a;">SQL CLAUSE EXECUTING:</div>
             <pre style="margin:0; font-family:monospace; font-size:12px; color:#38bdf8;"><code>${st.code}</code></pre>
           </div>
+
+          <!-- Live Table Transformation (Data Shrink) -->
+          ${st.transform ? `
+            <div class="koma-step-transform-box">
+              <div class="koma-step-transform-header">
+                <div class="koma-transform-label">
+                  <span>📊 LIVE DATA TRANSFORMATION (WATCH ROWS SHRINK)</span>
+                </div>
+                <span class="koma-transform-pill">${st.transform.stat}</span>
+              </div>
+              <table class="koma-transform-table">
+                <thead>
+                  <tr>${st.transform.headers.map(h => `<th>${h}</th>`).join('')}</tr>
+                </thead>
+                <tbody>
+                  ${st.transform.rows.map(r => {
+                    let rCls = 'transform-row-kept';
+                    let badgeCls = 'status-kept';
+                    let badgeText = '✓ KEPT';
+                    if (String(r.status).toLowerCase() === 'discarded' || String(r.status).toLowerCase() === 'filtered') {
+                      rCls = 'transform-row-discarded';
+                      badgeCls = 'status-discarded';
+                      badgeText = '✕ FILTERED';
+                    } else if (String(r.status).toLowerCase() === 'output') {
+                      rCls = 'transform-row-output';
+                      badgeCls = 'status-output';
+                      badgeText = '★ OUTPUT';
+                    }
+                    return `
+                      <tr class="${rCls}">
+                        <td><span class="transform-status-badge ${badgeCls}">${badgeText}</span></td>
+                        ${r.cells.map(c => `<td>${c}</td>`).join('')}
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          ` : ''}
         </div>
 
         <!-- Footer Actions -->
