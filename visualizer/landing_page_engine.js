@@ -1766,20 +1766,23 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
 
             if (tuplesElem) {
               tuplesElem.innerText = `${rows.length} rows found`;
+            this.dismissAutofixBanner();
+            this.updateClauseRibbon(query, cols);
             }
 
             if (tableWrapper) {
               tableWrapper.innerHTML = `
-                <table class="koma-table">
+                <div id="komaTableHighlightMount"></div>
+                <table class="koma-table" id="komaResultsTable">
                   <thead>
                     <tr>
-                      ${cols.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
+                      ${cols.map(c => `<th data-col="${escapeHtml(c).toLowerCase()}" onmouseenter="window.LANDING_PAGE_ENGINE.highlightColumnFromTable('${escapeHtml(c)}')" onmouseleave="window.LANDING_PAGE_ENGINE.clearClauseHighlight()" title="Hover to isolate column '${escapeHtml(c)}'">${escapeHtml(c)}</th>`).join('')}
                     </tr>
                   </thead>
                   <tbody>
                     ${rows.map(row => `
                       <tr>
-                        ${row.map(cell => `<td>${escapeHtml(cell !== null ? cell : 'NULL')}</td>`).join('')}
+                        ${row.map((cell, cIdx) => `<td data-col="${escapeHtml(cols[cIdx]).toLowerCase()}">${escapeHtml(cell !== null ? cell : 'NULL')}</td>`).join('')}
                       </tr>
                     `).join('')}
                   </tbody>
@@ -1804,6 +1807,12 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
           const schema = window.SQL_ERROR_DOCTOR ? window.SQL_ERROR_DOCTOR.getSchema(activeScenarioId) : null;
           const diag = window.SQL_ERROR_DOCTOR ? window.SQL_ERROR_DOCTOR.diagnose(query, rawMsg, schema) : null;
           lastDoctorDiagnosis = diag;
+
+          if (diag && diag.autoFixAvailable) {
+            this.showAutofixBanner(diag);
+          } else {
+            this.dismissAutofixBanner();
+          }
 
           if (badge) {
             badge.className = 'koma-badge-red';
@@ -2120,9 +2129,29 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                           <button class="koma-btn-toolbar ${currentSinkMode === 'stepper' ? 'active-stepper-btn' : ''}" id="komaBtnStepThrough" onclick="window.LANDING_PAGE_ENGINE.toggleStepThrough()" title="Interactive Step-by-Step SQL Guide">
                             <span>🚶 Step-by-Step</span>
                           </button>
+                          <button id="komaBtnToolbarFix" class="koma-btn-toolbar-fix" onclick="window.LANDING_PAGE_ENGINE.applyDoctorAutoFix()" title="Apply 1-Click Fix to Editor" style="display:none;">
+                            <span>⚡ Click to Fix</span>
+                          </button>
                         </div>
                         <div class="koma-editor-toolbar-right">
                           <span><span class="koma-editor-pulse"></span>Live Editor Ready</span>
+                        </div>
+                      </div>
+
+                      <!-- In-Editor 1-Click Autofix Banner (Option 3) -->
+                      <div id="komaAutofixBanner" class="koma-autofix-banner" style="display:none;">
+                        <div class="koma-autofix-content">
+                          <span class="koma-autofix-icon">🪄</span>
+                          <div class="koma-autofix-details">
+                            <span class="koma-autofix-title" id="komaAutofixTitle">Fix detected</span>
+                            <span class="koma-autofix-diff" id="komaAutofixDiff">Line 1: ...</span>
+                          </div>
+                        </div>
+                        <div class="koma-autofix-actions">
+                          <button class="koma-btn-autofix-apply" onclick="window.LANDING_PAGE_ENGINE.applyDoctorAutoFix()" title="Apply fix and re-run query">
+                            <span>⚡ Click to Fix</span>
+                          </button>
+                          <button class="koma-btn-autofix-dismiss" onclick="window.LANDING_PAGE_ENGINE.dismissAutofixBanner()" title="Dismiss fix notification">✕</button>
                         </div>
                       </div>
 
@@ -2130,6 +2159,12 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                       <div class="koma-editor-body">
                         <div id="komaEditorGutter" class="koma-editor-gutter"></div>
                         <textarea id="komaSqlEditor" class="koma-code-textarea" spellcheck="false" wrap="off" placeholder="Write SQL query here...">${escapeHtml(activeQuerySql)}</textarea>
+                      </div>
+
+                      <!-- Interactive Clause Explorer Ribbon (Option 4) -->
+                      <div id="komaClauseRibbon" class="koma-clause-ribbon">
+                        <span class="koma-clause-ribbon-label"><span>🔍</span> Clauses:</span>
+                        <div id="komaClauseChips" class="koma-clause-chips"></div>
                       </div>
 
                     </div>
@@ -2541,6 +2576,197 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
       }
     },
 
+    
+    dismissAutofixBanner: function() {
+      const banner = document.getElementById('komaAutofixBanner');
+      const toolbarFix = document.getElementById('komaBtnToolbarFix');
+      if (banner) {
+        banner.style.display = 'none';
+        banner.classList.remove('success-mode');
+      }
+      if (toolbarFix) {
+        toolbarFix.style.display = 'none';
+      }
+    },
+
+    showAutofixBanner: function(diag) {
+      if (!diag || !diag.autoFixAvailable) {
+        this.dismissAutofixBanner();
+        return;
+      }
+      const banner = document.getElementById('komaAutofixBanner');
+      const title = document.getElementById('komaAutofixTitle');
+      const diff = document.getElementById('komaAutofixDiff');
+      const toolbarFix = document.getElementById('komaBtnToolbarFix');
+
+      if (title) title.innerText = diag.friendlyTitle || '1-Click Fix Available';
+      if (diff) {
+        diff.innerHTML = 'Line ' + (diag.fixedLineNumber || 1) + ': <code>' + escapeHtml(diag.problemSnippet) + '</code> → <code>' + escapeHtml(diag.fixedSnippet) + '</code>';
+      }
+      if (banner) {
+        banner.classList.remove('success-mode');
+        banner.style.display = 'flex';
+      }
+      if (toolbarFix) {
+        toolbarFix.style.display = 'inline-flex';
+      }
+    },
+
+    updateClauseRibbon: function(sql, activeCols) {
+      const container = document.getElementById('komaClauseChips');
+      if (!container) return;
+      sql = String(sql || '').replace(/--.*$/gm, '').trim();
+      if (!sql) {
+        container.innerHTML = '<span style="color:#71717a;">No query</span>';
+        return;
+      }
+
+      // Parse main clauses
+      const fromMatch = sql.match(/\bFROM\s+([a-zA-Z0-9_]+)/i);
+      const fromTable = fromMatch ? fromMatch[1] : '';
+
+      const whereMatch = sql.match(/\bWHERE\s+([\s\S]*?)(?=\bGROUP\s+BY\b|\bORDER\s+BY\b|\bLIMIT\b|;|$)/i);
+      const whereCond = whereMatch ? whereMatch[1].trim() : '';
+
+      const orderMatch = sql.match(/\bORDER\s+BY\s+([\s\S]*?)(?=\bLIMIT\b|;|$)/i);
+      const orderCond = orderMatch ? orderMatch[1].trim() : '';
+
+      const limitMatch = sql.match(/\bLIMIT\s+(\d+)/i);
+      const limitVal = limitMatch ? limitMatch[1] : '';
+
+      const chipsHtml = [];
+
+      // SELECT chip
+      chipsHtml.push(
+        '<button class="koma-clause-chip chip-select" onmouseenter="window.LANDING_PAGE_ENGINE.highlightClause(\'SELECT\')" onmouseleave="window.LANDING_PAGE_ENGINE.clearClauseHighlight()" title="Hover to highlight selected columns">' +
+        '<span class="chip-kw">SELECT</span>' +
+        '<span style="color:#38bdf8;">' + (activeCols ? activeCols.length : '') + ' cols</span>' +
+        '</button>'
+      );
+
+      // Column chips
+      if (activeCols && activeCols.length) {
+        activeCols.slice(0, 5).forEach(c => {
+          chipsHtml.push(
+            '<button class="koma-clause-chip chip-col" data-col-chip="' + escapeHtml(c).toLowerCase() + '" onmouseenter="window.LANDING_PAGE_ENGINE.highlightColumn(\'' + escapeHtml(c) + '\')" onmouseleave="window.LANDING_PAGE_ENGINE.clearClauseHighlight()" title="Hover to isolate column \'' + escapeHtml(c) + '\'">' +
+            '<span class="chip-col-name">' + escapeHtml(c) + '</span>' +
+            '</button>'
+          );
+        });
+      }
+
+      // FROM chip
+      if (fromTable) {
+        chipsHtml.push(
+          '<button class="koma-clause-chip chip-from" onmouseenter="window.LANDING_PAGE_ENGINE.highlightClause(\'FROM\', \'' + escapeHtml(fromTable) + '\')" onmouseleave="window.LANDING_PAGE_ENGINE.clearClauseHighlight()" title="Hover to view source table">' +
+          '<span class="chip-kw">FROM</span>' +
+          '<span style="color:#fbbf24;">' + escapeHtml(fromTable) + '</span>' +
+          '</button>'
+        );
+      }
+
+      // WHERE chip
+      if (whereCond) {
+        const cleanWhere = escapeHtml(whereCond).replace(/'/g, "\\'");
+        chipsHtml.push(
+          '<button class="koma-clause-chip chip-where" onmouseenter="window.LANDING_PAGE_ENGINE.highlightClause(\'WHERE\', \'' + cleanWhere + '\')" onmouseleave="window.LANDING_PAGE_ENGINE.clearClauseHighlight()" title="Hover to highlight matching rows">' +
+          '<span class="chip-kw">WHERE</span>' +
+          '<span style="color:#34d399;">' + escapeHtml(whereCond).substring(0, 24) + (whereCond.length > 24 ? '...' : '') + '</span>' +
+          '</button>'
+        );
+      }
+
+      // ORDER BY chip
+      if (orderCond) {
+        chipsHtml.push(
+          '<button class="koma-clause-chip chip-order" onmouseenter="window.LANDING_PAGE_ENGINE.highlightClause(\'ORDER_BY\')" onmouseleave="window.LANDING_PAGE_ENGINE.clearClauseHighlight()" title="Hover to view sorting">' +
+          '<span class="chip-kw">ORDER BY</span>' +
+          '<span style="color:#a78bfa;">' + escapeHtml(orderCond).substring(0, 18) + '</span>' +
+          '</button>'
+        );
+      }
+
+      // LIMIT chip
+      if (limitVal) {
+        chipsHtml.push(
+          '<button class="koma-clause-chip chip-limit" onmouseenter="window.LANDING_PAGE_ENGINE.highlightClause(\'LIMIT\')" onmouseleave="window.LANDING_PAGE_ENGINE.clearClauseHighlight()" title="Hover to view limit cutoff">' +
+          '<span class="chip-kw">LIMIT</span>' +
+          '<span style="color:#f87171;">' + escapeHtml(limitVal) + '</span>' +
+          '</button>'
+        );
+      }
+
+      container.innerHTML = chipsHtml.join('');
+    },
+
+    highlightColumn: function(colName) {
+      const table = document.getElementById('komaResultsTable');
+      const mount = document.getElementById('komaTableHighlightMount');
+      if (!table) return;
+
+      const lower = String(colName || '').toLowerCase();
+      table.classList.add('has-highlight');
+
+      const cells = table.querySelectorAll('[data-col="' + lower + '"]');
+      cells.forEach(el => el.classList.add('col-active'));
+
+      if (mount) {
+        mount.innerHTML = '<div class="koma-table-highlight-banner highlight-banner-select"><span>✨ Column Isolated: <strong>' + escapeHtml(colName) + '</strong> (Selected in SELECT list)</span></div>';
+      }
+    },
+
+    highlightColumnFromTable: function(colName) {
+      this.highlightColumn(colName);
+      const lower = String(colName || '').toLowerCase();
+      const chip = document.querySelector('[data-col-chip="' + lower + '"]');
+      if (chip) chip.classList.add('active');
+    },
+
+    highlightClause: function(type, arg) {
+      const table = document.getElementById('komaResultsTable');
+      const mount = document.getElementById('komaTableHighlightMount');
+      if (!table) return;
+
+      if (type === 'SELECT') {
+        table.classList.add('has-highlight');
+        table.querySelectorAll('th, td').forEach(el => el.classList.add('col-active'));
+        if (mount) {
+          mount.innerHTML = '<div class="koma-table-highlight-banner highlight-banner-select"><span>✨ Highlighting all columns chosen in SELECT clause</span></div>';
+        }
+      } else if (type === 'WHERE') {
+        table.querySelectorAll('tbody tr').forEach(tr => tr.classList.add('row-active-where'));
+        if (mount) {
+          mount.innerHTML = '<div class="koma-table-highlight-banner highlight-banner-where"><span>🔍 Highlighting Rows: All returned rows satisfy WHERE ' + (arg ? '(' + escapeHtml(arg) + ')' : 'filter') + '</span></div>';
+        }
+      } else if (type === 'FROM') {
+        if (mount) {
+          mount.innerHTML = '<div class="koma-table-highlight-banner highlight-banner-from"><span>📁 Data sourced from table: <strong>' + escapeHtml(arg || 'current table') + '</strong></span></div>';
+        }
+      } else if (type === 'ORDER_BY') {
+        if (mount) {
+          mount.innerHTML = '<div class="koma-table-highlight-banner highlight-banner-select"><span>⇅ Rows sorted in deterministic order by ORDER BY</span></div>';
+        }
+      } else if (type === 'LIMIT') {
+        if (mount) {
+          mount.innerHTML = '<div class="koma-table-highlight-banner highlight-banner-where"><span>🛑 Row count bounded and capped by LIMIT</span></div>';
+        }
+      }
+    },
+
+    clearClauseHighlight: function() {
+      const table = document.getElementById('komaResultsTable');
+      const mount = document.getElementById('komaTableHighlightMount');
+      if (table) {
+        table.classList.remove('has-highlight');
+        table.querySelectorAll('.col-active').forEach(el => el.classList.remove('col-active'));
+        table.querySelectorAll('.row-active-where').forEach(el => el.classList.remove('row-active-where'));
+      }
+      document.querySelectorAll('.koma-clause-chip.active').forEach(el => el.classList.remove('active'));
+      if (mount) {
+        mount.innerHTML = '';
+      }
+    },
+
     applyDoctorAutoFix: function() {
       if (!lastDoctorDiagnosis || !lastDoctorDiagnosis.fixedSql) return;
       const textarea = document.getElementById('komaSqlEditor');
@@ -2586,6 +2812,12 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
 
       if (diag && diag.type !== 'GENERAL_ERROR') {
         lastDoctorDiagnosis = diag;
+
+          if (diag && diag.autoFixAvailable) {
+            this.showAutofixBanner(diag);
+          } else {
+            this.dismissAutofixBanner();
+          }
         activeErrorLine = diag.fixedLineNumber;
         this.updateEditorGutter();
         this.switchSinkView('results');

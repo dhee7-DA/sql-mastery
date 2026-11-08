@@ -170,12 +170,28 @@
         <div class="koma-explainer-body">
           <p class="koma-explainer-text">${summary}</p>
           <div class="koma-explainer-chips-row">
-            ${chipKeys.map(k => `
-              <div class="koma-explainer-chip">
-                <span class="chip-label">${escapeHtml(k)}:</span>
-                <span class="chip-val">${escapeHtml(chips[k])}</span>
-              </div>
-            `).join('')}
+                        ${chipKeys.map(k => {
+              let enterAttr = '';
+              const leaveAttr = 'if(window.LANDING_PAGE_ENGINE) window.LANDING_PAGE_ENGINE.clearClauseHighlight()';
+              if (k.includes('Output')) {
+                enterAttr = 'if(window.LANDING_PAGE_ENGINE) window.LANDING_PAGE_ENGINE.highlightClause(\'SELECT\')';
+              } else if (k.includes('Filter')) {
+                enterAttr = 'if(window.LANDING_PAGE_ENGINE) window.LANDING_PAGE_ENGINE.highlightClause(\'WHERE\', \'' + escapeHtml(chips[k]).replace(/'/g, "\\'") + '\')';
+              } else if (k.includes('Table')) {
+                enterAttr = 'if(window.LANDING_PAGE_ENGINE) window.LANDING_PAGE_ENGINE.highlightClause(\'FROM\', \'' + escapeHtml(chips[k]).replace(/'/g, "\\'") + '\')';
+              } else if (k.includes('Sorting')) {
+                enterAttr = 'if(window.LANDING_PAGE_ENGINE) window.LANDING_PAGE_ENGINE.highlightClause(\'ORDER_BY\')';
+              } else if (k.includes('Limit')) {
+                enterAttr = 'if(window.LANDING_PAGE_ENGINE) window.LANDING_PAGE_ENGINE.highlightClause(\'LIMIT\')';
+              }
+
+              return `
+                <div class="koma-explainer-chip interactive-clause-chip" ${enterAttr ? `onmouseenter="${enterAttr}" onmouseleave="${leaveAttr}" title="Hover to highlight this clause in table"` : ''}>
+                  <span class="chip-label">${escapeHtml(k)}:</span>
+                  <span class="chip-val">${escapeHtml(chips[k])}</span>
+                </div>
+              `;
+            }).join('')}
           </div>
         </div>
       </div>

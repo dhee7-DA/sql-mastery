@@ -156,6 +156,52 @@
       };
     }
 
+    
+    // 2b. Comparing NULL with Equals (= NULL, == NULL, != NULL, <> NULL)
+    // Common SQL beginner trap: NULL cannot be compared with equality operators
+    const nullEqMatch = query.match(/\b([a-zA-Z0-9_\.]+)\s*(=|==)\s*NULL\b/i);
+    const nullNeqMatch = query.match(/\b([a-zA-Z0-9_\.]+)\s*(!=|<>)\s*NULL\b/i);
+    if (nullEqMatch) {
+      const col = nullEqMatch[1];
+      const badExpr = nullEqMatch[0];
+      const goodExpr = col + ' IS NULL';
+      const fixedSql = query.replace(badExpr, goodExpr);
+      const lineNum = findLineNumber(query, badExpr);
+      return {
+        hasError: true,
+        type: 'NULL_EQUALS',
+        friendlyTitle: 'Comparing NULL with Equals (=)',
+        explanation: 'You wrote <code>' + badExpr + '</code>. In SQL, <code>NULL</code> represents unknown or missing data. Because unknown data can never equal anything (even itself), <code>= NULL</code> always evaluates to UNKNOWN and returns 0 rows! You must use <code>IS NULL</code> instead.',
+        beginnerRule: 'Never compare NULL with =. Always use IS NULL or IS NOT NULL.',
+        problemSnippet: badExpr,
+        fixedSnippet: goodExpr,
+        fixedSql: fixedSql,
+        fixedLineNumber: lineNum,
+        autoFixAvailable: true,
+        rawErrorText: rawStr
+      };
+    }
+    if (nullNeqMatch) {
+      const col = nullNeqMatch[1];
+      const badExpr = nullNeqMatch[0];
+      const goodExpr = col + ' IS NOT NULL';
+      const fixedSql = query.replace(badExpr, goodExpr);
+      const lineNum = findLineNumber(query, badExpr);
+      return {
+        hasError: true,
+        type: 'NULL_NOT_EQUALS',
+        friendlyTitle: 'Comparing NULL with Not-Equals (!=)',
+        explanation: 'You wrote <code>' + badExpr + '</code>. In SQL, testing for non-null values requires <code>IS NOT NULL</code> instead of <code>!= NULL</code>.',
+        beginnerRule: 'Always use IS NOT NULL instead of != NULL or <> NULL.',
+        problemSnippet: badExpr,
+        fixedSnippet: goodExpr,
+        fixedSql: fixedSql,
+        fixedLineNumber: lineNum,
+        autoFixAvailable: true,
+        rawErrorText: rawStr
+      };
+    }
+
     // 3. Unquoted String Literal or Typo in Column
     // e.g. rawStr is "no such column: Electronics" or "no such column: PROD_KINDLE"
     const colMatch = rawStr.match(/no such column:\s*([a-zA-Z0-9_]+)/i);
