@@ -1821,7 +1821,12 @@ function initThemeController() {
   // Hash route support for direct links (#machines, #leetcode, #studio, etc.)
   function handleHashRoute() {
     const hash = (window.location.hash || '').toLowerCase();
-    if (hash === '#machines' || hash === '#relational-machines') {
+    if (hash === '#patterns' || hash === '#pattern-academy' || hash === '#recipes') {
+      if (typeof selectNavView === 'function') selectNavView('viewPatternAcademy', '80/20 Patterns', null);
+      if (window.SQL_PATTERN_HUB && typeof window.SQL_PATTERN_HUB.mountView === 'function') {
+        window.SQL_PATTERN_HUB.mountView('viewPatternAcademy');
+      }
+    } else if (hash === '#machines' || hash === '#relational-machines') {
       if (typeof selectNavView === 'function') selectNavView('viewRelationalMachines', 'Relational Machines', null);
     } else if (hash === '#leetcode' || hash === '#leetcode323' || hash === '#arena') {
       if (typeof selectNavView === 'function') selectNavView('viewLeetCode50', 'LeetCode 323', null);
@@ -1829,13 +1834,20 @@ function initThemeController() {
       if (typeof selectNavView === 'function') selectNavView('viewStudio', 'Section Studio', null);
     } else if (hash === '#course' || hash === '#mastery') {
       if (typeof selectNavView === 'function') selectNavView('viewMasteryCourse', 'Course', null);
-    } else if (hash === '#home') {
-      if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Home', null);
-    } else if (hash === '#data-analytics' || hash === '#growth') {
-      if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Data Analytics', null);
-      if (window.LANDING_PAGE_ENGINE) setTimeout(() => window.LANDING_PAGE_ENGINE.setTrack('analytics'), 50);
-    } else if (hash === '#finance-analytics' || hash === '#finance-track') {
-      if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Finance Analytics', null);
+    } else if (hash === '#home') {
+
+      if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Home', null);
+
+    } else if (hash === '#data-analytics' || hash === '#growth') {
+
+      if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Data Analytics', null);
+
+      if (window.LANDING_PAGE_ENGINE) setTimeout(() => window.LANDING_PAGE_ENGINE.setTrack('analytics'), 50);
+
+    } else if (hash === '#finance-analytics' || hash === '#finance-track') {
+
+      if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Finance Analytics', null);
+
       if (window.LANDING_PAGE_ENGINE) setTimeout(() => window.LANDING_PAGE_ENGINE.setTrack('finance'), 50);
       if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Home', null);
     } else if (hash === '#uber' || hash === '#mobility' || hash === '#marketplace') {
@@ -2468,9 +2480,12 @@ function switchMainView(targetId) {
     if (window.CompanyMasteryEngine) window.CompanyMasteryEngine.init();
     if (window.SQL_BUDDY) window.SQL_BUDDY.say("🏛️ Welcome to the Institutional Domain & Company Hub! 10 Industry Verticals, 70+ Premier Employers, and curated LeetCode drills loaded!", 5000, 'celebrate');
   }
-  if (targetId === 'viewLandingPage') {
-    if (window.LANDING_PAGE_ENGINE) window.LANDING_PAGE_ENGINE.renderLandingPage('viewLandingPage');
-  }
+  if (targetId === 'viewLandingPage') {
+
+    if (window.LANDING_PAGE_ENGINE) window.LANDING_PAGE_ENGINE.renderLandingPage('viewLandingPage');
+
+  }
+
   if (targetId === 'viewHardwareStrata') {
 
     if (window.HARDWARE_STRATA_ENGINE) window.HARDWARE_STRATA_ENGINE.init('viewHardwareStrata');

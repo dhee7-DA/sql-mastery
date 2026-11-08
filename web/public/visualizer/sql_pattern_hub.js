@@ -1418,7 +1418,182 @@ ORDER BY total_attempts DESC;`
   // PUBLIC API & CONTROLLER
   // ===========================================================================
 
+  // ===========================================================================
+  // DEDICATED FULL-PAGE VIEW RENDERER
+  // ===========================================================================
+
+  function renderFullPageViewHtml() {
+    const p = getActivePattern();
+    const curCompany = activeCompanyMap[p.id] || 'amazon';
+    const variant = p.companyVariants[curCompany] || p.companyVariants.amazon;
+
+    return `
+      <div class="view-pattern-academy-page">
+        <!-- Top Bar -->
+        <div class="view-pattern-topbar">
+          <div class="view-pattern-title-wrap">
+            <div class="view-pattern-logo-icon">🧬</div>
+            <div>
+              <h1 class="view-pattern-main-heading">80/20 Universal SQL Pattern Academy</h1>
+              <p class="view-pattern-subtitle">Master the 6 foundational archetypes that solve 80% of data &amp; finance query interviews</p>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <button class="koma-pafb-btn" onclick="try{window.location.hash='#home';}catch(e){} selectNavView('viewLandingPage', 'Home', null);" style="background:#27272a; border:1px solid #3f3f46; box-shadow:none; padding:8px 16px; font-size:12px; cursor:pointer;">
+              &larr; Back to SQL Studio
+            </button>
+          </div>
+        </div>
+
+        <!-- Layout: 2 Columns (Sidebar + Full Canvas) -->
+        <div class="view-pattern-layout">
+          <!-- Left Pattern Nav -->
+          <div class="koma-hub-sidebar" style="background:#141416; border:1px solid #27272a; border-radius:8px; padding:16px;">
+            <div class="koma-hub-tier-label">🟢 TIER 1: EVERYDAY ESSENTIALS</div>
+            ${PATTERNS.filter(x => x.tier === 1).map(item => `
+              <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}', true)">
+                <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
+                <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
+              </button>
+            `).join('')}
+
+            <div class="koma-hub-tier-label" style="margin-top:16px;">🟡 TIER 2: BUSINESS GROWTH</div>
+            ${PATTERNS.filter(x => x.tier === 2).map(item => `
+              <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}', true)">
+                <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
+                <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
+              </button>
+            `).join('')}
+
+            <div class="koma-hub-tier-label" style="margin-top:16px;">🔴 TIER 3: BIG TECH ARSENAL</div>
+            <div class="koma-hub-nav-item locked">
+              <div class="koma-hub-nav-title">07. Deduplication &amp; Latest State</div>
+              <span class="koma-hub-nav-tag">CLEAN DATA</span>
+            </div>
+            <div class="koma-hub-nav-item locked">
+              <div class="koma-hub-nav-title">08. Consecutive Streaks (Gaps &amp; Islands)</div>
+              <span class="koma-hub-nav-tag">ENGAGEMENT</span>
+            </div>
+          </div>
+
+          <!-- Right Pattern Content Canvas -->
+          <div class="koma-hub-content" style="background:#141416; border:1px solid #27272a; border-radius:8px; padding:28px;">
+            <!-- Pattern Header Banner -->
+            <div class="koma-hub-header-banner">
+              <div class="koma-hub-tier-pill">Tier ${p.tier}: ${p.tier === 1 ? 'Everyday Essentials' : 'Business Growth'}</div>
+              <div class="koma-hub-tag-pill">${escapeHtml(p.tag)}</div>
+              <h1 class="koma-hub-header-title">${escapeHtml(p.title)}</h1>
+              <p class="koma-hub-tagline">${escapeHtml(p.tagline)}</p>
+            </div>
+
+            <!-- Section 1: Business Context -->
+            <div class="koma-hub-section">
+              <div class="koma-hub-section-title"><span>🎯</span> 1. The Real Business Problem</div>
+              <div class="koma-hub-quote-card">${escapeHtml(p.businessProblem)}</div>
+            </div>
+
+            <!-- Section 2: Visual Mental Model -->
+            <div class="koma-hub-section">
+              <div class="koma-hub-section-title"><span>🧠</span> 2. The Visual Mental Model (How To Picture It)</div>
+              <div class="koma-hub-mental-card"><p>${escapeHtml(p.mentalModel)}</p></div>
+            </div>
+
+            <!-- Section 3: Subtopics & Stepping Stones (WITH HANDCRAFTED SVGs) -->
+            <div class="koma-hub-section">
+              <div class="koma-hub-section-title"><span>🪜</span> 3. Stepping Stones: Concepts Needed to Master This</div>
+              <div class="koma-subtopics-list">
+                ${p.steppingStones.map(st => `
+                  <div class="koma-subtopic-card">
+                    <div class="koma-subtopic-header">
+                      <span class="koma-subtopic-badge">${st.num}</span>
+                      <div class="koma-subtopic-title">${escapeHtml(st.title)}</div>
+                    </div>
+                    <p class="koma-subtopic-desc">${escapeHtml(st.summary)}</p>
+                    ${st.svg && SVG_LIBRARY[st.svg] ? `
+                      <div class="koma-svg-viewport">
+                        ${SVG_LIBRARY[st.svg]()}
+                      </div>
+                    ` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Section 4: 4-Step Thinking Process -->
+            <div class="koma-hub-section">
+              <div class="koma-hub-section-title"><span>🧭</span> 4. The 4-Step Thinking Process</div>
+              <div class="koma-hub-steps-card">
+                ${p.thinkingProcess.map(step => `
+                  <div class="koma-hub-step-item">
+                    <div class="koma-step-dot"></div>
+                    <div class="koma-step-text">${escapeHtml(step)}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Section 5: Common Traps & Gotchas -->
+            <div class="koma-hub-section">
+              <div class="koma-hub-section-title"><span>⚠️</span> 5. Interview Traps &amp; Production Gotchas</div>
+              <div class="koma-hub-gotchas-card">
+                ${p.gotchas.map(g => `
+                  <div class="koma-gotcha-row">
+                    <span class="koma-gotcha-icon">⚡</span>
+                    <div class="koma-gotcha-text">${escapeHtml(g)}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Section 6: Cross-Company Chameleon Practice -->
+            <div class="koma-hub-section">
+              <div class="koma-hub-section-title"><span>🏢</span> 6. Cross-Company Chameleon: See the Exact Same Pattern Everywhere</div>
+              <p class="koma-chameleon-intro">
+                Notice how Amazon, Netflix, Uber, and Stripe ask the exact same fundamental question, only swapping the table names:
+              </p>
+
+              <!-- Company Selector Pills -->
+              <div class="koma-company-pills">
+                <button class="koma-company-pill ${curCompany === 'amazon' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('amazon', true)">🛒 Amazon</button>
+                <button class="koma-company-pill ${curCompany === 'netflix' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('netflix', true)">🎬 Netflix</button>
+                <button class="koma-company-pill ${curCompany === 'uber' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('uber', true)">🚗 Uber</button>
+                <button class="koma-company-pill ${curCompany === 'stripe' ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectCompany('stripe', true)">💳 Stripe</button>
+              </div>
+
+              <!-- Company Drill Card with 1-Click Load & Run -->
+              <div class="koma-company-drill-box">
+                <div class="koma-drill-head">
+                  <div class="koma-drill-co-name">${escapeHtml(variant.name)} Case Study</div>
+                  <button class="koma-load-editor-btn" onclick="window.SQL_PATTERN_HUB.loadAndRun('${p.id}', '${curCompany}')">
+                    ⚡ Load into Live Studio &amp; Run Query
+                  </button>
+                </div>
+                <div class="koma-drill-prompt">
+                  <strong>Challenge:</strong> ${escapeHtml(variant.question)}
+                </div>
+                <pre class="koma-drill-sql"><code>${escapeHtml(variant.sql)}</code></pre>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ===========================================================================
+  // PUBLIC API & CONTROLLER
+  // ===========================================================================
+
   window.SQL_PATTERN_HUB = {
+    mountView: function(elementId) {
+      const targetId = elementId || 'viewPatternAcademy';
+      const el = document.getElementById(targetId);
+      if (!el) return;
+      el.innerHTML = renderFullPageViewHtml();
+      try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(e) {}
+    },
+
     open: function(patternId) {
       if (patternId && PATTERNS.some(p => p.id === patternId)) {
         activePatternId = patternId;
@@ -1442,19 +1617,29 @@ ORDER BY total_attempts DESC;`
       document.body.style.overflow = '';
     },
 
-    selectPattern: function(patternId) {
+    selectPattern: function(patternId, isFullPage) {
       activePatternId = patternId;
-      const modal = document.getElementById('komaPatternHubMount');
-      if (modal) modal.innerHTML = renderPatternHubHtml();
+      const fullView = document.getElementById('viewPatternAcademy');
+      if (isFullPage || (fullView && fullView.classList.contains('active'))) {
+        this.mountView('viewPatternAcademy');
+      } else {
+        const modal = document.getElementById('komaPatternHubMount');
+        if (modal) modal.innerHTML = renderPatternHubHtml();
+      }
       if (window.soundFX && typeof window.soundFX.playClick === 'function') {
         try { window.soundFX.playClick(); } catch(e) {}
       }
     },
 
-    selectCompany: function(companyKey) {
+    selectCompany: function(companyKey, isFullPage) {
       activeCompanyMap[activePatternId] = companyKey;
-      const modal = document.getElementById('komaPatternHubMount');
-      if (modal) modal.innerHTML = renderPatternHubHtml();
+      const fullView = document.getElementById('viewPatternAcademy');
+      if (isFullPage || (fullView && fullView.classList.contains('active'))) {
+        this.mountView('viewPatternAcademy');
+      } else {
+        const modal = document.getElementById('komaPatternHubMount');
+        if (modal) modal.innerHTML = renderPatternHubHtml();
+      }
       if (window.soundFX && typeof window.soundFX.playClick === 'function') {
         try { window.soundFX.playClick(); } catch(e) {}
       }
@@ -1468,21 +1653,31 @@ ORDER BY total_attempts DESC;`
 
       this.close();
 
-      const textarea = document.getElementById('komaSqlEditor');
-      if (textarea && window.LANDING_PAGE_ENGINE) {
-        // Auto-switch company tab if supported
-        if (companyKey && typeof window.LANDING_PAGE_ENGINE.switchCompany === 'function') {
-          try { window.LANDING_PAGE_ENGINE.switchCompany(companyKey); } catch(e) {}
-        }
-
-        textarea.value = variant.sql;
-        window.LANDING_PAGE_ENGINE.runActiveQuery();
-
-        const editorContainer = document.getElementById('komaInteractiveEditor') || textarea;
-        if (editorContainer) {
-          editorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+      // If user is inside the full page view, transition back to home
+      const fullView = document.getElementById('viewPatternAcademy');
+      if (fullView && fullView.classList.contains('active')) {
+        try {
+          window.location.hash = '#home';
+          if (typeof selectNavView === 'function') selectNavView('viewLandingPage', 'Home', null);
+        } catch(e) {}
       }
+
+      setTimeout(() => {
+        const textarea = document.getElementById('komaSqlEditor');
+        if (textarea && window.LANDING_PAGE_ENGINE) {
+          if (companyKey && typeof window.LANDING_PAGE_ENGINE.switchCompany === 'function') {
+            try { window.LANDING_PAGE_ENGINE.switchCompany(companyKey); } catch(e) {}
+          }
+
+          textarea.value = variant.sql;
+          window.LANDING_PAGE_ENGINE.runActiveQuery();
+
+          const editorContainer = document.getElementById('komaInteractiveEditor') || textarea;
+          if (editorContainer) {
+            editorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+      }, 50);
     },
 
     detectPattern: function(sql) {
