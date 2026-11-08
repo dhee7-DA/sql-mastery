@@ -1434,3 +1434,264 @@
   background: #27272a;
   color: #ffffff;
 }
+
+
+/* =============================================================================
+   FRIENDLY SQL ERROR DOCTOR & AUTO-FIX STYLES
+   ============================================================================= */
+
+.koma-doctor-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #141417;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 8px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 24px rgba(239, 68, 68, 0.08);
+  animation: komaFadeIn 180ms ease forwards;
+}
+
+.koma-doctor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #27272a;
+  padding-bottom: 10px;
+}
+
+.koma-doctor-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.koma-doctor-badge {
+  background: rgba(239, 68, 68, 0.14);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  font-family: var(--koma-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.koma-doctor-type-tag {
+  color: #a1a1aa;
+  font-family: var(--koma-font-mono);
+  font-size: 10.5px;
+}
+
+.koma-doctor-line-tag {
+  background: #27272a;
+  color: #fbbf24;
+  font-family: var(--koma-font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid #3f3f46;
+}
+
+.koma-doctor-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.koma-doctor-title {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.koma-doctor-explanation {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #d4d4d8;
+}
+
+.koma-doctor-explanation code {
+  background: #1f1f23;
+  color: #38bdf8;
+  font-family: var(--koma-font-mono);
+  font-size: 12px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid #2f2f35;
+}
+
+/* Mental Rule Box */
+.koma-doctor-rule-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.koma-doctor-rule-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.koma-doctor-rule-text {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #fde68a;
+}
+
+/* Diff Comparison Box */
+.koma-doctor-diff-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #0b0b0d;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: var(--koma-font-mono);
+  font-size: 11.5px;
+}
+
+.koma-doctor-diff-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 3px 0;
+}
+
+.koma-doctor-diff-row.diff-bad {
+  color: #f87171;
+}
+
+.koma-doctor-diff-row.diff-bad code {
+  color: #fca5a5;
+  text-decoration: line-through;
+  opacity: 0.85;
+}
+
+.koma-doctor-diff-row.diff-good {
+  color: #34d399;
+}
+
+.koma-doctor-diff-row.diff-good code {
+  color: #6ee7b7;
+  font-weight: 700;
+}
+
+.diff-icon {
+  font-size: 11px;
+  font-weight: 700;
+  width: 90px;
+  flex-shrink: 0;
+}
+
+/* Action Buttons */
+.koma-doctor-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.koma-doctor-btn-autofix {
+  background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+  color: #000000;
+  font-weight: 700;
+  font-family: var(--koma-font-mono);
+  font-size: 12px;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 12px rgba(56, 189, 248, 0.35);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+.koma-doctor-btn-autofix:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(56, 189, 248, 0.5);
+}
+
+.koma-doctor-btn-reset {
+  background: #27272a;
+  color: #d4d4d8;
+  font-family: var(--koma-font-mono);
+  font-size: 11px;
+  border: 1px solid #3f3f46;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.koma-doctor-btn-reset:hover {
+  background: #3f3f46;
+  color: #ffffff;
+}
+
+/* Technical error toggle */
+.koma-doctor-tech-details {
+  border-top: 1px dashed #27272a;
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+.koma-doctor-tech-details summary {
+  color: #71717a;
+  font-family: var(--koma-font-mono);
+  font-size: 10.5px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.koma-doctor-tech-details summary:hover {
+  color: #a1a1aa;
+}
+
+.koma-doctor-tech-details pre {
+  margin: 6px 0 0 0;
+  background: #09090b;
+  border: 1px solid #202024;
+  border-radius: 4px;
+  padding: 8px 10px;
+  color: #ef4444;
+  font-family: var(--koma-font-mono);
+  font-size: 11px;
+  overflow-x: auto;
+}
+
+/* Gutter Line Highlighting for Errors */
+.error-step-line {
+  background: rgba(239, 68, 68, 0.22) !important;
+  color: #f87171 !important;
+  font-weight: 700 !important;
+  border-left: 2px solid #ef4444 !important;
+}
+
+/* Gutter Line Highlighting for Auto-Fix Flash */
+.autofix-success-line {
+  background: rgba(34, 197, 94, 0.3) !important;
+  color: #4ade80 !important;
+  font-weight: 700 !important;
+  border-left: 2px solid #22c55e !important;
+  animation: pulseGreen 1s ease-in-out;
+}
+
+@keyframes pulseGreen {
+  0% { background: rgba(34, 197, 94, 0.5); }
+  100% { background: transparent; }
+}
