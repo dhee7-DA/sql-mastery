@@ -59,6 +59,55 @@ WHERE o2.order_id IS NULL;`,
         ['CUST_89104', '2026-09-02', 'PROD_FIRE_TV_STICK_4K'],
         ['CUST_89311', '2026-09-03', 'PROD_RING_VIDEO_DOORBELL']
       ],
+            steps: [
+        {
+                "clause": "FROM",
+                "title": "1. Read Initial Orders Table",
+                "explanation": "SQL begins by loading the amazon_prime_orders table where all customer signups and initial purchases are stored.",
+                "mentalRule": "SQL always starts with FROM. It cannot filter or select columns without first opening the table.",
+                "rowImpact": "8 total orders loaded into memory",
+                "lineNumbers": [
+                        2
+                ],
+                "codeSlice": "FROM amazon_prime_orders o1"
+        },
+        {
+                "clause": "LEFT JOIN",
+                "title": "2. Match With Any Follow-Up Orders",
+                "explanation": "We connect each order with any other purchases that same member made within their next 30 days. Inactive members will have blank (NULL) follow-up data.",
+                "mentalRule": "LEFT JOIN keeps all original members even if they placed zero future orders.",
+                "rowImpact": "Evaluated 30-day window for each member",
+                "lineNumbers": [
+                        3,
+                        4,
+                        5,
+                        6
+                ],
+                "codeSlice": "LEFT JOIN amazon_prime_orders o2\n  ON o1.customer_id = o2.customer_id\n  AND o2.purchase_date > o1.purchase_date\n  AND o2.purchase_date <= DATE(o1.purchase_date, '+30 days')"
+        },
+        {
+                "clause": "WHERE",
+                "title": "3. Filter to Zero Follow-Up Purchases",
+                "explanation": "We filter for rows where o2.order_id IS NULL. This instantly isolates the inactive members who bought nothing else.",
+                "mentalRule": "WHERE IS NULL is the industry standard pattern to find missing or non-occurring events.",
+                "rowImpact": "Filtered down to 4 inactive members",
+                "lineNumbers": [
+                        7
+                ],
+                "codeSlice": "WHERE o2.order_id IS NULL;"
+        },
+        {
+                "clause": "SELECT",
+                "title": "4. Pick Customer Details & Deduplicate",
+                "explanation": "Finally, SQL selects just the customer ID, signup date, and product purchased, removing duplicate rows with DISTINCT.",
+                "mentalRule": "SELECT runs after WHERE. The database filters rows first, and picks columns last.",
+                "rowImpact": "4 clean rows ready for marketing outreach",
+                "lineNumbers": [
+                        1
+                ],
+                "codeSlice": "SELECT DISTINCT o1.customer_id, o1.purchase_date, o1.product_id"
+        }
+],
       latency: '0.014ms',
       tuples: '4 rows found',
       status: 'QUERY SUCCESS ✓',
@@ -108,6 +157,55 @@ HAVING COUNT(*) >= 2;`,
         ['AS15169-GOOGLE', '409.4', '620.0', '0.0004'],
         ['AS3356-LUMEN', '662.6', '1040.2', '0.0016']
       ],
+            steps: [
+        {
+                "clause": "FROM",
+                "title": "1. Load Video Playback Telemetry",
+                "explanation": "SQL loads the raw streaming session logs recording buffer duration and startup time for every viewer.",
+                "mentalRule": "FROM loads the raw event log before any averages or summaries are calculated.",
+                "rowImpact": "8 streaming test sessions loaded",
+                "lineNumbers": [
+                        6
+                ],
+                "codeSlice": "FROM playback_telemetry_events"
+        },
+        {
+                "clause": "GROUP BY",
+                "title": "2. Group by Internet Provider",
+                "explanation": "SQL organizes all 8 test sessions into buckets by their internet provider (Comcast, AT&T, Google Fiber, Lumen).",
+                "mentalRule": "GROUP BY collapses individual viewer sessions into summary buckets by provider.",
+                "rowImpact": "Grouped into 4 provider buckets",
+                "lineNumbers": [
+                        7
+                ],
+                "codeSlice": "GROUP BY isp_asn"
+        },
+        {
+                "clause": "HAVING",
+                "title": "3. Filter Out Low Sample Sizes",
+                "explanation": "HAVING checks each provider bucket and keeps only those with at least 2 test sessions to prevent misleading results.",
+                "mentalRule": "WHERE filters rows BEFORE grouping. HAVING filters buckets AFTER grouping.",
+                "rowImpact": "All 4 providers meet sample criteria (>= 2 sessions)",
+                "lineNumbers": [
+                        8
+                ],
+                "codeSlice": "HAVING COUNT(*) >= 2;"
+        },
+        {
+                "clause": "SELECT",
+                "title": "4. Calculate Speed & Buffering Ratios",
+                "explanation": "Finally, SQL calculates average load time (AVG), max delay (MAX), and total buffering percentage for each provider.",
+                "mentalRule": "Aggregate calculations (AVG, SUM, MAX) run inside the SELECT step on grouped data.",
+                "rowImpact": "4 clean performance summaries computed",
+                "lineNumbers": [
+                        1,
+                        2,
+                        3,
+                        4
+                ],
+                "codeSlice": "SELECT isp_asn,\n  ROUND(AVG(ttff_ms), 1) AS avg_load_ms,\n  ROUND(MAX(ttff_ms), 1) AS max_load_ms,\n  ROUND(SUM(rebuffer_seconds) / SUM(play_duration_sec), 4) AS buffer_ratio"
+        }
+],
       latency: '0.016ms',
       tuples: '4 providers compared',
       status: 'QUERY SUCCESS ✓',
@@ -167,6 +265,59 @@ ORDER BY surge_price DESC;`,
         ['Midtown_Mall', '1', '32', '0.03x'],
         ['Suburbs_North', '1', '40', '0.03x']
       ],
+            steps: [
+        {
+                "clause": "WITH (CTE)",
+                "title": "1. Count Rider Requests Per Area",
+                "explanation": "SQL calculates rider demand in a temporary named table (area_demand) by counting ride requests placed after 4:00 PM.",
+                "mentalRule": "Common Table Expressions (WITH) act like temporary scratchpads to break big problems into small steps.",
+                "rowImpact": "Summarized into ride request counts per zone",
+                "lineNumbers": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6
+                ],
+                "codeSlice": "WITH area_demand AS (\n  SELECT h3_index AS area_id, COUNT(*) AS ride_requests\n  FROM uber_ride_requests\n  WHERE requested_at >= '2026-11-07 16:00:00'\n  GROUP BY area_id\n)"
+        },
+        {
+                "clause": "FROM & JOIN",
+                "title": "2. Match Area Demand With Active Drivers",
+                "explanation": "We connect each zone's ride requests with the real-time driver count in that zone.",
+                "mentalRule": "Matching demand with supply lets algorithms spot driver shortages instantly.",
+                "rowImpact": "4 active geographic zones matched",
+                "lineNumbers": [
+                        9,
+                        10
+                ],
+                "codeSlice": "FROM area_demand d\nLEFT JOIN uber_driver_telemetry s ON d.area_id = s.h3_index"
+        },
+        {
+                "clause": "SELECT",
+                "title": "3. Calculate Dynamic Surge Multiplier",
+                "explanation": "SQL divides ride requests by available drivers to compute the surge multiplier. If drivers are zero, COALESCE handles it safely.",
+                "mentalRule": "Math formulas in SELECT transform raw counts into business KPIs like pricing multipliers.",
+                "rowImpact": "Calculated surge multipliers for all zones",
+                "lineNumbers": [
+                        7,
+                        8
+                ],
+                "codeSlice": "SELECT d.area_id, d.ride_requests, COALESCE(s.drivers, 0) AS drivers,\n  ROUND(CAST(d.ride_requests AS FLOAT) / MAX(COALESCE(s.drivers, 1), 1), 2) AS surge_price"
+        },
+        {
+                "clause": "ORDER BY",
+                "title": "4. Sort Highest Shortage to the Top",
+                "explanation": "SQL sorts the final list in descending order (DESC) so dispatchers immediately see which neighborhood needs drivers most.",
+                "mentalRule": "ORDER BY is almost always the final step executed by the database.",
+                "rowImpact": "Ranked from highest surge to lowest",
+                "lineNumbers": [
+                        11
+                ],
+                "codeSlice": "ORDER BY surge_price DESC;"
+        }
+],
       latency: '0.015ms',
       tuples: '4 areas computed',
       status: 'QUERY SUCCESS ✓',
@@ -217,6 +368,56 @@ WHERE status = 'CONFIRMED';`,
         ['Beach_House_202', '2026-10-05', '2026-10-07', '2.0 days'],
         ['Beach_House_202', '2026-10-12', null, null]
       ],
+            steps: [
+        {
+                "clause": "FROM",
+                "title": "1. Load Confirmed Bookings",
+                "explanation": "SQL loads the calendar reservations table containing guest check-in and check-out dates.",
+                "mentalRule": "FROM loads the raw stay dates for all listings in the system.",
+                "rowImpact": "6 total guest reservations loaded",
+                "lineNumbers": [
+                        7
+                ],
+                "codeSlice": "FROM airbnb_reservations"
+        },
+        {
+                "clause": "WHERE",
+                "title": "2. Keep Only Confirmed Stays",
+                "explanation": "SQL removes cancelled, disputed, or pending requests so unbooked gaps are calculated only between real stays.",
+                "mentalRule": "Filtering early with WHERE prevents inaccurate dates from polluting later calculations.",
+                "rowImpact": "Filtered to confirmed bookings only",
+                "lineNumbers": [
+                        8
+                ],
+                "codeSlice": "WHERE status = 'CONFIRMED';"
+        },
+        {
+                "clause": "LEAD() OVER",
+                "title": "3. Look Ahead to Next Guest Check-in",
+                "explanation": "The LEAD() window function looks at the chronological next check-in date for the same listing without grouping rows.",
+                "mentalRule": "Window functions like LEAD() allow looking ahead to the next row while keeping individual rows intact.",
+                "rowImpact": "Calculated next arrival date for each stay",
+                "lineNumbers": [
+                        2,
+                        3,
+                        4
+                ],
+                "codeSlice": "LEAD(check_in_date) OVER (\n  PARTITION BY listing_id ORDER BY check_in_date\n) AS next_guest_arrives"
+        },
+        {
+                "clause": "SELECT",
+                "title": "4. Calculate Empty Gap Days",
+                "explanation": "SQL calculates the difference between when guest 1 leaves and guest 2 arrives to highlight unbooked vacancies.",
+                "mentalRule": "Date math inside SELECT calculates how many days a property sits empty and earns zero income.",
+                "rowImpact": "3 unbooked calendar gaps identified",
+                "lineNumbers": [
+                        1,
+                        5,
+                        6
+                ],
+                "codeSlice": "SELECT listing_id, check_out_date AS stay_ended,\n  ROUND(JULIANDAY(LEAD(...)) - JULIANDAY(check_out_date), 1) AS empty_gap_days"
+        }
+],
       latency: '0.013ms',
       tuples: '7 bookings checked',
       status: 'QUERY SUCCESS ✓',
@@ -267,6 +468,55 @@ ORDER BY total_plays DESC;`,
         ['Taylor Swift', '1', '$0.0038'],
         ['The Weeknd', '1', '$0.0038']
       ],
+            steps: [
+        {
+                "clause": "FROM & WHERE",
+                "title": "1. Filter for Qualified 30s Streams",
+                "explanation": "SQL scans song stream events and keeps only plays that lasted 30 seconds or longer (the legal threshold for royalty payout).",
+                "mentalRule": "Under industry contracts, song plays under 30 seconds earn zero royalties.",
+                "rowImpact": "8 stream events filtered down to 6 valid plays",
+                "lineNumbers": [
+                        3,
+                        4
+                ],
+                "codeSlice": "FROM stream_events\nWHERE duration_seconds >= 30"
+        },
+        {
+                "clause": "GROUP BY",
+                "title": "2. Group Streams by Artist (CTE)",
+                "explanation": "SQL groups the valid plays by artist into a temporary table called valid_plays and counts the streams.",
+                "mentalRule": "GROUP BY condenses multiple plays into a single stream count per artist.",
+                "rowImpact": "Grouped into 3 artist buckets",
+                "lineNumbers": [
+                        2,
+                        5
+                ],
+                "codeSlice": "SELECT artist_id, COUNT(*) AS stream_count ...\nGROUP BY artist_id"
+        },
+        {
+                "clause": "SELECT",
+                "title": "3. Multiply by Payout Rate",
+                "explanation": "SQL multiplies total play count by the $0.0038 per-stream royalty rate to compute each artist's earnings in USD.",
+                "mentalRule": "Simple arithmetic in SELECT turns technical play counts into financial paychecks.",
+                "rowImpact": "Calculated earnings for all qualifying artists",
+                "lineNumbers": [
+                        7,
+                        8
+                ],
+                "codeSlice": "SELECT artist_id, stream_count AS total_plays,\n  ROUND(stream_count * 0.0038, 4) AS earnings_usd"
+        },
+        {
+                "clause": "ORDER BY",
+                "title": "4. Rank Highest Earners First",
+                "explanation": "SQL sorts descending (DESC) by total plays so top-streamed artists appear at the top of the payout report.",
+                "mentalRule": "ORDER BY DESC is standard for financial leaderboards and royalty reports.",
+                "rowImpact": "Ranked artists by highest earnings",
+                "lineNumbers": [
+                        10
+                ],
+                "codeSlice": "ORDER BY total_plays DESC;"
+        }
+],
       latency: '0.017ms',
       tuples: '4 artists calculated',
       status: 'QUERY SUCCESS ✓',
@@ -312,6 +562,53 @@ GROUP BY 1, 2;`,
         ['New York Branch', 'Checking Accounts', '$2,140,000', '$2,140,000', '$0.00 (Balanced)'],
         ['Tokyo Branch', 'Interbank Reserve', '$1,290,000', '$1,290,000', '$0.00 (Balanced)']
       ],
+            steps: [
+        {
+                "clause": "FROM",
+                "title": "1. Load General Ledger Journal Lines",
+                "explanation": "SQL loads the banking journal entries containing debit and credit transaction amounts.",
+                "mentalRule": "In banking, every financial movement has an offsetting debit and credit entry.",
+                "rowImpact": "8 ledger journal entries loaded",
+                "lineNumbers": [
+                        5
+                ],
+                "codeSlice": "FROM general_ledger_entries"
+        },
+        {
+                "clause": "GROUP BY",
+                "title": "2. Group by Branch & Account",
+                "explanation": "SQL collapses ledger entries into buckets based on the branch and specific account name.",
+                "mentalRule": "GROUP BY 1, 2 refers to the first two columns (bank_branch and account_name).",
+                "rowImpact": "Collapsing 8 entries into 3 branch accounts",
+                "lineNumbers": [
+                        6
+                ],
+                "codeSlice": "GROUP BY 1, 2;"
+        },
+        {
+                "clause": "SELECT & CASE",
+                "title": "3. Total Inflows (Debits) vs Outflows (Credits)",
+                "explanation": "SQL uses CASE WHEN inside SUM to add up money in (Debits) and money out (Credits) into separate summary columns.",
+                "mentalRule": "SUM(CASE WHEN ...) is the most famous pattern in financial analytics for conditional totals.",
+                "rowImpact": "Computed total in and total out per account",
+                "lineNumbers": [
+                        2,
+                        3
+                ],
+                "codeSlice": "ROUND(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount_usd ELSE 0 END), 2) AS total_in,\nROUND(SUM(CASE WHEN entry_type = 'CREDIT' THEN amount_usd ELSE 0 END), 2) AS total_out"
+        },
+        {
+                "clause": "DIFFERENCE",
+                "title": "4. Reconcile Balance to Zero",
+                "explanation": "Finally, SQL subtracts total out from total in. A balanced ledger has a difference of exactly $0.00.",
+                "mentalRule": "Auditors look for any account where difference is NOT 0.00 to catch missing wire transfers.",
+                "rowImpact": "3 accounts reconciled to zero balance",
+                "lineNumbers": [
+                        4
+                ],
+                "codeSlice": "ROUND(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount_usd ELSE -amount_usd END), 2) AS difference"
+        }
+],
       latency: '0.011ms',
       tuples: '3 accounts checked',
       status: 'QUERY SUCCESS ✓',
@@ -362,6 +659,66 @@ HAVING COUNT(*) >= 5;`,
         ['•••• 4242', '198.51.100.42', '5', '14:22:01', '14:22:48'],
         ['•••• 9191', '198.51.100.42', '5', '14:23:12', '14:23:55']
       ],
+            steps: [
+        {
+                "clause": "FROM",
+                "title": "1. Load Card Authorization Events",
+                "explanation": "SQL reads credit card charge attempts streamed in real time from the payment gateway.",
+                "mentalRule": "FROM loads incoming payment records before fraud filters evaluate them.",
+                "rowImpact": "8 card payment attempts loaded",
+                "lineNumbers": [
+                        5
+                ],
+                "codeSlice": "FROM card_authorization_events"
+        },
+        {
+                "clause": "WHERE",
+                "title": "2. Filter for Micro Test Charges (< $1.00)",
+                "explanation": "Card-testing fraudsters test stolen card numbers by making tiny transactions (e.g. $0.50). SQL filters for amounts under $1.00.",
+                "mentalRule": "WHERE runs before grouping. It throws away normal large purchases so we focus on micro charges.",
+                "rowImpact": "Filtered down to 6 micro payment attempts",
+                "lineNumbers": [
+                        6
+                ],
+                "codeSlice": "WHERE amount_usd < 1.00"
+        },
+        {
+                "clause": "GROUP BY",
+                "title": "3. Group by Card Number & IP Address",
+                "explanation": "SQL groups the micro charge attempts by card number and originating IP location.",
+                "mentalRule": "Fraud patterns stand out when grouped by the card and IP executing the attempts.",
+                "rowImpact": "Grouped into 2 card testing candidates",
+                "lineNumbers": [
+                        7
+                ],
+                "codeSlice": "GROUP BY 1, 2"
+        },
+        {
+                "clause": "HAVING",
+                "title": "4. Flag Rapid-Fire Velocity (>= 5 Attempts)",
+                "explanation": "HAVING checks the count of attempts in each group. Any card tried 5 or more times in minutes is flagged for immediate card block.",
+                "mentalRule": "HAVING COUNT(*) >= 5 catches automated bots trying card variations.",
+                "rowImpact": "1 suspicious bot attack isolated with 5 attempts",
+                "lineNumbers": [
+                        8
+                ],
+                "codeSlice": "HAVING COUNT(*) >= 5;"
+        },
+        {
+                "clause": "SELECT",
+                "title": "5. Output Security Alert Details",
+                "explanation": "SQL outputs the card number, IP location, attempt count, and timestamps of first and last charges for security investigation.",
+                "mentalRule": "SELECT formats the final fraud alert card for the risk operations team.",
+                "rowImpact": "1 high-risk security alert dispatched",
+                "lineNumbers": [
+                        1,
+                        2,
+                        3,
+                        4
+                ],
+                "codeSlice": "SELECT card_number_masked, ip_location,\n  COUNT(*) AS charge_attempts,\n  MIN(charge_time) AS first_charge,\n  MAX(charge_time) AS last_charge"
+        }
+],
       latency: '0.012ms',
       tuples: '2 cards flagged',
       status: 'QUERY SUCCESS ✓',
@@ -474,6 +831,18 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
   let activeScenarioId = 'amazon';
   let activeTrapId = 'null_trap';
   let userSqlMap = {};
+  // Interactive Step-by-Step State
+  let currentSinkMode = 'results'; // 'results' | 'stepper'
+  let activeStepMap = {
+    amazon: 0,
+    netflix: 0,
+    uber: 0,
+    airbnb: 0,
+    spotify: 0,
+    jpmorgan: 0,
+    stripe: 0
+  };
+
 
   let sqlModuleInstance = null;
   let activeDb = null;
@@ -547,6 +916,7 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
       }
     },
 
+    render: function() { this.updateView(); },
     updateView: function() {
       const container = document.getElementById('viewLandingPage');
       if (container) {
@@ -764,8 +1134,15 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
       const lines = (textarea.value || '').split('\n').length;
       let nums = [];
       const total = Math.max(lines, 8);
+      
+      const cur = KOMA_SCENARIOS[activeScenarioId] || KOMA_SCENARIOS.amazon;
+      const curStepIdx = activeStepMap[activeScenarioId] || 0;
+      const curStep = (cur && cur.steps && cur.steps[curStepIdx]) || null;
+      const highlightedLines = (currentSinkMode === 'stepper' && curStep && curStep.lineNumbers) ? curStep.lineNumbers : [];
+
       for (let i = 1; i <= total; i++) {
-        nums.push(i);
+        const isHl = highlightedLines.includes(i);
+        nums.push(isHl ? `<span class="koma-gutter-num active-step-line" title="Active Step Line">${i}</span>` : `<span class="koma-gutter-num">${i}</span>`);
       }
       gutter.innerHTML = nums.join('<br>');
     },
@@ -923,6 +1300,9 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
                           <button class="koma-btn-toolbar" onclick="window.LANDING_PAGE_ENGINE.formatActiveQuery()" title="Uppercase keywords">
                             <span>⚡ Format</span>
                           </button>
+                          <button class="koma-btn-toolbar ${currentSinkMode === 'stepper' ? 'active-stepper-btn' : ''}" id="komaBtnStepThrough" onclick="window.LANDING_PAGE_ENGINE.toggleStepThrough()" title="Interactive Step-by-Step SQL Guide">
+                            <span>🚶 Step-by-Step</span>
+                          </button>
                         </div>
                         <div class="koma-editor-toolbar-right">
                           <span><span class="koma-editor-pulse"></span>Live Editor Ready</span>
@@ -937,37 +1317,121 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
 
                     </div>
 
-                    <!-- Live Query Results Column -->
+                    <!-- Live Query Results & Interactive Stepper Column -->
                     <div class="koma-sink-column">
+                      
+                      <!-- Sink Tab Switcher Header -->
                       <div class="koma-sink-header">
-                        <span class="koma-sink-title">QUERY RESULTS</span>
+                        <div class="koma-sink-tab-group">
+                          <button class="koma-sink-tab-btn ${currentSinkMode === 'results' ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.switchSinkView('results')">
+                            📋 Query Results
+                          </button>
+                          <button class="koma-sink-tab-btn ${currentSinkMode === 'stepper' ? 'active' : ''}" onclick="window.LANDING_PAGE_ENGINE.switchSinkView('stepper')">
+                            🚶 Step-by-Step Guide ${(cur.steps && cur.steps.length) ? `<span class="koma-sink-tab-pill">${cur.steps.length} Steps</span>` : ''}
+                          </button>
+                        </div>
                         <span id="komaSinkBadge" class="koma-badge-green">${cur.status}</span>
                       </div>
 
-                      <div id="komaTableWrapper" class="koma-table-wrapper">
-                        <table class="koma-table">
-                          <thead>
-                            <tr>
-                              ${cur.tableHeaders.map(th => `<th>${escapeHtml(th)}</th>`).join('')}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            ${cur.tableRows.map(row => `
-                              <tr>
-                                ${row.map(cell => `<td>${escapeHtml(cell)}</td>`).join('')}
-                              </tr>
-                            `).join('')}
-                          </tbody>
-                        </table>
-                      </div>
+                      ${currentSinkMode === 'stepper' && cur.steps && cur.steps.length ? `
+                        <!-- INTERACTIVE STEP-BY-STEP VIEW -->
+                        ${(() => {
+                          const stepIdx = activeStepMap[activeScenarioId] || 0;
+                          const st = cur.steps[stepIdx] || cur.steps[0];
+                          const total = cur.steps.length;
+                          return `
+                            <div class="koma-stepper-view" id="komaStepperView">
+                              
+                              <!-- Stepper Top Bar -->
+                              <div class="koma-stepper-nav-bar">
+                                <div class="koma-step-counter">
+                                  <span class="koma-step-pill">STEP ${stepIdx + 1} OF ${total}</span>
+                                  <span class="koma-step-clause-badge">${escapeHtml(st.clause)}</span>
+                                </div>
+                                <div class="koma-step-nav-buttons">
+                                  <button class="koma-step-nav-btn" onclick="window.LANDING_PAGE_ENGINE.prevStep()" ${stepIdx === 0 ? 'disabled' : ''} title="Previous Step">◀ Back</button>
+                                  <button class="koma-step-nav-btn primary" onclick="window.LANDING_PAGE_ENGINE.nextStep()" ${stepIdx === total - 1 ? 'disabled' : ''} title="Next Step">Next Step ▶</button>
+                                </div>
+                              </div>
 
-                      <div class="koma-sink-footer">
-                        <span id="komaSinkLatency">speed: <strong>${cur.latency}</strong></span>
-                        <span id="komaSinkTuples" style="color:#4ec9b0;">${cur.tuples}</span>
-                        <button class="btn-koma-primary" style="padding:4px 10px; font-size:11px;" onclick="window.LANDING_PAGE_ENGINE.launchTrack('${cur.viewId}', '${cur.viewTitle}', '${cur.viewHash}')">
-                          Practice ${cur.company} &rarr;
-                        </button>
-                      </div>
+                              <!-- Interactive Step Track -->
+                              <div class="koma-stepper-track">
+                                ${cur.steps.map((s, i) => `
+                                  <div class="koma-step-track-node ${i === stepIdx ? 'active' : (i < stepIdx ? 'done' : '')}" onclick="window.LANDING_PAGE_ENGINE.setStep(${i})" title="${escapeHtml(s.clause)}: ${escapeHtml(s.title)}">
+                                    <span class="koma-step-num">${i + 1}</span>
+                                    <span class="koma-step-name">${escapeHtml(s.clause)}</span>
+                                  </div>
+                                  ${i < cur.steps.length - 1 ? `<div class="koma-step-track-line ${i < stepIdx ? 'done' : ''}"></div>` : ''}
+                                `).join('')}
+                              </div>
+
+                              <!-- Step Card Details -->
+                              <div class="koma-step-card">
+                                <div class="koma-step-card-header">
+                                  <h3 class="koma-step-title">${escapeHtml(st.title)}</h3>
+                                  <span class="koma-step-impact-pill">${escapeHtml(st.rowImpact)}</span>
+                                </div>
+                                
+                                <div class="koma-step-explanation-text">
+                                  ${escapeHtml(st.explanation)}
+                                </div>
+
+                                <!-- Beginner Rule Box -->
+                                <div class="koma-step-rule-box">
+                                  <span class="koma-rule-icon">💡</span>
+                                  <div class="koma-rule-text">
+                                    <strong>Beginner Mental Rule:</strong> ${escapeHtml(st.mentalRule)}
+                                  </div>
+                                </div>
+
+                                <!-- Code Slice for This Step -->
+                                <div class="koma-step-code-slice">
+                                  <div class="koma-slice-label">SQL Executed in this Step (Line ${st.lineNumbers.join(', ')}):</div>
+                                  <pre class="koma-slice-code"><code>${escapeHtml(st.codeSlice)}</code></pre>
+                                </div>
+                              </div>
+
+                              <!-- Stepper Footer -->
+                              <div class="koma-stepper-footer">
+                                <button class="koma-btn-subtle" onclick="window.LANDING_PAGE_ENGINE.switchSinkView('results')">
+                                  📋 View Output Table (${escapeHtml(cur.tuples)})
+                                </button>
+                                <button class="btn-koma-primary" style="padding:4px 12px; font-size:11px;" onclick="window.LANDING_PAGE_ENGINE.launchTrack('${cur.viewId}', '${cur.viewTitle}', '${cur.viewHash}')">
+                                  Practice ${escapeHtml(cur.company)} Track &rarr;
+                                </button>
+                              </div>
+
+                            </div>
+                          `;
+                        })()}
+                      ` : `
+                        <!-- QUERY RESULTS TABLE VIEW -->
+                        <div id="komaTableWrapper" class="koma-table-wrapper">
+                          <table class="koma-table">
+                            <thead>
+                              <tr>
+                                ${cur.tableHeaders.map(th => `<th>${escapeHtml(th)}</th>`).join('')}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              ${cur.tableRows.map(row => `
+                                <tr>
+                                  ${row.map(cell => `<td>${escapeHtml(cell)}</td>`).join('')}
+                                </tr>
+                              `).join('')}
+                            </tbody>
+                          </table>
+                        </div>
+
+                        <div class="koma-sink-footer">
+                          <span id="komaSinkLatency">speed: <strong>${cur.latency}</strong></span>
+                          <span id="komaSinkTuples" style="color:#4ec9b0;">${cur.tuples}</span>
+                          <button class="btn-koma-primary" style="padding:4px 10px; font-size:11px;" onclick="window.LANDING_PAGE_ENGINE.launchTrack('${cur.viewId}', '${cur.viewTitle}', '${cur.viewHash}')">
+                            Practice ${cur.company} &rarr;
+                          </button>
+                        </div>
+                      `}
+
                     </div>
 
                   </div>
@@ -1156,6 +1620,102 @@ LEFT JOIN payment_sums p ON o.order_id = p.order_id;`,
 
         </div>
       `;
+    },
+
+
+    toggleStepThrough: function(force) {
+      if (force !== undefined) {
+        currentSinkMode = force ? 'stepper' : 'results';
+      } else {
+        currentSinkMode = (currentSinkMode === 'stepper') ? 'results' : 'stepper';
+      }
+      this.updateView();
+      setTimeout(() => this.updateEditorGutter(), 30);
+    },
+
+    switchSinkView: function(mode) {
+      currentSinkMode = mode;
+      this.updateView();
+      setTimeout(() => this.updateEditorGutter(), 30);
+    },
+
+    prevStep: function() {
+      const cur = KOMA_SCENARIOS[activeScenarioId] || KOMA_SCENARIOS.amazon;
+      const current = activeStepMap[activeScenarioId] || 0;
+      if (current > 0) {
+        activeStepMap[activeScenarioId] = current - 1;
+        this.updateView();
+        setTimeout(() => this.updateEditorGutter(), 30);
+      }
+    },
+
+    nextStep: function() {
+      const cur = KOMA_SCENARIOS[activeScenarioId] || KOMA_SCENARIOS.amazon;
+      const total = (cur && cur.steps && cur.steps.length) || 1;
+      const current = activeStepMap[activeScenarioId] || 0;
+      if (current < total - 1) {
+        activeStepMap[activeScenarioId] = current + 1;
+        this.updateView();
+        setTimeout(() => this.updateEditorGutter(), 30);
+      }
+    },
+
+    setStep: function(idx) {
+      const cur = KOMA_SCENARIOS[activeScenarioId] || KOMA_SCENARIOS.amazon;
+      const total = (cur && cur.steps && cur.steps.length) || 1;
+      if (idx >= 0 && idx < total) {
+        activeStepMap[activeScenarioId] = idx;
+        this.updateView();
+        setTimeout(() => this.updateEditorGutter(), 30);
+      }
+    },
+
+
+    toggleStepThrough: function(force) {
+      if (force !== undefined) {
+        currentSinkMode = force ? 'stepper' : 'results';
+      } else {
+        currentSinkMode = (currentSinkMode === 'stepper') ? 'results' : 'stepper';
+      }
+      this.updateView();
+      setTimeout(() => this.updateEditorGutter(), 30);
+    },
+
+    switchSinkView: function(mode) {
+      currentSinkMode = mode;
+      this.updateView();
+      setTimeout(() => this.updateEditorGutter(), 30);
+    },
+
+    prevStep: function() {
+      const cur = KOMA_SCENARIOS[activeScenarioId] || KOMA_SCENARIOS.amazon;
+      const current = activeStepMap[activeScenarioId] || 0;
+      if (current > 0) {
+        activeStepMap[activeScenarioId] = current - 1;
+        this.updateView();
+        setTimeout(() => this.updateEditorGutter(), 30);
+      }
+    },
+
+    nextStep: function() {
+      const cur = KOMA_SCENARIOS[activeScenarioId] || KOMA_SCENARIOS.amazon;
+      const total = (cur && cur.steps && cur.steps.length) || 1;
+      const current = activeStepMap[activeScenarioId] || 0;
+      if (current < total - 1) {
+        activeStepMap[activeScenarioId] = current + 1;
+        this.updateView();
+        setTimeout(() => this.updateEditorGutter(), 30);
+      }
+    },
+
+    setStep: function(idx) {
+      const cur = KOMA_SCENARIOS[activeScenarioId] || KOMA_SCENARIOS.amazon;
+      const total = (cur && cur.steps && cur.steps.length) || 1;
+      if (idx >= 0 && idx < total) {
+        activeStepMap[activeScenarioId] = idx;
+        this.updateView();
+        setTimeout(() => this.updateEditorGutter(), 30);
+      }
     },
 
     bindEvents: function(container) {

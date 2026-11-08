@@ -11,7 +11,8 @@
 (function() {
   let activeDayNumber = 1;
   let activePhaseFilter = 'all'; // 'all' | 1 | 2 | 3 | 4
-  let activeTab = 'context'; // 'context' | 'challenge' | 'terminal'
+  let activeTab = 'context';
+  let activeAmazonStep = 0; // 'context' | 'challenge' | 'terminal'
   let userBlanks = {};
   let isEvaluated = false;
   let isSuccess = false;
@@ -272,11 +273,14 @@
         <button class="amazon-tab-btn ${activeTab === 'challenge' ? 'active' : ''}" onclick="window.AMAZON_STORY.setViewTab('challenge')">
           💻 SQL Practice Editor
         </button>
+        <button class="amazon-tab-btn ${activeTab === 'stepper' ? 'active' : ''}" onclick="window.AMAZON_STORY.setViewTab('stepper')">
+          🚶 Step-by-Step Breakdown <span style="font-size:9.5px; padding:1px 5px; border-radius:3px; background:rgba(56,189,248,0.15); color:#38bdf8; font-weight:700;">5 Steps</span>
+        </button>
       </div>
 
       <!-- TAB CONTENT AREA -->
       <div class="amazon-tab-panel" id="amazonTabPanel">
-        ${activeTab === 'context' ? renderContextReportHtml(day) : renderChallengeHtml(day)}
+        ${activeTab === 'context' ? renderContextReportHtml(day) : (activeTab === 'stepper' ? renderAmazonStepperHtml(day) : renderChallengeHtml(day))}
       </div>
     `;
     if (window.OvioMotion && typeof window.OvioMotion.refresh === "function") setTimeout(() => window.OvioMotion.refresh(), 30);
@@ -470,8 +474,139 @@
     `;
   }
 
+  function setAmazonStep(idx) {
+    activeAmazonStep = Math.max(0, Math.min(idx, AMAZON_DAY1_STEPS.length - 1));
+    renderAmazonMainStage();
+    playUiSound('click');
+  }
+
+const AMAZON_DAY1_STEPS = [
+    {
+      clause: 'FROM',
+      title: '1. Load the Entire Catalog',
+      badge: '350M ASINs Available',
+      explanation: 'SQL begins by opening the products_catalog table. Before applying any filters or choosing columns, the database establishes connection to the physical product table.',
+      rule: 'SQL always starts with FROM. It cannot filter or sort until it knows which table to read.',
+      code: 'FROM products_catalog'
+    },
+    {
+      clause: 'WHERE',
+      title: '2. Filter to Electronics Only',
+      badge: 'Discards Non-Electronics',
+      explanation: 'SQL scans each row and checks whether department equals Electronics. All books, clothing, and groceries are thrown out immediately, saving memory.',
+      rule: 'Filtering early with WHERE prevents massive memory spills in AWS Redshift.',
+      code: "WHERE department = 'Electronics'"
+    },
+    {
+      clause: 'SELECT',
+      title: '3. Pick Only the 3 Key Columns',
+      badge: 'Reduces Data Width',
+      explanation: 'Instead of loading all 50 columns with SELECT *, SQL isolates just asin, product_name, and price_usd.',
+      rule: 'SELECT runs after WHERE. The database filters rows first, then slices columns.',
+      code: 'SELECT asin, product_name, price_usd'
+    },
+    {
+      clause: 'ORDER BY',
+      title: '4. Sort from Highest to Lowest Price',
+      badge: 'Price Anomaly Surfaced to Top',
+      explanation: 'SQL sorts the filtered rows in descending order (DESC). This immediately pushes the accidental $1,200,000 television error right to Row 1!',
+      rule: 'ORDER BY DESC is the analyst superpower to spot pricing bugs and outliers.',
+      code: 'ORDER BY price_usd DESC'
+    },
+    {
+      clause: 'LIMIT',
+      title: '5. Stop After the Top 10 Items',
+      badge: 'Safe Bounded Output',
+      explanation: 'Finally, SQL cuts off after returning 10 rows. This delivers an instant report to Category Management without pulling millions of rows into your browser.',
+      rule: 'Never run SELECT without LIMIT on massive warehouse tables.',
+      code: 'LIMIT 10;'
+    }
+  ];
+
+  function renderAmazonStepperHtml(day) {
+    const steps = AMAZON_DAY1_STEPS;
+    const curIdx = Math.min(Math.max(activeAmazonStep, 0), steps.length - 1);
+    const st = steps[curIdx];
+
+    return `
+      <div class="amazon-stepper-container" style="background:#141416; border:1px solid #27272a; border-radius:8px; padding:20px; display:flex; flex-direction:column; gap:16px;">
+        
+        <!-- Stepper Top Bar -->
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #27272a; padding-bottom:12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-family:monospace; font-size:11px; font-weight:700; color:#38bdf8; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.25); padding:3px 8px; border-radius:4px;">
+              STEP ${curIdx + 1} OF ${steps.length}
+            </span>
+            <strong style="font-size:14px; color:#ffffff;">How SQL Solves Day 1's Audit Query</strong>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="koma-step-nav-btn" onclick="window.AMAZON_STORY.setAmazonStep(${curIdx - 1})" ${curIdx === 0 ? 'disabled' : ''} style="background:#27272a; border:1px solid #3f3f46; color:#e4e4e7; padding:4px 10px; border-radius:4px; font-size:11px; cursor:pointer;">
+              ◀ Previous
+            </button>
+            <button class="koma-step-nav-btn" onclick="window.AMAZON_STORY.setAmazonStep(${curIdx + 1})" ${curIdx === steps.length - 1 ? 'disabled' : ''} style="background:#38bdf8; border:1px solid #38bdf8; color:#000000; font-weight:700; padding:4px 12px; border-radius:4px; font-size:11px; cursor:pointer;">
+              Next Step ▶
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Track -->
+        <div style="display:flex; align-items:center; justify-content:space-between; background:#18181b; padding:10px 14px; border-radius:6px; border:1px solid #27272a;">
+          ${steps.map((s, i) => `
+            <div onclick="window.AMAZON_STORY.setAmazonStep(${i})" style="display:flex; align-items:center; gap:6px; cursor:pointer; padding:4px 8px; border-radius:4px; ${i === curIdx ? 'background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.35);' : ''}">
+              <span style="font-family:monospace; font-size:10px; font-weight:700; width:18px; height:18px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; ${i === curIdx ? 'background:#38bdf8; color:#000;' : (i < curIdx ? 'background:rgba(16,185,129,0.2); color:#10b981;' : 'background:#27272a; color:#71717a;')}">${i + 1}</span>
+              <span style="font-family:monospace; font-size:11px; font-weight:600; color:${i === curIdx ? '#38bdf8' : (i < curIdx ? '#a1a1aa' : '#71717a')};">${s.clause}</span>
+            </div>
+            ${i < steps.length - 1 ? `<div style="flex:1; height:2px; background:${i < curIdx ? 'rgba(16,185,129,0.4)' : '#27272a'}; margin:0 6px;"></div>` : ''}
+          `).join('')}
+        </div>
+
+        <!-- Step Detail Card -->
+        <div style="background:#18181c; border:1px solid #27272a; border-radius:8px; padding:18px; display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="font-size:15px; font-weight:700; color:#ffffff; margin:0;">${st.title}</h3>
+            <span style="font-family:monospace; font-size:10.5px; font-weight:600; color:#34d399; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.25); padding:2px 8px; border-radius:4px;">
+              ${st.badge}
+            </span>
+          </div>
+
+          <p style="font-size:13px; line-height:1.6; color:#d4d4d8; margin:0;">
+            ${st.explanation}
+          </p>
+
+          <div style="display:flex; align-items:center; gap:10px; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.22); border-radius:6px; padding:10px 14px;">
+            <span style="font-size:16px;">💡</span>
+            <div style="font-size:12px; color:#fde68a;">
+              <strong>Beginner Rule:</strong> ${st.rule}
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:6px; background:#0c0c0e; border:1px solid #27272a; border-radius:6px; padding:10px 14px;">
+            <div style="font-family:monospace; font-size:10px; font-weight:700; color:#71717a;">SQL CLAUSE EXECUTING:</div>
+            <pre style="margin:0; font-family:monospace; font-size:12px; color:#38bdf8;"><code>${st.code}</code></pre>
+          </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-top:6px;">
+          <button onclick="window.AMAZON_STORY.setViewTab('context')" style="background:transparent; border:1px solid #33333a; color:#94a3b8; font-family:monospace; font-size:11px; padding:6px 14px; border-radius:4px; cursor:pointer;">
+            📖 Back to Lesson & Explanation
+          </button>
+          <button onclick="window.AMAZON_STORY.setViewTab('challenge')" style="background:#22c55e; border:none; color:#000000; font-weight:700; font-family:monospace; font-size:11.5px; padding:7px 16px; border-radius:4px; cursor:pointer;">
+            Ready! Open SQL Practice Editor &rarr;
+          </button>
+        </div>
+
+      </div>
+    `;
+  }
+
   // Export to global window
   window.AMAZON_STORY = {
+    init: initAmazonStoryEngine,
+    selectDay: selectDay,
+    setPhaseFilter: setPhaseFilter,
+    setViewTab: setViewTab,
+    setAmazonStep: setAmazonStep,
     init: initAmazonStoryEngine,
     selectDay: selectDay,
     setPhaseFilter: setPhaseFilter,
@@ -487,4 +622,5 @@
   } else {
     initAmazonStoryEngine();
   }
+
 })();

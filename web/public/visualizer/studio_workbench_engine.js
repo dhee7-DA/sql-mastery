@@ -666,7 +666,7 @@ window.StudioWorkbenchEngine = (function() {
                     Visual Diff
                     ${state.testResult ? (`<span class="hot-badge" style="background:${state.testResult.passed ? 'rgba(22,163,74,0.15)' : 'rgba(220,38,38,0.15)'}; color:${state.testResult.passed ? '#16a34a' : '#dc2626'}; font-size:8.5px; padding:1px 4px; border-radius:3px; font-weight:700; margin-left:3px;">${state.testResult.passed ? 'PASS' : 'DIFF'}</span>`) : ''}
                   </button>
-                  <button class="tab-item ${state.activeTab === 'tabPipeline' ? 'active' : ''}" data-tab="tabPipeline">6-Stage Stepper</button>
+                  <button class="tab-item ${state.activeTab === 'tabPipeline' ? 'active' : ''}" data-tab="tabPipeline">🚶 Step-by-Step Guide</button>
                   <button class="tab-item ${state.activeTab === 'tabSchema' ? 'active' : ''}" data-tab="tabSchema">Schema &amp; Rows</button>
                   <button class="tab-item ${state.activeTab === 'tabExplainPlan' ? 'active' : ''}" data-tab="tabExplainPlan">EXPLAIN Plan</button>
                   <button class="tab-item ${state.activeTab === 'tabExplainer' ? 'active' : ''}" data-tab="tabExplainer">Engine Explainer</button>
@@ -711,7 +711,7 @@ window.StudioWorkbenchEngine = (function() {
                   <div class="stepper-top" style="padding: 10px 14px 6px 14px;">
                     <div class="stepper-meta">
                       <span class="step-counter" id="stepCounterLabel">STEP ${(state.currentStepIndex || 0) + 1} OF 6</span>
-                      <h3 class="step-heading" id="stepHeadingLabel" style="font-size: 13px;">FROM Clause: Table Scan</h3>
+                      <h3 class="step-heading" id="stepHeadingLabel" style="font-size: 13px;">1. FROM Clause: Load Table into Memory</h3>
                     </div>
                     <div class="stepper-controls">
                       <button id="btnPrevStep" class="icon-btn" title="Previous Step">◀</button>
@@ -723,7 +723,7 @@ window.StudioWorkbenchEngine = (function() {
 
                   <!-- Interactive 6-Stage Execution Slider Track -->
                   <div class="stepper-slider-panel">
-                    <span class="stepper-slider-label">STAGE SLIDER:</span>
+                    <span class="stepper-slider-label">EXECUTION ORDER:</span>
                     <button class="stepper-slider-arrow" id="btnSliderPrev" title="Previous Stage (◀)">◀</button>
                     <input type="range" min="0" max="5" value="${state.currentStepIndex || 0}" step="1" id="stepperRangeSlider" class="stepper-range-slider" title="Drag to scrub through physical execution phases">
                     <button class="stepper-slider-arrow" id="btnSliderNext" title="Next Stage (▶)">▶</button>
@@ -2690,7 +2690,7 @@ window.StudioWorkbenchEngine = (function() {
     }
     const sl = document.getElementById('stepperRangeSlider');
     if (sl) sl.value = idx;
-    const names = ['01 FROM', '02 WHERE', '03 GROUP BY', '04 HAVING', '05 SELECT', '06 LIMIT'];
+    const names = ['01 FROM: Load Table', '02 WHERE: Filter Rows', '03 GROUP BY: Group Buckets', '04 HAVING: Filter Groups', '05 SELECT: Pick Columns', '06 ORDER & LIMIT'];
     const lbl = document.getElementById('stepperSliderVal');
     if (lbl) lbl.textContent = names[idx] || ('STEP ' + (idx + 1));
 
