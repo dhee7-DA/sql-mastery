@@ -2262,3 +2262,508 @@
 .koma-table tr.row-active-where td {
   color: #4ade80 !important;
 }
+
+
+/* =============================================================================
+   80/20 SQL PATTERN ACADEMY & SUBTOPIC SVG STYLES
+   ============================================================================= */
+
+/* Pattern Academy Button in Editor Toolbar */
+.koma-btn-toolbar-pattern {
+  background: rgba(168, 85, 247, 0.14);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  transition: all 0.15s ease;
+}
+
+.koma-btn-toolbar-pattern:hover {
+  background: rgba(168, 85, 247, 0.25);
+  border-color: #a855f7;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.3);
+}
+
+/* Modal Overlay */
+.koma-pattern-hub-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: komaFadeIn 0.2s ease-out;
+}
+
+.koma-pattern-hub-modal {
+  background: #141417;
+  border: 1px solid #272730;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 1220px;
+  height: 90vh;
+  max-height: 860px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85);
+}
+
+/* Topbar */
+.koma-hub-topbar {
+  padding: 14px 22px;
+  border-bottom: 1px solid #23232a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #18181c;
+}
+
+.koma-hub-branding {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.koma-hub-dna-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.koma-hub-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #f4f4f5;
+  letter-spacing: -0.01em;
+}
+
+.koma-hub-subtitle {
+  margin: 2px 0 0 0;
+  font-size: 11.5px;
+  color: #a1a1aa;
+}
+
+.koma-hub-close-btn {
+  background: transparent;
+  border: 1px solid #2e2e38;
+  color: #a1a1aa;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+.koma-hub-close-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Layout Body */
+.koma-hub-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.koma-hub-sidebar {
+  width: 290px;
+  flex-shrink: 0;
+  background: #111114;
+  border-right: 1px solid #23232a;
+  padding: 16px 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.koma-hub-tier-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #71717a;
+  padding: 6px 8px 4px 8px;
+  font-family: var(--koma-font-mono);
+}
+
+.koma-hub-nav-item {
+  background: #17171c;
+  border: 1px solid #24242d;
+  border-radius: 6px;
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.koma-hub-nav-item:hover {
+  border-color: #38bdf8;
+  background: #1c1c22;
+  transform: translateX(2px);
+}
+
+.koma-hub-nav-item.active {
+  border-color: #a855f7;
+  background: rgba(168, 85, 247, 0.12);
+  box-shadow: inset 3px 0 0 #a855f7;
+}
+
+.koma-hub-nav-item.locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+.koma-hub-nav-item.locked:hover {
+  transform: none;
+  border-color: #24242d;
+}
+
+.koma-hub-nav-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.koma-hub-nav-tag {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #a1a1aa;
+  font-family: var(--koma-font-mono);
+}
+
+.koma-hub-nav-item.active .koma-hub-nav-title {
+  color: #e9d5ff;
+}
+
+.koma-hub-nav-item.active .koma-hub-nav-tag {
+  color: #c084fc;
+}
+
+/* Content Area */
+.koma-hub-content {
+  flex: 1;
+  padding: 24px 30px;
+  overflow-y: auto;
+  background: #141417;
+  scroll-behavior: smooth;
+}
+
+/* Pattern Hero */
+.koma-pattern-hero {
+  border-bottom: 1px solid #24242d;
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+}
+
+.koma-pattern-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.koma-pill-tier {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.koma-pill-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: #a1a1aa;
+  background: #1f1f26;
+  border: 1px solid #2d2d38;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--koma-font-mono);
+}
+
+.koma-pattern-name {
+  margin: 0 0 6px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.koma-pattern-lead {
+  margin: 0;
+  font-size: 13px;
+  color: #a1a1aa;
+  line-height: 1.45;
+}
+
+/* Sections */
+.koma-pattern-section {
+  margin-bottom: 24px;
+}
+
+.koma-sec-heading {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #f4f4f5;
+  margin: 0 0 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sec-icon {
+  font-size: 15px;
+}
+
+.koma-sec-box {
+  background: #19191e;
+  border: 1px solid #272732;
+  border-radius: 8px;
+  padding: 14px 18px;
+  line-height: 1.6;
+  font-size: 12.5px;
+  color: #d4d4d8;
+}
+
+.business-box {
+  border-left: 3px solid #38bdf8;
+}
+
+.koma-mental-lead {
+  margin: 0;
+  font-size: 12.5px;
+}
+
+/* Subtopics List */
+.koma-subtopics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.koma-subtopic-card {
+  background: #18181d;
+  border: 1px solid #282833;
+  border-radius: 8px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.koma-subtopic-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.koma-subtopic-num {
+  font-family: var(--koma-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.koma-subtopic-title {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.koma-subtopic-desc {
+  margin: 0 0 12px 0;
+  font-size: 12px;
+  color: #a1a1aa;
+}
+
+.koma-svg-viewport {
+  margin: 12px 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #26262f;
+  background: #131316;
+}
+
+.koma-pattern-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.koma-subtopic-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #24242e;
+}
+
+.subtopic-rule-item {
+  font-size: 11.5px;
+  color: #cbd5e1;
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.subtopic-rule-item::before {
+  content: "•";
+  position: absolute;
+  left: 2px;
+  color: #38bdf8;
+  font-weight: bold;
+}
+
+/* Blueprint Box */
+.koma-blueprint-box {
+  background: #111114;
+  border: 1px solid #25252e;
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-family: var(--koma-font-mono);
+  font-size: 12px;
+  color: #38bdf8;
+  overflow-x: auto;
+}
+
+.koma-blueprint-box pre {
+  margin: 0;
+}
+
+/* Company Chameleon */
+.koma-company-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.koma-company-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.koma-comp-pill {
+  background: #191920;
+  border: 1px solid #282833;
+  color: #d4d4d8;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.koma-comp-pill:hover {
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+}
+
+.koma-comp-pill.active {
+  background: #38bdf8;
+  border-color: #38bdf8;
+  color: #0c4a6e;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.35);
+}
+
+.koma-company-card {
+  background: #18181d;
+  border: 1px solid #292934;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.koma-comp-challenge-prompt {
+  font-size: 12.5px;
+  color: #e4e4e7;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.koma-comp-challenge-prompt strong {
+  color: #fde047;
+}
+
+.koma-comp-sql-box {
+  background: #101013;
+  border: 1px solid #23232a;
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-family: var(--koma-font-mono);
+  font-size: 11.5px;
+  color: #e2e8f0;
+  margin-bottom: 14px;
+  overflow-x: auto;
+}
+
+.koma-comp-sql-box pre {
+  margin: 0;
+}
+
+.koma-comp-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.koma-btn-load-run {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff;
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 10px rgba(2, 132, 199, 0.35);
+  transition: all 0.15s ease;
+}
+
+.koma-btn-load-run:hover {
+  background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.45);
+}
+
+.koma-comp-note {
+  font-size: 11px;
+  color: #71717a;
+  font-style: italic;
+}
