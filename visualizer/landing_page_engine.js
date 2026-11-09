@@ -556,6 +556,103 @@
       };
     }
 
+    
+    // =========================================================================
+    // ARCHETYPE-AWARE AST & LOGIC TRAP DETECTORS (Patterns 01, 02, 07, 08, 09)
+    // =========================================================================
+
+    // 10.1 Anti-Join Logic Trap (Pattern 01)
+    // Filter on right table in WHERE clause destroys outer join nullability
+    const leftJoinMatch = query.match(/LEFT\s+(?:OUTER\s+)?JOIN\s+([a-zA-Z0-9_]+)(?:\s+(?:AS\s+)?([a-zA-Z0-9_]+))?\s+ON\s+([^WHERE;]+)/i);
+    const whereMatch = query.match(/\bWHERE\b\s+([^;]+)/i);
+    if (leftJoinMatch && whereMatch) {
+      const rightAlias = leftJoinMatch[2] || leftJoinMatch[1];
+      const whereBody = whereMatch[1];
+      const badRightColMatch = whereBody.match(new RegExp('\\b' + rightAlias + '\\.([a-zA-Z0-9_]+)\\s*(=|!=|<>|>|<|LIKE|IN)\\s*([^\\s;]+)', 'i'));
+      if (badRightColMatch && !/\bIS\s+(?:NOT\s+)?NULL\b/i.test(badRightColMatch[0])) {
+        const badCondition = badRightColMatch[0].trim();
+        const lineNum = findLineNumber(query, badCondition);
+        const fixedOnClause = `${leftJoinMatch[0].trim()} AND ${badCondition}`;
+        let fixedWhere = whereBody.replace(badCondition, '').replace(/\bAND\s+AND\b/gi, 'AND').replace(/^\s*AND\s+/i, '').replace(/\s+AND\s*$/i, '').trim();
+        if (!fixedWhere || fixedWhere === ';') {
+          fixedWhere = `${rightAlias}.order_id IS NULL`;
+        }
+        const fixedSql = query.replace(leftJoinMatch[0], fixedOnClause).replace(whereMatch[0], `WHERE ${fixedWhere}`);
+        return {
+          hasError: true,
+          type: 'ARCHETYPE_TRAP_ANTI_JOIN_FILTER',
+          friendlyTitle: 'Anti-Join Trap: Right-Table WHERE Filter Converts to INNER JOIN',
+          explanation: `You wrote <code>${badCondition}</code> inside the <code>WHERE</code> clause. In a <code>LEFT JOIN</code>, unmatched rows have <code>NULL</code> in all right-table columns. Testing for a non-NULL value in <code>WHERE</code> wipes out every unmatched row you were trying to preserve, silently converting your query into an <code>INNER JOIN</code>!`,
+          beginnerRule: 'In Anti-Joins, only check IS NULL on the right table in WHERE. Move all other right-table filter criteria up into the ON clause.',
+          problemSnippet: `WHERE ${badCondition} -- Discards NULL holes!`,
+          fixedSnippet: `ON ... AND ${badCondition} \nWHERE ${rightAlias}.id IS NULL`,
+          fixedSql: fixedSql,
+          fixedLineNumber: lineNum,
+          autoFixAvailable: true,
+          rawErrorText: rawStr || 'Logic Error: Right-table WHERE filter eliminates outer join preserved rows'
+        };
+      }
+    }
+
+    // 10.2 Window Function in WHERE Clause Trap (Pattern 02 & Pattern 07)
+    const winInWhereMatch = query.match(/\bWHERE\b[\s\S]*?\b(ROW_NUMBER|RANK|DENSE_RANK|LAG|LEAD|SUM|AVG)\s*\([^)]*\)\s*OVER\b/i);
+    if (winInWhereMatch || (rawStr.includes('window function') && /\bWHERE\b/i.test(query))) {
+      const lineNum = findLineNumber(query, /OVER\s*\(/i);
+      const fixedSql = `WITH ranked AS (\n  ${query.replace(/\bWHERE\b[\s\S]*$/i, '').trim()}\n)\nSELECT *\nFROM ranked\nWHERE rn <= 3;`;
+      return {
+        hasError: true,
+        type: 'ARCHETYPE_TRAP_WINDOW_IN_WHERE',
+        friendlyTitle: 'Top N Ranking Trap: Window Function Inside WHERE Clause',
+        explanation: 'SQL evaluates the <code>WHERE</code> clause before calculating window functions (<code>OVER</code> clauses). The database cannot filter by <code>ROW_NUMBER()</code> or <code>RANK()</code> inside <code>WHERE</code> because those ranks do not exist yet when <code>WHERE</code> executes!',
+        beginnerRule: 'Calculate your window ranking inside a CTE (WITH ranked AS (...)) or subquery first, then filter the resulting alias in the outer WHERE clause.',
+        problemSnippet: 'WHERE ROW_NUMBER() OVER (...) <= 3',
+        fixedSnippet: 'WITH ranked AS (...) SELECT * FROM ranked WHERE rn <= 3',
+        fixedSql: fixedSql,
+        fixedLineNumber: lineNum,
+        autoFixAvailable: true,
+        rawErrorText: rawStr || 'misuse of window function inside WHERE clause'
+      };
+    }
+
+    // 10.3 Gaps & Islands Duplicate Dates Trap (Pattern 08)
+    const hasGapsFormula = /DATE\s*\([^)]*-\s*[^)]*ROW_NUMBER/i.test(query) || (query.includes('ROW_NUMBER') && /-\s*\(?\s*rn\b/i.test(query));
+    if (hasGapsFormula && !/\bDISTINCT\b/i.test(query)) {
+      const lineNum = findLineNumber(query, /ROW_NUMBER/i);
+      const fixedSql = query.replace(/\bSELECT\b/i, 'SELECT DISTINCT');
+      return {
+        hasError: true,
+        type: 'ARCHETYPE_TRAP_GAPS_ISLANDS_DUPLICATES',
+        friendlyTitle: 'Gaps & Islands Trap: Duplicate Dates Corrupt Invariant Anchors',
+        explanation: 'If a user logs in multiple times on the same date, <code>ROW_NUMBER()</code> increments while the calendar date stays identical. This causes the invariant calculation (<code>date - ROW_NUMBER()</code>) to drift by -1 day for every duplicate, splitting a single streak into false islands!',
+        beginnerRule: 'Always deduplicate user activity by day (SELECT DISTINCT user_id, activity_date) before calculating the date - ROW_NUMBER() invariant anchor.',
+        problemSnippet: 'SELECT user_id, login_date ... (Duplicates present)',
+        fixedSnippet: 'SELECT DISTINCT user_id, login_date ...',
+        fixedSql: fixedSql,
+        fixedLineNumber: lineNum,
+        autoFixAvailable: true,
+        rawErrorText: rawStr || 'Potential Data Anomaly: Duplicate partition dates skew streak islands'
+      };
+    }
+
+    // 10.4 Recursive CTE Bare UNION Trap (Pattern 09)
+    if (/\bWITH\s+RECURSIVE\b/i.test(query) && /\bUNION\b(?!\s+ALL\b)/i.test(query)) {
+      const lineNum = findLineNumber(query, /\bUNION\b(?!\s+ALL\b)/i);
+      const fixedSql = query.replace(/\bUNION\b(?!\s+ALL\b)/gi, 'UNION ALL');
+      return {
+        hasError: true,
+        type: 'ARCHETYPE_TRAP_RECURSIVE_CTE_UNION',
+        friendlyTitle: 'Recursive CTE Trap: UNION Causes Massive Recursion Overhead',
+        explanation: 'Using bare <code>UNION</code> in a recursive query forces the database to run an expensive global hash deduplication across the entire accumulated working table on every single recursion step. In enterprise systems, this causes memory exhaustion and query timeouts.',
+        beginnerRule: 'Always use UNION ALL in the recursive member of a CTE unless graph loop prevention specifically requires row deduplication.',
+        problemSnippet: 'SELECT ... UNION SELECT ...',
+        fixedSnippet: 'SELECT ... UNION ALL SELECT ...',
+        fixedSql: fixedSql,
+        fixedLineNumber: lineNum,
+        autoFixAvailable: true,
+        rawErrorText: rawStr || 'Performance Warning: Recursive CTE with set-deduplicating UNION'
+      };
+    }
+
     // 10. General / Fallback Error
     return {
       hasError: true,
@@ -5044,6 +5141,7 @@ ORDER BY consecutive_active_minutes DESC;`
 
 
 /* === SQL_PATTERN_HUB_EMBEDDED_START === */
+
 /**
  * SQL FOUNDRY - 80/20 UNIVERSAL SQL PATTERN ACADEMY
  * Clean Monochrome Architectural Theme - Only SQL Keywords Are Colored.
@@ -5800,6 +5898,288 @@ ORDER BY consecutive_active_minutes DESC;`
             <text x="350" y="143" fill="#ffffff" font-size="9.5" font-weight="700" font-family="monospace">COUNT(*) = 2 Days Continuous</text>
 
             <text x="310" y="195" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Max streak across all islands: MAX(streak_length) = 3 Days</text>
+          </g>
+        </svg>
+      `;
+    },
+
+    // 9.1: Recursive CTE Pipeline (Anchor Member -> UNION ALL -> Recursive Member -> Termination)
+    recursiveCtePipeline: function() {
+      return `
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
+
+          <!-- STAGE 1: ANCHOR MEMBER (SEED) -->
+          <g transform="translate(20, 20)">
+            <rect x="0" y="0" width="170" height="190" rx="4" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="85" y="24" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8" font-weight="700">1. ANCHOR MEMBER</tspan>
+            </text>
+            <text x="85" y="42" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Base Seed (Runs Once)</text>
+
+            <rect x="12" y="55" width="146" height="50" rx="3" fill="#222226" stroke="#27272a"/>
+            <text x="85" y="75" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="600" font-family="monospace">ROOT NODE (CEO)</text>
+            <text x="85" y="92" text-anchor="middle" fill="#38bdf8" font-size="9.5" font-family="monospace">WHERE manager_id IS NULL</text>
+
+            <rect x="12" y="115" width="146" height="32" rx="2" fill="#121214" stroke="#3f3f46" stroke-dasharray="2 2"/>
+            <text x="85" y="135" text-anchor="middle" fill="#d4d4d8" font-size="9.5" font-family="monospace">Output: Level 0 (1 Row)</text>
+
+            <text x="85" y="172" text-anchor="middle" fill="#a1a1aa" font-size="9" font-family="monospace">Seeds the working table</text>
+          </g>
+
+          <!-- OPERATOR: UNION ALL -->
+          <g transform="translate(200, 95)">
+            <rect x="0" y="0" width="70" height="40" rx="3" fill="#222226" stroke="#3f3f46" stroke-width="1"/>
+            <text x="35" y="24" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">UNION ALL</text>
+            <line x1="-10" y1="20" x2="0" y2="20" stroke="#52525b" stroke-width="1.5"/>
+            <line x1="70" y1="20" x2="80" y2="20" stroke="#52525b" stroke-width="1.5"/>
+          </g>
+
+          <!-- STAGE 2: RECURSIVE MEMBER (LOOP) -->
+          <g transform="translate(280, 20)">
+            <rect x="0" y="0" width="220" height="190" rx="4" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="110" y="24" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8" font-weight="700">2. RECURSIVE MEMBER</tspan>
+            </text>
+            <text x="110" y="42" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Loops Over Previous Output</text>
+
+            <rect x="15" y="55" width="190" height="28" rx="2" fill="#222226"/>
+            <text x="110" y="73" text-anchor="middle" fill="#d4d4d8" font-size="9.5" font-family="monospace">JOIN employees e ON e.mgr = prev.id</text>
+
+            <rect x="15" y="90" width="190" height="42" rx="2" fill="#121214" stroke="#27272a"/>
+            <text x="110" y="108" text-anchor="middle" fill="#ffffff" font-size="9.5" font-family="monospace">Level 1: VPs (2 rows)</text>
+            <text x="110" y="123" text-anchor="middle" fill="#a1a1aa" font-size="9.5" font-family="monospace">Level 2: Directors (6 rows)</text>
+
+            <text x="110" y="152" text-anchor="middle" fill="#38bdf8" font-size="9.5" font-family="monospace">depth := prev.depth + 1</text>
+            <text x="110" y="172" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Continues until empty set</text>
+          </g>
+
+          <!-- ARROW TO TERMINATION -->
+          <line x1="500" y1="115" x2="520" y2="115" stroke="#52525b" stroke-width="1.5"/>
+
+          <!-- STAGE 3: TERMINATION CHECK -->
+          <g transform="translate(520, 20)">
+            <rect x="0" y="0" width="140" height="190" rx="4" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="70" y="24" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8" font-weight="700">3. TERMINATION</tspan>
+            </text>
+            <text x="70" y="42" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Safety Exit Gate</text>
+
+            <rect x="12" y="58" width="116" height="48" rx="2" fill="#222226"/>
+            <text x="70" y="78" text-anchor="middle" fill="#d4d4d8" font-size="9" font-family="monospace">Iteration returns</text>
+            <text x="70" y="95" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">0 ROWS</text>
+
+            <rect x="12" y="118" width="116" height="40" rx="2" fill="#121214" stroke="#3f3f46"/>
+            <text x="70" y="136" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">LOOP STOPS</text>
+            <text x="70" y="150" text-anchor="middle" fill="#71717a" font-size="8.5" font-family="monospace">Returns full tree</text>
+          </g>
+        </svg>
+      `;
+    },
+
+    // 9.2: Cycle Detection & Loop Prevention (Visited Path String Tracking)
+    cycleDetectionPath: function() {
+      return `
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
+
+          <!-- LEFT: The Danger (Infinite Cyclic Loop) -->
+          <g transform="translate(25, 20)">
+            <text x="140" y="22" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              CIRCULAR REFERENCE (INFINITE LOOP)
+            </text>
+
+            <circle cx="70" cy="80" r="26" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="70" y="84" text-anchor="middle" fill="#ffffff" font-size="10.5" font-family="monospace">User #1</text>
+
+            <circle cx="210" cy="80" r="26" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="210" y="84" text-anchor="middle" fill="#ffffff" font-size="10.5" font-family="monospace">User #2</text>
+
+            <circle cx="140" cy="155" r="26" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <text x="140" y="159" text-anchor="middle" fill="#ffffff" font-size="10.5" font-family="monospace">User #3</text>
+
+            <!-- Cycle edges -->
+            <path d="M 96 80 L 184 80" stroke="#71717a" stroke-width="1.5"/>
+            <path d="M 200 102 L 158 135" stroke="#71717a" stroke-width="1.5"/>
+            <path d="M 122 135 L 80 102" stroke="#71717a" stroke-width="1.5"/>
+
+            <text x="140" y="200" text-anchor="middle" fill="#71717a" font-size="10" font-family="monospace">Cycle: 1 &rarr; 2 &rarr; 3 &rarr; 1 (Crashes Memory)</text>
+          </g>
+
+          <!-- Divider -->
+          <line x1="335" y1="20" x2="335" y2="210" stroke="#27272a" stroke-width="1" stroke-dasharray="3 3"/>
+
+          <!-- RIGHT: The Solution (Path Accumulator) -->
+          <g transform="translate(355, 20)">
+            <text x="150" y="22" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8" font-weight="700">VISITED PATH STRING</tspan> GUARD
+            </text>
+
+            <!-- Path table -->
+            <rect x="15" y="42" width="270" height="135" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <rect x="25" y="54" width="250" height="24" rx="2" fill="#222226"/>
+            <text x="35" y="70" fill="#a1a1aa" font-size="9.5" font-family="monospace">Step 1:</text>
+            <text x="95" y="70" fill="#ffffff" font-size="9.5" font-family="monospace">path = &apos;/1/&apos;</text>
+
+            <rect x="25" y="82" width="250" height="24" rx="2" fill="#222226"/>
+            <text x="35" y="98" fill="#a1a1aa" font-size="9.5" font-family="monospace">Step 2:</text>
+            <text x="95" y="98" fill="#ffffff" font-size="9.5" font-family="monospace">path = &apos;/1/2/&apos;</text>
+
+            <rect x="25" y="110" width="250" height="24" rx="2" fill="#222226"/>
+            <text x="35" y="126" fill="#a1a1aa" font-size="9.5" font-family="monospace">Step 3:</text>
+            <text x="95" y="126" fill="#ffffff" font-size="9.5" font-family="monospace">path = &apos;/1/2/3/&apos;</text>
+
+            <rect x="25" y="138" width="250" height="30" rx="2" fill="#121214" stroke="#3f3f46"/>
+            <text x="35" y="157" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">Step 4: &apos;/1/&apos; in path &rarr; PRUNED (Loop Aborted)</text>
+
+            <text x="150" y="200" text-anchor="middle" fill="#38bdf8" font-size="10" font-family="monospace">WHERE path NOT LIKE &apos;%/&apos; || e.id || &apos;/%&apos;</text>
+          </g>
+        </svg>
+      `;
+    },
+
+    // 10.1: Conditional Aggregation Matrix (Pivot rows into columns)
+    pivotConditionalAgg: function() {
+      return `
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
+
+          <!-- LEFT: Normalized Raw Rows -->
+          <g transform="translate(20, 20)">
+            <text x="120" y="22" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              RAW LOGGED ROWS (4 ROWS)
+            </text>
+            <rect x="10" y="38" width="220" height="142" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            
+            <!-- Table header -->
+            <rect x="18" y="46" width="204" height="20" rx="2" fill="#222226"/>
+            <text x="40" y="60" fill="#a1a1aa" font-size="9" font-family="monospace">year</text>
+            <text x="100" y="60" fill="#a1a1aa" font-size="9" font-family="monospace">qtr</text>
+            <text x="170" y="60" fill="#a1a1aa" font-size="9" font-family="monospace">revenue</text>
+
+            <!-- Row 1 -->
+            <text x="40" y="84" fill="#ffffff" font-size="9.5" font-family="monospace">2026</text>
+            <text x="100" y="84" fill="#38bdf8" font-size="9.5" font-weight="600" font-family="monospace">Q1</text>
+            <text x="170" y="84" fill="#d4d4d8" font-size="9.5" font-family="monospace">$100M</text>
+
+            <!-- Row 2 -->
+            <text x="40" y="108" fill="#ffffff" font-size="9.5" font-family="monospace">2026</text>
+            <text x="100" y="108" fill="#38bdf8" font-size="9.5" font-weight="600" font-family="monospace">Q2</text>
+            <text x="170" y="108" fill="#d4d4d8" font-size="9.5" font-family="monospace">$125M</text>
+
+            <!-- Row 3 -->
+            <text x="40" y="132" fill="#ffffff" font-size="9.5" font-family="monospace">2026</text>
+            <text x="100" y="132" fill="#38bdf8" font-size="9.5" font-weight="600" font-family="monospace">Q3</text>
+            <text x="170" y="132" fill="#d4d4d8" font-size="9.5" font-family="monospace">$140M</text>
+
+            <!-- Row 4 -->
+            <text x="40" y="156" fill="#ffffff" font-size="9.5" font-family="monospace">2026</text>
+            <text x="100" y="156" fill="#38bdf8" font-size="9.5" font-weight="600" font-family="monospace">Q4</text>
+            <text x="170" y="156" fill="#d4d4d8" font-size="9.5" font-family="monospace">$190M</text>
+
+            <text x="120" y="198" text-anchor="middle" fill="#71717a" font-size="9.5" font-family="monospace">4 tall vertical records</text>
+          </g>
+
+          <!-- ARROW -->
+          <g transform="translate(260, 95)">
+            <line x1="0" y1="15" x2="35" y2="15" stroke="#52525b" stroke-width="1.5"/>
+            <polygon points="35,11 43,15 35,19" fill="#52525b"/>
+            <text x="20" y="34" text-anchor="middle" fill="#38bdf8" font-size="9" font-weight="700" font-family="monospace">PIVOT</text>
+          </g>
+
+          <!-- RIGHT: Pivoted Matrix Presentation Table -->
+          <g transform="translate(320, 20)">
+            <text x="165" y="22" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8" font-weight="700">PIVOTED MATRIX</tspan> (1 ROW &middot; 4 COLS)
+            </text>
+
+            <rect x="10" y="38" width="315" height="142" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+
+            <!-- Matrix Header -->
+            <rect x="20" y="48" width="295" height="24" rx="2" fill="#222226"/>
+            <text x="35" y="64" fill="#a1a1aa" font-size="9" font-family="monospace">year</text>
+            <text x="95" y="64" fill="#38bdf8" font-size="9" font-weight="700" font-family="monospace">q1_rev</text>
+            <text x="155" y="64" fill="#38bdf8" font-size="9" font-weight="700" font-family="monospace">q2_rev</text>
+            <text x="215" y="64" fill="#38bdf8" font-size="9" font-weight="700" font-family="monospace">q3_rev</text>
+            <text x="275" y="64" fill="#38bdf8" font-size="9" font-weight="700" font-family="monospace">q4_rev</text>
+
+            <!-- Matrix Data Row -->
+            <rect x="20" y="80" width="295" height="34" rx="2" fill="#121214" stroke="#27272a"/>
+            <text x="35" y="101" fill="#ffffff" font-size="10" font-family="monospace">2026</text>
+            <text x="95" y="101" fill="#d4d4d8" font-size="10" font-family="monospace">$100M</text>
+            <text x="155" y="101" fill="#d4d4d8" font-size="10" font-family="monospace">$125M</text>
+            <text x="215" y="101" fill="#d4d4d8" font-size="10" font-family="monospace">$140M</text>
+            <text x="275" y="101" fill="#d4d4d8" font-size="10" font-family="monospace">$190M</text>
+
+            <text x="165" y="136" text-anchor="middle" fill="#71717a" font-size="9.5" font-family="monospace">SUM(CASE WHEN qtr = &apos;Q1&apos; THEN rev ELSE 0 END)</text>
+            <text x="165" y="156" text-anchor="middle" fill="#38bdf8" font-size="9.5" font-family="monospace">GROUP BY year</text>
+
+            <text x="165" y="198" text-anchor="middle" fill="#d4d4d8" font-size="9.5" font-family="monospace">Clean executive quarterly spreadsheet view</text>
+          </g>
+        </svg>
+      `;
+    },
+
+    // 10.2: Unpivoting Wide Tables into Fact Rows (Fan-Out via Cross Join)
+    unpivotCrossJoin: function() {
+      return `
+        <svg viewBox="0 0 680 230" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="680" height="230" rx="4" fill="#121214" stroke="#27272a" stroke-width="1"/>
+
+          <!-- LEFT: Wide Input Table -->
+          <g transform="translate(20, 20)">
+            <text x="130" y="22" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              WIDE SPREADSHEET (1 ROW &middot; 3 COLS)
+            </text>
+
+            <rect x="10" y="40" width="240" height="135" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <rect x="20" y="52" width="220" height="24" rx="2" fill="#222226"/>
+            <text x="35" y="68" fill="#a1a1aa" font-size="9" font-family="monospace">store</text>
+            <text x="95" y="68" fill="#a1a1aa" font-size="9" font-family="monospace">jan_sales</text>
+            <text x="150" y="68" fill="#a1a1aa" font-size="9" font-family="monospace">feb_sales</text>
+            <text x="205" y="68" fill="#a1a1aa" font-size="9" font-family="monospace">mar_sales</text>
+
+            <rect x="20" y="84" width="220" height="30" rx="2" fill="#121214"/>
+            <text x="35" y="103" fill="#ffffff" font-size="9.5" font-family="monospace">S01</text>
+            <text x="95" y="103" fill="#d4d4d8" font-size="9.5" font-family="monospace">450</text>
+            <text x="150" y="103" fill="#d4d4d8" font-size="9.5" font-family="monospace">600</text>
+            <text x="205" y="103" fill="#d4d4d8" font-size="9.5" font-family="monospace">720</text>
+
+            <text x="130" y="155" text-anchor="middle" fill="#71717a" font-size="9.5" font-family="monospace">Hard to filter, join or index</text>
+          </g>
+
+          <!-- ARROW -->
+          <g transform="translate(280, 95)">
+            <line x1="0" y1="15" x2="35" y2="15" stroke="#52525b" stroke-width="1.5"/>
+            <polygon points="35,11 43,15 35,19" fill="#52525b"/>
+            <text x="20" y="34" text-anchor="middle" fill="#38bdf8" font-size="9" font-weight="700" font-family="monospace">UNPIVOT</text>
+          </g>
+
+          <!-- RIGHT: Normalized Fact Rows -->
+          <g transform="translate(345, 20)">
+            <text x="155" y="22" text-anchor="middle" fill="#d4d4d8" font-size="11" font-weight="600" font-family="monospace">
+              <tspan fill="#38bdf8" font-weight="700">NORMALIZED FACT ROWS</tspan> (3 ROWS)
+            </text>
+
+            <rect x="10" y="40" width="295" height="135" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+            <rect x="20" y="50" width="275" height="22" rx="2" fill="#222226"/>
+            <text x="40" y="65" fill="#a1a1aa" font-size="9" font-family="monospace">store_id</text>
+            <text x="120" y="65" fill="#38bdf8" font-size="9" font-weight="700" font-family="monospace">month</text>
+            <text x="210" y="65" fill="#38bdf8" font-size="9" font-weight="700" font-family="monospace">amount</text>
+
+            <text x="40" y="90" fill="#ffffff" font-size="9.5" font-family="monospace">S01</text>
+            <text x="120" y="90" fill="#d4d4d8" font-size="9.5" font-family="monospace">&apos;Jan&apos;</text>
+            <text x="210" y="90" fill="#ffffff" font-size="9.5" font-family="monospace">450</text>
+
+            <text x="40" y="112" fill="#ffffff" font-size="9.5" font-family="monospace">S01</text>
+            <text x="120" y="112" fill="#d4d4d8" font-size="9.5" font-family="monospace">&apos;Feb&apos;</text>
+            <text x="210" y="112" fill="#ffffff" font-size="9.5" font-family="monospace">600</text>
+
+            <text x="40" y="134" fill="#ffffff" font-size="9.5" font-family="monospace">S01</text>
+            <text x="120" y="134" fill="#d4d4d8" font-size="9.5" font-family="monospace">&apos;Mar&apos;</text>
+            <text x="210" y="134" fill="#ffffff" font-size="9.5" font-family="monospace">720</text>
+
+            <text x="155" y="160" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Standard dimensional data warehouse format</text>
           </g>
         </svg>
       `;
@@ -6590,7 +6970,8 @@ ORDER BY final_timestamp DESC;`
           num: '8.1',
           title: 'The Stepping Stone: The Date - ROW_NUMBER() Group Anchor Trick',
           summary: 'Subtracting an integer counter from consecutive calendar dates produces an invariant anchor date for contiguous streaks.',
-          svg: 'streakDateDifference'
+          svg: 'streakDateDifference',
+          scrubberId: 'gaps_anchor_scrubber'
         },
         {
           num: '8.2',
@@ -6746,9 +7127,796 @@ FROM sequenced
 GROUP BY card_number_masked
 ORDER BY consecutive_active_minutes DESC;`
         }
+      }    },
+
+    // =========================================================================
+    // 09. HIERARCHICAL TREES & RECURSIVE CTES (TIER 4)
+    // =========================================================================
+    {
+      id: 'recursive_trees',
+      tier: 4,
+      num: '09',
+      title: '09. Hierarchical Trees & Recursive CTEs',
+      tag: 'ORG CHARTS & GRAPH TRAVERSAL',
+      tagline: 'Traverse parent-child hierarchies, BOM trees, and referral graphs with anchor-recursive loops',
+      businessProblem: 'Every tech enterprise stores hierarchies as flat (id, parent_id) tables: org charts, folder trees, assembly parts, and referral chains. When leadership asks "Show the entire hierarchy below this executive" or "Compute the total cost of an assembly including all sub-parts", simple single-level joins fail because the tree depth is dynamic and unknown.',
+      mentalModel: 'Picture climbing an escalating staircase. Step 0 is the Anchor Member (the root CEO or top folder). In each subsequent step, the Recursive Member takes the output of the previous floor, joins it against the table to find the next generation of direct reports, and increments depth + 1. The recursion halts automatically when an iteration produces zero new rows.',
+      steppingStones: [
+        {
+          num: '9.1',
+          title: 'The Anchor Member vs. Recursive Member',
+          summary: 'Why WITH RECURSIVE requires a static base query unioned with a self-referencing iterative join.',
+          svg: 'recursiveCtePipeline',
+          scrubberId: 'recursive_depth_scrubber'
+        },
+        {
+          num: '9.2',
+          title: 'Cycle Detection & Loop Prevention',
+          summary: 'How circular relationships (A reports to B who reports to A) cause infinite loops, and how string path tracking halts them.',
+          svg: 'cycleDetectionPath'
+        },
+        {
+          num: '9.3',
+          title: 'Depth Limiting & Aggregated Rollups',
+          summary: 'Bounding tree traversal depth with WHERE depth <= N and rolling up financial metrics across branches.'
+        }
+      ],
+      thinkingProcess: [
+        '1. Find the Anchor: Write the seed SELECT that identifies the tree roots (e.g. WHERE manager_id IS NULL) and sets depth := 0.',
+        '2. Define the Recursive Step: Join the CTE back to the base table (JOIN cte ON base.parent_id = cte.id) and increment depth + 1.',
+        '3. Track the Visited Path: Append node IDs to a delimited string (/root/child/) to guarantee cycle safety.',
+        '4. Query the Result: Filter the generated CTE by maximum depth or target branch in the outer query.'
+      ],
+      gotchas: [
+        'Infinite Loop Trap: Any circular parent_id reference will hang the query unless guarded by a visited path or MAXRECURSION limit.',
+        'Bare UNION Overhead: Using UNION instead of UNION ALL forces an expensive deduplication sort on every iteration step.',
+        'Outer Query Filters: Placing filters on the outer query only filters the finished hierarchy, not the intermediate recursion traversal.'
+      ],
+      companyVariants: {
+        amazon: {
+          company: 'Amazon',
+          question: 'Find the entire fulfillment warehouse hierarchy (Facility -> Zone -> Aisle -> Bin) down to depth 3.',
+          sql: `-- Amazon: Traverse warehouse storage zone hierarchy
+WITH RECURSIVE warehouse_tree AS (
+  SELECT 
+    location_id,
+    parent_location_id,
+    location_name,
+    0 AS depth,
+    CAST('/' || location_id || '/' AS TEXT) AS path_trail
+  FROM amazon_warehouse_nodes
+  WHERE parent_location_id IS NULL
+
+  UNION ALL
+
+  SELECT 
+    child.location_id,
+    child.parent_location_id,
+    child.location_name,
+    parent.depth + 1,
+    CAST(parent.path_trail || child.location_id || '/' AS TEXT)
+  FROM amazon_warehouse_nodes child
+  JOIN warehouse_tree parent
+    ON child.parent_location_id = parent.location_id
+  WHERE parent.depth < 3
+    AND parent.path_trail NOT LIKE '%/' || child.location_id || '/%'
+)
+SELECT location_id, location_name, depth, path_trail
+FROM warehouse_tree
+ORDER BY path_trail;`
+        },
+        netflix: {
+          company: 'Netflix',
+          question: 'Traverse the content catalog taxonomy tree (Genre -> Subgenre -> Microgenre) for recommendation indexing.',
+          sql: `-- Netflix: Content genre taxonomy tree
+WITH RECURSIVE genre_taxonomy AS (
+  SELECT genre_id, parent_genre_id, genre_name, 0 AS level
+  FROM netflix_genre_nodes
+  WHERE parent_genre_id IS NULL
+
+  UNION ALL
+
+  SELECT g.genre_id, g.parent_genre_id, g.genre_name, t.level + 1
+  FROM netflix_genre_nodes g
+  JOIN genre_taxonomy t ON g.parent_genre_id = t.genre_id
+  WHERE t.level < 4
+)
+SELECT genre_id, genre_name, level
+FROM genre_taxonomy
+ORDER BY level, genre_name;`
+        },
+        uber: {
+          company: 'Uber',
+          question: 'Calculate multi-tier driver referral bonuses across up to 3 referral generations.',
+          sql: `-- Uber: Multi-tier driver referral chain
+WITH RECURSIVE referral_tree AS (
+  SELECT driver_id, referred_by_id, 1 AS referral_tier
+  FROM uber_driver_referrals
+  WHERE referred_by_id = 'DRV_ROOT_99'
+
+  UNION ALL
+
+  SELECT d.driver_id, d.referred_by_id, r.referral_tier + 1
+  FROM uber_driver_referrals d
+  JOIN referral_tree r ON d.referred_by_id = r.driver_id
+  WHERE r.referral_tier < 3
+)
+SELECT referral_tier, COUNT(*) AS drivers_referred
+FROM referral_tree
+GROUP BY referral_tier;`
+        },
+        stripe: {
+          company: 'Stripe',
+          question: 'Determine the ultimate beneficial corporate owner by rolling up subsidiary ownership percentages.',
+          sql: `-- Stripe: Corporate parent-subsidiary ownership graph
+WITH RECURSIVE entity_hierarchy AS (
+  SELECT entity_id, parent_entity_id, ownership_pct, 0 AS hop_count
+  FROM stripe_corporate_entities
+  WHERE parent_entity_id IS NULL
+
+  UNION ALL
+
+  SELECT c.entity_id, c.parent_entity_id, (p.ownership_pct * c.ownership_pct) / 100.0, p.hop_count + 1
+  FROM stripe_corporate_entities c
+  JOIN entity_hierarchy p ON c.parent_entity_id = p.entity_id
+  WHERE p.hop_count < 5
+)
+SELECT entity_id, parent_entity_id, ownership_pct, hop_count
+FROM entity_hierarchy;`
+        }
+      }
+    },
+
+    // =========================================================================
+    // 10. PIVOT / UNPIVOT & MATRIX TRANSPOSITION (TIER 4)
+    // =========================================================================
+    {
+      id: 'pivot_matrix',
+      tier: 4,
+      num: '10',
+      title: '10. Pivot / Unpivot & Matrix Transposition',
+      tag: 'CROSS-TABULATION & REPORTING',
+      tagline: 'Transform normalized rows into executive reporting columns and unpivot wide tables',
+      businessProblem: 'Executives and finance teams rarely read tall normalized database logs; they require matrix tables where quarters (Q1, Q2, Q3, Q4) or departments are horizontal columns across fiscal years. Conversely, when analysts import wide multi-column Excel sheets into a data warehouse, data engineers must unpivot those columns into normalized key-value records for indexing.',
+      mentalModel: 'Picture a matrix transpose. Pivoting takes rows and sorts each row into a distinct column bucket based on a conditional expression (CASE WHEN quarter = "Q1" THEN rev END) wrapped inside an aggregate. Unpivoting duplicates each row across multiple dimension labels using a Cartesian cross-join or UNPIVOT operator.',
+      steppingStones: [
+        {
+          num: '10.1',
+          title: 'Conditional Aggregation (CASE WHEN inside SUM)',
+          summary: 'The universal, dialect-independent ANSI standard pattern to pivot rows into columns without vendor-locked extensions.',
+          svg: 'pivotConditionalAgg'
+        },
+        {
+          num: '10.2',
+          title: 'Handling NULL vs. Zero in Financial Matrices',
+          summary: 'Why SUM(CASE WHEN ... THEN val ELSE 0 END) prevents misleading blank cells in executive balance sheets.'
+        },
+        {
+          num: '10.3',
+          title: 'Unpivoting Wide Spreadsheets into Fact Tables',
+          summary: 'Using CROSS JOIN with value literals or UNPIVOT to unbundle wide multi-column imports into normalized analytics rows.',
+          svg: 'unpivotCrossJoin'
+        }
+      ],
+      thinkingProcess: [
+        '1. Determine Grouping Dimensions: Identify the row identifiers for GROUP BY (e.g. fiscal_year, region_id).',
+        '2. Identify the Pivot Dimension: Determine which categorical column values will become column headers (e.g. Q1, Q2, Q3, Q4).',
+        '3. Build Conditional Aggregations: For each column header, write SUM(CASE WHEN pivot_col = "val" THEN metric ELSE 0 END) AS val_metric.',
+        '4. Order and Format: Order by the primary row dimension for crisp financial presentation.'
+      ],
+      gotchas: [
+        'COUNT(*) vs. COUNT(CASE...): COUNT(*) counts all rows regardless of condition. Always use COUNT(CASE WHEN ... THEN 1 END) or SUM(CASE WHEN ... THEN 1 ELSE 0 END).',
+        'Static Column Requirement: Standard SQL requires column names to be hardcoded at compile time. Dynamic column counts require dynamic SQL or application-layer pivoting.',
+        'Integer Division Skew: When computing percentage distributions across pivoted columns, cast integers to FLOAT or NUMERIC to avoid truncation to 0.'
+      ],
+      companyVariants: {
+        amazon: {
+          company: 'Amazon',
+          question: 'Pivot quarterly marketplace net merchandise volume (GMV) by fulfillment region into an executive finance matrix.',
+          sql: `-- Amazon: Pivot quarterly GMV by marketplace region
+SELECT 
+  marketplace_region,
+  SUM(CASE WHEN fiscal_quarter = 'Q1' THEN net_gmv_usd ELSE 0 END) AS q1_gmv,
+  SUM(CASE WHEN fiscal_quarter = 'Q2' THEN net_gmv_usd ELSE 0 END) AS q2_gmv,
+  SUM(CASE WHEN fiscal_quarter = 'Q3' THEN net_gmv_usd ELSE 0 END) AS q3_gmv,
+  SUM(CASE WHEN fiscal_quarter = 'Q4' THEN net_gmv_usd ELSE 0 END) AS q4_gmv,
+  SUM(net_gmv_usd) AS total_annual_gmv
+FROM amazon_regional_financials
+WHERE fiscal_year = 2026
+GROUP BY marketplace_region
+ORDER BY total_annual_gmv DESC;`
+        },
+        netflix: {
+          company: 'Netflix',
+          question: 'Pivot daily streaming playback hours by device platform (Smart TV, Mobile, Desktop, Console).',
+          sql: `-- Netflix: Daily streaming hours pivoted by playback platform
+SELECT 
+  activity_date,
+  ROUND(SUM(CASE WHEN device_category = 'TV' THEN play_hours ELSE 0 END), 2) AS tv_hours,
+  ROUND(SUM(CASE WHEN device_category = 'Mobile' THEN play_hours ELSE 0 END), 2) AS mobile_hours,
+  ROUND(SUM(CASE WHEN device_category = 'Desktop' THEN play_hours ELSE 0 END), 2) AS web_hours,
+  ROUND(SUM(CASE WHEN device_category = 'Console' THEN play_hours ELSE 0 END), 2) AS console_hours
+FROM netflix_platform_streams
+GROUP BY activity_date
+ORDER BY activity_date DESC;`
+        },
+        uber: {
+          company: 'Uber',
+          question: 'Pivot hourly completed ride demand across days of week into a 7-column operational heatmap matrix.',
+          sql: `-- Uber: 7-Day ride demand matrix by hour of day
+SELECT 
+  hour_of_day,
+  SUM(CASE WHEN day_name = 'Mon' THEN trip_count ELSE 0 END) AS mon_trips,
+  SUM(CASE WHEN day_name = 'Tue' THEN trip_count ELSE 0 END) AS tue_trips,
+  SUM(CASE WHEN day_name = 'Wed' THEN trip_count ELSE 0 END) AS wed_trips,
+  SUM(CASE WHEN day_name = 'Thu' THEN trip_count ELSE 0 END) AS thu_trips,
+  SUM(CASE WHEN day_name = 'Fri' THEN trip_count ELSE 0 END) AS fri_trips,
+  SUM(CASE WHEN day_name = 'Sat' THEN trip_count ELSE 0 END) AS sat_trips,
+  SUM(CASE WHEN day_name = 'Sun' THEN trip_count ELSE 0 END) AS sun_trips
+FROM uber_hourly_grid_demand
+GROUP BY hour_of_day
+ORDER BY hour_of_day;`
+        },
+        stripe: {
+          company: 'Stripe',
+          question: 'Pivot settlement volume across card networks (Visa, Mastercard, Amex, Discover) by merchant processing tier.',
+          sql: `-- Stripe: Card network processing volume matrix
+SELECT 
+  merchant_tier,
+  SUM(CASE WHEN card_brand = 'VISA' THEN volume_cents ELSE 0 END) / 100.0 AS visa_usd,
+  SUM(CASE WHEN card_brand = 'MASTERCARD' THEN volume_cents ELSE 0 END) / 100.0 AS mastercard_usd,
+  SUM(CASE WHEN card_brand = 'AMEX' THEN volume_cents ELSE 0 END) / 100.0 AS amex_usd,
+  SUM(CASE WHEN card_brand = 'DISCOVER' THEN volume_cents ELSE 0 END) / 100.0 AS discover_usd
+FROM stripe_settlement_batches
+GROUP BY merchant_tier;`
+        }
       }
     }
   ];
+
+
+  // ===========================================================================
+  // INTERACTIVE STEPPING SCRUBBERS ENGINE (100% MONOCHROME + CYAN SQL ACCENTS)
+  // ===========================================================================
+  const SCRUBBERS = {
+    // -------------------------------------------------------------------------
+    // 1. Gaps & Islands Date Anchor Calculator (Pattern 08)
+    // -------------------------------------------------------------------------
+    gaps_anchor_scrubber: {
+      title: 'Interactive Stepper: The Date - ROW_NUMBER() Invariant Anchor',
+      steps: [
+        {
+          num: 1,
+          title: 'Step 1: Raw Distinct Daily Logins (Observe the Gap)',
+          desc: 'A user logs in on Nov 1, 2, 3, then drops off and returns on Nov 7 and 8. Notice the 4-day gap between rows 3 and 4.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">INPUT: Raw Distinct Daily Logins</text>
+                
+                <!-- Table Header -->
+                <rect x="25" y="38" width="630" height="22" rx="2" fill="#18181b" stroke="#3f3f46"/>
+                <text x="45" y="53" fill="#a1a1aa" font-size="9.5" font-family="monospace">user_id</text>
+                <text x="160" y="53" fill="#a1a1aa" font-size="9.5" font-family="monospace">login_date</text>
+                <text x="320" y="53" fill="#71717a" font-size="9.5" font-family="monospace">calendar note</text>
+
+                <!-- Rows -->
+                <g transform="translate(25, 66)">
+                  <text x="20" y="14" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="135" y="14" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-01</text>
+                  <text x="295" y="14" fill="#71717a" font-size="9.5" font-family="monospace">Day 1 (Contiguous)</text>
+
+                  <text x="20" y="34" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="135" y="34" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-02</text>
+                  <text x="295" y="34" fill="#71717a" font-size="9.5" font-family="monospace">Day 2 (Contiguous)</text>
+
+                  <text x="20" y="54" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="135" y="54" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-03</text>
+                  <text x="295" y="54" fill="#71717a" font-size="9.5" font-family="monospace">Day 3 (Contiguous)</text>
+
+                  <!-- Gap callout -->
+                  <rect x="130" y="60" width="480" height="16" rx="2" fill="#18181b" stroke="#3f3f46" stroke-dasharray="2 2"/>
+                  <text x="140" y="72" fill="#71717a" font-size="8.5" font-family="monospace">&mdash;&mdash; GAP DETECTED: Nov 04, 05, 06 MISSING (Inactive) &mdash;&mdash;</text>
+
+                  <text x="20" y="94" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="135" y="94" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-07</text>
+                  <text x="295" y="94" fill="#71717a" font-size="9.5" font-family="monospace">Day 7 (Streak restarts)</text>
+
+                  <text x="20" y="114" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="135" y="114" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-08</text>
+                  <text x="295" y="114" fill="#71717a" font-size="9.5" font-family="monospace">Day 8 (Contiguous)</text>
+                </g>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 2,
+          title: 'Step 2: Assign Dense Sequence ROW_NUMBER()',
+          desc: 'We calculate a continuous counter 1, 2, 3, 4, 5 with no gaps. Notice that ROW_NUMBER() increments by +1 on every row regardless of calendar skips.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">APPLY: <tspan fill="#38bdf8">ROW_NUMBER() OVER (ORDER BY login_date)</tspan></text>
+
+                <rect x="25" y="38" width="630" height="22" rx="2" fill="#18181b" stroke="#3f3f46"/>
+                <text x="45" y="53" fill="#a1a1aa" font-size="9.5" font-family="monospace">user_id</text>
+                <text x="160" y="53" fill="#a1a1aa" font-size="9.5" font-family="monospace">login_date</text>
+                <text x="290" y="53" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">rn (counter)</text>
+                <text x="420" y="53" fill="#71717a" font-size="9.5" font-family="monospace">counter behavior</text>
+
+                <g transform="translate(25, 66)">
+                  <text x="20" y="14" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="135" y="14" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-01</text>
+                  <rect x="260" y="2" width="40" height="16" rx="2" fill="#222226" stroke="#38bdf8"/>
+                  <text x="277" y="14" text-anchor="middle" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">1</text>
+                  <text x="395" y="14" fill="#71717a" font-size="9.5" font-family="monospace">rn starts at 1</text>
+
+                  <text x="20" y="34" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="135" y="34" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-02</text>
+                  <rect x="260" y="22" width="40" height="16" rx="2" fill="#222226" stroke="#38bdf8"/>
+                  <text x="277" y="34" text-anchor="middle" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">2</text>
+                  <text x="395" y="34" fill="#71717a" font-size="9.5" font-family="monospace">rn increments to 2</text>
+
+                  <text x="20" y="54" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="135" y="54" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-03</text>
+                  <rect x="260" y="42" width="40" height="16" rx="2" fill="#222226" stroke="#38bdf8"/>
+                  <text x="277" y="54" text-anchor="middle" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">3</text>
+                  <text x="395" y="54" fill="#71717a" font-size="9.5" font-family="monospace">rn increments to 3</text>
+
+                  <text x="20" y="74" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="135" y="74" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-07</text>
+                  <rect x="260" y="62" width="40" height="16" rx="2" fill="#222226" stroke="#38bdf8"/>
+                  <text x="277" y="74" text-anchor="middle" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">4</text>
+                  <text x="395" y="74" fill="#a1a1aa" font-size="9.5" font-family="monospace">rn still increments by 1 despite 4-day date jump!</text>
+
+                  <text x="20" y="94" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="135" y="94" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-08</text>
+                  <rect x="260" y="82" width="40" height="16" rx="2" fill="#222226" stroke="#38bdf8"/>
+                  <text x="277" y="94" text-anchor="middle" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">5</text>
+                  <text x="395" y="94" fill="#71717a" font-size="9.5" font-family="monospace">rn increments to 5</text>
+                </g>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 3,
+          title: 'Step 3: Fixed-Offset Subtraction (The Invariant Anchor)',
+          desc: 'Observe the arithmetic: date - rn days. For uninterrupted dates, date and rn increment in exact lockstep, producing the EXACT SAME anchor date! When the gap occurs, the anchor jumps forward!',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">SUBTRACT: <tspan fill="#38bdf8">login_date - rn days = streak_anchor</tspan></text>
+
+                <rect x="25" y="38" width="630" height="22" rx="2" fill="#18181b" stroke="#3f3f46"/>
+                <text x="45" y="53" fill="#a1a1aa" font-size="9.5" font-family="monospace">login_date</text>
+                <text x="160" y="53" fill="#a1a1aa" font-size="9.5" font-family="monospace">rn</text>
+                <text x="235" y="53" fill="#ffffff" font-size="9.5" font-weight="600" font-family="monospace">offset calculation</text>
+                <text x="410" y="53" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">streak_anchor (invariant)</text>
+
+                <g transform="translate(25, 66)">
+                  <!-- Island A Highlight -->
+                  <rect x="0" y="0" width="630" height="58" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1"/>
+                  <text x="20" y="16" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-01</text>
+                  <text x="140" y="16" fill="#71717a" font-size="9.5" font-family="monospace">- 1 day</text>
+                  <text x="210" y="16" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-01 - 1 =</text>
+                  <text x="385" y="16" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">2026-10-31  (Island A)</text>
+
+                  <text x="20" y="34" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-02</text>
+                  <text x="140" y="34" fill="#71717a" font-size="9.5" font-family="monospace">- 2 days</text>
+                  <text x="210" y="34" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-02 - 2 =</text>
+                  <text x="385" y="34" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">2026-10-31  (Island A)</text>
+
+                  <text x="20" y="52" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-03</text>
+                  <text x="140" y="52" fill="#71717a" font-size="9.5" font-family="monospace">- 3 days</text>
+                  <text x="210" y="52" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-03 - 3 =</text>
+                  <text x="385" y="52" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">2026-10-31  (Island A)</text>
+
+                  <!-- Island B Highlight -->
+                  <rect x="0" y="64" width="630" height="40" rx="3" fill="#18181b" stroke="#52525b" stroke-width="1"/>
+                  <text x="20" y="80" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-07</text>
+                  <text x="140" y="80" fill="#71717a" font-size="9.5" font-family="monospace">- 4 days</text>
+                  <text x="210" y="80" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-07 - 4 =</text>
+                  <text x="385" y="80" fill="#ffffff" font-size="9.5" font-weight="700" font-family="monospace">2026-11-03  (Island B)</text>
+
+                  <text x="20" y="98" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-08</text>
+                  <text x="140" y="98" fill="#71717a" font-size="9.5" font-family="monospace">- 5 days</text>
+                  <text x="210" y="98" fill="#d4d4d8" font-size="9.5" font-family="monospace">2026-11-08 - 5 =</text>
+                  <text x="385" y="98" fill="#ffffff" font-size="9.5" font-weight="700" font-family="monospace">2026-11-03  (Island B)</text>
+                </g>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 4,
+          title: 'Step 4: GROUP BY streak_anchor (Isolate & Measure Streaks)',
+          desc: 'Because streak_anchor is an invariant grouping key, a standard GROUP BY collapses each streak, letting us compute MIN(date), MAX(date), and COUNT(*) as streak length.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">OUTPUT: <tspan fill="#38bdf8">GROUP BY user_id, streak_anchor</tspan></text>
+
+                <rect x="25" y="38" width="630" height="22" rx="2" fill="#18181b" stroke="#3f3f46"/>
+                <text x="45" y="53" fill="#a1a1aa" font-size="9.5" font-family="monospace">user_id</text>
+                <text x="135" y="53" fill="#a1a1aa" font-size="9.5" font-family="monospace">streak_anchor</text>
+                <text x="255" y="53" fill="#a1a1aa" font-size="9.5" font-family="monospace">streak_start</text>
+                <text x="375" y="53" fill="#a1a1aa" font-size="9.5" font-family="monospace">streak_end</text>
+                <text x="500" y="53" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">duration (COUNT*)</text>
+
+                <g transform="translate(25, 68)">
+                  <rect x="0" y="0" width="630" height="32" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1"/>
+                  <text x="20" y="20" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="110" y="20" fill="#71717a" font-size="9.5" font-family="monospace">2026-10-31</text>
+                  <text x="230" y="20" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-01</text>
+                  <text x="350" y="20" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-03</text>
+                  <text x="475" y="20" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">3 CONSECUTIVE DAYS</text>
+
+                  <rect x="0" y="42" width="630" height="32" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+                  <text x="20" y="62" fill="#ffffff" font-size="9.5" font-family="monospace">USR_901</text>
+                  <text x="110" y="62" fill="#71717a" font-size="9.5" font-family="monospace">2026-11-03</text>
+                  <text x="230" y="62" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-07</text>
+                  <text x="350" y="62" fill="#ffffff" font-size="9.5" font-family="monospace">2026-11-08</text>
+                  <text x="475" y="62" fill="#d4d4d8" font-size="10" font-weight="700" font-family="monospace">2 CONSECUTIVE DAYS</text>
+                </g>
+              </svg>
+            `;
+          }
+        }
+      ]
+    },
+
+    // -------------------------------------------------------------------------
+    // 2. Top N Category Partition Slicing (Pattern 02)
+    // -------------------------------------------------------------------------
+    topn_rank_scrubber: {
+      title: 'Interactive Stepper: Partitioning Silos & Rank Slicing',
+      steps: [
+        {
+          num: 1,
+          title: 'Step 1: Unpartitioned Global Product Stream',
+          desc: 'Raw products across Electronics, Apparel, and Home arrive in an unsorted global heap. We cannot slice the top 2 per category yet.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">GLOBAL STREAM: Unsorted Cross-Category Inventory</text>
+                <rect x="25" y="40" width="630" height="120" rx="3" fill="#18181b" stroke="#3f3f46"/>
+                <g transform="translate(45, 62)">
+                  <text x="0" y="14" fill="#ffffff" font-size="9.5" font-family="monospace">iPhone 16</text>
+                  <text x="160" y="14" fill="#71717a" font-size="9.5" font-family="monospace">category: Electronics</text>
+                  <text x="360" y="14" fill="#d4d4d8" font-size="9.5" font-family="monospace">revenue: $1,200</text>
+
+                  <text x="0" y="38" fill="#ffffff" font-size="9.5" font-family="monospace">Silk Hoodie</text>
+                  <text x="160" y="38" fill="#71717a" font-size="9.5" font-family="monospace">category: Apparel</text>
+                  <text x="360" y="38" fill="#d4d4d8" font-size="9.5" font-family="monospace">revenue: $180</text>
+
+                  <text x="0" y="62" fill="#ffffff" font-size="9.5" font-family="monospace">Smart TV 4K</text>
+                  <text x="160" y="62" fill="#71717a" font-size="9.5" font-family="monospace">category: Electronics</text>
+                  <text x="360" y="62" fill="#d4d4d8" font-size="9.5" font-family="monospace">revenue: $850</text>
+
+                  <text x="0" y="86" fill="#ffffff" font-size="9.5" font-family="monospace">Wool Coat</text>
+                  <text x="160" y="86" fill="#71717a" font-size="9.5" font-family="monospace">category: Apparel</text>
+                  <text x="360" y="86" fill="#d4d4d8" font-size="9.5" font-family="monospace">revenue: $350</text>
+                </g>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 2,
+          title: 'Step 2: Carve Isolated Category Silos (PARTITION BY)',
+          desc: 'PARTITION BY category slices the global dataset into independent compartments. Rows from Electronics never compete against Apparel.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">SILOS FORMED: <tspan fill="#38bdf8">PARTITION BY category</tspan></text>
+
+                <!-- Silo 1 -->
+                <rect x="25" y="40" width="300" height="120" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1"/>
+                <text x="40" y="58" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">PARTITION: &apos;Electronics&apos;</text>
+                <text x="40" y="82" fill="#ffffff" font-size="9.5" font-family="monospace">iPhone 16 &middot; $1,200</text>
+                <text x="40" y="104" fill="#ffffff" font-size="9.5" font-family="monospace">Smart TV 4K &middot; $850</text>
+                <text x="40" y="126" fill="#71717a" font-size="9.5" font-family="monospace">USB Cable &middot; $25</text>
+
+                <!-- Silo 2 -->
+                <rect x="355" y="40" width="300" height="120" rx="3" fill="#18181b" stroke="#52525b" stroke-width="1"/>
+                <text x="370" y="58" fill="#ffffff" font-size="10" font-weight="700" font-family="monospace">PARTITION: &apos;Apparel&apos;</text>
+                <text x="370" y="82" fill="#ffffff" font-size="9.5" font-family="monospace">Wool Coat &middot; $350</text>
+                <text x="370" y="104" fill="#ffffff" font-size="9.5" font-family="monospace">Silk Hoodie &middot; $180</text>
+                <text x="370" y="126" fill="#71717a" font-size="9.5" font-family="monospace">Socks &middot; $12</text>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 3,
+          title: 'Step 3: Sort & Rank Within Silos (ORDER BY ... DESC)',
+          desc: 'DENSE_RANK() or ROW_NUMBER() runs independently inside each silo, resetting back to 1 for each new category.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">RANK COMPUTED: <tspan fill="#38bdf8">DENSE_RANK() OVER (PARTITION BY cat ORDER BY rev DESC)</tspan></text>
+
+                <!-- Silo 1 -->
+                <rect x="25" y="40" width="300" height="120" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1"/>
+                <text x="40" y="58" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">Electronics</text>
+                <text x="40" y="82" fill="#ffffff" font-size="9.5" font-family="monospace"><tspan fill="#38bdf8" font-weight="700">[#1]</tspan> iPhone 16 ($1,200)</text>
+                <text x="40" y="104" fill="#ffffff" font-size="9.5" font-family="monospace"><tspan fill="#38bdf8" font-weight="700">[#2]</tspan> Smart TV 4K ($850)</text>
+                <text x="40" y="126" fill="#71717a" font-size="9.5" font-family="monospace">[#3] USB Cable ($25)</text>
+
+                <!-- Silo 2 -->
+                <rect x="355" y="40" width="300" height="120" rx="3" fill="#18181b" stroke="#52525b" stroke-width="1"/>
+                <text x="370" y="58" fill="#ffffff" font-size="9.5" font-weight="700" font-family="monospace">Apparel</text>
+                <text x="370" y="82" fill="#ffffff" font-size="9.5" font-family="monospace"><tspan fill="#38bdf8" font-weight="700">[#1]</tspan> Wool Coat ($350)</text>
+                <text x="370" y="104" fill="#ffffff" font-size="9.5" font-family="monospace"><tspan fill="#38bdf8" font-weight="700">[#2]</tspan> Silk Hoodie ($180)</text>
+                <text x="370" y="126" fill="#71717a" font-size="9.5" font-family="monospace">[#3] Socks ($12)</text>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 4,
+          title: 'Step 4: Slice with Outer Filter (WHERE rank <= 2)',
+          desc: 'The outer query filters out all ranks > 2, leaving the top 2 category leaders cleanly separated.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">FINAL SLICE: <tspan fill="#38bdf8">SELECT * FROM ranked WHERE rank_num &lt;= 2</tspan></text>
+
+                <rect x="25" y="40" width="630" height="120" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1"/>
+                <g transform="translate(45, 60)">
+                  <text x="0" y="16" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">Electronics Leaders:</text>
+                  <text x="170" y="16" fill="#ffffff" font-size="9.5" font-family="monospace">1. iPhone 16 ($1,200) &middot; 2. Smart TV 4K ($850)</text>
+
+                  <text x="0" y="42" fill="#ffffff" font-size="10" font-weight="700" font-family="monospace">Apparel Leaders:</text>
+                  <text x="170" y="42" fill="#ffffff" font-size="9.5" font-family="monospace">1. Wool Coat ($350) &middot; 2. Silk Hoodie ($180)</text>
+
+                  <line x1="0" y1="58" x2="590" y2="58" stroke="#27272a"/>
+                  <text x="0" y="78" fill="#71717a" font-size="9" font-family="monospace">Pruned 2 bottom-tier items (Rank #3+) from final presentation output</text>
+                </g>
+              </svg>
+            `;
+          }
+        }
+      ]
+    },
+
+    // -------------------------------------------------------------------------
+    // 3. Cumulative Window Frame Accumulator (Pattern 05)
+    // -------------------------------------------------------------------------
+    cumulative_frame_scrubber: {
+      title: 'Interactive Stepper: Dynamic Window Frame Accumulation',
+      steps: [
+        {
+          num: 1,
+          title: 'Step 1: Row 1 Arrives (Day 1: $100)',
+          desc: 'Window frame begins at UNBOUNDED PRECEDING and expands to CURRENT ROW (Row 1). Accumulated sum = $100.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">FRAME SCOPE: <tspan fill="#38bdf8">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW (Row 1)</tspan></text>
+                
+                <rect x="25" y="45" width="140" height="100" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="35" y="65" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">DAY 1: Nov 01</text>
+                <text x="35" y="85" fill="#ffffff" font-size="9.5" font-family="monospace">Amount: $100</text>
+                <text x="35" y="125" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">TOTAL: $100</text>
+
+                <rect x="180" y="45" width="140" height="100" rx="3" fill="#121214" stroke="#27272a" stroke-dasharray="2 2"/>
+                <text x="190" y="65" fill="#52525b" font-size="9.5" font-family="monospace">DAY 2: Nov 02</text>
+                <text x="190" y="85" fill="#52525b" font-size="9.5" font-family="monospace">$250 (Future)</text>
+
+                <rect x="335" y="45" width="140" height="100" rx="3" fill="#121214" stroke="#27272a" stroke-dasharray="2 2"/>
+                <text x="345" y="65" fill="#52525b" font-size="9.5" font-family="monospace">DAY 3: Nov 03</text>
+                <text x="345" y="85" fill="#52525b" font-size="9.5" font-family="monospace">$150 (Future)</text>
+
+                <rect x="490" y="45" width="140" height="100" rx="3" fill="#121214" stroke="#27272a" stroke-dasharray="2 2"/>
+                <text x="500" y="65" fill="#52525b" font-size="9.5" font-family="monospace">DAY 4: Nov 04</text>
+                <text x="500" y="85" fill="#52525b" font-size="9.5" font-family="monospace">$300 (Future)</text>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 2,
+          title: 'Step 2: Row 2 Arrives (Day 2: $250)',
+          desc: 'Window frame expands to encompass Rows 1..2. Accumulated sum: 100 + 250 = $350.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">FRAME SCOPE: <tspan fill="#38bdf8">Accumulating Rows 1..2</tspan></text>
+                
+                <rect x="25" y="45" width="295" height="100" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="35" y="65" fill="#d4d4d8" font-size="9.5" font-family="monospace">DAY 1: $100</text>
+                <text x="180" y="65" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">DAY 2: $250</text>
+                <text x="35" y="125" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">RUNNING TOTAL: $100 + $250 = $350</text>
+
+                <rect x="335" y="45" width="140" height="100" rx="3" fill="#121214" stroke="#27272a" stroke-dasharray="2 2"/>
+                <text x="345" y="65" fill="#52525b" font-size="9.5" font-family="monospace">DAY 3: $150</text>
+
+                <rect x="490" y="45" width="140" height="100" rx="3" fill="#121214" stroke="#27272a" stroke-dasharray="2 2"/>
+                <text x="500" y="65" fill="#52525b" font-size="9.5" font-family="monospace">DAY 4: $300</text>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 3,
+          title: 'Step 3: Row 3 Arrives (Day 3: $150)',
+          desc: 'Window frame expands to encompass Rows 1..3. Accumulated sum: 350 + 150 = $500.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">FRAME SCOPE: <tspan fill="#38bdf8">Accumulating Rows 1..3</tspan></text>
+                
+                <rect x="25" y="45" width="450" height="100" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="35" y="65" fill="#d4d4d8" font-size="9.5" font-family="monospace">DAY 1: $100</text>
+                <text x="180" y="65" fill="#d4d4d8" font-size="9.5" font-family="monospace">DAY 2: $250</text>
+                <text x="325" y="65" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">DAY 3: $150</text>
+                <text x="35" y="125" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">RUNNING TOTAL: $350 + $150 = $500</text>
+
+                <rect x="490" y="45" width="140" height="100" rx="3" fill="#121214" stroke="#27272a" stroke-dasharray="2 2"/>
+                <text x="500" y="65" fill="#52525b" font-size="9.5" font-family="monospace">DAY 4: $300</text>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 4,
+          title: 'Step 4: Row 4 Arrives (Day 4: $300)',
+          desc: 'Window frame encompasses entire partition (Rows 1..4). Final balance: 500 + 300 = $800.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">FRAME SCOPE: <tspan fill="#38bdf8">All 4 Rows In Partition Accumulated</tspan></text>
+                
+                <rect x="25" y="45" width="605" height="100" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="35" y="65" fill="#d4d4d8" font-size="9.5" font-family="monospace">DAY 1: $100</text>
+                <text x="180" y="65" fill="#d4d4d8" font-size="9.5" font-family="monospace">DAY 2: $250</text>
+                <text x="325" y="65" fill="#d4d4d8" font-size="9.5" font-family="monospace">DAY 3: $150</text>
+                <text x="470" y="65" fill="#38bdf8" font-size="9.5" font-weight="700" font-family="monospace">DAY 4: $300</text>
+                <text x="35" y="125" fill="#38bdf8" font-size="10" font-weight="700" font-family="monospace">FINAL CUMULATIVE BALANCE: $500 + $300 = $800</text>
+              </svg>
+            `;
+          }
+        }
+      ]
+    },
+
+    // -------------------------------------------------------------------------
+    // 4. Recursive Member Depth Traversal & Loop Termination (Pattern 09)
+    // -------------------------------------------------------------------------
+    recursive_depth_scrubber: {
+      title: 'Interactive Stepper: Tree Recursion & Empty Set Termination',
+      steps: [
+        {
+          num: 1,
+          title: 'Step 1: Anchor Member Executes (Depth 0: CEO)',
+          desc: 'Base seed SELECT runs once where manager_id IS NULL. Loads root CEO into working table with depth = 0.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">ANCHOR QUERY: <tspan fill="#38bdf8">WHERE manager_id IS NULL (Depth 0)</tspan></text>
+
+                <g transform="translate(240, 50)">
+                  <rect x="0" y="0" width="200" height="60" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+                  <text x="100" y="25" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700" font-family="monospace">CEO (Root Node)</text>
+                  <text x="100" y="45" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="monospace">id: 1 &middot; depth: 0</text>
+                </g>
+
+                <text x="340" y="145" text-anchor="middle" fill="#71717a" font-size="9.5" font-family="monospace">Working Table initialized with 1 row. Recursion enters loop.</text>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 2,
+          title: 'Step 2: Iteration 1 (Depth 1: Direct VP Reports)',
+          desc: 'Recursive member joins employees against previous working table. Finds 2 direct reports (VP Engineering, VP Product). depth := 1.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">ITERATION 1: <tspan fill="#38bdf8">JOIN ON emp.mgr_id = prev.id (Depth 1)</tspan></text>
+
+                <g transform="translate(250, 40)">
+                  <rect x="0" y="0" width="180" height="35" rx="3" fill="#18181b" stroke="#3f3f46"/>
+                  <text x="90" y="22" text-anchor="middle" fill="#a1a1aa" font-size="9.5" font-family="monospace">CEO (depth 0)</text>
+                </g>
+
+                <line x1="340" y1="75" x2="200" y2="105" stroke="#52525b" stroke-width="1.5"/>
+                <line x1="340" y1="75" x2="480" y2="105" stroke="#52525b" stroke-width="1.5"/>
+
+                <g transform="translate(100, 105)">
+                  <rect x="0" y="0" width="200" height="45" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+                  <text x="100" y="20" text-anchor="middle" fill="#ffffff" font-size="9.5" font-weight="700" font-family="monospace">VP Engineering</text>
+                  <text x="100" y="36" text-anchor="middle" fill="#38bdf8" font-size="8.5" font-family="monospace">id: 2 &middot; depth: 1</text>
+                </g>
+
+                <g transform="translate(380, 105)">
+                  <rect x="0" y="0" width="200" height="45" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+                  <text x="100" y="20" text-anchor="middle" fill="#ffffff" font-size="9.5" font-weight="700" font-family="monospace">VP Product</text>
+                  <text x="100" y="36" text-anchor="middle" fill="#38bdf8" font-size="8.5" font-family="monospace">id: 3 &middot; depth: 1</text>
+                </g>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 3,
+          title: 'Step 3: Iteration 2 (Depth 2: Directors)',
+          desc: 'Recursive member loops over previous 2 VPs. Finds 4 Director reports. depth := 2.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="22" fill="#a1a1aa" font-size="10" font-family="monospace">ITERATION 2: <tspan fill="#38bdf8">Next Generation Discovered (Depth 2)</tspan></text>
+
+                <!-- VPs row -->
+                <rect x="120" y="38" width="160" height="28" rx="2" fill="#18181b" stroke="#3f3f46"/>
+                <text x="200" y="56" text-anchor="middle" fill="#a1a1aa" font-size="9" font-family="monospace">VP Eng (depth 1)</text>
+
+                <rect x="400" y="38" width="160" height="28" rx="2" fill="#18181b" stroke="#3f3f46"/>
+                <text x="480" y="56" text-anchor="middle" fill="#a1a1aa" font-size="9" font-family="monospace">VP Prod (depth 1)</text>
+
+                <!-- 4 Directors row -->
+                <g transform="translate(25, 90)">
+                  <rect x="0" y="0" width="145" height="40" rx="2" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+                  <text x="72" y="18" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="700" font-family="monospace">Dir Cloud</text>
+                  <text x="72" y="32" text-anchor="middle" fill="#38bdf8" font-size="8" font-family="monospace">depth: 2</text>
+
+                  <rect x="160" y="0" width="145" height="40" rx="2" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+                  <text x="232" y="18" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="700" font-family="monospace">Dir Data</text>
+                  <text x="232" y="32" text-anchor="middle" fill="#38bdf8" font-size="8" font-family="monospace">depth: 2</text>
+
+                  <rect x="320" y="0" width="145" height="40" rx="2" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+                  <text x="392" y="18" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="700" font-family="monospace">Dir Mobile</text>
+                  <text x="392" y="32" text-anchor="middle" fill="#38bdf8" font-size="8" font-family="monospace">depth: 2</text>
+
+                  <rect x="480" y="0" width="145" height="40" rx="2" fill="#18181b" stroke="#38bdf8" stroke-width="1.5"/>
+                  <text x="552" y="18" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="700" font-family="monospace">Dir Growth</text>
+                  <text x="552" y="32" text-anchor="middle" fill="#38bdf8" font-size="8" font-family="monospace">depth: 2</text>
+                </g>
+                <text x="340" y="155" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Working table now holds 4 directors. Next step checks their reports.</text>
+              </svg>
+            `;
+          }
+        },
+        {
+          num: 4,
+          title: 'Step 4: Iteration 3 Yields 0 Rows (Recursion Halts)',
+          desc: 'The join query against the Directors finds 0 new subordinate rows. Because the working table is empty, WITH RECURSIVE terminates cleanly without infinite loops.',
+          renderSvg: function() {
+            return `
+              <svg viewBox="0 0 680 180" class="koma-pattern-svg" xmlns="http://www.w3.org/2000/svg">
+                <rect width="680" height="180" rx="4" fill="#121214" stroke="#27272a"/>
+                <text x="25" y="25" fill="#a1a1aa" font-size="10" font-family="monospace">HALT CONDITION: <tspan fill="#38bdf8">Empty Working Set (0 Rows Returned)</tspan></text>
+
+                <rect x="25" y="45" width="630" height="75" rx="3" fill="#18181b" stroke="#38bdf8" stroke-width="1"/>
+                <text x="340" y="75" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="700" font-family="monospace">RECURSION HALTED SAFELY</text>
+                <text x="340" y="98" text-anchor="middle" fill="#38bdf8" font-size="9.5" font-family="monospace">Total Hierarchy Nodes Traversed: 7 | Max Depth: 2</text>
+
+                <text x="340" y="150" text-anchor="middle" fill="#71717a" font-size="9" font-family="monospace">Outer SELECT reads all accumulated rows from the CTE. Zero memory leak.</text>
+              </svg>
+            `;
+          }
+        }
+      ]
+    }
+  };
 
   // ===========================================================================
   // STATE & CONTROLLER
@@ -6763,11 +7931,64 @@ ORDER BY consecutive_active_minutes DESC;`
     running_totals: 'amazon',
     funnel_milestones: 'amazon',
     deduplication_latest: 'amazon',
-    consecutive_streaks: 'amazon'
+    consecutive_streaks: 'amazon',
+    recursive_trees: 'amazon',
+    pivot_matrix: 'amazon'
   };
 
   function getActivePattern() {
     return PATTERNS.find(p => p.id === activePatternId) || PATTERNS[0];
+  }
+
+  const scrubberStates = {};
+
+  function renderScrubberWidgetHtml(scrubberId) {
+    const scrub = SCRUBBERS[scrubberId];
+    if (!scrub) return '';
+    const currentStepIdx = (scrubberStates[scrubberId] !== undefined) ? scrubberStates[scrubberId] : 0;
+    const step = scrub.steps[currentStepIdx] || scrub.steps[0];
+    const totalSteps = scrub.steps.length;
+
+    return `
+      <div class="koma-scrubber-card" id="scrubberCard_${scrubberId}">
+        <div class="koma-scrubber-topbar">
+          <div class="koma-scrubber-title-group">
+            <span class="koma-scrubber-badge">STEP ${currentStepIdx + 1} OF ${totalSteps}</span>
+            <span class="koma-scrubber-title">${escapeHtml(step.title)}</span>
+          </div>
+          <div class="koma-scrubber-controls">
+            <button class="koma-scrubber-btn" onclick="window.SQL_PATTERN_HUB.stepScrubber('${scrubberId}', -1)" ${currentStepIdx === 0 ? 'disabled' : ''}>&larr; Prev</button>
+            <div class="koma-scrubber-dots">
+              ${scrub.steps.map((st, i) => `
+                <span class="koma-scrubber-dot ${i === currentStepIdx ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.setScrubberStep('${scrubberId}', ${i})" title="Jump to Step ${i + 1}"></span>
+              `).join('')}
+            </div>
+            <button class="koma-scrubber-btn" onclick="window.SQL_PATTERN_HUB.stepScrubber('${scrubberId}', 1)" ${currentStepIdx === totalSteps - 1 ? 'disabled' : ''}>Next &rarr;</button>
+          </div>
+        </div>
+        <div class="koma-scrubber-desc">${escapeHtml(step.desc)}</div>
+        <div class="koma-scrubber-viewport">
+          ${step.renderSvg()}
+        </div>
+      </div>
+    `;
+  }
+
+  function setScrubberStep(scrubberId, stepIdx) {
+    const scrub = SCRUBBERS[scrubberId];
+    if (!scrub) return;
+    if (stepIdx < 0) stepIdx = 0;
+    if (stepIdx >= scrub.steps.length) stepIdx = scrub.steps.length - 1;
+    scrubberStates[scrubberId] = stepIdx;
+    const wrap = document.getElementById('komaScrubber_' + scrubberId);
+    if (wrap) {
+      wrap.innerHTML = renderScrubberWidgetHtml(scrubberId);
+    }
+  }
+
+  function stepScrubber(scrubberId, delta) {
+    const current = (scrubberStates[scrubberId] !== undefined) ? scrubberStates[scrubberId] : 0;
+    setScrubberStep(scrubberId, current + delta);
   }
 
   function renderPatternContentHtml(p, curCompany, isFullPage) {
@@ -6776,7 +7997,7 @@ ORDER BY consecutive_active_minutes DESC;`
     return `
       <!-- Pattern Header Banner -->
       <div class="koma-hub-header-banner">
-        <div class="koma-hub-tier-pill">TIER ${p.tier} &middot; ${p.tier === 1 ? 'ESSENTIALS' : 'BUSINESS GROWTH'}</div>
+        <div class="koma-hub-tier-pill">TIER ${p.tier} &middot; ${p.tier === 1 ? 'ESSENTIALS' : (p.tier === 2 ? 'BUSINESS GROWTH' : (p.tier === 3 ? 'ADVANCED' : 'PRODUCTION TITANS'))}</div>
         <div class="koma-hub-tag-pill">${escapeHtml(p.tag)}</div>
         <h1 class="koma-hub-header-title">${escapeHtml(p.title)}</h1>
         <p class="koma-hub-tagline">${escapeHtml(p.tagline)}</p>
@@ -6810,6 +8031,11 @@ ORDER BY consecutive_active_minutes DESC;`
                   ${SVG_LIBRARY[st.svg]()}
                 </div>
               ` : ''}
+              ${st.scrubberId && SCRUBBERS[st.scrubberId] ? `
+                <div class="koma-scrubber-wrapper" id="komaScrubber_${st.scrubberId}">
+                  ${renderScrubberWidgetHtml(st.scrubberId)}
+                </div>
+              ` : ''}
             </div>
           `).join('')}
         </div>
@@ -6819,7 +8045,7 @@ ORDER BY consecutive_active_minutes DESC;`
       <div class="koma-hub-section">
         <div class="koma-hub-section-title">4. THINKING PROCESS</div>
         <div class="koma-hub-steps-card">
-          ${p.thinkingProcess.map(step => `
+          ${(p.thinkingProcess || []).map(step => `
             <div class="koma-hub-step-item">
               <div class="koma-step-dot"></div>
               <div class="koma-step-text">${escapeHtml(step)}</div>
@@ -6832,7 +8058,7 @@ ORDER BY consecutive_active_minutes DESC;`
       <div class="koma-hub-section">
         <div class="koma-hub-section-title">5. TRAPS &amp; GOTCHAS</div>
         <div class="koma-hub-gotchas-card">
-          ${p.gotchas.map(g => `
+          ${(p.gotchas || p.trapsAndGotchas || []).map(g => `
             <div class="koma-gotcha-row">
               <span style="color:#71717a; font-family:monospace;">&bull;</span>
               <div class="koma-gotcha-text">${escapeHtml(g)}</div>
@@ -6893,6 +8119,14 @@ ORDER BY consecutive_active_minutes DESC;`
 
       <div class="koma-hub-tier-label">TIER 3 &middot; ADVANCED</div>
       ${PATTERNS.filter(x => x.tier === 3).map(item => `
+        <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}', ${isFullPage})">
+          <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
+          <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
+        </button>
+      `).join('')}
+
+      <div class="koma-hub-tier-label">TIER 4 &middot; PRODUCTION TITANS</div>
+      ${PATTERNS.filter(x => x.tier === 4).map(item => `
         <button class="koma-hub-nav-item ${item.id === activePatternId ? 'active' : ''}" onclick="window.SQL_PATTERN_HUB.selectPattern('${item.id}', ${isFullPage})">
           <div class="koma-hub-nav-title">${escapeHtml(item.title)}</div>
           <span class="koma-hub-nav-tag">${escapeHtml(item.tag)}</span>
@@ -6974,6 +8208,10 @@ ORDER BY consecutive_active_minutes DESC;`
   // ===========================================================================
 
   window.SQL_PATTERN_HUB = {
+    renderScrubberWidgetHtml: renderScrubberWidgetHtml,
+    setScrubberStep: setScrubberStep,
+    stepScrubber: stepScrubber,
+    getAllPatterns: function() { return PATTERNS; },
     mountView: function(elementId) {
       const targetId = elementId || 'viewPatternAcademy';
       const el = document.getElementById(targetId);
@@ -7099,5 +8337,6 @@ ORDER BY consecutive_active_minutes DESC;`
   };
 
 })(window);
+
 
 /* === SQL_PATTERN_HUB_EMBEDDED_END === */

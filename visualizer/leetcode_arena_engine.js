@@ -317,8 +317,14 @@ window.LEETCODE_ARENA = (() => {
     if ([196, 511, 512, 1075, 1076].includes(id)) {
       return { id: 'deduplication_latest', num: '07', title: 'Deduplication & Latest State', shortTitle: 'Deduplication', tagline: 'Extract single freshest snapshot from event streams using ROW_NUMBER() = 1' };
     }
-    if ([1285, 1454, 1225, 1412, 1613].includes(id)) {
+    if ([1285, 1454, 1225, 1412].includes(id)) {
       return { id: 'consecutive_streaks', num: '08', title: 'Consecutive Streaks (Gaps & Islands)', shortTitle: 'Consecutive Streaks', tagline: 'Isolate contiguous active date streaks using invariant date subtraction' };
+    }
+    if ([1270, 1613, 2199, 579].includes(id)) {
+      return { id: 'recursive_trees', num: '09', title: 'Hierarchical Trees (Recursive CTEs)', shortTitle: 'Recursive Trees', tagline: 'Traverse parent-child hierarchies and graphs' };
+    }
+    if ([1179, 1795, 626].includes(id)) {
+      return { id: 'pivot_matrix', num: '10', title: 'Pivot / Unpivot (Matrix Transposition)', shortTitle: 'Pivot / Matrix', tagline: 'Conditional aggregation matrix and unpivoting' };
     }
 
     // 2. Heuristic Detection
@@ -680,6 +686,8 @@ window.LEETCODE_ARENA = (() => {
                 <option value="funnel_milestones" ${state.sidebarPattern === 'funnel_milestones' ? 'selected' : ''}>06. Funnel</option>
                 <option value="deduplication_latest" ${state.sidebarPattern === 'deduplication_latest' ? 'selected' : ''}>07. Dedup</option>
                 <option value="consecutive_streaks" ${state.sidebarPattern === 'consecutive_streaks' ? 'selected' : ''}>08. Streaks</option>
+                <option value="recursive_trees" ${state.sidebarPattern === 'recursive_trees' ? 'selected' : ''}>09. Trees</option>
+                <option value="pivot_matrix" ${state.sidebarPattern === 'pivot_matrix' ? 'selected' : ''}>10. Pivot</option>
               </select>
 
               <select id="lcFilterCompany" class="lc-compact-select" title="Filter by Company">

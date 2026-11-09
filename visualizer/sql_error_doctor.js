@@ -407,6 +407,137 @@
       };
     }
 
+    
+    // =========================================================================
+    // ARCHETYPE-AWARE AST & LOGIC TRAP DETECTORS (Patterns 01, 02, 07, 08, 09)
+    // =========================================================================
+
+    // 10.1 Anti-Join Logic Trap (Pattern 01)
+    // Filter on right table in WHERE clause destroys outer join nullability
+    const leftJoinMatch = query.match(/LEFT\s+(?:OUTER\s+)?JOIN\s+([a-zA-Z0-9_]+)(?:\s+(?:AS\s+)?([a-zA-Z0-9_]+))?\s+ON\s+([^WHERE;]+)/i);
+    const whereMatch = query.match(/\bWHERE\b\s+([^;]+)/i);
+    if (leftJoinMatch && whereMatch) {
+      const rightAlias = leftJoinMatch[2] || leftJoinMatch[1];
+      const whereBody = whereMatch[1];
+      const badRightColMatch = whereBody.match(new RegExp('\\b' + rightAlias + '\\.([a-zA-Z0-9_]+)\\s*(=|!=|<>|>|<|LIKE|IN)\\s*([^\\s;]+)', 'i'));
+      if (badRightColMatch && !/\bIS\s+(?:NOT\s+)?NULL\b/i.test(badRightColMatch[0])) {
+        const badCondition = badRightColMatch[0].trim();
+        const lineNum = findLineNumber(query, badCondition);
+        const fixedOnClause = `${leftJoinMatch[0].trim()} AND ${badCondition}`;
+        let fixedWhere = whereBody.replace(badCondition, '').replace(/\bAND\s+AND\b/gi, 'AND').replace(/^\s*AND\s+/i, '').replace(/\s+AND\s*$/i, '').trim();
+        if (!fixedWhere || fixedWhere === ';') {
+          fixedWhere = `${rightAlias}.order_id IS NULL`;
+        }
+        const fixedSql = query.replace(leftJoinMatch[0], fixedOnClause).replace(whereMatch[0], `WHERE ${fixedWhere}`);
+        return {
+          hasError: true,
+          type: 'ARCHETYPE_TRAP_ANTI_JOIN_FILTER',
+          friendlyTitle: 'Anti-Join Trap: Right-Table WHERE Filter Converts to INNER JOIN',
+          explanation: `You wrote <code>${badCondition}</code> inside the <code>WHERE</code> clause. In a <code>LEFT JOIN</code>, unmatched rows have <code>NULL</code> in all right-table columns. Testing for a non-NULL value in <code>WHERE</code> wipes out every unmatched row you were trying to preserve, silently converting your query into an <code>INNER JOIN</code>!`,
+          beginnerRule: 'In Anti-Joins, only check IS NULL on the right table in WHERE. Move all other right-table filter criteria up into the ON clause.',
+          problemSnippet: `WHERE ${badCondition} -- Discards NULL holes!`,
+          fixedSnippet: `ON ... AND ${badCondition} \nWHERE ${rightAlias}.id IS NULL`,
+          fixedSql: fixedSql,
+          fixedLineNumber: lineNum,
+          autoFixAvailable: true,
+          rawErrorText: rawStr || 'Logic Error: Right-table WHERE filter eliminates outer join preserved rows'
+        };
+      }
+    }
+
+    // 10.2 Window Function in WHERE Clause Trap (Pattern 02 & Pattern 07)
+    const winInWhereMatch = query.match(/\bWHERE\b[\s\S]*?\b(ROW_NUMBER|RANK|DENSE_RANK|LAG|LEAD|SUM|AVG)\s*\([^)]*\)\s*OVER\b/i);
+    if (winInWhereMatch || (rawStr.includes('window function') && /\bWHERE\b/i.test(query))) {
+      const lineNum = findLineNumber(query, /OVER\s*\(/i);
+      const fixedSql = `WITH ranked AS (\n  ${query.replace(/\bWHERE\b[\s\S]*$/i, '').trim()}\n)\nSELECT *\nFROM ranked\nWHERE rn <= 3;`;
+      return {
+        hasError: true,
+        type: 'ARCHETYPE_TRAP_WINDOW_IN_WHERE',
+        friendlyTitle: 'Top N Ranking Trap: Window Function Inside WHERE Clause',
+        explanation: 'SQL evaluates the <code>WHERE</code> clause before calculating window functions (<code>OVER</code> clauses). The database cannot filter by <code>ROW_NUMBER()</code> or <code>RANK()</code> inside <code>WHERE</code> because those ranks do not exist yet when <code>WHERE</code> executes!',
+        beginnerRule: 'Calculate your window ranking inside a CTE (WITH ranked AS (...)) or subquery first, then filter the resulting alias in the outer WHERE clause.',
+        problemSnippet: 'WHERE ROW_NUMBER() OVER (...) <= 3',
+        fixedSnippet: 'WITH ranked AS (...) SELECT * FROM ranked WHERE rn <= 3',
+        fixedSql: fixedSql,
+        fixedLineNumber: lineNum,
+        autoFixAvailable: true,
+        rawErrorText: rawStr || 'misuse of window function inside WHERE clause'
+      };
+    }
+
+    // 10.3 Gaps & Islands Duplicate Dates Trap (Pattern 08)
+    const hasGapsFormula = /DATE\s*\([^)]*-\s*[^)]*ROW_NUMBER/i.test(query) || (query.includes('ROW_NUMBER') && /-\s*\(?\s*rn\b/i.test(query));
+    if (hasGapsFormula && !/\bDISTINCT\b/i.test(query)) {
+      const lineNum = findLineNumber(query, /ROW_NUMBER/i);
+      const fixedSql = query.replace(/\bSELECT\b/i, 'SELECT DISTINCT');
+      return {
+        hasError: true,
+        type: 'ARCHETYPE_TRAP_GAPS_ISLANDS_DUPLICATES',
+        friendlyTitle: 'Gaps & Islands Trap: Duplicate Dates Corrupt Invariant Anchors',
+        explanation: 'If a user logs in multiple times on the same date, <code>ROW_NUMBER()</code> increments while the calendar date stays identical. This causes the invariant calculation (<code>date - ROW_NUMBER()</code>) to drift by -1 day for every duplicate, splitting a single streak into false islands!',
+        beginnerRule: 'Always deduplicate user activity by day (SELECT DISTINCT user_id, activity_date) before calculating the date - ROW_NUMBER() invariant anchor.',
+        problemSnippet: 'SELECT user_id, login_date ... (Duplicates present)',
+        fixedSnippet: 'SELECT DISTINCT user_id, login_date ...',
+        fixedSql: fixedSql,
+        fixedLineNumber: lineNum,
+        autoFixAvailable: true,
+        rawErrorText: rawStr || 'Potential Data Anomaly: Duplicate partition dates skew streak islands'
+      };
+    }
+
+    // 10.4 Recursive CTE Bare UNION Trap (Pattern 09)
+    if (/\bWITH\s+RECURSIVE\b/i.test(query) && /\bUNION\b(?!\s+ALL\b)/i.test(query)) {
+      const lineNum = findLineNumber(query, /\bUNION\b(?!\s+ALL\b)/i);
+      const fixedSql = query.replace(/\bUNION\b(?!\s+ALL\b)/gi, 'UNION ALL');
+      return {
+        hasError: true,
+        type: 'ARCHETYPE_TRAP_RECURSIVE_CTE_UNION',
+        friendlyTitle: 'Recursive CTE Trap: UNION Causes Massive Recursion Overhead',
+        explanation: 'Using bare <code>UNION</code> in a recursive query forces the database to run an expensive global hash deduplication across the entire accumulated working table on every single recursion step. In enterprise systems, this causes memory exhaustion and query timeouts.',
+        beginnerRule: 'Always use UNION ALL in the recursive member of a CTE unless graph loop prevention specifically requires row deduplication.',
+        problemSnippet: 'SELECT ... UNION SELECT ...',
+        fixedSnippet: 'SELECT ... UNION ALL SELECT ...',
+        fixedSql: fixedSql,
+        fixedLineNumber: lineNum,
+        autoFixAvailable: true,
+        rawErrorText: rawStr || 'Performance Warning: Recursive CTE with set-deduplicating UNION'
+      };
+    }
+
+        // 10.5 Frankenstein Record Trap (Pattern 07: Deduplication & Latest State)
+    // GROUP BY with MAX(date) selecting unaggregated non-grouped columns
+    const hasGroupBy = /\bGROUP\s+BY\b/i.test(query);
+    const hasMaxOrMin = /\b(MAX|MIN)\s*\([a-zA-Z0-9_.]*(?:date|time|stamp|created|updated)[a-zA-Z0-9_.]*\)/i.test(query);
+    if (hasGroupBy && hasMaxOrMin && !/\bROW_NUMBER\s*\(/i.test(query)) {
+      const selectMatch = query.match(/\bSELECT\b([\s\S]*?)\bFROM\b/i);
+      const groupMatch = query.match(/\bGROUP\s+BY\b([\s\S]*?)(?:\bORDER\b|\bHAVING\b|\bLIMIT\b|;|$)/i);
+      if (selectMatch && groupMatch) {
+        const selectCols = selectMatch[1].split(',').map(c => c.trim()).filter(c => !/\b(MAX|MIN|SUM|AVG|COUNT)\s*\(/i.test(c));
+        const groupCols = groupMatch[1].split(',').map(c => c.trim());
+        const unaggregated = selectCols.filter(sc => {
+          const colClean = sc.replace(/.*\bas\s+/i, '').replace(/.*\./, '').trim();
+          return !groupCols.some(gc => gc.includes(colClean));
+        });
+        if (unaggregated.length > 0) {
+          const lineNum = findLineNumber(query, /\bGROUP\s+BY\b/i);
+          const problemCol = unaggregated[0];
+          return {
+            hasError: true,
+            type: 'ARCHETYPE_TRAP_FRANKENSTEIN_RECORD',
+            friendlyTitle: 'Deduplication Trap: Frankenstein Record via Partial GROUP BY',
+            explanation: `You selected <code>${problemCol}</code> while grouping by only a subset of columns with <code>MAX()</code>. The database returns the maximum timestamp from one row, but pairs it with an arbitrary <code>${problemCol}</code> value from a completely different row! This creates an invalid hybrid record that never existed.`,
+            beginnerRule: 'Never use GROUP BY with MAX(date) to fetch the latest state of an entity. Instead, use ROW_NUMBER() OVER (PARTITION BY entity_id ORDER BY date DESC) in a CTE, then filter WHERE rn = 1.',
+            problemSnippet: `SELECT user_id, ${problemCol}, MAX(login_time) ... GROUP BY user_id`,
+            fixedSnippet: 'WITH ranked AS (\n  SELECT *, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY login_time DESC) AS rn FROM logs\n) SELECT * FROM ranked WHERE rn = 1',
+            fixedSql: `WITH ranked_latest AS (\n  SELECT *,\n    ROW_NUMBER() OVER (PARTITION BY ${groupCols[0] || 'entity_id'} ORDER BY created_at DESC) AS ranking_order\n  FROM (${query.replace(/\bGROUP\s+BY[\s\S]*$/i, '').trim()})\n)\nSELECT *\nFROM ranked_latest\nWHERE ranking_order = 1;`,
+            fixedLineNumber: lineNum,
+            autoFixAvailable: true,
+            rawErrorText: rawStr || 'Semantic Logic Flaw: Arbitrary non-aggregate columns paired with extreme timestamp'
+          };
+        }
+      }
+    }
+
     // 10. General / Fallback Error
     return {
       hasError: true,
@@ -446,7 +577,7 @@
         <!-- Header -->
         <div class="koma-doctor-header">
           <div class="koma-doctor-badge-row">
-            <span class="koma-doctor-badge">🩺 SQL Error Doctor</span>
+            <span class="koma-doctor-badge">SQL Error Doctor</span>
             <span class="koma-doctor-type-tag">Plain-English Diagnosis</span>
           </div>
           <div class="koma-doctor-line-tag">Line ${diag.fixedLineNumber || 1}</div>
@@ -459,7 +590,7 @@
 
           <!-- Beginner Mental Rule -->
           <div class="koma-doctor-rule-box">
-            <span class="koma-doctor-rule-icon">💡</span>
+            
             <div class="koma-doctor-rule-text">
               <strong>Beginner Rule:</strong> ${diag.beginnerRule}
             </div>

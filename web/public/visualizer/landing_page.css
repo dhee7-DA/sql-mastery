@@ -2800,3 +2800,121 @@
   color: #e4e4e7;
   line-height: 1.5;
 }
+
+/* ==========================================================================
+   MONOCHROME INTERACTIVE STEPPING SCRUBBERS (CYAN SQL ACCENTS ONLY)
+   ========================================================================== */
+.koma-scrubber-wrapper {
+  margin-top: 14px;
+}
+
+.koma-scrubber-card {
+  background: #121214;
+  border: 1px solid #27272a;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.koma-scrubber-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #18181b;
+  border-bottom: 1px solid #27272a;
+}
+
+.koma-scrubber-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.koma-scrubber-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #38bdf8;
+  background: #222226;
+  padding: 3px 7px;
+  border-radius: 2px;
+  border: 1px solid #27272a;
+}
+
+.koma-scrubber-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.koma-scrubber-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.koma-scrubber-btn {
+  background: #222226;
+  border: 1px solid #3f3f46;
+  color: #d4d4d8;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.koma-scrubber-btn:hover:not(:disabled) {
+  background: #27272a;
+  color: #ffffff;
+  border-color: #52525b;
+}
+
+.koma-scrubber-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: #27272a;
+}
+
+.koma-scrubber-dots {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 4px;
+}
+
+.koma-scrubber-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3f3f46;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.koma-scrubber-dot:hover {
+  background: #71717a;
+}
+
+.koma-scrubber-dot.active {
+  background: #38bdf8;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
+}
+
+.koma-scrubber-desc {
+  padding: 8px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #a1a1aa;
+  background: #141416;
+  border-bottom: 1px solid #1f1f23;
+  line-height: 1.45;
+}
+
+.koma-scrubber-viewport {
+  padding: 10px;
+  background: #121214;
+}
